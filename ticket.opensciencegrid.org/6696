@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[6696] Problem with jobmanager-pbs output back to the client</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=6696" method="post">
+<div class="page-header">
+    <h3><span class="muted">6696</span> / Problem with jobmanager-pbs output back to the client</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Jeffrey Dutton</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2009-10-07</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=6696", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/6696?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/6696?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Problem%20with%20jobmanager-pbs%20output%20back%20to%20the%20client%20ISSUE%3D6696%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='6696#1254933601'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-07T16:40:01+00:00">Oct 7, 2009 04:40 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1254933601">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='6696#1254341586'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-30T20:13:06+00:00">Sep 30, 2009 08:13 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1254341586">&nbsp;</a></div><pre>I think we can close this.  We will be discontinuing work on the site
+for the immediate future to work on application development.  It is the
+opinion of those in important places that our science is now more
+important than messing about with a 58 CPU site.
+
+We are not completely without use as Engage has run more than 3,000
+hours in the last couple of weeks using our PBS setup as it is.  It
+seems we can run as we are for the time being.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Wednesday, September 30, 2009 3&#58;51 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1254340268'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-30T19:51:08+00:00">Sep 30, 2009 07:51 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1254340268">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='6696#1253128271'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-16T19:11:11+00:00">Sep 16, 2009 07:11 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1253128271">&nbsp;</a></div><pre>A quick update&#58;
+
+1.  The CE was rebuilt from scratch back on Friday, 11 Sep 2009.  It was
+rebuilt using PBS as the local job manager
+
+2.  Approximately 500 hours of test jobs were until yesterday using PBS
+and pushing the CE as hard as possible.  Everything seemed to be fine
+
+3.  An engage user has run &#62;700 hours worth of jobs today and has
+reported they are running successfully.  All of these are using the
+local job manager PBS.
+
+It seems in our present state we can be functional to some extent such
+that a user can do production work on our site.
+
+I will gather more info and try to decide if we need to continue this or
+if we should just proceed with the functionality we have.  I&#39;ll attempt
+to have that answer by the next action date.
+
+Thanks!
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Wednesday, September 16, 2009 9&#58;18 AM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1253107086'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-16T13:18:06+00:00">Sep 16, 2009 01:18 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1253107086">&nbsp;</a></div><pre>I will set the Next action date to Sept. 30 for you.</pre></div><div class='update_description'><i onclick="document.location='6696#1252671011'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-11T12:10:11+00:00">Sep 11, 2009 12:10 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1252671011">&nbsp;</a></div><pre>There may be action on this in the next day or two.  We have been trying to implement Condor instead of PBS but have had equally perplexing issues.  Some are actually architecture related and may not be easily overcome.  Or at least easier to overcome than the current PBS issues.
+
+I believe I will be reinstalling the CE with PBS as the local job manager again today and it will need to settle out a bit post-install to see if RSV is functional and all probes are green.  Then we can pick back up on this at a later date as Abhishek Rana would like us to shift focus to science as our site is so small as to be irrelevant (except for our own use in developing our apps by easily accessing the compute nodes for development/debugging purposes).
+
+I will provide additional info in the next day or so.
+
+Jeffrey Dutton
+Technical Analyst I
+Richard D. Berlin Center for Cell Analysis and Modeling
+Department of Cell Biology
+University of Connecticut Health Center
+263 Farmington Avenue, MC1507
+Farmington, CT 06030
+Tele&#58; 860-679-4686
+E-mail&#58; jdutton@....
+Web&#58; <a href='http&#58;//www.ccam.uchc.edu/' target='_blank' rel='nofollow'>http&#58;//www.ccam.uchc.edu/</a></pre></div><div class='update_description'><i onclick="document.location='6696#1252521681'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-09T18:41:21+00:00">Sep 9, 2009 06:41 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1252521681">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='6696#1251316573'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-26T19:56:13+00:00">Aug 26, 2009 07:56 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1251316573">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='6696#1250687266'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-19T13:07:46+00:00">Aug 19, 2009 01:07 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1250687266">&nbsp;</a></div><pre>Shreyas,
+
+Thanks much for your time.  I&#39;ll move the next action date to the 26th.</pre></div><div class='update_description'><i onclick="document.location='6696#1250018292'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-11T19:18:12+00:00">Aug 11, 2009 07:18 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1250018292">&nbsp;</a></div><pre>Given that you understand our issues and have already spent some time
+looking into this I will gladly await for your return.
+
+Thanks.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Tuesday, August 11, 2009 2&#58;21 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1250014873'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-11T18:21:13+00:00">Aug 11, 2009 06:21 PM UTC</time> by <b>Shreyas Cholia</b><a class="anchor" name="1250014873">&nbsp;</a></div><pre>Hi Jeff
+
+I will be on leave until August 26th - if this can wait until then, I&#39;d
+be happy to help out when I get back.
+
+-Shreyas
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='6696#1250013072'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-11T17:51:12+00:00">Aug 11, 2009 05:51 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1250013072">&nbsp;</a></div><pre>Hello,
+
+Sorry for the lengthy delay in getting back to this.  Shreyas, I know it
+has been some time and I am very grateful for the attention you have
+given to this problem thus far.  If you are still willing to help out
+and are available I would be appreciative.  If not, I completely
+understand.  I am also copying Abhishek so that he knows I am back onto
+this issue as he was aware of the PBS/site updates I will describe
+below.
+
+What has happened&#58;
+
+1.  We found that OSG jobs using our enterprise PBS server were causing
+production jobs to experience lengthy timeouts.  We decided we didn&#39;t
+need to cause production problems and it would simplify things if we had
+a separate OSG-only PBS server should server side configurations need to
+be changed.  We also only have one queue now as well (workq).
+
+2.  A standalone PBS server was installed with PBS Pro 10.1.0 and all
+PBS MOM installations were updated as well.  Jobs submitted with the new
+PBS server and MOM updates exhibited the same behavior as before.
+
+3.  We essentially re-installed and re-configured the entire CE and
+supporting servers/services (VOMRS/GUMS).  We are operating at the
+latest OSG release level (1.2) across the entire site with the exception
+of OSG-Clients.  If it is thought that that could be an issue we can
+update that as well.
+
+4.  CE validation is essentially complete with the exception of some
+level of worker-node validation (in the works) and troubleshooting the
+various methods of job submission that use PBS that fail.
+
+5.  I ran a PBS job that was lengthy enough to capture some log info and
+queue info to help troubleshoot this issue.  I have put the log files on
+our web server since word-wrap causes me a headache just trying to read
+<div id='show_1605207785' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1605207785'>log files and replying and quoting makes things even worse.  So there
+are URLs to the logs. What I found&#58;
+
+Submit command - an application that finds all primes up to the passed
+parameter - useful because it takes a while to run so I can scavenge log
+files&#58;
+
+globusrun-ws -submit -F vdgateway.vcell.uchc.edu&#58;9443 -Ft PBS -c
+/osg/home/compbiogrid/jdutton/prime_test.sh 60000
+
+First Log location&#58;
+
+/osg/home/compbiogrid/.globus/b0a28c40-8697-11de-937c-d2ca12d73a05/sched
+uler_pbs_job_script
+
+URL&#58;
+<a href='http&#58;//dropbox.vcell.uchc.edu/OSG/PBS/1_scheduler_pbs_job_script.txt' target='_blank' rel='nofollow'>http&#58;//dropbox.vcell.uchc.edu/OSG/PBS/1_scheduler_pbs_job_script.txt</a>
+
+I think I already see a problem with this.  The definitions for PBS -o
+and PBS -e point to /dev/null and later on I see an error for this.  I
+am not sure how that should be defined to put error and output in the
+correct location.
+
+Second - a detailed qstat
+
+URL&#58;  <a href='http&#58;//dropbox.vcell.uchc.edu/OSG/PBS/2_qstat.txt' target='_blank' rel='nofollow'>http&#58;//dropbox.vcell.uchc.edu/OSG/PBS/2_qstat.txt</a>
+
+Again, ERROR_PATH and OUTPUT_PATH both show /dev/null
+
+Third - from /var/spool/PBS/spool on the compute node&#58;
+
+[root@compute-0-0 spool]# pwd
+/var/spool/PBS/spool
+[root@compute-0-0 spool]# ls -al
+total 8
+drwxrwxrwt  2 root        root    4096 Aug 11 12&#58;54 .
+drwxr-xr-x  8 root        root    4096 Jul 21 13&#58;04 ..
+-rw-------  1 compbiogrid osg_grp    0 Aug 11 12&#58;54
+673.osgrocks.vcell.uchc.edu.ER
+-rw-------  1 compbiogrid osg_grp    0 Aug 11 12&#58;54
+673.osgrocks.vcell.uchc.edu.OU
+[root@compute-0-0 spool]#
+
+Note both files are empty - I did not catch the error (if there was one)
+or the output (if there was one).  This was the victim of some cleanup
+shortly after the error below (I assume).
+
+Fourth - from /var/spool/PBS/spool/ an rcp error report&#58;
+
+URL&#58;   <a href='http&#58;//dropbox.vcell.uchc.edu/OSG/PBS/3_rcperror.txt' target='_blank' rel='nofollow'>http&#58;//dropbox.vcell.uchc.edu/OSG/PBS/3_rcperror.txt</a>
+
+I am guessing the continued appearance of /dev/null may be an issue or
+the only issue?
+
+Without knowing what further info/log files would be most useful I will
+stop here.  Again, Shreyas if you are available that would be awesome.
+If not, I understand since this is a problem that can consume ones time.
+
+Thanks.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Monday, August 10, 2009 2&#58;41 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]
+</div><script type='text/javascript'>
+        $('#show_1605207785').click(function() {
+            $('#detail_1605207785').slideDown("normal");
+            $('#show_1605207785').hide();
+            $('#hide_1605207785').show();
+        });
+        $('#hide_1605207785').click(function() {
+            $('#detail_1605207785').slideUp();
+            $('#hide_1605207785').hide();
+            $('#show_1605207785').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='6696#1249929672'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-10T18:41:12+00:00">Aug 10, 2009 06:41 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1249929672">&nbsp;</a></div><pre>Actually, there is no resolution at all on this one.
+
+I will be preparing new documentation on this since we updated and broke
+out our PBS server for OSG jobs, we upgraded to OSG 1.2 across the
+board, but streaming data back to the client is still not functional.
+
+I will be running a job later today or tomorrow morning to collect logs
+and compile a good email of where we are, the changes we made, and a
+granular look at what is going on in the logs.
+
+Sorry, but it still remains a working ticket, I believe.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Monday, August 10, 2009 2&#58;20 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1249928408'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-10T18:20:08+00:00">Aug 10, 2009 06:20 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1249928408">&nbsp;</a></div><pre>Jeff,
+
+I saw some resolution in the email thread you had going.  Can I close this ticket yet?</pre></div><div class='update_description'><i onclick="document.location='6696#1248192912'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-07-21T16:15:12+00:00">Jul 21, 2009 04:15 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1248192912">&nbsp;</a></div><pre>Yes - sort of.
+
+We fixed some hardware issues with our compute cluster and have
+installed a new PBS server to support the OSG work that is separate from
+our production PBS server.  We feel there were issues with the
+production PBS server that were causing problems when OSG jobs were
+submitted so breaking it out seems the prudent thing to do.  In the
+process we have updated PBS to version 10.1.0.
+
+I still have one remaining issue with PBS starting automatically on a
+reinstallation of a failed node that needs to be sorted out.
+
+The next update can also be in a couple of weeks since I am now waiting
+for the new OSG release to reinstall the CE so that everything is up to
+date.  Then we can see where the PBS issues are if there are any
+remaining.
+
+Background&#58;  We decided it would be best given the page of OSG major
+software releases to bring everything up to date instead of trying to
+push through on OSG-1.0.0.  It makes more sense to not push through our
+issues and then do an update of two major releases just to have things
+break and spend time fixing upgrade issues.  Time will be better spent
+working out issues with the new installation than losing time on fixing
+past versions.
+
+Thanks.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Tuesday, July 21, 2009 10&#58;46 AM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+<div id='show_819393160' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_819393160'>the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]
+</div><script type='text/javascript'>
+        $('#show_819393160').click(function() {
+            $('#detail_819393160').slideDown("normal");
+            $('#show_819393160').hide();
+            $('#hide_819393160').show();
+        });
+        $('#hide_819393160').click(function() {
+            $('#detail_819393160').slideUp();
+            $('#hide_819393160').hide();
+            $('#show_819393160').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='6696#1248187600'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-07-21T14:46:40+00:00">Jul 21, 2009 02:46 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1248187600">&nbsp;</a></div><pre>Jeff,
+
+Just pinging in two weeks like I said I would.  Any news on this?
+
+Kyle</pre></div><div class='update_description'><i onclick="document.location='6696#1246992155'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-07-07T18:42:35+00:00">Jul 7, 2009 06:42 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1246992155">&nbsp;</a></div><pre>THanks for the update, Jeff.  I&#39;ll ping you in two weeks.</pre></div><div class='update_description'><i onclick="document.location='6696#1246474332'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-07-01T18:52:12+00:00">Jul 1, 2009 06:52 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1246474332">&nbsp;</a></div><pre>Hello,
+
+Don&#39;t bother looking at this right now.  Our PBS person upgraded out PBS
+server and client software and it has broken everything.  I will have to
+get it sorted out next week.
+
+I&#39;ll update the ticket once I get PBS functional to the level I wrote
+about the other day.
+
+Sorry.
+
+Jeff</pre></div><div class='update_description'><i onclick="document.location='6696#1246305312'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-29T19:55:12+00:00">Jun 29, 2009 07:55 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1246305312">&nbsp;</a></div><pre>An update.
+
+I can submit PBS jobs using the following commands and it works (as an
+example)&#58;
+
+globus-job-submit vdgateway.vcell.uchc.edu/jobmanager-pbs
+/osg/home/compbiogrid/jdutton/prime_test.sh 50000
+
+I will get something back like this&#58;
+
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40003/9404/1246302609/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40003/9404/1246302609/</a>
+
+I can then get the status using globus-job-status.
+I can get results using globus-job-get-output
+And I can clean up the job using globus-job-clean
+
+I have run as many as 10 jobs concurrently and it all seems to work out
+well.
+
+I have issues with the following jobs as described in the CE Validation.
+NONE of these work.  I was told once I only need the above so I want to
+verify the following SHOULDN&#39;T work (and should possibly be noted in the
+CE Validation documentation)&#58;
+
+globusrun-ws -submit -F vdgateway.vcell.uchc.edu&#58;9443 -s -c
+/bin/hostname
+- I get a hostname but I also get the following error&#58;
+globusrun-ws&#58; Job failed&#58; Staging error for RSL element
+fileCleanUp.
+
+globusrun-ws -submit -F vdgateway.vcell.uchc.edu&#58;9443 -Ft PBS -c
+/bin/false
+- just sits at the line&#58;  Current job state&#58; Unsubmitted
+
+globusrun-ws -submit -F vdgateway.vcell.uchc.edu&#58;9443 -Ft PBS -s -c
+<div id='show_1409731050' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1409731050'>/bin/hostname
+- just sits at the line&#58;  Current job state&#58; Unsubmitted
+
+globusrun-ws -submit -F vdgateway.vcell.uchc.edu&#58;9443 -Ft PBS -s -f
+hellogrid.xml
+- just sits at the line&#58;  Current job state&#58; Unsubmitted
+
+globusrun-ws -submit -F vdgateway.vcell.uchc.edu&#58;9443 -Ft PBS -S -f
+hostname_file_stage.xml
+- just sits at the line&#58;  Current job state&#58; Unsubmitted
+
+For the submit file, using the following&#58;
+
+# specify resource destination
+Universe            = grid
+grid_resource       = gt4 <a href='https&#58;//vdgateway.vcell.uchc.edu&#58;9443' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;9443</a> PBS
+
+# specify executable
+Executable          = /bin/hostname
+Transfer_Executable = false
+
+# copy stdout stderr to local files, referenced by job (Process) and
+submission id (Cluster)
+output  =  mytest.out.$(Cluster).$(Process)
+error   =    mytest.err.$(Cluster).$(Process)
+#a single local log file for tracking Condor-g submission
+log    = mytest.log
+
+# do not send email notification
+notification=Never
+
+# submit 2 identical jobs&#58; Process=0 and Process=1
+Queue 2
+
+When running it I see this in the mytest.log&#58;
+
+000 (010.000.000) 06/29 13&#58;25&#58;38 Job submitted from host&#58;
+&#60;155.37.255.131&#58;43912&#62;
+...
+000 (010.001.000) 06/29 13&#58;25&#58;38 Job submitted from host&#58;
+&#60;155.37.255.131&#58;43912&#62;
+...
+018 (010.000.000) 06/29 13&#58;25&#58;51 Globus job submission failed!
+Reason&#58; 0 Staging error for RSL element fileStageIn.
+...
+012 (010.000.000) 06/29 13&#58;25&#58;52 Job was held.
+Globus error&#58; Staging error for RSL element fileStageIn.
+Code 0 Subcode 0
+...
+018 (010.001.000) 06/29 13&#58;25&#58;56 Globus job submission failed!
+Reason&#58; 0 Staging error for RSL element fileStageIn.
+...
+012 (010.001.000) 06/29 13&#58;25&#58;57 Job was held.
+Globus error&#58; Staging error for RSL element fileStageIn.
+Code 0 Subcode 0
+...
+
+That is what I have at this point.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Monday, June 29, 2009 12&#58;19 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]
+</div><script type='text/javascript'>
+        $('#show_1409731050').click(function() {
+            $('#detail_1409731050').slideDown("normal");
+            $('#show_1409731050').hide();
+            $('#hide_1409731050').show();
+        });
+        $('#hide_1409731050').click(function() {
+            $('#detail_1409731050').slideUp();
+            $('#hide_1409731050').hide();
+            $('#show_1409731050').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='6696#1246292356'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-29T16:19:16+00:00">Jun 29, 2009 04:19 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1246292356">&nbsp;</a></div><pre>I will have an update later today.  I am working on the data right now
+to support the questions I will be raising.
+
+Thanks.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Monday, June 29, 2009 12&#58;14 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1246292093'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-29T16:14:53+00:00">Jun 29, 2009 04:14 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1246292093">&nbsp;</a></div><pre>Jeff,
+
+Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='6696#1245949634'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-25T17:07:14+00:00">Jun 25, 2009 05:07 PM UTC</time> by <b>Shreyas Cholia</b><a class="anchor" name="1245949634">&nbsp;</a></div><pre>Hi Jeff
+
+I still think it is probably the same issue that we diagnosed earlier.
+Does your PBS install allow you to write stdout and stderr to files of
+your choice?
+
+My guess is that once you get PBS to work so that following lines are
+operational, everything else should work&#58;
+#PBS -o myfile.out
+#PBS -e myfile.err
+
+You would probably have to talk to the folks that manage your local PBS
+install for this.
+
+-Shreyas
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='6696#1245939554'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-25T14:19:14+00:00">Jun 25, 2009 02:19 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1245939554">&nbsp;</a></div><pre>Sorry,
+
+This problem appears to still be in existence.  I may have been testing
+incorrectly and not seeing that the problem still exists with running
+PBS jobs on our site.
+
+Please do not close the ticket yet.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Wednesday, June 24, 2009 12&#58;01 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1245859273'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-24T16:01:13+00:00">Jun 24, 2009 04:01 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1245859273">&nbsp;</a></div><pre>Hello,
+
+Since Monday the following events have taken place&#58;
+
+1.  As stated below Shreyas was given access to our CE for
+troubleshooting purposes
+
+2.  Shreyas spent quite some time narrowing the problem down to PBS
+being mis-configured such that the job could be submitted and monitored
+but the output was not being written to a location that Globus could
+find thus there was no output to collect after the job completed.
+
+3.  I passed the info Shreyas sent onto our local PBS expert who did
+recall an issue with copying results and had removed the path to rcp and
+scp from the local pbs.conf file in the pbs.conf file we use across our
+enterprise.
+
+4.  The patches to rcp and scp were restored on the cluster compute
+nodes and jobs now run to completion as they did before but it is now
+possible to get results now using globus-job-get-output.
+
+It seems this ticket can now be closed.
+
+Thanks.
+
+Jeff Dutton
+CompBioGrid
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Monday, June 22, 2009 1&#58;58 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+<div id='show_680310333' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_680310333'>
+[Duplicate message snipped]
+</div><script type='text/javascript'>
+        $('#show_680310333').click(function() {
+            $('#detail_680310333').slideDown("normal");
+            $('#show_680310333').hide();
+            $('#hide_680310333').show();
+        });
+        $('#hide_680310333').click(function() {
+            $('#detail_680310333').slideUp();
+            $('#hide_680310333').hide();
+            $('#show_680310333').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='6696#1245693491'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-22T17:58:11+00:00">Jun 22, 2009 05:58 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1245693491">&nbsp;</a></div><pre>A quick update.
+
+I made Shreyas an account so that he can look at our CE.  I also
+verified that he maps to OSG VO and should be able to run jobs. At this
+point we seem to be set up for more rigorous troubleshooting.  All of
+this has happened today.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Monday, June 22, 2009 1&#58;50 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1245693047'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-22T17:50:47+00:00">Jun 22, 2009 05:50 PM UTC</time> by <b>echism</b><a class="anchor" name="1245693047">&nbsp;</a></div><pre>Shreyas,
+
+Are there any updates on this issue?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='6696#1245086352'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-15T17:19:12+00:00">Jun 15, 2009 05:19 PM UTC</time> by <b>Shreyas Cholia</b><a class="anchor" name="1245086352">&nbsp;</a></div><pre>Hi Kyle
+
+Was on travel last week - will investigate further this week.
+
+-Shreyas
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='6696#1245082044'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-15T16:07:24+00:00">Jun 15, 2009 04:07 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1245082044">&nbsp;</a></div><pre>Shreyas,
+
+Are there any updates on this ticket?
+
+Kyle</pre></div><div class='update_description'><i onclick="document.location='6696#1244569751'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-09T17:49:11+00:00">Jun 9, 2009 05:49 PM UTC</time> by <b>Shreyas Cholia</b><a class="anchor" name="1244569751">&nbsp;</a></div><pre>Hi Jeffrey
+
+Ok - that should be enough for me to compare error codes. I believe
+PBSPro uses its own built in scheduler.
+
+Some versions of PBS (eg. OpenPBS, Torque etc.) will allow you to plug
+in a different scheduler (such as Moab or Maui) to handle the resources.
+For an example see&#58;
+<a href='http&#58;//www.clusterresources.com/products/mwm/docs/pbsintegration.shtml' target='_blank' rel='nofollow'>http&#58;//www.clusterresources.com/products/mwm/docs/pbsintegration.shtml</a>
+
+-Shreyas
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='6696#1244554631'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-09T13:37:11+00:00">Jun 9, 2009 01:37 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1244554631">&nbsp;</a></div><pre>We are using PBS Pro version 9.2.0 for 32-bit systems.
+
+Both myself and our PBS expert are at a loss as to what is meant by the
+backend scheduler.  Can you be more specific about that part?
+
+Thanks
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Monday, June 08, 2009 1&#58;31 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1244482271'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-08T17:31:11+00:00">Jun 8, 2009 05:31 PM UTC</time> by <b>Shreyas Cholia</b><a class="anchor" name="1244482271">&nbsp;</a></div><pre>Looking through the log files - I have a couple of suggestions, but
+before we go down that road I&#39;d like to check with Jeffrey - what
+version of PBS are you using and what backend scheduler do you have? I&#39;m
+wondering if you are running into an issue where the globus jobmanager
+is mixing up return codes with a non-standard version of PBS.
+
+-Shreyas
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='6696#1244472348'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-08T14:45:48+00:00">Jun 8, 2009 02:45 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1244472348">&nbsp;</a></div><pre>All,
+
+Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='6696#1244022011'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-03T09:40:11+00:00">Jun 3, 2009 09:40 AM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1244022011">&nbsp;</a></div><pre>Hello,
+
+The correct URL to get to the logs is&#58;
+
+<a href='http&#58;//dropbox.vcell.uchc.edu/OSG/' target='_blank' rel='nofollow'>http&#58;//dropbox.vcell.uchc.edu/OSG/</a> &#60;<a href='http&#58;//dropbox.vcell.uchc.edu/OSG/&#62' target='_blank' rel='nofollow'>http&#58;//dropbox.vcell.uchc.edu/OSG/&#62</a>;
+
+Sorry.
+
+Jeffrey Dutton
+Technical Analyst I
+Richard D. Berlin Center for Cell Analysis and Modeling
+Department of Cell Biology
+University of Connecticut Health Center
+263 Farmington Avenue, MC1507
+Farmington, CT 06030
+Tele&#58; 860-679-4686
+E-mail&#58; jdutton@....
+Web&#58; <a href='http&#58;//www.ccam.uchc.edu/' target='_blank' rel='nofollow'>http&#58;//www.ccam.uchc.edu/</a></pre></div><div class='update_description'><i onclick="document.location='6696#1243991051'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-03T01:04:11+00:00">Jun 3, 2009 01:04 AM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1243991051">&nbsp;</a></div><pre>Sorry.  One of our developers is shifting us over to a new web server and the address is either not aliased correctly or there is a typo somewhere.  I sent them an email asking for the correct URL and I will send it as soon as I get it.
+
+Jeffrey Dutton
+Technical Analyst I
+Richard D. Berlin Center for Cell Analysis and Modeling
+Department of Cell Biology
+University of Connecticut Health Center
+263 Farmington Avenue, MC1507
+Farmington, CT 06030
+Tele&#58; 860-679-4686
+E-mail&#58; jdutton@....
+Web&#58; <a href='http&#58;//www.ccam.uchc.edu/' target='_blank' rel='nofollow'>http&#58;//www.ccam.uchc.edu/</a></pre></div><div class='update_description'><i onclick="document.location='6696#1243981511'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-02T22:25:11+00:00">Jun 2, 2009 10:25 PM UTC</time> by <b>Shreyas Cholia</b><a class="anchor" name="1243981511">&nbsp;</a></div><pre>I can&#39;t access the dropbox&#58;
+
+Not Found
+
+The requested URL /dropbox/OSG/ was not found on this server.
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='6696#1243975390'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-02T20:43:10+00:00">Jun 2, 2009 08:43 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1243975390">&nbsp;</a></div><pre>Hello,
+
+I ran some jobs and collected some logs and produced what seems to me to
+be a characteristic run of a PBS job.  It takes a bit to run it so it
+shows &#34;ACTIVE&#34; form some time and I can also watch it from the PBS queue
+itself.
+
+Since the logs are big, I have them sitting on our web site in a
+location that can be downloaded.  They are not especially large in size
+(80k, 15k, and 13k) but they are a bit much for email.
+
+The log files are here&#58;
+
+<a href='http&#58;//nrcam.uchc.edu/dropbox/OSG/' target='_blank' rel='nofollow'>http&#58;//nrcam.uchc.edu/dropbox/OSG/</a>
+
+gram_job_mgr_16509.log is the actual job
+
+gram_job_mgr_21521.log is an attempt to collect the results using the
+globus-job-get-output command
+
+from_globus_gatekeeper_log.txt contains the job submission and several
+attempts to collect the results.
+
+I tried to collect results while still active and the
+globus-job-get-output command just returns to a bash prompt with no
+errors.  Just as it does when the job is done - no output and no errors.
+Just a bash prompt.
+
+Looking at the logs, I will admit I haven&#39;t a clue what might be an
+error and what is just fine.  So any pointers to the trouble spots would
+be appreciated.
+
+Jeff
+
+-----Original Message-----
+<div id='show_133272675' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_133272675'>From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Thursday, May 28, 2009 2&#58;25 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]
+</div><script type='text/javascript'>
+        $('#show_133272675').click(function() {
+            $('#detail_133272675').slideDown("normal");
+            $('#show_133272675').hide();
+            $('#hide_133272675').show();
+        });
+        $('#hide_133272675').click(function() {
+            $('#detail_133272675').slideUp();
+            $('#hide_133272675').hide();
+            $('#show_133272675').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='6696#1243535110'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-05-28T18:25:10+00:00">May 28, 2009 06:25 PM UTC</time> by <b>Shreyas Cholia</b><a class="anchor" name="1243535110">&nbsp;</a></div><pre>To begin with I would look at the values in these files, in the
+$GLOBUS_LOCATION/etc directory&#58;
+
+globus-fork.conf
+globus-gatekeeper.conf
+globus-job-manager.conf
+globus-pbs.conf
+
+Make sure that all the values are accurate for PBS specific stuff.
+
+These should also point you at all the relevant log files.
+
+Another useful tip is to tell the jobmanager to save the log by changing
+the option &#34;-save-logfile
+on_error&#34; to &#34;-save-logfile always&#34; (in globus-job-manager.conf). This
+will create a new log file for every job in your home directory.
+
+Hopefully this will give you some useful information. Please let us know
+what shows up in the log files.
+
+-Shreyas
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='6696#1243533693'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-05-28T18:01:33+00:00">May 28, 2009 06:01 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1243533693">&nbsp;</a></div><pre>Shreyas,
+
+Do you have any ideas about logs mentioned in the previous entry?
+
+Kyle</pre></div><div class='update_description'><i onclick="document.location='6696#1243527911'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-05-28T16:25:11+00:00">May 28, 2009 04:25 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1243527911">&nbsp;</a></div><pre>Hello,
+
+I was able to try the commands sent to me.
+
+Using PBS I ran the following&#58;
+
+globus-job-submit vdgateway.vcell.uchc.edu/jobmanager-pbs
+/osg/home/compbiogrid/prime_test.sh 25217
+
+The prime_test.sh script just calculates primes from 1 to the input
+number, in this case 25217 in an effort to consume CPU time so I can get
+variations in job status.
+
+Here is the entire output of the run including intermediate status
+checks&#58;
+
+[jdutton@ vdtclient1 11&#58;14&#58;11 ~]&#58;globus-job-submit
+vdgateway.vcell.uchc.edu/jobmanager-pbs
+/osg/home/compbiogrid/prime_test.sh 25217
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+[jdutton@ vdtclient1 11&#58;16&#58;29 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;16&#58;46 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;16&#58;55 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;16&#58;56 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;16&#58;56 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+<div id='show_470905713' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_470905713'>[jdutton@ vdtclient1 11&#58;16&#58;57 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;16&#58;58 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;17&#58;13 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;17&#58;14 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;17&#58;42 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+DONE
+[jdutton@ vdtclient1 11&#58;17&#58;48 ~]&#58;globus-job-get-output
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/9517/1243523789/</a>
+[jdutton@ vdtclient1 11&#58;18&#58;04 ~]&#58;
+
+The only problem I see at this point is the output returned nothing.  I
+also ran other jobs that are not shown such that some were sitting in
+the PBS queue and I did get PENDING returned for job status.  Perfection
+on that front!  There was output dumped into the home directory I am
+mapped to (compbiogrid) and the results are in a text file there.
+
+I did the same job using jobmanager fork&#58;
+
+[jdutton@ vdtclient1 11&#58;20&#58;37 ~]&#58;globus-job-submit
+vdgateway.vcell.uchc.edu/jobmanager-fork
+/osg/home/compbiogrid/prime_test.sh 25217
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/</a>
+[jdutton@ vdtclient1 11&#58;22&#58;51 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;23&#58;08 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;23&#58;09 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;23&#58;10 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/</a>
+ACTIVE
+[jdutton@ vdtclient1 11&#58;23&#58;12 ~]&#58;
+[jdutton@ vdtclient1 11&#58;23&#58;13 ~]&#58;globus-job-status
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/</a>
+DONE
+[jdutton@ vdtclient1 11&#58;23&#58;14 ~]&#58;globus-job-get-output
+<a href='https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/' target='_blank' rel='nofollow'>https&#58;//vdgateway.vcell.uchc.edu&#58;40001/12901/1243524170/</a>
+1 2 3 5 7 11 13 17 19 23 29 31 37 41 ... 25171 25183 25189
+[jdutton@ vdtclient1 11&#58;23&#58;23 ~]&#58;
+
+I cut much of the output because it is long.  So this is a perfect
+result for jobmanager fork.
+
+I guess the next step is to figure out what is failing with the pbs
+output and why it won&#39;t return it.  Are there log files I can look into
+for clues?
+
+Thanks for all the help with this.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Thursday, May 21, 2009 1&#58;19 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]
+</div><script type='text/javascript'>
+        $('#show_470905713').click(function() {
+            $('#detail_470905713').slideDown("normal");
+            $('#show_470905713').hide();
+            $('#hide_470905713').show();
+        });
+        $('#hide_470905713').click(function() {
+            $('#detail_470905713').slideUp();
+            $('#hide_470905713').hide();
+            $('#show_470905713').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='6696#1242926351'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-05-21T17:19:11+00:00">May 21, 2009 05:19 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1242926351">&nbsp;</a></div><pre>Hello,
+
+I have not been able to try yet.  I have been put on a documentation
+task by Abhishek Rana and he instructed me to hold off on working my
+open tickets until the documentation he seeks is finished.  I should be
+able to get back to this problem next week.
+
+Sorry to put this on hold like this.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Thursday, May 21, 2009 1&#58;08 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='6696#1242925728'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-05-21T17:08:48+00:00">May 21, 2009 05:08 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1242925728">&nbsp;</a></div><pre>Jeff,
+
+Did any of these suggestions work out for you?
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='6696#1242153336'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-05-12T18:35:36+00:00">May 12, 2009 06:35 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1242153336">&nbsp;</a></div><pre>Update from Shreyas&#58;
+
+Couple of things&#58;
+1. Typically, you wouldn&#39;t run globus-job-run on a PBS jobmanager - you
+would run globus-job-submit and then pick up the output by doing a
+globus-job-get-output on the returned endpoint.
+2. There may be weird firewall network issues at play here too.
+Depending on the kind of job you submit, the jobmanager may need to
+connect back to the client. I&#39;ve found that globus-job-submit is a good
+way to isolate the problem.
+
+Next steps&#58;
+- Try globus-job-submit (with globus-job-status and
+globus-job-get-output) instead of globus-job-run for BOTH fork and PBS
+jobmanager
+- Theory - submission and status check will work but get-output will
+fail for both types of jobmanagers. If it fails for both then we have a
+networking / firewall issue.</pre></div><div class='update_description'><i onclick="document.location='6696#1242151276'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-05-12T18:01:16+00:00">May 12, 2009 06:01 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1242151276">&nbsp;</a></div><pre>Jeff,
+
+Sorry this is taking so long.  I&#39;m having some trouble tracking down a PBS expert.
+(The resident PBS guy from PSU left)
+
+I think I have a few people who can help now.
+
+Kyle</pre></div><div class='update_description'><i onclick="document.location='6696#1240594751'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-04-24T17:39:11+00:00">Apr 24, 2009 05:39 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1240594751">&nbsp;</a></div><pre>Thanks for the reply.  Maybe I can explain things better.
+
+If I run any of the following, from a dedicated OSG client machine that
+I have built (vdtclient1.vcell.uchc.edu) to my CE
+(vdgateway.vcell.uchc.edu) I get a response back on my client machine
+with the output of the simple command that I run&#58;
+
+**** These all perform as you would expect - message sent from client to
+CE - response from CE visible on the client machine ****
+globus-job-run vdgateway.vcell.uchc.edu /bin/env
+globus-job-run vdgateway.vcell.uchc.edu/jobmanager-fork /bin/env
+globus-job-run vdgateway.vcell.uchc.edu/jobmanager-managedfork /bin/env
+
+However, what does not work intuitively are jobs using our local job
+manager PBS.  The behavior is different for the two flavors of job
+submission&#58;
+
+globus-job-run vdgateway.vcell.uchc.edu/jobmanager-pbs /bin/env
+The above command will execute the simple Linux command and dump the
+output to /osg/home/VO_NAME on the shared file system and the client
+finishes elegantly back to the bash prompt.  To find out what happended,
+you need to do something like this from the client ***without using the
+pbs jobmanager*** to see which file is the output&#58;
+
+globus-job-run vdgateway.vcell.uchc.edu /bin/ls -al
+/osg/home/compbiogrid
+
+Then the user either has to do a similar command to cat the file or a
+command like the following to go fetch it&#58;
+
+globus-url-copy
+<a href='gsiftp&#58;//vdgateway.vcell.uchc.edu&#58;2811/osg/home/compbiogrid/STDIN.o28783' target='_blank' rel='nofollow'>gsiftp&#58;//vdgateway.vcell.uchc.edu&#58;2811/osg/home/compbiogrid/STDIN.o28783</a>
+file&#58;///tmp/jdutton.o28783
+
+This is cumbersome but it does work.
+<div id='show_241625782' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_241625782'>
+The bigger problem is using globusrun-ws.  Sending a command like the
+following, the job will run successfully.  By that I mean PBS is happy
+and the output goes to a file in the /osg/home/VO_NAME on the shared
+file system.  HOWEVER, the issue is the client side appears to never get
+a message that the job is done so the job never finishes on the client
+side.  It gets stuck here&#58;
+
+-bash-3.1$ globusrun-ws -submit -F vdgateway.vcell.uchc.edu&#58;9443 -Ft PBS
+-c /bin/env
+Submitting job...Done.
+Job ID&#58; uuid&#58;3b160c26-30f3-11de-a993-0030488e9516
+Termination time&#58; 04/25/2009 17&#58;13 GMT
+Current job state&#58; Unsubmitted
+
+And that is where it will sit for as long as I have let it sit that way.
+I can log into another machine (or a second time into the client) and
+see the completed file in /osg/home/VO_NAME on the shared file system
+and I can read it with a cat sent via a globus-job-run command. So the
+worker node finishes and the data is copied to the home directory but
+globusrun-ws never knows it.
+
+If I give it a Crtl-C I get the rest of the output on screen&#58;
+
+Canceling...Canceled.
+Destroying job...
+
+Canceling...Failed.
+globusrun-ws&#58; globus_i_monitor.c&#58;&#58;1633&#58;
+Operation was canceled
+globusrun-ws&#58; Unable to destroy job&#58; globus_i_kill.c&#58;&#58;86&#58;
+Error destroying job
+ManagedJobService_client.c&#58;&#58;4560&#58;
+Failed receiving response ManagedJobPortType_Destroy.
+globus_soap_message_transport.c&#58;globus_l_soap_message_response_ready_cal
+lback&#58;682&#58;
+SOAP Message transport failed&#58; Error in HTTP response
+globus_xio_system_select.c&#58;globus_l_xio_system_cancel_cb&#58;665&#58;
+Operation was canceled
+
+The above may vary a little depending upon how long I let it sit after
+the job actually completes.
+
+As for any error in globus-gatekeeper.log, I don&#39;t see any.  The entries
+look the same and I see no identifiable error&#58;
+
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 0&#58; GATEKEEPER_ACCT_FD=4
+(/opt/osg-1.0.0/globus/var/accounting.log)
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 6&#58; Got connection 155.37.255.131 at Fri Apr 24
+13&#58;01&#58;52 2009
+
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 5&#58; Authenticated globus user&#58;
+/DC=org/DC=doegrids/OU=People/CN=Jeffrey Alan Dutton 536478
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 0&#58; GATEKEEPER_JM_ID
+2009-04-24.13&#58;01&#58;52.0000004055.0000000000 for
+/DC=org/DC=doegrids/OU=People/CN=Jeffrey Alan Dutton 536478 on
+155.37.255.131
+PID&#58; 4055 -- PRIMA INFO ts=2009-04-24T13&#58;01&#58;52-05&#58;00
+event=org.osg.prima.authz.start
+DN=&#34;/DC=org/DC=doegrids/OU=People/CN=Jeffrey Alan Dutton 536478&#34;
+Service_URL=&#34;https&#58;//vdgums.v
+cell.uchc.edu&#58;8443/gums/services/GUMSAuthorizationServicePort&#34;
+PID&#58; 4055 -- PRIMA INFO ts=2009-04-24T13&#58;01&#58;52-05&#58;00
+event=org.osg.prima.authz.end status=0 decision=PERMIT
+DN=&#34;/DC=org/DC=doegrids/OU=People/CN=Jeffrey Alan Dutton 536478&#34; Servic
+e_URL=&#34;<a href='https&#58;//vdgums.vcell.uchc.edu&#58;8443/gums/services/GUMSAuthorizatio' target='_blank' rel='nofollow'>https&#58;//vdgums.vcell.uchc.edu&#58;8443/gums/services/GUMSAuthorizatio</a>
+nServicePort&#34; local_user=compbiogrid
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 0&#58; GRID_SECURITY_HTTP_BODY_FD=8
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 5&#58; Requested service&#58; jobmanager
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 5&#58; Authorized as local user&#58; compbiogrid
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 5&#58; Authorized as local uid&#58; 12008
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 5&#58;           and local gid&#58; 12003
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 0&#58; executing
+/opt/osg-1.0.0/globus/libexec/globus-job-manager
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 0&#58; GRID_SECURITY_CONTEXT_FD=11
+TIME&#58; Fri Apr 24 13&#58;01&#58;52 2009
+PID&#58; 4055 -- Notice&#58; 0&#58; Child 4094 started
+
+I am hoping this has been more informative of the problem.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Friday, April 24, 2009 11&#58;11 AM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+
+[Duplicate message snipped]
+</div><script type='text/javascript'>
+        $('#show_241625782').click(function() {
+            $('#detail_241625782').slideDown("normal");
+            $('#show_241625782').hide();
+            $('#hide_241625782').show();
+        });
+        $('#hide_241625782').click(function() {
+            $('#detail_241625782').slideUp();
+            $('#hide_241625782').hide();
+            $('#show_241625782').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='6696#1240585885'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-04-24T15:11:25+00:00">Apr 24, 2009 03:11 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1240585885">&nbsp;</a></div><pre>Some quick questions&#58;
+
+Do you get output back if you run globus-job-run against fork?
+
+Are there errors in globus-gatekeeper.log, pbs&#39; server_logs directory, or the
+gram_job_mgr_*.log in the homedir?</pre></div><div class='update_description'><i onclick="document.location='6696#1240237631'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-04-20T14:27:11+00:00">Apr 20, 2009 02:27 PM UTC</time> by <b>Jeffrey Dutton</b><a class="anchor" name="1240237631">&nbsp;</a></div><pre>As a follow-up to this.  While it presents a problem from the
+perspective of validating the &#34;Simple Test Of The Job Manager Queue&#34;
+section of the CE Validation it also carries to the section for
+&#34;Client-side test of WS-GRAM services&#34;.
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/ReleaseDocumentation/ValidatingComput' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/ReleaseDocumentation/ValidatingComput</a>
+eElement
+
+The issue with the Client-side testing of WS-GRAM is that the simple
+command below never finishes&#58;
+
+globusrun-ws -submit -F vdgateway.vcell.uchc.edu&#58;9443 -Ft PBS -c
+/bin/true
+
+It seems that &#34;something&#34; on the client-side is waiting for &#34;something
+else&#34; to come back from the PBS submitted job.  As a result, the
+submitted job never ends and because it is dumping nothing, in this case
+/bin/true, into the output the same situation is created as first
+described that I get a STDIN.xxxxx file where the xxxxx represents the
+PBS job ID.  In this case it makes an empty file.  And since it never
+finishes on its own, I have to cancel the job from the client side to
+get back to a bash prompt.
+
+If anything, I hope this helps in understanding the problem and not
+making it worse.
+
+Jeff
+
+-----Original Message-----
+From&#58; Open Science Grid FootPrints
+[mailto&#58;osg@....]
+Sent&#58; Friday, April 17, 2009 4&#58;12 PM
+To&#58; Dutton,Jeff
+Subject&#58; Open Science Grid&#58; Problem with jobmanager-pbs output back to
+the client ISSUE=6696 PROJ=71
+<div id='show_2031190311' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2031190311'>
+[Duplicate message snipped]
+</div><script type='text/javascript'>
+        $('#show_2031190311').click(function() {
+            $('#detail_2031190311').slideDown("normal");
+            $('#show_2031190311').hide();
+            $('#hide_2031190311').show();
+        });
+        $('#hide_2031190311').click(function() {
+            $('#detail_2031190311').slideUp();
+            $('#hide_2031190311').hide();
+            $('#show_2031190311').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='6696#1239999120'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-04-17T20:12:00+00:00">Apr 17, 2009 08:12 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1239999120">&nbsp;</a></div><pre>Jeff,
+
+I&#39;m looking into this, but also adding a member of our infrastructure group to see if
+they have any idea off the top of their head.
+
+Kyle</pre></div><div class='update_description'><i onclick="document.location='6696#1239913150'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-04-16T20:19:10+00:00">Apr 16, 2009 08:19 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1239913150">&nbsp;</a></div><pre>Hello,
+
+I asked the following on OSG-SITES a a few days ago and there were no responses&#58;
+
+I am working through the steps to validate my Compute Element (<a href='https&#58;//twiki.grid.iu.edu/bin/view/ReleaseDocumentation/ValidatingComputeElement' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/ReleaseDocumentation/ValidatingComputeElement</a>) and I have run into a slight problem.  In the documentation for the “Simple Test of the Job Manager Queue” it shows the standard output came back to the client when using jobmanager-condor.  We use PBS and when I run the command “globus-job-run vdgateway.vcell.uchc.edu/jobmanager-pbs /usr/bin/id” I don’t get the info back as stdout but it dumps the results into a file in the $OSG_HOME/compbiogrid location which is where my grid-proxy maps my user DN to.   The PBS outputs shows up as files called STDIN.oXXXXX where XXXXX is replaced by what looks like the PBS job ID.
+
+Am I missing something in the configuration that will direct output from simple Linux commands like this back to the client instead of dumping it into a file that the user then has to go looking for?  At this time, I am considering this step in the validation a failure since it isn&#39;t behaving as it is shown in the release documentation.
+
+Thanks.
+
+Jeffrey Dutton
+Technical Analyst I
+Richard D. Berlin Center for Cell Analysis and Modeling
+Department of Cell Biology
+University of Connecticut Health Center
+263 Farmington Avenue, MC1507
+Farmington, CT 06030
+Tele&#58; 860-679-4686
+E-mail&#58; jdutton@....
+Web&#58; <a href='http&#58;//www.ccam.uchc.edu/' target='_blank' rel='nofollow'>http&#58;//www.ccam.uchc.edu/</a></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F6696">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 6696});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

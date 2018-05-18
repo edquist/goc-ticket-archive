@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[35171] Issue accessing files from FNAL-&#62;Vanderbilt over XRootD</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=35171" method="post">
+<div class="page-header">
+    <h3><span class="muted">35171</span> / Issue accessing files from FNAL-&#62;Vanderbilt over XRootD</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Andrew Melo</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Andrew Melo</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">High</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Resolved</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">TX Incoming</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-10-26</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">FNAL (Prod)&nbsp;<a target="_blank" href="https://fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086">INC000000897086</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=131244">131244</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=35171", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/35171?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/35171?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Issue%20accessing%20files%20from%20FNAL-%26%2362%3BVanderbilt%20over%20XRootD%20ISSUE%3D35171%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='35171#1510185677'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-09T00:01:17+00:00">Nov 9, 2017 12:01 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510185677">&nbsp;</a></div><pre>[Other (must describe below)]
+From Andrew, &#34;the issue is restricted to data passing through only one (of two) NAT hosts, so we&#39;ve tweaked things to send 131.225.0.0/16 through the functional host while we debug further&#34;.  Andrew further confirmed on 10/25 that the bandaids put in place on 10/21 appeared to have worked since then.  Resolve the ticket.
+-- by  at Sun Oct 29 05&#58;00&#58;16 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1510185617'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-09T00:00:17+00:00">Nov 9, 2017 12:00 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510185617">&nbsp;</a></div><pre>This ticket was closed automatically. If this issue has not been resolved according to your expectations or if you need further information, please submit a new ticket referencing this one.&#13;
+
+-- by GGUS SYSTEM at Wed Nov 08 23&#58;59&#58;00 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508943863'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-25T15:04:23+00:00">Oct 25, 2017 03:04 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508943863">&nbsp;</a></div><pre>[Other (must describe below)]
+From Andrew, &#34;the issue is restricted to data passing through only one (of two) NAT hosts, so we&#39;ve tweaked things to send 131.225.0.0/16 through the functional host while we debug further&#34;.  Andrew further confirmed on 10/25 that the bandaids put in place on 10/21 appeared to have worked since then.  Resolve the ticket.
+-- by  at Wed Oct 25 15&#58;02&#58;58 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508943211'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-25T14:53:31+00:00">Oct 25, 2017 02:53 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508943211">&nbsp;</a></div><pre>Absolutely! Feel free to close the ticket.&#13;
+
+-- by Andrew Melo at Wed Oct 25 14&#58;52&#58;21 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508942773'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-25T14:46:13+00:00">Oct 25, 2017 02:46 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508942773">&nbsp;</a></div><pre>reply from&#58; yujun@....
+
+Hi Andrew,
+
+Thanks for your update. If this is the case, could we close this ticket?
+
+Regards,
+Yujun
+On 10/24/2017 05&#58;10 PM, Fermilab Service Desk wrote&#58;
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+-- by yujun at Wed Oct 25 14&#58;45&#58;43 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508882984'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-24T22:09:44+00:00">Oct 24, 2017 10:09 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508882984">&nbsp;</a></div><pre>HI
+
+The bandaids we put in place appears to have worked. We&#39;re still trying to
+figure out what&#39;s wrong, but things are functional. If we need more info
+well get in touch
+
+Thanks
+Andrew
+
+On Oct 24, 2017 15&#58;02, &#60;helpdesk@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; Dear user,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Your GGUS ticket #131244 was updated.</font>
+<font color='#7F7E6F'>&#62; Please read this email carefully as your input may be required!</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; REFERENCE LINK&#58; <a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=</a></font>
+<font color='#7F7E6F'>&#62; 131244</font>
+<font color='#7F7E6F'>&#62; SUBJECT&#58; Issue accessing files from FNAL-&#62;Vanderbilt over XRootD</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; =====================</font>
+<font color='#7F7E6F'>&#62; LATEST MODIFICATIONS&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; LAST MODIFIER -&#62; Elizabeth Prout (via Footprints)</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; PUBLIC DIARY -&#62;</font>
+<font color='#7F7E6F'>&#62; Andrew,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Is this resolved?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ************************************************************</font>
+<font color='#7F7E6F'>&#62; *********************</font>
+<div id='show_1584413820' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1584413820'><font color='#7F7E6F'>&#62;  This is an automated mail. When replying don&#39;t change the subject line!</font>
+<font color='#7F7E6F'>&#62;  S T R I P  P R E V I O U S  M A I L S please!!</font>
+<font color='#7F7E6F'>&#62; ************************************************************</font>
+<font color='#7F7E6F'>&#62; *********************&#13;</font>
+
+-- by Andrew Melo at Tue Oct 24 22&#58;09&#58;00 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a>
+</div><script type='text/javascript'>
+        $('#show_1584413820').click(function() {
+            $('#detail_1584413820').slideDown("normal");
+            $('#show_1584413820').hide();
+            $('#hide_1584413820').show();
+        });
+        $('#hide_1584413820').click(function() {
+            $('#detail_1584413820').slideUp();
+            $('#hide_1584413820').hide();
+            $('#show_1584413820').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='35171#1508875173'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-24T19:59:33+00:00">Oct 24, 2017 07:59 PM UTC</time> by <b>echism</b><a class="anchor" name="1508875173">&nbsp;</a></div><pre>Andrew,
+
+Is this resolved?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='35171#1508633671'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-22T00:54:31+00:00">Oct 22, 2017 12:54 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508633671">&nbsp;</a></div><pre>Hi,
+Is there a problem still, or  is it resolved ? I see some transfers in netflow data, but it is hard to conclude whether  performance is as desired.
+
+Thanks,
+Andrey
+-- by bobyshev at Sun Oct 22 00&#58;54&#58;02 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508605449'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-21T17:04:09+00:00">Oct 21, 2017 05:04 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508605449">&nbsp;</a></div><pre>Hi all,
+
+We&#39;ve found the issue is restricted to data passing through only one (of two) NAT hosts, so we&#39;ve tweaked things to send 131.225.0.0/16 through the functional host while we debug further. Hand-checking nodes says the bandaid seems to work, so we&#39;ve requested that CMS begin to send jobs our way.
+
+Thanks
+Andrew&#13;
+
+-- by Andrew Melo at Sat Oct 21 17&#58;03&#58;28 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508594887'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-21T14:08:07+00:00">Oct 21, 2017 02:08 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508594887">&nbsp;</a></div><pre>Hi Steve-
+
+The command I&#39;m running is&#58;
+
+xrdcp -v -d 3 -f --verbose root&#58;//cmsxrootd.fnal.gov//store/data/Run2016D/DoubleMuon/AOD/23Sep2016-v1/100000/BAB37A5B-E188-E611-A794-008CFA064770.root testf
+
+Thanks
+Andrew&#13;
+
+-- by Andrew Melo at Sat Oct 21 14&#58;07&#58;28 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508593852'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-21T13:50:52+00:00">Oct 21, 2017 01:50 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508593852">&nbsp;</a></div><pre>I don&#39;t think I have access to the original hypernews article.. it would be very helpful if someone could
+give us the xrdcp command both host and destination that is failing.
+
+Steve
+
+I-tables of 131.225.204.15
+
+[root@cmswn2326 ~]# iptables -L | more
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+ACCEPT     icmp --  anywhere             anywhere            /* 000 accept all i
+cmp */
+ACCEPT     all  --  anywhere             anywhere            /* 001 accept all t
+o lo interface */
+ACCEPT     all  --  anywhere             anywhere            /* 002 allow relate
+d/established rules */ state RELATED,ESTABLISHED
+ACCEPT     udp  --  anywhere             anywhere            multiport sports do
+main /* 003 allow dns */
+ACCEPT     tcp  --  fermilab-net.fnal.gov/16  anywhere            multiport dpor
+ts ssh /* 100 fermi ssh 131.225.0.0/16 */
+ACCEPT     tcp  --  nova-daq-subnet.fnal.gov/23  anywhere            multiport d
+ports ssh /* 100 fermi ssh 198.124.68.0/23 */
+ACCEPT     tcp  --  nova-fd-vlan-780-subnet.fnal.gov/26  anywhere            mul
+tiport dports ssh /* 100 fermi ssh 198.124.70.0/26 */
+ACCEPT     tcp  --  cmsadmin1.fnal.gov   anywhere            multiport dports ss
+h /* 100 lockdown ssh cmsadmin1.fnal.gov */
+ACCEPT     tcp  --  cmsadmin2.fnal.gov   anywhere            multiport dports ss
+h /* 100 lockdown ssh cmsadmin2.fnal.gov */
+ACCEPT     tcp  --  cmsconsole.fnal.gov  anywhere            multiport dports ss
+h /* 100 lockdown ssh cmsconsole.fnal.gov */
+ACCEPT     tcp  --  rexadmin1.fnal.gov   anywhere            multiport dports ss
+h /* 100 lockdown ssh rexadmin1.fnal.gov */
+ACCEPT     tcp  --  ssiadmin1.fnal.gov   anywhere            multiport dports ss
+h /* 100 lockdown ssh ssiadmin1.fnal.gov */
+ACCEPT     tcp  --  ssiadmin2.fnal.gov   anywhere            multiport dports ss
+<div id='show_563909276' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_563909276'>h /* 100 lockdown ssh ssiadmin2.fnal.gov */
+ACCEPT     tcp  --  ssiadmin3.fnal.gov   anywhere            multiport dports ss
+h /* 100 lockdown ssh ssiadmin3.fnal.gov */
+ACCEPT     tcp  --  ssiconsole1.fnal.gov  anywhere            multiport dports s
+sh /* 100 lockdown ssh ssiconsole1.fnal.gov */
+ACCEPT     tcp  --  ssiconsole2.fnal.gov  anywhere            multiport dports s
+sh /* 100 lockdown ssh ssiconsole2.fnal.gov */
+ACCEPT     tcp  --  fermilab-net.fnal.gov/16  anywhere            multiport dpor
+ts 8037 /* 101 ganglia_cmsgrid tcp */
+ACCEPT     udp  --  fermilab-net.fnal.gov/16  anywhere            multiport dpor
+ts 8037 /* 101 ganglia_cmsgrid udp */
+ACCEPT     tcp  --  ecfmon1.fnal.gov     anywhere            multiport dports 96
+09 /* 140 check_mk cust ecfmon1.fnal.gov */
+ACCEPT     tcp  --  ecfmon2.fnal.gov     anywhere            multiport dports 96
+09 /* 140 check_mk cust ecfmon2.fnal.gov */
+ACCEPT     tcp  --  ecfmon3.fnal.gov     anywhere            multiport dports 96
+09 /* 140 check_mk cust ecfmon3.fnal.gov */
+ACCEPT     tcp  --  ecfmon4.fnal.gov     anywhere            multiport dports 96
+09 /* 140 check_mk cust ecfmon4.fnal.gov */
+ACCEPT     tcp  --  ecfmontest1.fnal.gov  anywhere            multiport dports 9
+609 /* 140 check_mk cust ecfmontest1.fnal.gov */
+ACCEPT     tcp  --  ssiadmin1.fnal.gov   anywhere            multiport dports 96
+09 /* 140 check_mk cust ssiadmin1.fnal.gov */
+ACCEPT     tcp  --  ssiconsole1.fnal.gov  anywhere            multiport dports 9
+609 /* 140 check_mk cust ssiconsole1.fnal.gov */
+ACCEPT     tcp  --  ecfmon1.fnal.gov     anywhere            multiport dports 96
+02 /* 140 check_mk dcso ecfmon1.fnal.gov */
+ACCEPT     tcp  --  ecfmon2.fnal.gov     anywhere            multiport dports 96
+02 /* 140 check_mk dcso ecfmon2.fnal.gov */
+ACCEPT     tcp  --  ecfmon3.fnal.gov     anywhere            multiport dports 96
+02 /* 140 check_mk dcso ecfmon3.fnal.gov */
+ACCEPT     tcp  --  ecfmon4.fnal.gov     anywhere            multiport dports 96
+02 /* 140 check_mk dcso ecfmon4.fnal.gov */
+ACCEPT     tcp  --  ecfmontest1.fnal.gov  anywhere            multiport dports 9
+602 /* 140 check_mk dcso ecfmontest1.fnal.gov */
+ACCEPT     tcp  --  ssiadmin1.fnal.gov   anywhere            multiport dports 96
+02 /* 140 check_mk dcso ssiadmin1.fnal.gov */
+ACCEPT     tcp  --  ssiconsole1.fnal.gov  anywhere            multiport dports 9
+602 /* 140 check_mk dcso ssiconsole1.fnal.gov */
+ACCEPT     tcp  --  ecfmon1.fnal.gov     anywhere            multiport dports 96
+01 /* 140 check_mk ecfmon1.fnal.gov */
+ACCEPT     tcp  --  ecfmon2.fnal.gov     anywhere            multiport dports 96
+01 /* 140 check_mk ecfmon2.fnal.gov */
+ACCEPT     tcp  --  ecfmon3.fnal.gov     anywhere            multiport dports 96
+01 /* 140 check_mk ecfmon3.fnal.gov */
+ACCEPT     tcp  --  ecfmon4.fnal.gov     anywhere            multiport dports 96
+01 /* 140 check_mk ecfmon4.fnal.gov */
+ACCEPT     tcp  --  ecfmon1.fnal.gov     anywhere            multiport dports 96
+03 /* 140 check_mk gco ecfmon1.fnal.gov */
+ACCEPT     tcp  --  ecfmon2.fnal.gov     anywhere            multiport dports 96
+03 /* 140 check_mk gco ecfmon2.fnal.gov */
+ACCEPT     tcp  --  ecfmon3.fnal.gov     anywhere            multiport dports 96
+03 /* 140 check_mk gco ecfmon3.fnal.gov */
+ACCEPT     tcp  --  ecfmon4.fnal.gov     anywhere            multiport dports 96
+03 /* 140 check_mk gco ecfmon4.fnal.gov */
+ACCEPT     tcp  --  ecfmontest1.fnal.gov  anywhere            multiport dports 9
+603 /* 140 check_mk gco ecfmontest1.fnal.gov */
+ACCEPT     tcp  --  ssiadmin1.fnal.gov   anywhere            multiport dports 96
+03 /* 140 check_mk gco ssiadmin1.fnal.gov */
+ACCEPT     tcp  --  ssiconsole1.fnal.gov  anywhere            multiport dports 9
+603 /* 140 check_mk gco ssiconsole1.fnal.gov */
+ACCEPT     tcp  --  ecfmon1.fnal.gov     anywhere            multiport dports 96
+01 /* 140 check_mk ssi ecfmon1.fnal.gov */
+ACCEPT     tcp  --  ecfmon2.fnal.gov     anywhere            multiport dports 96
+01 /* 140 check_mk ssi ecfmon2.fnal.gov */
+ACCEPT     tcp  --  ecfmon3.fnal.gov     anywhere            multiport dports 96
+01 /* 140 check_mk ssi ecfmon3.fnal.gov */
+ACCEPT     tcp  --  ecfmon4.fnal.gov     anywhere            multiport dports 96
+01 /* 140 check_mk ssi ecfmon4.fnal.gov */
+ACCEPT     tcp  --  ecfmontest1.fnal.gov  anywhere            multiport dports 9
+601 /* 140 check_mk ssi ecfmontest1.fnal.gov */
+ACCEPT     tcp  --  ssiadmin1.fnal.gov   anywhere            multiport dports 96
+01 /* 140 check_mk ssi ssiadmin1.fnal.gov */
+ACCEPT     tcp  --  ssiconsole1.fnal.gov  anywhere            multiport dports 9
+601 /* 140 check_mk ssi ssiconsole1.fnal.gov */
+ACCEPT     tcp  --  ssiconsole1.fnal.gov  anywhere            multiport dports 9
+601 /* 140 check_mk ssiprivate.fnal.gov */
+ACCEPT     tcp  --  fermilab-net.fnal.gov/16  anywhere            multiport dpor
+ts 1024&#58;65535 /* 997 high ports 131.225.0.0/16 */
+ACCEPT     tcp  --  cms-2-subnet.fnal.gov/22  anywhere            multiport dpor
+ts tcpmux&#58;1023 /* 998 low ports 131.225.188.0/22 */
+ACCEPT     tcp  --  cms-subnet.fnal.gov/22  anywhere            multiport dports
+tcpmux&#58;1023 /* 998 low ports 131.225.207.0/22 */
+REJECT     tcp  --  anywhere             anywhere            /* 999 drop tcp */
+reject-with icmp-port-unreachable
+REJECT     udp  --  anywhere             anywhere            /* 999 drop udp */
+reject-with icmp-port-unreachable
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+[root@cmswn2326 ~]# ifconfig eth0
+eth0      Link encap&#58;Ethernet  HWaddr 0C&#58;C4&#58;7A&#58;78&#58;A3&#58;0E
+inet addr&#58;131.225.204.15  Bcast&#58;131.225.207.255  Mask&#58;255.255.252.0
+UP BROADCAST RUNNING MULTICAST  MTU&#58;1500  Metric&#58;1
+RX packets&#58;42933325953 errors&#58;0 dropped&#58;0 overruns&#58;0 frame&#58;0
+TX packets&#58;8938497856 errors&#58;0 dropped&#58;0 overruns&#58;0 carrier&#58;0
+collisions&#58;0 txqueuelen&#58;1000
+RX bytes&#58;64243709238070 (58.4 TiB)  TX bytes&#58;8302306438234 (7.5 TiB)
+
+--------------
+-- by timm at Sat Oct 21 13&#58;50&#58;13 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a>
+</div><script type='text/javascript'>
+        $('#show_563909276').click(function() {
+            $('#detail_563909276').slideDown("normal");
+            $('#show_563909276').hide();
+            $('#hide_563909276').show();
+        });
+        $('#hide_563909276').click(function() {
+            $('#detail_563909276').slideUp();
+            $('#hide_563909276').hide();
+            $('#show_563909276').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='35171#1508592486'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-21T13:28:06+00:00">Oct 21, 2017 01:28 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508592486">&nbsp;</a></div><pre>Hi Andrey,
+
+We&#39;ve been testing accessing cmsxrootd-site1.fnal.gov from a compute node who is NAT-ed via infragate2.accre.vanderbilt.edu ...
+
+Cheers
+Andrew&#13;
+
+-- by Andrew Melo at Sat Oct 21 13&#58;27&#58;46 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508589130'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-21T12:32:10+00:00">Oct 21, 2017 12:32 PM UTC</time> by <b>dmason@....</b><a class="anchor" name="1508589130">&nbsp;</a></div><pre>Hmm — those are interesting,  those are T1 farm nodes trying to read data from Vanderbilt — sort of the opposite direction of this problem…  So something running here at FNAL thats reading data from Vanderbilt — would need to catch one of those in the act to see if its a problem or not.  Thinking this a different bunny hole, but worth following up with gco, as they might have puppet issues on those nodes.
+
+<font color='#7F7E6F'>&#62; On Oct 21, 2017, at 2&#58;43 AM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='35171#1508571837'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-21T07:43:57+00:00">Oct 21, 2017 07:43 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508571837">&nbsp;</a></div><pre>Hi,
+Could we have a couple of dCache nodes (names or IP),  or any other nodes at each site  that are involved in data transfer and are known to be having issues ?  It  would help to narrow down troubleshooting.  Here is a segment of netflow data I extracted for traffic between Vanderbilt  and FNAL.   These are worker nodes at FNAL, and I believe that are not configured for Jumbo frames. I&#39;m not sure whether there are any issues with that transfer either.
+...
+2017-10-20 20&#58;08&#58;37.386     0.000 TCP     131.225.204.15&#58;51414 -&#62;   129.59.197.114&#58;1094      2048   143360     1
+2017-10-20 20&#58;08&#58;38.149     0.000 TCP     131.225.207.68&#58;3084  -&#62;   129.59.197.227&#58;1094      2048   143360     1
+2017-10-20 20&#58;08&#58;38.196     0.000 TCP     129.59.197.227&#58;1094  -&#62;   131.225.207.68&#58;3084      2048    3.1 M     1
+...
+
+Thanks,
+Andrey.
+-- by bobyshev at Sat Oct 21 07&#58;43&#58;08 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508569442'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-21T07:04:02+00:00">Oct 21, 2017 07:04 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508569442">&nbsp;</a></div><pre>Hi, Andrey -
+
+<font color='#7F7E6F'>&#62; Well, the statement &#34;The public internet doesn&#39;t, in general, support jumbo packets,....&#34; is absolutely wrong.</font>
+
+You&#39;re right, my statement was wrong. There&#39;s nuance to what I was trying to say, but it doesn&#39;t really matter.
+
+<font color='#7F7E6F'>&#62; We need to double check that nothing is blocking ICMP messages at remote sites for PMTUD protocol to work properly. I see a NAT box in the middle.. Is it at Vanderbilt.</font>
+
+Yes, we (Vanderbilt) have always had NAT between our compute nodes and the WAN.  but we haven&#39;t had a reason to touch that host in a bit.
+
+<font color='#7F7E6F'>&#62; I don&#39;t recall we change any settings in out network recently, but we will check it.</font>
+
+We&#39;re doing the same locally -- the change freeze limits the things we could&#39;ve done by mistake, but there could be something that slipped in by mistake?
+
+cheers
+Andrew&#13;
+
+-- by Andrew Melo at Sat Oct 21 07&#58;03&#58;17 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508544324'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-21T00:05:24+00:00">Oct 21, 2017 12:05 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508544324">&nbsp;</a></div><pre>Well, the statement &#34;The public internet doesn&#39;t, in general, support jumbo packets,....&#34; is absolutely wrong. The  discussion amongst  ISPs regarding jumbo frame support  has  ended a DECADE ago. All links between ISPs have been configured for Jumbo frame support. All ISPs  mush support jumbo frames.  All our links to ESnet, as well as ESNet infrastructure is jumbo frame enabled.  A simple change of MTU at one site can simply move this problem to communication with  other remote sites.  We need to double check that nothing is blocking ICMP messages at remote sites for PMTUD protocol to work properly.  I see a NAT box in the middle.. Is it at Vanderbilt.  NAT is known to be a killer of PMTUD. I don&#39;t recall we change any settings in out network recently, but we will check it. You might want to check IPTables on hosts.  In many cases, sysadmins are blocking ICMP entirely, and that is what breaks PMTUD typically.
+- Andrey.
+-- by bobyshev at Sat Oct 21 00&#58;05&#58;00 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508543935'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-20T23:58:55+00:00">Oct 20, 2017 11:58 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508543935">&nbsp;</a></div><pre>Hi Dave, all -
+
+I agree, we&#39;ve certainly pumped data from FNAL to Vanderbilt via xrootd before, and the breakage appears to have happened in the tues/weds range of this week (from what I can divine from CMS&#39; logs), so something changed but I don&#39;t know what it could&#39;ve been.
+
+From our end, we&#39;ve been super-unable to change anything&#58; All of Vanderbilt is under a change freeze because the University and Medical Center are going through a divorce. We got a delivery of new servers and it&#39;s been a multi-week process just to get approval to run a new fiber between racks &#58;/
+
+still looking,
+Andrew&#13;
+
+-- by Andrew Melo at Fri Oct 20 23&#58;58&#58;35 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508542008'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-20T23:26:48+00:00">Oct 20, 2017 11:26 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508542008">&nbsp;</a></div><pre>Yes, confirming my confirmation -- we turned on MTU 9000 on almost exactly a year ago -- but even then that was a restoration of a setting we had on our dCache nodes before that.  Either we&#39;ve never tried to read from FNAL via xrootd @Vanderbilt or something new has happened in between.
+-- by dmason at Fri Oct 20 23&#58;26&#58;16 UTC 2017
+
+D. Mason (cms tier 1) confirms that the cms tier1 nodes do have MTU 9000
+Throwing Andrey Bobyshev of networking onto the watch list of the ticket as well.
+If MTU discovery is broken it may be wider problem than just between FNAL and Vanderbilt.
+-- by timm at Fri Oct 20 23&#58;18&#58;26 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508541585'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-20T23:19:45+00:00">Oct 20, 2017 11:19 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508541585">&nbsp;</a></div><pre>D. Mason (cms tier 1) confirms that the cms tier1 nodes do have MTU 9000
+Throwing Andrey Bobyshev of networking onto the watch list of the ticket as well.
+If MTU discovery is broken it may be wider problem than just between FNAL and Vanderbilt.
+-- by timm at Fri Oct 20 23&#58;18&#58;26 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508541311'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-20T23:15:11+00:00">Oct 20, 2017 11:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508541311">&nbsp;</a></div><pre>Assigning this to the storage group.  Unlikely anything will happen on the weekend.
+-- by timm at Fri Oct 20 23&#58;14&#58;05 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000897086</a></pre></div><div class='update_description'><i onclick="document.location='35171#1508539553'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-20T22:45:53+00:00">Oct 20, 2017 10:45 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508539553">&nbsp;</a></div><pre>Hi,
+
+There is an issue reading files from FNAL-&#62;Vanderbilt over XRootD. We&#39;ve had to shut down Vanderbilt entirely because we were effectively a blackhole for CMS jobs&#58;
+
+<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=131242' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=131242</a>
+
+If you would like background, the reports on the symptoms are here&#58;
+
+<a href='https&#58;//hypernews.cern.ch/HyperNews/CMS/get/wanaccess/527.html' target='_blank' rel='nofollow'>https&#58;//hypernews.cern.ch/HyperNews/CMS/get/wanaccess/527.html</a>
+
+The problem appears to be that&#58;
+
+1) FNAL has the external MTU on their xrootd data hosts (NOT the redirector) set to 9000
+2) Some hop on the path between FNAL and Vanderbilt doesn&#39;t support jumbo frames
+3) MTU discovery is somehow between the two is broken. Most probably the ICMP &#34;Needs Defragmentation&#34; messages are being dropped somewhere on the internet.
+
+The data path from our worker nodes to FNAL&#39;s XRootD hosts is&#58;
+
+[ WN ] (9000 MTU) &#60; -- private -- &#62; (1500 MTU) [ NAT ] (1500 MTU) &#60; -- WAN -- &#62; (9000 MTU)
+
+We think the quickest solution that will let us turn the site back on is for FNAL to drop their MTU from 9000 to 1500. The public internet doesn&#39;t, in general, support jumbo packets, and MTU negotiation is pretty flaky.
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131244</a>
+
+[Ticket History]
+Subject&#58; Issue accessing files from FNAL-&#62;Vanderbilt over XRootD
+Ticket Type&#58; USER
+CC&#58; ;matthew.f.heller@....;paul.sheldon@....;cms-comp-ops-site-support-team@....
+-- by Andrew Melo at Fri Oct 20 22&#58;45&#58;24 UTC 2017</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F35171">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 35171});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

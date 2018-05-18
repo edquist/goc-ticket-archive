@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[7581] ReSS new support model and routing ReSS tickets</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=7581" method="post">
+<div class="page-header">
+    <h3><span class="muted">7581</span> / ReSS new support model and routing ReSS tickets</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Parag Mhashilkar</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ping ttx list</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2010-02-15</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+        <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=7581", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/7581?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/7581?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20ReSS%20new%20support%20model%20and%20routing%20ReSS%20tickets%20ISSUE%3D7581%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='7581#1265912917'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-11T18:28:37+00:00">Feb 11, 2010 06:28 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1265912917">&nbsp;</a></div><pre>I am closing this ticket given i&#39;ve heard no opposition to such a move. We will continue to discuss 8084 as appropriate before closing that ticket. --ag</pre></div><div class='update_description'><i onclick="document.location='7581#1265720685'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-09T13:04:45+00:00">Feb 9, 2010 01:04 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1265720685">&nbsp;</a></div><pre>I see Remedy-based comments from Steve Timm and Parag respectively on <a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=8084' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=8084</a> and <a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=8084' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=8084</a> respectively. I suspect this ticket is ready to be closed? --ag</pre></div><div class='update_description'><i onclick="document.location='7581#1265651997'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-08T17:59:57+00:00">Feb 8, 2010 05:59 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1265651997">&nbsp;</a></div><pre>Done.</pre></div><div class='update_description'><i onclick="document.location='7581#1265651768'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-08T17:56:08+00:00">Feb 8, 2010 05:56 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1265651768">&nbsp;</a></div><pre>FNAL staff tell me they have now made the tweak in our script to
+accept ReSS_Development.  So go ahead and send the test ticket
+to that branch.
+
+Steve Timm
+
+On Mon, 8 Feb 2010, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='7581#1265643128'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-08T15:32:08+00:00">Feb 8, 2010 03:32 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1265643128">&nbsp;</a></div><pre>Arvind--I will work with the Remedy people on our end to
+make sure we are looking for ReSS_Development.
+It could be a while before this is done.  thanks for your help.
+
+Steve Timm
+
+On Mon, 8 Feb 2010, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='7581#1265642629'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-08T15:23:49+00:00">Feb 8, 2010 03:23 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1265642629">&nbsp;</a></div><pre>Parag/Steve,
+
+I just explained to Elizabeth why such a VO registration would not be accurate in describing the goal of the ticket assignment, given ReSS is a service, and that in this case not only do we want to have a ReSS service assignment to a support center ticket but also additionally we want to assign it to a different &#34;destination&#34; depending on whether the problem is with the ReSS service instance or the service&#39;s inner workings.
+
+Steve, I&#39;ve created a &#34;ReSS_Development&#34; destination VO on Footprints toward this request. Note the &#34;_&#34; in between the two words - FP did not offer a way to have a space, and I suspect even if it did, having a space would be dangerous to text parsing, etc. Can you work with FNAL ticketing group to ensure they rename the field&#39;s value from &#34;ReSS - Development&#34; to &#34;ReSS_Development&#34;?
+
+I&#39;ve created test tickets&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=8084' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=8084</a> [already assigned to Fermilab (Fermilab destination)]
+<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=8085' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=8085</a> [CCed you - we will assign Fermilab (ReSS_Development destination) once you confirm the Remedy change requested above is made]
+
+Future discussion&#58; When we have web services based TX, I&#39;d like to come up with a much cleaner way to deal with this. I suspect we will just directly use the &#34;destination&#34; queue kind of field with values gotten from FNAL, instead of having Footprints and/or OIM hooks. Or perhaps we will end up having OIM hooks, I am not sure yet. We will keep discussing outside of this ticket, and confirm. We are noting all TX related details in a public document that will ultimately be linked of GOCTicket as well as the Operations twiki page, etc.&#58; <a href='http&#58;//docs.google.com/Doc?docid=0AQGl_1gJKDWDZGY5ZnR6anZfMjFmMmpzZmc1cA&hl=en' target='_blank' rel='nofollow'>http&#58;//docs.google.com/Doc?docid=0AQGl_1gJKDWDZGY5ZnR6anZfMjFmMmpzZmc1cA&hl=en</a> ...
+
+Cheers,
+-ag</pre></div><div class='update_description'><i onclick="document.location='7581#1265642587'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-08T15:23:07+00:00">Feb 8, 2010 03:23 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1265642587">&nbsp;</a></div><pre>Elizabeth, can you please be more specific--should we
+register ReSS - Development in OIM as a VO or as a Support Center?
+
+Steve Timm
+
+On Mon, 8 Feb 2010, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='7581#1265640862'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-08T14:54:22+00:00">Feb 8, 2010 02:54 PM UTC</time> by <b>echism</b><a class="anchor" name="1265640862">&nbsp;</a></div><pre>Steve,
+
+Please register (or have someone register) ReSS - Development in OIM.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='7581#1265230397'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-03T20:53:17+00:00">Feb 3, 2010 08:53 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1265230397">&nbsp;</a></div><pre>Arvind and Soichi,
+
+This is an old ticket but Steve just sent the email which I already posted to this ticket explaining something about a ticket exchange. I thought it would be best if one of you two could take a look at this and determine if anything needs to be done.
+
+Thanks,
+
+Christopher</pre></div><div class='update_description'><i onclick="document.location='7581#1265230071'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-03T20:47:51+00:00">Feb 3, 2010 08:47 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1265230071">&nbsp;</a></div><pre>From&#58; Steven Timm &#60;timm@....&#62;
+To&#58; goc@....
+cc&#58; parag@...., servicedesk@....
+Subject&#58; [Fwd&#58; Open Science Grid&#58; ReSS new support model and routing ReSS tickets ISSUE=7581 PROJ=71] (fwd)
+Date-Sent&#58; Wednesday, February 03, 2010 2&#58;32 PM -0600
+
+Dear GOC staff-- we are now waking up Parag&#39;s dormant
+ticket 7581 because we now have the right Destination VO fields
+for the two kinds of tickets he mentioned below.
+
+For the actual service osg-ress-1 or osg-ress-4 being down, destination VO should be &#34;FERMILAB&#34; which will get the FermiGrid Support team notified.
+
+For any questions which require the services of the ReSS developers
+those tickets which have historically gone to the old ReSS support center
+should be routed to footprints-remedy@.... with
+Destination VO of &#34;ReSS - Development&#39;
+
+Let me know if this is going to be a new ticket or if the old one
+will be reopened.  And when this work has been completed, please
+send one test ticket of each type to make sure it works the way
+we think it is supposed to.
+
+Thanks
+
+Steve Timm
+
+--
+------------------------------------------------------------------
+Steven C. Timm, Ph.D  (630) 840-8525
+timm@....  <a href='http&#58;//home.fnal.gov/' target='_blank' rel='nofollow'>http&#58;//home.fnal.gov/</a>~timm/
+Fermilab Computing Division, Scientific Computing Facilities,
+Grid Facilities Department, FermiGrid Services Group, Assistant Group Leader.
+
+---------- Forwarded message ----------
+Date&#58; Wed, 03 Feb 2010 14&#58;23&#58;43 -0600
+<div id='show_1774753930' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1774753930'>From&#58; Parag Mhashilkar &#60;parag@....&#62;
+To&#58; Steve Timm &#60;timm@....&#62;
+Subject&#58; [Fwd&#58; Open Science Grid&#58; ReSS new support model and routing ReSS
+tickets ISSUE=7581 PROJ=71]
+
+Here is the ticket
+
+--
+Thanks & Regards
+=============================================================
+Parag Mhashilkar
+Fermi National Accelerator Laboratory, MS 120
+Wilson & Kirk Road, Batavia, IL - 60510.
+
+Location&#58; Wilson Hall, WH863
+Phone&#58; +1 (630) 840-6530
+Fax&#58; +1 (630) 840-2783
+Email&#58; parag@....
+=============================================================
+
+-------- Forwarded Message --------
+From&#58; Open Science Grid FootPrints &#60;osg@....&#62;
+Reply-to&#58; osg@....
+To&#58; parag@....
+Subject&#58; Open Science Grid&#58; ReSS new support model and routing ReSS
+tickets ISSUE=7581 PROJ=71
+Date&#58; Thu, 05 Nov 2009 19&#58;50 +0000
+
+When replying, type your text above this line.
+----------------------------------------------
+This message is to let you know that ticket Open Science Grid&#58; 7581 &#34;ReSS new support model and routing ReSS tickets &#34; was updated on 11/05/2009 at 19&#58;50&#58;06 with the following information&#58;
+
+FootPrints Ticket Description&#58;
+Parag,
+
+See that&#39;s what&#39;s been undetermined here---- the GOC uses the
+destination VO field in footprints to instruct fermilab remedy on
+where a ticket goes. I was trying to decipher (unsuccessfully) how
+that field needs to read. The discussion was derailed by some rallying
+for the usefulness of webservices, which I wholeheartedly believe in.
+However, when I tried to refocus the discussion back to what we need
+to do in the interim before everybody is using the new model, the
+thread totally died. I never got my answer from the remedy folks
+whether there is a group mapping in remedy for the ress tickets that
+go (per your documentation) to fermilab remedy or what VO tag will
+send it to the right group. I know this is a little convoluted,
+perhaps a phone call is in order.
+
+Thank you,
+Elizabeth
+
+On Nov 5, 2009, at 2&#58;20 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+
+For complete ticket details, click
+<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=7581' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=7581</a>
+
+Assignees&#58; Elizabeth Chism
+
+Please submit problems, requests, and questions at&#58;
+
+<a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a>
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a>
+</div><script type='text/javascript'>
+        $('#show_1774753930').click(function() {
+            $('#detail_1774753930').slideDown("normal");
+            $('#show_1774753930').hide();
+            $('#hide_1774753930').show();
+        });
+        $('#hide_1774753930').click(function() {
+            $('#detail_1774753930').slideUp();
+            $('#hide_1774753930').hide();
+            $('#show_1774753930').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='7581#1257450606'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-11-05T19:50:06+00:00">Nov 5, 2009 07:50 PM UTC</time> by <b>echism</b><a class="anchor" name="1257450606">&nbsp;</a></div><pre>Parag,
+
+See that&#39;s what&#39;s been undetermined here---- the GOC uses the
+destination VO field in footprints to instruct fermilab remedy on
+where a ticket goes. I was trying to decipher (unsuccessfully) how
+that field needs to read. The discussion was derailed by some rallying
+for the usefulness of webservices, which I wholeheartedly believe in.
+However, when I tried to refocus the discussion back to what we need
+to do in the interim before everybody is using the new model, the
+thread totally died. I never got my answer from the remedy folks
+whether there is a group mapping in remedy for the ress tickets that
+go (per your documentation) to fermilab remedy or what VO tag will
+send it to the right group. I know this is a little convoluted,
+perhaps a phone call is in order.
+
+Thank you,
+Elizabeth
+
+On Nov 5, 2009, at 2&#58;20 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='7581#1257448807'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-11-05T19:20:07+00:00">Nov 5, 2009 07:20 PM UTC</time> by <b>Parag Mhashilkar</b><a class="anchor" name="1257448807">&nbsp;</a></div><pre>Hi Elizabeth,
+
+Forgot to ask earlier, will you need any changes on your (GOC) side
+before we test this? Or shall I submit and test ticket and see if the
+connection works?
+-
+Thanks & Regards
+=============================================================
+Parag Mhashilkar
+Fermi National Accelerator Laboratory, MS 120
+Wilson & Kirk Road, Batavia, IL - 60510.
+
+Location&#58; Wilson Hall, WH863
+Phone&#58; +1 (630) 840-6530
+Fax&#58; +1 (630) 840-2783
+Email&#58; parag@....
+=============================================================
+
+On Wed, 2009-11-04 at 15&#58;12 -0600, Parag Mhashilkar wrote&#58;
+<font color='#7F7E6F'>&#62; Hi Elizabeth,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; He had the meeting yesterday. There are two groups in the remedy system</font>
+<font color='#7F7E6F'>&#62; to help route the tickets. If the destination VO contains following</font>
+<font color='#7F7E6F'>&#62; strings, the tickets should be routed correctly. We should try this out</font>
+<font color='#7F7E6F'>&#62; with couple of test tickets.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; &#39;FermiGridSupport&#39; for ReSS Operational Support</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; &#39;ReSS - Development&#39; for Development issues, bugs, etc</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; -</font>
+<font color='#7F7E6F'>&#62; Thanks & Regards</font>
+<font color='#7F7E6F'>&#62; =============================================================</font>
+<div id='show_766949430' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_766949430'><font color='#7F7E6F'>&#62; Parag Mhashilkar</font>
+<font color='#7F7E6F'>&#62; Fermi National Accelerator Laboratory, MS 120</font>
+<font color='#7F7E6F'>&#62; Wilson & Kirk Road, Batavia, IL - 60510.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Location&#58; Wilson Hall, WH863</font>
+<font color='#7F7E6F'>&#62; Phone&#58; +1 (630) 840-6530</font>
+<font color='#7F7E6F'>&#62; Fax&#58; +1 (630) 840-2783</font>
+<font color='#7F7E6F'>&#62; Email&#58; parag@....</font>
+<font color='#7F7E6F'>&#62; =============================================================</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Wed, 2009-11-04 at 21&#58;06 +0000, Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_766949430').click(function() {
+            $('#detail_766949430').slideDown("normal");
+            $('#show_766949430').hide();
+            $('#hide_766949430').show();
+        });
+        $('#hide_766949430').click(function() {
+            $('#detail_766949430').slideUp();
+            $('#hide_766949430').hide();
+            $('#show_766949430').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='7581#1257369246'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-11-04T21:14:06+00:00">Nov 4, 2009 09:14 PM UTC</time> by <b>Parag Mhashilkar</b><a class="anchor" name="1257369246">&nbsp;</a></div><pre>Hi Elizabeth,
+
+He had the meeting yesterday. There are two groups in the remedy system
+to help route the tickets. If the destination VO contains following
+strings, the tickets should be routed correctly. We should try this out
+with couple of test tickets.
+
+&#39;FermiGridSupport&#39; for ReSS Operational Support
+
+&#39;ReSS - Development&#39; for Development issues, bugs, etc
+
+-
+Thanks & Regards
+=============================================================
+Parag Mhashilkar
+Fermi National Accelerator Laboratory, MS 120
+Wilson & Kirk Road, Batavia, IL - 60510.
+
+Location&#58; Wilson Hall, WH863
+Phone&#58; +1 (630) 840-6530
+Fax&#58; +1 (630) 840-2783
+Email&#58; parag@....
+=============================================================
+
+On Wed, 2009-11-04 at 21&#58;06 +0000, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='7581#1257368804'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-11-04T21:06:44+00:00">Nov 4, 2009 09:06 PM UTC</time> by <b>echism</b><a class="anchor" name="1257368804">&nbsp;</a></div><pre>Parag,
+
+Are there any updates from the meeting?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='7581#1256746628'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-28T16:17:08+00:00">Oct 28, 2009 04:17 PM UTC</time> by <b>Parag Mhashilkar</b><a class="anchor" name="1256746628">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I will be scheduling a meeting with Fermi service desk and FermiGrid
+personnel in next few days. Hopefully, we will have more info on this
+matter after the meeting.
+
+-
+Thanks & Regards
+=============================================================
+Parag Mhashilkar
+Fermi National Accelerator Laboratory, MS 120
+Wilson & Kirk Road, Batavia, IL - 60510.
+
+Location&#58; Wilson Hall, WH863
+Phone&#58; +1 (630) 840-6530
+Fax&#58; +1 (630) 840-2783
+Email&#58; parag@....
+=============================================================
+
+On Wed, 2009-10-28 at 12&#58;56 +0000, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='7581#1256734572'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-28T12:56:12+00:00">Oct 28, 2009 12:56 PM UTC</time> by <b>echism</b><a class="anchor" name="1256734572">&nbsp;</a></div><pre>Parag,
+
+I am still waiting to hear back from the ticket exchange.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='7581#1256155719'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-21T20:08:39+00:00">Oct 21, 2009 08:08 PM UTC</time> by <b>echism</b><a class="anchor" name="1256155719">&nbsp;</a></div><pre>There is an ongoing discussion on this issue in the list so I am bumping this out a few days.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='7581#1255986163'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-19T21:02:43+00:00">Oct 19, 2009 09:02 PM UTC</time> by <b>echism</b><a class="anchor" name="1255986163">&nbsp;</a></div><pre>This is all in place as far as I can tell, but I&#39;m going to follow up with the fermilab TTX team to ensure we can assign these properly to route in fermilab remedy.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='7581#1255985705'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-19T20:55:05+00:00">Oct 19, 2009 08:55 PM UTC</time> by <b>echism</b><a class="anchor" name="1255985705">&nbsp;</a></div><pre>Parag,
+
+I am documenting what you stated in the first entry to this ticket.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='7581#1255349357'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-12T12:09:17+00:00">Oct 12, 2009 12:09 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1255349357">&nbsp;</a></div><pre>Kyle/E,
+
+I recommend you use &#34;Documentation/Ticketing/TicketAssignmentTips&#34; in our internal documentation to keep track of the detail Parag is talking about. Also, let me know if you need any help with the FP side of things.
+
+-ag.</pre></div><div class='update_description'><i onclick="document.location='7581#1255122966'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-09T21:16:06+00:00">Oct 9, 2009 09:16 PM UTC</time> by <b>Parag Mhashilkar</b><a class="anchor" name="1255122966">&nbsp;</a></div><pre>Hi Elizabeth,
+
+Sorry I missed your last mail. Gabriele added me to the OIM for ReSS Ops
+and now I am able to make the changes. But this is just one part of the
+ticket. How does GOC decide which SC to involve in case of a given
+issue? Is there a policy which GOC follows? Maybe that policy needs
+updates so that even if the ticket says &#39;ReSS&#39; in it, based on the type
+of failure identified, it should either go to Fermilab (Fermigrid) SC or
+ReSS SC. What should I do apart from this ticket to help GOC in
+forwarding the tickets to appropriate SC?
+
+-
+Thanks & Regards
+=============================================================
+Parag Mhashilkar
+Fermi National Accelerator Laboratory, MS 120
+Wilson & Kirk Road, Batavia, IL - 60510.
+
+Location&#58; Wilson Hall, WH863
+Phone&#58; +1 (630) 840-6530
+Fax&#58; +1 (630) 840-2783
+Email&#58; parag@....
+=============================================================
+
+On Fri, 2009-10-09 at 18&#58;38 +0000, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='7581#1255113536'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-09T18:38:56+00:00">Oct 9, 2009 06:38 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1255113536">&nbsp;</a></div><pre>Parag,
+
+Please let us know if you can do this.</pre></div><div class='update_description'><i onclick="document.location='7581#1254773096'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-05T20:04:56+00:00">Oct 5, 2009 08:04 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1254773096">&nbsp;</a></div><pre>Parag,
+
+I think that you (or whoever is associated with your SC) should be able to go into OIM and make those changes.</pre></div><div class='update_description'><i onclick="document.location='7581#1254772506'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-05T19:55:06+00:00">Oct 5, 2009 07:55 PM UTC</time> by <b>Parag Mhashilkar</b><a class="anchor" name="1254772506">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I estimate approx 5-6 weeks. I do not yet know all the details yet but
+think it should be a good approximation.
+-
+Thanks & Regards
+=============================================================
+Parag Mhashilkar
+Fermi National Accelerator Laboratory, MS 120
+Wilson & Kirk Road, Batavia, IL - 60510.
+
+Location&#58; Wilson Hall, WH863
+Phone&#58; +1 (630) 840-6530
+Fax&#58; +1 (630) 840-2783
+Email&#58; parag@....
+=============================================================
+
+On Mon, 2009-10-05 at 18&#58;29 +0000, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='7581#1254767346'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-05T18:29:06+00:00">Oct 5, 2009 06:29 PM UTC</time> by <b>echism</b><a class="anchor" name="1254767346">&nbsp;</a></div><pre>Parag,
+
+When are you anticipating the move to remedy?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='7581#1254519757'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-02T21:42:37+00:00">Oct 2, 2009 09:42 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1254519757">&nbsp;</a></div><pre>GOC,
+
+ReSS team and FermiGrid group are working together to provide ReSS
+service for the OSG and its users. ReSS team develops the required
+software while the FermiGrid group supports its deployment and
+operations. We are streamlining the support process for the ReSS project
+to distinguish between the issues that would be addressed by the
+respective groups. This process will not change how the ReSS users would
+report the issues or see a resolution to their issues. But this change
+in the support process model will affect how GOC should route any
+tickets/issues related to ReSS.
+
+Since ReSS-Ops Support center is not involved with the operations, I
+would also like to rename it to ReSS support center.
+
+Tickets that should be forwarded to Fermilab/ReSS Support Center&#58;
+- Disruption of ReSS service(s).
+- The service cannot be contacted
+- Machine hosting the service is not reachable.
+
+Tickets that should be forwarded to ReSS Support Center&#58;
+- Questions related to advertising site info using CEMon
+- Site(s) not reporting to ReSS
+- Site(s) not appearing in ReSS
+- How to extract required information from ReSS
+- Possible bugs preventing site(s) to advertise to ReSS or bugs such
+that site advertises incorrect information. This one is tricky since
+most of this is in GIP&#39;s court.
+
+We would really appreciate if GOC follow this guideline while routing
+any ReSS related tickets to the respective support centers.
+
+Please let me know if you have any questions/concerns or would like to
+talk about this over the phone.
+
+<div id='show_1250556854' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1250556854'>Also, as a heads up, in future, ReSS Ops will switch to Fermilab&#39;s
+Service desk and we would need to change the forwarding address from
+ress-support@.... to that of the Service desk. There might be other
+changes which I am not fully aware of right now. This is still under
+works and I will let you know when we are ready from our end.
+
+-
+Thanks &amp; Regards
+=============================================================
+Parag Mhashilkar
+Fermi National Accelerator Laboratory, MS 120
+Wilson &amp; Kirk Road, Batavia, IL - 60510.
+
+Location&#58; Wilson Hall, WH863
+Phone&#58; +1 (630) 840-6530
+Fax&#58; +1 (630) 840-2783
+Email&#58; parag@....
+=============================================================
+</div><script type='text/javascript'>
+        $('#show_1250556854').click(function() {
+            $('#detail_1250556854').slideDown("normal");
+            $('#show_1250556854').hide();
+            $('#hide_1250556854').show();
+        });
+        $('#hide_1250556854').click(function() {
+            $('#detail_1250556854').slideUp();
+            $('#hide_1250556854').hide();
+            $('#show_1250556854').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F7581">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 7581});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

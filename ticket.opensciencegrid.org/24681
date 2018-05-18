@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[24681] GT5 gram job state issues after upgrading to OSG 3.2</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=24681" method="post">
+<div class="page-header">
+    <h3><span class="muted">24681</span> / GT5 gram job state issues after upgrading to OSG 3.2</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Wei Yang</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Wei Yang</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-05-28</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=24681", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/24681?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/24681?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20GT5%20gram%20job%20state%20issues%20after%20upgrading%20to%20OSG%203.2%20ISSUE%3D24681%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='24681#1432654886'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T15:41:26+00:00">May 26, 2015 03:41 PM UTC</time> by <b>echism</b><a class="anchor" name="1432654886">&nbsp;</a></div><pre>Closing as requested.</pre></div><div class='update_description'><i onclick="document.location='24681#1432654096'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T15:28:16+00:00">May 26, 2015 03:28 PM UTC</time> by <b>Wei Yang</b><a class="anchor" name="1432654096">&nbsp;</a></div><pre>yes, you can close it.
+
+Wei Yang  |  yangw@....  |  650-926-3338(O)
+
+On May 26, 2015, at 6&#58;07 AM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='24681#1432645629'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T13:07:09+00:00">May 26, 2015 01:07 PM UTC</time> by <b>echism</b><a class="anchor" name="1432645629">&nbsp;</a></div><pre>Hi Wei,
+
+Is this ready to close?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='24681#1432187221'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-21T05:47:01+00:00">May 21, 2015 05:47 AM UTC</time> by <b>Wei Yang</b><a class="anchor" name="1432187221">&nbsp;</a></div><pre>HI Brian, A short test jobs indicate that this issue seems to have been resolved. I reenabled GT5 CE for production and will keep an eye on it for a few days. Many thanks</pre></div><div class='update_description'><i onclick="document.location='24681#1432004891'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-19T03:08:11+00:00">May 19, 2015 03:08 AM UTC</time> by <b>echism</b><a class="anchor" name="1432004891">&nbsp;</a></div><pre>This is a quick note to say that I am at a workshop this week, so please email
+goc@.... if you need anything from my group before Monday.
+
+Best,
+Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='24681#1431965188'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-18T16:06:28+00:00">May 18, 2015 04:06 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1431965188">&nbsp;</a></div><pre>Wei,
+
+There appears to have been a bug in the globus-gram-job-manager (<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1922' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1922</a>). Could you try the new version available in osg-testing with&#58;
+
+yum update globus-gram-job-manager --enablerepo=osg-testing
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='24681#1431121992'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-08T21:53:12+00:00">May 8, 2015 09:53 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1431121992">&nbsp;</a></div><pre>I sent the output to the Globus developers.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='24681#1430934585'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-06T17:49:45+00:00">May 6, 2015 05:49 PM UTC</time> by <b>Wei Yang</b><a class="anchor" name="1430934585">&nbsp;</a></div><pre>Below is the output.
+
+-sh-4.1# service globus-scheduler-event-generator start
+Started globus-scheduler-event-generator for (lsf)
+
+-sh-4.1# globus-scheduler-event-generator -t 1 -s lsf
+001;1430934013;897051;8;0
+001;1430934014;897051;8;0
+001;1430934014;897387;2;0
+001;1430934014;896936;8;0
+001;1430934015;897387;2;0
+001;1430934015;897387;2;0
+001;1430934015;897387;2;0
+001;1430934015;897387;2;0
+001;1430934015;897387;2;0
+001;1430934015;897387;2;0
+001;1430934015;897121;8;0
+001;1430934015;897121;8;0
+001;1430934015;897051;8;0
+001;1430934015;897121;8;0
+001;1430934015;897121;8;0
+001;1430934016;897121;8;0
+001;1430934016;894318;8;0
+001;1430934016;869312;8;0
+001;1430934016;897387;2;0
+001;1430934016;897387;2;0
+001;1430934016;897387;2;0
+...
+
+-sh-4.1# env JOB_MANAGER_SEG_SCHEDULER=lsf globus-scheduler-event-generator -s job_manager -t 1
+001;1430934307;898289;8;0
+001;1430934307;898231;8;0
+001;1430934307;893454;8;0
+001;1430934307;898354;8;0
+001;1430934307;898105;8;0
+<div id='show_399941738' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_399941738'>001;1430934308;898354;8;0
+001;1430934308;898625;2;0
+001;1430934308;898625;2;0
+001;1430934308;898105;8;0
+001;1430934308;898231;8;0
+001;1430934308;898105;8;0
+001;1430934308;898625;2;0
+001;1430934308;898625;2;0
+001;1430934308;898625;2;0
+001;1430934308;898625;2;0
+001;1430934308;898625;2;0
+001;1430934308;898625;2;0
+001;1430934308;898625;2;0
+001;1430934309;898354;8;0
+001;1430934309;898289;8;0
+001;1430934309;898289;8;0
+001;1430934309;898496;8;0
+001;1430934309;898231;8;0
+001;1430934309;893326;8;0
+001;1430934309;898105;8;0
+001;1430934310;898289;8;0
+001;1430934310;898625;2;0
+001;1430934310;898625;2;0
+001;1430934310;898625;2;0
+001;1430934310;898625;2;0
+001;1430934310;898625;2;0
+001;1430934310;898231;8;0
+001;1430934310;898231;8;0
+...
+</div><script type='text/javascript'>
+        $('#show_399941738').click(function() {
+            $('#detail_399941738').slideDown("normal");
+            $('#show_399941738').hide();
+            $('#hide_399941738').show();
+        });
+        $('#hide_399941738').click(function() {
+            $('#detail_399941738').slideUp();
+            $('#hide_399941738').hide();
+            $('#show_399941738').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='24681#1430421382'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-30T19:16:22+00:00">Apr 30, 2015 07:16 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1430421382">&nbsp;</a></div><pre>Got a response from the developers&#58;
+
+On 04/30/15 13&#58;06, Joseph Bester wrote&#58;
+<font color='#7F7E6F'>&#62; Sorry, it dropped off my radar. Some things to help debug seg issues&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; run</font>
+<font color='#7F7E6F'>&#62; globus-scheduler-event-generator -t 1 -s lsf</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; To see that the SEG daemon is able to parse lsf logs into seg format</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; run</font>
+<font color='#7F7E6F'>&#62; env JOB_MANAGER_SEG_SCHEDULER=lsf globus-scheduler-event-generator -s job_manager -t 1</font>
+<font color='#7F7E6F'>&#62; To see that the job manager can find and parse output like the above.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; If the first command outputs nothing, then the /etc/globus-lsf.conf file</font>
+<font color='#7F7E6F'>&#62; might not be able to find the lsf system accounting file.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; If the second command outputs nothing, then either the seg is not running or</font>
+<font color='#7F7E6F'>&#62; there is a misconfiguration between the different pieces on what path is</font>
+<font color='#7F7E6F'>&#62; being used. running the 2nd command with strace will display what directory</font>
+<font color='#7F7E6F'>&#62; it is trying to read.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Joe</font>
+
+Wei, can you try these things?
+
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='24681#1430320637'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-29T15:17:17+00:00">Apr 29, 2015 03:17 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1430320637">&nbsp;</a></div><pre>I do not have an account on their JIRA, so I can&#39;t update the ticket. I pinged the developers and will update this ticket when I hear back from them.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='24681#1430176895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-27T23:21:35+00:00">Apr 27, 2015 11:21 PM UTC</time><a class="anchor" name="1430176895">&nbsp;</a></div><pre>HI Mat, Suchandra,
+
+Can u update the ticket&#58;
+
+<a href='https&#58;//globus.atlassian.net/browse/GT-590' target='_blank' rel='nofollow'>https&#58;//globus.atlassian.net/browse/GT-590</a>
+
+Withe the packages provided by Wei
+
+Edgar Fajardo
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='24681#1430142176'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-27T13:42:56+00:00">Apr 27, 2015 01:42 PM UTC</time> by <b>echism</b><a class="anchor" name="1430142176">&nbsp;</a></div><pre>Hey Mat,
+
+Has globus said anything on this? If you can link me to the globus ticket, I&#39;ll be happy to just follow it myself.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='24681#1429541286'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-20T14:48:06+00:00">Apr 20, 2015 02:48 PM UTC</time> by <b>echism</b><a class="anchor" name="1429541286">&nbsp;</a></div><pre>Hey Mat,
+
+Any word on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='24681#1428953780'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-13T19:36:20+00:00">Apr 13, 2015 07:36 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1428953780">&nbsp;</a></div><pre>I sent your package list to the developers and am waiting to hear back from them.
+-mat</pre></div><div class='update_description'><i onclick="document.location='24681#1428474050'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-08T06:20:50+00:00">Apr 8, 2015 06:20 AM UTC</time> by <b>Wei Yang</b><a class="anchor" name="1428474050">&nbsp;</a></div><pre>cog-jglobus-axis-1.8.0-7.osg.el6.noarch
+globus-authz-3.10-1.osg32.el6.x86_64
+globus-authz-callout-error-3.5-1.osg32.el6.x86_64
+globus-callout-3.13-1.osg32.el6.x86_64
+globus-callout-devel-3.13-1.osg32.el6.x86_64
+globus-common-15.27-1.osg32.el6.x86_64
+globus-common-devel-15.27-1.osg32.el6.x86_64
+globus-common-progs-15.27-1.osg32.el6.x86_64
+globus-ftp-client-8.17-1.osg32.el6.x86_64
+globus-ftp-control-6.6-1.1.osg32.el6.x86_64
+globus-gass-cache-9.5-1.osg32.el6.x86_64
+globus-gass-cache-program-6.5-1.osg32.el6.x86_64
+globus-gass-copy-9.13-1.osg32.el6.x86_64
+globus-gass-copy-progs-9.13-1.osg32.el6.x86_64
+globus-gass-server-ez-5.7-1.osg32.el6.x86_64
+globus-gass-transfer-8.8-1.osg32.el6.x86_64
+globus-gatekeeper-10.9-1.2.osg32.el6.x86_64
+globus-gfork-4.7-1.osg32.el6.x86_64
+globus-gram-client-13.12-1.osg32.el6.x86_64
+globus-gram-client-tools-11.7-1.osg32.el6.x86_64
+globus-gram-job-manager-14.25-1.1.osg32.el6.x86_64
+globus-gram-job-manager-callout-error-3.5-1.osg32.el6.x86_64
+globus-gram-job-manager-fork-2.4-1.1.osg32.el6.x86_64
+globus-gram-job-manager-fork-setup-poll-2.4-1.1.osg32.el6.noarch
+globus-gram-job-manager-lsf-2.6-1.1.osg32.el6.x86_64
+globus-gram-job-manager-lsf-setup-seg-2.6-1.1.osg32.el6.x86_64
+globus-gram-job-manager-scripts-6.7-1.osg32.el6.noarch
+globus-gram-protocol-12.12-2.osg32.el6.x86_64
+globus-gram-protocol-devel-12.12-2.osg32.el6.x86_64
+globus-gridftp-server-7.20-1.1.osg32.el6.x86_64
+globus-gridftp-server-control-3.6-1.osg32.el6.x86_64
+globus-gridftp-server-progs-7.20-1.1.osg32.el6.x86_64
+globus-gridmap-callout-error-2.4-1.osg32.el6.x86_64
+globus-gsi-callback-5.6-1.osg32.el6.x86_64
+globus-gsi-callback-devel-5.6-1.osg32.el6.x86_64
+<div id='show_605916906' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_605916906'>globus-gsi-cert-utils-9.10-1.osg32.el6.x86_64
+globus-gsi-cert-utils-devel-9.10-1.osg32.el6.x86_64
+globus-gsi-cert-utils-progs-9.10-1.osg32.el6.noarch
+globus-gsi-credential-7.7-1.osg32.el6.x86_64
+globus-gsi-credential-devel-7.7-1.osg32.el6.x86_64
+globus-gsi-openssl-error-3.5-1.osg32.el6.x86_64
+globus-gsi-openssl-error-devel-3.5-1.osg32.el6.x86_64
+globus-gsi-proxy-core-7.7-1.osg32.el6.x86_64
+globus-gsi-proxy-core-devel-7.7-1.osg32.el6.x86_64
+globus-gsi-proxy-ssl-5.7-1.osg32.el6.x86_64
+globus-gsi-proxy-ssl-devel-5.7-1.osg32.el6.x86_64
+globus-gsi-sysconfig-6.8-1.osg32.el6.x86_64
+globus-gsi-sysconfig-devel-6.8-1.osg32.el6.x86_64
+globus-gss-assist-10.13-1.osg32.el6.x86_64
+globus-gss-assist-devel-10.13-1.osg32.el6.x86_64
+globus-gssapi-error-5.4-1.osg32.el6.x86_64
+globus-gssapi-error-devel-5.4-1.osg32.el6.x86_64
+globus-gssapi-gsi-11.14-1.osg32.el6.x86_64
+globus-gssapi-gsi-devel-11.14-1.osg32.el6.x86_64
+globus-io-11.3-1.osg32.el6.x86_64
+globus-io-devel-11.3-1.osg32.el6.x86_64
+globus-openssl-module-4.6-1.osg32.el6.x86_64
+globus-openssl-module-devel-4.6-1.osg32.el6.x86_64
+globus-proxy-utils-6.9-1.osg32.el6.x86_64
+globus-rsl-10.9-1.osg32.el6.x86_64
+globus-scheduler-event-generator-5.10-2.1.osg32.el6.x86_64
+globus-scheduler-event-generator-devel-5.10-2.1.osg32.el6.x86_64
+globus-scheduler-event-generator-progs-5.10-2.1.osg32.el6.x86_64
+globus-usage-4.4-1.osg32.el6.x86_64
+globus-xio-5.4-1.1.osg32.el6.x86_64
+globus-xio-devel-5.4-1.1.osg32.el6.x86_64
+globus-xio-gsi-driver-3.6-1.osg32.el6.x86_64
+globus-xio-gsi-driver-devel-3.6-1.osg32.el6.x86_64
+globus-xio-pipe-driver-3.7-1.osg32.el6.x86_64
+globus-xio-popen-driver-3.5-1.osg32.el6.x86_64
+jglobus-2.0.6-4.osg32.el6.noarch
+</div><script type='text/javascript'>
+        $('#show_605916906').click(function() {
+            $('#detail_605916906').slideDown("normal");
+            $('#show_605916906').hide();
+            $('#hide_605916906').show();
+        });
+        $('#hide_605916906').click(function() {
+            $('#detail_605916906').slideUp();
+            $('#hide_605916906').hide();
+            $('#show_605916906').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='24681#1428424304'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-07T16:31:44+00:00">Apr 7, 2015 04:31 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1428424304">&nbsp;</a></div><pre>Hi Wei,
+Can you just post &#34;rpm -qa | grep globus&#34; on your CE so we know exactly what versions of the software we are dealing with here?
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='24681#1428417267'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-07T14:34:27+00:00">Apr 7, 2015 02:34 PM UTC</time> by <b>echism</b><a class="anchor" name="1428417267">&nbsp;</a></div><pre>Hey Suchandra,
+
+That developer asked for the GTK version. Maybe he wants something more specific than 5, or didn&#39;t notice that you said 5?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='24681#1428079614'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-03T16:46:54+00:00">Apr 3, 2015 04:46 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1428079614">&nbsp;</a></div><pre>Okay, it looks like there&#39;s a bug in the GT5 GRAM code somewhere, I&#39;ve opened a globus ticket for this at <a href='https&#58;//globus.atlassian.net/browse/GT-590' target='_blank' rel='nofollow'>https&#58;//globus.atlassian.net/browse/GT-590</a>
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='24681#1427846690'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-01T00:04:50+00:00">Apr 1, 2015 12:04 AM UTC</time> by <b>Wei Yang</b><a class="anchor" name="1427846690">&nbsp;</a></div><pre>Hi Suchandra,
+
+here is a few records in those files. I sorted it based on the third column which is the LSF job Id. So you see that SEG reports all jobs&#39; state (grid jobs and nod-grid jobs) from 1 to 2 to 8 (forth&#39;s column, which I guess it means submitted/pending, running, and finished).
+
+At the beginning of this ticket, I also included one of the gram job state files, which has LSF job id 858961, and its SEG records while the LSF job was running (and GT5 thought it was pending)
+
+[yangw@osgserv01 globus-seg-lsf]$ cat 2015033* | sed -e &#39;s+;+ +g&#39; | sort -k 3 -n | more
+001 1427674528 1 1 0
+001 1427674529 1 2 0
+001 1427676074 1 8 0
+001 1427674528 2 1 0
+001 1427674530 2 2 0
+001 1427677097 2 8 0
+001 1427674529 3 1 0
+001 1427674530 3 2 0
+001 1427676015 3 8 0
+001 1427674529 4 1 0
+001 1427674530 4 2 0
+001 1427675714 4 8 0
+001 1427674529 5 1 0
+001 1427674530 5 2 0
+001 1427675906 5 8 0
+001 1427674529 6 1 0
+001 1427674530 6 2 0
+001 1427675812 6 8 0
+001 1427674529 7 1 0
+001 1427674530 7 2 0
+001 1427676986 7 8 0
+001 1427674529 8 1 0
+001 1427674530 8 2 0
+001 1427677098 8 8 0
+001 1427674529 9 1 0
+001 1427674530 9 2 0
+001 1427676973 9 8 0
+001 1427674529 10 1 0
+<div id='show_726546927' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_726546927'>001 1427674530 10 2 0
+001 1427674564 10 8 0
+001 1427674529 11 1 0
+001 1427674530 11 2 0
+001 1427676993 11 8 0
+001 1427674529 12 1 0
+001 1427674530 12 2 0
+001 1427679409 12 8 0
+001 1427674529 13 1 0
+001 1427674530 13 2 0
+001 1427675995 13 8 0
+001 1427674529 14 1 0
+001 1427674530 14 2 0
+001 1427676142 14 8 0
+001 1427674529 15 1 0
+001 1427674530 15 2 0
+001 1427676164 15 8 0
+001 1427674529 16 1 0
+001 1427674530 16 2 0
+001 1427675438 16 8 0
+</div><script type='text/javascript'>
+        $('#show_726546927').click(function() {
+            $('#detail_726546927').slideDown("normal");
+            $('#show_726546927').hide();
+            $('#hide_726546927').show();
+        });
+        $('#hide_726546927').click(function() {
+            $('#detail_726546927').slideUp();
+            $('#hide_726546927').hide();
+            $('#show_726546927').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='24681#1427832230'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-31T20:03:50+00:00">Mar 31, 2015 08:03 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1427832230">&nbsp;</a></div><pre>Yes, I mean the files under  /var/lib/globus/globus-seg-lsf .  You should be able to trace the states that the SEG thinks a given job is in using the records there.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='24681#1427742941'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T19:15:41+00:00">Mar 30, 2015 07:15 PM UTC</time> by <b>Wei Yang</b><a class="anchor" name="1427742941">&nbsp;</a></div><pre>HI Suchandra, where is the SEG log file? or do you mean files under /var/lib/globus/globus-seg-lsf ?</pre></div><div class='update_description'><i onclick="document.location='24681#1427738278'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T17:57:58+00:00">Mar 30, 2015 05:57 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1427738278">&nbsp;</a></div><pre>Hi Wei,
+
+Could you grep the SEG log file for a given job id that shows the problem?  I&#39;d like to see the transitions for the job.  It really sounds like this is a GRAM bug but I&#39;d like to try to confirm this.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='24681#1427481680'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-27T18:41:20+00:00">Mar 27, 2015 06:41 PM UTC</time> by <b>Wei Yang</b><a class="anchor" name="1427481680">&nbsp;</a></div><pre>That is correct. it is a big issue for us.
+
+Wei Yang  |  yangw@....  |  1-650-926-3338
+
+<font color='#7F7E6F'>&#62; On Mar 27, 2015, at 11&#58;18 AM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='24681#1427480272'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-27T18:17:52+00:00">Mar 27, 2015 06:17 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1427480272">&nbsp;</a></div><pre>So just to be clear&#58; everything works correctly *except* for the reporting of status before the job completes? That is, jobs do run to completion?</pre></div><div class='update_description'><i onclick="document.location='24681#1427478494'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-27T17:48:14+00:00">Mar 27, 2015 05:48 PM UTC</time> by <b>Wei Yang</b><a class="anchor" name="1427478494">&nbsp;</a></div><pre>Hi Elizabeth,
+
+when a job is running, GT5 CE shows that it is PENDING.
+when the job finished, the GT5 CE reports it as DONE.
+
+Wei Yang  |  yangw@....  |  1-650-926-3338
+
+<font color='#7F7E6F'>&#62; On Mar 27, 2015, at 10&#58;35 AM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='24681#1427477742'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-27T17:35:42+00:00">Mar 27, 2015 05:35 PM UTC</time> by <b>echism</b><a class="anchor" name="1427477742">&nbsp;</a></div><pre>The job has finished but it&#39;s listed as pending? Where, in a factory or flocking node or something?
+
+I&#39;m sorry, it&#39;s a little unclear to me.</pre></div><div class='update_description'><i onclick="document.location='24681#1427440788'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-27T07:19:48+00:00">Mar 27, 2015 07:19 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1427440788">&nbsp;</a></div><pre>I updated SLAC gatekeeper from OSG 3.1 to 3.2. And we are having this issue since.  For example, a job submitted to the CE always show that it is in pending state
+
+$ globus-job-status <a href='https&#58;//osgserv02.slac.stanford.edu&#58;37373/16433943817198189326/16372851839882943645/' target='_blank' rel='nofollow'>https&#58;//osgserv02.slac.stanford.edu&#58;37373/16433943817198189326/16372851839882943645/</a>
+PENDING
+
+Though the backend LSF has started the job almost a long time ago. The SEG shows&#58;
+
+# grep 858961 /var/lib/globus/globus-seg-lsf/*
+/var/lib/globus/globus-seg-lsf/20150327&#58;001;1427416056;858961;1;0
+/var/lib/globus/globus-seg-lsf/20150327&#58;001;1427423056;858961;2;0
+
+(Those finished jobs will also another line with &#34;8&#34; toward the end). Here is the corresponding job state file&#58;
+
+# more job.16433943817198189326.16372851839882943645
+<a href='https&#58;//osgserv02.slac.stanford.edu&#58;37373/16433943817198189326/16372851839882943645/' target='_blank' rel='nofollow'>https&#58;//osgserv02.slac.stanford.edu&#58;37373/16433943817198189326/16372851839882943645/</a>
+6
+1
+0
+858961
+&(&#34;rslsubstitution&#34; = (&#34;GRIDMANAGER_GASS_URL&#34; &#34;<a href='https&#58;//gridui18.usatlas.bnl.gov&#58;20888&#34' target='_blank' rel='nofollow'>https&#58;//gridui18.usatlas.bnl.gov&#58;20888&#34</a>; ) )(&#34;executable&#34; = $(&#34;GRIDMANAGER_GASS_URL&#34;)
+# &#34;/var/lib/condor/spool/1385/cluster6861385.ickpt.subproc0&#34; )(&#34;scratchdir&#34; = &#34;&#34; )(&#34;directory&#34; = $(&#34;SCRATCH_DIRECTORY&#34;) )(&#34;arguments
+&#34; = &#34;--wrapperloglevel=debug&#34; &#34;--wrappergrid=OSG&#34; &#34;--wrapperwmsqueue=SLACXRD&#34; &#34;--wrapperbatchqueue=SLACXRD-lsf&#34; &#34;--wrappervo=ATLAS&#34;
+&#34;--wrappertarballurl=<a href='http&#58;//dev.racf.bnl.gov/dist/wrapper/wrapperplugins-0.9.12-testing.tar.gz&#34' target='_blank' rel='nofollow'>http&#58;//dev.racf.bnl.gov/dist/wrapper/wrapperplugins-0.9.12-testing.tar.gz&#34</a>; &#34;--wrapperpilotcodeurl=http&#58;//pandas
+erver.cern.ch&#58;25085/cache/pilot&#34; &#34;--wrapperpilotcode=pilotcode-PICARD,pilotcode-rc&#34; &#34;--wrapperplugin=atlasprodpilot&#34; &#34;-w&#34; &#34;https&#58;//p
+andaserver.cern.ch&#34; &#34;-p&#34; &#34;25443&#34; &#34;-u&#34; &#34;managed&#34; )(&#34;stdout&#34; = $(&#34;GLOBUS_CACHED_STDOUT&#34;) )(&#34;stderr&#34; = $(&#34;GLOBUS_CACHED_STDERR&#34;) )(&#34;fil
+estageout&#34; = ($(&#34;GLOBUS_CACHED_STDOUT&#34;) $(&#34;GRIDMANAGER_GASS_URL&#34;) # &#34;/home/autopyfactory/factory/logs/2015-03-27/SLACXRD//6861385.0.
+out&#34; ) ($(&#34;GLOBUS_CACHED_STDERR&#34;) $(&#34;GRIDMANAGER_GASS_URL&#34;) # &#34;/home/autopyfactory/factory/logs/2015-03-27/SLACXRD//6861385.0.err&#34; )
+)(&#34;environment&#34; = (&#34;FACTORYUSER&#34; &#34;autopyfactory&#34; ) (&#34;APFFID&#34; &#34;BNL-gridui18-jhover&#34; ) (&#34;TMP&#34; &#34;/scratch&#34; ) (&#34;APFMON&#34; &#34;http&#58;//apfmon.l
+ancs.ac.uk/api&#34; ) (&#34;APFCID&#34; &#34;6861385.0&#34; ) (&#34;PANDA_JSID&#34; &#34;BNL-gridui18-jhover&#34; ) (&#34;DATA&#34; &#34;/nfs/slac/g/grid/osg/data&#34; ) (&#34;FACTORYQUEUE
+&#34; &#34;SLACXRD&#34; ) (&#34;GTAG&#34; &#34;<a href='http&#58;//gridui18.usatlas.bnl.gov&#58;25880/2015-03-27/SLACXRD/6861385.0.out&#34' target='_blank' rel='nofollow'>http&#58;//gridui18.usatlas.bnl.gov&#58;25880/2015-03-27/SLACXRD/6861385.0.out&#34</a>; ) )(&#34;proxytimeout&#34; = &#34;240&#34; )(&#34;savesta
+te&#34; = &#34;yes&#34; )(&#34;twophase&#34; = &#34;600&#34; )(&#34;remoteiourl&#34; = $(&#34;GRIDMANAGER_GASS_URL&#34;) )(&#34;jobtype&#34; = &#34;single&#34; )(&#34;queue&#34; = &#34;PROD_QUE&#34; )(&#34;maxwal
+ltime&#34; = &#34;63350&#34; )
+<a href='https&#58;//osgserv02.slac.stanford.edu&#58;37373/16433943817198189326/16372851839882943645/' target='_blank' rel='nofollow'>https&#58;//osgserv02.slac.stanford.edu&#58;37373/16433943817198189326/16372851839882943645/</a>
+lsf
+600
+<div id='show_952465699' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_952465699'>/nfs/slac/g/grid/osg/u/osgatlas01//gram_scratch_Slg6m2
+1427423056
+1427416051
+1427416056
+0
+0
+2
+&#34;/nfs/slac/g/grid/osg/u/osgatlas01/.globus/osgatlas01/.globus/job/osgserv02/16433943817198189326.16372851839882943645/stdout&#34;
+&#34;<a href='https&#58;//gridui18.usatlas.bnl.gov&#58;20888/home/autopyfactory/factory/logs/2015-03-27/SLACXRD//6861385.0.out&#34' target='_blank' rel='nofollow'>https&#58;//gridui18.usatlas.bnl.gov&#58;20888/home/autopyfactory/factory/logs/2015-03-27/SLACXRD//6861385.0.out&#34</a>;
+&#34;/nfs/slac/g/grid/osg/u/osgatlas01/.globus/osgatlas01/.globus/job/osgserv02/16433943817198189326.16372851839882943645/stderr&#34;
+&#34;<a href='https&#58;//gridui18.usatlas.bnl.gov&#58;20888/home/autopyfactory/factory/logs/2015-03-27/SLACXRD//6861385.0.err&#34' target='_blank' rel='nofollow'>https&#58;//gridui18.usatlas.bnl.gov&#58;20888/home/autopyfactory/factory/logs/2015-03-27/SLACXRD//6861385.0.err&#34</a>;
+0
+1
+1048575 <a href='https&#58;//gridui18.usatlas.bnl.gov&#58;29399/' target='_blank' rel='nofollow'>https&#58;//gridui18.usatlas.bnl.gov&#58;29399/</a>
+
+0
+1427416051.105942000 1427416055.536641000 1427416056.277177000 0.000000000 0.000000000 0.000000000 0.000000000 1 2 8 0 0 1 0 0 0 0 0
+0 0 0 0 0 0 0 0 0
+&#58;ffff&#58;192.12.15.97
+/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People
+8
+18ac9349
+858961
+
+With this problem, the condor-G at BNL thinks that there are enough pending jobs at SLAC and refuse to submit more jobs.
+
+by Wei Yang (guest)
+
+</div><script type='text/javascript'>
+        $('#show_952465699').click(function() {
+            $('#detail_952465699').slideDown("normal");
+            $('#show_952465699').hide();
+            $('#hide_952465699').show();
+        });
+        $('#hide_952465699').click(function() {
+            $('#detail_952465699').slideUp();
+            $('#hide_952465699').hide();
+            $('#show_952465699').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F24681">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 24681});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

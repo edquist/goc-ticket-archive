@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[33929] Add support for the DUNE VO on the CERN Tier 0 HTCondor CEs in ITB</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=33929" method="post">
+<div class="page-header">
+    <h3><span class="muted">33929</span> / Add support for the DUNE VO on the CERN Tier 0 HTCondor CEs in ITB</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Kenneth Herner</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">UCSD glidein</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">MIS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Kenneth Herner</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">osg-glidein-factory</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-07-17</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">OSG Glidein Factory Support <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=33929", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/33929?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/33929?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Add%20support%20for%20the%20DUNE%20VO%20on%20the%20CERN%20Tier%200%20HTCondor%20CEs%20in%20ITB%20ISSUE%3D33929%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='33929#1502317220'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-09T22:20:20+00:00">Aug 9, 2017 10:20 PM UTC</time><a class="anchor" name="1502317220">&nbsp;</a></div><pre>Hi,
+
+As we did for the ITB test, let&#39;s start with only CMSHTPC_T2_CH_CERN_ce503 and CMSHTPC_T2_CH_CERN_ce504 for now.
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1500321570'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-17T19:59:30+00:00">Jul 17, 2017 07:59 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1500321570">&nbsp;</a></div><pre>Closing per Ken&#39;s update.</pre></div><div class='update_description'><i onclick="document.location='33929#1500058611'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-14T18:56:51+00:00">Jul 14, 2017 06:56 PM UTC</time><a class="anchor" name="1500058611">&nbsp;</a></div><pre>Yes, I think so.
+
+Thanks,
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1500057287'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-14T18:34:47+00:00">Jul 14, 2017 06:34 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1500057287">&nbsp;</a></div><pre>Ken,
+
+Can we consider the issue resolved at this point?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='33929#1499361369'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-06T17:16:09+00:00">Jul 6, 2017 05:16 PM UTC</time><a class="anchor" name="1499361369">&nbsp;</a></div><pre>The first batch has succeeded; I&#39;ve got another one in right now to make sure I understand whether or not there are any additional pitfalls. If these work then I think we can consider the network issue solved.
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1499356306'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-06T15:51:46+00:00">Jul 6, 2017 03:51 PM UTC</time><a class="anchor" name="1499356306">&nbsp;</a></div><pre>Steve tells me that there&#39;s a fix in place for the asymmetric routing issue, so I&#39;ve go new test jobs in the queue now.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1499355675'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-06T15:41:15+00:00">Jul 6, 2017 03:41 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1499355675">&nbsp;</a></div><pre>I will be away from the lab on vacation July 6-10.
+I expect to check email from time to time but may have limited
+time to respond.
+If there are any issues with FermiCloud or any Grid and Cloud Operations services please open a Service Desk ticket.
+
+Steven Timm</pre></div><div class='update_description'><i onclick="document.location='33929#1499355525'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-06T15:38:45+00:00">Jul 6, 2017 03:38 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1499355525">&nbsp;</a></div><pre>Ken,
+
+Any updates here?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='33929#1498501742'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-26T18:29:02+00:00">Jun 26, 2017 06:29 PM UTC</time><a class="anchor" name="1498501742">&nbsp;</a></div><pre>Hi Kyle,
+
+We&#39;re testing a temporary software workaround at the moment, and if that works we may not need to open the network ticket until DUNE joins LHCONE. We&#39;d like to avoid asking CERN to change things twice if we can...
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1498488339'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-26T14:45:39+00:00">Jun 26, 2017 02:45 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1498488339">&nbsp;</a></div><pre>Ken,
+
+Have you been able to open the other ticket that Brian requested?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='33929#1497629285'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-16T16:08:05+00:00">Jun 16, 2017 04:08 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1497629285">&nbsp;</a></div><pre>Ken,
+
+Have you been able to open the other ticket that Brian requested?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='33929#1497093790'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-10T11:23:10+00:00">Jun 10, 2017 11:23 AM UTC</time> by <b>bbockelm</b><a class="anchor" name="1497093790">&nbsp;</a></div><pre>Hi Ken,
+
+Asymmetric routes can cause surprising and bad behavior across a variety of services.
+
+Can you please close out this ticket and open a new one with FNAL and CERN networking. Would be important to get this resolved.
+
+Brian
+
+Sent from my iPhone
+
+<font color='#7F7E6F'>&#62; On Jun 9, 2017, at 5&#58;07 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='33929#1497020863'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-09T15:07:43+00:00">Jun 9, 2017 03:07 PM UTC</time><a class="anchor" name="1497020863">&nbsp;</a></div><pre>Hi Brian,
+
+We can get things to work if we use the -nogridftp2 option and run everything through the head node (fndca1.fnal.gov). I did see from traceroutes in the job that packets do indeed take a different path if you&#39;re going through the head node as opposed to trying to go directly to a pool node&#58;
+
+traceroute to fndca1.fnal.gov (131.225.13.30), 30 hops max, 60 byte packets
+1 l513-v-rbrmx-2-ci123.cern.ch (10.42.88.1) 0.788 ms 0.771 ms 0.734 ms
+2 l513-b-rbrmx-3-hc6.cern.ch (172.24.32.113) 0.697 ms l513-b-rbrmx-2-hb6.cern.ch (172.24.32.81) 1.082 ms l513-b-rbrmx-1-ha6.cern.ch (172.24.32.49) 0.680
+ms
+3 b513-b-rbrml-1-ht2.cern.ch (172.24.112.69) 1.062 ms 1.051 ms b513-b-rbrml-1-ht1.cern.ch (172.24.112.65) 1.024 ms
+4 g513-a-rci65-1-pg1.cern.ch (192.65.196.33) 1.113 ms 1.456 ms 1.808 ms
+5 g513-a-rci65-1-fe1.cern.ch (192.65.184.165) 1.799 ms 1.782 ms 1.417 ms
+6 e513-e-rbrxl-1-pe1.cern.ch (192.65.184.161) 0.921 ms 0.762 ms 0.421 ms
+7 cixp-esnet-cern-513-cr5.cern.ch (192.65.184.214) 1.382 ms 2.117 ms 0.876 ms
+8 londcr5-ip-a-cern513cr5.es.net (134.55.42.57) 16.664 ms 17.331 ms 16.981 ms
+9 aofacr5-ip-a-londcr5.es.net (134.55.39.170) 85.704 ms 86.223 ms 86.019 ms
+10 washcr5-ip-a-aofacr5.es.net (134.55.36.34) 90.760 ms 91.050 ms 91.292 ms
+11 chiccr5-ip-a-washcr5.es.net (134.55.36.45) 107.634 ms 107.893 ms 108.147 ms
+12 fnal-ip-o-chiccr5.es.net (198.124.216.18) 108.146 ms 108.181 ms 108.107 ms
+13 r-s-edge-1-te4-2.fnal.gov (131.225.15.21) 108.304 ms 108.626 ms 108.589 ms
+14 r-s-core-fcc-244.fnal.gov (131.225.15.246) 108.310 ms 108.468 ms 108.489 ms
+15 r-dist-fcc2-1-228.fnal.gov (131.225.23.229) 108.640 ms 108.904 ms 109.093 ms
+16 fndca4a.fnal.gov (131.225.13.30) 108.454 ms 108.288 ms *
+
+But if you go directly to a pool node&#58;
+
+PING stkendca27a.fnal.gov (131.225.69.29) 56(84) bytes of data.
+
+--- stkendca27a.fnal.gov ping statistics ---
+10 packets transmitted, 0 received, 100% packet loss, time 19002ms
+
+traceroute to stkendca27a.fnal.gov (131.225.69.29), 30 hops max, 60 byte packets
+1 l513-v-rbrmx-2-ci123.cern.ch (10.42.88.1) 0.719 ms 0.714 ms 0.706 ms
+2 l513-b-rbrmx-2-hb6.cern.ch (172.24.32.81) 0.686 ms 0.712 ms 0.708 ms
+3 l513-e-rbrxl-2-de2.cern.ch (172.24.32.74) 0.658 ms l513-e-rbrxl-1-ce2.cern.ch (172.24.32.70) 0.675 ms l513-e-rbrxl-1-ce3.cern.ch (172.24.32.102) 0.649 ms
+4 esnet-lhc1-b-cern.es.net (198.124.80.69) 1.320 ms 1.468 ms esnet-lhc1-a-cern.es.net (198.124.80.65) 1.114 ms
+<div id='show_925151342' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_925151342'>5 esnet-lhc1-fnal.es.net (198.124.80.13) 107.985 ms 108.164 ms 108.376 ms
+6 fnal-lhc1-esnet.es.net (198.124.80.14) 113.610 ms 113.165 ms 113.130 ms
+7 * * *
+8 * * *
+
+And then it just stalls at that point. It looks like in this case it is indeed trying to go through LHCONE, at least on the outbound part, whereas it doesn&#39;t when talking to the head node.
+
+The failing g-u-c commands are of the form
+
+globus-url-copy -rst-retries 1 -gridftp2 -nodcau -restart  -st 1000 file&#58;////pool/condor/local_file_path <a href='gsiftp&#58;//stkendca33a.fnal.gov/pnfs/fnal.gov/usr/dune/scratch/users/dunepro/output_name' target='_blank' rel='nofollow'>gsiftp&#58;//stkendca33a.fnal.gov/pnfs/fnal.gov/usr/dune/scratch/users/dunepro/output_name</a>
+
+It also fails if you replace stkendcaXXa with fndca1 (I think because of the redirection behind the scenes when using the -gridftp2 option.) If however we do
+
+globus-url-copy -rst-retries 1 -nogridftp2 -nodcau -restart  -st 1000 file&#58;////pool/condor/local_file_path <a href='gsiftp&#58;//fndca1.fnal.gov&#58;2811/pnfs/fnal.gov/usr/dune/scratch/users/dunepro/output_name' target='_blank' rel='nofollow'>gsiftp&#58;//fndca1.fnal.gov&#58;2811/pnfs/fnal.gov/usr/dune/scratch/users/dunepro/output_name</a>
+
+Then things work. However, I&#39;m loath to make that the default since we&#39;d likely be taking a sizeable performance hit channeling everything through the head node. FWIW, xrdcp also fails.
+
+If there are additional options we should be adding to the command, I&#39;m all ears.
+
+Thanks again,
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385
+</div><script type='text/javascript'>
+        $('#show_925151342').click(function() {
+            $('#detail_925151342').slideDown("normal");
+            $('#show_925151342').hide();
+            $('#hide_925151342').show();
+        });
+        $('#hide_925151342').click(function() {
+            $('#detail_925151342').slideUp();
+            $('#hide_925151342').hide();
+            $('#show_925151342').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33929#1497011530'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-09T12:32:10+00:00">Jun 9, 2017 12:32 PM UTC</time> by <b>sbhat@....</b><a class="anchor" name="1497011530">&nbsp;</a></div><pre>I will be out of the office until Thursday, June 15.  I will respond to your request when I return.
+
+Thanks,
+Shreyas</pre></div><div class='update_description'><i onclick="document.location='33929#1497011450'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-09T12:30:50+00:00">Jun 9, 2017 12:30 PM UTC</time><a class="anchor" name="1497011450">&nbsp;</a></div><pre>Hi Ken,
+
+Are you sure about that?  What&#39;s the precise g-u-c (or gfal-copy) string that is failing?  It&#39;s really easy to invoke it in such a manner that the dCache pool tries to contact the client.
+
+There&#39;s typically never an outgoing firewall at CERN.
+
+Is it a timeout or a ICMP denied?  It is possible there&#39;s a routing misconfiguration at either FNAL or CERN related to LHCONE.  If there is asymmetric routes (i.e., FNAL routes packets via LHCONE but CERN returns them through a different path), then your packets will hit the stateful firewall and get dropped.
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='33929#1496938459'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-08T16:14:19+00:00">Jun 8, 2017 04:14 PM UTC</time><a class="anchor" name="1496938459">&nbsp;</a></div><pre>Hi Brian,
+
+To be clear we don&#39;t need &#34;incoming&#34; connections other than being able get a reply from a connection that we initiate within the job (for example the job may need to pull some input file in from FNAL dCache; that&#39;s all we&#39;re talking about here.)
+
+By default all of the FIFE experiments try to transfer by setting up a connection directly with the pool node to reduce load on the head node and take advantage of the 10 Gb connections. We could set up a special case for the Tier0 within our copying mechanisms, although I&#39;m not sure that would be the best thing to do performance-wise.
+
+Thanks,
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1496894951'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-08T04:09:11+00:00">Jun 8, 2017 04:09 AM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1496894951">&nbsp;</a></div><pre>I will be away from the lab on vacation June 8-11.
+I will have limited access to E-mail, and limited time to respond.
+If there are any issues with FermiCloud or any Grid and Cloud Operations services please open a Service Desk ticket.
+
+Steven Timm</pre></div><div class='update_description'><i onclick="document.location='33929#1496894722'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-08T04:05:22+00:00">Jun 8, 2017 04:05 AM UTC</time><a class="anchor" name="1496894722">&nbsp;</a></div><pre>Hi Ken,
+
+This is likely a configuration issue on the DUNE side.  Firewalls that allow *incoming* connections to worker nodes are exceedingly rare.
+
+Is there any particular reason why DUNE needs to transfer with multiple streams?  They should just set things to the default for the GridFTP client they use and it will avoid the firewall problems.
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='33929#1496854786'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-07T16:59:46+00:00">Jun 7, 2017 04:59 PM UTC</time><a class="anchor" name="1496854786">&nbsp;</a></div><pre>Hi,
+
+To keep everyone in the loop, the jobs are running now, but we&#39;re having trouble copying files to and from Fermilab&#39;s dCache area. It appears to be a firewall issue  on the Tier0 worker nodes where there&#39;s no path directly to the dcache pool nodes; only to the head node. I sent the issue to our network and dCache experts and they replied with&#58;
+
+It appears that connection to fndca4a on port 2811 is allowed, and that it is all.
+
+Can CERN open port range 20000&#58;35000 for 131.225.69 and 131.225.13 subnets (plus port 2811 )
+
+Ben, Steve, who are the right people to contact at CERN to see about opening these ports?
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1496418327'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-02T15:45:27+00:00">Jun 2, 2017 03:45 PM UTC</time><a class="anchor" name="1496418327">&nbsp;</a></div><pre>OK, I see that jobs are starting now. Unfortunately I see that they went held right away with a glexec error. I will make sure that we used the proper credential during submission.
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1496394490'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-02T09:08:10+00:00">Jun 2, 2017 09:08 AM UTC</time> by <b>ben.dylan.jones@....</b><a class="anchor" name="1496394490">&nbsp;</a></div><pre>I&#39;ve whitelisted.
+
+<font color='#7F7E6F'>&#62; On 1 Jun 2017, at 20&#58;11, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='33929#1496340674'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-01T18:11:14+00:00">Jun 1, 2017 06:11 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1496340674">&nbsp;</a></div><pre>The production FE&#39;s cert
+
+/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+
+maps to dune025.
+
+Ben can you please get dune033 and dune025 whitelisted for glexec?  Or is it easier if we just disable glexec for testing.
+
+Steve Timm
+
+________________________________
+From&#58; Steven C Timm
+Sent&#58; Thursday, June 1, 2017 1&#58;04&#58;32 PM
+To&#58; osg@....
+Subject&#58; Re&#58; Open Science Grid&#58; Add support for the DUNE VO on the CERN Tier 0 HTCondor CEs in ITB ISSUE=33929 PROJ=71
+
+We need to whitelist dune033,
+
+a.k.a. /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend_pp/fifebatch.fnal.gov
+
+and whatever pool account the production frontend cert is going to map to.
+
+/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+
+( I can force such a mapping to get the ball rolling, if you want.)
+
+Steve</pre></div><div class='update_description'><i onclick="document.location='33929#1496340317'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-01T18:05:17+00:00">Jun 1, 2017 06:05 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1496340317">&nbsp;</a></div><pre>We need to whitelist dune033,
+
+a.k.a. /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend_pp/fifebatch.fnal.gov
+
+and whatever pool account the production frontend cert is going to map to.
+
+/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+
+( I can force such a mapping to get the ball rolling, if you want.)
+
+Steve</pre></div><div class='update_description'><i onclick="document.location='33929#1496339901'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-01T17:58:21+00:00">Jun 1, 2017 05:58 PM UTC</time><a class="anchor" name="1496339901">&nbsp;</a></div><pre>Hi,
+
+The latest is DUNE appears to be failing glexec at CERN&#58;
+
+Validation failed in main/glexec_setup.sh.
+
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  User dune033 (uid=103800) is not whitelisted, i.e. may not invoke gLExec.
+If this is unexpected, ask the sysadmin to check the syslog and the
+permissions of the config file.
+
+Jeff Dost
+OSG Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='33929#1496332539'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-01T15:55:39+00:00">Jun 1, 2017 03:55 PM UTC</time><a class="anchor" name="1496332539">&nbsp;</a></div><pre>Hi,
+
+Have the log messages changed since Ben did the update? We still aren&#39;t seeing these glideins report back to us.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1496162892'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-30T16:48:12+00:00">May 30, 2017 04:48 PM UTC</time> by <b>ben.dylan.jones@....</b><a class="anchor" name="1496162892">&nbsp;</a></div><pre>Indeed, ce504 runs QA config, the accounting group changes haven&#39;t hit ce503 yet. No reason for it not to though, I&#39;ll update shortly.
+
+On 30 May 2017, at 16&#58;49, Open Science Grid FootPrints &#60;osg@....&#60;mailto&#58;osg@....&#62;&#62; wrote&#58;
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='33929#1496155659'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-30T14:47:39+00:00">May 30, 2017 02:47 PM UTC</time><a class="anchor" name="1496155659">&nbsp;</a></div><pre>Ben--I also note the following from condor_status -submitters
+
+group_u_DUNE.grid_DUNE.dune033@....            ce503.cern.ch                0          1          0
+group_u_NP04.grid_DUNE.dune033@....            ce504.cern.ch                1          0          0
+
+Looks like the accounting groups are not set up quite the same on ce503.cern.ch and ce504.cern.ch
+
+The frontend pilot appears to be running as user dune033.
+
+There is no record of anything from CERN trying to call back to our condor pool in any of our logs.
+Will need help from factory team to look at logs of this pilot when it exits, which I suspect it will in a few minutes.
+
+Cern ce504.cern.ch cluster id 7077213, htcondor-ce queue id 3044248
+
+schedd_glideins1@.... -proxy None -factory ITBGOC -web <a href='http&#58;//glidein-itb.grid.iu.edu/factory/stage' target='_blank' rel='nofollow'>http&#58;//glidein-itb.grid.iu.edu/factory/stage</a> -sign 59211c066f05af8a3d7e5ae3433730dfd7498ab5 -signentry 3650b8ccbdf0f915a00f02f0e4f1ea4772f6bc93 -signtype sha1 -descript description.h5qkJO.cfg -descriptentry description.h5qkJO.cfg -dir Condor -param_GLIDEIN_Client FIFE-ITB-FNAL-GWMSFrontend.OSG_dune -submitcredid 346168 -slotslayout fixed -clientweb <a href='http&#58;//fifefeitbgpvm01.fnal.gov&#58;8319/vofrontend/stage' target='_blank' rel='nofollow'>http&#58;//fifefeitbgpvm01.fnal.gov&#58;8319/vofrontend/stage</a> -clientsign 0bb32503e6c3115efc515f9abe79f0d0b1d1f533 -clientsigntype sha1 -clientdescript description.h52bwj.cfg -clientgroup OSG_dune -clientwebgroup <a href='http&#58;//fifefeitbgpvm01.fnal.gov&#58;8319/vofrontend/stage/group_OSG_dune' target='_blank' rel='nofollow'>http&#58;//fifefeitbgpvm01.fnal.gov&#58;8319/vofrontend/stage/group_OSG_dune</a> -clientsigngroup 2513f8b5adc4558dc957380a6f6d1bb1e0f005b4 -clientdescriptgroup description.h52bwj.cfg -param_CONDOR_VERSION 8.dot,4.dot,2 -param_GLIDEIN_Glexec_Use NEVER -param_GLIDEIN_Job_Max_Time 34800 -param_GLIDECLIENT_ReqNode glidein.minus,itb.dot,grid.dot,iu.dot,edu -param_GLIDECLIENT_Rank 1 -param_GLIDEIN_Report_Failed NEVER -param_GLIDEIN_Monitoring_Enabled False -param_HAS_USAGE_MODEL OFFSITE -param_USE_CCB True -param_CONDOR_ARCH default -param_USE_MATCH_AUTH True -param_CONDOR_OS default -param_GLIDEIN_Collector fifeucitbgpvm01.dot,fnal.dot,gov.colon,9620.minus,9660.semicolon,fifeucitbgpvm02.dot,fnal.dot,gov.colon,9620.minus,9660 -cluster 356216 -subcluster 0&#34;
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='33929#1496154235'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-30T14:23:55+00:00">May 30, 2017 02:23 PM UTC</time><a class="anchor" name="1496154235">&nbsp;</a></div><pre>According to factory monitoring it appears that 3 glide ins ran at cern at 00&#58;00 May 30 in some time zone, and one is now pending.
+There is no indication however that any of our user jobs matched to such glide ins and they appeared to exit very quickly, within a few minutes.
+Any idea what happened?
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='33929#1496068689'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-29T14:38:09+00:00">May 29, 2017 02:38 PM UTC</time> by <b>ben.dylan.jones@....</b><a class="anchor" name="1496068689">&nbsp;</a></div><pre>The role=Pilot wouldn&#39;t match currently. I&#39;ll update the grid-mapfile, hang on.
+
+<font color='#7F7E6F'>&#62; On 26 May 2017, at 22&#58;50, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='33929#1495831810'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-26T20:50:10+00:00">May 26, 2017 08:50 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1495831810">&nbsp;</a></div><pre>Those are errors like I was first getting when I was testing grid universe submits to those ce&#39;s from
+
+a regular schedd.  But I tried again to do the same thing from my personal account and my personall schedd
+
+and it worked with both of those machines (ce503.cern.ch and ce504.cern.ch) .  I would suggest contacting CERN  (They are copied on this ticket already) and have them look to see what is in their AuditLog
+
+for the timestamps in question.)
+
+Steve Timm</pre></div><div class='update_description'><i onclick="document.location='33929#1495831315'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-26T20:41:55+00:00">May 26, 2017 08:41 PM UTC</time><a class="anchor" name="1495831315">&nbsp;</a></div><pre>Hi Steve,
+
+I took a quick look and here held reasons&#58;
+-- Schedd&#58; schedd_glideins4@.... &#58; &#60;129.79.53.24&#58;38306?...
+ID        OWNER          HELD_SINCE  HOLD_REASON
+331930.0   fefermifife     5/26 20&#58;34 Error connecting to schedd ce503.cern.ch&#58; SECMAN&#58;2007&#58;Failed to received post-auth ClassAd|AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+331933.0   fefermifife     5/26 20&#58;34 Error connecting to schedd ce503.cern.ch&#58; SECMAN&#58;2007&#58;Failed to received post-auth ClassAd|AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+331936.0   fefermifife     5/26 20&#58;21 Error connecting to schedd ce503.cern.ch&#58; SECMAN&#58;2007&#58;Failed to received post-auth ClassAd|AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+
+The proxy used is&#58;
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend_pp/fifebatch.fnal.gov/CN=544675643
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend_pp/fifebatch.fnal.gov
+identity  &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend_pp/fifebatch.fnal.gov
+type      &#58; RFC compliant proxy
+strength  &#58; 1024 bits
+path      &#58; /var/lib/gwms-factory/client-proxies/user_fefermifife/glidein_gfactory_instance/credential_FIFE-ITB-FNAL-GWMSFrontend.OSG_dune_346168
+timeleft  &#58; 266&#58;43&#58;39
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO dune extension information ===
+VO        &#58; dune
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend_pp/fifebatch.fnal.gov
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms2.fnal.gov
+attribute &#58; /dune/Role=pilot/Capability=NULL
+attribute &#58; /dune/Role=NULL/Capability=NULL
+timeleft  &#58; 22&#58;43&#58;39
+uri       &#58; voms2.fnal.gov&#58;15042
+
+-Marian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=zvada/CN=684832/CN=Marian Zvada</pre></div><div class='update_description'><i onclick="document.location='33929#1495829368'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-26T20:09:28+00:00">May 26, 2017 08:09 PM UTC</time><a class="anchor" name="1495829368">&nbsp;</a></div><pre>Do we have available to us what the hold message was in the factory?  There don&#39;t appear to be any glideins held in the condor-ce queue at CERN.
+Do we know what proxy the factory is using, and with what Role?
+If we can get a timestamp then maybe they can look on the CERN end, then again maybe this is something to pursue after the holiday weekend which I believe both ends of the pond have off.
+
+Steve
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33929#1495749400'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T21:56:40+00:00">May 25, 2017 09:56 PM UTC</time><a class="anchor" name="1495749400">&nbsp;</a></div><pre>Dear ops,
+
+It looks like we did get some glideins through to CERN, but they went held right away.
+
+<a href='http&#58;//glidein-itb.grid.iu.edu/factory/monitor/factoryStatus.html?entry=CMSHTPC_T2_CH_CERN_ce503&frontend=FIFE-ITB-FNAL_frontend&infoGroup=other&elements=StatusHeld' target='_blank' rel='nofollow'>http&#58;//glidein-itb.grid.iu.edu/factory/monitor/factoryStatus.html?entry=CMSHTPC_T2_CH_CERN_ce503&frontend=FIFE-ITB-FNAL_frontend&infoGroup=other&elements=StatusHeld</a>,&rra=0&window_min=0&window_max=0&timezone=-5
+
+Would you please check the logs and tell us what the exact issue is? We think it&#39;s some authentication problem with the pilot but the logs would say for sure.
+
+Thanks a lot,
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1495653934'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-24T19:25:34+00:00">May 24, 2017 07:25 PM UTC</time><a class="anchor" name="1495653934">&nbsp;</a></div><pre>OK, thanks. We&#39;re doing the rest of the work on our frontend now. I&#39;ve added Ben Jones from CERN to the ticket as well.
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='33929#1495653861'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-24T19:24:21+00:00">May 24, 2017 07:24 PM UTC</time><a class="anchor" name="1495653861">&nbsp;</a></div><pre>Hi.
+
+We had added DUNE to supported VO&#39;s in two entries CMSHTPC_T2_CH_CERN_ce503/04 in ITB, and reconfigured ITB.
+
+If these work first on the CE&#39;s we already have, we will new entries as suggested. Let us know.
+
+Thanks
+VG
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=VAIBHAV GUPTA 4273</pre></div><div class='update_description'><i onclick="document.location='33929#1495651736'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-24T18:48:56+00:00">May 24, 2017 06:48 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1495651736">&nbsp;</a></div><pre>Hi,
+
+DUNE has just been granted access for job submission on the CERN Tier 0. The jobs should only be submitted to the HTCondor CEs though, not the OpenStack resources like CMS. Those CEs are
+
+condorce01.cern.ch
+ce503.cern.ch
+ce504.cern.ch
+ce505.cern.ch
+ce506.cern.ch
+
+If we look at the existing factory entries we see that ce503 and ce504 are already there&#58;
+
+condor_status -any -pool glidein-itb.grid.iu.edu -constraint &#39;glideinmytype==&#34;glidefactory&#34;&#39; -af GLIDEIN_Site GLIDEIN_ResourceNAme EntryName GLIDEIN_Gatekeeper GLIDEIN_Supported_VOs | grep ce5[0-9][0-9].cern
+CERN CERN-PROD CMSHTPC_T2_CH_CERN_ce504 ce504.cern.ch ce504.cern.ch&#58;9619 CMS
+CERN CERN-PROD CMSHTPC_T2_CH_CERN_ce503 ce503.cern.ch ce503.cern.ch&#58;9619 CMS
+
+So for those two It should only be a matter of adding DUNE to the supported VOs. For the other three that are not yet included, we can just make the additional entries, following the same pattern as these two. Of course, let&#39;s make the changes only in ITB for now. Once they&#39;re done, I&#39;ll fire off some test jobs. The workers already have all necessary CVMFS repositories available and accept the CILogon certs.
+
+Thanks,
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F33929">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 33929});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

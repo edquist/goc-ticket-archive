@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[8565] OSG Storage&#58; dCache&#58; 1.9.5-15 Reconfiguration of Pool/Link</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=8565" method="post">
+<div class="page-header">
+    <h3><span class="muted">8565</span> / OSG Storage&#58; dCache&#58; 1.9.5-15 Reconfiguration of Pool/Link</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Shawn Mckee</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">1970-01-01</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Neha Sharma <span class="muted"> / OSG Storage Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=8565", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/8565?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/8565?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20OSG%20Storage%26%2358%3B%20dCache%26%2358%3B%201.9.5-15%20Reconfiguration%20of%20Pool%2FLink%20ISSUE%3D8565%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='8565#1273690609'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-05-12T18:56:49+00:00">May 12, 2010 06:56 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1273690609">&nbsp;</a></div><pre>Hi Pedro,
+
+Thanks for the detailed instructions.
+
+Yes we are trying to merge all the sGroup tags into the new one (aglt2).  (You had &#39;atlas&#39; below).
+
+We don&#39;t have restrictions on the links as you noted...they are very &#34;open&#34;.
+
+I did a quick test and I believe the &#39;(tag)(sGroup)&#39; is actually only set on the &#34;top&#34; directory and the ones below it inherit the settings.
+
+(I did a quick echo &#34;newtag&#34; &#62; &#39;.(tag)(sGroup)&#39; in a directory, cd down, cat the sGroup and it showed &#39;newtag&#39;)
+
+So I believe I have only about 8 tags to change (1/space-token; the top ones).
+
+The new procedure you outline below sounds like a good one and we will use it.
+
+FYI, for managing our HOTDISK replicas we have a service called &#39;RepHot&#39; which scans the system for hot files every 10 minutes and makes any need
+replicas and removes &#34;cold&#34; replicas.
+
+About the monitoring...yes we will need to update our scripts to work off the SRM info as opposed to the disk info after the change.   Otherwise, as
+you note, we may overrun our storage without warning!
+
+Thanks again,
+
+Shawn
+
+-----Original Message-----
+From&#58; Pedro Emanuel de Castro Faria Salgado [mailto&#58;psalgado@....]
+Sent&#58; Wednesday, May 12, 2010 11&#58;24 AM
+To&#58; McKee, Shawn
+Cc&#58; Sergey Kalinin; OSG STORAGE; user-forum@....; aglt2-admin@....; Hironori Ito; Ernst, Michael; MWT2; Kaushik De
+Subject&#58; Re&#58; Reconfiguration of Pool/Link organization in dCache 1.9.5-15
+
+On May 12, 2010, at 10&#58;10 AM, McKee, Shawn wrote&#58;
+
+<div id='show_864845414' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_864845414'>Pedro,
+
+Many thanks for the detailed response.  I very much like your incremental approach.  It sounds like we could do this &#34;online&#34; and that by moving the
+existing links as a first step we would address the existing SRM space issue...very nice.
+
+One question&#58;  When do we change the (tag)(sGroup) for the top level directories in your sequence?  (At the point where we remove the old/unused
+pool groups?)
+
+hmm... I missed that point.
+let me see... from your config, you want to maintain the OSMTemplate (usatlas) but  want to merge all sGroup into a single one (atlas), correct?
+
+# psu create unit -store  usatlas&#58;atlas@osm (not needed to execute since it already exists)
+# psu create link aglt2-link world-net any-protocol any-store (this one below should be generic enough and it should work even with the any space
+token sGroup name)
+
+if the link above is really generic, meaning it will read from &#39;any-store&#39; (OSMTemplate&#58;sGroup) then it shouldn&#39;t make a difference when you change
+this tag, no? [I&#39;m not 100% sure here]
+what seems to be a restrictions is the fact that you can only remove the old sGroups from your PoolManager.conf only when you managed to replace
+this tag on ***all files and directories*** of your space token directory of the namespace...
+the consequence seems to be that if you delete the unit/ugroup/links for this particular sGroup you&#39;re basically making the data unreachable?
+
+since I&#39;m not comfortable with this part, I would say that when you arrive at stable.2 to check the following procedure...
+
+- create a /pnfs/.../CALIBDISK/mydirectory (I&#39;m assuming the sGroup tag of CALIBDISK disk is the &#39;acal&#39; one)
+- change the sGroup of that mydirectory to the new unified &#39;atlas&#39;
+- copy a file to that directory (using lcg-cp or gsidcap)
+- succeeds?
+- [yes]
+- check the sGroup tags of the file
+- is it the new unified &#39;atlas&#39;? [yes] new tag is effectively inherited
+- can you read the file back? (using dccp and lcg-cp)
+
+if everything goes well, then I believe that you can safely change all sGroup tags of all files and directories/sub-directories under
+/pnfs/.../CALIBDISK/etc.
+you&#39;ll have to do this in a top-bottom approach in order not to miss anything (unless in Chimera there is a more easy way to do this).
+
+only after this you can safely remove all the links that use that obsolete &#39;sGroup&#39; and their corresponding ugroup and unit from the PoolManager.
+(this may seem a bit of paranoia but I tend to be very very careful in certain parts of the dcache configuration)
+
+if you really just to want to manage one set of pool groups then I believe the steps up to stable.2 seem to be enough&#58; one big shared storage for all of
+the space token areas.
+it&#39;s true that you&#39;ll have some extra links, units and ugroups but the goal seems to be achieved?
+
+Pedro
+PS&#58; just for curiosity, how do you manage the number of replicas on your HOTDISK area? do you use resilient dcache?
+maybe you&#39;ll want to have this area in a separate pool group as well? we prefer to know where the multiple replicas reside therefore we have only 1 pool
+per server that can contain this data.
+if you have multiple pools per server and all as a big space-token shared storage I believe you may end up with replicas on the same server which
+won&#39;t be optimal to spread the reads.
+at bnl, we have a separate pool group with one hotdisk reserved 200GB pool per server to have 100% guarantee that the 2nd/3rd/... replicas of the
+files are all on different servers.
+
+PS2&#58; you really have to have some alarms for the space token info on the postgresql database before you merge the storage or else you&#39;ll not be able
+to know when you&#39;re running out of space beforehand!
+we have a python package using psycopg2 that read this info from the srm database. we can send you if you want to have a look how we get this info.
+
+We are working out the details of how to do this including things like an initial DB backup before changes take place to setup the baseline we could
+revert to if something really bad happened.
+
+The suggestion about adding the read link is good and I will put that into the plan.
+
+Thanks again,
+
+Shawn
+
+-----Original Message-----
+From&#58; Pedro Emanuel de Castro Faria Salgado [mailto&#58;pedro.salgado@....]
+Sent&#58; Wednesday, May 12, 2010 9&#58;51 AM
+To&#58; McKee, Shawn
+Cc&#58; Sergey Kalinin; OSG STORAGE; user-forum@....; aglt2-admin@....; Hironori Ito; Ernst, Michael; MWT2; Kaushik De
+Subject&#58; Re&#58; Reconfiguration of Pool/Link organization in dCache 1.9.5-15
+
+Shawn,
+
+I&#39;ve checked your file and it seems that your approach should work.
+I would make it more of an incremental changes though.
+example, what about creating the new pool groups first and move your current configuration to it directly using the PoolManager cell on the admin
+console?
+
+login to admin console
+cd PoolManager
+save -file=/tmp/PoolManager.conf.stable
+# this will be your backup
+
+# keep your current unit, ugroup as they are, don&#39;t add anything yet.
+# create the new pool groups you want
+
+psu create pgroup aglt2Pools
+(...)
+
+psu create pgroup notokPools
+(...)
+
+psu create pgroup testPools
+(...)
+
+# now for the links don&#39;t remove anything yet, just make them point to the new pool groups
+# do this one at a time and always trying to read a file from that storage class from the worker nodes everytime you make a change
+
+psu create link acal-link world-net any-protocol acal
+psu set link acal-link -readpref=10 -writepref=10 -cachepref=10 -p2ppref=-1
+psu add link acal-link aglt2Pools
+
+# change, test, next/rollback, change, test, next/rollback, ...
+
+if this works then you already have only one pool group being used on all links.
+you can then remove all unnecessary pool groups and save the config again.
+
+save -file=/tmp/PoolManager.conf.stable.2
+
+the next step would be to create the new unit, ugroup, create the new links and change the linkgroups using the PoolManager cell in the admin
+console.
+do one linkGroup at a time, check if srm transfers continue to succeed, rollback or move to the next.
+
+if everything works well you can just execute the remove commands for all obsolete info...
+
+psu remove ugroup &#60;uGroup&#62;
+psu remove pool &#60;pool&#62;
+psu remove link &#60;link&#62;
+psu remove unit &#60;unit&#62; [-net]
+psu remove linkGroup &#60;linkGroup&#62;
+psu remove linkGroup attribute &#60;linkGroup&#62; attribute=value
+
+if you ever want to go back as you were before just do
+
+PoolManager &#62; reload -yes
+
+it will bring you to the very first working configuration.
+if you want to move the second stable config
+
+cp /tmp/PoolManager.conf.stable.2 /opt/d-cache/config/PoolManager.conf
+login to admin console
+cd PoolManager
+reload -yes
+
+it may seem a more manual process but it&#39;s incremental and if done with small changes at a time the risk of complete disruption is minimal.
+
+Pedro
+PS&#58; I would have one major read link for all space token areas separate from the write link since, sometimes, you may want to phaseout nodes and
+moving them to a read link will make your life easier (at least that&#39;s how we do it).
+
+On May 12, 2010, at 8&#58;42 AM, McKee, Shawn wrote&#58;
+
+Thanks Sergey!
+
+I forgot to mention that we are on a short timescale to implement this reconfiguration (primarily to allow us to utilize our space more effectively to
+host incoming ATLAS data).  We would need something achievable on the timescale of a few days (but without being down for a few days!)
+
+We have 71 pools varying in size from 9TB to 24TB and over 5 million files.   The migration method you propose would take us weeks to implement
+(we have about 1 Petabyte of space of which 80% is used).
+
+I was hoping that we didn&#39;t need to involve the pool nodes (or data on them) in the process at all!
+
+Thanks,
+
+Shawn
+
+-----Original Message-----
+From&#58; Sergey Kalinin [mailto&#58;skalinin@....]
+Sent&#58; Wednesday, May 12, 2010 8&#58;37 AM
+To&#58; McKee, Shawn
+Cc&#58; OSG STORAGE; user-forum@....; aglt2-admin@....; Pedro Emanuel de Castro Faria Salgado; Hironori Ito; Ernst, Michael; MWT2;
+Kaushik De
+Subject&#58; Re&#58; Reconfiguration of Pool/Link organization in dCache 1.9.5-15
+
+Hi Shawn,
+
+if I understood you correctly, you can do it nearly online(depends
+upon how complicated is your setup). What you have to do is something
+like that&#58;
+
+1. Make one of your big pools rdonly.
+2. Replicate all the data on it to other pools with, for example, &#39;pp
+get file pnfsid poolname&#39;.
+3. Unregister the pool with the data and delete all the data on it.
+4. Create a new pool group, link group and so on.
+5. Put this new empty pool into the new pool group.
+6. Take another pool and repeat the above.
+
+After that you can update the space reservations even without SQL
+statements.
+
+Best regards,
+Sergey
+
+On May 12, 2010, at 2&#58;13 PM, McKee, Shawn wrote&#58;
+
+Hi Everyone,
+
+We are interested in &#34;simplifying&#34; our dCache configuration at AGLT2
+but want to do this with the least possible downtime.  We are
+currently running dCache 1.9.5-15/x86_64 with JDK 1.6.0_20 and using
+the Chimera namespace.  We have two dCache headnodes, one for the
+Chimera namespace and one for everything else.
+
+Our current configuration has setup a number of pool groups for
+different space-token areas used by ATLAS at our site.  This is
+proving cumbersome to manage our space as data flows to different
+space-tokens at varying rates.
+
+Rather than having &#34;hard&#34; constraints on each space-token area it
+would be much nicer to utilize all of our pools in a single much
+larger pool group and then use SRM space tokens to manage the amount
+allotted to each area.
+
+I am attaching two PoolManager.conf files (the current one and a
+proposed &#34;new&#34; version).
+
+My question is about the difficulty of making such a transition and
+minimizing downtime for our site.
+
+I imagine the following sequence to achieve the transition to the
+new configuration&#58;
+
+1) Shut-down dCache services on the non-Chimera headnode
+2) Swap the PoolManager.conf for the new one
+3) Restart the dCache services on the headnode to implement the new
+configuration
+4) Determine the linkgroup ID for the new inclusive linkgroup
+5) Migrate the existing space-token reservations to be associated
+with the new linkgroup
+(This means some SQL &#34;set&#34; statements to take reconnect existing
+reservations to  the new linkgroup)
+6) Update the (sGroup) tags in all our top-level Chimera/pnfs
+directories to utilize the new linkgroups
+(This means mounting the localhost&#58;/ on /mnt and doing &#39;echo
+&#34;newgroup&#34; &#62; &#39;/path/to/dir/.(tag)(sGroup)&#39; &#39; for each directory
+currently in other pool groups)
+
+So given this rough plan does anyone have suggestions, comments or
+warnings about doing this?   What is missed in the above steps?
+Suggestions for how to keep the system out of production (readonly)
+while making the needed changes?
+
+All suggestions would be very welcome.  Thanks,
+
+Shawn
+
+&#60;PoolManager.conf&#62;&#60;PoolManager.conf.new&#62;
+</div><script type='text/javascript'>
+        $('#show_864845414').click(function() {
+            $('#detail_864845414').slideDown("normal");
+            $('#show_864845414').hide();
+            $('#hide_864845414').show();
+        });
+        $('#hide_864845414').click(function() {
+            $('#detail_864845414').slideUp();
+            $('#hide_864845414').hide();
+            $('#show_864845414').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F8565">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 8565});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[21722] problem with osg 3.2.12 -- rsv is broken</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=21722" method="post">
+<div class="page-header">
+    <h3><span class="muted">21722</span> / problem with osg 3.2.12 -- rsv is broken</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Bob Ball</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Bob Ball</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Close ticket</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-07-11</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=21722", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/21722?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/21722?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20problem%20with%20osg%203.2.12%20--%20rsv%20is%20broken%20ISSUE%3D21722%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='21722#1405112894'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T21:08:14+00:00">Jul 11, 2014 09:08 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1405112894">&nbsp;</a></div><pre>Actually, I went WAY back, and I did not lose anything.  It just seems
+that the behavior changed in some way I don&#39;t understand.  In any case,
+it is now working, with the addition of setting the service_proxy value.
+
+bob
+
+On 7/11/2014 4&#58;56 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21722#1405112180'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T20:56:20+00:00">Jul 11, 2014 08:56 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1405112180">&nbsp;</a></div><pre>Well, dang.  I lost a setting in 30-rsv.ini and I don&#39;t know how. Or,
+maybe I have an idea.  Sometimes you feel like a fool, and sometimes you
+don&#39;t.
+
+In any case, that was the key, and now rsv is happy again.  I&#39;ll have to
+track down what happened here, and correct the issue.
+
+Thanks, everyone.  This ticket can be closed.
+
+bob
+
+On 7/11/2014 4&#58;23 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21722#1405110199'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T20:23:19+00:00">Jul 11, 2014 08:23 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1405110199">&nbsp;</a></div><pre>Well, this is as strange as it gets, that suddenly the rsv is failing.
+This is what /var/log/messages shows from that same PID 710444&#58;
+
+2014-07-11T14&#58;37&#58;00-04&#58;00 gate03.aglt2.org GRAM-gatekeeper[710444]&#58; Got
+connection &#58;&#58;ffff&#58;192.41.231.35 at Fri Jul 11 14&#58;37&#58;00 2014
+2014-07-11T14&#58;37&#58;00-04&#58;00 gate03.aglt2.org GRAM-gatekeeper[710444]&#58;
+Authenticated globus user&#58; /DC=com/DC=DigiCert-Grid/O=Open Science
+Grid/OU=Services/CN=http-gate03.aglt2.org
+2014-07-11T14&#58;37&#58;00-04&#58;00 gate03.aglt2.org GRAM-gatekeeper-llgt[710444]&#58;
+lcmaps&#58;
+/etc/lcmaps.db&#58;162&#58; [warning] expecting rule definitions.
+2014-07-11T14&#58;37&#58;00-04&#58;00 gate03.aglt2.org GRAM-gatekeeper-llgt[710444]&#58;
+lcmaps&#58;
+/etc/lcmaps.db&#58;162&#58; [warning] no rules specified for policy&#58; &#39;glexec&#39;
+at line 145.
+*2014-07-11T14&#58;37&#58;01-04&#58;00 gate03.aglt2.org
+GRAM-gatekeeper-llgt[710444]&#58; lcmaps&#58;**
+** lcmaps_plugin_scas_client-plugin_run()&#58; User
+&#34;/DC=com/DC=DigiCert-Grid/O=Open Science
+Grid/OU=Services/CN=http-gate03.aglt2.org&#34; with first FQAN &#34;&#34; Banned at
+endpoint
+&#34;<a href='https&#58;//linat03.grid.umich.edu&#58;8443/gums/services/GUMSXACMLAuthorizationServicePort&#34' target='_blank' rel='nofollow'>https&#58;//linat03.grid.umich.edu&#58;8443/gums/services/GUMSXACMLAuthorizationServicePort&#34</a>;*
+2014-07-11T14&#58;37&#58;01-04&#58;00 gate03.aglt2.org GRAM-gatekeeper-llgt[710444]&#58;
+Warning&#58; failed mapping. LCMAPS returned&#58; 1
+2014-07-11T14&#58;37&#58;01-04&#58;00 gate03.aglt2.org GRAM-gatekeeper-llgt[710444]&#58;
+Execution of LCMAPS failed.
+2014-07-11T14&#58;37&#58;01-04&#58;00 gate03.aglt2.org GRAM-gatekeeper-llgt[710444]&#58;
+globus_gss_assist_gridmap() failed authorization. globus_gss_assist&#58;
+Error invoking callout
+2014-07-11T14&#58;37&#58;01-04&#58;00 gate03.aglt2.org globus_callout_module&#58; The
+callout returned an error
+
+I&#39;ll try a few more tests and see what I can see locally via globusrun,
+and via our GUMS server.  But, like I&#39;ve said, why is this suddenly
+failing?  The rsvcert is a copy of the httpcert, so that much, at least,
+<div id='show_589102173' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_589102173'>makes sense.
+
+No, I take it back, this does not make sense, as rsv (seen correctly on
+our main gatekeeper gate04) was set up to use my cert, not this rsv
+service cert.  I need to go back and check some config files for this.
+More shortly (returning now from a meeting to my office).
+
+bob
+
+On 7/11/2014 3&#58;42 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_589102173').click(function() {
+            $('#detail_589102173').slideDown("normal");
+            $('#show_589102173').hide();
+            $('#hide_589102173').show();
+        });
+        $('#hide_589102173').click(function() {
+            $('#detail_589102173').slideUp();
+            $('#hide_589102173').hide();
+            $('#show_589102173').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='21722#1405107721'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T19:42:01+00:00">Jul 11, 2014 07:42 PM UTC</time><a class="anchor" name="1405107721">&nbsp;</a></div><pre>Hi Bob,
+
+Here&#39;s the relevant message from Globus&#58;
+
+PID&#58; 710444 -- Notice&#58; 5&#58; Authenticated globus user&#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=http-gate03.aglt2.org
+TIME&#58; Fri Jul 11 14&#58;37&#58;00 2014
+PID&#58; 710444 -- Notice&#58; 0&#58; GATEKEEPER_JM_ID 2014-07-11.14&#58;37&#58;00.0000001473.0000003437 for /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=http-gate03.aglt2.org on &#58;&#58;ffff&#58;192.41.231.35
+Failure&#58; globus_gss_assist_gridmap() failed authorization. globus_gss_assist&#58; Error invoking callout
+globus_callout_module&#58; The callout returned an error
+an unknown error occurred
+
+Well, that&#39;s no use.  Unfortunately, the callout logs to /var/log/messages (which isn&#39;t part of the system profiler).  Can you please look there for relevant snippets after a failure?
+
+Brian
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='21722#1405104614'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T18:50:14+00:00">Jul 11, 2014 06:50 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1405104614">&nbsp;</a></div><pre>osg-profile.txt is now uploaded to the ticket.
+
+bob
+
+On 7/11/2014 2&#58;25 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21722#1405103144'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T18:25:44+00:00">Jul 11, 2014 06:25 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1405103144">&nbsp;</a></div><pre>Bob, can you attach the osg-system-profiler output?
+-Mat</pre></div><div class='update_description'><i onclick="document.location='21722#1405099976'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T17:32:56+00:00">Jul 11, 2014 05:32 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1405099976">&nbsp;</a></div><pre>Added Mat since he has more experience with the rsv tests on a htcondor-ce gatekeeper.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='21722#1405083189'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T12:53:09+00:00">Jul 11, 2014 12:53 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1405083189">&nbsp;</a></div><pre>Hi.  Is this reproducible, or am I just all wet somehow?
+
+bob
+
+On 7/9/2014 1&#58;54 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21722#1404928453'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T17:54:13+00:00">Jul 9, 2014 05:54 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1404928453">&nbsp;</a></div><pre>I should clarify the full sequence of updates
+update to osg 3.2.11
+install, but not enable or modify, htcondor-ce-condor
+update to osg 3.2.12
+osg-configure
+
+rsv fails starting here.
+
+bob
+
+On 7/9/2014 1&#58;39 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21722#1404927550'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T17:39:10+00:00">Jul 9, 2014 05:39 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1404927550">&nbsp;</a></div><pre>I may not have run osg-configure after the update to 3.2.11 last week.
+That was an update from version 3.2.10.  I have installed, but not yet
+configured, htcondor-ce-condor
+
+bob
+
+On 7/9/2014 1&#58;15 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21722#1404926113'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T17:15:13+00:00">Jul 9, 2014 05:15 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1404926113">&nbsp;</a></div><pre>I had just run this one&#58; &#58;-)
+
+[root@gate03 rsv]# rsv-control --run --gk-type gram --verbose 3 --host
+gate03.aglt2.org org.osg.globus.gram-authentication
+INFO&#58; Reading configuration file /etc/rsv/rsv.conf
+INFO&#58; Reading configuration file /etc/rsv/consumers.conf
+INFO&#58; Validating configuration&#58;
+INFO&#58; Validating user&#58;
+INFO&#58;     Invoked as root.  Switching to &#39;rsv&#39; user (uid&#58; 305 - gid&#58; 306)
+INFO&#58; Registered consumers&#58; html-consumer
+INFO&#58; Loading config file
+&#39;/etc/rsv/meta/metrics/org.osg.globus.gram-authentication.meta&#39;
+INFO&#58; Loading config file
+&#39;/etc/rsv/metrics/org.osg.globus.gram-authentication.conf&#39;
+INFO&#58; Loading config file
+&#39;/etc/rsv/metrics/gate03.aglt2.org/allmetrics.conf&#39;
+DEBUG&#58; Setting option &#39;ce-type&#39; for section
+&#39;org.osg.globus.gram-authentication&#39; to &#39;gram&#39; (from allmetrics section)
+INFO&#58; Optional config file
+&#39;/etc/rsv/metrics/gate03.aglt2.org/org.osg.globus.gram-authentication.conf&#39;
+does not exist
+INFO&#58; Checking proxy&#58;
+INFO&#58;     Using service certificate proxy
+INFO&#58; Running command with timeout (720 seconds)&#58;
+/usr/bin/openssl x509 -in /tmp/rsvproxy -noout -enddate
+-checkend 21600
+INFO&#58; Exit code of job&#58; 0
+INFO&#58;     Service certificate valid for at least 6 hours.
+DEBUG&#58; metric.config_getboolean - no key &#39;no-ping&#39;
+INFO&#58; Pinging host gate03.aglt2.org&#58;
+INFO&#58; Running command with timeout (720 seconds)&#58;
+/bin/ping -W 3 -c 1 gate03.aglt2.org
+INFO&#58; Exit code of job&#58; 0
+INFO&#58;     Ping successful
+
+<div id='show_1255313970' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1255313970'>Running metric org.osg.globus.gram-authentication&#58;
+
+INFO&#58; Executing job locally
+INFO&#58; Forming arguments&#58;
+INFO&#58;     Arguments&#58; &#39;[]&#39;
+INFO&#58; Setting up job environment&#58;
+INFO&#58;     Var&#58; &#39;PERL5LIB&#39; Action&#58; &#39;PREPEND&#39; Value&#58; &#39;/usr/libexec/rsv/probes&#39;
+DEBUG&#58;         New value of PERL5LIB&#58;
+/usr/libexec/rsv/probes
+INFO&#58; Running command with timeout (720 seconds)&#58;
+/usr/libexec/rsv/metrics/org.osg.globus.gram-authentication -m
+org.osg.globus.gram-authentication -u gate03.aglt2.org
+INFO&#58; Exit code of job&#58; 0
+DEBUG&#58; In brief_result()
+INFO&#58; Trimming data to 10000 bytes because details-data-trim-length is set
+DEBUG&#58; STDERR from metric&#58;
+
+INFO&#58; Result&#58;
+
+metricName&#58; org.osg.globus.gram-authentication
+metricType&#58; status
+timestamp&#58; 2014-07-09 13&#58;09&#58;22 EDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-GRAM-CE
+serviceURI&#58; gate03.aglt2.org
+gatheredAt&#58; gate03.aglt2.org
+summaryData&#58; CRITICAL
+detailsData&#58; Output from globusrun -a -r &#39;gate03.aglt2.org&#39;
+
+GRAM Authentication test failure&#58; authentication with the remote server
+failed
+
+EOT
+
+DEBUG&#58; Validating directory &#39;/var/spool/rsv/html-consumer&#39;
+DEBUG&#58;     Directory &#39;/var/spool/rsv/html-consumer&#39; already exists
+DEBUG&#58;     Directory &#39;/var/spool/rsv/html-consumer&#39; is writable
+INFO&#58; Creating record for html-consumer consumer at
+&#39;/var/spool/rsv/html-consumer/org.osg.globus.gram-authentication.6iv2u3&#39;
+
+bob
+
+On 7/9/2014 1&#58;10 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1255313970').click(function() {
+            $('#detail_1255313970').slideDown("normal");
+            $('#show_1255313970').hide();
+            $('#hide_1255313970').show();
+        });
+        $('#hide_1255313970').click(function() {
+            $('#detail_1255313970').slideUp();
+            $('#hide_1255313970').hide();
+            $('#show_1255313970').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='21722#1404925820'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T17:10:20+00:00">Jul 9, 2014 05:10 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1404925820">&nbsp;</a></div><pre>This will provide more information&#58;
+
+rsv-control --run --verbose 3 --host ....
+
+The output will be useful to you and us, if you could send it along we&#39;d appreciate it.
+
+S</pre></div><div class='update_description'><i onclick="document.location='21722#1404925226'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T17:00:26+00:00">Jul 9, 2014 05:00 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1404925226">&nbsp;</a></div><pre>I think this is a serious issue as others may also update soon to this
+just-released version, and so I request a fast reply.  Note that 3.2.11
+did NOT present this problem.
+
+bob
+
+On 7/9/2014 12&#58;40 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21722#1404924045'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T16:40:45+00:00">Jul 9, 2014 04:40 PM UTC</time> by <b>echism</b><a class="anchor" name="1404924045">&nbsp;</a></div><pre>I just updated to osg 3.2.12, from 3.2.11
+yum --enablerepo=osg update
+
+Now, rsv is broken.  For example&#58;
+
+[root@gate03 ~]# rsv-control --run --host gate03.aglt2.org org.osg.globus.gram-authentication
+
+Running metric org.osg.globus.gram-authentication&#58;
+
+metricName&#58; org.osg.globus.gram-authentication
+metricType&#58; status
+timestamp&#58; 2014-07-09 12&#58;19&#58;24 EDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-GRAM-CE
+serviceURI&#58; gate03.aglt2.org
+gatheredAt&#58; gate03.aglt2.org
+summaryData&#58; CRITICAL
+detailsData&#58; Output from globusrun -a -r &#39;gate03.aglt2.org&#39;
+
+GRAM Authentication test failure&#58; authentication with the remote server failed
+
+EOT
+
+A similar result ensues from rsv-control&#58;
+[root@gate03 ~]# globusrun -a -r &#39;gate03.aglt2.org&#39;
+
+GRAM Authentication test failure&#58; authentication with the remote server failed
+
+But remote globusrun, or globusrun locally with a grid-proxy, both succeed&#58;
+Your proxy is valid until&#58; Thu Jul 10 00&#58;27&#58;41 2014
+[ball@gate03&#58;~]$ globusrun -a -r &#39;gate03.aglt2.org&#39;
+
+GRAM Authentication test successful
+
+What has changed here?  What must I do to repair this issue?
+<div id='show_962456503' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_962456503'>
+bob
+
+</div><script type='text/javascript'>
+        $('#show_962456503').click(function() {
+            $('#detail_962456503').slideDown("normal");
+            $('#show_962456503').hide();
+            $('#hide_962456503').show();
+        });
+        $('#hide_962456503').click(function() {
+            $('#detail_962456503').slideUp();
+            $('#hide_962456503').hide();
+            $('#show_962456503').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F21722">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 21722});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

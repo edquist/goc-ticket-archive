@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[29043] virtual memory issues on Palmetto</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=29043" method="post">
+<div class="page-header">
+    <h3><span class="muted">29043</span> / virtual memory issues on Palmetto</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Kenneth Herner</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">Clemson-Palmetto</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">OSG</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Kenneth Herner</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for user answer</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-04-01</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=29043", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/29043?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/29043?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20virtual%20memory%20issues%20on%20Palmetto%20ISSUE%3D29043%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='29043#1459370572'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-30T20:42:52+00:00">Mar 30, 2016 08:42 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1459370572">&nbsp;</a></div><pre>Closed per user request.</pre></div><div class='update_description'><i onclick="document.location='29043#1459370034'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-30T20:33:54+00:00">Mar 30, 2016 08:33 PM UTC</time><a class="anchor" name="1459370034">&nbsp;</a></div><pre>By the way I think we can close this ticket and work from the glidein size increase ticket&#58; <a href='https&#58;//ticket.opensciencegrid.org/29110' target='_blank' rel='nofollow'>https&#58;//ticket.opensciencegrid.org/29110</a>
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='29043#1459356853'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-30T16:54:13+00:00">Mar 30, 2016 04:54 PM UTC</time><a class="anchor" name="1459356853">&nbsp;</a></div><pre>Yes, that would be great if it could default to off, and then users don&#39;t have to worry about setting a separate variable for vmem.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='29043#1459356344'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-30T16:45:44+00:00">Mar 30, 2016 04:45 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1459356344">&nbsp;</a></div><pre>Here&#39;s a relevant JIRA ticket, hopefully this makes it into the May release&#58; <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2260' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2260</a></pre></div><div class='update_description'><i onclick="document.location='29043#1459185253'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-28T17:14:13+00:00">Mar 28, 2016 05:14 PM UTC</time><a class="anchor" name="1459185253">&nbsp;</a></div><pre>I&#39;ve got a ticket in to increase the glidein size, but no reply yet.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='29043#1459182972'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-28T16:36:12+00:00">Mar 28, 2016 04:36 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1459182972">&nbsp;</a></div><pre>Xizhou,
+
+Has this newer version improved the MOM&#39;s ability to track processes per
+job? Do you know how exactly the MOM tracks memory usage? For example,
+HTCondor sets an environment variable per process to know if it&#39;s
+associated with a specific job or it tries to look at the PPID/PGID to
+associate processes.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='29043#1459182428'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-28T16:27:08+00:00">Mar 28, 2016 04:27 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1459182428">&nbsp;</a></div><pre>Hi Brian,
+
+We are using PBS Pro 13.0. According to Altar’s announcement ( <a href='http&#58;//www.pbsworks.com/newsdetail.aspx?news_id=11135&news_country=en-US' target='_blank' rel='nofollow'>http&#58;//www.pbsworks.com/newsdetail.aspx?news_id=11135&news_country=en-US</a>), this version does use cgroups to manage reources.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='29043#1459179549'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-28T15:39:09+00:00">Mar 28, 2016 03:39 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1459179549">&nbsp;</a></div><pre>Xizhou,
+
+The problem is that the MOM loses track of processes owned by jobs
+unless PBS uses cgroups, doesn&#39;t it? We showed that the MOM would not
+kill jobs that were double-forked (i.e. they didn&#39;t share the same
+PGID/PPID), so if the MOM isn&#39;t aware of these processes, how can it
+track their memory usage?
+
+If I&#39;m right, that means that PBS believes the pilot job used a couple
+GBs of memory and it wasn&#39;t the user payload.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29043#1459177389'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-28T15:03:09+00:00">Mar 28, 2016 03:03 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1459177389">&nbsp;</a></div><pre>Hi Brian,
+
+Like Condor, PBS use a daemon called MOM (pbs_mom) to monitor and run PBS jobs. This daemon will periodically check a job’s resource usage such as CPU time and memory usage.
+For your second question, the PBS memory numbers reported by PBS should be the maximum memory used by the job.
+
+Thanks,
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='29043#1459176162'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-28T14:42:42+00:00">Mar 28, 2016 02:42 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1459176162">&nbsp;</a></div><pre>Ken,
+
+Was the factory able to bump the requested mem?
+
+Xizhou,
+
+I&#39;m curious, how exactly does PBS track memory usage amongst processes started by a job? The pilot job double forks to start HTCondor daemons that the user payload runs under and we&#39;ve already established that your site PBS has issues tracking these child processes. Also, are the PBS memory numbers in your original e-mail peak memory usage or memory usage at the time that the job was killed?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='29043#1458852803'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-24T20:53:23+00:00">Mar 24, 2016 08:53 PM UTC</time><a class="anchor" name="1458852803">&nbsp;</a></div><pre>I&#39;m going to open a ticket with the factory today to see about getting that adjusted. Thanks for the help.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='29043#1458828026'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-24T14:00:26+00:00">Mar 24, 2016 02:00 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1458828026">&nbsp;</a></div><pre>The user can request all the memory he or she wants with no effect
+because the underlying pilot job will only be allotted the 2GB it
+requested. The frontend will need to request more memory for its pilots
+at Clemson.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29043#1458780488'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-24T00:48:08+00:00">Mar 24, 2016 12:48 AM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1458780488">&nbsp;</a></div><pre>No limitation was set except the available memory on the compute node. All Open Science Grid  jobs will go to the same  OSG queue. We have set a maximum number of jobs or nodes allocated to OSG jobs. The memory on the compute nodes ranges from 12GB to 128GB (see <a href='http&#58;//citi.clemson.edu/palmetto/pages/userguide.html#queues' target='_blank' rel='nofollow'>http&#58;//citi.clemson.edu/palmetto/pages/userguide.html#queues</a>). You may recommend the user to request the appropriate amount of memory. If a job requests more than it needs, there will be fewer jobs running on the same node.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='29043#1458779794'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-24T00:36:34+00:00">Mar 24, 2016 12:36 AM UTC</time><a class="anchor" name="1458779794">&nbsp;</a></div><pre>Oh, I understood before that 2 GB was the maximum for now. Is 2 GB/core permissible then, or is say 1 core 4 GB possible? If NOvA needs to specify more than 1  CPU if requesting &#62; 2 GB memory, does that go to a separate queue?
+
+Thanks,
+
+Ken
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='29043#1458777248'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T23:54:08+00:00">Mar 23, 2016 11:54 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1458777248">&nbsp;</a></div><pre>Since the PBS scheduler on Clemson-Palmetto cluster always enforce the limits on memory usage, the code will not have any effect on our site.
+
+To get a higher memory limit, the user can simply request a memory size higher than 2GB.  PBS allows to specify mem, pmem, vmem, and pvmem. For serial job, specifying mem request should be sufficient.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='29043#1458775987'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T23:33:07+00:00">Mar 23, 2016 11:33 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1458775987">&nbsp;</a></div><pre>A try/except block would make sense if the job could function properly
+without raising the vmem limit? Virtual and regular mem are tightly
+coupled in the CE right now so you&#39;d have to request them together with
+&#39;+maxMemory=4000&#39; in the pilot jobs.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29043#1458775247'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T23:20:47+00:00">Mar 23, 2016 11:20 PM UTC</time><a class="anchor" name="1458775247">&nbsp;</a></div><pre>Hi,
+
+OK, it looks to me like the problem might be that they&#39;re trying to raise the max vmem limit to 3.9 GB, and then there&#39;s an exception if they&#39;re not allowed to do so. From a failed job&#39;s stderr&#58;
+
+Traceback (most recent call last)&#58;
+File &#34;/cvmfs/nova.opensciencegrid.org/externals/NovaGridUtils/v01.69/NULL/bin/runNovaSAM.py&#34;, line 390, in &#60;module&#62;
+setVMemLimit()
+File &#34;/cvmfs/nova.opensciencegrid.org/externals/NovaGridUtils/v01.69/NULL/bin/runNovaSAM.py&#34;, line 34, in setVMemLimit
+resource.setrlimit(resource.RLIMIT_AS, (memLimit, memLimit))
+ValueError&#58; not allowed to raise maximum limit
+
+The code in question does
+
+def setVMemLimit()&#58;
+#memLimit = 3.9*1024**3
+memLimit = 3.9*1000**3
+print &#34;Old virtual memory limit&#58;&#34;, resource.getrlimit(resource.RLIMIT_AS)
+print &#34;Limiting the virtual memory of the nova job to 3.9 GB&#34;
+resource.setrlimit(resource.RLIMIT_AS, (memLimit, memLimit))
+print &#34;New virtual memory limit&#58;&#34;, resource.getrlimit(resource.RLIMIT_AS)
+
+Looks like they should put that in a try block, no? At any rate, is there a proper way for them to get a higher virtual memory limit than 2 GB?
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='29043#1458757577'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T18:26:17+00:00">Mar 23, 2016 06:26 PM UTC</time><a class="anchor" name="1458757577">&nbsp;</a></div><pre>I&#39;ll try to get one of the NOvA users to submit some fresh jobs today. From what I understand it is a fairly regular occurrence at least for the particular type of job that they really want to run at Clemson (my test jobs work fine but they never exceed 1 GB of memory.)
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='29043#1458748270'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T15:51:10+00:00">Mar 23, 2016 03:51 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1458748270">&nbsp;</a></div><pre>The only job nova I saw is from October 28. I just removed from the queue.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='29043#1458747349'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T15:35:49+00:00">Mar 23, 2016 03:35 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1458747349">&nbsp;</a></div><pre>Xizhou,
+
+You should be able to find the Nova jobs and their corresponding PBS job ID&#39;s with the following command&#58;
+
+condor_ce_q -const &#39;regexp(&#34;nova&#34;, x509userproxyfirstfqan)&#39; -af gridjobid
+
+The PBS job ID will be in the form specified in the &#39;Non-HTCondor batch systems&#39; section here&#58; <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#Identifying_the_corresponding_jo.' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#Identifying_the_corresponding_jo.</a> It will look something like pbs/date/jobid. I only see one job right now in the CE, which is held and without a corresponding PBS job.
+
+Ken,
+
+How many Nova jobs are running at Clemson currently? I see some other jobs with secondary nova VOMS roles but only the one whose primary VOMS role is nova.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29043#1458743769'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T14:36:09+00:00">Mar 23, 2016 02:36 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1458743769">&nbsp;</a></div><pre>Hi Brian,
+
+If you or Ken can provide me the list of corresponding PBS jobs, that would be much helpful for use to diagnose the problem.
+
+Thanks,
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='29043#1458742655'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T14:17:35+00:00">Mar 23, 2016 02:17 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1458742655">&nbsp;</a></div><pre>If this is an occurrence with all Nova jobs, it should be fairly easy to start troubleshooting. We&#39;ll just have to track down the Nova jobs on the CE, map them to their PBS job, and from there we can see which nodes to investigate. From there we can see if it&#39;s the pilot job, the user job, or another process that is eating up all the virtual mem. Xizhou, let me know if you need help with finding the Nova jobs and finding their corresponding PBS jobs.</pre></div><div class='update_description'><i onclick="document.location='29043#1458711608'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T05:40:08+00:00">Mar 23, 2016 05:40 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458711608">&nbsp;</a></div><pre>Hi,
+
+I&#39;ve already discussed this issue of Nova jobs running into some problems with exceeding their virtual memory allocation on some Palmetto nodes with Brian and Xizhou, so this ticket is to have a record of that and of further tests.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F29043">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 29043});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

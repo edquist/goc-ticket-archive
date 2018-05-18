@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[23859] T3_US_Colorado&#58; CMS glidein jobs failing due to segfault in libcrypto.so.6</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=23859" method="post">
+<div class="page-header">
+    <h3><span class="muted">23859</span> / T3_US_Colorado&#58; CMS glidein jobs failing due to segfault in libcrypto.so.6</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Douglas Johnson</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Douglas Johnson</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier3</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Elevated</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Wait for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-02-02</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">OSG Glidein Factory Support <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">USCMS_Tier3 <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=111372">111372</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Edgar Fajardo <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=23859", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/23859?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/23859?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20T3_US_Colorado%26%2358%3B%20CMS%20glidein%20jobs%20failing%20due%20to%20segfault%20in%20libcrypto.so.6%20ISSUE%3D23859%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='23859#1424217596'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-02-17T23:59:56+00:00">Feb 17, 2015 11:59 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1424217596">&nbsp;</a></div><pre>This ticket was closed automatically. If this issue has not been resolved according your expectations or if you need further information, please submit a new ticket referencing this one.
+
+-- by SYSTEM at Tue Feb 17 23&#58;59&#58;03 UTC 2015
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=111372' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=111372</a></pre></div><div class='update_description'><i onclick="document.location='23859#1422896730'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-02-02T17:05:30+00:00">Feb 2, 2015 05:05 PM UTC</time><a class="anchor" name="1422896730">&nbsp;</a></div><pre>Thanks Jeff,
+
+I am happy glideins are now running fine.
+
+Cheers,
+
+Edgar
+
+OSG Software Team
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='23859#1422656076'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-30T22:14:36+00:00">Jan 30, 2015 10:14 PM UTC</time><a class="anchor" name="1422656076">&nbsp;</a></div><pre>Hi,
+
+Sorry for the delay, we were preoccupied most of the week at UCSD at the xrootd workshop.  We have reconfigured the glideins shipped to Colorado to pull the rhel6 binaries instead.
+
+I see the glideins running normally again at Colorado.
+
+Historically rhel5 condor builds ran fine on rhel6 nodes, as long as the architecture matched.  Apparently this is no longer the case, so we will be more careful to ensure this doesn&#39;t happen again on the factory side.
+
+Thanks and sorry again for the delay.
+Jeff Dost
+OSG Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='23859#1422580153'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-30T01:09:13+00:00">Jan 30, 2015 01:09 AM UTC</time><a class="anchor" name="1422580153">&nbsp;</a></div><pre>Greetings,
+
+I am not so sure it is still needed, but here is an SURL to a failed glidein work directory&#58;
+
+<a href='srm&#58;//hepse01.colorado.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/store/temp/user/root/glide.tar.gz' target='_blank' rel='nofollow'>srm&#58;//hepse01.colorado.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/store/temp/user/root/glide.tar.gz</a>
+
+I believe it is only accessible by a CMS user.
+
+Thank you,
+doug
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=johnsond/CN=655679/CN=Douglas Johnson</pre></div><div class='update_description'><i onclick="document.location='23859#1422571145'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-29T22:39:05+00:00">Jan 29, 2015 10:39 PM UTC</time><a class="anchor" name="1422571145">&nbsp;</a></div><pre>Hi Carl,
+
+This is clearly a gfactory problem. I talk to Jeff and he agrees. IT looks like a missconfigured entry in the factory. I am assigning to the factory guys.
+
+Cheers,
+
+Edgar
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='23859#1422568203'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-29T21:50:03+00:00">Jan 29, 2015 09:50 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1422568203">&nbsp;</a></div><pre>Doug, is there any chance we can get the core file too?
+
+Carl
+
+<font color='#7F7E6F'>&#62; Interesting, deep within the GSI libraries, it&#39;s jumping back and calling</font>
+<font color='#7F7E6F'>&#62; something from libcondor.  I need to investigate more.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; (If you can get your hands on an actual core file that would be ideal, but</font>
+<font color='#7F7E6F'>&#62;  that can also be difficult with glideins so I&#39;ll start digging in with what</font>
+<font color='#7F7E6F'>&#62;  I&#39;ve got.)</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Cheers,</font>
+<font color='#7F7E6F'>&#62; -zach</font></pre></div><div class='update_description'><i onclick="document.location='23859#1422565045'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-29T20:57:25+00:00">Jan 29, 2015 08:57 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1422565045">&nbsp;</a></div><pre>Thanks Doug, I passed along the new stacktrace to one of the condor devs to take a look at.
+
+Edgar, are you familiar with glideins and how to ensure that a condor built for the right platform gets sent to the worker nodes?
+In this case things seem to be going wrong due to a RHEL5 build of condor landing on a RHEL6 machine.  Any suggestions you might have would be great.
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='23859#1422549020'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-29T16:30:20+00:00">Jan 29, 2015 04:30 PM UTC</time><a class="anchor" name="1422549020">&nbsp;</a></div><pre>Greetings,
+
+I believe I installed as many of the debug rpm&#39;s as are available and attached the output from&#58;
+
+gdb /sge-batch/glide_wIghtY/main/condor/sbin/condor_master core.20029
+gdb&#62; where
+
+Please let me know what else I can do.
+
+NOTE&#58; The worker nodes were all patched last night with the new glibc and are at osg 3.1.43. The node that the trace comes from was rebooted and is running&#58;
+
+Linux lnxfarm207.colorado.edu 2.6.32-504.8.1.el6.x86_64 #1 SMP Tue Jan 27 13&#58;39&#58;10 CST 2015 x86_64 x86_64 x86_64 GNU/Linux
+
+Thank you,
+doug
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=johnsond/CN=655679/CN=Douglas Johnson</pre></div><div class='update_description'><i onclick="document.location='23859#1422488605'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-28T23:43:25+00:00">Jan 28, 2015 11:43 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1422488605">&nbsp;</a></div><pre>Doug, could you try to install the debugging symbols too, and produce another stack trace?  (One of the condor developers is interested in taking a look.)
+
+The relevant commands to get the missing debugging symbols based on your existing trace are&#58;
+
+debuginfo-install expat-2.0.1-11.el6_2.x86_64 glibc-2.12-1.149.el6.x86_64 keyutils-libs-1.4-4.el6.x86_64 libgcc-4.4.7-4.el6.x86_64 libselinux-2.0.94-5.3.el6_4.1.x86_64 libstdc++-4.4.7-4.el6.x86_64 openssl-1.0.1e-30.el6_6.2.x86_64 zlib-1.2.3-29.el6.x86_64
+
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/20/c24f967a7bd709eb46d60b6783eb3b15a9abc1
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/26/8a743b8cb4e9aec8d5aa391dd8fba457a7fa82
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/35/1622d3a0d6ae3dbb4ad8f045e685a800dd9734
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/4a/2839597e43d6ed5a144626af1d742ad203ac2d
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/4d/3e89c331f7ab5542a0bbf50a8ba5a1a1b2eaea
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/55/3de93fd0e37f87f60351d79a5bdad4498d0dd7
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/63/d70f58810233859dd4c1e5d8c99367aff3cc2a
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/75/70c938a4832a4b1ec36a42057799b4a751b364
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/af/b714eed71455d42115926981a7b01343f8f476
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/b5/bdf0a9c2656122de3dd1920f30d5cd466fdff8
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/c2/eadd6db5c86e09586380bfe5f9066a33579de5
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/c5/9c422baa9d933fe84b792b757ff4ac63dfdb6f
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/ce/4ba9ab2898727af43b94070fb8b8dc44b2ad06
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/d0/793380eb2096528a237c6f627ad18cbf406f5d
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/dc/3ca25cd9869c7c00cea35e336ce9920d24e399
+yum --disablerepo=&#39;*&#39; --enablerepo=&#39;*-debug*&#39; install /usr/lib/debug/.build-id/e9/5caae422e7e61e93bd007861583beaaa3eaf94
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='23859#1422488059'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-28T23:34:19+00:00">Jan 28, 2015 11:34 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1422488059">&nbsp;</a></div><pre>Hi Doug,
+
+That is a useful piece of information -- I asked the condor developers here and they said they wouldn&#39;t expect that to work (running a condor built for EL5 on an EL6 machine).
+
+By the way, from the stack trace, it looks like the actual segfault is happening in the system libpthread.so, rather than the libs that ship with condor&#58;
+
+#0  0x0000003f8e60f5db in raise () from /lib64/libpthread.so.0
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='23859#1422484348'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-28T22:32:28+00:00">Jan 28, 2015 10:32 PM UTC</time><a class="anchor" name="1422484348">&nbsp;</a></div><pre>Greetings,
+
+I notice in the glidein run directory /log, there is a file&#58;
+
+.master_address
+
+which mentions that condor is built for RedHat5. The worker nodes run SL6. Might the glidein server be sending us the wrong condor package?
+Could this be the problem?
+
+root&#62; cat .master_address
+&#60;192.168.3.107&#58;51702&#62;
+$CondorVersion&#58; 8.3.1 Sep 10 2014 BuildID&#58; 271535 $
+$CondorPlatform&#58; x86_64_RedHat5 $
+
+Thank you,
+doug
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=johnsond/CN=655679/CN=Douglas Johnson</pre></div><div class='update_description'><i onclick="document.location='23859#1422474974'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-28T19:56:14+00:00">Jan 28, 2015 07:56 PM UTC</time> by <b>echism</b><a class="anchor" name="1422474974">&nbsp;</a></div><pre>I&#39;m not sure what to make of this. Software team, do you have any input?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='23859#1422384162'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-27T18:42:42+00:00">Jan 27, 2015 06:42 PM UTC</time><a class="anchor" name="1422384162">&nbsp;</a></div><pre>I am adding the output from osg-system-profiler from one of the worker nodes.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=johnsond/CN=655679/CN=Douglas Johnson</pre></div><div class='update_description'><i onclick="document.location='23859#1422375741'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-27T16:22:21+00:00">Jan 27, 2015 04:22 PM UTC</time><a class="anchor" name="1422375741">&nbsp;</a></div><pre>Greetings,
+
+100% of glidein/pilot jobs are crashing with a segmentation fault in condor_master. This started occurring about 2 weeks ago. As far as I know, nothing had changed on the Colorado system. We would really appreciate it if someone could take a look at this issue. I am attaching the MasterLog file and a trace from condor_master from a failed job. The jobs appear to crash when accessing libcrypt. Both condor_master and libcrypt are shipped with the pilot.
+
+This is a beyond urgent issue as nothing is currently able to run on our site.
+
+Thank you,
+doug
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=johnsond/CN=655679/CN=Douglas Johnson</pre></div><div class='update_description'><i onclick="document.location='23859#1422257583'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-26T07:33:03+00:00">Jan 26, 2015 07:33 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1422257583">&nbsp;</a></div><pre>Greetings,
+
+It appears that CMS glidein jobs are failing to due a segfault in libcrypto.so.6 I see errors in the log files of the form&#58;
+
+condor_advertis[13172]&#58; segfault at 900 ip 000000386a4a63e0 sp 00007fff9662cb98 error 4 in libcrypto.so.6[386a400000+12d000]
+
+We do not use condor as a batch system.
+Is this a know problem with a known solution? Any help would be greatly appreciated.
+
+Thank you,
+doug
+Affected Site&#58; UColorado_HEP
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=111372' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=111372</a>
+
+[Ticket History]
+Subject&#58; T3_US_Colorado&#58; CMS glidein jobs failing due to segfault in libcrypto.so.6
+Ticket Type&#58; USER
+CC&#58;
+-- by Douglas Johnson at Mon Jan 26 02&#58;39&#58;00 UTC 2015
+
+-- by Ondrej Ferdan at Mon Jan 26 07&#58;31&#58;59 UTC 2015</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F23859">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 23859});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

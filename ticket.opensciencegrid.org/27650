@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[27650] Clemson-Palmetto - glideins killed by segfault</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=27650" method="post">
+<div class="page-header">
+    <h3><span class="muted">27650</span> / Clemson-Palmetto - glideins killed by segfault</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Marty Kandes</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">Clemson-Palmetto</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">OSG</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Marty Kandes</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-01-15</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+        <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=27650", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/27650?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/27650?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Clemson-Palmetto%20-%20glideins%20killed%20by%20segfault%20ISSUE%3D27650%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='27650#1453312248'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-20T17:50:48+00:00">Jan 20, 2016 05:50 PM UTC</time><a class="anchor" name="1453312248">&nbsp;</a></div><pre>Issue resolved; see <a href='https&#58;//ticket.opensciencegrid.org/27686' target='_blank' rel='nofollow'>https&#58;//ticket.opensciencegrid.org/27686</a>; closing ticket.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='27650#1452869769'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-15T14:56:09+00:00">Jan 15, 2016 02:56 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1452869769">&nbsp;</a></div><pre>Hi Elizabeth,
+
+You can decide whether you want to close or not. The current approach of setting the default walltime to 24 hours is just a temporal solution. The underlying causes for this issue still exist. We are working with Brian on an ultimate fix.
+
+Thanks,
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='27650#1452795876'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-14T18:24:36+00:00">Jan 14, 2016 06:24 PM UTC</time> by <b>echism</b><a class="anchor" name="1452795876">&nbsp;</a></div><pre>May I close this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27650#1452657910'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-13T04:05:10+00:00">Jan 13, 2016 04:05 AM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1452657910">&nbsp;</a></div><pre>Thank you, Ken.
+
+We set the default walltime to 24 hours.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='27650#1452650124'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-13T01:55:24+00:00">Jan 13, 2016 01:55 AM UTC</time><a class="anchor" name="1452650124">&nbsp;</a></div><pre>Hi again,
+
+100/100 successful 1-hour jobs this afternoon! They ran on multiple nodes and the outputs look reasonable. Whatever you did today has definitely gotten things working much better. I&#39;ve asked some other Fermilab people to send some more realistic test jobs over the next day or so.
+
+Thanks,
+
+Ken
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='27650#1452634122'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-12T21:28:42+00:00">Jan 12, 2016 09:28 PM UTC</time><a class="anchor" name="1452634122">&nbsp;</a></div><pre>Hi everyone,
+
+I sent some new jobs this morning, and they appear to have worked. These jobs do some software setup, make a small output file, then sleep for one hour before copying back. I did get a successful copyback with these latest ten jobs. Just a few minutes ago at 16&#58;22 ET I sent 100 similar jobs to you. I&#39;ll update the ticket again once they start finishing.
+
+Ken
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='27650#1452547211'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-11T21:20:11+00:00">Jan 11, 2016 09:20 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1452547211">&nbsp;</a></div><pre>Hi Ken,
+
+I looked at your jobs and found that some jobs failed after 30 minutes.
+
+The cause is still the 30-minute timeout. It looked like that the changes made on our PBS osg_e queue was removed from the configuration. I will ask our admin to put the change back and ask you for a further test.
+
+Thanks,
+
+Xizhou
+
+----------------------------Diagnose Output-----------------------------
+
+(1)  The PBS submit script for the glide in job. Potential issue&#58; doesn’t set wall time and memory requirements.
+[root@osg-ce bl_3fb8953bc2fc.debug]# cat submit.script
+#!/bin/bash
+# PBS job wrapper generated by pbs_submit.sh
+# on Mon Jan 11 15&#58;42&#58;30 EST 2016
+#
+# stgcmd = no
+# proxy_string = /usr/local/osg/5907/0/cluster1835907.proc0.subproc0/credential_osg-flock-grid-iu-edu_OSG_gWMSFrontend.main_907675.lmt
+# proxy_local_file = /usr/local/osg/5907/0/cluster1835907.proc0.subproc0/credential_osg-flock-grid-iu-edu_OSG_gWMSFrontend.main_907675.lmt
+#
+# PBS directives&#58;
+#PBS -S /bin/bash
+#PBS -o /dev/null
+#PBS -e /dev/null
+#PBS -q osg
+#PBS -l select=1
+#PBS -m n
+….
+
+(2)  PBS jobs submitted by fermilab. Observation&#58; all jobs ended before or around 30 minutes.
+$ qstat -x -u fermilab@....
+pbs02&#58;
+Req&#39;d  Req&#39;d   Elap
+<div id='show_1761643429' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1761643429'>Job ID          Username Queue    Jobname    SessID NDS TSK Memory Time  S Time
+--------------- -------- -------- ---------- ------ --- --- ------ ----- - -----
+1931723.pbs02   fermilab osg_e    bl_fe8efb8  18159   1   1    1gb 00&#58;30 F 00&#58;25
+1931754.pbs02   fermilab osg_e    bl_a5b58e8  22747   1   1    1gb 00&#58;30 F 00&#58;21
+1931755.pbs02   fermilab osg_e    bl_5e5de8b   8953   1   1    1gb 00&#58;30 F 00&#58;21
+1931798.pbs02   fermilab osg_e    bl_62911bf  22996   1   1    1gb 00&#58;30 F 00&#58;31
+1931816.pbs02   fermilab osg_e    bl_1de81ff  26767   1   1    1gb 00&#58;30 F 00&#58;24
+…
+
+(3)  Check job information. Finding&#58; job requested 30 minutes and was terminated by the scheduler.
+[xizhouf@osg-ce ~]$ qstat -xf 1945933
+Job Id&#58; 1945933.pbs02
+Job_Name = bl_290fdf078589
+Job_Owner = fermilab@....
+resources_used.cpupercent = 27
+resources_used.cput = 00&#58;00&#58;04
+resources_used.mem = 6132kb
+resources_used.ncpus = 1
+resources_used.vmem = 363420kb
+resources_used.walltime = 00&#58;30&#58;17
+job_state = F
+queue = osg_e
+server = pbs02
+Checkpoint = u
+ctime = Mon Jan 11 14&#58;53&#58;08 2016
+Error_Path = osg-ce.clemson.edu&#58;/dev/null
+exec_host = node0533/5
+exec_vnode = (node0533&#58;mem=1048576kb&#58;ncpus=1&#58;ngpus=0&#58;nphis=0)
+group_list = osg
+Hold_Types = n
+Join_Path = n
+Keep_Files = n
+Mail_Points = n
+Mail_Users = fermilab@....
+mtime = Mon Jan 11 15&#58;23&#58;28 2016
+Output_Path = osg-ce.clemson.edu&#58;/dev/null
+Priority = 0
+qtime = Mon Jan 11 14&#58;53&#58;08 2016
+Rerunable = True
+Resource_List.mem = 1gb
+Resource_List.ncpus = 1
+Resource_List.ngpus = 0
+Resource_List.nodect = 1
+Resource_List.nphis = 0
+Resource_List.place = free&#58;shared
+Resource_List.qcat = osg_qcat
+Resource_List.select = 1
+Resource_List.walltime = 00&#58;30&#58;00
+stime = Mon Jan 11 14&#58;53&#58;12 2016
+session_id = 26607
+Shell_Path_List = /bin/bash
+jobdir = /home/fermilab
+substate = 93
+Variable_List = PBS_O_HOME=/home/fermilab,
+PBS_O_WORKDIR=/usr/local/osg/5208/0/cluster1835208.proc0.subproc0,
+PBS_O_LANG=en_US.UTF-8,PBS_O_PATH=/sbin&#58;/usr/sbin&#58;/bin&#58;/usr/bin,
+PBS_O_SYSTEM=Linux,PBS_O_QUEUE=osg,
+PBS_O_HOST=osg001.palmetto.clemson.edu
+comment = Job run at Mon Jan 11 at 14&#58;53 on (node0533&#58;mem=1048576kb&#58;ncpus=1
+&#58;ngpus=0&#58;nphis=0) and failed
+etime = Mon Jan 11 14&#58;53&#58;08 2016
+run_count = 1
+Stageout_status = 1
+Exit_status = 271
+Submit_arguments = /tmp/condor_g_scratch.0x7f24fc61c8b0.7550/bl_290fdf07858
+9
+history_timestamp = 1452543808
+project = _pbs_project_default
+
+(4)  Check PBS queue setting. Potential issue&#58; the variable “resources_default.walltime” was not set.
+[root@osg-ce tmp]# qmgr -c &#39;p s&#39; | grep osg
+#
+# Create and define queue osg_e
+#
+create queue osg_e
+set queue osg_e queue_type = Execution
+set queue osg_e Priority = 100
+set queue osg_e max_queued = [o&#58;PBS_ALL=3000]
+set queue osg_e max_queued += [u&#58;osgconnect=3000]
+set queue osg_e max_queued_res.mem = [o&#58;PBS_ALL=3000gb]
+set queue osg_e max_queued_res.ncpus = [o&#58;PBS_ALL=3000]
+set queue osg_e max_queued_res.mem += [u&#58;osgconnect=2950gb]
+set queue osg_e max_queued_res.ncpus += [u&#58;osgconnect=2950]
+set queue osg_e from_route_only = True
+set queue osg_e resources_max.mem = 3000gb
+set queue osg_e resources_max.ncpus = 3000
+set queue osg_e resources_max.walltime = 24&#58;00&#58;00
+set queue osg_e resources_default.qcat = osg_qcat
+set queue osg_e acl_group_enable = True
+set queue osg_e acl_groups = osg
+set queue osg_e default_chunk.mem = 1gb
+set queue osg_e default_chunk.qcat = osg_qcat
+set queue osg_e resources_available.mem = 3000gb
+set queue osg_e resources_available.ncpus = 3000
+set queue osg_e resources_available.qcat = osg_qcat
+set queue osg_e kill_delay = 30
+set queue osg_e max_run = [o&#58;PBS_ALL=3000]
+set queue osg_e max_run += [u&#58;osgconnect=3000]
+set queue osg_e max_run_res.mem = [o&#58;PBS_ALL=3000gb]
+set queue osg_e max_run_res.ncpus = [o&#58;PBS_ALL=3000]
+set queue osg_e max_run_res.mem += [u&#58;osgconnect=2950gb]
+set queue osg_e max_run_res.ncpus += [u&#58;osgconnect=2950]
+set queue osg_e enabled = True
+set queue osg_e started = True
+</div><script type='text/javascript'>
+        $('#show_1761643429').click(function() {
+            $('#detail_1761643429').slideDown("normal");
+            $('#show_1761643429').hide();
+            $('#hide_1761643429').show();
+        });
+        $('#hide_1761643429').click(function() {
+            $('#detail_1761643429').slideUp();
+            $('#hide_1761643429').hide();
+            $('#show_1761643429').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='27650#1452543071'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-11T20:11:11+00:00">Jan 11, 2016 08:11 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1452543071">&nbsp;</a></div><pre>Thank you, Ken.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='27650#1452541770'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-11T19:49:30+00:00">Jan 11, 2016 07:49 PM UTC</time><a class="anchor" name="1452541770">&nbsp;</a></div><pre>Hi, I have just done so at 2&#58;47 ET. The job IDs on our schedd are 6574939.[0-9]@fifebatch2.fnal.gov. The executable name is offsite_Clemson_mu2e.sh. Let me know if you need any other information.
+
+Ken
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='27650#1452538749'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-11T18:59:09+00:00">Jan 11, 2016 06:59 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1452538749">&nbsp;</a></div><pre>Hi Ken,
+
+We found that the pbs_submit script currently deployed on the osg-ce node doesn’t insert the wall time request into the corresponding PBS job scripts generated from the condor job description. Once Brian has updated the scripts, we will deploy them and let you know which Condor variable needs to be used.
+
+Meanwhile, as our HPC admin changed the default wall clock time for OSG jobs to 24 hours back to December, if you still see jobs being killed after 30 minutes, it might be caused by a different issue that we need to investigate. Can you submit a new set of jobs to palmetto and post the time you submitted and the corresponding job ids? We will make further investigation on this problem.
+
+Thanks,
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='27650#1452534391'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-11T17:46:31+00:00">Jan 11, 2016 05:46 PM UTC</time><a class="anchor" name="1452534391">&nbsp;</a></div><pre>Hi,
+
+I sent some Fermilab test jobs a couple of days ago and those that I made run longer than 30 minutes were still having trouble. If you tell me exactly what Condor variable you&#39;d like us to set for walltime, I&#39;ll send a few more jobs with that setting in place.
+
+Thanks,
+
+Ken
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='27650#1452284444'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-08T20:20:44+00:00">Jan 8, 2016 08:20 PM UTC</time> by <b>echism</b><a class="anchor" name="1452284444">&nbsp;</a></div><pre>Glidein team,
+
+What is the status of this issue?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27650#1452114522'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-06T21:08:42+00:00">Jan 6, 2016 09:08 PM UTC</time> by <b>echism</b><a class="anchor" name="1452114522">&nbsp;</a></div><pre>It seems like there are a lot of glideins running. Are they faring better, Marty?</pre></div><div class='update_description'><i onclick="document.location='27650#1451931541'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-04T18:19:01+00:00">Jan 4, 2016 06:19 PM UTC</time><a class="anchor" name="1451931541">&nbsp;</a></div><pre>Our HPC admin team investigated this problem during the break. We can confirm that that some glidein jobs were terminated by the PBS scheduler because of a default 30-minute wall clock time constrain.
+
+I followed the suggestion from Brian to set the default wall-clock time to 24 hours in OSG-CE configuration. However, the configuration didn&#39;t work for some reason.
+
+Recently, we have made a change on the PBS side to set the default time as 24 hours. This change may solve issues caused by the 30-minute time-out issue but could not prevent issues associated with jobs running longer than 24 hours.
+
+To completely solve the underlying problem, the users may need to specify the required wall time in their job requirement and CONDOR_CE translates the requirement to proper syntax matching the PBS installation.
+
+Thanks,
+
+Xizhou
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Xizhou Feng 3402</pre></div><div class='update_description'><i onclick="document.location='27650#1451924972'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-04T16:29:32+00:00">Jan 4, 2016 04:29 PM UTC</time> by <b>echism</b><a class="anchor" name="1451924972">&nbsp;</a></div><pre>Hi Xizhou,
+
+Please revisit this when you get a chance.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27650#1450458373'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-18T17:06:13+00:00">Dec 18, 2015 05:06 PM UTC</time> by <b>echism</b><a class="anchor" name="1450458373">&nbsp;</a></div><pre>Adjusting next action per last update.</pre></div><div class='update_description'><i onclick="document.location='27650#1450362196'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-17T14:23:16+00:00">Dec 17, 2015 02:23 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1450362196">&nbsp;</a></div><pre>Thank you, Elizabeth.
+
+Because I will be out for vacation from tomorrow to Christmas, I will troubleshoot the problem when I am back from travel.
+
+Merry Christmas and Happy New Year.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='27650#1450360893'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-17T14:01:33+00:00">Dec 17, 2015 02:01 PM UTC</time> by <b>echism</b><a class="anchor" name="1450360893">&nbsp;</a></div><pre>Hi Xizhou,
+
+Sorry, I was out sick a bit. The tools we have run very short jobs, so you won&#39;t find anything that would find your 30 minute walltime issue, but here are a bunch of easy troubleshooting tools you might like
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#HTCondor_CE_Troubleshooting_Tool' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#HTCondor_CE_Troubleshooting_Tool</a>
+
+I see you already have RSV installed and running. Maybe you can run a custom rsv probe that just sleeps for an hour?
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/WriteProbe' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/WriteProbe</a>
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27650#1450223823'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-15T23:57:03+00:00">Dec 15, 2015 11:57 PM UTC</time><a class="anchor" name="1450223823">&nbsp;</a></div><pre>Hi everyone,
+
+Here is an additional data point. I sent a couple dozen test jobs today, and those than were designed to only run a few minutes completed without incident, including copying some output files back to Fermilab. I then sent another set of jobs which were identical but contained a 40-minute sleep command in the middle. I haven&#39;t gotten any of those to complete successfully yet (they are still in the run state after a few hours even though they only do about one minute&#39;s worth of work other than the sleep statement.)  Also one of them sent me back the following error (received at 16&#58;36 CST)&#58;
+
+Error from glidein_6279_251586783@node0666&#58; STARTER at 10.125.3.155 failed to send file(s) to &#60;131.225.67.139&#58;9615&#62;&#58; error reading from /local_scratch/glide_jnMyVn/execute/dir_11422/_condor_stderr&#58; (errno 2) No such file or directory; SHADOW failed to receive file(s) from &#60;130.127.255.222&#58;60315&#62;
+
+So indeed it does look like something strange happens at some time between a few and 40 minutes. Perhaps it is the PBS scheduler terminating (or trying to but not quite succeeding?) jobs after the 30 minutes.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kenneth Herner 1385</pre></div><div class='update_description'><i onclick="document.location='27650#1450118143'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-14T18:35:43+00:00">Dec 14, 2015 06:35 PM UTC</time><a class="anchor" name="1450118143">&nbsp;</a></div><pre>Is there some ways for us (Palmetto admins) to submit remote jobs on the Palmetto cluster to diagnose the underlying cause of the problem?
+
+In the past several days, we have been working with Brian and Marty on a related ticket issue=27686. Below is the summary of what have tested.
+
+1. Jobs submitted to compute nodes without walltime requirement would be terminated by the PBS scheduler after a default walltime (30 minutes). Changing the default time to 24 hours doesn&#39;t solve the problem.
+
+2.Work nodes don’t allow outbound traffic. We just verified that the work nodes have outbound access. Brian also found that he can grab file from repo.grid.iu.edu on the work node.
+
+3. OSG  jobs use the /tmp directory for execute directory which might be full or doesn&#39;t have adequate space. We have changed it to /local_scratch for the directory and verified it took effect.
+
+4. Processes without an associated PBS job will be killed by a cron job on the work node. For the issue described here, it doesn&#39;t look that the jobs actually get to the work nodes.
+
+If OSG has some tools and test jobs that we can use to diagnose and isolate the actual problems, it would be very helpful.
+
+Xizhou
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Xizhou Feng 3402</pre></div><div class='update_description'><i onclick="document.location='27650#1450110718'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-14T16:31:58+00:00">Dec 14, 2015 04:31 PM UTC</time> by <b>echism</b><a class="anchor" name="1450110718">&nbsp;</a></div><pre>Hello,
+
+Are there any updates on this? Can we help in any way?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27650#1449610610'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-08T21:36:50+00:00">Dec 8, 2015 09:36 PM UTC</time><a class="anchor" name="1449610610">&nbsp;</a></div><pre>Adding Xizhou to this ticket as well.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Bodhitha Jayatilaka 2312</pre></div><div class='update_description'><i onclick="document.location='27650#1449594109'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-08T17:01:49+00:00">Dec 8, 2015 05:01 PM UTC</time> by <b>echism</b><a class="anchor" name="1449594109">&nbsp;</a></div><pre>Hello,
+
+Are there any updates on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27650#1449249467'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-04T17:17:47+00:00">Dec 4, 2015 05:17 PM UTC</time> by <b>echism</b><a class="anchor" name="1449249467">&nbsp;</a></div><pre>Hello,
+
+Are there any updates on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27650#1449014959'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-02T00:09:19+00:00">Dec 2, 2015 12:09 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1449014959">&nbsp;</a></div><pre>Hi Clemson admins,
+
+We&#39;re observing glideins submitted to your gatekeeper [1] segfault [2] when they attempt to startup on your local worker nodes. This problem appears to be affecting glidein startup on all worker nodes. As you can see in [2], the glidein work directory is located in /tmp. Should the glideins be running under /tmp? Maybe your local site config expects a different work directory? Please let us know if you see anything else that might indicate the source of the problem here. This is about all we currently see from the factory logs.
+
+Thanks,
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+osg-ce.clemson.edu
+
+[2]
+
+tmp/glide_jZQS2j/main/condor/sbin/condor_master[0x408649]
+/tmp/glide_jZQS2j/main/condor_startup.sh&#58; line 13&#58; 32671 Segmentation fault      $CONDOR_DIR/sbin/condor_master -f -pidfile $PWD/condor_master2.pid
+/tmp/glide_jZQS2j/main/condor_startup.sh&#58; line 15&#58; /tmp/glide_jZQS2j/main/condor/sbin/condor_master&#58; No such file or directory
+ls&#58; cannot access log&#58; No such file or directory
+/tmp/glide_jZQS2j/main/condor_startup.sh&#58; line 1002&#58; /tmp/glide_jZQS2j/main/error_gen.sh&#58; No such file or directory
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F27650">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 27650});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

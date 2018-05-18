@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[34103] RFC proxy failures for some services and some CAs</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=34103" method="post">
+<div class="page-header">
+    <h3><span class="muted">34103</span> / RFC proxy failures for some services and some CAs</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">asoka.de.silva </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">ATLAS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">asoka.de.silva</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USATLAS</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"><p><a target='_blank' href='https://ticket.opensciencegrid.org/34832'><b>34832</b> All transfers from NET2 to UNI-FREIBURG fail with &amp;#34;Unable to connect to 132.230.203.210&amp;#34;</a></p></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Elevated</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for host rebuild</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2018-01-26</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Sarah Schmiechen <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Sarah Schmiechen <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=128934">128934</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">USATLAS (BNL Prod)&nbsp;<a target="_blank" href="https://rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539">27539</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=34103", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/34103?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/34103?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20RFC%20proxy%20failures%20for%20some%20services%20and%20some%20CAs%20ISSUE%3D34103%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='34103#1517403250'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-31T12:54:10+00:00">Jan 31, 2018 12:54 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1517403250">&nbsp;</a></div><pre>&#13;
+
+-- by asoka.de.silva at Wed Jan 31 12&#58;53&#58;42 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1516904247'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-25T18:17:27+00:00">Jan 25, 2018 06:17 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1516904247">&nbsp;</a></div><pre>Good work everyone! Closing.</pre></div><div class='update_description'><i onclick="document.location='34103#1516903702'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-25T18:08:22+00:00">Jan 25, 2018 06:08 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1516903702">&nbsp;</a></div><pre>I can confirm that it is resolved (although still blacklisted in rucio) so this ticket can be closed if you all agree.  (Thanks Saul and Augustine)
+
+...
+<font color='#7F7E6F'>&#62; gfal-ls <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a></font>
+<a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>
+
+<font color='#7F7E6F'>&#62; voms-proxy-info -all</font>
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125/CN=1258820380
+issuer    &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+identity  &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+type      &#58; RFC3820 compliant impersonation proxy
+strength  &#58; 1024
+path      &#58; /tmp/x509up_u1179
+timeleft  &#58; 11&#58;58&#58;52
+key usage &#58; Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment
+=== VO atlas extension information ===
+VO        &#58; atlas
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+issuer    &#58; /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+attribute &#58; /atlas/Role=NULL/Capability=NULL
+attribute &#58; /atlas/ca/Role=NULL/Capability=NULL
+attribute &#58; /atlas/lcg1/Role=NULL/Capability=NULL
+attribute &#58; /atlas/team/Role=NULL/Capability=NULL
+attribute &#58; nickname = desilva (atlas)
+timeleft  &#58; 11&#58;58&#58;52
+uri       &#58; lcg-voms2.cern.ch&#58;15001
+
+<font color='#7F7E6F'>&#62; rucio get panda.1206214522.574934.lib._12761731.11886445354.log.tgz</font>
+2018-01-25 10&#58;05&#58;05,079	INFO	Thread 1/1 &#58; Starting the download of panda&#58;panda.1206214522.574934.lib._12761731.11886445354.log.tgz
+2018-01-25 10&#58;05&#58;05,788	INFO	Thread 1/1 &#58; NET2_SCRATCHDISK is blacklisted for reading
+2018-01-25 10&#58;05&#58;05,788	ERROR	Thread 1/1 &#58; Cannot download file panda&#58;panda.1206214522.574934.lib._12761731.11886445354.log.tgz
+----------------------------------
+Download summary
+----------------------------------------
+DID panda&#58;panda.1206214522.574934.lib._12761731.11886445354.log.tgz
+<div id='show_1108870777' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1108870777'>Total files &#58;                                 1
+Downloaded files &#58;                            0
+Files already found locally &#58;                 0
+Files that cannot be downloaded &#58;             1
+
+<font color='#7F7E6F'>&#62; gfal-copy  <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a> file&#58;//&#96;pwd&#96;/test.log.gz</font>
+Copying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>     0s  FiCopying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz.' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz.</a>    0s  FiCopying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz..' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz..</a>   1s  FiCopying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz...' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz...</a>  1s  FiCopying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>     2s  FiCopying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz.' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz.</a>    2s  FiCopying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz..' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz..</a>   3s  FiCopying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz...' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz...</a>  3s  FiCopying <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>   [DONE]  after 3s
+
+<font color='#7F7E6F'>&#62; echo $?</font>
+0&#13;
+
+-- by asoka.de.silva at Thu Jan 25 18&#58;08&#58;04 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a>
+</div><script type='text/javascript'>
+        $('#show_1108870777').click(function() {
+            $('#detail_1108870777').slideDown("normal");
+            $('#show_1108870777').hide();
+            $('#hide_1108870777').show();
+        });
+        $('#hide_1108870777').click(function() {
+            $('#detail_1108870777').slideUp();
+            $('#hide_1108870777').hide();
+            $('#show_1108870777').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1516903032'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-25T17:57:12+00:00">Jan 25, 2018 05:57 PM UTC</time> by <b>Saul Youssef</b><a class="anchor" name="1516903032">&nbsp;</a></div><pre>SRM has been rebuilt.  Problem should be solved now.   - Saul & Augustine
+
+On Tue, Jan 16, 2018 at 8&#58;20 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34103#1516630320'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-22T14:12:00+00:00">Jan 22, 2018 02:12 PM UTC</time> by <b>echism</b><a class="anchor" name="1516630320">&nbsp;</a></div><pre>Hi Saul,
+
+Is this still in progress?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1516117993'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-16T15:53:13+00:00">Jan 16, 2018 03:53 PM UTC</time> by <b>Saul Youssef</b><a class="anchor" name="1516117993">&nbsp;</a></div><pre>Hello Sarah,
+
+We have a fix, but it basically requires a DDM interruption and
+rebuilding our SRM endpoint.  We are going to schedule it for next week so
+as to overlap with a GPFS maintenance and kernel update that we need to do
+anyway.  When I know the exact schedule, I&#39;ll reply to thi s email again
+and there will be an NET2 DDM downtime that goes with it as usual.
+
+- Saul & Augustine
+
+On Tue, Jan 16, 2018 at 8&#58;20 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34103#1516108838'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-16T13:20:38+00:00">Jan 16, 2018 01:20 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1516108838">&nbsp;</a></div><pre>Hello,
+
+Have you had a chance to look into this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='34103#1515437056'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-08T18:44:16+00:00">Jan 8, 2018 06:44 PM UTC</time> by <b>Saul Youssef</b><a class="anchor" name="1515437056">&nbsp;</a></div><pre>Hi Edgar,
+
+Our admins are back from the break, but dealing with meltdown and
+spectre is the top issue ATM.  - Saul
+
+On Mon, Jan 8, 2018 at 1&#58;38 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34103#1515436701'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-08T18:38:21+00:00">Jan 8, 2018 06:38 PM UTC</time><a class="anchor" name="1515436701">&nbsp;</a></div><pre>Hi Saul,
+
+Could you please update this ticket at your earliest convenience.
+
+Thanks,
+
+Edgar
+OSG Software Support
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='34103#1515092547'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-04T19:02:27+00:00">Jan 4, 2018 07:02 PM UTC</time> by <b>echism</b><a class="anchor" name="1515092547">&nbsp;</a></div><pre>Hi Saul,
+
+What&#39;s happening with this one?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1514901174'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-02T13:52:54+00:00">Jan 2, 2018 01:52 PM UTC</time> by <b>echism</b><a class="anchor" name="1514901174">&nbsp;</a></div><pre>Happy new year, Saul! Did the rebuild happen?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1514559625'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-29T15:00:25+00:00">Dec 29, 2017 03:00 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1514559625">&nbsp;</a></div><pre>Hello,
+
+Are there any updates on this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='34103#1513351937'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-15T15:32:17+00:00">Dec 15, 2017 03:32 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1513351937">&nbsp;</a></div><pre>Saul,
+
+Do you have a specific date scheduled for the rebuild?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1513286592'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-14T21:23:12+00:00">Dec 14, 2017 09:23 PM UTC</time> by <b>Saul Youssef</b><a class="anchor" name="1513286592">&nbsp;</a></div><pre>Greetings,
+
+Since there are very few errors, I&#39;ve decided not to push our luck
+and rebuild our SRM just before the Holiday.  We&#39;ll rebuild ASAP after
+Christmas, though.
+
+We&#39;re aware of the lack of support for Bestman2.  It&#39;s not a big
+problem for us as we can switch to gridftp anytime we need to.  The bigger
+picture, though, is that in 2018 we will be migrating all of our storage
+into the NESE data lake anyway with new gridftp front ends.
+
+- Saul
+
+On Thu, Dec 14, 2017 at 2&#58;31 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34103#1513280450'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-14T19:40:50+00:00">Dec 14, 2017 07:40 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1513280450">&nbsp;</a></div><pre>Still see the issue&#58;
+[desilva@lxplus073 ~]$ voms-proxy-init -voms atlas
+Enter GRID pass phrase for this identity&#58;
+Contacting lcg-voms2.cern.ch&#58;15001 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch] &#34;atlas&#34;...
+Remote VOMS server contacted succesfully.
+
+Created proxy in /tmp/x509up_u28311.
+
+Your proxy is valid until Fri Dec 15 08&#58;37&#58;35 CET 2017
+[desilva@lxplus073 ~]$ rucio list-file-replicas panda.1206214522.574934.lib._12761731.11886445354.log.tgz
++---------+-----------------------------------------------------------+------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| SCOPE   | NAME                                                      | FILESIZE   | ADLER32   | RSE&#58; REPLICA                                                                                                                                                    |
+|---------+-----------------------------------------------------------+------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| panda   | panda.1206214522.574934.lib._12761731.11886445354.log.tgz | 63.353 kB  | 9fc17f39  | NET2_SCRATCHDISK&#58; <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a> |
++---------+-----------------------------------------------------------+------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[desilva@lxplus073 ~]$ gfal-ls  <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//atlas.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus073.cern.ch reports Error reading token data header&#58; Connection reset by peer
+
+[desilva@lxplus073 ~]$ voms-proxy-init -voms atlas -old
+Enter GRID pass phrase for this identity&#58;
+Contacting lcg-voms2.cern.ch&#58;15001 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch] &#34;atlas&#34;...
+Remote VOMS server contacted succesfully.
+
+Created proxy in /tmp/x509up_u28311.
+
+Your proxy is valid until Fri Dec 15 08&#58;38&#58;22 CET 2017
+[desilva@lxplus073 ~]$ gfal-ls  <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>
+<a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>
+[desilva@lxplus073 ~]$
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Thu Dec 14 19&#58;39&#58;50 UTC 2017
+
+<div id='show_452447470' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_452447470'>GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a>
+</div><script type='text/javascript'>
+        $('#show_452447470').click(function() {
+            $('#detail_452447470').slideDown("normal");
+            $('#show_452447470').hide();
+            $('#hide_452447470').show();
+        });
+        $('#hide_452447470').click(function() {
+            $('#detail_452447470').slideUp();
+            $('#hide_452447470').hide();
+            $('#show_452447470').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1513279895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-14T19:31:35+00:00">Dec 14, 2017 07:31 PM UTC</time> by <b>echism</b><a class="anchor" name="1513279895">&nbsp;</a></div><pre>Hey all,
+
+Where are we with the assorted items in this ticket, including the future plans question that Brian asked?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1512600748'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-06T22:52:28+00:00">Dec 6, 2017 10:52 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1512600748">&nbsp;</a></div><pre>Now that we have some sort of deadline, I am ok with leaving this ticket open. Let&#39;s revisit this specific issue on the 13th. I do however want to stress again that BeStMan and jGlobus will only receive security or critical bug fixes after the new year. Saul, what are your plans to move off of BeStMan?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1512599952'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-06T22:39:12+00:00">Dec 6, 2017 10:39 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1512599952">&nbsp;</a></div><pre>Hi,
+
+I am not sure I understand what I need to do to flag this as a site issue until it is fixed.  Doesn&#39;t closing this ticket mean that it is resolved ?  I understand that BU is rebuilding the server on Dec 12 and then it should fix the issue; but shouldn&#39;t the ticket be closed after it is verified that the issue is resolved ?    As of today, I cannot confirm that the issue is resolved since it still exists as demonstrated below&#58;
+
+[desilva@lxplus052 ~]$ voms-proxy-init -voms atlas -old
+Enter GRID pass phrase for this identity&#58;
+Contacting lcg-voms2.cern.ch&#58;15001 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch] &#34;atlas&#34;...
+Remote VOMS server contacted succesfully.
+
+Created proxy in /tmp/x509up_u28311.
+
+Your proxy is valid until Thu Dec 07 11&#58;30&#58;30 CET 2017
+[desilva@lxplus052 ~]$ rucio list-file-replicas panda.1206214522.574934.lib._12761731.11886445354.log.tgz
++---------+-----------------------------------------------------------+------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| SCOPE   | NAME                                                      | FILESIZE   | ADLER32   | RSE&#58; REPLICA                                                                                                                                                    |
+|---------+-----------------------------------------------------------+------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| panda   | panda.1206214522.574934.lib._12761731.11886445354.log.tgz | 63.353 kB  | 9fc17f39  | NET2_SCRATCHDISK&#58; <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a> |
++---------+-----------------------------------------------------------+------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[desilva@lxplus052 ~]$ gfal-ls -l <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>
+-rwxr-xr-x   1 47    46        63353 Dec  6 23&#58;23 <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>
+[desilva@lxplus052 ~]$ voms-proxy-init -voms atlas
+Enter GRID pass phrase for this identity&#58;
+Contacting voms2.cern.ch&#58;15001 [/DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch] &#34;atlas&#34;...
+Remote VOMS server contacted succesfully.
+
+Created proxy in /tmp/x509up_u28311.
+
+Your proxy is valid until Thu Dec 07 11&#58;31&#58;24 CET 2017
+[desilva@lxplus052 ~]$ gfal-ls -l <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/panda/e6/49/panda.1206214522.574934.lib._12761731.11886445354.log.tgz</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//atlas.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus052.cern.ch reports Error reading token data header&#58; Connection reset by peer
+
+[desilva@lxplus052 ~]$
+
+Thanks !
+
+<div id='show_622590843' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_622590843'>regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Wed Dec 06 22&#58;38&#58;46 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a>
+</div><script type='text/javascript'>
+        $('#show_622590843').click(function() {
+            $('#detail_622590843').slideDown("normal");
+            $('#show_622590843').hide();
+            $('#hide_622590843').show();
+        });
+        $('#hide_622590843').click(function() {
+            $('#detail_622590843').slideUp();
+            $('#hide_622590843').hide();
+            $('#show_622590843').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1512491513'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-05T16:31:53+00:00">Dec 5, 2017 04:31 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1512491513">&nbsp;</a></div><pre>Hi Asoka, Brian,
+
+Closing the ticket and re-opening if necessary is fine with us.
+
+We&#39;re actually going to re-build the server on December 12 as a
+way
+of fixing this problem as our previous attempts to switch from
+atlas.bu.edu
+to atlas-at4.bu.edu in AGIS introduced other problems.
+
+Between the new OSG release and the above rebuild, the problem
+should
+disappear.
+
+- Saul & Augustine
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Tue Dec 05 16&#58;31&#58;31 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539</pre></div><div class='update_description'><i onclick="document.location='34103#1512489464'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-05T15:57:44+00:00">Dec 5, 2017 03:57 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1512489464">&nbsp;</a></div><pre>Asoka,
+
+The &#34;fixed&#34; version of jglobus was released in the OSG months ago and we haven&#39;t heard any complaints. Afaict, the OSG can&#39;t actually help with the network troubleshooting issue so our participation in this thread seems unnecessary. If it turns out that there is still an issue with jglobus once the networking issue is solved, the software team would treat that as a new, albeit related, bug. On top of that, BeStMan2 support in the OSG will be ending completely in May 2018 (<a href='https&#58;//opensciencegrid.github.io/technology/policy/release-series/#life-cycle-dates' target='_blank' rel='nofollow'>https&#58;//opensciencegrid.github.io/technology/policy/release-series/#life-cycle-dates</a>).
+
+I would prefer closing the GOC ticket.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1512486249'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-05T15:04:09+00:00">Dec 5, 2017 03:04 PM UTC</time> by <b>echism</b><a class="anchor" name="1512486249">&nbsp;</a></div><pre>This one is ready to close, right? Or is there more?</pre></div><div class='update_description'><i onclick="document.location='34103#1511898072'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-28T19:41:12+00:00">Nov 28, 2017 07:41 PM UTC</time> by <b>Saul Youssef</b><a class="anchor" name="1511898072">&nbsp;</a></div><pre>We&#39;re attempting to fix this by switching to our new SRM endpoint (
+atlas-at4.bu.edu).  I just made the switch in AGIS (I think, DDM in AGIS
+just changed and it&#39;s pretty confusing).  Will watch for the switch-over.
+Once we have moved to atlas-at4, the problem should disappear.  - Saul &
+Augustine
+
+On Mon, Nov 27, 2017 at 9&#58;48 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34103#1511794844'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-27T15:00:44+00:00">Nov 27, 2017 03:00 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1511794844">&nbsp;</a></div><pre>Hi,
+
+I would rather you did not close this ticket until the issue is resolved or else it will be forgotten.
+
+the issue still exists eg on lxplus between the RFC and legacy proxy you can see one works and the other fails&#58;
+
+[desilva@lxplus022 ~]$ voms-proxy-init -voms atlas
+Enter GRID pass phrase for this identity&#58;
+Contacting lcg-voms2.cern.ch&#58;15001 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch] &#34;atlas&#34;...
+Remote VOMS server contacted succesfully.
+
+Created proxy in /tmp/x509up_u28311.
+
+Your proxy is valid until Tue Nov 28 03&#58;56&#58;15 CET 2017
+[desilva@lxplus022 ~]$ gfal-ls -t 60 <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//atlas.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus022.cern.ch reports Error reading token data header&#58; Connection reset by peer
+
+[desilva@lxplus022 ~]$ voms-proxy-init -voms atlas -old
+Enter GRID pass phrase for this identity&#58;
+Contacting voms2.cern.ch&#58;15001 [/DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch] &#34;atlas&#34;...
+Remote VOMS server contacted succesfully.
+
+Created proxy in /tmp/x509up_u28311.
+
+Your proxy is valid until Tue Nov 28 03&#58;56&#58;58 CET 2017
+[desilva@lxplus022 ~]$ gfal-ls -t 60 <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/</a>
+user
+mc12_8TeV
+tests
+mc15_13TeV
+mc14_13TeV
+data16_13TeV
+data15_hi
+group
+valid1
+<div id='show_1780986206' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1780986206'>valid2
+hc_test
+panda
+data15_13TeV
+mc15_14TeV
+data14_cos
+data15_cos
+mc16_13TeV
+data17_13TeV
+
+Thanks !
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Mon Nov 27 14&#58;59&#58;52 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a>
+</div><script type='text/javascript'>
+        $('#show_1780986206').click(function() {
+            $('#detail_1780986206').slideDown("normal");
+            $('#show_1780986206').hide();
+            $('#hide_1780986206').show();
+        });
+        $('#hide_1780986206').click(function() {
+            $('#detail_1780986206').slideUp();
+            $('#hide_1780986206').hide();
+            $('#show_1780986206').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1511794124'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-27T14:48:44+00:00">Nov 27, 2017 02:48 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1511794124">&nbsp;</a></div><pre>Saul,
+
+This ticket has been open for a while and it&#39;s starting to get tough to follow. Do you mind if we just close this one and if you do encounter problems after the networking issue is sorted out, open a new ticket?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1509393709'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-30T20:01:49+00:00">Oct 30, 2017 08:01 PM UTC</time> by <b>echism</b><a class="anchor" name="1509393709">&nbsp;</a></div><pre>Edgar,
+
+The activity is mostly happening in the linked ticket (34832).
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1508775134'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-23T16:12:14+00:00">Oct 23, 2017 04:12 PM UTC</time><a class="anchor" name="1508775134">&nbsp;</a></div><pre>Hi Saul,
+
+Can you please update the state of this ticket?
+
+Edgar Fajardo
+OSG Software Support
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='34103#1508164213'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-16T14:30:13+00:00">Oct 16, 2017 02:30 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508164213">&nbsp;</a></div><pre>Kevin Finelli has subscribed to this ticket.
+
+&#13;
+
+-- by Kevin Finelli at Mon Oct 16 13&#58;45&#58;41 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1508164151'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-16T14:29:11+00:00">Oct 16, 2017 02:29 PM UTC</time> by <b>Saul Youssef</b><a class="anchor" name="1508164151">&nbsp;</a></div><pre>Hello Kevin,
+
+We actually have a solution ready but it involves changing the SRM
+endpoint.  We&#39;ve been holding off not wanting to confuse the networking
+issue on the other ticket.  I&#39;m thinking about going ahead anyway at this
+point.  - Saul
+
+On Mon, Oct 16, 2017 at 9&#58;43 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34103#1508161408'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-16T13:43:28+00:00">Oct 16, 2017 01:43 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1508161408">&nbsp;</a></div><pre>Hi all,
+It&#39;s been about a month since the last update, has there been any progress on this issue?
+Thanks,
+Kevin&#13;
+
+-- by Kevin Finelli at Mon Oct 16 13&#58;43&#58;09 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1505917687'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-20T14:28:07+00:00">Sep 20, 2017 02:28 PM UTC</time> by <b>echism</b><a class="anchor" name="1505917687">&nbsp;</a></div><pre>checking in after maintenance.</pre></div><div class='update_description'><i onclick="document.location='34103#1505308860'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-13T13:21:00+00:00">Sep 13, 2017 01:21 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1505308860">&nbsp;</a></div><pre>Hi Elizabeth,
+
+Yes....  Shawn is helping on the other ticket.
+
+What I suspect happened is that on Aug. 23, we briefly switched
+our
+SRM in AGIS to fix the proxy problem below, and then resumed using the
+original SRM.  This may have caused some security software to block us
+to a
+couple of sites.
+
+As long as this isn&#39;t urgent, I&#39;m planning to wait do this
+change so
+as to not confuse the networking investigation.
+
+- Saul & Augustine
+
+On Wed, Sep 13, 2017 at 8&#58;25 AM, OSG GOC TX via RT &#60;RT-RACF@....&#62;
+wrote&#58;
+
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;   *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539</a>
+<font color='#7F7E6F'>&#62;   *Requestors&#58;* tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;          *Ccs&#58;* augustine@....</font>
+<font color='#7F7E6F'>&#62;        *Queue&#58;* NETier2</font>
+<font color='#7F7E6F'>&#62;        *Owner&#58;* Saul Youssef</font>
+<font color='#7F7E6F'>&#62;       *Status&#58;* *open*</font>
+<font color='#7F7E6F'>&#62;     *Priority&#58;* *Medium*</font>
+<font color='#7F7E6F'>&#62;  *Transaction&#58;* Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;      *Subject&#58;* RFC proxy failures for some services and some CAs</font>
+<font color='#7F7E6F'>&#62;              *GGUS Ticket&#58;* 128934</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62</a>;
+<font color='#7F7E6F'>&#62;           *OSG GOC Ticket&#58;* 34103</font>
+<div id='show_689810798' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_689810798'>&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62</a>;
+<font color='#7F7E6F'>&#62;         *GGUS Ticket Type&#58;* USER</font>
+<font color='#7F7E6F'>&#62;      *Resource Group Name&#58;* BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62;                  *VO Name&#58;* ATLAS</font>
+<font color='#7F7E6F'>&#62;        *GGUS Problem Type&#58;* Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ------------------------------</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Saul,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Has there been any word from the networking people?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks</font>
+<font color='#7F7E6F'>&#62;  -- by Elizabeth Prout at Wed Sep 13 12&#58;23&#58;27 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Wed Sep 13 13&#58;19&#58;23 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539
+</div><script type='text/javascript'>
+        $('#show_689810798').click(function() {
+            $('#detail_689810798').slideDown("normal");
+            $('#show_689810798').hide();
+            $('#hide_689810798').show();
+        });
+        $('#hide_689810798').click(function() {
+            $('#detail_689810798').slideUp();
+            $('#hide_689810798').hide();
+            $('#show_689810798').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1505305407'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-13T12:23:27+00:00">Sep 13, 2017 12:23 PM UTC</time> by <b>echism</b><a class="anchor" name="1505305407">&nbsp;</a></div><pre>Saul,
+
+Has there been any word from the networking people?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1504829414'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-08T00:10:14+00:00">Sep 8, 2017 12:10 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1504829414">&nbsp;</a></div><pre>Hi Elizabeth,
+
+We have updated our software and are planning to do some testing
+and
+switch our SRM again once this is working.
+
+If you look in our other open ticket, it might be that the last
+time
+we switched our SRM in AGIS, it caused a problem specific to transfers
+from
+NET2 to Freiburg.  If it&#39;s not causing a big problem, we might wait a
+day
+or so to let our networking people clarify the situation.
+
+- Saul
+
+On Wed, Sep 6, 2017 at 12&#58;29 PM, OSG GOC TX via RT &#60;RT-RACF@....&#62;
+wrote&#58;
+
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;   *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539</a>
+<font color='#7F7E6F'>&#62;   *Requestors&#58;* tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;          *Ccs&#58;* augustine@....</font>
+<font color='#7F7E6F'>&#62;        *Queue&#58;* NETier2</font>
+<font color='#7F7E6F'>&#62;        *Owner&#58;* Saul Youssef</font>
+<font color='#7F7E6F'>&#62;       *Status&#58;* *open*</font>
+<font color='#7F7E6F'>&#62;     *Priority&#58;* *Medium*</font>
+<font color='#7F7E6F'>&#62;  *Transaction&#58;* Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;      *Subject&#58;* RFC proxy failures for some services and some CAs</font>
+<font color='#7F7E6F'>&#62;              *GGUS Ticket&#58;* 128934</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62</a>;
+<font color='#7F7E6F'>&#62;           *OSG GOC Ticket&#58;* 34103</font>
+&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62</a>;
+<div id='show_2072800139' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2072800139'><font color='#7F7E6F'>&#62;         *GGUS Ticket Type&#58;* USER</font>
+<font color='#7F7E6F'>&#62;      *Resource Group Name&#58;* BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62;                  *VO Name&#58;* ATLAS</font>
+<font color='#7F7E6F'>&#62;        *GGUS Problem Type&#58;* Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ------------------------------</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Hey Saul,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; What&#39;s the status of this issue?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks</font>
+<font color='#7F7E6F'>&#62;  -- by Elizabeth Prout at Wed Sep 06 16&#58;28&#58;11 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Fri Sep 08 00&#58;09&#58;52 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539
+</div><script type='text/javascript'>
+        $('#show_2072800139').click(function() {
+            $('#detail_2072800139').slideDown("normal");
+            $('#show_2072800139').hide();
+            $('#hide_2072800139').show();
+        });
+        $('#hide_2072800139').click(function() {
+            $('#detail_2072800139').slideUp();
+            $('#hide_2072800139').hide();
+            $('#show_2072800139').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1504715291'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-06T16:28:11+00:00">Sep 6, 2017 04:28 PM UTC</time> by <b>echism</b><a class="anchor" name="1504715291">&nbsp;</a></div><pre>Hey Saul,
+
+What&#39;s the status of this issue?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1504205790'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-31T18:56:30+00:00">Aug 31, 2017 06:56 PM UTC</time> by <b>echism</b><a class="anchor" name="1504205790">&nbsp;</a></div><pre>Hey Saul,
+
+How are things?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1504019759'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-29T15:15:59+00:00">Aug 29, 2017 03:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1504019759">&nbsp;</a></div><pre>Not quite yet.  I have to fix some of our software and then switch us
+back
+over to the new SRM endpoint.  Should take about a day.  - Saul
+
+On Tue, Aug 29, 2017 at 10&#58;49 AM, OSG GOC TX via RT &#60;RT-RACF@....&#62;
+wrote&#58;
+
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;   *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539</a>
+<font color='#7F7E6F'>&#62;   *Requestors&#58;* tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;          *Ccs&#58;* augustine@....</font>
+<font color='#7F7E6F'>&#62;        *Queue&#58;* NETier2</font>
+<font color='#7F7E6F'>&#62;        *Owner&#58;* Saul Youssef</font>
+<font color='#7F7E6F'>&#62;       *Status&#58;* *open*</font>
+<font color='#7F7E6F'>&#62;     *Priority&#58;* *Medium*</font>
+<font color='#7F7E6F'>&#62;  *Transaction&#58;* Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;      *Subject&#58;* RFC proxy failures for some services and some CAs</font>
+<font color='#7F7E6F'>&#62;              *GGUS Ticket&#58;* 128934</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62</a>;
+<font color='#7F7E6F'>&#62;           *OSG GOC Ticket&#58;* 34103</font>
+&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62</a>;
+<font color='#7F7E6F'>&#62;         *GGUS Ticket Type&#58;* USER</font>
+<font color='#7F7E6F'>&#62;      *Resource Group Name&#58;* BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62;                  *VO Name&#58;* ATLAS</font>
+<font color='#7F7E6F'>&#62;        *GGUS Problem Type&#58;* Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ------------------------------</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Should I close this?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks</font>
+<div id='show_1306783586' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1306783586'><font color='#7F7E6F'>&#62;  -- by Elizabeth Prout at Tue Aug 29 14&#58;48&#58;47 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Tue Aug 29 15&#58;15&#58;23 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539
+</div><script type='text/javascript'>
+        $('#show_1306783586').click(function() {
+            $('#detail_1306783586').slideDown("normal");
+            $('#show_1306783586').hide();
+            $('#hide_1306783586').show();
+        });
+        $('#hide_1306783586').click(function() {
+            $('#detail_1306783586').slideUp();
+            $('#hide_1306783586').hide();
+            $('#show_1306783586').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1504018553'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-29T14:55:53+00:00">Aug 29, 2017 02:55 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1504018553">&nbsp;</a></div><pre>No, it is still an issue according to my test&#58;
+
+[desilva@lxplus065 ~]$ rseCheck  NET2_SCRATCHDISK
+....
+Created proxy in /tmp/x509up_u28311.
+
+Your proxy is valid until Wed Aug 30 04&#58;52&#58;53 CEST 2017
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125/CN=568337009
+issuer    &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+identity  &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+type      &#58; RFC3820 compliant impersonation proxy
+strength  &#58; 1024
+path      &#58; /tmp/x509up_u28311
+timeleft  &#58; 11&#58;59&#58;58
+key usage &#58; Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment
+=== VO atlas extension information ===
+VO        &#58; atlas
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+issuer    &#58; /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+attribute &#58; /atlas/Role=NULL/Capability=NULL
+attribute &#58; /atlas/ca/Role=NULL/Capability=NULL
+attribute &#58; /atlas/lcg1/Role=NULL/Capability=NULL
+attribute &#58; /atlas/team/Role=NULL/Capability=NULL
+attribute &#58; nickname = desilva (atlas)
+timeleft  &#58; 11&#58;59&#58;58
+uri       &#58; voms2.cern.ch&#58;15001
+....
+
+7&#58; Test SE access ...
+
+WAN read protocol priority&#58;
+srm &#58; <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/</a>
+root &#58; root&#58;//atlas-cm4.bu.edu&#58;1094//gpfs1/atlasscratchdisk/rucio/
+gsiftp &#58; <a href='gsiftp&#58;//atlas-cm2.bu.edu&#58;2811/gpfs1/atlasscratchdisk/rucio/' target='_blank' rel='nofollow'>gsiftp&#58;//atlas-cm2.bu.edu&#58;2811/gpfs1/atlasscratchdisk/rucio/</a>
+
+<div id='show_1190961036' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1190961036'>Checking protocol srm <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/</a> ...
+gfal-ls timeout set to 60 s ...
+gfal-ls -t 60 <a href='srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/' target='_blank' rel='nofollow'>srm&#58;//atlas.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/</a> ...
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//atlas.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus065.cern.ch reports Error reading token data header&#58; Connection reset by peer
+
+Test SE access                                                      [FAILED]
+
+and
+
+8&#58; Test rucio upload ...
+rucio upload --scope user.desilva --rse NET2_SCRATCHDISK /tmp/desilva/desilva/.alrb/checkRSE/testFuRYpe/upload/test.60bc75a1-c098-43e0-8b50-87c49078e350
+2017-08-29 16&#58;53&#58;04,350	INFO	Adding replicas in Rucio catalog
+2017-08-29 16&#58;53&#58;04,500	INFO	Replicas successfully added
+2017-08-29 16&#58;53&#58;04,500	INFO	Adding replication rule on RSE NET2_SCRATCHDISK for the file user.desilva&#58;test.60bc75a1-c098-43e0-8b50-87c49078e350
+2017-08-29 16&#58;53&#58;05,395	ERROR	The requested service is not available at the moment.
+Details&#58; An unknown exception occurred.
+Details&#58; srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//atlas.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus065.cern.ch reports Error reading token data header&#58; Connection reset by peer
+Test rucio upload                                                   [FAILED]
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Tue Aug 29 14&#58;55&#58;17 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a>
+</div><script type='text/javascript'>
+        $('#show_1190961036').click(function() {
+            $('#detail_1190961036').slideDown("normal");
+            $('#show_1190961036').hide();
+            $('#hide_1190961036').show();
+        });
+        $('#hide_1190961036').click(function() {
+            $('#detail_1190961036').slideUp();
+            $('#hide_1190961036').hide();
+            $('#show_1190961036').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1504018127'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-29T14:48:47+00:00">Aug 29, 2017 02:48 PM UTC</time> by <b>echism</b><a class="anchor" name="1504018127">&nbsp;</a></div><pre>Should I close this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1503682294'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-25T17:31:34+00:00">Aug 25, 2017 05:31 PM UTC</time> by <b>echism</b><a class="anchor" name="1503682294">&nbsp;</a></div><pre>Is this all buttoned up?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1503495403'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T13:36:43+00:00">Aug 23, 2017 01:36 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1503495403">&nbsp;</a></div><pre>I did switch to the new endpoint just today in AGIS.  It might take a
+day
+or so (?) for DDM to switch over.
+
+- Saul
+
+On Wed, Aug 23, 2017 at 9&#58;13 AM, OSG GOC TX via RT &#60;RT-RACF@....&#62;
+wrote&#58;
+
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;   *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539</a>
+<font color='#7F7E6F'>&#62;   *Requestors&#58;* tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;          *Ccs&#58;* augustine@....</font>
+<font color='#7F7E6F'>&#62;        *Queue&#58;* NETier2</font>
+<font color='#7F7E6F'>&#62;        *Owner&#58;* Saul Youssef</font>
+<font color='#7F7E6F'>&#62;       *Status&#58;* *open*</font>
+<font color='#7F7E6F'>&#62;     *Priority&#58;* *Medium*</font>
+<font color='#7F7E6F'>&#62;  *Transaction&#58;* Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;      *Subject&#58;* RFC proxy failures for some services and some CAs</font>
+<font color='#7F7E6F'>&#62;              *GGUS Ticket&#58;* 128934</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62</a>;
+<font color='#7F7E6F'>&#62;           *OSG GOC Ticket&#58;* 34103</font>
+&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62</a>;
+<font color='#7F7E6F'>&#62;         *GGUS Ticket Type&#58;* USER</font>
+<font color='#7F7E6F'>&#62;      *Resource Group Name&#58;* BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62;                  *VO Name&#58;* ATLAS</font>
+<font color='#7F7E6F'>&#62;        *GGUS Problem Type&#58;* Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ------------------------------</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Saul,</font>
+<div id='show_1215980069' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1215980069'><font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Did you change the endpoint?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks</font>
+<font color='#7F7E6F'>&#62;  -- by Elizabeth Prout at Wed Aug 23 13&#58;12&#58;18 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Wed Aug 23 13&#58;35&#58;52 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539
+</div><script type='text/javascript'>
+        $('#show_1215980069').click(function() {
+            $('#detail_1215980069').slideDown("normal");
+            $('#show_1215980069').hide();
+            $('#hide_1215980069').show();
+        });
+        $('#hide_1215980069').click(function() {
+            $('#detail_1215980069').slideUp();
+            $('#hide_1215980069').hide();
+            $('#show_1215980069').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1503493938'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T13:12:18+00:00">Aug 23, 2017 01:12 PM UTC</time> by <b>echism</b><a class="anchor" name="1503493938">&nbsp;</a></div><pre>Saul,
+
+Did you change the endpoint?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1503330207'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-21T15:43:27+00:00">Aug 21, 2017 03:43 PM UTC</time> by <b>echism</b><a class="anchor" name="1503330207">&nbsp;</a></div><pre>Hello,
+
+Where are we on this issue?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1502979668'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-17T14:21:08+00:00">Aug 17, 2017 02:21 PM UTC</time> by <b>echism</b><a class="anchor" name="1502979668">&nbsp;</a></div><pre>Hey Saul,
+
+Is this finished?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1502376104'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-10T14:41:44+00:00">Aug 10, 2017 02:41 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1502376104">&nbsp;</a></div><pre>On Thu Aug 03 12&#58;57&#58;24 2017, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; If Maarten is satisfied, I think we can go ahead and close this</font>
+<font color='#7F7E6F'>&#62; ticket.</font>
+<font color='#7F7E6F'>&#62; -- by Brian Lin at Thu Aug 03 16&#58;56&#58;29 UTC 2017</font>
+
+Almost. I&#39;m waiting for permission to change our DDM entries in AGIS to switch
+to a new endpoint. - Saul
+-- by youssef@.... at Thu Aug 10 14&#58;40&#58;22 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539</pre></div><div class='update_description'><i onclick="document.location='34103#1501779389'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-03T16:56:29+00:00">Aug 3, 2017 04:56 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1501779389">&nbsp;</a></div><pre>If Maarten is satisfied, I think we can go ahead and close this ticket.</pre></div><div class='update_description'><i onclick="document.location='34103#1501775557'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-03T15:52:37+00:00">Aug 3, 2017 03:52 PM UTC</time> by <b>echism</b><a class="anchor" name="1501775557">&nbsp;</a></div><pre>Hello all,
+
+Are there any updates on this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1501598860'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-01T14:47:40+00:00">Aug 1, 2017 02:47 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501598860">&nbsp;</a></div><pre>Hi all,
+srmping has &#34;managerv2&#34; as the default web service;
+an extra option has to be used to override that&#58;
+
+$ srmping -webservice_path=srm/v2/server <a href='srm&#58;//atlas-at4.bu.edu&#58;8443' target='_blank' rel='nofollow'>srm&#58;//atlas-at4.bu.edu&#58;8443</a>
+VersionInfo &#58; v2.3.0
+backend_type&#58;BeStMan
+backend_version&#58;2.2.2.3.0
+backend_build_date&#58;2016-05-26T23&#58;17&#58;52.000Z
+gsiftpTxfServers[0]&#58;<a href='gsiftp&#58;//cm2.bu.edu' target='_blank' rel='nofollow'>gsiftp&#58;//cm2.bu.edu</a>
+GatewayMode&#58;Enabled
+clientDN&#58;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=maart/CN=410032/CN=Maarten Litmaath
+localIDMapped&#58;usatlas1&#13;
+
+-- by Maarten Litmaath at Tue Aug 01 14&#58;46&#58;53 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1501552822'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-01T02:00:22+00:00">Aug 1, 2017 02:00 AM UTC</time> by <b>Saul Youssef</b><a class="anchor" name="1501552822">&nbsp;</a></div><pre>OK, thanks Asoka & Maarten.  We&#39;ll proceed migrating it to production.
+
+Just out of curiosity, do you know why srmping is giving that error?
+
+- Saul
+
+On Mon, Jul 31, 2017 at 6&#58;38 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34103#1501540738'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T22:38:58+00:00">Jul 31, 2017 10:38 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501540738">&nbsp;</a></div><pre>Hi all,
+never mind that srmping error that has nothing to do with this matter.
+
+We can conclude atlas-at4.bu.edu runs a version that works OK
+for proxies that are affected by the reported JGlobus problem.
+
+The production instance can thus be upgraded similarly, thanks!&#13;
+
+-- by Maarten Litmaath at Mon Jul 31 22&#58;38&#58;32 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1501540499'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T22:34:59+00:00">Jul 31, 2017 10:34 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501540499">&nbsp;</a></div><pre>Hmm ... that fails although gfal-ls worked&#58;
+
+[desilva@lxplus026 ~]$ setupATLAS -q
+[desilva@lxplus026 ~]$ lsetup rucio
+************************************************************************
+Requested&#58;  rucio ...
+Setting up emi 1.0.0_v3.centos7.preview ...
+Setting up rucio 1.11.3 ...
+Info&#58; Setting compatibility to slc6
+Warning&#58; missing 32-bit kerberos externals dir
+Info&#58; Set RUCIO_AUTH_TYPE to x509_proxy
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Information for user &#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;</font>
+emi&#58;
+No valid proxy present.  Type &#34;voms-proxy-init -voms atlas&#34;
+Your certificate has a nonRepudiation key.
+Please report this to DAST for any site access issues
+A temporary workaround is&#58; voms-proxy-init -voms atlas -old
+************************************************************************
+[desilva@lxplus026 ~]$ voms-proxy-init -voms atlas
+Enter GRID pass phrase for this identity&#58;
+Contacting voms2.cern.ch&#58;15001 [/DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch] &#34;atlas&#34;...
+Remote VOMS server contacted succesfully.
+
+Created proxy in /tmp/x509up_u28311.
+
+Your proxy is valid until Tue Aug 01 12&#58;32&#58;39 CEST 2017
+[desilva@lxplus026 ~]$ voms-proxy-info -all
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125/CN=1269971754
+issuer    &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+identity  &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+type      &#58; RFC3820 compliant impersonation proxy
+strength  &#58; 1024
+path      &#58; /tmp/x509up_u28311
+timeleft  &#58; 11&#58;59&#58;51
+key usage &#58; Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment
+<div id='show_417685522' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_417685522'>=== VO atlas extension information ===
+VO        &#58; atlas
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+issuer    &#58; /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+attribute &#58; /atlas/Role=NULL/Capability=NULL
+attribute &#58; /atlas/ca/Role=NULL/Capability=NULL
+attribute &#58; /atlas/lcg1/Role=NULL/Capability=NULL
+attribute &#58; /atlas/team/Role=NULL/Capability=NULL
+attribute &#58; nickname = desilva (atlas)
+timeleft  &#58; 11&#58;59&#58;51
+uri       &#58; voms2.cern.ch&#58;15001
+
+[desilva@lxplus026 ~]$ srmping <a href='srm&#58;//atlas-at4.bu.edu&#58;8443/srm/v2/server?SFN=/' target='_blank' rel='nofollow'>srm&#58;//atlas-at4.bu.edu&#58;8443/srm/v2/server?SFN=/</a>
+2017-08-01 00&#58;33&#58;00,661 [main] ERROR org.dcache.srm.client.SRMClientV2 - srmPing &#58; try # 0 failed with error The AXIS engine could not find a target service to invoke!  targetService is managerv2
+2017-08-01 00&#58;33&#58;00,663 [main] ERROR org.dcache.srm.client.SRMClientV2 -  srmPing &#58; try again
+2017-08-01 00&#58;33&#58;10,778 [main] ERROR org.dcache.srm.client.SRMClientV2 - srmPing &#58; try # 1 failed with error The AXIS engine could not find a target service to invoke!  targetService is managerv2
+2017-08-01 00&#58;33&#58;10,778 [main] ERROR org.dcache.srm.client.SRMClientV2 -  srmPing &#58; try again
+^C[desilva@lxplus026 ~]$&#13;
+
+-- by asoka.de.silva at Mon Jul 31 22&#58;33&#58;49 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a>
+</div><script type='text/javascript'>
+        $('#show_417685522').click(function() {
+            $('#detail_417685522').slideDown("normal");
+            $('#show_417685522').hide();
+            $('#hide_417685522').show();
+        });
+        $('#hide_417685522').click(function() {
+            $('#detail_417685522').slideUp();
+            $('#hide_417685522').hide();
+            $('#show_417685522').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1501540108'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T22:28:28+00:00">Jul 31, 2017 10:28 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501540108">&nbsp;</a></div><pre>Try
+
+srmping <a href='srm&#58;//atlas-at4.bu.edu&#58;8443/srm/v2/server?SFN=/' target='_blank' rel='nofollow'>srm&#58;//atlas-at4.bu.edu&#58;8443/srm/v2/server?SFN=/</a>
+
+- Saul
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Mon Jul 31 22&#58;28&#58;12 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539</pre></div><div class='update_description'><i onclick="document.location='34103#1501538037'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T21:53:57+00:00">Jul 31, 2017 09:53 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501538037">&nbsp;</a></div><pre>Thanks - yes the host cert name works&#58;
+
+[desilva@lxplus036 ~]$ gfal-ls <a href='srm&#58;//atlas-at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas-at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tgz</a>
+<a href='srm&#58;//atlas-at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tgz' target='_blank' rel='nofollow'>srm&#58;//atlas-at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tgz</a>
+
+[desilva@lxplus036 ~]$ voms-proxy-info -all
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125/CN=341997362
+issuer    &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+identity  &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+type      &#58; RFC3820 compliant impersonation proxy
+strength  &#58; 1024
+path      &#58; /tmp/x509up_u28311
+timeleft  &#58; 10&#58;09&#58;26
+key usage &#58; Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment
+=== VO atlas extension information ===
+VO        &#58; atlas
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+issuer    &#58; /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+attribute &#58; /atlas/Role=NULL/Capability=NULL
+attribute &#58; /atlas/ca/Role=NULL/Capability=NULL
+attribute &#58; /atlas/lcg1/Role=NULL/Capability=NULL
+attribute &#58; /atlas/team/Role=NULL/Capability=NULL
+attribute &#58; nickname = desilva (atlas)
+timeleft  &#58; 10&#58;09&#58;25
+uri       &#58; voms2.cern.ch&#58;15001&#13;
+
+-- by asoka.de.silva at Mon Jul 31 21&#58;53&#58;21 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1501537798'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T21:49:58+00:00">Jul 31, 2017 09:49 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501537798">&nbsp;</a></div><pre>Hi Asoka,
+please try with the host name that is recorded in the host certificate, atlas-at4.bu.edu.
+The short name can only be used if the host certificate mentions it in the SAN.&#13;
+
+-- by Maarten Litmaath at Mon Jul 31 21&#58;48&#58;55 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1501537198'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T21:39:58+00:00">Jul 31, 2017 09:39 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501537198">&nbsp;</a></div><pre>[desilva@lxplus027 ~]$ gfal-ls <a href='srm&#58;//at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tgz' target='_blank' rel='nofollow'>srm&#58;//at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tgz</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//at4.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus027.cern.ch reports Error initializing context
+GSS Major Status&#58; Unexpected Gatekeeper or Service Name
+
+GSS Minor Status Error Chain&#58;
+globus_gsi_gssapi&#58; Authorization denied&#58; The expected name for the remote host (host@....) does not match the authenticated name of the remote host (host@....). This happens when the name in the host certificate does not match the in&#13;
+
+-- by asoka.de.silva at Mon Jul 31 21&#58;39&#58;42 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1501536791'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T21:33:11+00:00">Jul 31, 2017 09:33 PM UTC</time> by <b>Saul Youssef</b><a class="anchor" name="1501536791">&nbsp;</a></div><pre>Typo Asoka...  Should be
+
+&#34;at4.bu.edu&#58;8443&#34;, not &#34;st4.bu.edu&#58;8443&#34;
+
+- Saul
+
+On Mon, Jul 31, 2017 at 4&#58;31 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34103#1501536658'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T21:30:58+00:00">Jul 31, 2017 09:30 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501536658">&nbsp;</a></div><pre>Still have access issues - what is the correct full path for gfal-ls ?  (eg with legacy proxy)
+
+[desilva@lxplus027 ~]$ gfal-ls <a href='srm&#58;//at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tg' target='_blank' rel='nofollow'>srm&#58;//at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tg</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//at4.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus027.cern.ch reports Error initializing context
+GSS Major Status&#58; Unexpected Gatekeeper or Service Name
+
+GSS Minor Status Error Chain&#58;
+globus_gsi_gssapi&#58; Authorization denied&#58; The expected name for the remote host (host@....) does not match the authenticated name of the remote host (host@....). This happens when the name in the host certificate does not match the in
+
+[desilva@lxplus027 ~]$ gfal-ls <a href='srm&#58;//st4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1' target='_blank' rel='nofollow'>srm&#58;//st4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//st4.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus027.cern.ch reports could not open connection to st4.bu.edu&#58;8443&#13;
+
+-- by asoka.de.silva at Mon Jul 31 21&#58;29&#58;50 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1501535537'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T21:12:17+00:00">Jul 31, 2017 09:12 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501535537">&nbsp;</a></div><pre>Can you try again Asoka?  Should be fixed as of a few minutes ago.   -
+Saul
+& Augustine
+
+[image&#58; Inline image 1]
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Mon Jul 31 21&#58;12&#58;01 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539</pre></div><div class='update_description'><i onclick="document.location='34103#1501533117'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T20:31:57+00:00">Jul 31, 2017 08:31 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501533117">&nbsp;</a></div><pre>[desilva@lxplus027 ~]$ gfal-ls <a href='srm&#58;//st4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1' target='_blank' rel='nofollow'>srm&#58;//st4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//st4.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus027.cern.ch reports could not open connection to st4.bu.edu&#58;8443
+
+Please let me have a path and note this other issue&#58;
+
+[desilva@lxplus027 ~]$ gfal-ls <a href='srm&#58;//at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tg' target='_blank' rel='nofollow'>srm&#58;//at4.bu.edu&#58;8443/srm/v2/server?SFN=/gpfs1/atlasscratchdisk/rucio/user/fschenck/d4/93/user.fschenck.363405.Sherpa.DAOD_TOPQ1.e4716_s2726_r7725_r7676_p2952.May-17.log.11305535.000005.log.tg</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//at4.bu.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on lxplus027.cern.ch reports Error initializing context
+GSS Major Status&#58; Unexpected Gatekeeper or Service Name
+
+GSS Minor Status Error Chain&#58;
+globus_gsi_gssapi&#58; Authorization denied&#58; The expected name for the remote host (host@....) does not match the authenticated name of the remote host (host@....). This happens when the name in the host certificate does not match the in
+
+Thanks !
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Mon Jul 31 20&#58;31&#58;44 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1501524229'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T18:03:49+00:00">Jul 31, 2017 06:03 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501524229">&nbsp;</a></div><pre>Hi Elizabeth,
+
+We have a new server with Bestman & JGlobus installed.  The new
+server
+works fine, but we don&#39;t have a way of testing with the problematic
+CAs.
+
+We&#39;re planning to transition to the new server and see if that
+solves
+the problem.  We&#39;ll probably do this tomorrow as we&#39;re having storage
+issues to work on today.
+
+I don&#39;t know if you can arrange to test the new server with old
+CAs in
+the mean time, but if you can, that would be helpful (at4.bu.edu).
+
+Cheers,
+
+- Saul & Augustine
+
+On Mon, Jul 31, 2017 at 1&#58;24 PM, OSG GOC TX via RT &#60;RT-RACF@....&#62;
+wrote&#58;
+
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;   *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539</a>
+<font color='#7F7E6F'>&#62;   *Requestors&#58;* tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;          *Ccs&#58;* augustine@....</font>
+<font color='#7F7E6F'>&#62;        *Queue&#58;* NETier2</font>
+<font color='#7F7E6F'>&#62;        *Owner&#58;* Saul Youssef</font>
+<font color='#7F7E6F'>&#62;       *Status&#58;* *open*</font>
+<font color='#7F7E6F'>&#62;     *Priority&#58;* *Medium*</font>
+<font color='#7F7E6F'>&#62;  *Transaction&#58;* Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;      *Subject&#58;* RFC proxy failures for some services and some CAs</font>
+<div id='show_1395618147' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1395618147'><font color='#7F7E6F'>&#62;              *GGUS Ticket&#58;* 128934</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62</a>;
+<font color='#7F7E6F'>&#62;           *OSG GOC Ticket&#58;* 34103</font>
+&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62</a>;
+<font color='#7F7E6F'>&#62;         *GGUS Ticket Type&#58;* USER</font>
+<font color='#7F7E6F'>&#62;      *Resource Group Name&#58;* BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62;                  *VO Name&#58;* ATLAS</font>
+<font color='#7F7E6F'>&#62;        *GGUS Problem Type&#58;* Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ------------------------------</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; How did it go?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thank you</font>
+<font color='#7F7E6F'>&#62;  -- by Elizabeth Prout at Mon Jul 31 17&#58;23&#58;07 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Mon Jul 31 18&#58;03&#58;29 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539
+</div><script type='text/javascript'>
+        $('#show_1395618147').click(function() {
+            $('#detail_1395618147').slideDown("normal");
+            $('#show_1395618147').hide();
+            $('#hide_1395618147').show();
+        });
+        $('#hide_1395618147').click(function() {
+            $('#detail_1395618147').slideUp();
+            $('#hide_1395618147').hide();
+            $('#show_1395618147').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1501521787'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-31T17:23:07+00:00">Jul 31, 2017 05:23 PM UTC</time> by <b>echism</b><a class="anchor" name="1501521787">&nbsp;</a></div><pre>How did it go?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='34103#1500954821'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-25T03:53:41+00:00">Jul 25, 2017 03:53 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1500954821">&nbsp;</a></div><pre>Yes, we have a test machine with the new JGlobus set up for testing.
+Assuming no problems, we&#39;ll swap it into production this week.  - Saul
+&
+Augustine
+
+On Mon, Jul 24, 2017 at 1&#58;17 PM, OSG GOC TX via RT &#60;RT-RACF@....&#62;
+wrote&#58;
+
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;   *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27539</a>
+<font color='#7F7E6F'>&#62;   *Requestors&#58;* tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;          *Ccs&#58;* augustine@....</font>
+<font color='#7F7E6F'>&#62;        *Queue&#58;* NETier2</font>
+<font color='#7F7E6F'>&#62;        *Owner&#58;* Saul Youssef</font>
+<font color='#7F7E6F'>&#62;       *Status&#58;* *open*</font>
+<font color='#7F7E6F'>&#62;     *Priority&#58;* *Medium*</font>
+<font color='#7F7E6F'>&#62;  *Transaction&#58;* Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;      *Subject&#58;* RFC proxy failures for some services and some CAs</font>
+<font color='#7F7E6F'>&#62;              *GGUS Ticket&#58;* 128934</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128934&#62</a>;
+<font color='#7F7E6F'>&#62;           *OSG GOC Ticket&#58;* 34103</font>
+&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34103&#62</a>;
+<font color='#7F7E6F'>&#62;         *GGUS Ticket Type&#58;* USER</font>
+<font color='#7F7E6F'>&#62;      *Resource Group Name&#58;* BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62;                  *VO Name&#58;* ATLAS</font>
+<font color='#7F7E6F'>&#62;        *GGUS Problem Type&#58;* Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ------------------------------</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Have there been any further developments on this?</font>
+<font color='#7F7E6F'>&#62;</font>
+<div id='show_1897482412' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1897482412'><font color='#7F7E6F'>&#62; Thanks</font>
+<font color='#7F7E6F'>&#62;  -- by Elizabeth Prout at Mon Jul 24 17&#58;16&#58;05 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Tue Jul 25 03&#58;53&#58;26 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539
+</div><script type='text/javascript'>
+        $('#show_1897482412').click(function() {
+            $('#detail_1897482412').slideDown("normal");
+            $('#show_1897482412').hide();
+            $('#hide_1897482412').show();
+        });
+        $('#hide_1897482412').click(function() {
+            $('#detail_1897482412').slideUp();
+            $('#hide_1897482412').hide();
+            $('#show_1897482412').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34103#1500916565'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-24T17:16:05+00:00">Jul 24, 2017 05:16 PM UTC</time> by <b>echism</b><a class="anchor" name="1500916565">&nbsp;</a></div><pre>Have there been any further developments on this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1500068711'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-14T21:45:11+00:00">Jul 14, 2017 09:45 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1500068711">&nbsp;</a></div><pre>Saul,
+
+Do you mean obtaining the new version of jglobus or BeStMan installation
+instructions? For the former, &#96;yum install jglobus
+--enablerepo=osg-testing&#96; should suffice. For the latter, we have some
+installation docs here
+(<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/BestmanOverview#Installation' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/BestmanOverview#Installation</a>)
+depending on your underlying storage solution. They are rather old so if
+ATLAS has newer or ATLAS-specific instructions, I&#39;d use those.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1500061310'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-14T19:41:50+00:00">Jul 14, 2017 07:41 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1500061310">&nbsp;</a></div><pre>On Fri Jul 14 14&#58;59&#58;20 2017, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; MWT2,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Can you assist Brian? He needs some ATLAS endpoint to perform a test</font>
+<font color='#7F7E6F'>&#62; which entails installing the new jglobus.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks</font>
+<font color='#7F7E6F'>&#62; -- by Elizabeth Prout at Fri Jul 14 18&#58;59&#58;00 UTC 2017</font>
+
+Hello Brian, Elizabeth,
+
+We can volunteer to test the new jGlobus Brian. We&#39;ve got to set up a new
+bestman2 endpoint anyway. Can you send us instructions?
+
+- Saul & Augustine & Dan
+-- by youssef@.... at Fri Jul 14 19&#58;41&#58;41 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539</pre></div><div class='update_description'><i onclick="document.location='34103#1500058740'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-14T18:59:00+00:00">Jul 14, 2017 06:59 PM UTC</time> by <b>echism</b><a class="anchor" name="1500058740">&nbsp;</a></div><pre>MWT2,
+
+Can you assist Brian? He needs some ATLAS endpoint to perform a test which entails installing the new jglobus.
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1499719625'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-10T20:47:05+00:00">Jul 10, 2017 08:47 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499719625">&nbsp;</a></div><pre>So are there any ATLAS-endpoints willing to install the new jglobus to verify this?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1499454572'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-07T19:09:32+00:00">Jul 7, 2017 07:09 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1499454572">&nbsp;</a></div><pre>Hi,
+
+Yes, I can test it.
+
+Just before you install and restart, let me know the end point so that I can confirm before fails and after works.
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Fri Jul 07 19&#58;08&#58;39 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1499454214'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-07T19:03:34+00:00">Jul 7, 2017 07:03 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1499454214">&nbsp;</a></div><pre>Hi all,
+if you deploy the new JGlobus on a BeStMan endpoint available to ATLAS
+(and restart the service), I would hope that Asoka could give it a try?
+
+One needs to have a certificate from an affected CA to be able to see any
+presumably improved behavior, e.g. one from the GridCanada CA...&#13;
+
+-- by Maarten Litmaath at Fri Jul 07 19&#58;02&#58;38 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1499453585'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-07T18:53:05+00:00">Jul 7, 2017 06:53 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499453585">&nbsp;</a></div><pre>Maarten,
+
+We&#39;ve built a patched jglobus that should be available in the osg-testing repository and mirrors over the next few hours. Would you be able to help us test the new build?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1499275644'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-05T17:27:24+00:00">Jul 5, 2017 05:27 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499275644">&nbsp;</a></div><pre>Ticket created here&#58; <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2807' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2807</a></pre></div><div class='update_description'><i onclick="document.location='34103#1499275298'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-05T17:21:38+00:00">Jul 5, 2017 05:21 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1499275298">&nbsp;</a></div><pre>Hi all,
+the matter is summarized here&#58;
+
+<a href='https&#58;//github.com/jglobus/JGlobus/issues/160' target='_blank' rel='nofollow'>https&#58;//github.com/jglobus/JGlobus/issues/160</a>
+
+Your SW team would need to rebuild JGlobus e.g. with the suggested patch.
+BeStMan itself stays unchanged.&#13;
+
+-- by Maarten Litmaath at Wed Jul 05 17&#58;21&#58;25 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1499272055'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-05T16:27:35+00:00">Jul 5, 2017 04:27 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499272055">&nbsp;</a></div><pre>Maarten,
+
+I&#39;m having trouble following the many tickets, does this require a patch to just jGlobus or jGlobus and BeStMan? Is there a link to the patch(es)? I can&#39;t seem to find it in any of the linked tickets.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1499093779'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-03T14:56:19+00:00">Jul 3, 2017 02:56 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1499093779">&nbsp;</a></div><pre>Hi OSG,
+as was concluded in the original ticket, BeStMan would need to be supplied
+with a patched JGlobus.  Brian was in the loop already there.
+The recipe was applied successfully by the dCache team.&#13;
+
+-- by Maarten Litmaath at Mon Jul 03 14&#58;55&#58;30 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1499090774'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-03T14:06:14+00:00">Jul 3, 2017 02:06 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1499090774">&nbsp;</a></div><pre>Hello,
+
+Is there any update on this?
+
+Thanks,
+Yun-Ha&#13;
+
+-- by Yun-Ha.Shin at Fri Jun 30 18&#58;22&#58;41 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1498754133'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-29T16:35:33+00:00">Jun 29, 2017 04:35 PM UTC</time> by <b>echism</b><a class="anchor" name="1498754133">&nbsp;</a></div><pre>Wei or Asoka,
+
+Could you explain the situation to Brian? I don&#39;t really have the background on this situation.
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1498589525'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T18:52:05+00:00">Jun 27, 2017 06:52 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1498589525">&nbsp;</a></div><pre>Wei,
+
+Does the jglobus patch fix issues with bestman? I&#39;m not sure if I&#39;m following the ggus thread correctly.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34103#1498582243'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T16:50:43+00:00">Jun 27, 2017 04:50 PM UTC</time> by <b>echism</b><a class="anchor" name="1498582243">&nbsp;</a></div><pre>I&#39;m adding software to this ticket to honor Wei&#39;s request.
+
+Software, Wei would like you to look at this patch.
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34103#1498097230'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-22T02:07:10+00:00">Jun 22, 2017 02:07 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1498097230">&nbsp;</a></div><pre>Hi Wei,
+
+The trigger is that some country CAs (CA and FR as far as I am aware) issue certificates with a non-Repudiation key and when RFC proxies are created, this breaks at old dCache and Bestman sites.  Yes, the workaround is to use legacy proxies but this is not a normal practice for users.
+
+regards,
+Asoka&#13;
+
+-- by Asoka De Silva at Thu Jun 22 02&#58;06&#58;53 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1498088048'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-21T23:34:08+00:00">Jun 21, 2017 11:34 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1498088048">&nbsp;</a></div><pre>Hi Elizabeth, Asoka,
+
+This is an known issue for many years. Good to see that there is a solution (JGlobus patch). Hopefully OSG will take action. I don&#39;t see an action item for NET2.
+
+I didn&#39;t quite follow the other thread but we haven&#39;t seen compliant until now because a proxy created by voms-proxy-init or grid-proxy-init -old won&#39;t have this issue. So what is the trigger?&#13;
+
+-- by Wei Yang at Wed Jun 21 23&#58;33&#58;52 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1497981486'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-20T17:58:06+00:00">Jun 20, 2017 05:58 PM UTC</time> by <b>echism</b><a class="anchor" name="1497981486">&nbsp;</a></div><pre>NET2,
+
+Is there any news on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='34103#1497619609'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-16T13:26:49+00:00">Jun 16, 2017 01:26 PM UTC</time> by <b>echism</b><a class="anchor" name="1497619609">&nbsp;</a></div><pre>NET2,
+
+Is there any news on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='34103#1497364349'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-13T14:32:29+00:00">Jun 13, 2017 02:32 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1497364349">&nbsp;</a></div><pre>&#13;
+
+-- by Maarten Litmaath at Tue Jun 13 14&#58;31&#58;12 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a></pre></div><div class='update_description'><i onclick="document.location='34103#1497309922'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-12T23:25:22+00:00">Jun 12, 2017 11:25 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1497309922">&nbsp;</a></div><pre>Hi Asoka,
+
+We&#39;ll have a look.   We don&#39;t run dCache, but we are a Bestman
+site.
+
+- Saul & Augustine
+
+On Mon, Jun 12, 2017 at 6&#58;35 PM, The RT System itself via RT &#60;
+
+--
+Saul Youssef
+Research Associate Professor
+Department of Physics
+Boston University
+590 Commonwealth Avenue
+Boston, MA 02215
+youssef@....
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef
+-- by youssef@.... at Mon Jun 12 23&#58;25&#58;09 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=27539</pre></div><div class='update_description'><i onclick="document.location='34103#1497306895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-12T22:34:55+00:00">Jun 12, 2017 10:34 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1497306895">&nbsp;</a></div><pre>Hi,
+
+There are 2 confirmations now that this rucio rse NET2_SCRATCHDISK has the issue described here&#58;
+
+<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=124650' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=124650</a>
+
+Could you please check that fixed version of dcache is installed at the site ?  (see solution in ggusticket above)
+
+Thanks !
+
+regards,
+Asoka
+
+Affected Site&#58; BU_ATLAS_Tier2
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128934</a>
+
+[Ticket History]
+Subject&#58; RFC proxy failures for some services and some CAs
+Ticket Type&#58; USER
+CC&#58;
+-- by asoka.de.silva at Mon Jun 12 22&#58;27&#58;42 UTC 2017
+
+&#13;
+
+-- by Pavel Verkner at Mon Jun 12 22&#58;34&#58;13 UTC 2017</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F34103">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 34103});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

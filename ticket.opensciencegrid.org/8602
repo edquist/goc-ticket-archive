@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[8602] OSG Storage&#58; dCache&#58; Replication Failure</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=8602" method="post">
+<div class="page-header">
+    <h3><span class="muted">8602</span> / OSG Storage&#58; dCache&#58; Replication Failure</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Fengping Hu</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2010-07-21</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Neha Sharma <span class="muted"> / OSG Storage Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=8602", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/8602?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/8602?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20OSG%20Storage%26%2358%3B%20dCache%26%2358%3B%20Replication%20Failure%20ISSUE%3D8602%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='8602#1279744356'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-21T20:32:36+00:00">Jul 21, 2010 08:32 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1279744356">&nbsp;</a></div><pre>Hi Neha,
+
+This fixed the problem.
+However I am not sure what caused this problem and not sure how to prevent this from happening again.
+
+Thanks,
+Fengping</pre></div><div class='update_description'><i onclick="document.location='8602#1279136836'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-14T19:47:16+00:00">Jul 14, 2010 07:47 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1279136836">&nbsp;</a></div><pre>follow up with user is in progress
+
+Ok, the last question is what shows
+
+storageinfoof 000100000000000006D8A730
+
+Thanks,
+tigran.
+On Mon Jul 12 22&#58;35&#58;12 2010, neha wrote&#58;
+I can copy the file into the /tmp directory and the copied file has
+the correct file size.
+One thing abnormal I want to point out is that the modification time
+of the file in the pool is updated when the replicaManager try to
+replicate the file.
+
+Thanks,
+Fengping</pre></div><div class='update_description'><i onclick="document.location='8602#1278531131'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-07T19:32:11+00:00">Jul 7, 2010 07:32 PM UTC</time> by <b>Ted Hesselroth</b><a class="anchor" name="1278531131">&nbsp;</a></div><pre>This is an automatic reply. I am on vacation until July 14. I will respond to your email when I return.
+
+Ted Hesselroth</pre></div><div class='update_description'><i onclick="document.location='8602#1276718946'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-06-16T20:09:06+00:00">Jun 16, 2010 08:09 PM UTC</time> by <b>Fengping Hu</b><a class="anchor" name="1276718946">&nbsp;</a></div><pre>ls -l 000100000000000006D8A730
+-rw-r--r-- 1 root root 1101477169 Jun 11 08&#58;40 000100000000000006D8A730
+
+rep ls  -l 000100000000000006D8A730
+000100000000000006D8A730 &#60;-P---------L(0)[0]&#62; 1101477169 si={myStore&#58;STRING}
+
+The file size on disk and in pnfs are the same.
+
+Thanks,
+
+Fengping Hu
+Unix Systems Administrator
+Rosen Center for Advanced Computing, Purdue University
+email&#58;fhu@.... phone&#58; 765-494-0032
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8602#1276718258'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-06-16T19:57:38+00:00">Jun 16, 2010 07:57 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1276718258">&nbsp;</a></div><pre>Hi Neha,
+
+could you please check that file 000100000000000006D8A730 has a correct size in
+pnfs and
+on the pool cms-127_2.
+
+Thanks,
+Tigran.</pre></div><div class='update_description'><i onclick="document.location='8602#1276114686'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-06-09T20:18:06+00:00">Jun 9, 2010 08:18 PM UTC</time> by <b>Fengping Hu</b><a class="anchor" name="1276114686">&nbsp;</a></div><pre>[dcache.rcac.purdue.edu] (cms-081_2) admin &#62; pp get file
+000100000000000006D8A730 cms-127_2
+Transfer Initiated
+[dcache.rcac.purdue.edu] (cms-081_2) admin &#62; rep ls -l
+000100000000000006D8A730
+(3) CacheException(rc=10007;msg=Entry not in repository &#58;
+000100000000000006D8A730) from ac_rep_ls_$_0_99
+diskCacheV111.util.FileNotInCacheException &#58; Entry not in repository &#58;
+000100000000000006D8A730
+[dcache.rcac.purdue.edu] (cms-081_2) admin &#62; pp ls
+7439 00004A1783ABE1DC4433B178C430334AA491 FSM.Connected
+7438 00003D3790079919475EA193D2FC9B03F482 FSM.Connected
+7437 00006CE861381FC74791BC8BC0C940D919E3 FSM.Connected
+7436 00007E3FD0AFED874C86A3B9A8ECF4E631EB FSM.Connected
+7427 0000148230C7B87B44CD9D70C5A4DFF4DAEE FSM.Connected
+7426 000095675016ADFD4038896A73DF3EC23832 FSM.Connected
+7440 00004CB11B3438254DE49FB49AF615A8DBC2 FSM.Connected
+7425 0000B4962F355D154F6FBB72CFD96D9F4EE6 FSM.DoorFinished
+7444 000100000000000006D8A730 FSM.CreatingMover
+[dcache.rcac.purdue.edu] (cms-081_2) admin &#62; pp ls
+7439 00004A1783ABE1DC4433B178C430334AA491 FSM.Connected
+7438 00003D3790079919475EA193D2FC9B03F482 FSM.Connected
+7437 00006CE861381FC74791BC8BC0C940D919E3 FSM.Connected
+7436 00007E3FD0AFED874C86A3B9A8ECF4E631EB FSM.Connected
+7427 0000148230C7B87B44CD9D70C5A4DFF4DAEE FSM.Connected
+7426 000095675016ADFD4038896A73DF3EC23832 FSM.Connected
+7440 00004CB11B3438254DE49FB49AF615A8DBC2 FSM.Connected
+7425 0000B4962F355D154F6FBB72CFD96D9F4EE6 FSM.DoorFinished
+7444 000100000000000006D8A730 FSM.CreatingMover
+[dcache.rcac.purdue.edu] (cms-081_2) admin &#62; pp ls
+7449 000049C108613FBE4499B37BC65AA31DE2C9 FSM.DoorFinished
+7439 00004A1783ABE1DC4433B178C430334AA491 FSM.DoorFinished
+7437 00006CE861381FC74791BC8BC0C940D919E3 FSM.DoorFinished
+7436 00007E3FD0AFED874C86A3B9A8ECF4E631EB FSM.Connected
+7427 0000148230C7B87B44CD9D70C5A4DFF4DAEE FSM.DoorFinished
+<div id='show_1622485284' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1622485284'>7426 000095675016ADFD4038896A73DF3EC23832 FSM.DoorFinished
+7446 00000F61DBF2780D40A0A694FF0C283C965D FSM.DoorFinished
+[dcache.rcac.purdue.edu] (cms-081_2) admin &#62; rep ls -l
+000100000000000006D8A730
+(3) CacheException(rc=10007;msg=Entry not in repository &#58;
+000100000000000006D8A730) from ac_rep_ls_$_0_99
+diskCacheV111.util.FileNotInCacheException &#58; Entry not in repository &#58;
+000100000000000006D8A730
+
+Fengping Hu
+Unix Systems Administrator
+Rosen Center for Advanced Computing, Purdue University
+email&#58;fhu@.... phone&#58; 765-494-0032
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1622485284').click(function() {
+            $('#detail_1622485284').slideDown("normal");
+            $('#show_1622485284').hide();
+            $('#hide_1622485284').show();
+        });
+        $('#hide_1622485284').click(function() {
+            $('#detail_1622485284').slideUp();
+            $('#hide_1622485284').hide();
+            $('#show_1622485284').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='8602#1276112238'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-06-09T19:37:18+00:00">Jun 9, 2010 07:37 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1276112238">&nbsp;</a></div><pre>hey fengping
+
+I have received following response from support person
+
+&#34;could you run &#39;rep ls -l 000100000000000006D8A730&#39; after p2p get
+Regards,
+Tigran.&#34;
+
+can you provide this info please?
+thanks
+-neha</pre></div><div class='update_description'><i onclick="document.location='8602#1274297610'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-05-19T19:33:30+00:00">May 19, 2010 07:33 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1274297610">&nbsp;</a></div><pre>The file size on disk is correct.
+
+I followed the 3 steps to replicate file manually by passing the replica manager.
+1) exclude 000100000000000006D8A730 in replicaManager cell
+2) cd destination pool
+3) pp get file 000100000000000006D8A730 cms-127_2
+&#34;Transfer Initiated&#34; is the only thing I can observe.
+This command seems fails silently.
+The file is not transfered as requested and there&#39;s no log information in the  pool logs of both source and destnation pools.
+
+So I tried to increase verbosity by editing the config/log4j.properties file and restart the dcache pool
+1) No logs after changed
+log4j.logger.logger.org.dcache.cells.messages=ERROR, stdout
+to
+log4j.logger.logger.org.dcache.cells.messages=WARN, stdout
+2)The logs become really noisy and I don&#39;t know how to extract useful information from it.
+when I changed  the line to log4j.logger.logger.org.dcache.cells.messages=DEBUG, stdout
+Though I am not really sure if what I did is a correct way to set log verbosity levels. The dcache version is production-1.9.5-11.
+The log4j command set is not available on the pool cell.
+I don&#39;t think I can set verbosity level in the System cell for a specific pool either.
+log4j logger ls -a
+Level Appenders                      Logger
+----- ---------                      ------
+WARN  [stdout]                       root
+ERROR [stdout]                       com.mchange
+-     []                             diskCacheV111.admin.PAMAuthentificator
+WARN  [stdout]                       diskCacheV111.doors
+-     []                             dmg.cells.network.LocationManagerConnector
+-     []                             dmg.cells.network.LocationMgrTunnel
+-     []                             dmg.cells.nucleus.CellGlue
+-     []                             dmg.cells.nucleus.CellNucleus
+-     []                             dmg.cells.nucleus.SystemCell
+-     []                             dmg.cells.services.BatchCell
+-     []                             dmg.cells.services.LocationManager
+-     []                             dmg.cells.services.RoutingManager
+<div id='show_1864993950' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1864993950'>-     []                             dmg.cells.services.login.LoginManager
+-     []                             dmg.cells.services.login.SshKeyManager
+-     []                             dmg.cells.services.login.StreamObjectCell
+-     []                             dmg.cells.services.login.user.AclCell
+-     []                             dmg.util.DummyStreamEngine
+-     []                             events.org.dcache.cells.deliver
+-     []                             events.org.dcache.cells.queue
+-     []                             events.org.dcache.cells.send
+DEBUG [traceFile]                    logger.dev.org.dcache.io.socket
+OFF   []                             logger.org.dcache
+ERROR [stdout]                       logger.org.dcache.cells.messages
+INFO  [stdout]                       logger.org.dcache.namespace
+INFO  [stdout]                       logger.org.dcache.repository
+OFF   []                             org.dcache
+-     []                             org.dcache.cells.network
+INFO  [stdout]                       org.dcache.chimera
+
+Fengping Hu
+Unix Systems Administrator
+Rosen Center for Advanced Computing, Purdue University
+email&#58;fhu@.... phone&#58; 765-494-0032
+
+Alex Kulyavtsev wrote&#58;
+Is file size on disk correct ? Use Unix &#34;ls&#34; command on directory containing raw data. Pool may think it has correct length, but the row data file on disk
+can be truncated.
+
+It looks like there is some error when file is replicated by p2p command.
+
+In admin CLI try to replicate file manually bypassing replica manager
+
+[1] 18 May 2010 13&#58;35&#58;24 (replicaManager) [] Replicator ID=186437, pnfsId=000100000000000006D8A730 starting, now 1/200 workers are
+active
+[2] 18 May 2010 13&#58;35&#58;24 (replicaManager) [] Sending p2p for 000100000000000006D8A730 cms-127_2 -&#62; cms-193_2
+[3] 18 May 2010 13&#58;35&#58;24 (replicaManager) [] 000100000000000006D8A730 Replicating
+
+[4] 18 May 2010 13&#58;35&#58;24 (replicaManager) [] cacheLocationModified &#58; pnfsID 000100000000000006D8A730 removed from pool cms-193_2
+[5] 18 May 2010 13&#58;35&#58;25 (replicaManager) [] Adjuster &#58; DB updated, scan DB and replicate or reduce
+[6] 18 May 2010 13&#58;35&#58;25 (replicaManager) [] cacheLocationModified &#58; pnfsID 000100000000000006D8A730 removed from pool cms-193_2 - DB
+updated
+
+1. use replica manager command - &#34;exclude&#34; file 000100000000000006D8A730 from replication  so there will no chatter int the log. Note time when
+it done.
+2. get to destination pool cms-193_2
+3. use p2p to replicate file from 000100000000000006D8A730 from pool cms-127_2
+
+watch for errors on source and destination pools, increase log verbosity if needed.
+
+Log record lines [4-6] seem particularly unusual. It looks like incomplete replica on destination pool has been removed by the pool, I do not see in the
+log replica manager issuing command to remove replica. Thing I do not like there pool removes old entry in response to the next replication command.
+I would expect when p2p transfer fails, pool will remove bad local replica of the file before it reports failure to the initiator. Perhaps it can be just
+timing, destination pool reports error to the replica manager directly while cacheLocationModified travels from pool to pnfsManager to broadcast to the
+replica manager.
+
+Sooo ... Before doing manual replication with p2p above, do not change anything on destination pool yet, if there is broken copy try to replicate and
+see what happens and when.
+On next attempt try to remove broken copy and then try to do p2p to see what happens when destination pool is &#39;clean&#39;. You may alos try to replicate
+file to different pool.
+
+Can you check pool is configured as precious ... or whatever it is called right now, so file replica are not removed right away.
+
+Alex.
+</div><script type='text/javascript'>
+        $('#show_1864993950').click(function() {
+            $('#detail_1864993950').slideDown("normal");
+            $('#show_1864993950').hide();
+            $('#hide_1864993950').show();
+        });
+        $('#hide_1864993950').click(function() {
+            $('#detail_1864993950').slideUp();
+            $('#hide_1864993950').hide();
+            $('#show_1864993950').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F8602">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 8602});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

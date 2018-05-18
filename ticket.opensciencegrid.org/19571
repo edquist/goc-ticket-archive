@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[19571] Problems with gridftp-hdfs in OSG 3.2</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=19571" method="post">
+<div class="page-header">
+    <h3><span class="muted">19571</span> / Problems with gridftp-hdfs in OSG 3.2</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Tim Theisen</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Tim Theisen</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Wait for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-03-06</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=19571", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/19571?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/19571?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Problems%20with%20gridftp-hdfs%20in%20OSG%203.2%20ISSUE%3D19571%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='19571#1393948455'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-04T15:54:15+00:00">Mar 4, 2014 03:54 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1393948455">&nbsp;</a></div><pre>I&#39;ve created a JIRA ticket to make a more permanent fix.
+<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1410' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1410</a></pre></div><div class='update_description'><i onclick="document.location='19571#1393946801'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-04T15:26:41+00:00">Mar 4, 2014 03:26 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1393946801">&nbsp;</a></div><pre>Great, I&#39;m glad things are working! If you have any other issues, don&#39;t hesitate to create a new ticket.</pre></div><div class='update_description'><i onclick="document.location='19571#1393944745'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-04T14:52:25+00:00">Mar 4, 2014 02:52 PM UTC</time><a class="anchor" name="1393944745">&nbsp;</a></div><pre>I have two RHEL6 gridftp servers that have been running fine in production since Friday.  Let&#39;s go ahead and close this ticket.  Thanks for your help!
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=egough/CN=734735/CN=Erik Gough</pre></div><div class='update_description'><i onclick="document.location='19571#1393600212'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-28T15:10:12+00:00">Feb 28, 2014 03:10 PM UTC</time><a class="anchor" name="1393600212">&nbsp;</a></div><pre>Hi Mat,
+
+I just tried the symlink and it is working.  I also tried added /usr/lib/jvm/java/jre/lib/amd64 to LD_LIBRARY_PATH in /usr/share/gridftp-hdfs/gridftp-hdfs-environment and it worked.  I will get a RHEL6 gridftp server up in production and once I confirm it behaves I will close the ticket.
+
+Thanks for the help!
+-Erik
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=egough/CN=734735/CN=Erik Gough</pre></div><div class='update_description'><i onclick="document.location='19571#1393545668'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-28T00:01:08+00:00">Feb 28, 2014 12:01 AM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1393545668">&nbsp;</a></div><pre>Hi Erik,
+Sorry this took so long. As Tim said, we got preempted.
+
+I haven&#39;t been able to reproduce your exact symptoms (for me, small files were broken too), but I did get some of the segfaults you described and I think that the missing libjsig.so is causing your problem. That file is typically provided by your JRE -- on my SL6 test machine, that&#39;s java-1.7.0-openjdk. It&#39;s not in a path that the loader would find it by default though, which is why you&#39;re getting that message.
+
+There should be a file at /usr/lib/jvm/java/jre/lib/amd64/libjsig.so. Try making a symlink to that in /usr/lib64 and restarting globus-gridftp-server. That solved it for me, anyway.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='19571#1393274628'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-24T20:43:48+00:00">Feb 24, 2014 08:43 PM UTC</time><a class="anchor" name="1393274628">&nbsp;</a></div><pre>Thanks for the update Tim.  If you can think of anything else I can provide before you take a look just let me know.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=egough/CN=734735/CN=Erik Gough</pre></div><div class='update_description'><i onclick="document.location='19571#1393271867'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-24T19:57:47+00:00">Feb 24, 2014 07:57 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1393271867">&nbsp;</a></div><pre>Erik&#58;
+
+We have not forgotten about you! Unfortunately, a couple of very high priority items have come up, and we need to focus on them first. Rest assured that we will get back to you soon and see if we can help you get the GridFTP-HDFS connector working.
+
+— Tim</pre></div><div class='update_description'><i onclick="document.location='19571#1392843153'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-19T20:52:33+00:00">Feb 19, 2014 08:52 PM UTC</time><a class="anchor" name="1392843153">&nbsp;</a></div><pre>I saw the files I attached to the email weren&#39;t in the file list.  I attached them through the web interface.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=egough/CN=734735/CN=Erik Gough</pre></div><div class='update_description'><i onclick="document.location='19571#1392741495'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-18T16:38:15+00:00">Feb 18, 2014 04:38 PM UTC</time> by <b>goughes@....</b><a class="anchor" name="1392741495">&nbsp;</a></div><pre>Hello,
+
+I keep running into an issue when installing gridftp-hdfs on RHEL6.  I
+am able to copy small files fine, but when I copy a larger file the
+transfer process seg faults.  This is a standalone gridftp server that
+is not a datanode in HDFS.
+
+When I copy an 18MB input file there is no issue.
+
+When I copy a 127MB file I get this error after the file is written and
+the cksums are calculated&#58;
+
+error&#58; an end-of-file was reached
+globus_xio_system_select.c&#58;globus_l_xio_system_try_read&#58;1140&#58;
+An end of file occurred
+
+When I copy a 129MB file I get this error&#58;
+error&#58; globus_xio_system_select.c&#58;globus_l_xio_system_try_write&#58;1424&#58;
+System error in write&#58; Connection reset by peer
+globus_xio&#58; A system call failed&#58; Connection reset by peer
+
+All other large files have the same error.
+
+I have attached 127.out and 128.out.  These files are the console debug
+output of gridftp-hdfs-standalone.
+
+I also attached the output of &#39;yum list installed&#39;.
+
+I have tried different java 6 rpms with no luck&#58; sun/openjdk
+
+Let me know if you have any thoughts.
+
+Thanks,
+-Erik
+
+<div id='show_1257243393' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1257243393'>On Wed, 2014-02-12 at 17&#58;42 +0000, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1257243393').click(function() {
+            $('#detail_1257243393').slideDown("normal");
+            $('#show_1257243393').hide();
+            $('#hide_1257243393').show();
+        });
+        $('#hide_1257243393').click(function() {
+            $('#detail_1257243393').slideUp();
+            $('#hide_1257243393').hide();
+            $('#show_1257243393').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='19571#1392227290'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-12T17:48:10+00:00">Feb 12, 2014 05:48 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1392227290">&nbsp;</a></div><pre>Date&#58; Tue, 11 Feb 2014 11&#58;48&#58;30 -0500
+
+Hi Tim,
+
+I am still unable to copy files when starting with a fresh RHEL6
+install, epel and OSG 3.2.
+
+I attached some output of running gridftp-hdfs-standalone and trying to
+copy a file.  I see this at the beginning&#58;
+
+ERROR&#58; ld.so&#58; object &#39;libjsig.so&#39; from LD_PRELOAD cannot be preloaded&#58;
+ignored.
+
+I had seen that before though and I could still copy &#60;128MB files.
+
+We have the USCMST2 meeting this afternoon.  I&#39;ll ask in that meeting if
+anyone else is running these packages successfully.
+
+-Erik</pre></div><div class='update_description'><i onclick="document.location='19571#1392227095'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-12T17:44:55+00:00">Feb 12, 2014 05:44 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1392227095">&nbsp;</a></div><pre>Date&#58; Mon, 10 Feb 2014 17&#58;02&#58;02 -0500
+
+Here are openssl versions&#58;
+
+openssl-1.0.1e-16.el6_5.4.x86_64
+globus-openssl-module-3.1-4.osg.el6.x86_64
+globus-gsi-openssl-error-2.1-4.osg.el6.x86_64
+openssl-devel-1.0.1e-16.el6_5.4.x86_64
+
+On Mon, 2014-02-10 at 15&#58;58 -0600, Tim Theisen wrote&#58;
+<font color='#7F7E6F'>&#62; Which openssl version is installed?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Can you provide logs? /var/log/messages /var/log/gridftp.log (Not sure</font>
+<font color='#7F7E6F'>&#62; on the last name.)</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ...Tim</font></pre></div><div class='update_description'><i onclick="document.location='19571#1392227040'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-12T17:44:00+00:00">Feb 12, 2014 05:44 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1392227040">&nbsp;</a></div><pre>Date&#58; Mon, 10 Feb 2014 16&#58;53&#58;30 -0500
+
+Well, here&#39;s what I just did.  Took a test VM, removed it from our
+puppet instance.  Removed all local repos.  Registered it with RHN.
+Installed OSG 3.2 / EPEL.  Ran yum update.  Installed
+osg-se-hadoop-gridftp and updated the hadoop config to reflect our
+environment.
+
+Now I can&#39;t copy any files...
+
+I get this error every time, no matter the file size.
+
+error&#58; globus_xio_system_select.c&#58;globus_l_xio_system_try_write&#58;1424&#58;
+System error in write&#58; Connection reset by peer
+globus_xio&#58; A system call failed&#58; Connection reset by peer
+
+Any thoughts?  Sorry for holding up the release on this.
+
+On Mon, 2014-02-10 at 14&#58;12 -0600, Tim Theisen wrote&#58;
+<font color='#7F7E6F'>&#62; Hi Erik,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks for the quick reply.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Is there a possibility that the Globus Toolkit 5.2.5 update in 3.2</font>
+<font color='#7F7E6F'>&#62; osg-testing might be causing the problem? We haven&#39;t had any reports of</font>
+<font color='#7F7E6F'>&#62; problems with the Globus Toolkit 5.2.5 update.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ...Tim</font></pre></div><div class='update_description'><i onclick="document.location='19571#1392226969'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-12T17:42:49+00:00">Feb 12, 2014 05:42 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1392226969">&nbsp;</a></div><pre>Date&#58; Mon, 10 Feb 2014 14&#58;59&#58;47 -0500
+
+Hi Tim,
+
+I see the issue with both of the versions which is the weird thing.
+
+gridftp-hdfs-0.5.4-9.osg.el6.x86_64
+gridftp-hdfs-0.5.4-10.osg.el6.x86_64
+
+I&#39;m starting with a new test VM now and will send an update in a half
+hour.  It has to be an issue on our end.  I&#39;m sure other sites are
+running the 0.5.4-9 package fine.
+
+-Erik
+
+On Mon, 2014-02-10 at 13&#58;30 -0600, Tim Theisen wrote&#58;
+<font color='#7F7E6F'>&#62; Hi Erik,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; If you downgrade this one package, does it work for you?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We are trying to make a go/no-go decision about this package today.</font>
+<font color='#7F7E6F'>&#62; Tomorrow is the release.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ...Tim</font></pre></div><div class='update_description'><i onclick="document.location='19571#1392226899'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-12T17:41:39+00:00">Feb 12, 2014 05:41 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1392226899">&nbsp;</a></div><pre>Fri, 07 Feb 2014 15&#58;41&#58;48 -0500&#58;
+
+Hi Tim,
+
+I am currently getting this weird issue when I install the current
+release version of gridftp on any RHEL6 node.  I am able to copy files
+into the server up to 128MB.  Once I copy a file &#62; 128MB, the transfer
+fails.  This seems like an issue where if the gridftp server has to
+create more than one block in HDFS it fails with the process killed by
+signal 11.
+
+I was thinking it was an issue with our local repos, but I got the same
+error when using the EPEL and OSG 3.2 repos.  I have reached out to some
+other sites to get versioning information for the packages installed on
+their RHEL6 nodes to see if there is an inconsistency.
+
+Does this gridftp-hdfs package support Hadoop 2.0?
+
+<a href='http&#58;//repo.grid.iu.edu/osg/3.2/el6/release/x86_64/gridftp-hdfs-0.5.4-9.osg.el6.x86_64.rpm' target='_blank' rel='nofollow'>http&#58;//repo.grid.iu.edu/osg/3.2/el6/release/x86_64/gridftp-hdfs-0.5.4-9.osg.el6.x86_64.rpm</a>
+
+I see that version running on our RHEL5 nodes and they seem to work
+fine.
+
+Sorry this is taking so long... one would think that installing and
+testing a gridftp server would be quite trivial.
+
+-Erik</pre></div><div class='update_description'><i onclick="document.location='19571#1392226778'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-12T17:39:38+00:00">Feb 12, 2014 05:39 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1392226778">&nbsp;</a></div><pre>Erik Gough is having trouble getting the latest version of gridftp-hdfs working in OSG 3.2.  I will be attaching our email conversation to date.</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F19571">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 19571});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

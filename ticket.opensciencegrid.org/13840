@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[13840] Improve OIM PKI user interface</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=13840" method="post">
+<div class="page-header">
+    <h3><span class="muted">13840</span> / Improve OIM PKI user interface</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Soichi Hayashi</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Soichi Hayashi</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-04-30</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Scott Teige <span class="muted"> / OSG Operations Infrastructure</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=13840", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/13840?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/13840?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Improve%20OIM%20PKI%20user%20interface%20ISSUE%3D13840%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='13840#1367513817'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-02T16:56:57+00:00">May 2, 2013 04:56 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1367513817">&nbsp;</a></div><pre>I am closing this ticket since most of the comments / bug reports by Eileen are already addressed, and have Jira tickets for long term goal.
+
+Eileen,
+Thank you for all of your comments, and please feel free to submit more if you have anything.</pre></div><div class='update_description'><i onclick="document.location='13840#1364836505'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-01T17:15:05+00:00">Apr 1, 2013 05:15 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1364836505">&nbsp;</a></div><pre>This is still on-going. Extending NAD to 4/30.</pre></div><div class='update_description'><i onclick="document.location='13840#1361390784'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-20T20:06:24+00:00">Feb 20, 2013 08:06 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1361390784">&nbsp;</a></div><pre>Eileen,
+
+Thanks! I have incorporated your comments to various Jira ticket I opened. I should be able to get most of those issues handled by 3/26 release.</pre></div><div class='update_description'><i onclick="document.location='13840#1361388607'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-20T19:30:07+00:00">Feb 20, 2013 07:30 PM UTC</time> by <b>berman@....</b><a class="anchor" name="1361388607">&nbsp;</a></div><pre>Hi, here are my comments -
+
+<font color='#7F7E6F'>&#62; The osg info at ‘getting a user certificate via web interface&#39; gives instructions on downloading the CA files. I thought the info on the fermi page said this would happen automatically. Will it?</font>
+When I tested it on Windows7/Chrome & Firefox, it prompted to install the CA when I first imported my user certificate. I hit &#34;Yes&#34;, and CA was automatically installed at that point. There is a Jira ticket related to do this <a href='http&#58;//jira.opensciencegrid.org/browse/OSGPKI-320' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OSGPKI-320</a>
+
+<font color='#7F7E6F'>&#62; The top of the certificate request page says &#34;This is a public certificate request form. If you are already an OIM user, please login first.&#34; there does not seem to be a button to &#39;login&#39; to OIM on this page. Where do I go?</font>
+<font color='#7F7E6F'>&#62; I hit the &#60;NoCert&#62; link at the upper right. It took me to a page with a Login button. I hit the login button. Nothing happened. Is something supposed to happen? Now I have no idea what to do.</font>
+Unlike a traditional user/pass *Login*, our &#34;Login&#34; means to access our application via HTTPS while user providing an OIM registered X509 certificate. &#34;Login&#34; button will appear if you access OIM via http&#58;// URL. When you click it, it simply forwards the same URL to https&#58;// URL and at that point user&#39;s browser will prompt user to select a user certificate to use. We have 5 possible use-cases. Case 1) User will select a valid OIM registered certificate (User ID will appear)
+Case 2) User will select a valid certificate that is not yet OIM registered (Register button will appear)
+Case 3) User has no certificate installed on their browser. (No Cert) will appear
+Case 4) User has valid certificate, but refuse to provide it - hit Cancel button on the cert selection dialog. (No Cert) will appear.
+Case 5) User provides certificate that is disabled in OIM - (Disabled) will appear.
+What complicates this matter further is the fact that once user makes a certificate selection decision (which cert to use, or whether or not to provide the cert at all), that decision will stick with the browser session until user restart a browser. So, if a user accidentally cancels the certificate selection, the user will always see &#34;No Cert&#34; even the user wanted to provide the certificate that he knows he has installed on a browser. I believe we could create a document detailing this information, and link it from (No Cert) button so that user can learn about it. I have created this Jira ticket &#62; <a href='http&#58;//jira.opensciencegrid.org/browse/OSGPKI-336' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OSGPKI-336</a>
+
+It was not obvious that the NoCert button was what i had to choose.  Can this be made more obvious?  Also, when i did hit it and then got to the screen with the Login button, i assumed i could then login.  It would be good to let the user know here also, that if they bypassed the supplying of a cert, then the login button will not work.
+
+<font color='#7F7E6F'>&#62; I went back to the OSG user certificate request page and entered my name in the first field. I got a popup window that said something like &#34;Resyncing with server&#34; and it had an &#34;OK&#34; button. I hit the OK button. The popup disappeared and so did my name in the Full Name field. I do not know what happened.</font>
+When you clicked (No Cert), it forwarded back to http&#58;// URL (basically doing a &#34;Log Off&#34;) and the session associated with your browser was destroyed. The original form you were in detected that the session that the form was rendered from no longer exists, and resync-ed with the server in order to render a new form. By making (No Cert) a link to above documentation, ant no longer do &#34;Log Off&#34;, I believe this scenario can be avoided.
+
+<font color='#7F7E6F'>&#62; The Phone field has no suggestions for the acceptable format. Hope I did it right. Why do I have to enter the timezone? Can&#39;t that be gotten from the city and state and country I entered? The format for selection of timezone is awkward. Someone could have to search through the entire thing. Can the places be alphabetized?</font>
+I will add sample values to all fields, including phone number. Timezone field is currently in the process of being deprecated (<a href='http&#58;//jira.opensciencegrid.org/browse/OIM-46' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OIM-46</a>)
+
+<font color='#7F7E6F'>&#62; There is no way to select another captcha if I cannot read that one. This reselection is often allowed on other sites. I entered the captcha wrong. When I went back to fix the issue the captcha was the same. Again, I do not know what to do. I do not see my error in the captcha to correct it. Another person cannot read it either. I had to quit the browser and start again. I restarted again several times before I got a captcha I could read.</font>
+I tried to use ReCaptcha (which is a more popular captcha provider and provides &#34;show other captcha&#34; feature) in the past, but I was not able to use it in the context of OIM. I don&#39;t remember the exact detail, but I will tackle this again and see if I can get it to work this time. I&#39;ve opened this jira ticket &#62; <a href='http&#58;//jira.opensciencegrid.org/browse/OSGPKI-337' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OSGPKI-337</a>
+
+<font color='#7F7E6F'>&#62; The password entry seems to drop characters if you type too fast. It is slow and I had multiple issues here and had to reenter things multiple times. Usually I do not have this problem at all.</font>
+Can you do &#34;ping oim.grid.iu.edu&#34; from your laptop and give me the result? I might have to switch back to do validation after user enters the entire password - instead of on each characters. I have opened this Jira ticket <a href='http&#58;//jira.opensciencegrid.org/browse/OSGPKI-338' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OSGPKI-338</a>
+
+mac-120549.dhcp.fnal.gov} ping oim.grid.iu.edu
+PING oim.grid.iu.edu (129.79.53.67)&#58; 56 data bytes
+64 bytes from 129.79.53.67&#58; icmp_seq=0 ttl=53 time=8.734 ms
+64 bytes from 129.79.53.67&#58; icmp_seq=1 ttl=53 time=11.374 ms
+64 bytes from 129.79.53.67&#58; icmp_seq=2 ttl=53 time=11.155 ms
+64 bytes from 129.79.53.67&#58; icmp_seq=3 ttl=53 time=10.957 ms
+64 bytes from 129.79.53.67&#58; icmp_seq=4 ttl=53 time=11.028 ms
+<div id='show_1205528233' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1205528233'>
+<font color='#7F7E6F'>&#62; I got to the end, hit submit and it would not let me get a cert because my email is already registered. But I don&#39;t know how to login from here. This should be more obvious at the top. I am exiting the browser and starting again.</font>
+Your OIM account currently has following DN associated (and you can&#39;t re-register using the same email address)
+/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Eileen Berman 600
+/DC=org/DC=doegrids/OU=People/CN=Eileen F. Berman 843159
+Do you have either of these certificate installed on your browser? If so, you need to select it when you login to OIM. If you don&#39;t have these anymore, then you need to contact GOC and have them disabled, then you will be able to submit new user certificate request using your current email address. I think I should do 2 things here.
+1) Validate email address (to see if they are already registered) before user hit submit button.
+2) Show details about why they can&#39;t re-use the email address inside the form.
+
+Yes i have the certs in the browser, and when i went back in i used them and everything went smoothly then. It would be good to let the user know that if they have an OIM account, they MUST yse it to register.  Otherwise they spend the time entering all the information only to be told they can&#39;t submit.
+
+Thanks for addressing these!!
+
+eileen
+</div><script type='text/javascript'>
+        $('#show_1205528233').click(function() {
+            $('#detail_1205528233').slideDown("normal");
+            $('#show_1205528233').hide();
+            $('#hide_1205528233').show();
+        });
+        $('#hide_1205528233').click(function() {
+            $('#detail_1205528233').slideUp();
+            $('#hide_1205528233').hide();
+            $('#show_1205528233').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13840#1361376407'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-20T16:06:47+00:00">Feb 20, 2013 04:06 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1361376407">&nbsp;</a></div><pre>Eileen, I don&#39;t see your comments on your previous update. Can you post it again?</pre></div><div class='update_description'><i onclick="document.location='13840#1361369889'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-20T14:18:09+00:00">Feb 20, 2013 02:18 PM UTC</time> by <b>berman@....</b><a class="anchor" name="1361369889">&nbsp;</a></div><pre>Hi, thanks for the feedback.  Further comments are below
+
+eileen</pre></div><div class='update_description'><i onclick="document.location='13840#1361368980'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-20T14:03:00+00:00">Feb 20, 2013 02:03 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1361368980">&nbsp;</a></div><pre>Ruth forwarded me a feedback from Eileen on our current user certificate request form.
+
+Eileen,
+
+<font color='#7F7E6F'>&#62; The osg info at ‘getting a user certificate via web interface&#39; gives instructions on downloading the CA files.  I thought the info on the fermi page said this would happen automatically. Will it?</font>
+When I tested it on Windows7/Chrome & Firefox, it prompted to install the CA when I first imported my user certificate. I hit &#34;Yes&#34;, and CA was automatically installed at that point. There is a Jira ticket related to do this <a href='http&#58;//jira.opensciencegrid.org/browse/OSGPKI-320' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OSGPKI-320</a>
+
+<font color='#7F7E6F'>&#62; The top of the certificate request page says &#34;This is a public certificate request form. If you are already an OIM user, please login first.&#34;  there does not seem to be a button to &#39;login&#39; to OIM on this page.  Where do I go?</font>
+<font color='#7F7E6F'>&#62; I hit the &#60;NoCert&#62; link at the upper right. It took me to a page with a Login button.  I hit the login button. Nothing happened.  Is something supposed to happen? Now I have no idea what to do.</font>
+Unlike a traditional user/pass *Login*, our &#34;Login&#34; means to access our application via HTTPS while user providing an OIM registered X509 certificate. &#34;Login&#34; button will appear if you access OIM via http&#58;// URL. When you click it, it simply forwards the same URL to https&#58;// URL and at that point user&#39;s browser will prompt user to select a user certificate to use.  We have 5 possible use-cases. Case 1) User will select a valid OIM registered certificate (User ID will appear)
+Case 2) User will select a valid certificate that is not yet OIM registered (Register button will appear)
+Case 3) User has no certificate installed on their browser. (No Cert) will appear
+Case 4) User has valid certificate, but refuse to provide it - hit Cancel button on the cert selection dialog. (No Cert) will appear.
+Case 5) User provides certificate that is disabled in OIM - (Disabled) will appear.
+What complicates this matter further is the fact that once user makes a certificate selection decision (which cert to use, or whether or not to provide the cert at all), that decision will stick with the browser session until user restart a browser. So, if a user accidentally cancels the certificate selection, the user will always see &#34;No Cert&#34; even the user wanted to provide the certificate that he knows he has installed on a browser. I believe we could create a document detailing this information, and link it from (No Cert) button so that user can learn about it. I have created this Jira ticket &#62; <a href='http&#58;//jira.opensciencegrid.org/browse/OSGPKI-336' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OSGPKI-336</a>
+
+<font color='#7F7E6F'>&#62; I went back to the OSG user certificate request page and entered my name in the first field.  I got a popup window that said something like &#34;Resyncing with server&#34; and it had an &#34;OK&#34; button.  I hit the OK button.  The popup disappeared and so did my name in the Full Name field.  I do not know what happened.</font>
+When you clicked (No Cert), it forwarded back to http&#58;// URL (basically doing a &#34;Log Off&#34;) and the session associated with your browser was destroyed. The original form you were in detected that the session that the form was rendered from no longer exists, and resync-ed with the server in order to render a new form. By making (No Cert) a link to above documentation, ant no longer do &#34;Log Off&#34;, I believe this scenario can be avoided.
+
+<font color='#7F7E6F'>&#62; The Phone field has no suggestions for the acceptable format. Hope I did it right. Why do I have to enter the timezone? Can&#39;t that be gotten from the city and state and country I entered? The format for selection of timezone is awkward.  Someone could have to search through the entire thing. Can the places be alphabetized?</font>
+I will add sample values to all fields, including phone number. Timezone field is currently in the process of being deprecated (<a href='http&#58;//jira.opensciencegrid.org/browse/OIM-46' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OIM-46</a>)
+
+<font color='#7F7E6F'>&#62; There is no way to select another captcha if I cannot read that one.  This reselection is often allowed on other sites.  I entered the captcha wrong.  When I went back to fix the issue the captcha was the same.  Again, I do not know what to do. I do not see my error in the captcha to correct it. Another person cannot read it either. I had to quit the browser and start again.  I restarted again several times before I got a captcha I could read.</font>
+I tried to use ReCaptcha (which is a more popular captcha provider and provides &#34;show other captcha&#34; feature) in the past, but I was not able to use it in the context of OIM. I don&#39;t remember the exact detail, but I will tackle this again and see if I can get it to work this time. I&#39;ve opened this jira ticket &#62; <a href='http&#58;//jira.opensciencegrid.org/browse/OSGPKI-337' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OSGPKI-337</a>
+
+<font color='#7F7E6F'>&#62; The password entry seems to drop characters if you type too fast.  It is slow and I had multiple issues here and had to reenter things multiple times.  Usually I do not have this problem at all.</font>
+Can you do &#34;ping oim.grid.iu.edu&#34; from your laptop and give me the result? I might have to switch back to do validation after user enters the entire password - instead of on each characters. I have opened this Jira ticket <a href='http&#58;//jira.opensciencegrid.org/browse/OSGPKI-338' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/OSGPKI-338</a>
+
+<font color='#7F7E6F'>&#62; I got to the end, hit submit and it would not let me get a cert because my email is already registered. But I don&#39;t know how to login from here.  This should be more obvious at the top. I am exiting the browser and starting again.</font>
+Your OIM account currently has following DN associated (and you can&#39;t re-register using the same email address)
+/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Eileen Berman 600
+/DC=org/DC=doegrids/OU=People/CN=Eileen F. Berman 843159
+Do you have either of these certificate installed on your browser? If so, you need to select it when you login to OIM. If you don&#39;t have these anymore, then you need to contact GOC and have them disabled, then you will be able to submit new user certificate request using your current email address. I think I should do 2 things here.
+1) Validate email address (to see if they are already registered) before user hit submit button.
+2) Show details about why they can&#39;t re-use the email address inside the form.
+<div id='show_613848648' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_613848648'>
+Thank you for the great feedback! Please feel free to send me more of these.
+
+</div><script type='text/javascript'>
+        $('#show_613848648').click(function() {
+            $('#detail_613848648').slideDown("normal");
+            $('#show_613848648').hide();
+            $('#hide_613848648').show();
+        });
+        $('#hide_613848648').click(function() {
+            $('#detail_613848648').slideUp();
+            $('#hide_613848648').hide();
+            $('#show_613848648').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F13840">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 13840});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

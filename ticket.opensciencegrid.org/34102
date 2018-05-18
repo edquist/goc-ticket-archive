@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[34102] RFC proxy failures for some services and some CAs</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=34102" method="post">
+<div class="page-header">
+    <h3><span class="muted">34102</span> / RFC proxy failures for some services and some CAs</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">asoka.de.silva </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">ATLAS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">asoka.de.silva</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USATLAS</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Elevated</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">TX Incoming</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-08-18</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=128933">128933</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">USATLAS (BNL Prod)&nbsp;<a target="_blank" href="https://rt.racf.bnl.gov/rt/Ticket/Display.html?id=27538">27538</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=34102", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/34102?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/34102?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20RFC%20proxy%20failures%20for%20some%20services%20and%20some%20CAs%20ISSUE%3D34102%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='34102#1504310370'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-01T23:59:30+00:00">Sep 1, 2017 11:59 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1504310370">&nbsp;</a></div><pre>This ticket was closed automatically. If this issue has not been resolved according your expectations or if you need further information, please submit a new ticket referencing this one.&#13;
+
+-- by GGUS SYSTEM at Fri Sep 01 23&#58;59&#58;00 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1503526052'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T22:07:32+00:00">Aug 23, 2017 10:07 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1503526052">&nbsp;</a></div><pre>Hi,
+
+I think this issue may be unrelated to the subject of this ticket and needs to be taken up with ATLAS DDM support so I&#39;ll point them to this ticket too.
+
+I cannot test NET2 since the issue with this proxy is still being resolved.  SLAC works.
+
+The lower level commands would probably be through strace (there is a verbose option for rucio if you want to try but it does not show much ....)  Here is the recipe.
+
+export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
+alias setupATLAS=&#39;source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh&#39;
+setupATLAS
+lsetup rucio
+voms-proxy-init -voms atlas
+mydid=&#96;uuidgen&#96;
+cd
+rm -rf ./t2a
+mkdir -p t2a
+cd ~/t2a
+uuidgen &#62; ~/t2a/myFile.$mydid.log
+rucio --verbose upload --scope user.desilva --rse SWT2_CPB_SCRATCHDISK ~/t2a/myFile.$mydid.log
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Wed Aug 23 22&#58;06&#58;38 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1503523811'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T21:30:11+00:00">Aug 23, 2017 09:30 PM UTC</time> by <b>Patrick McGuigan</b><a class="anchor" name="1503523811">&nbsp;</a></div><pre>Hi Asoka,
+
+I have a number of questions because I am not sure what is trying to be done at
+the SRM level.  In my logs there are two attempts to perform an srm-ls on the
+file before being transferred.  The file is then transferred to our local path of&#58;
+/xrd/atlasscratchdisk/rucio/user/desilva/f2/de/test.287c9f0f-6655-46e0-a88b-1d1c9af6024b.rucio.upload
+
+and immediately afterwards there is some form of an SRM-MV command that fails.
+Our logging does not provide any insight of what was being moved nor the
+destination.
+
+Some questions&#58;
+
+Are you seeing this issue with other Bestman SRM&#39;s (NET2, SLACXRD)?
+
+Are you seeing this with the other space tokens?
+
+Do you know the lower level sequence of commands that rucio is using to attempt
+this test?  I am curious what the mv command is trying to do.  Also, if I can
+divorce the rucio operations from the SRM operations, I can potentially test
+this on a non-production machine where I can crank up the logging.
+
+Regards,
+
+Patrick
+
+On 08/23/2017 11&#58;23 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34102#1503505406'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T16:23:26+00:00">Aug 23, 2017 04:23 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1503505406">&nbsp;</a></div><pre>Hi,
+
+I&#39;m seeing this&#58;
+
+(setupATLAS
+diagnostics
+rseCheck SWT2_CPB_SCRATCHDISK
+)
+
+8&#58; Test rucio upload ...
+rucio upload --scope user.desilva --rse SWT2_CPB_SCRATCHDISK /tmp/desilva/desilva/.alrb/checkRSE/testPnkInY/upload/test.287c9f0f-6655-46e0-a88b-1d1c9af6024b
+2017-08-23 18&#58;18&#58;53,669	INFO	Adding replicas in Rucio catalog
+2017-08-23 18&#58;18&#58;54,533	INFO	Replicas successfully added
+2017-08-23 18&#58;18&#58;54,534	INFO	Adding replication rule on RSE SWT2_CPB_SCRATCHDISK for the file user.desilva&#58;test.287c9f0f-6655-46e0-a88b-1d1c9af6024b
+2017-08-23 18&#58;19&#58;18,789	ERROR	The requested service is not available at the moment.
+Details&#58; An unknown exception occurred.
+Details&#58; srm-ifce err&#58; Operation not supported, err&#58; [SE][Mv][SRM_NOT_SUPPORTED] httpg&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server&#58; Gateway mode does not support this function
+Test rucio upload                                                   [FAILED]
+
+(note&#58;
+gfal-ls -t 60 <a href='srm&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk/rucio/' target='_blank' rel='nofollow'>srm&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk/rucio/</a> ...
+works)
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Wed Aug 23 16&#58;22&#58;40 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1503008602'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-17T22:23:22+00:00">Aug 17, 2017 10:23 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1503008602">&nbsp;</a></div><pre>Thanks Asoka,
+
+I am glad everything worked.
+
+The delay may be related to the high load we are experiencing on that SRM at
+the moment, likely caused by a problematic storage server. That is the subject
+of a different ticket.
+
+It looks like the issue related to the proxies generated by the French and
+Canadian CA certificates has been resolved.
+
+I am closing the ticket.
+
+Patrick
+-- by mcguigan@.... at Thu Aug 17 22&#58;23&#58;10 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=SWTier2 ID=27538</pre></div><div class='update_description'><i onclick="document.location='34102#1503008145'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-17T22:15:45+00:00">Aug 17, 2017 10:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1503008145">&nbsp;</a></div><pre>Hi Patrick,
+
+[desilva@lxplus085 ~]$ voms-proxy-info -all
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125/CN=412442442
+issuer    &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+identity  &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+type      &#58; RFC3820 compliant impersonation proxy
+strength  &#58; 1024
+path      &#58; /tmp/x509up_u28311
+timeleft  &#58; 11&#58;54&#58;18
+key usage &#58; Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment
+=== VO atlas extension information ===
+VO        &#58; atlas
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+issuer    &#58; /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+attribute &#58; /atlas/Role=NULL/Capability=NULL
+attribute &#58; /atlas/ca/Role=NULL/Capability=NULL
+attribute &#58; /atlas/lcg1/Role=NULL/Capability=NULL
+attribute &#58; /atlas/team/Role=NULL/Capability=NULL
+attribute &#58; nickname = desilva (atlas)
+timeleft  &#58; 11&#58;54&#58;18
+uri       &#58; voms2.cern.ch&#58;15001
+
+[desilva@lxplus085 ~]$ srmping -webservice_path=srm/v2/server <a href='srm&#58;//gk03.atlas-swt2.org' target='_blank' rel='nofollow'>srm&#58;//gk03.atlas-swt2.org</a>
+VersionInfo &#58; v2.3.0
+backend_type&#58;BeStMan
+backend_version&#58;2.2.2.3.0
+backend_build_date&#58;2016-05-27T00&#58;17&#58;52.000Z
+gsiftpTxfServers[0]&#58;gk04.atlas-swt2.org
+gsiftpTxfServers[1]&#58;gk05.atlas-swt2.org
+GatewayMode&#58;Enabled
+clientDN&#58;/C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+gumsIDMapped&#58;usatlas4
+
+[desilva@lxplus085 ~]$ gfal-ls -l &#39;<a href='srm&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1&#39' target='_blank' rel='nofollow'>srm&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1&#39</a>;
+<div id='show_1953587698' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1953587698'>-rwxr-xr-x   1 47    46       141840 Aug 17 22&#58;30 <a href='srm&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1' target='_blank' rel='nofollow'>srm&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1</a>
+[desilva@lxplus085 ~]$ gfal-ls -l &#39;<a href='srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk&#39' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk&#39</a>;
+d---------   1 0     0             0 Aug 17 19&#58;42 SAM
+d---------   1 0     0             0 Apr  1  2016 dumps
+d---------   1 0     0             0 Aug  4 11&#58;45 rucio
+[desilva@lxplus085 ~]$
+[desilva@lxplus085 ~]$
+[desilva@lxplus085 ~]$
+[desilva@lxplus085 ~]$ srmping -webservice_path=srm/v2/server <a href='srm&#58;//gk05.swt2.uta.edu' target='_blank' rel='nofollow'>srm&#58;//gk05.swt2.uta.edu</a>
+VersionInfo &#58; v2.3.0
+backend_type&#58;BeStMan
+backend_version&#58;2.2.2.3.0
+backend_build_date&#58;2016-05-27T00&#58;17&#58;52.000Z
+gsiftpTxfServers[0]&#58;gk01.swt2.uta.edu
+GatewayMode&#58;Enabled
+clientDN&#58;/C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+gumsIDMapped&#58;usatlas4
+
+[desilva@lxplus085 ~]$ gfal-ls -l &#39;<a href='srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-17.1&#39' target='_blank' rel='nofollow'>srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-17.1&#39</a>;
+-rwxr-xr-x   1 47    46       141570 Aug 17 22&#58;35 <a href='srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-17.1' target='_blank' rel='nofollow'>srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-17.1</a>
+[desilva@lxplus085 ~]$ gfal-ls -l &#39;<a href='srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-test&#39' target='_blank' rel='nofollow'>srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-test&#39</a>;
+----------   1 0     0        141570 Aug 17 21&#58;35 2017-08-17.1
+----------   1 0     0           762 Oct 27  2016 gk05.test.10-26-16
+d---------   1 0     0             0 Aug 17 22&#58;40 nagios
+[desilva@lxplus085 ~]$
+
+Works.  (the first srmping I tried, it seemed to take a long time &#62; 2 mins and I had to ctrl-c.  I was unable to reproduce that.)
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Thu Aug 17 22&#58;15&#58;07 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a>
+</div><script type='text/javascript'>
+        $('#show_1953587698').click(function() {
+            $('#detail_1953587698').slideDown("normal");
+            $('#show_1953587698').hide();
+            $('#hide_1953587698').show();
+        });
+        $('#hide_1953587698').click(function() {
+            $('#detail_1953587698').slideUp();
+            $('#hide_1953587698').hide();
+            $('#show_1953587698').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34102#1503003236'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-17T20:53:56+00:00">Aug 17, 2017 08:53 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1503003236">&nbsp;</a></div><pre>HI Asoka,
+
+Can I trouble you try one last time against our production servers so
+that we can move to close out the ticket.
+
+Note the second set of tests are for the SRM at UTA_SWT2 that was not
+identified in a GGUS ticket, but uses the same software stack.
+
+The commands and paths to try are&#58;
+
+srmping -webservice_path=srm/v2/server <a href='srm&#58;//gk03.atlas-swt2.org' target='_blank' rel='nofollow'>srm&#58;//gk03.atlas-swt2.org</a>
+gfal-ls -l &#39;<a href='srm&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-' target='_blank' rel='nofollow'>srm&#58;//gk03.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-</a>
+test/2017-08-14.1&#39;
+gfal-ls -l &#39;<a href='srm&#58;//test02.atlas-' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-</a>
+swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk&#39;
+
+srmping -webservice_path=srm/v2/server <a href='srm&#58;//gk05.swt2.uta.edu' target='_blank' rel='nofollow'>srm&#58;//gk05.swt2.uta.edu</a>
+gfal-ls -l &#39;<a href='srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-' target='_blank' rel='nofollow'>srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-</a>
+test/2017-08-17.1&#39;
+gfal-ls -l &#39;<a href='srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-' target='_blank' rel='nofollow'>srm&#58;//gk05.swt2.uta.edu&#58;8443/srm/v2/server?SFN=/xrd/srm-</a>
+test&#39;
+
+Regards,
+
+Patrick
+
+*** RT-Note&#58; Stripped 45 quoted lines from message body!
+
+-- by mcguigan@.... at Thu Aug 17 20&#58;53&#58;46 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=SWTier2 ID=27538</pre></div><div class='update_description'><i onclick="document.location='34102#1502756505'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-15T00:21:45+00:00">Aug 15, 2017 12:21 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1502756505">&nbsp;</a></div><pre>Hi Asoka,
+
+Thanks,  We will rebuild our production hosts.
+
+Regards,
+
+Patrick
+
+*** RT-Note&#58; Stripped 45 quoted lines from message body!
+
+-- by mcguigan@.... at Tue Aug 15 00&#58;21&#58;31 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=SWTier2 ID=27538</pre></div><div class='update_description'><i onclick="document.location='34102#1502755899'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-15T00:11:39+00:00">Aug 15, 2017 12:11 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1502755899">&nbsp;</a></div><pre>Looks good with my proxy  !
+
+[desilva@lxplus001 ~]$ gfal-ls -l <a href='srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1</a>
+-rwxr-xr-x   1 47    46       615432 Aug 15 02&#58;00 <a href='srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1</a>
+[desilva@lxplus001 ~]$ gfal-ls -l <a href='srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk</a>
+d---------   1 0     0             0 Aug 15 00&#58;55 SAM
+d---------   1 0     0             0 Mar 25 07&#58;22 dumps
+d---------   1 0     0             0 Aug  4 13&#58;46 rucio
+
+Thanks !
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Tue Aug 15 00&#58;10&#58;38 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1502755389'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-15T00:03:09+00:00">Aug 15, 2017 12:03 AM UTC</time> by <b>Patrick McGuigan</b><a class="anchor" name="1502755389">&nbsp;</a></div><pre>Hi Asoka,
+
+I don&#39;t use gfal-ls but if you want to look at one file try this path&#58;
+
+<a href='srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/srm-test/2017-08-14.1</a>
+
+If you want a directory&#58;
+<a href='srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/xrd/atlasscratchdisk</a>
+
+Regards,
+
+Patrick
+
+On 08/14/2017 06&#58;57 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34102#1502755059'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-14T23:57:39+00:00">Aug 14, 2017 11:57 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1502755059">&nbsp;</a></div><pre>srmping is ok&#58;
+
+[desilva@lxplus010 ~]$ voms-proxy-info -all
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125/CN=1250265226
+issuer    &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+identity  &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+type      &#58; RFC3820 compliant impersonation proxy
+strength  &#58; 1024
+path      &#58; /tmp/x509up_u28311
+timeleft  &#58; 11&#58;59&#58;49
+key usage &#58; Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment
+=== VO atlas extension information ===
+VO        &#58; atlas
+subject   &#58; /C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+issuer    &#58; /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+attribute &#58; /atlas/Role=NULL/Capability=NULL
+attribute &#58; /atlas/ca/Role=NULL/Capability=NULL
+attribute &#58; /atlas/lcg1/Role=NULL/Capability=NULL
+attribute &#58; /atlas/team/Role=NULL/Capability=NULL
+attribute &#58; nickname = desilva (atlas)
+timeleft  &#58; 11&#58;59&#58;49
+uri       &#58; lcg-voms2.cern.ch&#58;15001
+
+[desilva@lxplus010 ~]$ srmping -webservice_path=srm/v2/server <a href='srm&#58;//test02.atlas-swt2.org' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org</a>
+VersionInfo &#58; v2.3.0
+backend_type&#58;BeStMan
+backend_version&#58;2.2.2.3.0
+backend_build_date&#58;2016-05-27T00&#58;17&#58;52.000Z
+gsiftpTxfServers[0]&#58;gk04.atlas-swt2.org
+gsiftpTxfServers[1]&#58;gk05.atlas-swt2.org
+GatewayMode&#58;Enabled
+clientDN&#58;/C=CA/O=Grid/OU=westgrid.ca/CN=Asoka De Silva mwt-125
+gumsIDMapped&#58;usatlas4
+
+Not sure how to check gfal-ls with the right path (if you tell me what to look for, I can do it.)&#58;
+<div id='show_1224550374' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1224550374'>
+[desilva@lxplus010 ~]$  gfal-ls <a href='srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org&#58;8443/srm/v2/server?SFN=/</a>
+gfal-ls error&#58; 5 (Input/output error) - Error reported from srm_ifce &#58; 5 [SE][Ls][SRM_FAILURE] Access to&#58; [/] is forbidden!
+
+regards,
+Asoka&#13;
+
+-- by asoka.de.silva at Mon Aug 14 23&#58;56&#58;43 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a>
+</div><script type='text/javascript'>
+        $('#show_1224550374').click(function() {
+            $('#detail_1224550374').slideDown("normal");
+            $('#show_1224550374').hide();
+            $('#hide_1224550374').show();
+        });
+        $('#hide_1224550374').click(function() {
+            $('#detail_1224550374').slideUp();
+            $('#hide_1224550374').hide();
+            $('#show_1224550374').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34102#1502748636'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-14T22:10:36+00:00">Aug 14, 2017 10:10 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1502748636">&nbsp;</a></div><pre>Hi again,
+Asoka may want to check it with his GridCanada proxy, though...&#13;
+
+-- by Maarten Litmaath at Mon Aug 14 22&#58;10&#58;10 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1502748517'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-14T22:08:37+00:00">Aug 14, 2017 10:08 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1502748517">&nbsp;</a></div><pre>Hi all,
+that test command works OK for me&#58;
+
+$ srmping -webservice_path=srm/v2/server <a href='srm&#58;//test02.atlas-swt2.org' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org</a>
+VersionInfo &#58; v2.3.0
+backend_type&#58;BeStMan
+backend_version&#58;2.2.2.3.0
+backend_build_date&#58;2016-05-27T00&#58;17&#58;52.000Z
+gsiftpTxfServers[0]&#58;gk04.atlas-swt2.org
+gsiftpTxfServers[1]&#58;gk05.atlas-swt2.org
+GatewayMode&#58;Enabled
+clientDN&#58;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=maart/CN=410032/CN=Maarten Litmaath
+gumsIDMapped&#58;usatlas4&#13;
+
+-- by Maarten Litmaath at Mon Aug 14 22&#58;07&#58;32 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1502747724'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-14T21:55:24+00:00">Aug 14, 2017 09:55 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1502747724">&nbsp;</a></div><pre>Hi Elizabeth,
+
+The problem turned out to be related to the mount point that gets put
+into
+/etc/fstab.
+
+The rebuild procedure was using&#58;
+
+&#34;rdr=xroot&#58;//xrdb.local&#58;1094//xrd/,uid=xrootd,nworkers=16,_netdev&#34;
+
+While the correct nomenclature (for our system at least) should be&#58;
+
+&#34;rdr=xroot&#58;//xrdb.local&#58;1094//xrd,uid=xrootd,nworkers=16,_netdev&#34;
+
+(i.e. no trailing space on the mounted directory name from the
+redirector)
+
+The system was mostly operational with either syntax in place, but we
+rely on
+using &#34;df /xrd/?oss.cgroup=&#60;TOKEN&#62;&#34; to retrieve xrootd&#39;s idea of space
+being
+used within a specific token.  When using the trailing space (the
+incorrect
+argument) the df commands would give either no information or give
+information
+for xrootd&#39;s &#34;public&#34; token.
+
+Things seemed to be fixed now, and I am wondering if we can get
+someone from the
+ATLAS vo that uses the problematic proxy to try some commands against
+our test
+instance.
+
+If srmping is a sufficient test then the command would be&#58;
+
+<div id='show_903792878' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_903792878'>srmping -webservice_path=srm/v2/server <a href='srm&#58;//test02.atlas-swt2.org' target='_blank' rel='nofollow'>srm&#58;//test02.atlas-swt2.org</a>
+
+Regards,
+
+Patrick
+
+On 08/14/2017 10&#58;04 AM, OSG GOC TX via RT wrote&#58;
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;    *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27538' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27538</a>
+<font color='#7F7E6F'>&#62;    *Requestors&#58;*  tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;           *Ccs&#58;*  (None)</font>
+<font color='#7F7E6F'>&#62;         *Queue&#58;*  SWTier2</font>
+<font color='#7F7E6F'>&#62;         *Owner&#58;*  Patrick McGuigan</font>
+<font color='#7F7E6F'>&#62;        *Status&#58;*  /open/</font>
+<font color='#7F7E6F'>&#62;      *Priority&#58;*  /Medium/</font>
+<font color='#7F7E6F'>&#62;   *Transaction&#58;*  Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;       *Subject&#58;*  RFC proxy failures for some services and some CAs</font>
+<font color='#7F7E6F'>&#62;               *GGUS Ticket&#58;*  128933</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128933&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128933&#62</a>;
+<font color='#7F7E6F'>&#62;            *OSG GOC Ticket&#58;*  34102</font>
+&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34102&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34102&#62</a>;
+<font color='#7F7E6F'>&#62;          *GGUS Ticket Type&#58;*  USER</font>
+<font color='#7F7E6F'>&#62;       *Resource Group Name&#58;*  SWT2_CPB</font>
+<font color='#7F7E6F'>&#62;                   *VO Name&#58;*  ATLAS</font>
+<font color='#7F7E6F'>&#62;         *GGUS Problem Type&#58;*  Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+--------------------------------------------------------------------------------
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Hey Patrick,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; What&#39;s the nature of the odd problem you mentioned? I&#39;d like to</font>
+track
+<font color='#7F7E6F'>&#62; it in case others experience it.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks</font>
+<font color='#7F7E6F'>&#62;   -- by Elizabeth Prout at Mon Aug 14 15&#58;03&#58;52 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+
+-- by mcguigan@.... at Mon Aug 14 21&#58;55&#58;10 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=SWTier2 ID=27538
+</div><script type='text/javascript'>
+        $('#show_903792878').click(function() {
+            $('#detail_903792878').slideDown("normal");
+            $('#show_903792878').hide();
+            $('#hide_903792878').show();
+        });
+        $('#hide_903792878').click(function() {
+            $('#detail_903792878').slideUp();
+            $('#hide_903792878').hide();
+            $('#show_903792878').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34102#1502723032'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-14T15:03:52+00:00">Aug 14, 2017 03:03 PM UTC</time> by <b>echism</b><a class="anchor" name="1502723032">&nbsp;</a></div><pre>Hey Patrick,
+
+What&#39;s the nature of the odd problem you mentioned? I&#39;d like to track it in case others experience it.
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34102#1502488341'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-11T21:52:21+00:00">Aug 11, 2017 09:52 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1502488341">&nbsp;</a></div><pre>Hi Brian,
+
+Yeah, I saw the announcement and we have started to play with it.  I
+am using
+this opportunity to straighten out and rectify our procedures for
+building the
+SRM host from bare metal and we will rebuild the production SRM host
+when the
+testing is complete.  Right now I have run into a an odd problem with
+xrootdfs
+that I am trying to track down.  I
+
+Regards,
+
+Patrick
+
+On 08/10/2017 01&#58;55 PM, OSG GOC TX via RT wrote&#58;
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;    *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27538' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27538</a>
+<font color='#7F7E6F'>&#62;    *Requestors&#58;*  tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;           *Ccs&#58;*  (None)</font>
+<font color='#7F7E6F'>&#62;         *Queue&#58;*  SWTier2</font>
+<font color='#7F7E6F'>&#62;         *Owner&#58;*  Patrick McGuigan</font>
+<font color='#7F7E6F'>&#62;        *Status&#58;*  /open/</font>
+<font color='#7F7E6F'>&#62;      *Priority&#58;*  /Medium/</font>
+<font color='#7F7E6F'>&#62;   *Transaction&#58;*  Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;       *Subject&#58;*  RFC proxy failures for some services and some CAs</font>
+<font color='#7F7E6F'>&#62;               *GGUS Ticket&#58;*  128933</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128933&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128933&#62</a>;
+<font color='#7F7E6F'>&#62;            *OSG GOC Ticket&#58;*  34102</font>
+&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34102&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34102&#62</a>;
+<font color='#7F7E6F'>&#62;          *GGUS Ticket Type&#58;*  USER</font>
+<font color='#7F7E6F'>&#62;       *Resource Group Name&#58;*  SWT2_CPB</font>
+<div id='show_828983915' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_828983915'><font color='#7F7E6F'>&#62;                   *VO Name&#58;*  ATLAS</font>
+<font color='#7F7E6F'>&#62;         *GGUS Problem Type&#58;*  Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+--------------------------------------------------------------------------------
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Yes, it&#39;s available in OSG 3.3.27</font>
+<font color='#7F7E6F'>&#62;</font>
+(<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/Release3327' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/Release3327</a>)
+<font color='#7F7E6F'>&#62;   -- by Brian Lin at Thu Aug 10 18&#58;54&#58;19 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+
+-- by mcguigan@.... at Fri Aug 11 21&#58;52&#58;07 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=SWTier2 ID=27538
+</div><script type='text/javascript'>
+        $('#show_828983915').click(function() {
+            $('#detail_828983915').slideDown("normal");
+            $('#show_828983915').hide();
+            $('#hide_828983915').show();
+        });
+        $('#hide_828983915').click(function() {
+            $('#detail_828983915').slideUp();
+            $('#hide_828983915').hide();
+            $('#show_828983915').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34102#1502391259'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-10T18:54:19+00:00">Aug 10, 2017 06:54 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1502391259">&nbsp;</a></div><pre>Yes, it&#39;s available in OSG 3.3.27 (<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/Release3327' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/Release3327</a>)</pre></div><div class='update_description'><i onclick="document.location='34102#1501875823'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-04T19:43:43+00:00">Aug 4, 2017 07:43 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501875823">&nbsp;</a></div><pre>Has the JGlobus library been migrated to the OSG production repos?
+
+Regards,
+
+Patrick
+
+On 08/04/2017 09&#58;45 AM, OSG GOC TX via RT wrote&#58;
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;    *Ticket URL&#58;*</font>
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27538' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=27538</a>
+<font color='#7F7E6F'>&#62;    *Requestors&#58;*  tx+rtbnlprod_fp71@....</font>
+<font color='#7F7E6F'>&#62;           *Ccs&#58;*  (None)</font>
+<font color='#7F7E6F'>&#62;         *Queue&#58;*  SWTier2</font>
+<font color='#7F7E6F'>&#62;         *Owner&#58;*  Patrick McGuigan</font>
+<font color='#7F7E6F'>&#62;        *Status&#58;*  /new/</font>
+<font color='#7F7E6F'>&#62;      *Priority&#58;*  /Medium/</font>
+<font color='#7F7E6F'>&#62;   *Transaction&#58;*  Correspondence added by osg-goc-rest</font>
+<font color='#7F7E6F'>&#62;       *Subject&#58;*  RFC proxy failures for some services and some CAs</font>
+<font color='#7F7E6F'>&#62;               *GGUS Ticket&#58;*  128933</font>
+&#60;<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128933&#62' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=128933&#62</a>;
+<font color='#7F7E6F'>&#62;            *OSG GOC Ticket&#58;*  34102</font>
+&#60;<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=34102&#62' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=34102&#62</a>;
+<font color='#7F7E6F'>&#62;          *GGUS Ticket Type&#58;*  USER</font>
+<font color='#7F7E6F'>&#62;       *Resource Group Name&#58;*  SWT2_CPB</font>
+<font color='#7F7E6F'>&#62;                   *VO Name&#58;*  ATLAS</font>
+<font color='#7F7E6F'>&#62;         *GGUS Problem Type&#58;*  Authorization/Authentication</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+--------------------------------------------------------------------------------
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Hey Kevin,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I think the fix has gone into production? Here&#39;s the ticket related</font>
+<div id='show_1285945946' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1285945946'>to
+<font color='#7F7E6F'>&#62; that <a href='https&#58;//ticket.grid.iu.edu/34103' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/34103</a></font>
+<font color='#7F7E6F'>&#62;   -- by Elizabeth Prout at Fri Aug 04 14&#58;44&#58;23 UTC 2017</font>
+<font color='#7F7E6F'>&#62;</font>
+
+-- by mcguigan@.... at Fri Aug 04 19&#58;43&#58;33 UTC 2017
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=SWTier2 ID=27538
+</div><script type='text/javascript'>
+        $('#show_1285945946').click(function() {
+            $('#detail_1285945946').slideDown("normal");
+            $('#show_1285945946').hide();
+            $('#hide_1285945946').show();
+        });
+        $('#hide_1285945946').click(function() {
+            $('#detail_1285945946').slideUp();
+            $('#hide_1285945946').hide();
+            $('#show_1285945946').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34102#1501857863'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-04T14:44:23+00:00">Aug 4, 2017 02:44 PM UTC</time> by <b>echism</b><a class="anchor" name="1501857863">&nbsp;</a></div><pre>Hey Kevin,
+
+I think the fix has gone into production? Here&#39;s the ticket related to that <a href='https&#58;//ticket.grid.iu.edu/34103' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/34103</a></pre></div><div class='update_description'><i onclick="document.location='34102#1501766500'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-03T13:21:40+00:00">Aug 3, 2017 01:21 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1501766500">&nbsp;</a></div><pre>Hi,
+Are there any updates on this issue?
+Cheers,
+Kevin&#13;
+
+-- by Kevin Finelli at Thu Aug 03 13&#58;20&#58;46 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1500381101'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-18T12:31:41+00:00">Jul 18, 2017 12:31 PM UTC</time> by <b>echism</b><a class="anchor" name="1500381101">&nbsp;</a></div><pre>This is still in testing.</pre></div><div class='update_description'><i onclick="document.location='34102#1499458060'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-07T20:07:40+00:00">Jul 7, 2017 08:07 PM UTC</time> by <b>echism</b><a class="anchor" name="1499458060">&nbsp;</a></div><pre>This is in testing</pre></div><div class='update_description'><i onclick="document.location='34102#1498660882'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-28T14:41:22+00:00">Jun 28, 2017 02:41 PM UTC</time> by <b>echism</b><a class="anchor" name="1498660882">&nbsp;</a></div><pre>Mark,
+
+I asked software to look at that patch. I&#39;ll keep you posted.</pre></div><div class='update_description'><i onclick="document.location='34102#1498246865'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-23T19:41:05+00:00">Jun 23, 2017 07:41 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1498246865">&nbsp;</a></div><pre>Hi,
+I&#39;m including a comment from Wei Yang to a ticket for a similar issue at NET2 / BU_ATLAS_Tier2 (<a href='https&#58;//ggus.eu/?mode=ticket_info&ticket_id=128934' target='_blank' rel='nofollow'>https&#58;//ggus.eu/?mode=ticket_info&ticket_id=128934</a>). The common feature is that both sites (NET2 and SWT2_CPB) use BeStMan SRM.
+
+&#34;This is an known issue for many years. Good to see that there is a solution (JGlobus patch). Hopefully OSG will take action. I don&#39;t see an action item for NET2.&#34;
+
+-- Mark&#13;
+
+-- by Mark  Sosebee at Fri Jun 23 19&#58;40&#58;41 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1497981467'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-20T17:57:47+00:00">Jun 20, 2017 05:57 PM UTC</time> by <b>echism</b><a class="anchor" name="1497981467">&nbsp;</a></div><pre>Hi Mark,
+
+Any news?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34102#1497618729'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-16T13:12:09+00:00">Jun 16, 2017 01:12 PM UTC</time> by <b>echism</b><a class="anchor" name="1497618729">&nbsp;</a></div><pre>Hey Mark,
+
+Any updates?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34102#1497364877'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-13T14:41:17+00:00">Jun 13, 2017 02:41 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1497364877">&nbsp;</a></div><pre>Hi Asoka,
+
+We don&#39;t use dCache at SWT2_CPB (instead xrootd), but we are using BeStMan for the SRM service. I&#39;m traveling today, but will get back to this later tonight.
+
+Regards,
+-- Mark&#13;
+
+-- by Mark  Sosebee at Tue Jun 13 14&#58;40&#58;19 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1497364277'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-13T14:31:17+00:00">Jun 13, 2017 02:31 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1497364277">&nbsp;</a></div><pre>&#13;
+
+-- by Maarten Litmaath at Tue Jun 13 14&#58;30&#58;48 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a></pre></div><div class='update_description'><i onclick="document.location='34102#1497306837'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-12T22:33:57+00:00">Jun 12, 2017 10:33 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1497306837">&nbsp;</a></div><pre>Hi,
+
+There are 2 confirmations now that this rucio rse SWT2_CPB_SCRATCHDISK has the issue described here&#58;
+
+<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=124650' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=124650</a>
+
+Access will work with user&#39;s legacy proxies but not with FFC compliant proxies if it has a non-Repudiation key.
+
+Could you please check that fixed version of dcache is installed at the site ?  (see solution in ggusticket above)
+
+Thanks !
+
+regards,
+Asoka
+
+Affected Site&#58; SWT2_CPB
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=128933</a>
+
+[Ticket History]
+Subject&#58; RFC proxy failures for some services and some CAs
+Ticket Type&#58; USER
+CC&#58;
+-- by asoka.de.silva at Mon Jun 12 22&#58;26&#58;21 UTC 2017
+
+&#13;
+
+-- by Pavel Verkner at Mon Jun 12 22&#58;33&#58;01 UTC 2017</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F34102">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 34102});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[35370] Transfer timing out to FNAL_Disk</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=35370" method="post">
+<div class="page-header">
+    <h3><span class="muted">35370</span> / Transfer timing out to FNAL_Disk</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Sebastian Pulido</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Sebastian Pulido</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">High</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Resolved</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">TX Incoming</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2018-01-10</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">FNAL (Prod)&nbsp;<a target="_blank" href="https://fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962">INC000000903962</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=131836">131836</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=35370", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/35370?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/35370?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Transfer%20timing%20out%20to%20FNAL_Disk%20ISSUE%3D35370%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='35370#1517356852'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-31T00:00:52+00:00">Jan 31, 2018 12:00 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1517356852">&nbsp;</a></div><pre>[Closed/Resolved by Caller]
+Closed by Caller
+-- by  at Sat Jan 20 06&#58;00&#58;29 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962</a></pre></div><div class='update_description'><i onclick="document.location='35370#1517356769'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-30T23:59:29+00:00">Jan 30, 2018 11:59 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1517356769">&nbsp;</a></div><pre>This ticket was closed automatically. If this issue has not been resolved according to your expectations or if you need further information, please submit a new ticket referencing this one.&#13;
+
+-- by GGUS SYSTEM at Tue Jan 30 23&#58;59&#58;00 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1516120792'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-16T16:39:52+00:00">Jan 16, 2018 04:39 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1516120792">&nbsp;</a></div><pre>Transfer quality recovered, average rates of 400 MB/s.
+<a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;QualityPlots?graph=quality_all&entity=link&src_filter=&dest_filter=FNAL_Disk&no_mss=true&period=l12h&upto=&.submit=Update
+<a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;RatePlots?src_filter=;period=l12h;no_mss=true;dest_filter=FNAL_Disk;upto=;entity=link;graph=quality_all
+
+Sebastian.
+Transfer Team&#13;
+
+-- by Sebastian Pulido at Tue Jan 16 16&#58;38&#58;47 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1514930070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-02T21:54:30+00:00">Jan 2, 2018 09:54 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1514930070">&nbsp;</a></div><pre>The technical issue has been resolved.
+We are aiming for Wednesday, Jan. 10.
+-- by huangch at Tue Jan 02 21&#58;53&#58;49 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962</a></pre></div><div class='update_description'><i onclick="document.location='35370#1514901287'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-02T13:54:47+00:00">Jan 2, 2018 01:54 PM UTC</time> by <b>echism</b><a class="anchor" name="1514901287">&nbsp;</a></div><pre>Happy new year, Chih-Hao!
+
+Are you on track to switch to 3.7?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='35370#1513958419'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-22T16:00:19+00:00">Dec 22, 2017 04:00 PM UTC</time> by <b>echism</b><a class="anchor" name="1513958419">&nbsp;</a></div><pre>Thanks for the update! I&#39;ll touch base at that time and see how you&#39;re doing.</pre></div><div class='update_description'><i onclick="document.location='35370#1513812450'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-20T23:27:30+00:00">Dec 20, 2017 11:27 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1513812450">&nbsp;</a></div><pre>No. It did not happen. We ran into a problem where fts_url_copy is throwing segmentation faults. We are still in the process of sorting it out. Since the holidays are around the corner, we will postpone the switch after new year.
+
+Cheers,
+
+-- Chih-Hao
+-- by huangch at Wed Dec 20 23&#58;26&#58;49 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962</a></pre></div><div class='update_description'><i onclick="document.location='35370#1513803273'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-20T20:54:33+00:00">Dec 20, 2017 08:54 PM UTC</time> by <b>echism</b><a class="anchor" name="1513803273">&nbsp;</a></div><pre>Did the switch happen?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='35370#1513347093'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-15T14:11:33+00:00">Dec 15, 2017 02:11 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1513347093">&nbsp;</a></div><pre>We have upgraded our backup server to 3.7 and are working with sites to test it.  The plan if those tests are successful to switch the alias to point to that server on Tuesday.  If necessary we would be able to roll back to the current server by switching the alias.&#13;
+
+-- by David Mason at Fri Dec 15 14&#58;10&#58;23 UTC 2017
+
+Maarten Litmaath has subscribed to this ticket.
+
+&#13;
+
+-- by Maarten Litmaath at Fri Dec 15 10&#58;25&#58;48 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1513327763'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-15T08:49:23+00:00">Dec 15, 2017 08:49 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1513327763">&nbsp;</a></div><pre>C&P from an email sent to fts3-steering&#58;
+
+Hello,
+
+I have seen FNAL hasn&#39;t upgraded yet, and Elizabeth Prout is asking on the GGUS ticket #131836 [1].
+
+I will comment on that ticket too, but I would like to ask on this thread to postpone the upgrade to January 2018. The two weeks Christmas break is just one week away, and I can&#39;t see any advantage on upgrading so closely to the holidays.
+
+However, I will ask one thing&#58; can FNAL propose, and compromise, on a date? If things keep piling up, 3.8 will be out before FNAL upgrade, and then FNAL will be **three major releases** behind.
+
+I can not guarantee a jump like this is going to necessarily happen smoothly.
+
+Regards,
+Alejandro Álvarez Ayllón&#13;
+
+-- by Alejandro Alvarez at Fri Dec 15 08&#58;48&#58;20 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1513283547'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-12-14T20:32:27+00:00">Dec 14, 2017 08:32 PM UTC</time> by <b>echism</b><a class="anchor" name="1513283547">&nbsp;</a></div><pre>Hello,
+
+Is FNAL going to upgrade FTS?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='35370#1511801203'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-27T16:46:43+00:00">Nov 27, 2017 04:46 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1511801203">&nbsp;</a></div><pre>FTS hasn&#39;t been upgraded yet. I think this ticket should follow up on that.
+
+Best,&#13;
+
+-- by Sebastian Pulido at Mon Nov 27 16&#58;46&#58;21 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1511800621'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-27T16:37:01+00:00">Nov 27, 2017 04:37 PM UTC</time> by <b>echism</b><a class="anchor" name="1511800621">&nbsp;</a></div><pre>I&#39;m not sure what you want me to do with this ticket. Are you still using it? Are you going to document or work through something, or is the agreement that you&#39;ll consider upgrading effectively the end of the troubleshooting?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='35370#1511188713'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-20T14:38:33+00:00">Nov 20, 2017 02:38 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1511188713">&nbsp;</a></div><pre>Hi Alejandro,
+
+We actually thought the version of FTS we are currently running gave us the ability to set timeouts like this manually, so are surprised there isn&#39;t a way to do this even in 3.5.
+
+There are actually several reasons for reluctance to upgrade in the short term,  not the least of which this being a major holiday week for the US, so it certainly wouldn&#39;t happen this week.  Beyond that CERN&#39;s 3.7 upgrade a few weeks ago for CMS triggered problems with several of our OSG sites, who moved to FNAL&#39;s FTS server as a short term fix.  Any upgrade we do would need to be coordinated with US T2&#39;s certainly.  That said we will look at getting that process started.&#13;
+
+-- by David Mason at Mon Nov 20 14&#58;37&#58;57 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1511165203'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-20T08:06:43+00:00">Nov 20, 2017 08:06 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1511165203">&nbsp;</a></div><pre>Hello again,
+
+May I ask why is FNAL so reluctant to upgrade to a more recent version, which has been running successfully on other 3 WLCG sites? Between 3.6 and 3.7 a lot of work has been put into consolidating the configuration schema of FTS to avoid this kind of problems, work that avoids this sort of workarounds that break after a while.
+
+Also, I would like to remind that bugs on 3.5 are *not* going to be fixed. If they happen to remain on the codebase, they will be, but in 3.7.
+
+Best regards,
+Alejandro Álvarez Ayllón&#13;
+
+-- by Alejandro Alvarez at Mon Nov 20 08&#58;05&#58;57 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1511025370'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-18T17:16:10+00:00">Nov 18, 2017 05:16 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1511025370">&nbsp;</a></div><pre>Hi Chih-Hao,
+
+OK, understood. Thank you very much for continued investigation. I am sure you are aware of it, but the US sites using FNAL FTS are still affected by timeouts of large files.
+
+Cheers,
+Yutaro&#13;
+
+-- by Yutaro Iiyama at Sat Nov 18 17&#58;15&#58;01 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510987212'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-18T06:40:12+00:00">Nov 18, 2017 06:40 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510987212">&nbsp;</a></div><pre>We tried to set it to 14400. However, for a reason that we don&#39;t quite understand yet, if global_timeout is not zero, the fts_url_copy would have &#34;--timeout 0&#34; in there, which caused massive failures this morning. We set it back to 0, hence default 4000. We are still looking for a way to deal with it.
+-- by huangch at Sat Nov 18 06&#58;39&#58;08 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510958237'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-17T22:37:17+00:00">Nov 17, 2017 10:37 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510958237">&nbsp;</a></div><pre>Hi Dave, Chih-Hao,
+
+Thank you for making FTS work again. Do I understand that the timeout was set back to 4000? Is it simply not possible to operate it with a longer timeout?
+
+Yutaro&#13;
+
+-- by Yutaro Iiyama at Fri Nov 17 22&#58;36&#58;12 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510936922'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-17T16:42:02+00:00">Nov 17, 2017 04:42 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510936922">&nbsp;</a></div><pre>Yes -- investigating -- see <a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=131927&#13' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=131927&#13</a>;
+
+-- by David Mason at Fri Nov 17 16&#58;41&#58;44 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510936744'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-17T16:39:04+00:00">Nov 17, 2017 04:39 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510936744">&nbsp;</a></div><pre>Hi huangch,
+Currently, there are no transfers to US sites using FNAL&#39;s FTS server. [1]
+Can you please check if FTS got stuck and if so restart it?
+
+Thanks,
+Sebastian.
+
+[1] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;Rate?span=h&tofilter=_US_&andor=and&fromfilter=.*&#13;
+
+-- by Sebastian Pulido at Fri Nov 17 16&#58;38&#58;12 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510927040'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-17T13:57:20+00:00">Nov 17, 2017 01:57 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510927040">&nbsp;</a></div><pre>The global_timeout has been set to 14400 (4 hours). Let&#39;s see how it goes.
+-- by huangch at Fri Nov 17 13&#58;56&#58;48 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510916493'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-17T11:01:33+00:00">Nov 17, 2017 11:01 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510916493">&nbsp;</a></div><pre>Hello,
+
+You are facing an issue already fixed on 3.6, and every other WLCG instance is running 3.7 by now. We advise to upgrade first the instance.
+
+Regards,
+Alejandro Álvarez&#13;
+
+-- by Alejandro Alvarez at Fri Nov 17 11&#58;00&#58;57 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510915228'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-17T10:40:28+00:00">Nov 17, 2017 10:40 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510915228">&nbsp;</a></div><pre>Involve person(s) has been changed to fts-devel@....;fts-support@.....
+Hi, FTS support experts might be able to help as well&#58;
+fts-support@....
+
+Here is some documentation as well&#58;
+<a href='http&#58;//fts3-docs.web.cern.ch/fts3-docs/docs/config/config.html&#13' target='_blank' rel='nofollow'>http&#58;//fts3-docs.web.cern.ch/fts3-docs/docs/config/config.html&#13</a>;
+
+-- by Sebastian Pulido at Fri Nov 17 10&#58;39&#58;29 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510914687'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-17T10:31:27+00:00">Nov 17, 2017 10:31 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510914687">&nbsp;</a></div><pre>Natalia Ratnikova has subscribed to this ticket.
+
+HI, added fts-devel@.... . Hopefully they can help with the configuration change.&#13;
+
+-- by Natalia Ratnikova at Fri Nov 17 10&#58;30&#58;55 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510913845'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-17T10:17:25+00:00">Nov 17, 2017 10:17 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510913845">&nbsp;</a></div><pre>Priority has been changed from urgent to top priority.&#13;
+
+-- by Yutaro Iiyama at Fri Nov 17 10&#58;17&#58;09 UTC 2017
+
+Hi Chih-Hao,
+
+This is a documentation for a newer version, but there should be some corresponding parameters in your version&#58;
+<a href='http&#58;//fts3-docs.web.cern.ch/fts3-docs/docs/config/config.html' target='_blank' rel='nofollow'>http&#58;//fts3-docs.web.cern.ch/fts3-docs/docs/config/config.html</a>
+
+Yutaro&#13;
+
+-- by Yutaro Iiyama at Fri Nov 17 10&#58;16&#58;59 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510875838'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-16T23:43:58+00:00">Nov 16, 2017 11:43 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510875838">&nbsp;</a></div><pre>Do you know where it is defined and how we might change it?
+-- by huangch at Thu Nov 16 23&#58;42&#58;54 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510819548'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-16T08:05:48+00:00">Nov 16, 2017 08:05 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510819548">&nbsp;</a></div><pre>Hi Dave,
+
+I believe there is a setting in FTS itself too. The transfers going to everywhere that&#39;s using the FNAL FTS is still suffering from the 4000 second timeout. For example this is MIT to Florida (I didn&#39;t realize we don&#39;t get 10 MB/s for a transfer just down the east coast)&#58;
+
+<a href='https&#58;//cmsftssrv1.fnal.gov&#58;8449/var/log/fts3/2017-11-16/se01.cmsaf.mit.edu__cmsio.rc.ufl.edu/2017-11-16-0757__se01.cmsaf.mit.edu__cmsio.rc.ufl.edu__12074661__28a1cfc8-ca3f-11e7-bee7-a0369f23d03e' target='_blank' rel='nofollow'>https&#58;//cmsftssrv1.fnal.gov&#58;8449/var/log/fts3/2017-11-16/se01.cmsaf.mit.edu__cmsio.rc.ufl.edu/2017-11-16-0757__se01.cmsaf.mit.edu__cmsio.rc.ufl.edu__12074661__28a1cfc8-ca3f-11e7-bee7-a0369f23d03e</a>
+
+Cheers,
+Yutaro&#13;
+
+-- by Yutaro Iiyama at Thu Nov 16 08&#58;04&#58;43 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510764180'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-15T16:43:00+00:00">Nov 15, 2017 04:43 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510764180">&nbsp;</a></div><pre>That was a setting for the gfal2 plugin in FTS I believe.  Will look at where we sit right now --- looking at quality thought the situation had improved in bringing files in from T2.  Produciton transfers in general are sparse.&#13;
+
+-- by David Mason at Wed Nov 15 16&#58;42&#58;40 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510755048'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-15T14:10:48+00:00">Nov 15, 2017 02:10 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510755048">&nbsp;</a></div><pre>Hi,
+
+Is REQUEST_LIFETIME=28800 a setting on FTS or dCache? I still see that the timeout is 4000 for transfers using FNAL FTS.
+
+Cheers,
+Yutaro&#13;
+
+-- by Yutaro Iiyama at Wed Nov 15 14&#58;07&#58;55 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510686384'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-14T19:06:24+00:00">Nov 14, 2017 07:06 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510686384">&nbsp;</a></div><pre>Maria Acosta has subscribed to this ticket.
+
+&#13;
+
+-- by Maria Acosta at Tue Nov 14 17&#58;29&#58;27 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510669869'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-14T14:31:09+00:00">Nov 14, 2017 02:31 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510669869">&nbsp;</a></div><pre>We now set REQUEST_LIFETIME=28800 (was 3600). Do we need to restart fts service, or the plug-in will pick it up by itself?
+-- by huangch at Tue Nov 14 14&#58;30&#58;21 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510663958'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-14T12:52:38+00:00">Nov 14, 2017 12:52 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510663958">&nbsp;</a></div><pre>Hi Dave,
+
+I think it&#39;s the same issue I asked you over an email a few days ago - we have ridiculously large files trying to get to FNAL from Europe, but FNAL FTS has a fixed timeout window of 4000 seconds, and for some sites, that&#39;s simply not long enough.
+Is the timeout configurable? (Also just to mention, the newer versions of FTS seem to set timeouts dynamically depending on the file size.)
+
+Cheers,
+Yutaro&#13;
+
+-- by Yutaro Iiyama at Tue Nov 14 12&#58;51&#58;57 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510662135'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-14T12:22:15+00:00">Nov 14, 2017 12:22 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510662135">&nbsp;</a></div><pre>Assigning to DMS
+-- by dmason at Tue Nov 14 12&#58;21&#58;25 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000903962</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510662097'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-14T12:21:37+00:00">Nov 14, 2017 12:21 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510662097">&nbsp;</a></div><pre>Yes -- we are investigating, not a clear pattern yet -- debug transfers all OK, not all sites are having trouble, and its only affecting the disk instance.  Not sure if the low rate leaves only sites that have been red for a long time, or vice versa here yet.&#13;
+
+-- by David Mason at Tue Nov 14 12&#58;20&#58;27 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a></pre></div><div class='update_description'><i onclick="document.location='35370#1510660537'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-14T11:55:37+00:00">Nov 14, 2017 11:55 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1510660537">&nbsp;</a></div><pre>Dear site admins,
+Phedex is reporting that transfers to FNAL_Disk endpoint are failing due to timeouts [1], whereas, transfer to _Buffer are progressing as expected [2]. Transfer rates to FNAL_Disk are a bit low as well&#58;
+<a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;Rate?span=h&tofilter=FNAL_Disk&andor=and&fromfilter=.*
+
+Some of the error messages logged [3]&#58;
+TRANSFER TRANSFER Operation timed out
+
+Can you please check if host cmsdcadisk01.fnal.gov is under high load or some networking issue preventing transfers to complete.
+
+Best,
+Sebastian.
+Transfer Team
+
+[1] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;QualityPlots?graph=quality_all&entity=link&src_filter=&dest_filter=FNAL_Disk&no_mss=true&period=l12h&upto=&.submit=Update
+[2] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;QualityPlots?graph=quality_all&entity=link&src_filter=&dest_filter=FNAL_Buffer&no_mss=true&period=l12h&upto=&.submit=Update
+[3] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;ErrorInfo?tofilter=FNAL_Disk&fromfilter=&report_code=.*&xfer_code=.*&to_pfn=.*&from_pfn=.*&log_detail=.*&log_validate=.*&.submit=Update#
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=131836</a>
+
+[Ticket History]
+Subject&#58; Transfer timing out to FNAL_Disk
+Ticket Type&#58; USER
+CC&#58; ;cms-comp-ops-transfer-team@....
+-- by Sebastian Pulido at Tue Nov 14 11&#58;55&#58;20 UTC 2017</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F35370">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 35370});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

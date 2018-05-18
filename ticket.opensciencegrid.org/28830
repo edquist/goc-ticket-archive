@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[28830] Moving T2_US_Florida to multicore</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=28830" method="post">
+<div class="page-header">
+    <h3><span class="muted">28830</span> / Moving T2_US_Florida to multicore</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Antonio Perez-Calero</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Antonio Perez-Calero Yzquierdo</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">fGOC</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Elevated</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">TX Incoming</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-04-14</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">fGOC <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=120099">120099</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=28830", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/28830?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/28830?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Moving%20T2_US_Florida%20to%20multicore%20ISSUE%3D28830%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='28830#1460661017'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-14T19:10:17+00:00">Apr 14, 2016 07:10 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1460661017">&nbsp;</a></div><pre>-- by Antonio Perez-Calero Yzquierdo at Thu Apr 14 10&#58;11&#58;12 UTC 2016
+
+Thanks Marty
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Apr 14 10&#58;10&#58;59 UTC 2016
+
+Antonio, Bockjoo,
+
+I&#39;ve disabled the final single-core entry. The site is now fully multicore. Closing ticket.
+
+Marty Kandes
+UCSD Gliden Factory Operationsall single-core glidein factory entries disabled; new multicore glidein factory entries created, tested, and put into production
+
+-- by Marty Kandes at Wed Apr 13 19&#58;59&#58;41 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1460660942'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-14T19:09:02+00:00">Apr 14, 2016 07:09 PM UTC</time> by <b>echism</b><a class="anchor" name="1460660942">&nbsp;</a></div><pre>Closing to match the GGUS ticket</pre></div><div class='update_description'><i onclick="document.location='28830#1460575058'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-13T19:17:38+00:00">Apr 13, 2016 07:17 PM UTC</time> by <b>echism</b><a class="anchor" name="1460575058">&nbsp;</a></div><pre>Jeff,
+
+Should I close this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='28830#1460575023'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-13T19:17:03+00:00">Apr 13, 2016 07:17 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1460575023">&nbsp;</a></div><pre>Fully multicore has been the objective for CMS SI all along. So please do and let&#39;s close the ticket.
+
+-- by Antonio Perez-Calero Yzquierdo at Wed Apr 13 08&#58;16&#58;09 UTC 2016
+
+Hi Marty,
+I have no objection.
+Bockjoo
+
+-- by Bockjoo Kim at Tue Apr 12 19&#58;05&#58;39 UTC 2016
+
+Antonio, Bockjoo,
+
+Multicore glidein performance is looking much better now.
+
+I think the only outstanding single-core entry is now CMS_T2_US_Florida_iogw1 (osg.rc.ufl.edu). Was there a decision made about what you&#39;d like to do with this one? Is it time to disable this entry and move the site to fully multicore?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Tue Apr 12 18&#58;56&#58;31 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1460390728'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-11T16:05:28+00:00">Apr 11, 2016 04:05 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1460390728">&nbsp;</a></div><pre>Hi,
+
+As an update, I disabled the 8gb single core entries, those are irrelevant now that we have the multicore entries that can be partitioned.
+
+Thanks,
+Jeff
+
+-- by Jeffrey Dost at Fri Apr 08 23&#58;31&#58;55 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1460146274'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-08T20:11:14+00:00">Apr 8, 2016 08:11 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1460146274">&nbsp;</a></div><pre>pmem=mem multicore jobs are scheduled in a reasonable amount time.
+I think the multicore entries are ready to accept various types of workflows conceived.
+
+-- by Bockjoo Kim at Fri Apr 08 13&#58;09&#58;05 UTC 2016
+
+Hi Marty,
+Since the multi-core jobs are assigned with the default pmem=600mb by the scheduler, there is the high possibility of PBS kill.
+The new multi-core jobs request pmem=mem, and might have some other trouble.
+Anyway, this is the problem that I will watch.
+There is nothing for you to do at this time.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Thu Apr 07 22&#58;05&#58;00 UTC 2016
+
+Bockjoo, Antonio,
+
+It looks like claimed glideins have ramped up over the last day or so. Unfortunately, however, we haven&#39;t yet got back logs from these glideins yet to allow us to confirm the segfault issue is gone. But this is a good sign they are running longer. We will check back again on this in a few days.
+
+Is there anything else outstanding for us to consider here?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Apr 07 21&#58;23&#58;32 UTC 2016
+
+This is the response from my HPC&#58;
+&#34;
+It has come up before. We don&#39;t have a way to do it. If you think one of your processes will need 10GB, you will have to ask for pmem=10GB. The consequence is that it will limit the number of slots available for other jobs.
+
+I think we can handle this better under SLURM but with only a few months left under torque/moab, I don&#39;t think it makes sense to start changing the way we enforce memory limits there.
+&#34;
+
+So, I will make pem=mem for now. Probably, the job scheduling will be slow.
+In the meantime, we have to deal with this beast again and hopefully easier when we deploy the SLURM CE.
+<div id='show_874174352' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_874174352'>
+-- by Bockjoo Kim at Thu Apr 07 18&#58;17&#58;06 UTC 2016
+
+Hi Bockjoo,
+
+Yes, we did study it, in general and for the particular PBS case (as indicated as documentation in the original message). See for example for a nice solution&#58;
+
+<a href='https&#58;//indico.cern.ch/event/304944/session/6/contribution/281/attachments/578828/797018/CHEP.2015.templon.pdf' target='_blank' rel='nofollow'>https&#58;//indico.cern.ch/event/304944/session/6/contribution/281/attachments/578828/797018/CHEP.2015.templon.pdf</a>
+
+Concerning pmem, it&#39;s the same for us including it in the request or not&#58; just tell us if we should do it and it will be passed as request attributes. But then please make sure it is working at your end, because apparently last time we had that config, it did not work (update#43).
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Apr 07 15&#58;53&#58;08 UTC 2016
+
+That does not mean it should work at other sites.
+This IS a complicated issue. Unlike single core entries, there will be larger fraction of unused resources
+and less site utilization. Did anyone in the submission infra. studied this in depth?
+Apparently, my HPC enforces on pmem. So, if there is no pmem, the PBS will put a default pmem.
+Anyway, as I said, I am trying to explain to my HPC different types of possible runtime real workflows in a single static PBS job.
+Hopefully, they can do something about pmem enforcement, but I am not sure.
+
+-- by Bockjoo Kim at Thu Apr 07 15&#58;06&#58;16 UTC 2016
+
+We are possibly over complicating the discussion. I don&#39;t exactly know what you mean by multipurpose entries other that multipurpose for CMS = multicore in the standard configuration, 8 cores, at least 16 GB, at least 48h.
+
+I&#39;m writing to you from PIC, where we use PBS to schedule that type of requests successfully.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Apr 07 14&#58;46&#58;03 UTC 2016
+
+Well, at leat at PBS sites, multi-purpose entry is not ideal as I realize.
+Anyway, I am talking to my HPC, but the outcome of the talk is not predictable.
+
+-- by Bockjoo Kim at Thu Apr 07 14&#58;38&#58;28 UTC 2016
+
+Multipurpose (multicore) glideins are the most interesting to CMS, because it allows us the most flexibility in the scheduling. That is why I was configuring pilots to take 4GB/core, as the intention it not having to rely as much as possible on high-mem queues/entries.
+
+Nevertheless the entry could be helpful to other VOs running at Florida, but that&#39;s not my business.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Apr 07 13&#58;29&#58;45 UTC 2016
+
+The generated script is not multi-thread ready.
+When we put the only mem directive, the scheduler puts the default per core memory of 600mb (#PBS -l pmem=600mb).
+I am negotiating with my HPC, but now I am not sure if multipurpose glidein entry is a good idea or not.
+
+-- by Bockjoo Kim at Thu Apr 07 13&#58;11&#58;05 UTC 2016
+
+Hi Bockjoo,
+
+&#34;s this entry, CMS_T2_US_Florida_osg_HighMem_8GB, needed?
+Can it be deleted and the multi-core entries can replace its functionality?&#34;
+
+-&#62; update#70, update#73
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Apr 07 08&#58;55&#58;00 UTC 2016
+
+Hi All,
+I see there are four glidein entries for Florida&#58;
+Two single-core entries&#58;
+CMS_T2_US_Florida_iogw1 ( osg.rc.ufl.edu )
+CMS_T2_US_Florida_osg_HighMem_8GB ( osg.rc.ufl.edu maxMemory=8GB)
+
+Two multi-core entries;
+CMSHTPC_T2_US_Florida_osg ( osg.rc.ufl.edu )
+CMSHTPC_T2_US_Florida_condor ( cms.rc.ufl.edu )
+
+Is this entry, CMS_T2_US_Florida_osg_HighMem_8GB, needed?
+Can it be deleted and the multi-core entries can replace its functionality?
+
+Thanks
+Bockjoo
+
+-- by Bockjoo Kim at Wed Apr 06 20&#58;00&#58;29 UTC 2016
+
+Elizabeth,
+
+No, we&#39;re still working on the issue.. I&#39;ll check back on glidein performance tomorrow to see if Bockjoo&#39;s fix worked.
+
+Bockjoo,
+
+I&#39;ll check back in tomorrow.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Wed Apr 06 19&#58;30&#58;50 UTC 2016
+
+Ticket has been tagged &#34;VO specific&#34;.
+This ticket was supposed to be a VO specific.
+I changed it &#34;VO specific&#34;.
+
+-- by Bockjoo Kim at Wed Apr 06 17&#58;13&#58;32 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a>
+</div><script type='text/javascript'>
+        $('#show_874174352').click(function() {
+            $('#detail_874174352').slideDown("normal");
+            $('#show_874174352').hide();
+            $('#hide_874174352').show();
+        });
+        $('#hide_874174352').click(function() {
+            $('#detail_874174352').slideUp();
+            $('#hide_874174352').hide();
+            $('#show_874174352').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='28830#1459961230'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-06T16:47:10+00:00">Apr 6, 2016 04:47 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1459961230">&nbsp;</a></div><pre>I found the glidein leakage. It was my fault.
+I introduced some bug in the blah script.
+Sorry about that!
+Bockjoo
+
+-- by Bockjoo Kim at Wed Apr 06 16&#58;27&#58;14 UTC 2016
+
+The processes&#58;
+[root@c11a-s2 glide_rmgpmD]# ps auxwww | grep 19741962
+cmspilot  2222  0.0  0.0   9228  1276 ?        S    10&#58;28   0&#58;00 /bin/bash /var/spool/torque/mom_priv/jobs/19741962.moab.ufhpc.SC
+cmspilot  2806  0.0  0.0  23320  4812 ?        S    10&#58;28   0&#58;00 condor_procd -A /local/scratch/19741962.moab.ufhpc/glide_rmgpmD/log/procd_address -L /local/scratch/19741962.moab.ufhpc/glide_rmgpmD/log/ProcLog -R 1000000 -S 60 -C 130007 -I /local/scratch/19741962.moab.ufhpc/glide_rmgpmD/main/condor/libexec/condor_glexec_kill /usr/sbin/glexec 3 30
+cms4673   4977  0.0  0.0   9236  1360 ?        S    10&#58;31   0&#58;00 /bin/bash /local/scratch/19741962.moab.ufhpc/glide_rmgpmD/execute/dir_4864/condor_exec.exe -a sandbox.tar.gz --sourceURL=<a href='https&#58;//cmsweb.cern.ch/crabcache' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/crabcache</a> --jobNumber=119 --cmsswVersion=CMSSW_7_4_4 --scramArch=slc6_amd64_gcc491 --inputFile=job_input_file_list_119.txt --runAndLumis=job_lumis_119.json --lheInputFiles=False --firstEvent=None --firstLumi=None --lastEvent=None --firstRun=None --seeding=AutomaticSeeding --scriptExe=None --eventsPerLumi=None --scriptArgs=[] -o {}
+root      9283  0.0  0.0 103244   852 pts/0    S+   10&#58;42   0&#58;00 grep 19741962
+cmspilot 30788  0.0  0.0  10384  1464 ?        S    10&#58;28   0&#58;00 /bin/bash /local/scratch/19741962.moab.ufhpc/glide_rmgpmD/main/condor_startup.sh glidein_config
+cmspilot 32662  0.0  0.0  98040  8564 ?        S    10&#58;28   0&#58;00 /local/scratch/19741962.moab.ufhpc/glide_rmgpmD/main/condor/sbin/condor_master -f -pidfile /local/scratch/19741962.moab.ufhpc/glide_rmgpmD/condor_master2.pid
+
+-- by Bockjoo Kim at Wed Apr 06 14&#58;47&#58;11 UTC 2016
+
+The main issue seems to be this&#58;
+/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/main/condor_startup.sh&#58; line 13&#58; 28125 Segmentation fault (core dumped) $CONDOR_DIR/sbin/condor_master -f -pidfile $PWD/condor_master2.pid
+, not because of memory nor walltime.
+
+I can not imagine what could have caused condor_master to segfault.
+
+By the way, I think, because of this, the job pressure is low.
+
+-- by Bockjoo Kim at Wed Apr 06 13&#58;50&#58;27 UTC 2016
+
+That job never used its requested walltime of 12 hours.
+This does not look like a regular cms job.
+It requested only 600mb.
+This is the tracejob output&#58;
+Job&#58; 19723469.moab.ufhpc
+
+04/05/2016 18&#58;56&#58;38  S    enqueuing into default, state 1 hop 1
+<div id='show_1700981979' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1700981979'>04/05/2016 18&#58;56&#58;38  S    dequeuing from default, state QUEUED
+04/05/2016 18&#58;56&#58;38  S    enqueuing into cmspilot, state 1 hop 1
+04/05/2016 18&#58;56&#58;38  A    queue=default
+04/05/2016 18&#58;56&#58;38  A    queue=cmspilot
+04/05/2016 19&#58;01&#58;03  S    Job Run at request of root@....c
+04/05/2016 19&#58;01&#58;03  S    Not sending email&#58; User does not want mail of this type.
+04/05/2016 19&#58;01&#58;03  A    user=cmspilot group=avery jobname=bl_2fc4a9f57f82 queue=cmspilot ctime=1459896997 qtime=1459896998
+etime=1459896998 start=1459897263 owner=cmspilot@....c exec_host=c10a-s10/9 Resource_List.ncpus=1
+Resource_List.neednodes=1 Resource_List.nodect=1 Resource_List.nodes=1 Resource_List.pmem=600mb
+Resource_List.walltime=12&#58;00&#58;00
+04/05/2016 19&#58;17&#58;11  S    Job deleted at request of root@....c
+04/05/2016 19&#58;17&#58;11  A    requestor=root@....c
+04/05/2016 19&#58;17&#58;19  S    Job sent signal SIGTERM on delete
+04/05/2016 19&#58;17&#58;27  S    Exit_status=271 resources_used.cput=00&#58;09&#58;40 resources_used.mem=5738204kb resources_used.vmem=9867168kb
+resources_used.walltime=00&#58;16&#58;16
+04/05/2016 19&#58;17&#58;27  S    Not sending email&#58; User does not want mail of this type.
+04/05/2016 19&#58;17&#58;27  S    on_job_exit valid pjob&#58; 19723469.moab.ufhpc (substate=50)
+04/05/2016 19&#58;17&#58;27  A    user=cmspilot group=avery jobname=bl_2fc4a9f57f82 queue=cmspilot ctime=1459896997 qtime=1459896998
+etime=1459896998 start=1459897263 owner=cmspilot@....c exec_host=c10a-s10/9 Resource_List.ncpus=1
+Resource_List.neednodes=1 Resource_List.nodect=1 Resource_List.nodes=1 Resource_List.pmem=600mb
+Resource_List.walltime=12&#58;00&#58;00 session=29223 end=1459898247 Exit_status=271
+resources_used.cput=00&#58;09&#58;40 resources_used.mem=5738204kb resources_used.vmem=9867168kb
+resources_used.walltime=00&#58;16&#58;16
+04/05/2016 19&#58;22&#58;40  S    dequeuing from cmspilot, state COMPLETE
+
+-- by Bockjoo Kim at Tue Apr 05 23&#58;51&#58;10 UTC 2016
+
+Brian(s) et al.,
+
+We&#39;re still observing the tale-tale signs of PBS killing the glideins in the *.err logs for some reason [1] . I&#39;m guessing we still need to explicitly set the +maxWalltime submit attribute to avoid whatever the PBS default wall time is. I&#39;m going to explicitly set +maxWalltime = 48 hours on the GOC factory to perform a differential test against the SDSC factory with no +maxWalltime setting. Hopefully this confirms the issue.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+Unsetting X509_USER_PROXY
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+Terminated
+Received kill signal... shutting down child processes
+Terminated
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+date&#58; write error&#58; Broken pipe
+Received kill signal... shutting down child processes
+date&#58; write error&#58; Broken pipe
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+rm&#58; cannot remove &#96;/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/execute/dir_14486/scramOutput.log&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/execute/dir_14486/PSetDump.py&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/execute/dir_14486/.job.ad&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/execute/dir_14486/Fall15_25nsV2_MC.db&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/execute/dir_14486/condor_exec.exe&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/execute/dir_14486/WMCore.zip&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/execute/dir_14486/cmscp.py&#39;Terminated
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+
+=== Encoded XML description of glidein activity ===
+begin-base64 644 -
+H4sIAH9HBFcAA+MCAJMG1zIBAAAA
+====
+=== End encoded XML description of glidein activity ===
+/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/main/condor_startup.sh&#58; line 13&#58; 28125 Segmentation fault      (core dumped) $CONDOR_DIR/sbin/condor_master -f -pidfile $PWD/condor_master2.pid
+File specified in CONDOR_CONFIG environment variable&#58;
+&#34;/local/scratch/19723469.moab.ufhpc/glide_UyOnTO/condor_config&#34; does not exist.
+ls&#58; cannot access log&#58; No such file or directory
+
+-- by Marty Kandes at Tue Apr 05 23&#58;34&#58;46 UTC 2016
+
+Hi Bockjoo,
+
+I just set maxMemory and changed the walltimes back to 48h
+
+Jeff
+
+-- by Jeffrey Dost at Mon Apr 04 20&#58;21&#58;35 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a>
+</div><script type='text/javascript'>
+        $('#show_1700981979').click(function() {
+            $('#detail_1700981979').slideDown("normal");
+            $('#show_1700981979').hide();
+            $('#hide_1700981979').show();
+        });
+        $('#hide_1700981979').click(function() {
+            $('#detail_1700981979').slideUp();
+            $('#hide_1700981979').hide();
+            $('#show_1700981979').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='28830#1459961161'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-06T16:46:01+00:00">Apr 6, 2016 04:46 PM UTC</time> by <b>echism</b><a class="anchor" name="1459961161">&nbsp;</a></div><pre>Is this ready to close?</pre></div><div class='update_description'><i onclick="document.location='28830#1459784000'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-04T15:33:20+00:00">Apr 4, 2016 03:33 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1459784000">&nbsp;</a></div><pre>Hi Jeff,
+Yes, please update the production entry for the maxMemory.
+For the walltime, I prefer 48h.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Mon Apr 04 03&#58;24&#58;01 UTC 2016
+
+Hi Bockjoo,
+
+This looks good. Are you ready on your side if we add maxMemory set to 20480 into the production factory entries?
+
+Another issue caught my attention. It appears that CMS increased the max walltime of the glideins at Florida to 216000 (60h) without first communicating it to you. The single core entries were set to 48h. Which would you prefer for the new multicore entries?
+
+Thanks,
+Jeff Dost
+OSG Glidein Factory Operations
+
+-- by Jeffrey Dost at Mon Apr 04 03&#58;02&#58;15 UTC 2016
+
+Hi All,
+I guess only the ITB entries have the maxMemory attribute at the moment.
+
+So, if there is the maxMemory attribute, with the multithreaded job in mind, the script will look something like
+#PBS -l mem=20480mb
+#PBS -l nodes=1&#58;ppn=8
+
+But if there is no maxMemory attribute, I take it multiple single core jobs and the script will look like
+#PBS -l pmem=2500mb
+#PBS -l nodes=1&#58;ppn=8
+
+This is currently what I have in my CE config. So, in principle, how the memory request will be passed to the scheduler will be
+up to how the factory entry is configured.
+Please let me know your comments.
+Thanks,
+<div id='show_2044849415' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2044849415'>Bockjoo
+
+-- by Bockjoo Kim at Sat Apr 02 15&#58;38&#58;16 UTC 2016
+
+It looks like the only factories requesting memory are GOC ITB and CERN ITB. I updated them accordingly to 20480 / 2.5gb (thanks for the correction Bockjoo).
+
+Jeff
+
+-- by Jeffrey Dost at Fri Apr 01 22&#58;12&#58;58 UTC 2016
+
+@Jeff&#58;
+
+Well, OK, he has stated that now.
+
+But please see update#5, where I clearly indicated that&#58; from the start it has never been a secret, and the reasons to do that are what I described (by the way, it goes in the interest of sites too that we use the cores in the most efficient way!). People may not have paid enough attention or most probably forgot after dealing with this ticket for three weeks discussing other matters.
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Fri Apr 01 22&#58;08&#58;08 UTC 2016
+
+Hi Jeff,
+It&#39;s 2500mb. It&#39;s a little less than 2.5GB, but I guess you can call it 2.5GB/core.
+Sorry about the confusion.
+Antonio, I did not take you would take all 3.9GB when I gave you the number.
+As I said many times, I&#39;d prefer 2.5GB per core at least for now.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Fri Apr 01 22&#58;05&#58;59 UTC 2016
+
+Sorry Antonio,
+
+I don&#39;t think I understand. Bockjoo clearly stated he prefers 2GB / core for pilots. Factory ops needs to respect site policies. I was in the process of reconfiguring these, I&#39;ll revert back to 4gb / core if Bockjoo states otherwise.
+
+Thanks,
+Jeff Dost
+OSG Glidein Factory Operations
+
+-- by Jeffrey Dost at Fri Apr 01 21&#58;52&#58;34 UTC 2016
+
+Hi Brian, Bockjoo,
+
+Please see update#1&#58; available memory per core ~4 GB (and higher in some machines). Why do we ask about that right from the start? Because the more memory we have in the pilot for the same amount of cores, the more flexible and efficient the pilot is in using its allocated resources. So we profit from the machines having 4 GB/core and since we ask for 8 cores, we also request 32 GB.
+
+This is a standard principle we are following in deploying mcore across all sites&#58; if they provide the minimum, 2GB/core, ok. If their machines have higher specification, then we request that in order to improve the performance of the pilots. It&#39;s that simple.
+
+Multicore pilots are different from single core pilots in more than cores&#58; we don&#39;t have to setup single core regular + single core &#34;high mem&#34;, we can have multicore partitionable with as much memory as possible considering machine specifications. Then we will create as many &#34;high mem&#34; slots as required on the fly. Plus we no longer have to maintain different types of entries.
+
+Concerning the situation of the single core entries and the new multicore one, Vassil was working on that today, he should be able to report on the updated status. Factory Ops team was having some discussions apparently on how to proceed with the changes CMS is requesting when factory entries are serving more than one VO.
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Fri Apr 01 21&#58;40&#58;49 UTC 2016
+
+By the way,
+the generated submit script looks correct now with the ITB entry, though I am not sure if this is ever going to be scheduled&#58;
+
+# proxy_string = /cms/data/htcondor-ce/cms/var/lib/condor-ce/spool/5314/0/cluste
+r1785314.proc0.subproc0/credential_CMSG-ITB_gWMSFrontend-v1_0.main_13591.lmt
+# proxy_local_file = /cms/data/htcondor-ce/cms/var/lib/condor-ce/spool/5314/0/cl
+uster1785314.proc0.subproc0/credential_CMSG-ITB_gWMSFrontend-v1_0.main_13591.lmt
+#
+# PBS directives&#58;
+#PBS -S /bin/bash
+#PBS -o /dev/null
+#PBS -e /dev/null
+#PBS -l walltime=48&#58;00&#58;00
+#PBS -l mem=32000mb
+#PBS -q default
+#PBS -l nodes=1&#58;ppn=8
+#PBS -m n
+
+-- by Bockjoo Kim at Fri Apr 01 20&#58;26&#58;05 UTC 2016
+
+The less memory, the faster the job will be scheduled.
+2500mb has been the Florida default with the single core.
+
+-- by Bockjoo Kim at Fri Apr 01 20&#58;20&#58;42 UTC 2016
+
+I can confirm both production and ITB factories are configured to ask for 4GB / core.  I don’t know why; 2.5GB / core is the standard (and some sites even do 2.0).
+
+-- by Brian Bockelman at Fri Apr 01 20&#58;17&#58;04 UTC 2016
+
+That&#39;s ~4.0GB per core memory request.
+Starting when, does CMS require this much memory per core?
+2500mb was the memory request for the single-core entry.
+Isn&#39;t 2.5GB per core memory more than enough?
+If so, it should be 20480 instead of 32000.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Fri Apr 01 19&#58;35&#58;45 UTC 2016
+
+That number is to be expected if the factory is requesting 32000mb. Your
+CE should be creating a submit file and requesting (factory requested
+mem)*1024 kb.
+
+- Brian
+
+-- by Brian Lin at Fri Apr 01 19&#58;18&#58;37 UTC 2016
+
+OK, now I am seeing 32768000.
+Is it coming from ITB?
+
+-- by Bockjoo Kim at Fri Apr 01 19&#58;08&#58;40 UTC 2016
+
+Yes, that&#39;s fine, but I don&#39;t see maxMemory with the Brian Lin&#39;s patch.
+So, I am wondering if there is no maxMemory attribute in the production factory.
+
+-- by Bockjoo Kim at Fri Apr 01 17&#58;30&#58;11 UTC 2016
+
+Hi Bockjoo,
+
+Can we start this in the ITB factory?  I hate to disrupt a working entry point to test a workaround.
+
+Thanks,
+
+-- by Brian Bockelman at Fri Apr 01 17&#58;24&#58;23 UTC 2016
+
+Factory Team,
+Brian Bockelman wants us to use mem directive. For that maxMemory attribute is needed in the glidein entry.
+Can you check if there is the entry for maxMemory?
+&#60;submit_attr name=&#34;+maxMemory&#34; value=&#34;20000&#34;/&#62;
+&#60;submit_attr name=&#34;+xcount&#34; value=&#34;8&#34;/&#62;
+
+I do not see maxMemory in the submit script.
+
+Can you also update the status of the other CE entry and the removal of the single-core entry?
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Fri Apr 01 17&#58;20&#58;03 UTC 2016
+
+Hi Marty, Bockjoo,
+
+Thanks for the line, Marty. It seems we are fine with just requesting 8 cores, then letting memory be handled by the local system, with the default value as defined by the site. I don&#39;t really understand why you said PBS is killing the glideins&#58; I see about 40 pilots which have been running for 6-7 hours. With respect to requesting memory (and walltime) I just know that for the case of PBS being accessed from a CREAM CE this is not necessary.
+
+Bockjoo, yes we should configure as many entry points to the cluster as possible, for redundancy among other things. So we will get that ready.
+
+Also, Marty, Vassil, I think we can start disabling some single core entries as well, right?
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Mar 31 23&#58;55&#58;25 UTC 2016
+
+Bockjoo,
+
+Okay, I&#39;ll check back next week on glidein performance. Maybe the PBS killed glideins will disappear over the weekend.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Mar 31 23&#58;51&#58;21 UTC 2016
+
+Hi Marty,
+I took care of the PBS directives at the CE level (using the blah config in the HTCondor-CE).
+Besides, I will try to watch WMStat to see if there is any issue with the multicore jobs.
+At least for now, you don&#39;t have to worry about this.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Thu Mar 31 23&#58;48&#58;12 UTC 2016
+
+Involve person(s) has been changed to bbockelm@...., blin@.....
+Antonio,
+
+We&#39;re going to have to set +maxMemory. Glideins are being killed by PBS. We probably spent three months debugging this same problem at Clemson. Setting +maxMemory was the solution. In fact, we also had to set +maxWalltime as well. I don&#39;t know why the confusing PBS directives are created, but I&#39;ve cc&#39;d Brian Lin on this as he helped Clemson debug the issue.
+
+Brian,
+
+Can you comment on this issue for us?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Mar 31 23&#58;42&#58;07 UTC 2016
+
+Bockjoo,
+
+Yes, we can setup another entry for the other gatekeeper.
+
+Vassil,
+
+Can you take care of this? I&#39;ll also make a note of it for Jeff to handle tomorrow if you cannot get to it.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Mar 31 23&#58;39&#58;28 UTC 2016
+
+We have two CEs.
+Can you add another entry with a different CE, osg.rc.ufl.edu?
+Currently we have entries for both cms.rc.ufl.edu and osg.rc.ufl.edu for the single core glideins.
+Although the two CEs share exactly the same cluster, there may be some scheduling benefit with the PBS.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Thu Mar 31 23&#58;35&#58;37 UTC 2016
+
+Bockjoo,
+
+The multicore entry CMSHTPC_T2_US_Florida_condor is already in production on all glidein factories.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Mar 31 23&#58;26&#58;18 UTC 2016
+
+Antonio,
+
+&#60;submit_attr name=&#34;+xcount&#34; value=&#34;8&#34;/&#62;
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Mar 31 23&#58;24&#58;14 UTC 2016
+
+Hi Marty,
+I meant multi-core glideins.
+At this point, I think the only thing that remains to be done is adding the multi-core glidein entry to all factories.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Thu Mar 31 23&#58;07&#58;39 UTC 2016
+
+Hi Bockjoo,
+
+Nothing is being delayed&#58; as we have been discussing, we seemed to have conflicting configurations in terms of passing the memory request that we needed to understand.
+
+However, we are in fact running some multicore already at Florida, about 300 cores. And, as you can see in
+
+<a href='http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/status_mcore_T2_US_Florida.html' target='_blank' rel='nofollow'>http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/status_mcore_T2_US_Florida.html</a>
+
+they have been running them for about 5-6 hours.
+
+So apparently this is working, I am not sure which caused this to happen, it may have been changes we did during the day today (to many to remember all at this time).
+
+So, once we disable single core (or understand to what amount we should limit it) and see that we can grow multicore at scale, we&#39;ll close the ticket.
+
+Marty, could you please paste here what is in the submit attributes of the CMSHTPC_T2_US_Florida_condor entry? This must be correct now.
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Mar 31 22&#58;53&#58;35 UTC 2016
+
+Bockjoo,
+
+We&#39;ve had a busy week rolling out multicore glideins across all T2 sites. I&#39;ll have a look at where the multicore entires stand for Florida before the end of the day.
+
+Can you clarify what you mean by &#34;multicore jobs&#34;? Are you referring to multicore glideins? Or the actual user jobs that run on the glideins? If user jobs, there may simply be only single core user jobs running on multicore glideins.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Mar 31 22&#58;43&#58;06 UTC 2016
+
+Hi Elizabeth,
+
+No. We&#39;ve been having some off-ticket discussions. I&#39;ll try to move the discussion back here.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Mar 31 22&#58;39&#58;40 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a>
+</div><script type='text/javascript'>
+        $('#show_2044849415').click(function() {
+            $('#detail_2044849415').slideDown("normal");
+            $('#show_2044849415').hide();
+            $('#hide_2044849415').show();
+        });
+        $('#hide_2044849415').click(function() {
+            $('#detail_2044849415').slideUp();
+            $('#hide_2044849415').hide();
+            $('#show_2044849415').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='28830#1459783990'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-04-04T15:33:10+00:00">Apr 4, 2016 03:33 PM UTC</time> by <b>echism</b><a class="anchor" name="1459783990">&nbsp;</a></div><pre>There is more on this in the GGUS ticket.</pre></div><div class='update_description'><i onclick="document.location='28830#1459443311'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-31T16:55:11+00:00">Mar 31, 2016 04:55 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1459443311">&nbsp;</a></div><pre>I do not see any multi-core jobs.
+I do not see any reason why you shouldn&#39;t send the multi-core jobs.
+Nothing&#39;s wrong, but only the confusing PBS directives that are generated.
+
+Also, can you create mutli-core entries for all factories.
+Why is this being delayed? I don&#39;t understand.
+
+-- by Bockjoo Kim at Thu Mar 31 15&#58;56&#58;44 UTC 2016
+
+Hi Bockjoo,
+
+Yes, from what I can see in terms of the pilot running monitoring, I think something is still not correct. However, I can&#39;t directly check entry configurations at the factories, so I don&#39;t really know the source of the errors. Let&#39;s wait for Marty or Vassil to comment.
+
+Thanks,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 29 21&#58;37&#58;46 UTC 2016
+
+Hi Vassil,
+Something&#39;s wrong. The script looks like&#58;
+#PBS -S /bin/bash
+#PBS -o /dev/null
+#PBS -e /dev/null
+#PBS -l pmem=2500mb
+#PBS -l pvmem=2500mb
+#PBS -l mem=2500mb
+#PBS -l walltime=48&#58;00&#58;00
+#PBS -l pmem=2500mb
+#PBS -l pvmem=5000mb
+#PBS -l vmem=5000mb
+#PBS -q default
+#PBS -l nodes=1&#58;ppn=8
+#PBS -m n
+
+<div id='show_1313210310' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1313210310'>I think these lines&#58;
+#PBS -l pmem=2500mb
+#PBS -l pvmem=2500mb
+#PBS -l mem=2500mb
+are coming from the factory config.
+
+Can you double-check if there is any memory request in the factory config for the multi-core entry?
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Tue Mar 29 17&#58;38&#58;03 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a>
+</div><script type='text/javascript'>
+        $('#show_1313210310').click(function() {
+            $('#detail_1313210310').slideDown("normal");
+            $('#show_1313210310').hide();
+            $('#hide_1313210310').show();
+        });
+        $('#hide_1313210310').click(function() {
+            $('#detail_1313210310').slideUp();
+            $('#hide_1313210310').hide();
+            $('#show_1313210310').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='28830#1459443262'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-31T16:54:22+00:00">Mar 31, 2016 04:54 PM UTC</time> by <b>echism</b><a class="anchor" name="1459443262">&nbsp;</a></div><pre>Hello all,
+
+Is this finished?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='28830#1459265272'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-29T15:27:52+00:00">Mar 29, 2016 03:27 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1459265272">&nbsp;</a></div><pre>Hi Antonio,
+Well described!
+I have added the pmem directive to the pbs_local_submit_attributes.sh
+to cover both single- and multi-core pilots.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Tue Mar 29 13&#58;18&#58;27 UTC 2016
+
+Hi Bockjoo,
+
+With respect to memory, we are typically not scheduling on memory at PBS sites. The usual request we pass to PBS refers just to the &#34;nodes=1&#58;ppn=8&#34; part.
+
+Even more, I think it is quite possible that the information is not being passed correctly to PBS through the Condor CE, as we are only adding
+
+&#60;submit_attr name=&#34;+maxMemory&#34; value=&#34;32768&#34;/&#62;
+
+yet this is being interpreted as a request for three different parameters, pmem, mem and pvmem. I just propose to drop that line, simply ask for CPUs and take the default memory value. If the mem or pmem values are mandatory, perhaps you can add them as default to the pbs_local_submit_attributes.sh, so we don&#39;t have to request either of them from the factory side.
+
+Cheers,
+
+Antonio.
+
+PS, I was discussing this also with Vassil, so he got ahead of me and did the changes.
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 29 13&#58;01&#58;17 UTC 2016
+
+Hi Bockjoo, Antonio,
+
+I removed the submit attribute [1] for entry CMSHTPC_T2_US_Florida_condor in CERN, GOC and SDSC production factories.
+
+Vassil
+
+[1] &#60;submit_attr name=&#34;+maxMemory&#34; value=&#34;32768&#34;/&#62;
+
+<div id='show_959396632' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_959396632'>-- by Vassil Verguilov at Tue Mar 29 12&#58;56&#58;17 UTC 2016
+
+Brian,
+Regarding getting rid of single core entries, we need to have both single- and multi-core entries for a while until scheduling (at least at Florida)
+becomes somewhat optimized.
+This is because 8-core jobs will be usually harder to be scheduled.
+
+-- by Bockjoo Kim at Tue Mar 29 04&#58;01&#58;00 UTC 2016
+
+The script looks like&#58;
+#PBS -l pmem=32768mb
+#PBS -l pvmem=32768mb
+#PBS -l mem=32768mb
+#PBS -l walltime=48&#58;00&#58;00
+#PBS -l pvmem=5000mb
+#PBS -l vmem=5000mb
+#PBS -q default
+#PBS -l nodes=1&#58;ppn=8
+
+These
+#PBS -l pmem=32768mb
+#PBS -l pvmem=32768mb
+#PBS -l mem=32768mb
+are coming from Factory.
+
+These
+#PBS -l pvmem=5000mb
+#PBS -l vmem=5000mb
+are coming from me (CE), /etc/blahp/pbs_local_submit_attributes.sh
+
+I will take care pvmem/vmem as needed from my end.
+So, the FACTORY config about 32768mb should be updated.
+
+My HPC tells me this
+&#34;We enforce the pmem (memory per process/core) so you need to ask for the memory
+*per* core that the job will use and put that in your pmem request.  Asking for
+both mem and pmem just gets confusing and is not necessary or desirable.
+&#34;
+
+-- by Bockjoo Kim at Tue Mar 29 02&#58;35&#58;28 UTC 2016
+
+Thanks Bockjoo, we should remove those attributes from the entry configuration.
+
+Brian, in fact, as we do with the rest of sites using PBS, I propose we remove any memory requirements from the request, i.e. this line&#58;
+
+&#60;submit_attr name=&#34;+maxMemory&#34; value=&#34;32768&#34;/&#62;
+
+and just keep the xcount value. We don&#39;t need to schedule on memory at the site. PBS will allocate 8 single core fixed slots to the &#34;job&#34;
+
+With respect to disabling single core, yes, we are proceeding with that after multicore has been running stably for a while, in order not to interfere with normal production requests at the site. That applies for all sites, not just US.
+
+Thanks,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 29 01&#58;38&#58;57 UTC 2016
+
+Hi,
+
+Couple of things --
+
+1) If I’m reading the torque docs right, we really want to use “mem”, not “pmem” or ‘pvmem’ (in fact, I see no reason why we’d ever want to use the latter).  ‘mem’ is the memory used by the _whole_ job while ‘pmem’ is the max used by a single process.  Since CMS multicore jobs may use, for example, 4 cores and 6GB RAM, it seems we want to use &#39;mem&#39;
+- Web page used&#58; <a href='http&#58;//docs.adaptivecomputing.com/torque/4-1-3/Content/topics/2-jobs/requestingRes.htm' target='_blank' rel='nofollow'>http&#58;//docs.adaptivecomputing.com/torque/4-1-3/Content/topics/2-jobs/requestingRes.htm</a>
+- FLORIDA&#58; Can you file an OSG ticket?  This is something that could be handled correctly by the CE.  Reference this GGUS ticket and we can follow up more there.
+- FLORIDA&#58; In the meantime, can you edit pbs_submit.sh to set only mem= ?
+2) FACTORY&#58; I only see an entry for one Florida CE but not the other.
+3) FACTORY&#58; It seems we’re still submitting single core jobs.  As part of switching sites over, we need to also disable the single core pilots (at least in the US, may not apply elsewhere).  Otherwise, you end up fighting against your own jobs for cores.
+
+Thanks,
+
+-- by Brian Bockelman at Tue Mar 29 01&#58;25&#58;30 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a>
+</div><script type='text/javascript'>
+        $('#show_959396632').click(function() {
+            $('#detail_959396632').slideDown("normal");
+            $('#show_959396632').hide();
+            $('#hide_959396632').show();
+        });
+        $('#hide_959396632').click(function() {
+            $('#detail_959396632').slideUp();
+            $('#hide_959396632').hide();
+            $('#show_959396632').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='28830#1459180489'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-28T15:54:49+00:00">Mar 28, 2016 03:54 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1459180489">&nbsp;</a></div><pre>I would like to close this ticket as soon as the jobs successfully run.
+Can somebody respond to the update #36?
+Is there any problem in updating the config?
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Mon Mar 28 14&#58;33&#58;17 UTC 2016
+
+In fact, our HPC recommends
+#PBS -l pmem=2500mb
+Please update the glidein config. accordingly.
+Please do not use
+#PBS -l mem
+#PBS -l pvmem
+
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Fri Mar 25 13&#58;39&#58;25 UTC 2016
+
+Hi Marty,
+I am seeing these PBS directives
+#PBS -l pmem=32768mb
+#PBS -l pvmem=32768mb
+#PBS -l mem=32768mb
+
+This should not be changed.
+Can you change them back to
+#PBS -l mem=2500mb
+?
+I think this is because once the job grabs 8 cores, each core will automatically get 2500mb.
+I think pmem and pvmem are meaningless at my site. I need to confirm this with our HPC people.
+The bigger the memory request is, the harder the job will be scheduled.
+Thanks,
+Bockjoo
+<div id='show_1033252246' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1033252246'>
+-- by Bockjoo Kim at Thu Mar 24 18&#58;32&#58;12 UTC 2016
+
+Well, the first approach would be to see if you really need something like mcfloat or not at your site. Like I said, CIEMAT T2, being almost dedicated to CMS, can run multicore simply by the effect of the fair-share on the scheduler, once we completely switched to multicore. It&#39;s harder to run single and multi combination (even if just for CMS) than go actually for fully mcore scenario.
+
+In any case, if you do need to use &#34;advanced techniques&#34; I can pass more info and the contact of people at PIC well experienced with mcfloat for PBS.
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Mar 24 17&#58;49&#58;12 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a>
+</div><script type='text/javascript'>
+        $('#show_1033252246').click(function() {
+            $('#detail_1033252246').slideDown("normal");
+            $('#show_1033252246').hide();
+            $('#hide_1033252246').show();
+        });
+        $('#hide_1033252246').click(function() {
+            $('#detail_1033252246').slideUp();
+            $('#hide_1033252246').hide();
+            $('#show_1033252246').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='28830#1458838978'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-24T17:02:58+00:00">Mar 24, 2016 05:02 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458838978">&nbsp;</a></div><pre>Hi Antonio,
+Thanks for the info!
+Can you send me more details of the measurements described in the presentation
+so that I can convince my HPC people?
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Thu Mar 24 14&#58;36&#58;12 UTC 2016
+
+Hi Bockjoo,
+
+Great! Yes, I see the jobs now in the queue (idle from the pilot factory pov), see&#58;
+
+<a href='http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/multicore_factory_t2s_24h.html' target='_blank' rel='nofollow'>http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/multicore_factory_t2s_24h.html</a>
+
+So yes, now it&#39;s a matter of getting them to run at the site. Being PBS, it&#39;s important to know the job mix that the site is being required to schedule. Do you support multiple VOs? are they running multicore at all? what is the share of CMS?
+
+Depending on that, you may simply rely on the scheduler settings or may need to implement more advanced techniques. In the first case, like CIEMAT, it was now required. In the second, with more complex situation, for scheduling multicore so far with PBS, &#34;mcfloat&#34; has been very successful (we are running that here at PIC, by the way), see
+
+<a href='https&#58;//indico.cern.ch/event/304944/session/6/contribution/281/attachments/578828/797018/CHEP.2015.templon.pdf' target='_blank' rel='nofollow'>https&#58;//indico.cern.ch/event/304944/session/6/contribution/281/attachments/578828/797018/CHEP.2015.templon.pdf</a>
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Mar 24 13&#58;19&#58;05 UTC 2016
+
+Thanks Marty!
+One multicore job arrived&#58;
+19365445
+#PBS -l nodes=1&#58;ppn=8
+I wonder how soon it can be scheduled.
+It might take foreever, though.
+We will see.
+Thanks,
+<div id='show_1444158022' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1444158022'>Bockjoo
+
+-- by Bockjoo Kim at Wed Mar 23 19&#58;03&#58;37 UTC 2016
+
+Antonio, Bockjoo,
+
+I&#39;ve added the submit attributes
+
+&#60;submit_attr name=&#34;+maxMemory&#34; value=&#34;32768&#34;/&#62;
+&#60;submit_attr name=&#34;+xcount&#34; value=&#34;8&#34;/&#62;
+
+to the new multicore entry CMSHTPC_T2_US_Florida_condor as well as adjusted
+
+&#60;attr name=&#34;GLIDEIN_MaxMemMBs&#34; const=&#34;True&#34; glidein_publish=&#34;False&#34; job_publish=&#34;True&#34; parameter=&#34;True&#34; publish=&#34;True&#34; type=&#34;int&#34; value=&#34;32768&#34;/&#62;
+
+to match. The entry is now in production across all glidein factories. If you would like us to disable the entry in any while still testing, please let us know.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Wed Mar 23 18&#58;52&#58;34 UTC 2016
+
+By the way, I think the entry name is lacking in consistency.
+It should say multicore or something.
+Some sites have that in the entry name and some entries start with CMSHTC*.
+So confusing!
+
+-- by Bockjoo Kim at Wed Mar 23 15&#58;56&#58;19 UTC 2016
+
+Thanks a lot Brian, I did not realize about that parameters in the configuration, even if we knew we were trying to run a multicore pilot in a single core slot…
+
+Let&#39;s ask the factory ops team to reconfigure the entry.
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Wed Mar 23 15&#58;52&#58;29 UTC 2016
+
+Hi guys,
+
+No one set the standard attributes for a condor-ce multicore entry.
+
+Every other condor-ce has the following&#58;
+
+&#60;submit_attrs&#62;
+&#60;submit_attr name=&#34;+maxMemory&#34; value=&#34;20000&#34;/&#62;
+&#60;submit_attr name=&#34;+xcount&#34; value=&#34;8&#34;/&#62;
+&#60;/submit_attrs&#62;
+
+while the entry point in question (CMSHTPC_T2_US_Florida_condor) has&#58;
+
+&#60;submit cluster_size=&#34;10&#34; max_per_cycle=&#34;25&#34; sleep=&#34;2&#34; slots_layout=&#34;fixed&#34;&#62;
+&#60;submit_attrs&#62;
+&#60;/submit_attrs&#62;
+&#60;/submit&#62;
+
+Hence, you’re requesting a single core from the site and starting an 8-core pilot.
+
+There’s nothing here to figure out (well, at this point - bugs can always pop up later).  Just do the standard configuration.
+
+Brian
+
+-- by Brian Bockelman at Wed Mar 23 15&#58;35&#58;13 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a>
+</div><script type='text/javascript'>
+        $('#show_1444158022').click(function() {
+            $('#detail_1444158022').slideDown("normal");
+            $('#show_1444158022').hide();
+            $('#hide_1444158022').show();
+        });
+        $('#hide_1444158022').click(function() {
+            $('#detail_1444158022').slideUp();
+            $('#hide_1444158022').hide();
+            $('#show_1444158022').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='28830#1458746159'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T15:15:59+00:00">Mar 23, 2016 03:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458746159">&nbsp;</a></div><pre>Notified CMS Glidein Factory team of this ticket.Hi Bockjoo,
+
+Agreed. And I don&#39;t have the technical expertise to really help on this level of detail. Hopefully the glideinWMS experts can advice in case we require reconfiguration at the site or at the pilot factory side… assigning the ticket to the factory ops team.
+
+Thanks,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Wed Mar 23 15&#58;14&#58;52 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458743273'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T14:27:53+00:00">Mar 23, 2016 02:27 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458743273">&nbsp;</a></div><pre>Hi Antonio,
+We have only one queue. That queue is being routed to the proper resource.
+As far as I can tell, the CE takes both InputRSL,maxMemory and InputRSL.xcount, those are turned
+into the proper PBS directives.
+What happens is that the condor attributes (maxMemory, xcount etc) in the condor submit file
+are interpreted in the CE by the &#34;blah&#34; and the blah creates the proper PBS directives based on the
+condor attributes, I think.
+I think you can pass xcount through the submission file in terms of the glidein language.
+But I am not sure this is the correct way of doing  the multi-core setup in the glidein.
+But also setting a dedicated queue for GLIDEIN_CPUs is not the right way to do this.
+What a mess!
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Wed Mar 23 14&#58;27&#58;17 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458737018'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T12:43:38+00:00">Mar 23, 2016 12:43 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458737018">&nbsp;</a></div><pre>Hi Bockjoo,
+
+I guess this happens at the level of the CE, and probably happens for condor-CE to PBS, which I think is not a very frequent combination, as far as I can tell. However, as you said, if the memory request is being passed correctly for you, with no need for RSL, the rest should be ok as well.
+
+However, I see no queue specification at
+
+<a href='http&#58;//vocms0305.cern.ch/factory/monitor/factoryEntryStatusNow.html?entry=CMS_T2_US_Florida_osg_HighMem_8GB' target='_blank' rel='nofollow'>http&#58;//vocms0305.cern.ch/factory/monitor/factoryEntryStatusNow.html?entry=CMS_T2_US_Florida_osg_HighMem_8GB</a>
+
+since in fact all entries for Florida are configured to point to the same gatekeeper,
+
+osg.rc.ufl.edu osg.rc.ufl.edu&#58;9619.
+
+Since I am not familiar with Condor-CE, I&#39;m guessing that it&#39;s the CE who&#39;s doing the routing to the different queues and resources within the site, according to what is being requested. Therefore, perhaps you could check your CE configuration in case you need, for example, enable a different PBS queue for multicore, reconfigure the CE, etc. Multicore pilots could be identified by the GLIDEIN_CPUs attribute and routed to a queue which has &#34;node=1, ppn=8&#34; by default, for example.
+
+But that is just my guess.
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Wed Mar 23 12&#58;43&#58;04 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458736056'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T12:27:36+00:00">Mar 23, 2016 12:27 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458736056">&nbsp;</a></div><pre>Hi Antonio,
+The PBS directive for the pmem is correctly passed to the CE for the high memory glidein entry
+, CMS_T2_US_Florida_osg_HighMem_8GB.
+If we could figure out how it is done with that directive (#PBS -l pmem=8000mb), you could do
+a similar thing for the ppn?
+I am surprised this hurdle did not come up with Purdue multi-core or Vanderbilt multi-core setup.
+They have PBS and SLURM.
+I will ask Manoj at Purdue.
+Bockjoo
+
+-- by Bockjoo Kim at Wed Mar 23 12&#58;27&#58;17 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458712096'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-23T05:48:16+00:00">Mar 23, 2016 05:48 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458712096">&nbsp;</a></div><pre>Hi Bockjoo,
+
+Yes, the &#34;GLIDEIN_CPUS 8&#34; attribute is in principle for internal use of the pilot, it is not the request to the CE. We need something like
+
+GlobusRSL =&#34; WholeNodes = False; HostNumber = 1; CPUNumber = 8&#34;
+
+in the Condor CE syntax to be passed in order to request &#34;node=1&#58;ppn=8&#34;. According to
+
+<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/SubmittingHTCondorCE' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/SubmittingHTCondorCE</a>
+
+we should be using RSL string with &#34;xcount&#34;.
+
+However, I have also found
+
+<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2205' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2205</a>
+
+which apparently discourages the use of RSL for HTCondor-CE as &#34;modern versions of the glideinWMS factories, which can natively talk to HTCondor-CE&#34;...
+
+Do you have any more info? Should we ask Brian?
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Wed Mar 23 05&#58;47&#58;34 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458672897'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-22T18:54:57+00:00">Mar 22, 2016 06:54 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458672897">&nbsp;</a></div><pre>It&#39;s apparent that
+GLIDEIN_CPUS	8
+does not achieve what we want.
+Besides, multicore jobs usually take very long to be scheduled
+unless we arrange it specially locally.
+Let&#39;s worry about the slow schedule later.
+We need to figure out how to achieve node=1&#58;ppn=8 in terms of the glidein language.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Tue Mar 22 18&#58;54&#58;36 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458671816'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-22T18:36:56+00:00">Mar 22, 2016 06:36 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458671816">&nbsp;</a></div><pre>-Exactly, this is what we need to achieve&#58;
+
+nodes=1&#58;ppn=8
+
+8 slots in a single node.
+
+-We don&#39;t explicitly request memory&#58; just 8 times that of a regular single core slot.
+
+-I see nothing special for the Purdue or Vanderbilt entries. However, the CREAM rsl string we use is (from PIC entry *)&#58;
+
+GlobusRSL =&#34; WholeNodes = False; HostNumber = 1; CPUNumber = 8&#34;
+
+I hope that helps,
+
+Antonio.
+
+(*) <a href='http&#58;//vocms0305.cern.ch/factory/monitor/factoryEntryStatusNow.html?entry=CMSHTPC_T1_ES_PIC_ce07-multicore' target='_blank' rel='nofollow'>http&#58;//vocms0305.cern.ch/factory/monitor/factoryEntryStatusNow.html?entry=CMSHTPC_T1_ES_PIC_ce07-multicore</a>
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 22 18&#58;36&#58;08 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458671155'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-22T18:25:55+00:00">Mar 22, 2016 06:25 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458671155">&nbsp;</a></div><pre>The script shows this&#58;
+#PBS -l nodes=1&#58;ppn=1
+I think it should be at least
+#PBS -l nodes=1&#58;ppn=8
+if you wanted to take 8 cores.
+There is also the memory PBS directives. I am not sure if those directives should be set according to the number of cores.
+For a single core job, the physical memory directive for 2500 MB of memory is
+#PBS -l pmem=2500mb
+
+Do you have the GGUS ticket for Vanderbilt or Purdue site?
+We can refer to those tickets. Also if you could send me the rsl string for the CREAME CE sites, that would help too.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Tue Mar 22 18&#58;24&#58;49 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458670494'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-22T18:14:54+00:00">Mar 22, 2016 06:14 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458670494">&nbsp;</a></div><pre>Hi Bockjoo,
+
+No, the request is passed at submission time. From the PBS point of view, the pilots take 8 single core slots (qstat shows node_a/1+node_a/2+...). This request must be passed from the CE to the batch system. For the case of CREAM CEs, this is passed as a rsl string. Looking at the entry config, we might be missing something like that&#58;
+
+<a href='http&#58;//vocms0305.cern.ch/factory/monitor/factoryEntryStatusNow.html?entry=CMSHTPC_T2_US_Florida_condor' target='_blank' rel='nofollow'>http&#58;//vocms0305.cern.ch/factory/monitor/factoryEntryStatusNow.html?entry=CMSHTPC_T2_US_Florida_condor</a>
+
+I think we have not tried condor CE + PBS/moab before. The typical combination is CREAM + PBS at EU sites, so we might need to explore this a bit more.
+
+Do you actually know how the request should be written?
+
+Thanks,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 22 18&#58;13&#58;56 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458669655'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-22T18:00:55+00:00">Mar 22, 2016 06:00 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458669655">&nbsp;</a></div><pre>OK, I see the multicore jobs&#58;
+[root@moab ~]# showq -b  | grep cmspilot
+19339339           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 12&#58;48&#58;43
+19339340           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 12&#58;48&#58;43
+19339353           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 12&#58;55&#58;59
+19339357           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 12&#58;57&#58;03
+19339358           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 12&#58;57&#58;05
+19339483           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 13&#58;11&#58;47
+19339493           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 13&#58;14&#58;01
+19339543           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 13&#58;30&#58;46
+19339552           cmspilot       Idle     1  2&#58;00&#58;00&#58;00  Tue Mar 22 13&#58;34&#58;53
+
+But the sripts&#39; PBS directives are same as single core jobs
+Will they be running as a single job and grab more cores along the lifetime of the job?
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Tue Mar 22 18&#58;00&#58;30 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458667249'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-22T17:20:49+00:00">Mar 22, 2016 05:20 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458667249">&nbsp;</a></div><pre>Hi Bockjoo,
+
+Actually Florida multicore entry was moved to production, so you are continuously receiving multicore pilots. Right now&#58;
+
+aperez@submit-3 ~/entries$ condor_status -pool cmssrv221.fnal.gov -af GLIDEIN_CMSSite SlotType GLIDEIN_Entry_Name|sort |uniq -c | grep Florida
+8 T2_US_Florida Dynamic CMSHTPC_T2_US_Florida_condor
+1 T2_US_Florida Partitionable CMSHTPC_T2_US_Florida_condor
+887 T2_US_Florida Static CMS_T2_US_Florida_condor
+825 T2_US_Florida Static CMS_T2_US_Florida_iogw1
+342 T2_US_Florida Static CMS_T2_US_Florida_osg_HighMem_8GB
+
+so there&#39;s one mcore pilot, if you want to check it.
+
+Also, Vassil has been looking at the pilot logs. He did not find anything looking strange.
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 22 17&#58;19&#58;58 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458666769'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-22T17:12:49+00:00">Mar 22, 2016 05:12 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458666769">&nbsp;</a></div><pre>Hi Antonio,
+I only know the moab tracejob tool that shows the walltime etc. But it requires the job id.
+So, it&#39;s not possible to check the multi-core jobs at this moment.
+If you could submit some test multi-core jobs, I could check the glidein entry, CMSHTPC_T2_US_Florida_condor
+, to identify multi-core jobs and to debug any issue from my end.
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Tue Mar 22 17&#58;12&#58;16 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458665690'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-22T16:54:50+00:00">Mar 22, 2016 04:54 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458665690">&nbsp;</a></div><pre>Hi Bockjoo,
+
+I&#39;ll try to find pilot logs in the factories, see if I can find anything suspicious. Perhaps you can also check on your side filtering on user and resource request?
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 22 16&#58;54&#58;24 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458568833'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-21T14:00:33+00:00">Mar 21, 2016 02:00 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458568833">&nbsp;</a></div><pre>The default walltime is 48hours.
+If jobs are terminating much less than 30 hours, we should look at the individual jobs.
+Is there a list of job ids for the multi-cores jobs?
+
+-- by Bockjoo Kim at Mon Mar 21 14&#58;00&#58;07 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458566477'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-21T13:21:17+00:00">Mar 21, 2016 01:21 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458566477">&nbsp;</a></div><pre>-- by Antonio Perez-Calero Yzquierdo at Mon Mar 21 13&#58;21&#58;05 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458284055'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-18T06:54:15+00:00">Mar 18, 2016 06:54 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458284055">&nbsp;</a></div><pre>Hi Elizabeth,
+
+Not yet. We are not finished with the transition to multicore, and moreover I don&#39;t understand the pattern for running pilots I see for Florida site. See
+
+<a href='http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/multicore_usage_t2s_12h.html' target='_blank' rel='nofollow'>http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/multicore_usage_t2s_12h.html</a>
+
+and compare Florida to the rest of sites. This fast alternating pattern looks to me to be caused by short pilot running times. Our multicore pilots should in principle run at least for 30 hours, yet as you can see at
+
+<a href='http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/status_mcore_T2_US_Florida.html' target='_blank' rel='nofollow'>http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/status_mcore_T2_US_Florida.html</a>
+
+all of them are running for one hour long or less, again compare to other sites, for example Nebraska
+
+<a href='http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/status_mcore_T2_US_Nebraska.html' target='_blank' rel='nofollow'>http&#58;//submit-3.t2.ucsd.edu/CSstoragePath/aperez/T2s/status_mcore_T2_US_Nebraska.html</a>
+
+Are you limiting at your end the duration of the jobs? I don&#39;t see anything obviously wrong in the configuration at the pilot factory side.
+
+Thanks,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Fri Mar 18 06&#58;53&#58;22 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458249882'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-17T21:24:42+00:00">Mar 17, 2016 09:24 PM UTC</time> by <b>echism</b><a class="anchor" name="1458249882">&nbsp;</a></div><pre>This seems like it&#39;s working to me, may I close this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='28830#1458056533'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-15T15:42:13+00:00">Mar 15, 2016 03:42 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458056533">&nbsp;</a></div><pre>Hi Antonio,
+
+I added the entry to the CERN production factory [1].
+
+Cheers,
+Vassil
+
+[1] <a href='http&#58;//vocms0305.cern.ch/monitor/factoryEntryStatusNow.html?entry=CMSHTPC_T2_US_Florida_condor' target='_blank' rel='nofollow'>http&#58;//vocms0305.cern.ch/monitor/factoryEntryStatusNow.html?entry=CMSHTPC_T2_US_Florida_condor</a>
+
+-- by Vassil Verguilov at Tue Mar 15 15&#58;41&#58;51 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458056052'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-15T15:34:12+00:00">Mar 15, 2016 03:34 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458056052">&nbsp;</a></div><pre>Hi Vassil,
+
+It seems the tests are successful, as the dummy jobs are running. As in the other cases, I suggest we include the recently configured entry in one of the production factories, see if it can handle real work fine, then we could expand.
+
+Thanks,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 15 15&#58;33&#58;02 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458054912'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-15T15:15:12+00:00">Mar 15, 2016 03:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458054912">&nbsp;</a></div><pre>Thanks Vassil, I&#39;ll start testing immediately.
+
+-- by Antonio Perez-Calero Yzquierdo at Tue Mar 15 15&#58;14&#58;34 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1458046741'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-15T12:59:01+00:00">Mar 15, 2016 12:59 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1458046741">&nbsp;</a></div><pre>Hi Antonio,
+
+I reconfigured the entry in the CERN ITB factory.
+
+Cheers,
+Vassil
+
+-- by Vassil Verguilov at Tue Mar 15 12&#58;58&#58;33 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1457637200'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-10T19:13:20+00:00">Mar 10, 2016 07:13 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1457637200">&nbsp;</a></div><pre>Hi Bockjoo, Vassil,
+
+I don&#39;t know for sure about the virtual memory... but in principle what we request from PBS in terms of multicore is N single core slots, not an N-core slot, so the configuration is correct for one core, it should also work for N, I guess.
+
+Vassil, please setup the entry for the standard 8 cores, as that should maximize the use of the reources, and we want to keep the standard size whenever possible. We can always keep a few single core pilots still running to complete for example the 12 core machines. And with respect to memory, let&#39;s use 4 GB per core (memory attribute GLIDEIN_MaxMemMBs = 32000) for now. Again, we can always also configire some high memory alternative entry for the machines with higher specification.
+
+Cheers and thanks,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Mar 10 19&#58;12&#58;46 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1457630952'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-10T17:29:12+00:00">Mar 10, 2016 05:29 PM UTC</time> by <b>Bockjoo Kim</b><a class="anchor" name="1457630952">&nbsp;</a></div><pre>For the single core job, I had to increase the virtual memory in the PBS
+directive.
+I wonder if the virtual memory size has to be increased further for the
+multi-core jobs.
+Just curious,
+Bockjoo
+On 3/10/16 11&#58;09 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28830#1457626198'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-10T16:09:58+00:00">Mar 10, 2016 04:09 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1457626198">&nbsp;</a></div><pre>Hi Antonio, Bockjoo,
+
+I created a multicore (12-core/94Gb) entry CMSHTPC_T2_US_Florida_condor [1] in CERN ITB factory.
+
+Cheers,
+Vassil Verguilov
+CMS CERN Factory Operations
+
+[1] <a href='http&#58;//vocms054.cern.ch/monitor/factoryEntryStatusNow.html?entry=CMSHTPC_T2_US_Florida_condor' target='_blank' rel='nofollow'>http&#58;//vocms054.cern.ch/monitor/factoryEntryStatusNow.html?entry=CMSHTPC_T2_US_Florida_condor</a>
+
+-- by Vassil Verguilov at Thu Mar 10 16&#58;09&#58;28 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1457622895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-10T15:14:55+00:00">Mar 10, 2016 03:14 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1457622895">&nbsp;</a></div><pre>Thanks for all the details, Bockjoo. we should start testing immediately, and let you know about the results.
+
+Cheers,
+
+Antonio.
+
+-- by Antonio Perez-Calero Yzquierdo at Thu Mar 10 15&#58;14&#58;25 UTC 2016
+
+Here you go&#58;
+
+-Batch system and CE technologies
+PBS queue=default and OSG HTCondoe CE
+
+-Cores per node in your cluster
+12, 16, or 64
+
+-Memory per core in your cluster
+7.87 GB for 12 core/node machines, 3.94 GB for the other nodes
+
+-Gatekeeper to be used for multicore pilot submission
+cms.rc.ufl.edu
+
+Thanks,
+Bockjoo
+
+-- by Bockjoo Kim at Thu Mar 10 04&#58;57&#58;02 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a></pre></div><div class='update_description'><i onclick="document.location='28830#1457568713'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-03-10T00:11:53+00:00">Mar 10, 2016 12:11 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1457568713">&nbsp;</a></div><pre>Dear site admins,
+
+As you may know, CMS requires the deployment of multicore CPU resources at their supporting T2 sites for the upcoming Spring and Summer MC production campaigns. For that, CMS will switch to submitting multi-core pilots to your site, instead of the current single-core.
+
+You can find more information about the project at&#58;
+<a href='https&#58;//twiki.cern.ch/twiki/bin/view/CMSPublic/CMSMulticoreSchedulingProject' target='_blank' rel='nofollow'>https&#58;//twiki.cern.ch/twiki/bin/view/CMSPublic/CMSMulticoreSchedulingProject</a>
+
+with specific details to the deployment at T2s at&#58;
+<a href='https&#58;//twiki.cern.ch/twiki/bin/view/CMSPublic/MulticoreDeploymentToT2s' target='_blank' rel='nofollow'>https&#58;//twiki.cern.ch/twiki/bin/view/CMSPublic/MulticoreDeploymentToT2s</a>
+
+The proposed plan is to first setup a test multicore entry for your site in the testbed (ITB) glideinWMS pilot factories, submitting a few pilots to verify that the request is correctly passed to the local CE and batch systems. For that, we need that you provide the following information&#58;
+
+-Batch system and CE technologies
+
+-Cores per node in your cluster
+
+-Memory per core in your cluster
+
+-Gatekeeper to be used for multicore pilot submission
+
+Thank you,
+
+Antonio,
+CMS Submission Infrastructure team.
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=120099</a>
+
+[Ticket History]
+Subject&#58; Moving T2_US_Florida to multicore
+Ticket Type&#58; USER
+CC&#58; cms-submission-infrastructure@....
+-- by Antonio Perez-Calero Yzquierdo at Thu Mar 10 00&#58;11&#58;21 UTC 2016</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F28830">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 28830});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

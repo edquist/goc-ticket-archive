@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[22305] bestman2 and org.osg.gratia.condor problems with new OSG 3.1.38 install on 32-bit RHEL5.10 install on OUHEP_OSG</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=22305" method="post">
+<div class="page-header">
+    <h3><span class="muted">22305</span> / bestman2 and org.osg.gratia.condor problems with new OSG 3.1.38 install on 32-bit RHEL5.10 install on OUHEP_OSG</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Horst Severini</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Horst Severini</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Resolved</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-09-15</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=22305", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/22305?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/22305?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20bestman2%20and%20org.osg.gratia.condor%20problems%20with%20new%20OSG%203.1.38%20install%20on%2032-bit%20RHEL5.10%20install%20on%20OUHEP_OSG%20ISSUE%3D22305%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='22305#1410573682'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-13T02:01:22+00:00">Sep 13, 2014 02:01 AM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1410573682">&nbsp;</a></div><pre>Thanks Horst.  Glad everything worked out &#58;)
+
+Have a great weekend.
+
+Vince</pre></div><div class='update_description'><i onclick="document.location='22305#1410536054'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T15:34:14+00:00">Sep 12, 2014 03:34 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1410536054">&nbsp;</a></div><pre>Hi Vince,
+
+yes, with the group ownership hack of /etc/cron.d/ this now works here,
+so I think we can leave it at that for now, until you come up with a
+more permanent solution for that in the JIRA ticket ...
+
+The crl-expiry probe is still failing, but I was about to send
+a follow up email on that to the other ticket.
+
+So I think we can close this one now.
+
+Thanks a lot,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='22305#1410534707'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T15:11:47+00:00">Sep 12, 2014 03:11 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1410534707">&nbsp;</a></div><pre>Greetings all,
+
+We&#39;ve got a JIRA ticket tracking the cron.d update/changes and it appears that all of the issues in this ticket have been resolved.
+<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1602' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1602</a>
+
+Horst,
+Everything looking good on your end?
+
+Please let me know if I can assist.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='22305#1410387325'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-10T22:15:25+00:00">Sep 10, 2014 10:15 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1410387325">&nbsp;</a></div><pre>Hi Mat,
+
+yes, I think it would be best to migrate that cron.d check someplace else,
+since you can&#39;t do in RSV it without hacking something, at least in RHEL5.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='22305#1410386752'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-10T22:05:52+00:00">Sep 10, 2014 10:05 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1410386752">&nbsp;</a></div><pre>That&#39;s a good question. I doubt admins would be happy if osg-configure changed the permissions on /etc/cron.d for them, so we might just have to mention it in documentation.
+
+A technical way around this is to have the rsv probe look for a sentinel file created by the cron job that has a &#39;last run&#39; time. But then people would have to update the gratia probe at the same time as the rsv probe, and manually merge any changes they may have made to the cron job -- so not really feasible.
+
+Perhaps the best thing to do is to skip the cron.d check in the rsv probe and put it into the osg-system-profiler instead.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22305#1410355271'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-10T13:21:11+00:00">Sep 10, 2014 01:21 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1410355271">&nbsp;</a></div><pre>Hi Mat,
+
+okay, for the time being I gave group ownership of /etc/cron.d/ to rsv
+and made it group readable, and now that error went away.
+
+You&#39;re right, though, it&#39;s strange that this hasn&#39;t come up before --
+but maybe there really aren&#39;t any more sites running RHEL5 now?
+I don&#39;t know about CentOS5, that may not have this protection,
+but I just checked some SLC5 and SLF5 nodes, and they do.
+
+So what&#39;s the best way forward here, that will allow a standard RHEL5
+installation to get this working without having to hack anything?
+
+Thanks a lot,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='22305#1410312221'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-10T01:23:41+00:00">Sep 10, 2014 01:23 AM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1410312221">&nbsp;</a></div><pre>Good evening, Horst and Mat
+
+I created OSG Ticket 22381 for the org.osg.certificates.crl-expiry issue&#58;  <a href='https&#58;//ticket.grid.iu.edu/22381' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/22381</a>
+Please let me know if I can assist.
+
+Thank you,
+Vince</pre></div><div class='update_description'><i onclick="document.location='22305#1410301922'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-09T22:32:02+00:00">Sep 9, 2014 10:32 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1410301922">&nbsp;</a></div><pre>Odd that it hasn&#39;t come up for other sites yet. I&#39;ve created a JIRA ticket ( <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1602' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1602</a> ) to make it a warning instead of an error if /etc/cron.d is inaccessible.
+In the meantime, you should chmod /etc/cron.d to make it readable by the rsv user. If you don&#39;t want to make it 0755, perhaps change the group to rsv and make it 0750. (Check that there are no passwords/private data in the directory first, though I don&#39;t expect any).
+
+Can someone on the Support Team make a ticket for the org.osg.certificates.crl-expiry issue? I don&#39;t have the powers to make Horst be the submitter...
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22305#1410297851'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-09T21:24:11+00:00">Sep 9, 2014 09:24 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1410297851">&nbsp;</a></div><pre>Hi Mat,
+
+ahh, now we&#39;re getting closer!
+
+I think the problem is that in RHEL5, /etc/cron.d/ is read protected,
+while in RHEL6 that&#39;s no longer the case. Therefore the rsv user can&#39;t
+look at it&#58;
+
+----
+[root@ouhep0 ~]# grep -e &#39;^[[&#58;space&#58;]]*[^#].*gratia/&#92;(probe/&#92;)&#92;?condor/&#39;
+/etc/cron.d/*
+/etc/cron.d/gratia-probe-condor.cron&#58;0,15,30,45 * * * * root
+/usr/share/gratia/common/cron_check  /etc/gratia/condor/ProbeConfig &&
+/usr/share/gratia/condor/condor_meter -s 900
+----
+[root@ouhep0 ~]# su rsv
+sh-3.2$ grep -e &#39;^[[&#58;space&#58;]]*[^#].*gratia/&#92;(probe/&#92;)&#92;?condor/&#39;
+/etc/cron.d/*
+grep&#58; /etc/cron.d/*&#58; Permission denied
+----
+[root@ouhep0 ~]# ls -al /etc/cron.d
+total 68
+drwx------   2 root root  4096 Aug 29 16&#58;55 .
+drwxr-xr-x 136 root root 12288 Sep  9 15&#58;55 ..
+-rw-r--r--   1 root root   414 May 27 11&#58;42 edg-mkgridmap-cron
+-rw-r--r--   1 root root   565 Jul 23  2013 fetch-crl3
+-rw-r--r--   1 root root   117 Aug 29 16&#58;26 frontier-squid.cron
+-rw-r--r--   1 root root   140 Jul 15 11&#58;17 gratia-probe-condor.cron
+-rw-r--r--   1 root root   169 Jul 15 11&#58;17
+gratia-probe-gridftp-transfer.cron
+-rw-r--r--   1 root root   187 Mar 18 17&#58;09 gums-client-cron
+-rw-r--r--   1 root root   222 Nov  1  2012 osg-ca-certs-updater
+-rw-r--r--   1 root root    84 Sep  3 09&#58;53 osg-cleanup
+-rw-r--r--   1 root root   461 Feb 26  2014 osg-info-services
+-rw-r--r--   1 root root   170 Aug  3  2010 restart-ntpd-gmetad
+<div id='show_568354109' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_568354109'>-rw-r--r--   1 root root   188 May 29  2012 sysstat
+----
+
+What do we do now? &#58;)
+
+And yes, adding
+
+gram_ce_hosts = %(localhost)s
+
+and re-running osg-configure did the trick for these other two probes!
+
+Can you open a ticket on our OUHEP_ITB RSV issues, or should I email the
+GOC about this?
+
+Thanks a lot,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_568354109').click(function() {
+            $('#detail_568354109').slideDown("normal");
+            $('#show_568354109').hide();
+            $('#hide_568354109').show();
+        });
+        $('#hide_568354109').click(function() {
+            $('#detail_568354109').slideUp();
+            $('#hide_568354109').hide();
+            $('#show_568354109').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22305#1410292985'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-09T20:03:05+00:00">Sep 9, 2014 08:03 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1410292985">&nbsp;</a></div><pre>Hi Horst,
+
+gram_ce_hosts was added because we didn&#39;t want gram-specific tests running (and failing) against an htcondor-ce ce.
+gram_ce_hosts = %(localhost)s should work.
+
+What do you get when you run&#58;
+grep -e &#39;^[[&#58;space&#58;]]*[^#].*gratia/&#92;(probe/&#92;)&#92;?condor/&#39; /etc/cron.d/*
+?
+
+If you can run it as the rsv user, it would be even better.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22305#1410196730'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-08T17:18:50+00:00">Sep 8, 2014 05:18 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1410196730">&nbsp;</a></div><pre>Hi Mat,
+
+okay, I installed your patch, but it didn&#39;t seem to help&#58;
+
+----
+[root@ouhep0 probes]# diff gratia-config-probe gratia-config-probe.orig
+90c90
+&#60;   my $cron_grep_pattern = &#34;^[[&#58;space&#58;]]*[^#].*gratia/&#92;&#92;(probe/&#92;&#92;)&#92;&#92;?$real_gratia_probe_type/&#34;;
+---
+<font color='#7F7E6F'>&#62;   my $cron_grep_pattern = &#34;^&#92;&#92;s*[^#].*gratia/&#92;&#92;(probe/&#92;&#92;)&#92;&#92;?$real_gratia_probe_type/&#34;;</font>
+----
+[root@ouhep0 hs]# rsv-control --run org.osg.gratia.condor -u ouhep0.nhn.ou.edu
+
+Running metric org.osg.gratia.condor&#58;
+
+metricName&#58; org.osg.gratia.condor
+metricType&#58; status
+timestamp&#58; 2014-09-08 12&#58;04&#58;22 CDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-CE
+serviceURI&#58; ouhep0.nhn.ou.edu
+gatheredAt&#58; ouhep0.nhn.ou.edu
+summaryData&#58; CRITICAL
+detailsData&#58; 2
+ERROR&#58; Probe condor&#58;ouhep0.nhn.ou.edu is not listed in cron.d.
+0 records waiting to be re-sent to gratia-osg-prod.opensciencegrid.org&#58;80 in 0 files (including 0 archive files).
+1 total gratia files found&#58;
+0 gratia_certinfo files under /var/lib/gratia/data/
+0 classad records under /var/lib/gratia/data/
+0 quarantine files under /var/lib/gratia/data/quarantine/
+1 unsent collector records under /var/lib/gratia/tmp/gratiafiles
+Probe condor&#58;ouhep0.nhn.ou.edu has sent data to Gratia collector within the last hour.
+Configured site name (OUHEP_OSG) for probe condor&#58;ouhep0.nhn.ou.edu matches Gratia translation.
+----
+
+<div id='show_1400429176' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1400429176'>What else can we try?
+
+About the jobmanagers-available and gram-authentication probes&#58;
+we use an older version of a 99-config.ini file we put together quite
+a while ago, which makes it much easier for us to upgrade and configure
+sites. So we&#39;re not using 30-rsv.ini, but I still believe that our RSV section
+is fine -- at least it works for all our other CEs ...
+
+So here&#39;s what we have in the [RSV] section&#58;
+
+----
+[RSV]
+enabled = %(enable)s
+enable_gratia = True
+service_cert  = /etc/grid-security/rsv/rsvcert.pem
+service_key  = /etc/grid-security/rsv/rsvkey.pem
+service_proxy = %(default)s
+user_proxy = UNAVAILABLE
+ce_hosts = %(localhost)s
+gridftp_hosts = %(localhost)s
+gridftp_dir = %(default)s
+gratia_probes = metric, condor
+gums_hosts = UNAVAILABLE
+srm_hosts = ouhep2.nhn.ou.edu&#58;8443
+srm_dir = /raid1/data/griddata
+srm_webservice_path = srm/v2/server
+enable_local_probes = True
+condor_location = /opt/condor
+----
+
+I guess I always assumed that &#39;ce_hosts&#39; will enable these two probes --
+and they are enabled on all our other CEs, which have identical
+(well, except for the hostnames and paths) RSV section.
+
+Has something changed in RSV very recently which would now require
+&#39;gram_ce_hosts&#39; to be defined, which wasn&#39;t required earlier?
+That might explain why this isn&#39;t working anymore.
+
+If so, then should I add a line
+
+gram_ce_hosts = %(localhost)s
+
+and re-run osg-configure, and see if tht helps?
+
+About the ITB RSV probe&#58; sure, let&#39;s open a new ticket on this.
+Can you do that for me, or do I need to email the GOC separately?
+
+Thanks a lot,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_1400429176').click(function() {
+            $('#detail_1400429176').slideDown("normal");
+            $('#show_1400429176').hide();
+            $('#hide_1400429176').show();
+        });
+        $('#hide_1400429176').click(function() {
+            $('#detail_1400429176').slideUp();
+            $('#hide_1400429176').hide();
+            $('#show_1400429176').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22305#1410191388'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-08T15:49:48+00:00">Sep 8, 2014 03:49 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1410191388">&nbsp;</a></div><pre>Try applying the cron-grep-pattern.patch file I just uploaded to /usr/libexec/rsv/probes/gratia-config-probe with -p1. (I had to add .txt to the file extension because I was getting &#39;file type not allowed&#39; errors when attaching).</pre></div><div class='update_description'><i onclick="document.location='22305#1410190894'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-08T15:41:34+00:00">Sep 8, 2014 03:41 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1410190894">&nbsp;</a></div><pre>Hi Horst,
+
+The jobmanagers-available and gram-authentication probes are only enabled for hosts that are listed as GRAM hosts in osg-configure, specifically in the &#34;gram_ce_hosts&#34; setting in 30-rsv.ini. If you put a comma-separated list of the hosts you want to run the GRAM CE probes against and rerun osg-configure, it should enable those probes. Or you could run &#34;rsv-control --enable --host &#60;hostname&#62; org.osg.batch.jobmanagers-available org.osg.globus.gram-authentication&#34; to enable them manually.
+
+I&#39;m still looking into the graita probe issue. You should make a separate ticket for the ITB issue -- let&#39;s not let this ticket get too bloated.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22305#1409922494'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-05T13:08:14+00:00">Sep 5, 2014 01:08 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409922494">&nbsp;</a></div><pre>Hi again,
+
+I just noticed that there are other inconsistencies with this RSV installation,
+too, in addition to this strange gratia.condor error.
+
+If you compare these three practically identical installations,
+
+<a href='https&#58;//osgitb1.nhn.ou.edu/rsv/' target='_blank' rel='nofollow'>https&#58;//osgitb1.nhn.ou.edu/rsv/</a>
+<a href='https&#58;//tier2-01.ochep.ou.edu/rsv/' target='_blank' rel='nofollow'>https&#58;//tier2-01.ochep.ou.edu/rsv/</a>
+<a href='https&#58;//ouhep0.nhn.ou.edu&#58;8443/rsv/' target='_blank' rel='nofollow'>https&#58;//ouhep0.nhn.ou.edu&#58;8443/rsv/</a>
+
+you notice that this last one is missing two probes as well&#58;
+
+org.osg.batch.jobmanagers-available
+org.osg.globus.gram-authentication
+
+They&#39;re also not in the output of &#39;rsv-control --list&#39;, which I guess
+is consistent.
+
+The question is, why weren&#39;t they enabled by default, like they were
+in the other two installations? All three are normal Condor sites.
+The one difference is that ouhep0 runs Condor outside of a local RPM
+installation, so I installed the empty-condor RPM there. Could that cause
+these two probes to be disabled? If so, why?
+
+And, how do I enable them now?
+
+We&#39;re running all the same versions of everything&#58;
+
+ouhep0&#58;
+------
+osg-configure-rsv-1.0.58-3.osg31.el5
+rsv-3.7.18-2.osg31.el5
+rsv-consumers-3.7.18-2.osg31.el5
+rsv-core-3.7.18-2.osg31.el5
+<div id='show_1994423535' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1994423535'>rsv-metrics-3.7.18-2.osg31.el5
+
+osgitb1&#58;
+-------
+osg-configure-rsv-1.0.58-3.osg31.el6.noarch
+rsv-3.7.18-2.osg31.el6.noarch
+rsv-consumers-3.7.18-2.osg31.el6.noarch
+rsv-core-3.7.18-2.osg31.el6.noarch
+rsv-metrics-3.7.18-2.osg31.el6.noarch
+
+While we&#39;re on the topic of RSV&#58; there seem to be some problems
+with osgitb1&#39;s org.osg.certificates.crl-expiry, too&#58;
+
+----
+metricName&#58; org.osg.certificates.crl-expiry
+metricType&#58; status
+timestamp&#58; 2014-09-05 06&#58;30&#58;20 CDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-CE
+serviceURI&#58; osgitb1.nhn.ou.edu
+gatheredAt&#58; osgitb1.nhn.ou.edu
+summaryData&#58; CRITICAL
+detailsData&#58; CRITICAL&#58; Probe ended with unexpected error condition
+2014-09-05T11&#58;30&#58;09Z
+CRITICAL&#58; CRL file for CA with hash d3619baa has not been updated since 2014/06/10 12&#58;44&#58;15
+CRITICAL&#58; CRL file for CA with hash 7721d4d3 has not been updated since 2014/07/09 00&#58;45&#58;53
+CRITICAL&#58; CRL file for CA with hash 679cff61 has not been updated since 2014/06/10 12&#58;44&#58;25
+CRITICAL&#58; CRL file for CA with hash 2376bd8e has not been updated since 2014/07/09 00&#58;45&#58;53
+CRITICAL&#58; CRL file for CA with hash dd51b42a has not been updated since 2014/07/09 00&#58;45&#58;58
+CRITICAL&#58; CRL file for CA with hash 468d15b3 has not been updated since 2014/07/09 00&#58;45&#58;58
+CRITICAL&#58; CRL file for CA with hash ba2f39ca has not been updated since 2014/06/10 12&#58;44&#58;15
+CRITICAL&#58; CRL file for CA with hash 9c3efee6 has not been updated since 2014/06/10 12&#58;44&#58;25
+----
+
+This is an ITB site, but we&#39;re still running the same versions of the CA stuff
+as far as I can tell&#58;
+
+ouhep0&#58;
+------
+osg-ca-certs-updater-0.5-1.osg.el5
+osg-ca-certs-1.40-2.osg31.el5
+
+osgitb1&#58;
+-------
+osg-ca-certs-updater-0.5-1.osg.el6.noarch
+osg-ca-certs-1.40-2.osg31.el6.noarch
+
+Any ideas why the latter isn&#39;t updating properly? And what does
+&#39;unexpected error condition&#39; mean, anyway? &#58;)
+
+Should we create a separate ticket for this ITB issue?
+
+Thanks a lot,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_1994423535').click(function() {
+            $('#detail_1994423535').slideDown("normal");
+            $('#show_1994423535').hide();
+            $('#hide_1994423535').show();
+        });
+        $('#hide_1994423535').click(function() {
+            $('#detail_1994423535').slideUp();
+            $('#hide_1994423535').hide();
+            $('#show_1994423535').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22305#1409867230'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-04T21:47:10+00:00">Sep 4, 2014 09:47 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409867230">&nbsp;</a></div><pre>Hi again,
+
+any new ideas on what might be going on with this org.osg.gratia.condor
+probe?
+
+Could you please have a look at Gratia to make sure that we are indeed
+reporting data for OUHEP_OSG? I just tried looking there myself, but
+it&#39;s been a while since I last looked, and I can&#39;t find the right page
+for it, and the ones I do find I can&#39;t figure out how to enter the
+constraints right in order to get something useful out of it. I do miss
+the old BIRT viewer, which actually had an intuitive user interface ... ;)
+
+Anyway, I&#39;d really like to get this fixed so that we can close this
+case, and move on to the next problem!
+
+Thanks a lot,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='22305#1409777954'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T20:59:14+00:00">Sep 3, 2014 08:59 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409777954">&nbsp;</a></div><pre>Hi Mat,
+
+<font color='#7F7E6F'>&#62; The error means that there should be a file with a cron entry in</font>
+<font color='#7F7E6F'>&#62; /etc/cron.d that runs the probe with the name</font>
+<font color='#7F7E6F'>&#62; &#34;condor&#58;ouhep0.nhn.ou.edu&#34;, but either the file is missing or the entry</font>
+<font color='#7F7E6F'>&#62; has been commented out.</font>
+<font color='#7F7E6F'>&#62; A file called gratia-probe-condor.cron comes with the</font>
+<font color='#7F7E6F'>&#62; gratia-probe-condor package; this is what its contents look like&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 0,15,30,45 * * * * root /usr/share/gratia/common/cron_check</font>
+<font color='#7F7E6F'>&#62; /etc/gratia/condor/ProbeConfig && /usr/share/gratia/condor/condor_meter</font>
+<font color='#7F7E6F'>&#62; -s 900</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; This is assuming /etc/gratia/condor/ProbeConfig has the line</font>
+<font color='#7F7E6F'>&#62; &#39;ProbeName=&#34;condor&#58;ouhep0.nhn.ou.edu&#34;&#39;; if not, you need to find the</font>
+<font color='#7F7E6F'>&#62; ProbeConfig file that does and use that instead.</font>
+
+But we have all that, and I don&#39;t see anything wrong or missing with it&#58;
+
+----
+[root@ouhep0 hs]# ls -ao /etc/cron.d/gratia-probe-condor.cron
+-rw-r--r-- 1 root 140 Jul 15 11&#58;17 /etc/cron.d/gratia-probe-condor.cron
+[root@ouhep0 hs]# cat /etc/cron.d/gratia-probe-condor.cron
+0,15,30,45 * * * * root /usr/share/gratia/common/cron_check
+/etc/gratia/condor/ProbeConfig && /usr/share/gratia/condor/condor_meter
+-s 900
+[root@ouhep0 hs]# grep ProbeName /etc/gratia/condor/ProbeConfig
+ProbeName=&#34;condor&#58;ouhep0.nhn.ou.edu&#34;
+----
+
+And according to /var/log/cron, that does run&#58;
+
+Sep  3 15&#58;45&#58;01 ouhep0 crond[430]&#58; (root) CMD
+(/usr/share/gratia/common/cron_check  /etc/gratia/condor/ProbeConfig &&
+/usr/share/gratia/condor/condor_meter -s 900)
+<div id='show_2138808233' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2138808233'>
+So what are we missing?
+
+Thanks,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_2138808233').click(function() {
+            $('#detail_2138808233').slideDown("normal");
+            $('#show_2138808233').hide();
+            $('#hide_2138808233').show();
+        });
+        $('#hide_2138808233').click(function() {
+            $('#detail_2138808233').slideUp();
+            $('#hide_2138808233').hide();
+            $('#show_2138808233').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22305#1409774343'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T19:59:03+00:00">Sep 3, 2014 07:59 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1409774343">&nbsp;</a></div><pre>Hi Horst,
+
+The error means that there should be a file with a cron entry in /etc/cron.d that runs the probe with the name &#34;condor&#58;ouhep0.nhn.ou.edu&#34;, but either the file is missing or the entry has been commented out.
+A file called gratia-probe-condor.cron comes with the gratia-probe-condor package; this is what its contents look like&#58;
+
+0,15,30,45 * * * * root /usr/share/gratia/common/cron_check  /etc/gratia/condor/ProbeConfig && /usr/share/gratia/condor/condor_meter -s 900
+
+This is assuming /etc/gratia/condor/ProbeConfig has the line &#39;ProbeName=&#34;condor&#58;ouhep0.nhn.ou.edu&#34;&#39;; if not, you need to find the ProbeConfig file that does and use that instead.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22305#1409771857'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T19:17:37+00:00">Sep 3, 2014 07:17 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409771857">&nbsp;</a></div><pre>Hi again,
+
+I just had another look at the org.osg.gratia.condor probe, and I
+noticed that SSLHost is set to &#34;gratia-osg-prod.opensciencegrid.org&#58;80&#34;
+in /etc/gratia/condor/ProbeConfig -- changed from
+gratia-osg-prod.opensciencegrid.org&#58;443&#34; in
+/etc/gratia/condor/ProbeConfig.rpmsave -- whereas it&#39;s set to
+&#34;gratia-osg-prod.opensciencegrid.org&#58;443&#34; in
+/etc/gratia/gridftp-transfer/ProbeConfig. Is there a reason it&#39;s using
+port 80 instead of 443?
+
+Then again, this same modification from 443 to 80 is also present in our
+other OSG CE&#39;s, where we&#39;re not seeing this error, so that probably has
+nothing to do with the prohblem. I&#39;m just curious ...
+
+Comparing to the other CEs, it looks like OUHEP_OSG&#39;s probe seems to be
+running and processing stuff, too, so I don&#39;t understand what that
+
+ERROR&#58; Probe condor&#58;ouhep0.nhn.ou.edu is not listed in cron.d.
+
+really means. Anyone? Bueller? ;)
+
+I think this is the last mystery we need to solve, before we can call
+this upgrade a success ...
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='22305#1409763733'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T17:02:13+00:00">Sep 3, 2014 05:02 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1409763733">&nbsp;</a></div><pre>Ok, cool! Switching owner to Mat, who does a lot of RSV work these days.</pre></div><div class='update_description'><i onclick="document.location='22305#1409759595'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T15:53:15+00:00">Sep 3, 2014 03:53 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409759595">&nbsp;</a></div><pre>Oh wait --
+
+the SRM RSV probes just ran automatically within the RSV framework,
+and there they seem to work, yay!
+
+So now we only have to fix the gratia.condor probe, and then we&#39;re
+in business!
+
+Thanks a lot,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='22305#1409759417'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T15:50:17+00:00">Sep 3, 2014 03:50 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409759417">&nbsp;</a></div><pre>Hi Tim,
+
+thanks -- I had forgotten about these java tweaks, since I didn&#39;t have
+to do them on our RHEL6 machines, I only had to set
+
+JAVA_HOME=/etc/alternatives/java_sdk_openjdk
+
+in /etc/sysconfig/bestman2, and then everything worked!
+
+But now I went through it and reinstalled java-1.7.0-openjdk and
+java-1.7.0-openjdk-devel, and did all the other tricks, and that
+fixed it, yay!
+
+Now the only remaining problem is RSV. osg.osg.gratia.condor still won&#39;t run,
+and the srm probes also can&#39;t find the right JAVA.
+
+Here are the errors -- also at
+
+<a href='https&#58;//ouhep0.nhn.ou.edu&#58;8443/rsv/' target='_blank' rel='nofollow'>https&#58;//ouhep0.nhn.ou.edu&#58;8443/rsv/</a> &#58;
+
+----
+Running metric org.osg.gratia.condor (10 of 14)
+
+metricName&#58; org.osg.gratia.condor
+metricType&#58; status
+timestamp&#58; 2014-09-03 10&#58;23&#58;02 CDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-CE
+serviceURI&#58; ouhep0.nhn.ou.edu
+gatheredAt&#58; ouhep0.nhn.ou.edu
+summaryData&#58; CRITICAL
+detailsData&#58; 2
+ERROR&#58; Probe condor&#58;ouhep0.nhn.ou.edu is not listed in cron.d.
+0 records waiting to be re-sent to gratia-osg-prod.opensciencegrid.org&#58;80 in 0 files (including 0 archive files).
+1 total gratia files found&#58;
+<div id='show_1674374755' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1674374755'>0 gratia_certinfo files under /var/lib/gratia/data/
+0 classad records under /var/lib/gratia/data/
+0 quarantine files under /var/lib/gratia/data/quarantine/
+1 unsent collector records under /var/lib/gratia/tmp/gratiafiles
+Probe condor&#58;ouhep0.nhn.ou.edu has sent data to Gratia collector within the last hour.
+Configured site name (OUHEP_OSG) for probe condor&#58;ouhep0.nhn.ou.edu matches Gratia translation.
+----
+
+What&#39;s missing here? This works on all our other osg-3.1 installs
+out of the box, I didn&#39;t have to change anything. Where can I look
+for possible problems?
+
+----
+Running metric org.osg.srm.srmping (13 of 14)
+
+metricName&#58; org.osg.srm.srmping
+metricType&#58; status
+timestamp&#58; 2014-09-03 10&#58;23&#58;34 CDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-SRM
+serviceURI&#58; ouhep2.nhn.ou.edu&#58;8443
+gatheredAt&#58; ouhep0.nhn.ou.edu
+summaryData&#58; CRITICAL
+detailsData&#58; SRM server running at ouhep2.nhn.ou.edu&#58;8443 is not responding to the srm-ping command.
+Output from srm-ping&#58;
+ERROR&#58; Cannot find the java executable in the /usr/java/jdk/bin location,
+ERROR&#58; Please define $JAVA_HOME correctly
+----
+Running metric org.osg.srm.srmcp-readwrite (14 of 14)
+
+metricName&#58; org.osg.srm.srmcp-readwrite
+metricType&#58; status
+timestamp&#58; 2014-09-03 10&#58;23&#58;35 CDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-SRM
+serviceURI&#58; ouhep2.nhn.ou.edu&#58;8443
+gatheredAt&#58; ouhep0.nhn.ou.edu
+summaryData&#58; CRITICAL
+detailsData&#58; Failed to transfer file to remote server.
+Command&#58; srm-copy &#39;file&#58;///usr/share/rsv/probe-helper-files/storage-probe-test-file&#39; &#39;<a href='srm&#58;//ouhep2.nhn.ou.edu&#58;8443/srm/v2/server?SFN=/raid1/data/griddata/storage-probe-test-file.1409757814.17844&#39' target='_blank' rel='nofollow'>srm&#58;//ouhep2.nhn.ou.edu&#58;8443/srm/v2/server?SFN=/raid1/data/griddata/storage-probe-test-file.1409757814.17844&#39</a>; 2&#62;&1
+Output from srm-copy&#58;
+ERROR&#58; Cannot find the java executable in the /usr/java/jdk/bin location,
+ERROR&#58; Please define $JAVA_HOME correctly
+----
+
+I did define JAVA_HOME on ouhep0 in /etc/sysconfig/bestman2
+to /etc/alternatives/java_sdk_openjdk as well, just like on ouhep2 (above).
+
+So why isn&#39;t RSV finding it? Alternatively, where can I set it
+such that RSV will find it?
+
+I can get it to work by running them by hand like this&#58;
+
+----
+JAVA_HOME=/etc/alternatives/java_sdk_openjdk rsv-control --run org.osg.srm.srmping -u ouhep2.nhn.ou.edu&#58;8443
+JAVA_HOME=/etc/alternatives/java_sdk_openjdk rsv-control --run org.osg.srm.srmcp-readwrite -u ouhep2.nhn.ou.edu&#58;8443
+----
+
+But I need to find a way to pass that on to the RSV runtime environment,
+and on our two other osg-3 installations, the /etc/sysconfig/bestman2
+modification did the trick, so why not here?
+
+Here&#39;s the output of &#39;rsv-control --list&#39;&#58;
+
+----
+Metrics enabled for host&#58; ouhep2.nhn.ou.edu&#58;8443          | Service
+----------------------------------------------------------+--------------------
+org.osg.srm.srmcp-readwrite                               | OSG-SRM
+org.osg.srm.srmping                                       | OSG-SRM
+
+Metrics enabled for host&#58; ouhep0.nhn.ou.edu               | Service
+----------------------------------------------------------+--------------------
+org.osg.certificates.cacert-expiry                        | OSG-CE
+org.osg.certificates.crl-expiry                           | OSG-CE
+org.osg.general.java-version                              | OSG-CE
+org.osg.general.osg-directories-CE-permissions            | OSG-CE
+org.osg.general.osg-version                               | OSG-CE
+org.osg.general.ping-host                                 | OSG-CE
+org.osg.general.vo-supported                              | OSG-CE
+org.osg.globus.gridftp-simple                             | GridFTP
+org.osg.gratia.condor                                     | OSG-CE
+org.osg.gratia.metric                                     | OSG-CE
+org.osg.local.hostcert-expiry                             | OSG-Local-Monitor
+org.osg.local.httpcert-expiry                             | OSG-Local-Monitor
+----
+
+So org.osg.gratia.condor is enabled, so why does it claim it&#39;s not listed
+in cron.d?
+
+Thanks a lot,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_1674374755').click(function() {
+            $('#detail_1674374755').slideDown("normal");
+            $('#show_1674374755').hide();
+            $('#hide_1674374755').show();
+        });
+        $('#hide_1674374755').click(function() {
+            $('#detail_1674374755').slideUp();
+            $('#hide_1674374755').hide();
+            $('#show_1674374755').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22305#1409751802'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T13:43:22+00:00">Sep 3, 2014 01:43 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1409751802">&nbsp;</a></div><pre>Hi Horst, I am assigning this ticket to Carl, who has worked with BeStMan before. But I seem to recall that the &#34;Unsupported major.minor version 51.0&#34; error message comes from running a Java program built for Java 7 on a JVM from Java 6 or earlier. But maybe that error was just an artifact of running directly from the command line.
+
+Also, did you follow all of the instructions here &#60;<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallSoftwareWithOpenJDK7&#62' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallSoftwareWithOpenJDK7&#62</a>; for running with Java 7? I see that your installation does include the old Oracle/Sun JDK, and so you may need to take extra steps to make sure that it does not interfere. If you have not done so already, please go through that document very carefully.
+
+Other than that, I will let Carl jump in with debugging.</pre></div><div class='update_description'><i onclick="document.location='22305#1409749872'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T13:11:12+00:00">Sep 3, 2014 01:11 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409749872">&nbsp;</a></div><pre>Hi Vince,
+
+I just had a look at /etc/sysconfig/bestman2lib, and it does contain
+all the &#34;build-classpath&#34; definitions. That file is identical to
+the two other bestman2 installations we have at OU, so I don&#39;t think
+that&#39;s it.
+
+The other two installations are on 64-bit RHEL6 machines, though,
+so it&#39;s quite possible that there&#39;s a problem with the way bestman2
+and/or java interact with a 32-bit RHEL5 OS somehow.
+But how do we figure this out in detail?
+
+Thanks a lot,
+
+Horst
+
+Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22305#1409707674'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T01:27:54+00:00">Sep 3, 2014 01:27 AM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1409707674">&nbsp;</a></div><pre>Horst,
+
+I&#39;ll have to let Software answer your version question as they would have the best/accurate answer.
+
+You could very well be right about the manually run command generating a misleading error.  When I dug through the documentation
+I did find this&#58;
+
+Be sure that /etc/sysconfig/bestman2lib contains the &#34;build-classpath&#34; directives in the BESTMAN2_SERVER_LIB and BESTMAN2_CLIENT_LIB. Otherwise, you may get java class loading errors on startup or on run-time. Also, be sure to remove these entries from the /etc/sysconfig/bestman2 file.
+
+Let me know what you think.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='22305#1409705956'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T00:59:16+00:00">Sep 3, 2014 12:59 AM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409705956">&nbsp;</a></div><pre>Hi Vince,
+
+thanks for the info.
+
+<font color='#7F7E6F'>&#62; While I do not have specific experience with this issue I have seen the error &#34;Unsupported major.minor version 51.0&#34; before.</font>
+<font color='#7F7E6F'>&#62; In my instance it was because the java source and target versions were incompatible because my Java had been updated as a dependency for another program.</font>
+<font color='#7F7E6F'>&#62; Have you been able to check the Java version and update information?</font>
+
+What version are you -- or bestman2 -- looking for exactly here?
+Here&#39;s what we have installed&#58;
+
+----
+
+[hs@ouhep2 ~]$ rpm -qa | egrep &#34;java|jdk|jre&#34; | sort
+glite-security-util-java-2.8.0-3.2.osg.el5
+java-1.4.2-gcj-compat-1.4.2.0-40jpp.115
+java-1.6.0-bea-uninstall-1.6.0.03-1jpp.6.el5
+java-1.7.0-ibm-1.7.0.7.1-1jpp.1.el5_10
+java-1.7.0-ibm-devel-1.7.0.7.1-1jpp.1.el5_10
+java-1.7.0-openjdk-1.7.0.65-2.5.1.2.el5_10
+java-1.7.0-openjdk-devel-1.7.0.65-2.5.1.2.el5_10
+jdk-1.6.0_45-fcs.1.osg.el5
+mysql-connector-java-5.1.12-2.el5
+tzdata-java-2014e-1.el5
+voms-api-java-2.0.8-1.5.osg.el5
+----
+
+These are all the latest java versions available for RHEL5.10.
+
+And we made sure to use java-1.7.0-openjdk, in /etc/sysconfig/bestman2&#58;
+
+JAVA_HOME=/etc/alternatives/java_sdk_openjdk
+
+I&#39;m not aware of anything else we can tweak for this, but I&#39;d be happy
+to try if you tell me where!
+<div id='show_152321816' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_152321816'>
+<font color='#7F7E6F'>&#62; In digging around on stackoverflow I see a number of instances were the error &#34;Exception in thread &#34;main&#34; java.lang.NoClassDefFoundError&#58;&#34;</font>
+<font color='#7F7E6F'>&#62; is caused by &#34;CLASSPATH&#34; not being set.  Might be worth a check.</font>
+
+Okay -- where or how would I set that?
+
+This is possibly just a red herring, though, since I got this error
+by running bestman.server by hand. This might be set when run &#39;properly&#39;
+via &#39;service bestman2 start&#39;. But when I do that, then the bestman2.log
+file didn&#39;t show me the full java error, so I tried it by hand.
+
+I&#39;m happy to try anything else anyone can think of, though!
+
+Thanks a lot,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_152321816').click(function() {
+            $('#detail_152321816').slideDown("normal");
+            $('#show_152321816').hide();
+            $('#hide_152321816').show();
+        });
+        $('#hide_152321816').click(function() {
+            $('#detail_152321816').slideUp();
+            $('#hide_152321816').hide();
+            $('#show_152321816').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22305#1409705518'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T00:51:58+00:00">Sep 3, 2014 12:51 AM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1409705518">&nbsp;</a></div><pre>Hi Horst,
+
+While I do not have specific experience with this issue I have seen the error &#34;Unsupported major.minor version 51.0&#34; before.
+In my instance it was because the java source and target versions were incompatible because my Java had been updated as a dependency for another program.
+Have you been able to check the Java version and update information?
+
+In digging around on stackoverflow I see a number of instances were the error &#34;Exception in thread &#34;main&#34; java.lang.NoClassDefFoundError&#58;&#34;
+is caused by &#34;CLASSPATH&#34; not being set.  Might be worth a check.
+
+Please let me know what you think.
+
+Thanks,
+Vince</pre></div><div class='update_description'><i onclick="document.location='22305#1409697387'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-02T22:36:27+00:00">Sep 2, 2014 10:36 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1409697387">&nbsp;</a></div><pre>Hi Vince and Chris,
+
+I just ran /usr/sbin/bestman.server by hand, and got a little more output&#58;
+
+----
+BeStMan (Gateway mode)   2.2.2.3.0  Wed Nov  7 16&#58;03&#58;09 CST 2012
+
+BeStMan and SRM-Clients Copyright(c) 2007-2012,
+Lawrence Berkeley National Laboratory. All rights reserved.
+Support at SRM@.... and documents at <a href='http&#58;//sdm.lbl.gov/bestman' target='_blank' rel='nofollow'>http&#58;//sdm.lbl.gov/bestman</a>
+OSG Support at osg-software@.... and
+documentation at <a href='https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/' target='_blank' rel='nofollow'>https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/</a>
+
+[root@ouhep2 hs]# Exception in thread &#34;main&#34; java.lang.UnsupportedClassVersionError&#58; gov/lbl/srm/server/Server &#58; Unsupported major.minor version 51.0
+at java.lang.ClassLoader.defineClass1(Native Method)
+at java.lang.ClassLoader.defineClassCond(ClassLoader.java&#58;632)
+at java.lang.ClassLoader.defineClass(ClassLoader.java&#58;616)
+at java.security.SecureClassLoader.defineClass(SecureClassLoader.java&#58;141)
+at java.net.URLClassLoader.defineClass(URLClassLoader.java&#58;283)
+at java.net.URLClassLoader.access$000(URLClassLoader.java&#58;58)
+at java.net.URLClassLoader$1.run(URLClassLoader.java&#58;197)
+at java.security.AccessController.doPrivileged(Native Method)
+at java.net.URLClassLoader.findClass(URLClassLoader.java&#58;190)
+at java.lang.ClassLoader.loadClass(ClassLoader.java&#58;307)
+at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java&#58;301)
+at java.lang.ClassLoader.loadClass(ClassLoader.java&#58;248)
+Could not find the main class&#58; gov.lbl.srm.server.Server.  Program will exit.
+----
+
+Does that tell you what&#39;s missing? Looks like it&#39;s not finding something,
+but why not? I&#39;ve done this installation exactly the same way as
+all other bestman2 installation I&#39;ve done before, and I&#39;ve never
+gotten this error before ...
+
+Thanks a lot,
+<div id='show_1318240340' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1318240340'>
+Horst
+
+Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1318240340').click(function() {
+            $('#detail_1318240340').slideDown("normal");
+            $('#show_1318240340').hide();
+            $('#hide_1318240340').show();
+        });
+        $('#hide_1318240340').click(function() {
+            $('#detail_1318240340').slideUp();
+            $('#hide_1318240340').hide();
+            $('#show_1318240340').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22305#1409696225'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-02T22:17:05+00:00">Sep 2, 2014 10:17 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1409696225">&nbsp;</a></div><pre>Software,
+
+In past tickets this type of issue appears to have gone to your first.  If I should send this to other team please let me know.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='22305#1409696138'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-02T22:15:38+00:00">Sep 2, 2014 10:15 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1409696138">&nbsp;</a></div><pre>Evening, Horst
+
+I thought I noticed a ticket created earlier for this issue but I was unable to find it so to be safe I created another ticket.
+GOC Ticket 22305.
+I&#39;ve added Software Support to this ticket and left a note with Chris Pipes to ping someone first thing tomorrow.
+
+If I can assist please let me know.
+
+Thanks,
+Vince</pre></div><div class='update_description'><i onclick="document.location='22305#1409695466'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-02T22:04:26+00:00">Sep 2, 2014 10:04 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1409695466">&nbsp;</a></div><pre>Hi all,
+
+so now we finally got the okay that the D0 SamGRID infrastructure has been
+updated to work with SHA-2, and I have installed OSG 3.1.38 on OUHEP_OSG,
+but now I&#39;m having problems with bestman2 and the org.osg.gratia.condor
+RSV probe, and I&#39;m hoping you can help me with this quickly, since this is
+an ATLAS Tier3 site which is awaiting data to be copied in from an ATLAS
+subscription, and that of course requires bestman2 to work ...
+
+The biggest problem is that bestman2 won&#39;t start up now, it crashes with
+some java error, looking at /var/log/bestman2/bestman2.log&#58;
+
+----
+BeStMan (Gateway mode)   2.2.2.3.0  Wed Nov  7 16&#58;03&#58;09 CST 2012
+
+BeStMan and SRM-Clients Copyright(c) 2007-2012,
+Lawrence Berkeley National Laboratory. All rights reserved.
+Support at SRM@.... and documents at <a href='http&#58;//sdm.lbl.gov/bestman' target='_blank' rel='nofollow'>http&#58;//sdm.lbl.gov/bestman</a>
+OSG Support at osg-software@.... and documentation at
+<a href='https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/' target='_blank' rel='nofollow'>https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/</a>
+
+Exception in thread &#34;main&#34; java.lang.NoClassDefFoundError&#58;
+org/eclipse/jetty/util/thread/ThreadPool
+at java.lang.Class.getDeclaredMethods0(Native Method)
+at java.lang.Class.privateGetDeclaredMethods(Class.java&#58;2570)
+at java.lang.Class.getMethod0(Class.java&#58;2813)
+at java.lang.Class.getMethod(Class.java&#58;1663)
+at sun.launcher.LauncherHelper.getMainMethod(LauncherHelper.java&#58;494)
+at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java&#58;486)
+Caused by&#58; java.lang.ClassNotFoundException&#58; org.eclipse.jetty.util.thread.ThreadPool
+at java.net.URLClassLoader$1.run(URLClassLoader.java&#58;366)
+at java.net.URLClassLoader$1.run(URLClassLoader.java&#58;355)
+at java.security.AccessController.doPrivileged(Native Method)
+at java.net.URLClassLoader.findClass(URLClassLoader.java&#58;354)
+at java.lang.ClassLoader.loadClass(ClassLoader.java&#58;425)
+<div id='show_1791942080' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1791942080'>at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java&#58;308)
+at java.lang.ClassLoader.loadClass(ClassLoader.java&#58;358)
+... 6 more
+----
+
+I tried to increase verbosity by changing &#39;eventLogLevel=DEBUG&#39; in
+/etc/bestman2/conf/bestman2.rc, but that doesn&#39;t seem to help in this log.
+
+We are using java-1.7.0-openjdk-1.7.0.65-2.5.1.2.el5_10, I made sure of that
+by adding this to /etc/sysconfig/bestman2&#58;
+
+JAVA_HOME=/etc/alternatives/java_sdk_openjdk
+
+How can we figure out what java doesn&#39;t like here?
+
+The other problem seems to be that org.osg.gratia.condor complains
+that it&#39;s not running, according to RSV,
+
+<a href='https&#58;//ouhep0.nhn.ou.edu&#58;8443/rsv/' target='_blank' rel='nofollow'>https&#58;//ouhep0.nhn.ou.edu&#58;8443/rsv/</a>
+
+---
+ERROR&#58; Probe condor&#58;ouhep0.nhn.ou.edu is not listed in cron.d.
+0 records waiting to be re-sent to gratia-osg-prod.opensciencegrid.org&#58;80 in 0 files (including 0 archive files).
+1 total gratia files found&#58;
+0 gratia_certinfo files under /var/lib/gratia/data/
+0 classad records under /var/lib/gratia/data/
+0 quarantine files under /var/lib/gratia/data/quarantine/
+1 unsent collector records under /var/lib/gratia/tmp/gratiafiles
+Probe condor&#58;ouhep0.nhn.ou.edu has sent data to Gratia collector within the last hour.
+Configured site name (OUHEP_OSG) for probe condor&#58;ouhep0.nhn.ou.edu matches Gratia translation.
+----
+
+The probe is listed and active in cron.d&#58;
+
+----
+[root@ouhep0 ~]# cat /etc/cron.d/gratia-probe-condor.cron
+0,15,30,45 * * * * root /usr/share/gratia/common/cron_check  /etc/gratia/condor/ProbeConfig && /usr/share/gratia/condor/condor_meter -s 900
+----
+
+This is a default RSV installation, and I believe it&#39;s configured correctly,
+so what could be missing here?
+
+I&#39;ll be happy to provide further details on anything, just let me know
+what you would like. As I said, we&#39;d like to gett this fixed quickly,
+since we are awaiting ATLAS datasets, and also we need to start D0
+SamGRID production again ASAP.
+
+Thanks a lot,
+
+Horst
+
+</div><script type='text/javascript'>
+        $('#show_1791942080').click(function() {
+            $('#detail_1791942080').slideDown("normal");
+            $('#show_1791942080').hide();
+            $('#hide_1791942080').show();
+        });
+        $('#hide_1791942080').click(function() {
+            $('#detail_1791942080').slideUp();
+            $('#hide_1791942080').hide();
+            $('#show_1791942080').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F22305">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 22305});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

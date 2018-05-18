@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[32612] blahp and SLURM</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=32612" method="post">
+<div class="page-header">
+    <h3><span class="muted">32612</span> / blahp and SLURM</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Horst Severini</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Horst Severini</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-02-10</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=32612", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/32612?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/32612?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20blahp%20and%20SLURM%20ISSUE%3D32612%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='32612#1486679358'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T22:29:18+00:00">Feb 9, 2017 10:29 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486679358">&nbsp;</a></div><pre>Thanks again for being so responsive! We should have a fix for you soon!</pre></div><div class='update_description'><i onclick="document.location='32612#1486678992'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T22:23:12+00:00">Feb 9, 2017 10:23 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1486678992">&nbsp;</a></div><pre>Hi Brian,
+
+yes, I saw the JIRA ticket. Sure, we can close this one.
+
+Thanks!
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='32612#1486678810'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T22:20:10+00:00">Feb 9, 2017 10:20 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486678810">&nbsp;</a></div><pre>Horst,
+
+Yup that&#39;s exactly what I was hoping for. The issue actually isn&#39;t with
+your normal user vs root, that was just a red herring. The problem is
+the unexpected format of the MaxRSS field for the job. I&#39;ve made a JIRA
+ticket (<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2604' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2604</a>). Do you
+mind if I close this and we just track the issue there?
+
+Thanks,
+Brian
+
+On 02/09/2017 04&#58;14 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32612#1486678451'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T22:14:11+00:00">Feb 9, 2017 10:14 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1486678451">&nbsp;</a></div><pre>Hi Brian,
+
+sure&#58;
+
+----
+[hs@grid1 ~]$ python tmp/slurm/pbs_status.py.new pbs/20170209/2306938
+1ERROR&#58; invalid literal for int() with base 10&#58; &#39;18446744073709551616.00&#39;
+[hs@grid1 ~]$ echo $?
+0
+----
+[hs@grid1 ~]$ sudo python tmp/slurm/pbs_status.py.new pbs/20170209/2306938
+1ERROR&#58; invalid literal for int() with base 10&#58; &#39;18446744073709551616.00&#39;
+[hs@grid1 ~]$ echo $?
+0
+----
+
+And compare that to the patched version we&#39;re currently using&#58;
+
+----
+[hs@grid1 ~]$ python tmp/slurm/pbs_status.py.save pbs/20170209/2306938
+0[BatchJobId=&#34;2306938&#34;; JobStatus=4; ExitCode= 0; ]
+----
+[hs@grid1 ~]$ sudo python tmp/slurm/pbs_status.py.save pbs/20170209/2306938
+0[BatchJobId=&#34;2306938&#34;; JobStatus=4; ExitCode= 0; ]
+----
+
+Does that make sense?
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='32612#1486677903'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T22:05:03+00:00">Feb 9, 2017 10:05 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486677903">&nbsp;</a></div><pre>Horst,
+
+I&#39;m in the process of making a ticket because I think we&#39;ve found the bug but just to be sure, would you be able to run your &#34;new&#34; pbs_status.py that you previously attached the ticket manually with the argument &#34;pbs/20170209/2306938&#34;?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='32612#1486676473'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T21:41:13+00:00">Feb 9, 2017 09:41 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1486676473">&nbsp;</a></div><pre>Hi Brian,
+
+yeah, that&#39;s slightly different&#58;
+
+----
+[hs@grid1 ~]$ sacct -j 2306938 -l --noconvert -P
+JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES
+2306938|2306938|bl_b3222b327f04|hep|18446744073709551616.00K||||18446744073709551616.00K||||18446744073709551616.00K|||||||||1|00&#58;43&#58;44|COMPLETED|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||sacct&#58;
+error&#58; Access/permission denied
+|sacct&#58; error&#58; Access/permission denied
+
+2306938.batch|2306938.batch|batch||1128440K|c268|0|1128440K|118072K|c268|0|118072K|25K|c268|0|25K|00&#58;00&#58;03|c268|0|00&#58;00&#58;03|1||00&#58;43&#58;44|COMPLETED|0&#58;0|2599958K|0|0|0|2000Mn|0|882M|c268|0|882M|84M|c268|0|84M|||sacct&#58;
+error&#58; Access/permission denied
+|sacct&#58; error&#58; Access/permission denied
+
+----
+
+[hs@grid1 ~]$ sudo sacct -j 2306938 -l --noconvert -P
+[sudo] password for hs&#58;
+JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES
+2306938|2306938|bl_b3222b327f04|hep|18446744073709551616.00K||||18446744073709551616.00K||||18446744073709551616.00K|||||||||1|00&#58;43&#58;44|COMPLETED|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||cpu=1,mem=2000,node=1|cpu=1,mem=2000,node=1
+2306938.batch|2306938.batch|batch||1128440K|c268|0|1128440K|118072K|c268|0|118072K|25K|c268|0|25K|00&#58;00&#58;03|c268|0|00&#58;00&#58;03|1||00&#58;43&#58;44|COMPLETED|0&#58;0|2599958K|0|0|0|2000Mn|0|882M|c268|0|882M|84M|c268|0|84M||||
+----
+
+Cheers,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='32612#1486676178'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T21:36:18+00:00">Feb 9, 2017 09:36 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486676178">&nbsp;</a></div><pre>Thanks Horst, what do you get if you run &#96;sacct -j 2306938 -l --noconvert -P&#96; instead?</pre></div><div class='update_description'><i onclick="document.location='32612#1486673231'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T20:47:11+00:00">Feb 9, 2017 08:47 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1486673231">&nbsp;</a></div><pre>Hi Brian,
+
+sure&#58;
+
+----
+[hs@grid1 ~]$ sacct -j 2306938 -l -P
+JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES
+2306938|2306938|bl_b3222b327f04|hep|16?||||16?||||16?|||||||||1|00&#58;43&#58;44|COMPLETED|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||sacct&#58;
+error&#58; Access/permission denied
+|sacct&#58; error&#58; Access/permission denied
+
+2306938.batch|2306938.batch|batch||1128440K|c268|0|1128440K|118072K|c268|0|118072K|25K|c268|0|25K|00&#58;00&#58;03|c268|0|00&#58;00&#58;03|1||00&#58;43&#58;44|COMPLETED|0&#58;0|2.60G|0|0|0|2000Mn|0|882M|c268|0|882M|84M|c268|0|84M|||sacct&#58;
+error&#58; Access/permission denied
+|sacct&#58; error&#58; Access/permission denied
+
+----
+
+[hs@grid1 ~]$ sudo sacct -j 2306938 -l -P
+[sudo] password for hs&#58;
+JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES
+2306938|2306938|bl_b3222b327f04|hep|16?||||16?||||16?|||||||||1|00&#58;43&#58;44|COMPLETED|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||cpu=1,mem=2000,node=1|cpu=1,mem=2000,node=1
+2306938.batch|2306938.batch|batch||1128440K|c268|0|1128440K|118072K|c268|0|118072K|25K|c268|0|25K|00&#58;00&#58;03|c268|0|00&#58;00&#58;03|1||00&#58;43&#58;44|COMPLETED|0&#58;0|2.60G|0|0|0|2000Mn|0|882M|c268|0|882M|84M|c268|0|84M||||
+----
+
+Cheers,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='32612#1486672294'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T20:31:34+00:00">Feb 9, 2017 08:31 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486672294">&nbsp;</a></div><pre>Oh boy, that&#39;s mind blowing. Just to verify my own sanity, could you give me the output of &#34;sacct -j 2306938 -l -P&#34; again?</pre></div><div class='update_description'><i onclick="document.location='32612#1486671793'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T20:23:13+00:00">Feb 9, 2017 08:23 PM UTC</time><a class="anchor" name="1486671793">&nbsp;</a></div><pre>Hi Brian,
+
+okay, here you go&#58;
+
+----
+[hs@grid1 ~]$ python tmp/test3_pbs_status.py 2306938
+Querying sacct for completed job for jobid&#58; 2306938
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+
+OUTPUT
+[&#39;JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES&#92;n&#39;, &#39;2306938|2306938|bl_b3222b327f04|hep|18446744073709551616.00K||||18446744073709551616.00K||||18446744073709551616.00K|||||||||1|00&#58;43&#58;44|COMPLETED|0&#58;0||Unknown|Unknown|Unknown|2000Mn|||||||||||||&#92;n&#39;, &#39;2306938.batch|2306938.batch|batch||1128440K|c268|0|1128440K|118072K|c268|0|118072K|25K|c268|0|25K|00&#58;00&#58;03|c268|0|00&#58;00&#58;03|1||00&#58;43&#58;44|COMPLETED|0&#58;0|2599958K|0|0|0|2000Mn|0|882M|c268|0|882M|84M|c268|0|84M||||&#92;n&#39;]
+
+CSV
+{&#39;AveCPUFreq&#39;&#58; &#39;&#39;, &#39;MaxDiskWrite&#39;&#58; &#39;&#39;, &#39;ReqCPUFreqGov&#39;&#58; &#39;Unknown&#39;, &#39;JobID&#39;&#58; &#39;2306938&#39;, &#39;MaxRSS&#39;&#58; &#39;18446744073709551616.00K&#39;, &#39;NTasks&#39;&#58; &#39;&#39;, &#39;ConsumedEnergy&#39;&#58; &#39;&#39;, &#39;MaxVMSizeNode&#39;&#58; &#39;&#39;, &#39;AveRSS&#39;&#58; &#39;&#39;, &#39;ReqTRES&#39;&#58; &#39;&#39;, &#39;MinCPUTask&#39;&#58; &#39;&#39;, &#39;MaxDiskReadNode&#39;&#58; &#39;&#39;, &#39;AveVMSize&#39;&#58; &#39;&#39;, &#39;ReqGRES&#39;&#58; &#39;&#39;, &#39;MaxDiskReadTask&#39;&#58; &#39;&#39;, &#39;MaxDiskRead&#39;&#58; &#39;&#39;, &#39;Elapsed&#39;&#58; &#39;00&#58;43&#58;44&#39;, &#39;JobIDRaw&#39;&#58; &#39;2306938&#39;, &#39;ReqCPUFreqMax&#39;&#58; &#39;Unknown&#39;, &#39;MaxVMSizeTask&#39;&#58; &#39;&#39;, &#39;AllocTRES&#39;&#58; &#39;&#39;, &#39;AveDiskRead&#39;&#58; &#39;&#39;, &#39;MaxVMSize&#39;&#58; &#39;18446744073709551616.00K&#39;, &#39;MaxPages&#39;&#58; &#39;18446744073709551616.00K&#39;, &#39;MaxPagesNode&#39;&#58; &#39;&#39;, &#39;MaxPagesTask&#39;&#58; &#39;&#39;, &#39;Partition&#39;&#58; &#39;hep&#39;, &#39;MinCPUNode&#39;&#58; &#39;&#39;, &#39;MaxDiskWriteTask&#39;&#58; &#39;&#39;, &#39;AveCPU&#39;&#58; &#39;&#39;, &#39;JobName&#39;&#58; &#39;bl_b3222b327f04&#39;, &#39;MaxDiskWriteNode&#39;&#58; &#39;&#39;, &#39;MaxRSSNode&#39;&#58; &#39;&#39;, &#39;AllocGRES&#39;&#58; &#39;&#39;, &#39;MinCPU&#39;&#58; &#39;&#39;, &#39;ReqMem&#39;&#58; &#39;2000Mn&#39;, &#39;State&#39;&#58; &#39;COMPLETED&#39;, &#39;AvePages&#39;&#58; &#39;&#39;, &#39;MaxRSSTask&#39;&#58; &#39;&#39;, &#39;AllocCPUS&#39;&#58; &#39;1&#39;, &#39;ReqCPUFreqMin&#39;&#58; &#39;Unknown&#39;, &#39;AveDiskWrite&#39;&#58; &#39;&#39;, &#39;ExitCode&#39;&#58; &#39;0&#58;0&#39;}
+Traceback (most recent call last)&#58;
+File &#34;tmp/test3_pbs_status.py&#34;, line 38, in &#60;module&#62;
+return_dict[&#39;RemoteUserCpu&#39;] += convert_cpu_to_seconds(row[&#34;AveCPU&#34;]) * int(row[&#34;AllocCPUS&#34;])
+ValueError&#58; invalid literal for int() with base 10&#58; &#39;&#39;
+[hs@grid1 ~]$ echo $?
+1
+
+----
+
+[hs@grid1 ~]$ sudo python tmp/test3_pbs_status.py 2306938
+[sudo] password for hs&#58;
+Querying sacct for completed job for jobid&#58; 2306938
+
+OUTPUT
+[&#39;JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES&#92;n&#39;, &#39;2306938|2306938|bl_b3222b327f04|hep|18446744073709551616.00K||||18446744073709551616.00K||||18446744073709551616.00K|||||||||1|00&#58;43&#58;44|COMPLETED|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||cpu=1,mem=2000,node=1|cpu=1,mem=2000,node=1&#92;n&#39;, &#39;2306938.batch|2306938.batch|batch||1128440K|c268|0|1128440K|118072K|c268|0|118072K|25K|c268|0|25K|00&#58;00&#58;03|c268|0|00&#58;00&#58;03|1||00&#58;43&#58;44|COMPLETED|0&#58;0|2599958K|0|0|0|2000Mn|0|882M|c268|0|882M|84M|c268|0|84M||||&#92;n&#39;]]
+
+CSV
+{&#39;AveCPUFreq&#39;&#58; &#39;&#39;, &#39;MaxDiskWrite&#39;&#58; &#39;&#39;, &#39;ReqCPUFreqGov&#39;&#58; &#39;Unknown&#39;, &#39;JobID&#39;&#58; &#39;2306938&#39;, &#39;MaxRSS&#39;&#58; &#39;18446744073709551616.00K&#39;, &#39;NTasks&#39;&#58; &#39;&#39;, &#39;ConsumedEnergy&#39;&#58; &#39;&#39;, &#39;MaxVMSizeNode&#39;&#58; &#39;&#39;, &#39;AveRSS&#39;&#58; &#39;&#39;, &#39;ReqTRES&#39;&#58; &#39;cpu=1,mem=2000,node=1&#39;, &#39;MinCPUTask&#39;&#58; &#39;&#39;, &#39;MaxDiskReadNode&#39;&#58; &#39;&#39;, &#39;AveVMSize&#39;&#58; &#39;&#39;, &#39;ReqGRES&#39;&#58; &#39;&#39;, &#39;MaxDiskReadTask&#39;&#58; &#39;&#39;, &#39;MaxDiskRead&#39;&#58; &#39;&#39;, &#39;Elapsed&#39;&#58; &#39;00&#58;43&#58;44&#39;, &#39;JobIDRaw&#39;&#58; &#39;2306938&#39;, &#39;ReqCPUFreqMax&#39;&#58; &#39;Unknown&#39;, &#39;MaxVMSizeTask&#39;&#58; &#39;&#39;, &#39;AllocTRES&#39;&#58; &#39;cpu=1,mem=2000,node=1&#39;, &#39;AveDiskRead&#39;&#58; &#39;&#39;, &#39;MaxVMSize&#39;&#58; &#39;18446744073709551616.00K&#39;, &#39;MaxPages&#39;&#58; &#39;18446744073709551616.00K&#39;, &#39;MaxPagesNode&#39;&#58; &#39;&#39;, &#39;MaxPagesTask&#39;&#58; &#39;&#39;, &#39;Partition&#39;&#58; &#39;hep&#39;, &#39;MinCPUNode&#39;&#58; &#39;&#39;, &#39;MaxDiskWriteTask&#39;&#58; &#39;&#39;, &#39;AveCPU&#39;&#58; &#39;&#39;, &#39;JobName&#39;&#58; &#39;bl_b3222b327f04&#39;, &#39;MaxDiskWriteNode&#39;&#58; &#39;&#39;, &#39;MaxRSSNode&#39;&#58; &#39;&#39;, &#39;AllocGRES&#39;&#58; &#39;&#39;, &#39;MinCPU&#39;&#58; &#39;&#39;, &#39;ReqMem&#39;&#58; &#39;2000Mn&#39;, &#39;State&#39;&#58; &#39;COMPLETED&#39;, &#39;AvePages&#39;&#58; &#39;&#39;, &#39;MaxRSSTask&#39;&#58; &#39;&#39;, &#39;AllocCPUS&#39;&#58; &#39;1&#39;, &#39;ReqCPUFreqMin&#39;&#58; &#39;Unknown&#39;, &#39;AveDiskWrite&#39;&#58; &#39;&#39;, &#39;ExitCode&#39;&#58; &#39;0&#58;0&#39;}
+<div id='show_1208627716' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1208627716'>Traceback (most recent call last)&#58;
+File &#34;tmp/test3_pbs_status.py&#34;, line 38, in &#60;module&#62;
+return_dict[&#39;RemoteUserCpu&#39;] += convert_cpu_to_seconds(row[&#34;AveCPU&#34;]) * int(row[&#34;AllocCPUS&#34;])
+ValueError&#58; invalid literal for int() with base 10&#58; &#39;&#39;
+[hs@grid1 ~]$ echo $?
+1
+
+----
+[hs@grid1 ~]$ python -V
+Python 2.7.5
+[hs@grid1 ~]$ type sacct
+sacct is /usr/bin/sacct
+[hs@grid1 ~]$ rpm -qf /usr/bin/sacct
+slurm-15.08.1-1.el7.centos.x86_64
+----
+
+Cheers,
+
+Horst
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Horst Severini 27
+</div><script type='text/javascript'>
+        $('#show_1208627716').click(function() {
+            $('#detail_1208627716').slideDown("normal");
+            $('#show_1208627716').hide();
+            $('#hide_1208627716').show();
+        });
+        $('#hide_1208627716').click(function() {
+            $('#detail_1208627716').slideUp();
+            $('#hide_1208627716').hide();
+            $('#show_1208627716').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='32612#1486671213'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T20:13:33+00:00">Feb 9, 2017 08:13 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486671213">&nbsp;</a></div><pre>Ok so those exceptions for both root/regular user are weird for different reasons and may be the actual cause of the issues you have. The strange thing is that the string it complains about (18446744073709551616.00) is nowhere to be found in the output of &#39;sacct&#39; that you ran by hand...
+
+I&#39;ve uploaded yet another test script (test3_pbs_status.py.txt). Could you try that along with &#96;python -V&#96; and &#96;which sacct&#96;?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='32612#1486659599'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T16:59:59+00:00">Feb 9, 2017 04:59 PM UTC</time><a class="anchor" name="1486659599">&nbsp;</a></div><pre>Hi Brian,
+
+okay, I ran test2&#58;
+
+----
+[hs@grid1 ~]$ python tmp/test2_pbs_status.py 2306938
+Querying sacct for completed job for jobid&#58; 2306938
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+Traceback (most recent call last)&#58;
+File &#34;tmp/test2_pbs_status.py&#34;, line 58, in &#60;module&#62;
+return_dict[&#34;ImageSize&#34;] += int(row[&#34;MaxRSS&#34;].replace(&#39;K&#39;, &#39;&#39;))
+ValueError&#58; invalid literal for int() with base 10&#58; &#39;18446744073709551616.00&#39;
+----
+[hs@grid1 ~]$ sudo python tmp/test2_pbs_status.py 2306938
+Querying sacct for completed job for jobid&#58; 2306938
+Traceback (most recent call last)&#58;
+File &#34;tmp/test2_pbs_status.py&#34;, line 58, in &#60;module&#62;
+return_dict[&#34;ImageSize&#34;] += int(row[&#34;MaxRSS&#34;].replace(&#39;K&#39;, &#39;&#39;))
+ValueError&#58; invalid literal for int() with base 10&#58; &#39;18446744073709551616.00&#39;
+----
+
+Does that help?
+
+Thanks,
+
+Horst
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Horst Severini 27</pre></div><div class='update_description'><i onclick="document.location='32612#1486654085'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T15:28:05+00:00">Feb 9, 2017 03:28 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486654085">&nbsp;</a></div><pre>Strange, new version should be up now.</pre></div><div class='update_description'><i onclick="document.location='32612#1486598482'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T00:01:22+00:00">Feb 9, 2017 12:01 AM UTC</time><a class="anchor" name="1486598482">&nbsp;</a></div><pre>Hi Brian,
+
+hmm, something seems to have gone wrong with the attachments, since right now I can only see my old .save.txt file and your first test file. My .new. file and your test2 file aren&#39;t there. Can you still see them? If you can, then something&#39;s weird with footprints, and you should email me that test2 file privately. &#58;)
+
+Thanks,
+
+Horst
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Horst Severini 27</pre></div><div class='update_description'><i onclick="document.location='32612#1486597685'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-08T23:48:05+00:00">Feb 8, 2017 11:48 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486597685">&nbsp;</a></div><pre>Horst,
+
+That&#39;s definitely helpful, especially running the &#39;sacct&#39; command by hand. I&#39;ve uploaded a new version of the test (test2_pbs_status.py.txt), could you run it as root on the same job?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='32612#1486588741'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-08T21:19:01+00:00">Feb 8, 2017 09:19 PM UTC</time><a class="anchor" name="1486588741">&nbsp;</a></div><pre>Hi Brian,
+
+okay, here we go&#58;
+
+----
+[hs@grid1 ~]$ python tmp/test_pbs_status.py 2306938
+Querying sacct for completed job for jobid&#58; 2306938
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+sacct&#58; error&#58; Access/permission denied
+Traceback (most recent call last)&#58;
+File &#34;tmp/test_pbs_status.py&#34;, line 58, in &#60;module&#62;
+return_dict[&#34;ImageSize&#34;] += int(row[&#34;MaxRSS&#34;].replace(&#39;K&#39;, &#39;&#39;))
+ValueError&#58; invalid literal for int() with base 10&#58; &#39;18446744073709551616.00&#39;
+[hs@grid1 ~]$ echo $?
+1
+----
+[hs@grid1 ~]$ sudo python tmp/test_pbs_status.py 2306938
+{&#39;RemoteUserCpu&#39;&#58; 0, &#39;ImageSize&#39;&#58; 0, &#39;ExitCode&#39;&#58; 0}
+cluster_type file is not present, not checking for completed job statistics
+[hs@grid1 ~]$ echo $?
+1
+----
+
+Does that make sense? I don&#39;t really know what to expect from running this test by hand.
+
+As a reference, here&#39;s what the sacct command returns directly&#58;
+
+----
+[hs@grid1 ~]$ sacct -j 2306938 -l -P
+JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES
+2306938|2306938|bl_b3222b327f04|hep|16?||||16?||||16?|||||||||1|00&#58;43&#58;44|COMPLETED|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||sacct&#58; error&#58; Access/permission denied
+|sacct&#58; error&#58; Access/permission denied
+
+<div id='show_912789431' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_912789431'>2306938.batch|2306938.batch|batch||1128440K|c268|0|1128440K|118072K|c268|0|118072K|25K|c268|0|25K|00&#58;00&#58;03|c268|0|00&#58;00&#58;03|1||00&#58;43&#58;44|COMPLETED|0&#58;0|2.60G|0|0|0|2000Mn|0|882M|c268|0|882M|84M|c268|0|84M|||sacct&#58; error&#58; Access/permission denied
+|sacct&#58; error&#58; Access/permission denied
+----
+[hs@grid1 ~]$ sudo sacct -j 2306938 -l -P
+JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES
+2306938|2306938|bl_b3222b327f04|hep|16?||||16?||||16?|||||||||1|00&#58;43&#58;44|COMPLETED|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||cpu=1,mem=2000,node=1|cpu=1,mem=2000,node=1
+2306938.batch|2306938.batch|batch||1128440K|c268|0|1128440K|118072K|c268|0|118072K|25K|c268|0|25K|00&#58;00&#58;03|c268|0|00&#58;00&#58;03|1||00&#58;43&#58;44|COMPLETED|0&#58;0|2.60G|0|0|0|2000Mn|0|882M|c268|0|882M|84M|c268|0|84M||||
+----
+
+Thanks,
+
+Horst
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Horst Severini 27
+</div><script type='text/javascript'>
+        $('#show_912789431').click(function() {
+            $('#detail_912789431').slideDown("normal");
+            $('#show_912789431').hide();
+            $('#hide_912789431').show();
+        });
+        $('#hide_912789431').click(function() {
+            $('#detail_912789431').slideUp();
+            $('#hide_912789431').hide();
+            $('#show_912789431').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='32612#1486580598'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-08T19:03:18+00:00">Feb 8, 2017 07:03 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486580598">&nbsp;</a></div><pre>Horst,
+
+I have an inkling as to what the problem is so I&#39;ve modified the get_finished_job_stats() function and made it a script (attached as test_pbs_status.py.txt) so we can investigate. Could you run that script [1] as both root and an unprivileged user on a slurm job ID that has completed and provide me the output?
+
+Thanks,
+Brian
+
+[1] python test_pbs_status.py.txt &#60;JOB ID&#62;</pre></div><div class='update_description'><i onclick="document.location='32612#1486570305'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-08T16:11:45+00:00">Feb 8, 2017 04:11 PM UTC</time><a class="anchor" name="1486570305">&nbsp;</a></div><pre>Oh,
+
+I just read the bottom of your last email, sorry. ;)
+
+So I believe the problem is that while the SLURM job completed successfully, condor_ce_q still shows both of the CE jobs as idle, and that never changes. Or maybe they show as running, but the test jobs I tried were always very short, so I don&#39;t think I&#39;ve ever seen them running in the CE. I don&#39;t remember now, though ...
+
+They definitely never completed, though, since blahp couldn&#39;t see the end of the SLURM jobs.
+
+Thanks,
+
+Horst
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Horst Severini 27</pre></div><div class='update_description'><i onclick="document.location='32612#1486570034'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-08T16:07:14+00:00">Feb 8, 2017 04:07 PM UTC</time><a class="anchor" name="1486570034">&nbsp;</a></div><pre>Hi Brian,
+
+yes, that zero return code also surprised me -- and certainly makes catching the problem a lot harder.
+
+The issue with the various &#39;production&#39; versions of pbs_status.py is that (presumably) because of these permission denied errors, blahp cannot catch the completion of a SLURM job, and therefore it just sits there forever waiting for the job to finish. And by patching the script as I did -- which I got from somewhere some time last year, can&#39;t remember now -- it works, so I guess I&#39;ll keep it as it is right now, and we&#39;ll just have to make sure to put the patched version back in the next time we do an update, until the production version is patched to avoid that -- or the OSCER cluster upgrades to SLURM 16, which supposedly doesn&#39;t have that problem anymore ...
+
+Thanks,
+
+Horst
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Horst Severini 27</pre></div><div class='update_description'><i onclick="document.location='32612#1486568565'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-08T15:42:45+00:00">Feb 8, 2017 03:42 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486568565">&nbsp;</a></div><pre>Horst,
+
+I didn&#39;t expecet it to return zero, that&#39;s a little confusing. Do you recall the symptoms of the issue? I can&#39;t find the exact details in the e-mail thread I had. It looks like jobs didn&#39;t leave the CE queue even though they had completed in slurm. Do you remember what state the CE jobs were in? Running/idle/complete?
+
+CC&#39;ing Derek to see if he can recall the details for why we commented out the &#34;get_finished_job_stats&#34; calls
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='32612#1486505650'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-07T22:14:10+00:00">Feb 7, 2017 10:14 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1486505650">&nbsp;</a></div><pre>Hi Brian,
+
+yes, that&#39;s correct&#58;
+
+----
+[hs@grid1 ~]$ sacct -j 2304018 -l -P
+JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES
+2304018|2304018|bl_df48d4ff410e|hep||||||||||||||||||16|00&#58;21&#58;07|RUNNING|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||sacct&#58;
+error&#58; Access/permission denied
+|sacct&#58; error&#58; Access/permission denied
+
+[hs@grid1 ~]$ echo $?
+0
+----
+
+Not sure about the return code, why it seems to be 0. Maybe because it&#39;s
+a composite command?
+
+It works fine as root&#58;
+
+----
+[hs@grid1 ~]$ sudo sacct -j 2304018 -l -P
+JobID|JobIDRaw|JobName|Partition|MaxVMSize|MaxVMSizeNode|MaxVMSizeTask|AveVMSize|MaxRSS|MaxRSSNode|MaxRSSTask|AveRSS|MaxPages|MaxPagesNode|MaxPagesTask|AvePages|MinCPU|MinCPUNode|MinCPUTask|AveCPU|NTasks|AllocCPUS|Elapsed|State|ExitCode|AveCPUFreq|ReqCPUFreqMin|ReqCPUFreqMax|ReqCPUFreqGov|ReqMem|ConsumedEnergy|MaxDiskRead|MaxDiskReadNode|MaxDiskReadTask|AveDiskRead|MaxDiskWrite|MaxDiskWriteNode|MaxDiskWriteTask|AveDiskWrite|AllocGRES|ReqGRES|ReqTRES|AllocTRES
+2304018|2304018|bl_df48d4ff410e|hep||||||||||||||||||16|00&#58;22&#58;13|RUNNING|0&#58;0||Unknown|Unknown|Unknown|2000Mn||||||||||||cpu=16,mem=2000,node=1|cpu=16,mem=2000,node=1
+----
+
+But of course that doesn&#39;t help us right now.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='32612#1486505140'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-07T22:05:40+00:00">Feb 7, 2017 10:05 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486505140">&nbsp;</a></div><pre>Horst,
+
+I&#39;ve got some ideas on how to fix this &#34;properly&#34; but I want to double check a few items with you&#58; When running &#96;sacct -j &#60;job id&#62; -l -P&#96; as a non-root user, you get that &#34;Permission Denied&#34; message, right? What&#39;s the return code?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='32612#1486432789'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-07T01:59:49+00:00">Feb 7, 2017 01:59 AM UTC</time><a class="anchor" name="1486432789">&nbsp;</a></div><pre>Hi Brian,
+
+yes, I believe you&#39;re right, and the problem was that the specific incantation of sacct used in pbs_status.py wasn&#39;t working for our version of slurm, we got a &#39;permission denied&#39; for parts of it, which then caused a problem parsing the output, and therefore blahp never figured out that the slurm job had finished, and would just sit and wait forever.
+
+I have attached our patched version again to this ticket, as well as the latest version that came with the blahp update we installed. I hope that&#39;ll help figure out what&#39;s happening.
+
+We could try to migrate from the pbs compat mode to slurm directly, but I think you&#39;re probably right that we&#39;d see the same problem.
+
+The OSCER admins are going to upgrade to slurm 16 some time soon, which supposedly doesn&#39;t have that problems, but a specific date hasn&#39;t been set yet.
+
+Thanks,
+
+Horst
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Horst Severini 27</pre></div><div class='update_description'><i onclick="document.location='32612#1486428333'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-07T00:45:33+00:00">Feb 7, 2017 12:45 AM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486428333">&nbsp;</a></div><pre>Horst,
+
+Could you remind me what the exact problem was with pbs_status.py? I can&#39;t seem to find the e-mail but I remember it being a permissions issue involving sacct. There are slurm-specific blahp scripts, gratia-probes, etc. that you can get by installing &#39;osg-ce-slurm&#39; and changing your job routes to read &#39;gridresource = batch slurm&#39; instead of &#39;gridresource = batch pbs&#39;. However, slurm_status.py still uses &#39;sacct&#39; so I think we&#39;ll probably run into the same issues.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='32612#1486427352'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-07T00:29:12+00:00">Feb 7, 2017 12:29 AM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1486427352">&nbsp;</a></div><pre>Hi Brian,
+
+yes, it&#39;s still the same problem as a few months ago, that the current
+(just like the previous) pbs_status.py contains lines that don&#39;t work
+with slurm 15.08, which make it never notice when the slurm job
+has finished, and therefore nothing ever makes it back to the
+submit host.
+
+I had attached the current and the patched pbs_status.py files
+to my original email last week. Do you still have that?
+Otherwise I&#39;ll have to dig them up again and attach them to the ticket.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='32612#1486423494'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-06T23:24:54+00:00">Feb 6, 2017 11:24 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1486423494">&nbsp;</a></div><pre>Hey Horst,
+
+What exactly is broken? Nebraska&#39;s running with a very recent version of slurm that I believe works. Is this related to the issue with sacct from a few months ago?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='32612#1486418293'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-06T21:58:13+00:00">Feb 6, 2017 09:58 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1486418293">&nbsp;</a></div><pre>Hi again,
+
+I think my last message was confusing, in that the SAM3 tests were
+working again -- but that was still only because I had backed out of the
+/usr/libexec/blahp/pbs_status.py update again.
+
+So I&#39;m afraid we still need to open a new ticket on this, to get the
+latest blahp version to work properly with SLURM-15.08.
+
+Thanks a lot,
+
+Horst</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F32612">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 32612});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

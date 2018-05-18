@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[11720] getting a nice summary of RSV status</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=11720" method="post">
+<div class="page-header">
+    <h3><span class="muted">11720</span> / getting a nice summary of RSV status</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Kenneth Bloom</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/myosg</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Kenneth Bloom</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2012-08-07</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Scott Teige <span class="muted"> / OSG Operations Infrastructure</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=11720", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/11720?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/11720?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20getting%20a%20nice%20summary%20of%20RSV%20status%20ISSUE%3D11720%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='11720#1344989275'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-15T00:07:55+00:00">Aug 15, 2012 12:07 AM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1344989275">&nbsp;</a></div><pre>Ken,
+
+The new style sheet was released today, and the new RSV status view went live today. I am closing this ticket.
+
+Please feel free to open a Jira ticket about the resource group custom logic.
+
+Soichi</pre></div><div class='update_description'><i onclick="document.location='11720#1343399890'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-27T14:38:10+00:00">Jul 27, 2012 02:38 PM UTC</time> by <b>Ken Bloom</b><a class="anchor" name="1343399890">&nbsp;</a></div><pre>Well, WLCG has defined some logic for us it seems, so that seems like something that shouldn&#39;t get shot down.  I&#39;ll continue to nail down what that logic is and see if I can get some attention to this higher up the chain.  Thanks, best wishes.
+
+Ken
+
+On Jul 27, 2012, at 8&#58;25 AM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11720#1343395551'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-27T13:25:51+00:00">Jul 27, 2012 01:25 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1343395551">&nbsp;</a></div><pre>Ken,
+
+In the past, I have suggested to allow site admins to define the logic used to compute the resource group status, but so far this idea has been shot down several times. The only option you have right now is to download the rgsummary XML, and construct a script which will pull rsv status from the resources that you are interested in, and do the and/or logics inside this script.
+
+Also, I am currently designing a new event notification system and I believe similar feature could be implemented on the event notification system.
+
+Thanks,
+Soichi</pre></div><div class='update_description'><i onclick="document.location='11720#1343248507'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-25T20:35:07+00:00">Jul 25, 2012 08:35 PM UTC</time> by <b>Ken Bloom</b><a class="anchor" name="1343248507">&nbsp;</a></div><pre>Hi Soichi,
+
+Sorry for the delay in replying.  It looks nice, but is there a way to get a summary of the results, which would correspond to the status that we report to the WLCG?  I believe this would correspond to an &#34;or&#34; within the CE&#39;s and SRMv2&#39;s of a given resource, and then an &#34;and&#34; of those results.  Although I should check on that algorithm.  Thanks, best wishes.
+
+Ken
+
+On Jul 23, 2012, at 2&#58;57 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11720#1343073452'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-23T19:57:32+00:00">Jul 23, 2012 07:57 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1343073452">&nbsp;</a></div><pre>Ken,
+
+I have finished updating most of the MyOSG page using the new stylesheet, and I&#39;d like you to take a look one last time and see if I should adjust anything. Please see <a href='http&#58;//tinyurl.com/bou7rzc' target='_blank' rel='nofollow'>http&#58;//tinyurl.com/bou7rzc</a>
+
+Thanks!
+Soichi</pre></div><div class='update_description'><i onclick="document.location='11720#1342713099'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-19T15:51:39+00:00">Jul 19, 2012 03:51 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1342713099">&nbsp;</a></div><pre>I am planning to release updates to MyOSG on 8/14 (ITB release on 8/7).</pre></div><div class='update_description'><i onclick="document.location='11720#1342196168'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T16:16:08+00:00">Jul 13, 2012 04:16 PM UTC</time> by <b>Ken Bloom</b><a class="anchor" name="1342196168">&nbsp;</a></div><pre>Yes, that looks like it could be useful...as long as you can choose the resources to be viewed and the time window, I think it satisfies the needs.  Thanks, best wishes.
+
+Ken
+
+On Jul 12, 2012, at 2&#58;37 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11720#1342121866'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-12T19:37:46+00:00">Jul 12, 2012 07:37 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1342121866">&nbsp;</a></div><pre>Ken,
+
+I am working on Jira ticket <a href='http&#58;//jira.opensciencegrid.org/browse/MYOSG-41' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/MYOSG-41</a>
+
+Can you check out the attached screenshot for the current prototype for compact RSV status history view?
+
+Thanks,
+Soichi</pre></div><div class='update_description'><i onclick="document.location='11720#1338579336'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-06-01T19:35:36+00:00">Jun 1, 2012 07:35 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1338579336">&nbsp;</a></div><pre>Got jira tickets assigned to me. They are set to low priority.</pre></div><div class='update_description'><i onclick="document.location='11720#1338570262'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-06-01T17:04:22+00:00">Jun 1, 2012 05:04 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1338570262">&nbsp;</a></div><pre>Pinged Scott. Extending NAD another week.</pre></div><div class='update_description'><i onclick="document.location='11720#1336061869'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-05-03T16:17:49+00:00">May 3, 2012 04:17 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1336061869">&nbsp;</a></div><pre>Still no go-sign. Extending NAD for 1 more month.</pre></div><div class='update_description'><i onclick="document.location='11720#1333457635'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-03T12:53:55+00:00">Apr 3, 2012 12:53 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1333457635">&nbsp;</a></div><pre>2 Jira tickets are still sitting on Scott&#39;s queue, so nothing has been done on this ticket. Extending NAD until the end of the month.</pre></div><div class='update_description'><i onclick="document.location='11720#1330957545'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-05T14:25:45+00:00">Mar 5, 2012 02:25 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1330957545">&nbsp;</a></div><pre>Extending NAD</pre></div><div class='update_description'><i onclick="document.location='11720#1330557127'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-02-29T23:12:07+00:00">Feb 29, 2012 11:12 PM UTC</time> by <b>Ken Bloom</b><a class="anchor" name="1330557127">&nbsp;</a></div><pre>Hi Soichi,
+
+This all sounds like it is going in the right direction, so let&#39;s see what the outcome is and figure if anything else is needed.  I might want to modify the sites that are part of this URL, but that is a separate matter and one I won&#39;t worry about for the moment.  Thanks, best wishes.
+
+Ken
+
+On Feb 29, 2012, at 4&#58;20 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11720#1330554003'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-02-29T22:20:03+00:00">Feb 29, 2012 10:20 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1330554003">&nbsp;</a></div><pre>Ken,
+
+I&#39;ve open following Jira tickets.
+
+<font color='#7F7E6F'>&#62; So, of the list of differences you give, I suppose #3 is the most critical one.</font>
+<a href='http&#58;//jira.opensciencegrid.org/browse/MYOSG-41' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/MYOSG-41</a>
+
+<font color='#7F7E6F'>&#62; I would be happy if it just summarizes all the RSV tests for a given site, both CE (multiple CE&#39;s, even) and SE.</font>
+<a href='http&#58;//jira.opensciencegrid.org/browse/MYOSG-40' target='_blank' rel='nofollow'>http&#58;//jira.opensciencegrid.org/browse/MYOSG-40</a>
+
+<font color='#7F7E6F'>&#62; As for #2, could we define a resource group that is the US CMS T2 sites?</font>
+We currently don&#39;t store information that indicates which resources / sites belongs to &#34;Tier 2&#34; (I think we should, but I am not sure if anyone agrees). Meanwhile, Rob Quick has been maintaining couple of MyOSG URLs on MyOSG home page (<a href='http&#58;//myosg.grid.iu.edu' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu</a>). Please look for &#34;ATLAS Tier Twos&#34; and &#34;CMS Tier Twos&#34;. The idea here is that, you can manually select resource groups inside the MyOSG query. Once I complete the Jira ticket MYOSG-40, and MYOSG-41, I believe you can then create the MyOSG URL containing the list of resource groups (or sites) that you are interested in and create a replacement for your gratia page.
+
+Will this approach accomplish your goal?
+
+Thanks,
+Soichi</pre></div><div class='update_description'><i onclick="document.location='11720#1330402687'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-02-28T04:18:07+00:00">Feb 28, 2012 04:18 AM UTC</time> by <b>Ken Bloom</b><a class="anchor" name="1330402687">&nbsp;</a></div><pre>Hi Soichi,
+
+Here is the use case -- every month I present a set of metrics to the US T2 sites, which has for a while now included the day-by-day status of the RSV tests.  This lets me embarrass sites that are doing poorly, in the hope that this will inspire them to do better.  Having the history day by day allows sites to go back and check specific problems they might have had at that time.  So it is very nice to have a compact way to display this information that can be shown in a single slide, or as part of a single slide.  I suppose the history could be considered less crucial than just the average over a given period...but it still seems useful.
+
+So, of the list of differences you give, I suppose #3 is the most critical one.  I suppose a version like what you linked in #1 would be useful, but I&#39;d need it to be much more compact, and I would be happy if it just summarizes all the RSV tests for a given site, both CE (multiple CE&#39;s, even) and SE.  As for #2, could we define a resource group that is the US CMS T2 sites?  (Plus the Brazil CMS T2 sites, which we always bring along with us to be friendly.)  That would make it easier to get the sites I want, especially as I can never remember their OSG names, as they follow no uniform convention.
+
+Also, I am on that mailing list...I enjoy getting the emails each morning.  Thanks, best wishes.
+
+Ken
+
+On Feb 27, 2012, at 3&#58;50 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11720#1330379429'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-02-27T21:50:29+00:00">Feb 27, 2012 09:50 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1330379429">&nbsp;</a></div><pre>Hello,
+I don&#39;t know if you are on the mailing list or not but there are daily availability/reliability reports sent via e-mail. They are archived, for example, here&#58;
+
+<a href='http&#58;//rsv.grid.iu.edu/daily-reports/2012/02/17' target='_blank' rel='nofollow'>http&#58;//rsv.grid.iu.edu/daily-reports/2012/02/17</a>
+
+If you&#39;d like, I can add you to this list, just let me know.</pre></div><div class='update_description'><i onclick="document.location='11720#1330376329'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-02-27T20:58:49+00:00">Feb 27, 2012 08:58 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1330376329">&nbsp;</a></div><pre>Ken,
+
+By comparing those 2 pages, I see following differences.
+
+1) MyOSG&#39;s RSV history page shows each status changes, not availability over a period of time. Are you more interested in page like this &#62; <a href='http&#58;//tinyurl.com/7p8ooxa' target='_blank' rel='nofollow'>http&#58;//tinyurl.com/7p8ooxa</a>
+2) MyOSG page shows more resources than displayed on the gratia page. Why is gratia page not showing all CMS supported resources? Should I adjust the MyOSG query to match it (I think you can just enumerate all resources that you are interested in the MyOSG query under &#34;Specific Resource Groups&#34;.
+3) MyOSG page has a lot of (unnecessary) empty spaces causing graphs to be displayed across multiple pages. Should we provide more concise view for MyOSG?
+4) MyOSG page shows status for each services for each resources. I believe gratia graph shows status for each resource. We have data available for resource status change (not service). Should we expose graphs for resource as well as resource service?
+
+Out of these differences, which are the most critical differences? How can I make MyOSG page more useful for you?
+
+Also, the MyOSG page provides the XML view.
+
+<a href='http&#58;//myosg.grid.iu.edu/rgstatushistory/xml?datasource=statushistory&downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=7daysago&start_date=02/27/2012&end_type=now&end_date=02/27/2012&all_resources=on&facility_10009=on&gridtype=on&gridtype_1=on&service_1=on&service_5=on&voown=on&voown_3=on&has_status=on&active=on&active_value=1&disable_value=1&has_wlcg=on' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu/rgstatushistory/xml?datasource=statushistory&downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=7daysago&start_date=02/27/2012&end_type=now&end_date=02/27/2012&all_resources=on&facility_10009=on&gridtype=on&gridtype_1=on&service_1=on&service_5=on&voown=on&voown_3=on&has_status=on&active=on&active_value=1&disable_value=1&has_wlcg=on</a>
+
+It is possible that you could write a XSLT to convert this XML view into a HTML view in the format that you&#39;d like. Are you interested in doing so?
+
+Thanks,
+Soichi</pre></div><div class='update_description'><i onclick="document.location='11720#1330374256'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-02-27T20:24:16+00:00">Feb 27, 2012 08:24 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1330374256">&nbsp;</a></div><pre>[by Kenneth Bloom]
+
+Dear OSG,
+
+To help keep track of the performance of US CMS Tier-2 sites, I make plots of the historical status of the RSV tests.  I&#39;ve always managed to get these through
+
+<a href='http&#58;//t2.unl.edu&#58;8100/gratia/xml/avail_summary_daily?kind=Site&span=86400&starttime=2012-01-29+00%3A00%3A00&facility=T2_%7CBR-&fixed-height=False&endtime=2012-02-27+00%3A00%3A00' target='_blank' rel='nofollow'>http&#58;//t2.unl.edu&#58;8100/gratia/xml/avail_summary_daily?kind=Site&span=86400&starttime=2012-01-29+00%3A00%3A00&facility=T2_%7CBR-&fixed-height=False&endtime=2012-02-27+00%3A00%3A00</a>
+
+or an equivalent different time period.  However, it looks like the DB that has held the data has disappeared, or something like that.  I looked at what is available on the MyOSG page, and there doesn&#39;t seem to be anything quite like that.  The existing page, e.g.
+
+<a href='http&#58;//myosg.grid.iu.edu/rgstatushistory/index?datasource=statushistory&downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=7daysago&start_date=02/27/2012&end_type=now&end_date=02/27/2012&all_resources=on&facility_10009=on&gridtype=on&gridtype_1=on&service_1=on&service_5=on&voown=on&voown_3=on&has_status=on&active=on&active_value=1&disable_value=1&has_wlcg=on' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu/rgstatushistory/index?datasource=statushistory&downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=7daysago&start_date=02/27/2012&end_type=now&end_date=02/27/2012&all_resources=on&facility_10009=on&gridtype=on&gridtype_1=on&service_1=on&service_5=on&voown=on&voown_3=on&has_status=on&active=on&active_value=1&disable_value=1&has_wlcg=on</a>
+
+can&#39;t be condensed down into a simple plot.  Is there any way to get the functionality I was looking for?  Thanks, best wishes.
+
+Ken</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F11720">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 11720});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

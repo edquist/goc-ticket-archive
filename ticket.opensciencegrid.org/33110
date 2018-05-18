@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[33110] glideins getting killed due to proxy expiration</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=33110" method="post">
+<div class="page-header">
+    <h3><span class="muted">33110</span> / glideins getting killed due to proxy expiration</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Daniel Bradley</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Daniel Bradley</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-03-28</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">OSG Glidein Factory Support <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">FNAL (Prod)&nbsp;<a target="_blank" href="https://fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000835013">INC000000835013</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=33110", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/33110?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/33110?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20glideins%20getting%20killed%20due%20to%20proxy%20expiration%20ISSUE%3D33110%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='33110#1490977918'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-31T16:31:58+00:00">Mar 31, 2017 04:31 PM UTC</time><a class="anchor" name="1490977918">&nbsp;</a></div><pre>Good to hear the problem is understood.  Awkward to hear that it might be my fault from long ago!
+
+I have no problem tracking this via the condor ticket.
+
+Thanks to all who helped debug this.
+
+--Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley</pre></div><div class='update_description'><i onclick="document.location='33110#1490977062'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-31T16:17:42+00:00">Mar 31, 2017 04:17 PM UTC</time><a class="anchor" name="1490977062">&nbsp;</a></div><pre>OK we can follow it from the htcondor ticket that is fine with us.  Will be interested how it explains a phenomenon which is intermittent, i.e. only happening to a few jobs.  Thanks for your work on this.
+
+Steve Timm
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490976281'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-31T16:04:41+00:00">Mar 31, 2017 04:04 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490976281">&nbsp;</a></div><pre>Steve/Dan,
+
+I spoke with Jaime about the issue and it turns out the x509UserProxyExpiration isn&#39;t being updated in the job router so you were both right. I&#39;ve created a gittrac ticket here and added you both to the notification list&#58; <a href='https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=6209.' target='_blank' rel='nofollow'>https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=6209.</a> This fix will make it into the 8.6.x branch.
+
+Do you guys mind tracking this issue through that ticket? If not, I&#39;ll close this one.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='33110#1490968741'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-31T13:59:01+00:00">Mar 31, 2017 01:59 PM UTC</time><a class="anchor" name="1490968741">&nbsp;</a></div><pre>OK here is another fresh one, this time with D_FULLDEBUG JobRouterLog
+condor-ce job number 1050349, condor_q job number 2803527
+Glidein is still active on gpce02, it has been requeued after the hold
+
+[root@gpce02 condor-ce]# condor_ce_q -l 1050349 | grep ^Glidein
+GlideinSlotsLayout = &#34;fixed&#34;
+GlideinFactory = &#34;OSGGOC&#34;
+GlideinCredentialIdentifier = &#34;124570&#34;
+GlideinWebBase = &#34;<a href='http&#58;//glidein.grid.iu.edu/factory/stage&#34' target='_blank' rel='nofollow'>http&#58;//glidein.grid.iu.edu/factory/stage&#34</a>;
+GlideinLogNr = &#34;20170320&#34;
+GlideinWorkDir = &#34;Condor&#34;
+GlideinSecurityClass = &#34;frontend&#34;
+GlideinFrontendName = &#34;Fermilab-fifebatch&#58;frontend&#34;
+GlideinName = &#34;gfactory_instance&#34;
+GlideinEntryName = &#34;FNAL_GPGrid_ce02_mcore&#34;
+GlideinClient = &#34;fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID&#34;
+cluster 3813678 -subcluster 5&#34;
+
+Held at Fri Mar 31 06&#58;29&#58;46 2017
+htcondor-ce gpce02.fnal.gov
+Last successful refresh of proxy about 4 hours before that, from AuditLog
+&#92;
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) Command=DELEGATE_GSI_CRED_SCHEDD, peer=&#60;129.79.53.27&#58;50352&#62;
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend
+/fifebatch.fnal.gov, CondorId=fermigli@....
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) Received proxy for job 1050349.0
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) proxy path&#58; /storage/local/data1/condor-ce/spool/349/0/cluster1050349.proc0.subproc0/credenti
+al_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID_124570
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) proxy expiration&#58; 1491636998
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) proxy identity&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifeba
+tch.fnal.gov
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) proxy subject&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebat
+ch.fnal.gov/CN=1888294247/CN=1014356205
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) proxy email&#58; neha@....
+03/31/17 02&#58;36&#58;38 (cid&#58;87425813) proxy vo name&#58; fermilab
+<div id='show_1533546457' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1533546457'>03/31/17 02&#58;36&#58;38 (cid&#58;87425813) proxy first fqan&#58; /fermilab/Role=pilot/Capability=NULL
+
+Held at 06&#58;29&#58;46
+Released at 06&#58;36&#58;04
+New credential refreshed at 06&#58;36&#58;14, new expiration time  proxy expiration&#58; 1491651374
+
+Now--here is JobRouterLog&#58;
+
+03/31/17 06&#58;29&#58;25 JobRouter&#58; Evaluating all managed jobs periodic job policy expressions.
+03/31/17 06&#58;29&#58;25 (1050349.0) Writing hold record to user logfile
+03/31/17 06&#58;29&#58;25 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;29&#58;25 Setting EnteredCurrentStatus = 1490959765
+03/31/17 06&#58;29&#58;25 Setting HoldReason = &#34;CE job in status 2 put on hold by SYSTEM_PERIODIC_HOLD due to expired user proxy.&#34;
+03/31/17 06&#58;29&#58;25 Setting HoldReasonCode = 26
+03/31/17 06&#58;29&#58;25 Setting HoldReasonSubCode = 0
+03/31/17 06&#58;29&#58;25 Setting JobStatus = 5
+03/31/17 06&#58;29&#58;25 Setting LastReleaseReason = &#34;Data files spooled&#34;
+03/31/17 06&#58;29&#58;25 Setting NumSystemHolds = 1
+03/31/17 06&#58;29&#58;25 Setting ReleaseReason = &#34;Undefined&#34;
+03/31/17 06&#58;29&#58;25 JobRouter (1050349.0)&#58; Placed job on hold.
+03/31/17 06&#58;29&#58;25 JobRouter&#58; Evaluated all managed jobs periodic expressions.
+03/31/17 06&#58;29&#58;39 JobRouter (src=1050349.0,dest=2803527.0,route=GPGrid non-specific)&#58; found src job on hold
+03/31/17 06&#58;29&#58;39 Will use TCP to update collector gpcollector01.fnal.gov &#60;131.225.152.45&#58;9619&#62;
+03/31/17 06&#58;29&#58;39 Will use TCP to update collector gpcollector02.fnal.gov &#60;131.225.152.46&#58;9618&#62;
+03/31/17 06&#58;30&#58;00 JobRouter (src=1050349.0,dest=2803527.0)&#58; job mirror synchronized; removing job from internal &#39;retirement&#39; s
+tatus
+03/31/17 06&#58;36&#58;21 JobRouter&#58; Found candidate job src=1050349.0,route=GPGrid non-DES
+03/31/17 06&#58;36&#58;21 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;36&#58;21 Setting RemoteSysCpu = 16364.0
+03/31/17 06&#58;36&#58;21 Setting RemoteUserCpu = 493133.0
+03/31/17 06&#58;36&#58;21 JobRouter&#58; Umbrella constraint&#58; ((target.x509userproxysubject =!= UNDEFINED) && (target.x509UserProxyExpirat
+ion =!= UNDEFINED) && (time() &#60; target.x509UserProxyExpiration) && (target.JobUniverse =?= 5 || target.JobUniverse =?= 1)) &&
+( (( target.JobClass isnt &#34;DES&#34; )) || (( target.JobClass is &#34;DES&#34; )) ) && (target.ProcId &#62;= 0 && target.JobStatus == 1 && (tar
+get.StageInStart is undefined || target.StageInFinish isnt undefined) && target.Managed isnt &#34;ScheddDone&#34; && target.Managed is
+nt &#34;External&#34; && target.Owner isnt Undefined && target.RoutedBy isnt &#34;htcondor-ce&#34;)
+03/31/17 06&#58;36&#58;21 JobRouter&#58; Found candidate job src=1050349.0,route=GPGrid non-DES
+03/31/17 06&#58;36&#58;21 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;36&#58;21 Setting RemoteSysCpu = 16364.0
+03/31/17 06&#58;36&#58;21 Setting RemoteUserCpu = 493133.0
+03/31/17 06&#58;36&#58;21 JobRouter (src=1055310.0,dest=2808812.0,route=GPGrid non-specific)&#58; updated job status
+03/31/17 06&#58;36&#58;21 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;36&#58;21 Setting RemoteSysCpu = 3379.0
+03/31/17 06&#58;36&#58;21 Setting RemoteUserCpu = 487295.0
+03/31/17 06&#58;36&#58;21 JobRouter (src=1055220.0,dest=2808793.0,route=GPGrid non-specific)&#58; updated job status
+03/31/17 06&#58;36&#58;21 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;36&#58;21 Setting RemoteSysCpu = 3960.0
+03/31/17 06&#58;36&#58;21 Setting RemoteUserCpu = 567882.0
+03/31/17 06&#58;36&#58;21 JobRouter (src=1055601.0,dest=2809125.0,route=GPGrid non-specific)&#58; updated job status
+03/31/17 06&#58;36&#58;21 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;36&#58;21 Setting RemoteSysCpu = 4440.0
+03/31/17 06&#58;36&#58;21 Setting RemoteUserCpu = 388127.0
+03/31/17 06&#58;36&#58;21 JobRouter (src=1055450.0,dest=2808953.0,route=GPGrid non-specific)&#58; updated job status
+/1050349
+...skipping
+03/31/17 06&#58;36&#58;21 JobRouter (src=1055352.0,dest=2808883.0,route=GPGrid non-specific)&#58; updated job status
+03/31/17 06&#58;36&#58;21 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;36&#58;21 Initializing Directory&#58; curr_dir = /storage/local/data1/condor-ce/spool/349/0/cluster1050349.proc0.subproc0
+03/31/17 06&#58;36&#58;21 JobRouter (src=1050349.0,route=GPGrid non-DES)&#58; claimed job
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Copying attribute OnExitHoldReason to orig_OnExitHoldReason
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Copying attribute OnExitHoldSubCode to orig_OnExitHoldSubCode
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Copying attribute OnExitHold to orig_OnExitHold
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Copying attribute environment to orig_environment
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Deleting attribute CondorCE
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Deleting attribute PeriodicRemove
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute AccountingGroupOSG
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute RoutedJob
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute CondorCECollectorHost
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute osg_environment
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute requirements
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute OnExitHold to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute remote_cerequirements to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute remote_NodeNumber to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute OnExitHoldReason to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute RequestCpus to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute RequestMemory to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute AccountingGroup to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute remote_queue to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute remote_SMPGranularity to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute GridResource to an evaluated expression
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute environment to an evaluated expression
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.00095ms] &#34;fermigli&#34; --&#62; fermigli
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.02217ms] Owner --&#62; fermigli
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.21291ms] userHome(Owner,&#34;/&#34;) --&#62; /home/fermigli
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.00286ms] regexp(&#34;&#58;&#34;,&#34;gpce02.fnal.gov&#58;9619&#34;) --&#62; TRUE
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.02694ms] ifThenElse(regexp(&#34;&#58;&#34;,&#34;gpce02.fnal.gov&#58;9619&#34;),&#34;gpce02.fnal.gov&#58;9619&#34;,strcat(&#34;gpce
+02.fnal.gov&#58;9619&#34;,&#34;&#58;&#34;,9619)) --&#62; gpce02.fnal.gov&#58;9619
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.05198ms] ifThenElse(regexp(&#34;&#58;&#34;,&#34;gpce02.fnal.gov&#58;9619&#34;),&#34;gpce02.fnal.gov&#58;9619&#34;,strcat(&#34;gpce
+02.fnal.gov&#58;9619&#34;,&#34;&#58;&#34;,9619)) --&#62; gpce02.fnal.gov&#58;9619
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.07892ms] CondorCECollectorHost --&#62; gpce02.fnal.gov&#58;9619
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.00095ms] &#34;&#34; --&#62;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.01907ms] orig_environment --&#62;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.00095ms] &#34;OSG_GRID=&#39;/etc/osg/wn-client&#39; OSG_SQUID_LOCATION=&#39;squid.fnal.gov&#58;3128&#39; OSG_APP=&#39;
+/cvmfs/oasis.opensciencegrid.org&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; OSG_DATA=&#39;UNAVAILABLE&#39; OSG_HOSTNAME=&#39;gpce02.fnal.gov&#39;
+OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;FNAL_GPGRID_5&#39; GLOBUS_LOCATION=&#39;/usr&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin&#39; OSG_DEFA
+ULT_SE=&#39;cmssrm.fnal.gov&#39;&#34; --&#62; OSG_GRID=&#39;/etc/osg/wn-client&#39; OSG_SQUID_LOCATION=&#39;squid.fnal.gov&#58;3128&#39; OSG_APP=&#39;/cvmfs/oasis.ope
+nsciencegrid.org&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; OSG_DATA=&#39;UNAVAILABLE&#39; OSG_HOSTNAME=&#39;gpce02.fnal.gov&#39; OSG_STORAGE_ELE
+MENT=&#39;True&#39; OSG_SITE_NAME=&#39;FNAL_GPGRID_5&#39; GLOBUS_LOCATION=&#39;/usr&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin&#39; OSG_DEFAULT_SE=&#39;cmssrm.f
+nal.gov&#39;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.03695ms] osg_environment --&#62; OSG_GRID=&#39;/etc/osg/wn-client&#39; OSG_SQUID_LOCATION=&#39;squid.fnal.
+gov&#58;3128&#39; OSG_APP=&#39;/cvmfs/oasis.opensciencegrid.org&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; OSG_DATA=&#39;UNAVAILABLE&#39; OSG_HOSTNAM
+E=&#39;gpce02.fnal.gov&#39; OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;FNAL_GPGRID_5&#39; GLOBUS_LOCATION=&#39;/usr&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;
+/usr/sbin&#39; OSG_DEFAULT_SE=&#39;cmssrm.fnal.gov&#39;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.00095ms] &#34;&#34; --&#62;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.01884ms] orig_environment --&#62;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.10586ms] strcat(osg_environment,&#34; &#34;,orig_environment) --&#62; OSG_GRID=&#39;/etc/osg/wn-client&#39; OS
+G_SQUID_LOCATION=&#39;squid.fnal.gov&#58;3128&#39; OSG_APP=&#39;/cvmfs/oasis.opensciencegrid.org&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; OSG_D
+ATA=&#39;UNAVAILABLE&#39; OSG_HOSTNAME=&#39;gpce02.fnal.gov&#39; OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;FNAL_GPGRID_5&#39; GLOBUS_LOCATION=&#39;/us
+r&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin&#39; OSG_DEFAULT_SE=&#39;cmssrm.fnal.gov&#39;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.18191ms] ifThenElse(orig_environment is undefined,osg_environment,strcat(osg_environment,&#34;
+&#34;,orig_environment)) --&#62; OSG_GRID=&#39;/etc/osg/wn-client&#39; OSG_SQUID_LOCATION=&#39;squid.fnal.gov&#58;3128&#39; OSG_APP=&#39;/cvmfs/oasis.opensci
+encegrid.org&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; OSG_DATA=&#39;UNAVAILABLE&#39; OSG_HOSTNAME=&#39;gpce02.fnal.gov&#39; OSG_STORAGE_ELEMENT
+=&#39;True&#39; OSG_SITE_NAME=&#39;FNAL_GPGRID_5&#39; GLOBUS_LOCATION=&#39;/usr&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin&#39; OSG_DEFAULT_SE=&#39;cmssrm.fnal.
+gov&#39;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.55885ms] strcat(&#34;HOME=&#34;,userHome(Owner,&#34;/&#34;),&#34; CONDORCE_COLLECTOR_HOST=&#34;,CondorCECollectorH
+ost,&#34; &#34;,ifThenElse(orig_environment is undefined,osg_environment,strcat(osg_environment,&#34; &#34;,orig_environment))) --&#62; HOME=/home
+/fermigli CONDORCE_COLLECTOR_HOST=gpce02.fnal.gov&#58;9619 OSG_GRID=&#39;/etc/osg/wn-client&#39; OSG_SQUID_LOCATION=&#39;squid.fnal.gov&#58;3128&#39;
+OSG_APP=&#39;/cvmfs/oasis.opensciencegrid.org&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; OSG_DATA=&#39;UNAVAILABLE&#39; OSG_HOSTNAME=&#39;gpce02.
+fnal.gov&#39; OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;FNAL_GPGRID_5&#39; GLOBUS_LOCATION=&#39;/usr&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin&#39;
+OSG_DEFAULT_SE=&#39;cmssrm.fnal.gov&#39;
+03/31/17 06&#58;36&#58;21 Classad debug&#58; [0.59986ms] strcat(&#34;HOME=&#34;,userHome(Owner,&#34;/&#34;),&#34; CONDORCE_COLLECTOR_HOST=&#34;,CondorCECollectorH
+ost,&#34; &#34;,ifThenElse(orig_environment is undefined,osg_environment,strcat(osg_environment,&#34; &#34;,orig_environment))) --&#62; HOME=/home
+/fermigli CONDORCE_COLLECTOR_HOST=gpce02.fnal.gov&#58;9619 OSG_GRID=&#39;/etc/osg/wn-client&#39; OSG_SQUID_LOCATION=&#39;squid.fnal.gov&#58;3128&#39;
+OSG_APP=&#39;/cvmfs/oasis.opensciencegrid.org&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; OSG_DATA=&#39;UNAVAILABLE&#39; OSG_HOSTNAME=&#39;gpce02.
+fnal.gov&#39; OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;FNAL_GPGRID_5&#39; GLOBUS_LOCATION=&#39;/usr&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin&#39;
+OSG_DEFAULT_SE=&#39;cmssrm.fnal.gov&#39;
+03/31/17 06&#58;36&#58;21 JobRouter (route=GPGrid non-DES)&#58; Setting attribute OnExitHoldSubCode to an evaluated expression
+03/31/17 06&#58;36&#58;21 Will use TCP to update collector gpcollector01.fnal.gov &#60;131.225.152.45&#58;9619&#62;
+03/31/17 06&#58;36&#58;21 Will use TCP to update collector gpcollector02.fnal.gov &#60;131.225.152.46&#58;9618&#62;
+03/31/17 06&#58;36&#58;21 Trying to query collector &#60;131.225.152.46&#58;9618&#62;
+03/31/17 06&#58;36&#58;21 JobRouter (src=1050349.0,dest=2812806.0,route=GPGrid non-DES)&#58; submitted job
+03/31/17 06&#58;36&#58;21 JobRouter (src=1050349.0,dest=2812806.0,route=GPGrid non-DES)&#58; submitted job has not yet appeared in job que
+ue mirror or was removed (submitted 0 seconds ago)
+03/31/17 06&#58;36&#58;21 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;36&#58;21 Setting RemoteSysCpu = 4093.0
+03/31/17 06&#58;36&#58;21 Setting RemoteUserCpu = 327724.0
+03/31/17 06&#58;36&#58;31 JobRouter (src=1050349.0,dest=2812806.0,route=GPGrid non-DES)&#58; updated job status
+03/31/17 06&#58;36&#58;31 SharedPortClient&#58; sent connection request to schedd at &#60;131.225.152.41&#58;9619&#62; for shared port id 7181_5884_3
+03/31/17 06&#58;36&#58;31 Setting RemoteSysCpu = 9187.0
+03/31/17 06&#58;36&#58;31 Setting RemoteUserCpu = 337491.0
+
+--------------------
+
+I am not sure what the JobRouterLog may tell you that the other logs didn&#39;t but hope it can help you converge.
+
+One note above--it says
+
+03/31/17 06&#58;29&#58;25 (1050349.0) Writing hold record to user logfile
+
+But in fact the Userlog variable in the classads on the htcondor-ce is null, there is no userlog, which is part of what makes this whole setup so incredibly hard to debug anything in.  We need a better audit trail on the htcondor-ce schedd, either with userlog or eventlog or both.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm
+</div><script type='text/javascript'>
+        $('#show_1533546457').click(function() {
+            $('#detail_1533546457').slideDown("normal");
+            $('#show_1533546457').hide();
+            $('#hide_1533546457').show();
+        });
+        $('#hide_1533546457').click(function() {
+            $('#detail_1533546457').slideUp();
+            $('#hide_1533546457').hide();
+            $('#show_1533546457').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490891664'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-30T16:34:24+00:00">Mar 30, 2017 04:34 PM UTC</time><a class="anchor" name="1490891664">&nbsp;</a></div><pre>It should also be noted that right now I see 25 held glideins on gpce01.fnal.gov where the proxy (from /osg/ligo) really *is* expired.
+Could be that some osg-flavored frontends have not yet caught up to the new location of the OSG voms server at voms.grid.iu.edu.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490891408'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-30T16:30:08+00:00">Mar 30, 2017 04:30 PM UTC</time><a class="anchor" name="1490891408">&nbsp;</a></div><pre>At the time I posted the previous comment ( 8&#58;53 or so) the proxy had not been refreshed.  It was refreshed, and the job released, at 09&#58;01&#58;06.
+But what I just showed in the previous comment is that at the time the job was held, its proxy was in fact current and the condor_ce classad
+also believed it to be current and yet it got held anyway.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490891201'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-30T16:26:41+00:00">Mar 30, 2017 04:26 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490891201">&nbsp;</a></div><pre>Steve,
+
+Was that same proxy refreshed between 8&#58;31&#58;40 and when you posted the comment?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='33110#1490882373'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-30T13:59:33+00:00">Mar 30, 2017 01:59 PM UTC</time><a class="anchor" name="1490882373">&nbsp;</a></div><pre>OK here&#39;s another one this one from gpce02, I caught it as it is still held
+[root@gpce02 cluster1042473.proc0.subproc0]# voms-proxy-info -all -file ./credential_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID_124570
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=3809735135/CN=1891970565
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=3809735135
+identity  &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=3809735135
+type      &#58; RFC compliant proxy
+strength  &#58; 1024 bits
+path      &#58; ./credential_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID_124570
+timeleft  &#58; 191&#58;35&#58;45
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO fermilab extension information ===
+VO        &#58; fermilab
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms1.fnal.gov
+attribute &#58; /fermilab/Role=pilot/Capability=NULL
+attribute &#58; /fermilab/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/accelerator/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/annie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/argoneut/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/captmnv/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdf/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdms/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/chips/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/coupp/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/darkside/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/des/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/dune/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/genie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/grid/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/icarus/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1nd/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lariat/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/Role=NULL/Capability=NULL
+<div id='show_821964824' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_821964824'>attribute &#58; /fermilab/mars/accel/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/lbne/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minerva/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/miniboone/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minos/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/noble/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/nova/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/numix/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/patriot/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/seaquest/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/uboone/Role=NULL/Capability=NULL
+timeleft  &#58; 119&#58;30&#58;07
+uri       &#58; voms1.fnal.gov&#58;15001
+x509UserProxyExpiration = 1491571840
+
+The actual proxy and its x509userproxyexpiration show as OK, well into the future .
+This proxy was refreshed at 08&#58;31 this morning and the job held at 08&#58;37
+03/30/17 08&#58;31&#58;40 (cid&#58;87137285) Received proxy for job 1042473.0
+03/30/17 08&#58;31&#58;40 (cid&#58;87137285) proxy path&#58; /storage/local/data1/condor-ce/spool/2473/0/cluster1042473.proc0.subproc0/credential_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID_124570
+03/30/17 08&#58;31&#58;40 (cid&#58;87137285) Refresh GSI cred for job 1042473.0 suceeded
+[root@gpce02 condor-ce]# condor_ce_q -held 1042473
+
+-- Schedd&#58; gpce02.fnal.gov &#58; &#60;131.225.152.41&#58;52277&#62;
+ID         OWNER          HELD_SINCE  HOLD_REASON
+1042473.0   fermigli        3/30 08&#58;37 CE job in status 2 put on hold by SYSTEM_PERIODIC_HOLD due to expired user proxy.
+
+1 jobs; 0 completed, 0 removed, 0 idle, 0 running, 1 held, 0 suspended
+
+Args&#58;Arguments = &#34;-v std -name gfactory_instance -entry FNAL_GPGrid_ce02_mcore -clientname fifebatchgp
+vmhead1_OSG_gWMSFrontend.GPGRID -schedd schedd_glideins3@.... -proxy None -fact
+ory SDSC -web <a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/stage' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/stage</a> -sign d51db6e14e39c307e8ae6537b4febdd55
+c47472e -signentry d05ce4046d2e34105d7985bbdafe2cabbb3e559b -signtype sha1 -descript description.
+h32aXk.cfg -descriptentry description.h32aXk.cfg -dir Condor -param_GLIDEIN_Client fifebatchgpvmh
+ead1_OSG_gWMSFrontend.GPGRID -submitcredid 124570 -slotslayout fixed -clientweb http&#58;//fifebatchg
+pvmhead1.fnal.gov&#58;8319/vofrontend/stage -clientsign c013074a2abf7aacb693aeaa7906f28628c64620 -cli
+entsigntype sha1 -clientdescript description.h32ee4.cfg -clientgroup GPGRID -clientwebgroup http&#58;
+//fifebatchgpvmhead1.fnal.gov&#58;8319/vofrontend/stage/group_GPGRID -clientsigngroup 138a5efccdd5378
+9e9f107e79574db9742dc5ca7 -clientdescriptgroup description.h32ee4.cfg -param_CONDOR_VERSION 8.dot
+,4.dot,2 -param_FIFE_DESC NewGPGridSlot -param_GLIDEIN_Job_Max_Time 34800 -param_GLIDECLIENT_ReqN
+ode gfactory.minus,1.dot,t2.dot,ucsd.dot,edu -param_FIFE_SLOTTYPE QUOTASLOT -param_GLIDECLIENT_Ra
+nk 1 -param_GLIDEIN_Report_Failed NEVER -param_MIN_DISK_GBS 1 -param_GLIDEIN_Glexec_Use NEVER -pa
+ram_GLIDEIN_Monitoring_Enabled False -param_HAS_USAGE_MODEL DEDICATED.comma,OPPORTUNISTIC -param_
+UPDATE_COLLECTOR_WITH_TCP True -param_CONDOR_ARCH default -param_USE_MATCH_AUTH True -param_CONDO
+R_OS default -param_GLIDEIN_Collector fifebatchhead4.dot,fnal.dot,gov.colon,9620.minus,9640.semic
+olon,fifebatchhead3.dot,fnal.dot,gov.colon,9620.minus,9640 -cluster 4816876 -subcluster 9&#34;
+
+Look on UCSD factory see what you can find.. this job has not yet been released again.
+Unfortunately I didn&#39;t have the debug JobRouterLog enabled on this one.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm
+</div><script type='text/javascript'>
+        $('#show_821964824').click(function() {
+            $('#detail_821964824').slideDown("normal");
+            $('#show_821964824').hide();
+            $('#hide_821964824').show();
+        });
+        $('#hide_821964824').click(function() {
+            $('#detail_821964824').slideUp();
+            $('#hide_821964824').hide();
+            $('#show_821964824').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490820645'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T20:50:45+00:00">Mar 29, 2017 08:50 PM UTC</time><a class="anchor" name="1490820645">&nbsp;</a></div><pre>[root@gpce01 cluster851227.proc0.subproc0]# voms-proxy-info -all -file ./credential_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID_124570
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=444504305/CN=206082378
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=444504305
+identity  &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=444504305
+type      &#58; RFC compliant proxy
+strength  &#58; 1024 bits
+path      &#58; ./credential_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID_124570
+timeleft  &#58; 190&#58;46&#58;25
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO fermilab extension information ===
+VO        &#58; fermilab
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms2.fnal.gov
+attribute &#58; /fermilab/Role=pilot/Capability=NULL
+attribute &#58; /fermilab/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/accelerator/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/annie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/argoneut/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/captmnv/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdf/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdms/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/chips/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/coupp/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/darkside/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/des/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/dune/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/genie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/grid/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/icarus/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1nd/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lariat/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/accel/Role=NULL/Capability=NULL
+<div id='show_51553707' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_51553707'>attribute &#58; /fermilab/mars/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/lbne/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minerva/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/miniboone/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minos/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/noble/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/nova/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/numix/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/patriot/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/seaquest/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/uboone/Role=NULL/Capability=NULL
+timeleft  &#58; 118&#58;36&#58;22
+uri       &#58; voms2.fnal.gov&#58;15001
+[root@gpce01 cluster851227.proc0.subproc0]#
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Steve Timm 167
+</div><script type='text/javascript'>
+        $('#show_51553707').click(function() {
+            $('#detail_51553707').slideDown("normal");
+            $('#show_51553707').hide();
+            $('#hide_51553707').show();
+        });
+        $('#hide_51553707').click(function() {
+            $('#detail_51553707').slideUp();
+            $('#hide_51553707').hide();
+            $('#show_51553707').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490820641'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T20:50:41+00:00">Mar 29, 2017 08:50 PM UTC</time><a class="anchor" name="1490820641">&nbsp;</a></div><pre>[root@gpce01 cluster851227.proc0.subproc0]# voms-proxy-info -all -file ./credential_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID_124570
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=444504305/CN=206082378
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=444504305
+identity  &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=444504305
+type      &#58; RFC compliant proxy
+strength  &#58; 1024 bits
+path      &#58; ./credential_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID_124570
+timeleft  &#58; 190&#58;46&#58;25
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO fermilab extension information ===
+VO        &#58; fermilab
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms2.fnal.gov
+attribute &#58; /fermilab/Role=pilot/Capability=NULL
+attribute &#58; /fermilab/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/accelerator/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/annie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/argoneut/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/captmnv/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdf/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdms/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/chips/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/coupp/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/darkside/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/des/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/dune/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/genie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/grid/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/icarus/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1nd/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lariat/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/accel/Role=NULL/Capability=NULL
+<div id='show_1991894960' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1991894960'>attribute &#58; /fermilab/mars/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/lbne/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minerva/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/miniboone/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minos/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/noble/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/nova/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/numix/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/patriot/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/seaquest/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/uboone/Role=NULL/Capability=NULL
+timeleft  &#58; 118&#58;36&#58;22
+uri       &#58; voms2.fnal.gov&#58;15001
+[root@gpce01 cluster851227.proc0.subproc0]#
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Steve Timm 167
+</div><script type='text/javascript'>
+        $('#show_1991894960').click(function() {
+            $('#detail_1991894960').slideDown("normal");
+            $('#show_1991894960').hide();
+            $('#hide_1991894960').show();
+        });
+        $('#hide_1991894960').click(function() {
+            $('#detail_1991894960').slideUp();
+            $('#hide_1991894960').hide();
+            $('#show_1991894960').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490819283'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T20:28:03+00:00">Mar 29, 2017 08:28 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490819283">&nbsp;</a></div><pre>Steve,
+
+If you inspect CE job 851227.0, are the expiration times similar to the one Marty posted below?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='33110#1490817918'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T20:05:18+00:00">Mar 29, 2017 08:05 PM UTC</time><a class="anchor" name="1490817918">&nbsp;</a></div><pre>And current reported proxy ... [3]
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[3]
+
+[1304] gfactory@gfactory-1 /etc/osg-gfactory$ proxy_info fefermifife info -all /var/lib/gwms-factory/client-proxies/user_fefermifife/glidein_gfactory_instance/credential_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID_124570
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=3109488172
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+identity  &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+type      &#58; RFC compliant proxy
+strength  &#58; 1024 bits
+path      &#58; /var/lib/gwms-factory/client-proxies/user_fefermifife/glidein_gfactory_instance/credential_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID_124570
+timeleft  &#58; 267&#58;20&#58;38
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO fermilab extension information ===
+VO        &#58; fermilab
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms2.fnal.gov
+attribute &#58; /fermilab/Role=pilot/Capability=NULL
+attribute &#58; /fermilab/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/accelerator/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/annie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/argoneut/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/captmnv/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdf/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdms/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/chips/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/coupp/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/darkside/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/des/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/dune/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/genie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/gm2/Role=NULL/Capability=NULL
+<div id='show_1701062279' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1701062279'>attribute &#58; /fermilab/grid/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/icarus/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1nd/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lariat/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/accel/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/lbne/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minerva/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/miniboone/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minos/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/noble/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/nova/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/numix/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/patriot/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/seaquest/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/uboone/Role=NULL/Capability=NULL
+timeleft  &#58; 119&#58;20&#58;38
+uri       &#58; voms2.fnal.gov&#58;15001
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049
+</div><script type='text/javascript'>
+        $('#show_1701062279').click(function() {
+            $('#detail_1701062279').slideDown("normal");
+            $('#show_1701062279').hide();
+            $('#hide_1701062279').show();
+        });
+        $('#hide_1701062279').click(function() {
+            $('#detail_1701062279').slideUp();
+            $('#hide_1701062279').hide();
+            $('#show_1701062279').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490817905'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T20:05:05+00:00">Mar 29, 2017 08:05 PM UTC</time><a class="anchor" name="1490817905">&nbsp;</a></div><pre>yes, the glidein in question is still idle at gpce01.  not surprising, there is typically a 1&#58;1 ratio of running to idle glideins for the &#34;fermigli&#34; user on this CE.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490817814'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T20:03:34+00:00">Mar 29, 2017 08:03 PM UTC</time><a class="anchor" name="1490817814">&nbsp;</a></div><pre>Here is class ad dump ... [2]
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[2]
+
+[1259] gfactory@gfactory-1 /etc/osg-gfactory$ entry_q FNAL_GPGrid_ce01_mcore -l 4575875.0
+MaxHosts = 1
+GlideinSlotsLayout = &#34;fixed&#34;
+GlideinFactory = &#34;SDSC&#34;
+GlideinCredentialIdentifier = &#34;124570&#34;
+Managed = &#34;External&#34;
+User = &#34;fefermifife@....&#34;
+EncryptExecuteDirectory = false
+OnExitHold = false
+CoreSize = 0
+LastRemoteStatusUpdate = 1490817769
+LastHoldReason = &#34;CE job in status 2 put on hold by SYSTEM_PERIODIC_HOLD due to expired user proxy.&#34;
+WallClockCheckpoint = 163344
+WantRemoteSyscalls = false
+MyType = &#34;Job&#34;
+Rank = 0.0
+CumulativeSuspensionTime = 0
+ReleaseReason = &#34;via condor_release (by user gfactory)&#34;
+MinHosts = 1
+xcount = 8
+PeriodicHold = false
+PeriodicRemove = false
+Err = &#34;/var/log/gwms-factory/client/user_fefermifife/glidein_gfactory_instance/entry_FNAL_GPGrid_ce01_mcore/job.4575875.0.err&#34;
+ProcId = 0
+EnteredCurrentStatus = 1490809031
+UserLog = &#34;/var/log/gwms-factory/client/user_fefermifife/glidein_gfactory_instance/entry_FNAL_GPGrid_ce01_mcore/condor_activity_20170318_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID.log&#34;
+NumJobStarts = 0
+JobUniverse = 9
+<div id='show_452953006' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_452953006'>GridJobStatus = &#34;IDLE&#34;
+In = &#34;/dev/null&#34;
+Requirements = true
+ClusterId = 4575875
+WhenToTransferOutput = &#34;ON_EXIT&#34;
+CompletionDate = 0
+x509UserProxyVOName = &#34;fermilab&#34;
+BufferSize = 524288
+Environment = &#34;&#34;
+TargetType = &#34;Machine&#34;
+LeaveJobInQueue = false
+x509UserProxyExpiration = 1490808303
+JobNotification = 0
+Owner = &#34;fefermifife&#34;
+CondorPlatform = &#34;$CondorPlatform&#58; X86_64-CentOS_6.8 $&#34;
+CommittedTime = 0
+x509userproxy = &#34;/var/lib/gwms-factory/client-proxies/user_fefermifife/glidein_gfactory_instance/credential_fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID_124570&#34;
+QDate = 1489851185
+TransferIn = false
+ExitStatus = 0
+maxMemory = 15940
+NumJobMatches = 5
+RootDir = &#34;/&#34;
+JobCurrentStartDate = 1490644777
+LastHoldReasonSubCode = 0
+GlideinWebBase = &#34;<a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/stage&#34' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/stage&#34</a>;
+GlobalJobId = &#34;schedd_glideins4@....#4575875.0#1489851185&#34;
+CurrentHosts = 0
+RemoteSysCpu = 0.0
+TotalSuspensions = 0
+x509UserProxyFirstFQAN = &#34;/fermilab/Role=pilot/Capability=NULL&#34;
+WantCheckpoint = false
+x509userproxysubject = &#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov&#34;
+Args = &#34;-v std -name gfactory_instance -entry FNAL_GPGrid_ce01_mcore -clientname fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID -schedd schedd_glideins4@.... -proxy None -factory SDSC -web <a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/stage' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/stage</a> -sign 673668568e586a1f0378eec1ecbf93e55c45b0b9 -signentry 64204f86c39e0d0947d6ffd9a440d57f98f184e1 -signtype sha1 -descript description.h3gdJU.cfg -descriptentry description.h3gdJU.cfg -dir Condor -param_GLIDEIN_Client fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID -submitcredid 124570 -slotslayout fixed -clientweb <a href='http&#58;//fifebatchgpvmhead1.fnal.gov&#58;8319/vofrontend/stage' target='_blank' rel='nofollow'>http&#58;//fifebatchgpvmhead1.fnal.gov&#58;8319/vofrontend/stage</a> -clientsign c013074a2abf7aacb693aeaa7906f28628c64620 -clientsigntype sha1 -clientdescript description.h32ee4.cfg -clientgroup GPGRID -clientwebgroup <a href='http&#58;//fifebatchgpvmhead1.fnal.gov&#58;8319/vofrontend/stage/group_GPGRID' target='_blank' rel='nofollow'>http&#58;//fifebatchgpvmhead1.fnal.gov&#58;8319/vofrontend/stage/group_GPGRID</a> -clientsigngroup 138a5efccdd53789e9f107e79574db9742dc5ca7 -clientdescriptgroup description.h32ee4.cfg -param_CONDOR_VERSION 8.dot,4.dot,2 -param_FIFE_DESC NewGPGridSlot -param_GLIDEIN_Job_Max_Time 34800 -param_GLIDECLIENT_ReqNode gfactory.minus,1.dot,t2.dot,ucsd.dot,edu -param_FIFE_SLOTTYPE QUOTASLOT -param_GLIDECLIENT_Rank 1 -param_GLIDEIN_Report_Failed NEVER -param_MIN_DISK_GBS 1 -param_GLIDEIN_Glexec_Use NEVER -param_GLIDEIN_Monitoring_Enabled False -param_HAS_USAGE_MODEL DEDICATED.comma,OPPORTUNISTIC -param_UPDATE_COLLECTOR_WITH_TCP True -param_CONDOR_ARCH default -param_USE_MATCH_AUTH True -param_CONDOR_OS default -param_GLIDEIN_Collector fifebatchhead4.dot,fnal.dot,gov.colon,9620.minus,9640.semicolon,fifebatchhead3.dot,fnal.dot,gov.colon,9620.minus,9640 -cluster 4575875 -subcluster 0&#34;
+PeriodicRelease = false
+GlideinLogNr = &#34;20170318&#34;
+NumCkpts_RAW = 0
+CondorVersion = &#34;$CondorVersion&#58; 8.4.9 Sep 29 2016 $&#34;
+Out = &#34;/var/log/gwms-factory/client/user_fefermifife/glidein_gfactory_instance/entry_FNAL_GPGrid_ce01_mcore/job.4575875.0.out&#34;
+ShouldTransferFiles = &#34;IF_NEEDED&#34;
+DiskUsage = 75
+GlideinWorkDir = &#34;Condor&#34;
+JobRunCount = 5
+CumulativeSlotTime = 0
+CommittedSlotTime = 0
+LocalUserCpu = 0.0
+JobStartDate = 1490124953
+ExitBySignal = false
+StreamErr = false
+DelegatedProxyExpiration = 1491507321
+NumSystemHolds = 1
+NumRestarts = 0
+RequestDisk = DiskUsage
+GridJobId = &#34;condor gpce01.fnal.gov gpce01.fnal.gov&#58;9619 851227.0&#34;
+FileSystemDomain = &#34;gfactory-1.t2.ucsd.edu&#34;
+JobPrio = 0
+NumCkpts = 0
+BufferBlockSize = 32768
+ImageSize = 27500000
+DiskUsage_RAW = 58
+CommittedSuspensionTime = 0
+x509UserProxyEmail = &#34;neha@....&#34;
+GlideinSecurityClass = &#34;frontend&#34;
+Cmd = &#34;/data/gwms-factory/lib/work-dir/glidein_startup.sh&#34;
+LastHoldReasonCode = 26
+WantClaiming = false
+LocalSysCpu = 0.0
+Iwd = &#34;/data/gwms-factory/lib/work-dir&#34;
+GlideinFrontendName = &#34;Fermilab-fifebatch&#58;frontend&#34;
+GridResource = &#34;condor gpce01.fnal.gov gpce01.fnal.gov&#58;9619&#34;
+TransferInputSizeMB = 0
+ServerTime = 1490817772
+LastSuspensionTime = 0
+ExecutableSize_RAW = 58
+GlideinName = &#34;gfactory_instance&#34;
+BytesSent = 0.0
+TransferOutput = &#34;&#34;
+JobStatus = 1
+ShadowBday = 1490644777
+ExecutableSize = 75
+GlideinEntryName = &#34;FNAL_GPGrid_ce01_mcore&#34;
+ImageSize_RAW = 27500000
+RemoteWallClockTime = 354903.0
+OnExitRemove = true
+KillSig = &#34;SIGTERM&#34;
+StreamOut = false
+CmdHash = &#34;CmdMD5-13046a5d063fc39b82821fa610810b2c&#34;
+BytesRecvd = 206913.0
+RequestMemory = ifthenelse(MemoryUsage =!= undefined,MemoryUsage,( ImageSize + 1023 ) / 1024)
+RemoteUserCpu = 0.0
+NiceUser = false
+RequestCpus = 1
+WantRemoteIO = true
+x509UserProxyFQAN = &#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov,/fermilab/Role=pilot/Capability=NULL,/fermilab/Role=NULL/Capability=NULL,/fermilab/accelerator/Role=NULL/Capability=NULL,/fermilab/annie/Role=NULL/Capability=NULL,/fermilab/argoneut/Role=NULL/Capability=NULL,/fermilab/captmnv/Role=NULL/Capability=NULL,/fermilab/cdf/Role=NULL/Capability=NULL,/fermilab/cdms/Role=NULL/Capability=NULL,/fermilab/chips/Role=NULL/Capability=NULL,/fermilab/coupp/Role=NULL/Capability=NULL,/fermilab/darkside/Role=NULL/Capability=NULL,/fermilab/des/Role=NULL/Capability=NULL,/fermilab/dune/Role=NULL/Capability=NULL,/fermilab/genie/Role=NULL/Capability=NULL,/fermilab/gm2/Role=NULL/Capability=NULL,/fermilab/grid/Role=NULL/Capability=NULL,/fermilab/icarus/Role=NULL/Capability=NULL,/fermilab/lar1/Role=NULL/Capability=NULL,/fermilab/lar1nd/Role=NULL/Capability=NULL,/fermilab/lariat/Role=NULL/Capability=NULL,/fermilab/mars/Role=NULL/Capability=NULL,/fermilab/mars/accel/Role=NULL/Capability=NULL,/fermilab/mars/gm2/Role=NULL/Capability=NULL,/fermilab/mars/lbne/Role=NULL/Capability=NULL,/fermilab/mars/mu2e/Role=NULL/Capability=NULL,/fermilab/minerva/Role=NULL/Capability=NULL,/fermilab/miniboone/Role=NULL/Capability=NULL,/fermilab/minos/Role=NULL/Capability=NULL,/fermilab/mu2e/Role=NULL/Capability=NULL,/fermilab/noble/Role=NULL/Capability=NULL,/fermilab/nova/Role=NULL/Capability=NULL,/fermilab/numix/Role=NULL/Capability=NULL,/fermilab/patriot/Role=NULL/Capability=NULL,/fermilab/seaquest/Role=NULL/Capability=NULL,/fermilab/uboone/Role=NULL/Capability=NULL&#34;
+LastJobStatus = 5
+GlideinClient = &#34;fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID&#34;
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049
+</div><script type='text/javascript'>
+        $('#show_452953006').click(function() {
+            $('#detail_452953006').slideDown("normal");
+            $('#show_452953006').hide();
+            $('#hide_452953006').show();
+        });
+        $('#hide_452953006').click(function() {
+            $('#detail_452953006').slideUp();
+            $('#hide_452953006').hide();
+            $('#show_452953006').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490817754'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T20:02:34+00:00">Mar 29, 2017 08:02 PM UTC</time><a class="anchor" name="1490817754">&nbsp;</a></div><pre>Brian,
+
+It&#39;s currently reported as idle at the factory [1]. So may still be in queue at gpce01. There was no record in the CGAHPWorkerLog.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+4575875.0   fefermifife     3/18 08&#58;33   4+02&#58;35&#58;03 I  0   26855.5 glidein_startup.sh
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='33110#1490815306'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T19:21:46+00:00">Mar 29, 2017 07:21 PM UTC</time><a class="anchor" name="1490815306">&nbsp;</a></div><pre>The log lines are from /var/log/condor-ce/AuditLog.
+Similar log lines, although not as many, appear in the SchedLog.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490814672'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T19:11:12+00:00">Mar 29, 2017 07:11 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490814672">&nbsp;</a></div><pre>Steve, are those log lines from the SchedLog? And if you have the job
+router debug set to D_FULLDEBUG, you should see messages along the lines
+of &#34;Placed job on hold&#34;.
+
+Marty, could you get us the CGAHPWorker logs for 4577875.0 from the UCSD
+factory?
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='33110#1490813121'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T18:45:21+00:00">Mar 29, 2017 06:45 PM UTC</time><a class="anchor" name="1490813121">&nbsp;</a></div><pre>So here is a brand new glidein from gpce01.fnal.gov that just got killed.
+condor_q job  2566205, condor_ce_q job id  851227,
+LastHoldReason = &#34;CE job in status 2 put on hold by SYSTEM_PERIODIC_HOLD due to expired user proxy.&#34;
+last held Wed. Mar 29 12&#58;29&#58;59 (CDT)
+GlideinWebBase = &#34;<a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/stage&#34' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/stage&#34</a>;
+cluster 4575875 -subcluster 0&#34;
+
+Now requeued as gpce01&#58; 2574042 in the condor_q
+user fermigli
+from frontend
+&#34;fifebatchgpvmhead1_OSG_gWMSFrontend.GPGRID&#34;
+
+Last renewal of proxy, 4 hours before.
+
+03/29/17 08&#58;33&#58;26 (cid&#58;72445140) proxy path&#58; /storage/local/data1/condor-ce/spoo
+l/1227/0/cluster851227.proc0.subproc0/credential_fifebatchgpvmhead1_OSG_gWMSFron
+tend.GPGRID_124570
+03/29/17 08&#58;33&#58;26 (cid&#58;72445140) proxy expiration&#58; 1491485546
+03/29/17 08&#58;33&#58;26 (cid&#58;72445140) proxy identity&#58; /DC=org/DC=opensciencegrid/O=Op
+en Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+03/29/17 08&#58;33&#58;26 (cid&#58;72445140) proxy subject&#58; /DC=org/DC=opensciencegrid/O=Ope
+n Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=1419285534/CN=20553
+42272
+03/29/17 08&#58;33&#58;26 (cid&#58;72445140) proxy email&#58; neha@....
+03/29/17 08&#58;33&#58;26 (cid&#58;72445140) proxy vo name&#58; fermilab
+03/29/17 08&#58;33&#58;26 (cid&#58;72445140) proxy first fqan&#58; /fermilab/Role=pilot/Capability=NULL
+03/29/17 08&#58;33&#58;26 (cid&#58;72445140) Refresh GSI cred for job 851227.0 suceeded
+
+x509userproxyexpiration at time of removal, almost 4 hours later, was same as shown above.
+x509UserProxyExpiration = 1491485546
+
+Our condor_job_router has been running since sometime in 2016.
+
+Nothing in JobRouterLog or SchedLog at the time of SYSTEM_PERIODIC_HOLD.
+(JobRouter is pretty bad that way).
+<div id='show_1601502789' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1601502789'>
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm
+</div><script type='text/javascript'>
+        $('#show_1601502789').click(function() {
+            $('#detail_1601502789').slideDown("normal");
+            $('#show_1601502789').hide();
+            $('#hide_1601502789').show();
+        });
+        $('#hide_1601502789').click(function() {
+            $('#detail_1601502789').slideUp();
+            $('#hide_1601502789').hide();
+            $('#show_1601502789').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490812259'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T18:30:59+00:00">Mar 29, 2017 06:30 PM UTC</time><a class="anchor" name="1490812259">&nbsp;</a></div><pre>Note that voms.opensciencegrid.org moved today from FNAL to IU.  If a CE doesn&#39;t have the latest version of the VO package (72) they may
+find that the voms proxy for the OSG VO is malformed.  that might be causing what Marty is describing below.
+
+Steve Timm
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490811971'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T18:26:11+00:00">Mar 29, 2017 06:26 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490811971">&nbsp;</a></div><pre>Marty,
+
+That&#39;s unrelated and is generally a site-specific problem&#58; that&#39;s the
+message you&#39;ll see when the blahp fails to submit the job to the backend
+(actual reason should be in one of the site GridmanagerLogs). Since
+Fermi/Wisconsin are using HTCondor backends, the blahp isn&#39;t involved so
+it shouldn&#39;t be the case here.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='33110#1490810157'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T17:55:57+00:00">Mar 29, 2017 05:55 PM UTC</time><a class="anchor" name="1490810157">&nbsp;</a></div><pre>Brian,
+
+I don&#39;t know if this is related or not. I guess it could be. We&#39;re having submission problems at new Vanderbilt HTCondor-CEs at the moment. All glideins going held with hold reason [1]. In CGAHPWorkerLog I find [2].
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+3893013.0   fecmsglobal     3/29 15&#58;55 Attempts to submit failed&#58;
+
+[2]
+
+03/29/17 17&#58;36&#58;13 [255623] ReliSock&#58;&#58;put_x509_delegation()&#58; delegation failed&#58; x509_send_delegation failed at line 1410
+03/29/17 17&#58;36&#58;13 [255623] DCSchedd&#58;&#58;delegateGSIcredential failed to send proxy file /var/lib/gwms-factory/client-proxies/user_feucsditb/glidein_gfactory_instance/cred
+ential_test-frontend-1-t2-ucsd-edu_OSG_gWMSFrontend.cms_91999
+03/29/17 17&#58;36&#58;13 [255623] Error refreshing proxy to schedd ce4.accre.vanderbilt.edu&#58; DCSchedd&#58;&#58;delegateGSIcredential&#58;6003&#58;Failed to send proxy file
+03/29/17 17&#58;36&#58;19 [250179] ReliSock&#58;&#58;put_x509_delegation()&#58; delegation failed&#58; x509_send_delegation failed at line 1410
+03/29/17 17&#58;36&#58;19 [250179] DCSchedd&#58;&#58;delegateGSIcredential failed to send proxy file /var/lib/gwms-factory/client-proxies/user_feucsditb/glidein_gfactory_instance/cred
+ential_test-frontend-1-t2-ucsd-edu_OSG_gWMSFrontend.cms_91999
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='33110#1490806438'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T16:53:58+00:00">Mar 29, 2017 04:53 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1490806438">&nbsp;</a></div><pre>I will get a new example later this afternoon.  Standby.
+-- by timm at Wed Mar 29 16&#58;53&#58;00 UTC 2017
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000835013' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000835013</a></pre></div><div class='update_description'><i onclick="document.location='33110#1490806256'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T16:50:56+00:00">Mar 29, 2017 04:50 PM UTC</time><a class="anchor" name="1490806256">&nbsp;</a></div><pre>Brian,
+
+Unfortunately, like most logs on the factory, the CGAHPWorkerLog only spans last 2 days or so due to log rotation. So the log with 4064531.3 is long gone. We&#39;ll need a new, more recent example job to dig up.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='33110#1490805143'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T16:32:23+00:00">Mar 29, 2017 04:32 PM UTC</time><a class="anchor" name="1490805143">&nbsp;</a></div><pre>Due to a lull in CMS submissions, I can&#39;t say for sure if restarting the job router every day has solved the problem.  There have been no new occurrences of the problem on any of our CEs, including the ones where we do not restart the job router.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley</pre></div><div class='update_description'><i onclick="document.location='33110#1490802514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-29T15:48:34+00:00">Mar 29, 2017 03:48 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490802514">&nbsp;</a></div><pre>Dan, has restarting the job router once a day alleviated your issue?
+
+Marty, do you have any CGAHPWorker logs for 4064531.3 from the GOC factory?
+
+Steve (or Dan), could we get a new job ID + related logs that exhibit this problem. You mentioned that there were jobs whose proxy was renewed hours before yet it was put on hold due to the expired proxy. I&#39;d like to see the proxy renewal in the logs, the output of &#96;voms-proxy-info -all&#96; for the proxy, and the x509UserProxyExpiration.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='33110#1490625850'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-27T14:44:10+00:00">Mar 27, 2017 02:44 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490625850">&nbsp;</a></div><pre>Thanks for the update, Dan. I&#39;ll speak with the condor team and forward
+any questions they have onto you and Steve.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='33110#1490624726'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-27T14:25:26+00:00">Mar 27, 2017 02:25 PM UTC</time><a class="anchor" name="1490624726">&nbsp;</a></div><pre>On the CE that was updated to condor 8.6.1, a batch of jobs were affected by the same problem after a couple days of running.  We upgraded on 2017-03-23 at 5pm.  The first jobs to be affected were on 2017-03-26 at 10am.
+
+I will next try restarting condor_job_router once per day.  That should limit the staleness of information.
+
+--Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley</pre></div><div class='update_description'><i onclick="document.location='33110#1490384860'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T19:47:40+00:00">Mar 24, 2017 07:47 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490384860">&nbsp;</a></div><pre>Dan, I completely misread the date on the proxy, you&#39;re correct. I&#39;d also be interested to see if the version update fixes the problem, or a job with an unexpired proxy that was put on a hold by the SYSTEM_PERIODIC_HOLD expression due to expired proxy, e.g. a held job whose x509UserProxyExpiration is unexpired and there haven&#39;t been any proxy renewals after &#34;EnteredCurrentStatus&#34;.</pre></div><div class='update_description'><i onclick="document.location='33110#1490369222'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T15:27:02+00:00">Mar 24, 2017 03:27 PM UTC</time><a class="anchor" name="1490369222">&nbsp;</a></div><pre>Brian said, &#34;Looking at Dan&#39;s job ad from below, it looks like his x509UserProxyExpiration attribute was expired before his proxy was actually renewed in the logs.&#34;
+
+The way I read it, the x509UserProxyExpiration attribute was well in the future in both copies of the job that I recorded (one from condor_history and one from condor_ce_q).
+
+condor job&#58;
+x509UserProxyExpiration = 1490252408 (Thu Mar 23 02&#58;00&#58;08 CDT 2017)
+
+condor CE job&#58;
+x509UserProxyExpiration = 1490281208 (Thu Mar 23 10&#58;00&#58;08 CDT 2017)
+
+Logs&#58;
+03/20/17 10&#58;01&#58;01 (3483864.0) (2896658)&#58; Requesting fast removal of job.
+03/20/17 10&#58;12&#58;56 Received proxy for job 1991175.0
+
+--Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley</pre></div><div class='update_description'><i onclick="document.location='33110#1490368456'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T15:14:16+00:00">Mar 24, 2017 03:14 PM UTC</time><a class="anchor" name="1490368456">&nbsp;</a></div><pre>The schedd only handles evaluation of periodic expressions when something else (e.g. shadow, JobRouter, GridManager) is not responsible.  For routed jobs, the JobRouter handles evaluation of periodic expressions.  There doesn&#39;t appear to be much logging in the JobRouter associated with that.  At D_FULLDEBUG, it will announce when it puts a job on hold.
+
+So far, no jobs have been affected by the problem on the CE that we updated to Condor 8.6.1, whereas the other CEs are still having the problem as usual.  If the problem is due to stale info, it might take a couple days to start happening in the upgraded CE.
+
+--Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley</pre></div><div class='update_description'><i onclick="document.location='33110#1490366650'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T14:44:10+00:00">Mar 24, 2017 02:44 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490366650">&nbsp;</a></div><pre>Steve,
+
+Yea, this is starting to sound more and more like the ticket I linked
+but you may have also tripped on another place where the proxy
+expiration date that condor stores doesn&#39;t necessarily reflect reality.
+
+And according to the manual, SYSTEM_PERIODIC_HOLD is evaluated by the
+schedd.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='33110#1490364966'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T14:16:06+00:00">Mar 24, 2017 02:16 PM UTC</time><a class="anchor" name="1490364966">&nbsp;</a></div><pre>PS--in the condor-ce what is it exactly that executes the system_periodic_hold?  there&#39;s no record of it in any log I can find.  Is it a schedd thing or is it a jobrouter thing?
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490364920'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T14:15:20+00:00">Mar 24, 2017 02:15 PM UTC</time><a class="anchor" name="1490364920">&nbsp;</a></div><pre>On closer examination I have seen some jobs held where x509userproxyexpiration was actually expired according to the condor-ce classad, these come mostly from the osg VO.  But even in those cases there is a clear trail in AuditLog that the proxy in question had in fact been updated with a proxy within the last couple of hours successfully.  The much more common case is that the x509userproxyexpiration classad attribute appears to be fine, these come mostly from the fermilab frontend.  Both of these behaviors could be a sign of an intermittent problem, that x509userproxyexpiration fluctuates to an expired value just for a minute or so and gets nailed.  Still very interested to find out if the condor upgrade works for Dan.
+
+Steve Timm
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490364512'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T14:08:32+00:00">Mar 24, 2017 02:08 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490364512">&nbsp;</a></div><pre>Looking at Dan&#39;s job ad from below, it looks like his x509UserProxyExpiration attribute was expired before his proxy was actually renewed in the logs. Maybe I misread your comments but it sounded like your x509UserProxyExpiration indicated that the proxy was still valid when your jobs got held by the SYSTEM_PERIODIC_HOLD.</pre></div><div class='update_description'><i onclick="document.location='33110#1490364431'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T14:07:11+00:00">Mar 24, 2017 02:07 PM UTC</time><a class="anchor" name="1490364431">&nbsp;</a></div><pre>Dan, what is the story so far--did the condor upgrade stop the system_periodic_hold for x509userproxyexpiration?
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490318459'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-24T01:20:59+00:00">Mar 24, 2017 01:20 AM UTC</time><a class="anchor" name="1490318459">&nbsp;</a></div><pre>Would be interested to see how dan&#39;s problem is different than ours.  As far as I can tell the symptoms he is describing are identical to our case.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='33110#1490308091'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T22:28:11+00:00">Mar 23, 2017 10:28 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490308091">&nbsp;</a></div><pre>Steve, it sounds like your problem may be slightly different than Dan&#39;s. I believe Dan&#39;s has a chance of being fixed by the upgrade but yours...not so much. I&#39;ve spoken to the condor team about this issue and there are a few places where x509userproxyexpiration doesn&#39;t necessarily reflect reality. I&#39;ll speak to them about the details of your issue tomorrow.</pre></div><div class='update_description'><i onclick="document.location='33110#1490307710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T22:21:50+00:00">Mar 23, 2017 10:21 PM UTC</time><a class="anchor" name="1490307710">&nbsp;</a></div><pre>I meant to say that we&#39;ve upgraded to 8.6.1, not 6.8.1!
+--Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley</pre></div><div class='update_description'><i onclick="document.location='33110#1490307483'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T22:18:03+00:00">Mar 23, 2017 10:18 PM UTC</time><a class="anchor" name="1490307483">&nbsp;</a></div><pre>We&#39;ve upgraded a CE to condor 6.8.1 in Wisconsin.  We&#39;ll see if this upgrade makes any difference to this problem.
+
+--Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley</pre></div><div class='update_description'><i onclick="document.location='33110#1490305906'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T21:51:46+00:00">Mar 23, 2017 09:51 PM UTC</time><a class="anchor" name="1490305906">&nbsp;</a></div><pre>This is the pattern we have seen on many glideins.. we also have many glideins that old on cmsgwms-factory.
+Cycle is&#58;
+glidein submitted to htcondor-ce
+gets routed to batch system
+htcondor-ce system_periodic_hold kicks in, holding the glidein (and condor_rm&#39;ing it from the batch queue)
+The factory notices it is held at remote end, does a condor_release4
+proxy is refreshed, the same glidein queues, waits for a couple days, and then runs for almost four again.
+There are a number of glideins in our condor_ce_q that have been there almost a month, with 4 runs thus far.
+
+Any chance that something in htcondor-ce is caching a x509userproxy file handle somewhere?
+The job getting held just 5 minutes after a successful refresh of the proxy makes me wonder.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490305498'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T21:44:58+00:00">Mar 23, 2017 09:44 PM UTC</time><a class="anchor" name="1490305498">&nbsp;</a></div><pre>Hi Steven,
+
+First, I suspect the authentication errors in your HTCondor-CEs audit and schedd logs are unrelated to the the proxy problem being discussed here. For example, we also see related authentication errors at the factories holding some HCC glideins [1]. This is happening to HCC glideins elsewhere [2] as well. So I would be these authentication errors are due to a problem with the HCC VO frontend, not FNAL.
+
+Second, and more important, here is the condor activity log [3] from the GOC factory for the glidein you cited. This definitely looks strange that its survived this long, running multiple times.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+2017-03-23 21&#58;06&#58;08 UTC [gfactory@glidein&#58;/etc/osg-gfactory]$ entry_q FNAL_GPGrid_ce01_mcore_op -held
+-- Schedd&#58; schedd_glideins7@.... &#58; &#60;129.79.53.27&#58;44835?...
+ID         OWNER          HELD_SINCE  HOLD_REASON
+4209198.0   fehcc           3/23 20&#58;25 Error connecting to schedd gpce01.fnal.gov&#58; SECMAN&#58;2010&#58;Received &#34;DENIED&#34; from server for user glidein.unl.edu@.... using method GSI.|AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+131072
+
+[2]
+
+017-03-23 21&#58;12&#58;36 UTC [gfactory@glidein&#58;/etc/osg-gfactory]$ entry_q CMSHTPC_T2_US_UCSD_gw2 -held
+-- Schedd&#58; schedd_glideins6@.... &#58; &#60;129.79.53.27&#58;30766?...
+ID         OWNER          HELD_SINCE  HOLD_REASON
+4220294.0   fehcc           3/23 20&#58;36 Error connecting to schedd osg-gw-2.t2.ucsd.edu&#58; SECMAN&#58;2010&#58;Received &#34;DENIED&#34; from server for user glidein.unl.edu@.... using method GSI.|AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+
+[3]
+
+2017-03-23 21&#58;33&#58;49 UTC [gfactory@glidein&#58;/var/log/gwms-factory/client/user_fefermifife/glidein_gfactory_instance/entry_FNAL_GPGrid_ce01_mcore]$ grep -H 4064531.003 *
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;000 (4064531.003.000) 02/27 12&#58;08&#58;24 Job submitted from host&#58; &#60;129.79.53.27&#58;39247?addrs=129.79.53.27-39247&#62;
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;027 (4064531.003.000) 02/27 12&#58;08&#58;38 Job submitted to grid resource
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;001 (4064531.003.000) 02/27 16&#58;24&#58;25 Job executing on host&#58; condor gpce01.fnal.gov gpce01.fnal.gov&#58;9619
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;004 (4064531.003.000) 02/27 23&#58;10&#58;37 Job was evicted.
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;001 (4064531.003.000) 03/05 14&#58;44&#58;39 Job executing on host&#58; condor gpce01.fnal.gov gpce01.fnal.gov&#58;9619
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;012 (4064531.003.000) 03/07 20&#58;37&#58;10 Job was held.
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;013 (4064531.003.000) 03/07 20&#58;44&#58;34 Job was released.
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;001 (4064531.003.000) 03/11 10&#58;25&#58;41 Job executing on host&#58; condor gpce01.fnal.gov gpce01.fnal.gov&#58;9619
+<div id='show_202208035' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_202208035'>condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;004 (4064531.003.000) 03/11 18&#58;37&#58;57 Job was evicted.
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;001 (4064531.003.000) 03/12 17&#58;47&#58;20 Job executing on host&#58; condor gpce01.fnal.gov gpce01.fnal.gov&#58;9619
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;012 (4064531.003.000) 03/15 20&#58;32&#58;28 Job was held.
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;013 (4064531.003.000) 03/15 20&#58;42&#58;42 Job was released.
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;001 (4064531.003.000) 03/20 10&#58;14&#58;43 Job executing on host&#58; condor gpce01.fnal.gov gpce01.fnal.gov&#58;9619
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;012 (4064531.003.000) 03/23 19&#58;35&#58;30 Job was held.
+condor_activity_20170227_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID.log&#58;013 (4064531.003.000) 03/23 19&#58;51&#58;53 Job was released.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049
+</div><script type='text/javascript'>
+        $('#show_202208035').click(function() {
+            $('#detail_202208035').slideDown("normal");
+            $('#show_202208035').hide();
+            $('#hide_202208035').show();
+        });
+        $('#hide_202208035').click(function() {
+            $('#detail_202208035').slideUp();
+            $('#hide_202208035').hide();
+            $('#show_202208035').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490298526'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T19:48:46+00:00">Mar 23, 2017 07:48 PM UTC</time><a class="anchor" name="1490298526">&nbsp;</a></div><pre>This job came from GOC factory, cluster 4064531.3
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490298330'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T19:45:30+00:00">Mar 23, 2017 07:45 PM UTC</time><a class="anchor" name="1490298330">&nbsp;</a></div><pre>I am seeing some of the following errors in the AuditLog and SchedLog of our condor-ce schedd.. these from /var/log/condor-ce/SchedLog
+03/23/17 14&#58;34&#58;55 Command=QMGMT_WRITE_CMD, peer=&#60;129.79.53.27&#58;10753&#62;
+03/23/17 14&#58;34&#58;55 AuthMethod=GSI, AuthId=/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot/glidein2.chtc.wisc.edu, CondorId=glow@....
+03/23/17 14&#58;34&#58;55 Number of Active Workers 0
+03/23/17 14&#58;34&#58;57 Command=QMGMT_WRITE_CMD, peer=&#60;129.79.53.24&#58;16607&#62;
+03/23/17 14&#58;34&#58;57 AuthMethod=GSI, AuthId=/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot/glidein2.chtc.wisc.edu, CondorId=glow@....
+03/23/17 14&#58;34&#58;57 Number of Active Workers 0
+03/23/17 14&#58;34&#58;57 Command=QMGMT_WRITE_CMD, peer=&#60;169.228.38.36&#58;22324&#62;
+03/23/17 14&#58;34&#58;57 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/glidein-1.sbgrid.org, CondorId=sbgrid@....
+03/23/17 14&#58;34&#58;58 Number of Active Workers 0
+03/23/17 14&#58;34&#58;58 Command=QMGMT_WRITE_CMD, peer=&#60;129.79.53.27&#58;11706&#62;
+03/23/17 14&#58;34&#58;58 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/glidein-1.sbgrid.org, CondorId=sbgrid@....
+03/23/17 14&#58;34&#58;58 Number of Active Workers 1
+03/23/17 14&#58;35&#58;09 Command=ACT_ON_JOBS, peer=&#60;169.228.38.36&#58;1928&#62;
+03/23/17 14&#58;35&#58;09 Authentication Failed, MethodsTried=FS,GSI
+03/23/17 14&#58;35&#58;09 DC_AUTHENTICATE&#58; authentication of &#60;169.228.38.36&#58;1928&#62; did not result in a valid mapped user name, which is required for this command (478 ACT_ON_JOBS), so aborting.
+03/23/17 14&#58;35&#58;09 DC_AUTHENTICATE&#58; reason for authentication failure&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5002&#58;Failed to authenticate because the remote (client) side was not able to acquire its credentials.|AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS|FS&#58;1004&#58;Unable to lstat(/tmp/FS_XXXRkKrPk)
+03/23/17 14&#58;35&#58;09 Command=QMGMT_WRITE_CMD, peer=&#60;169.228.38.36&#58;28472&#62;
+03/23/17 14&#58;35&#58;09 Authentication Failed, MethodsTried=FS,GSI
+03/23/17 14&#58;35&#58;09 DC_AUTHENTICATE&#58; authentication of &#60;169.228.38.36&#58;28472&#62; did not result in a valid mapped user name, which is required for this command (1112 QMGMT_WRITE_CMD), so aborting.
+03/23/17 14&#58;35&#58;09 DC_AUTHENTICATE&#58; reason for authentication failure&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5002&#58;Failed to authenticate because the remote (client) side was not able to acquire its credentials.|AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS|FS&#58;1004&#58;Unable to lstat(/tmp/FS_XXXpjdsYe)
+
+Just around this time, one glidein got held on gpce01.
+I verified that even while it was held, that the x509userproxyexpiration was NOT expired and neither was the cached proxy in the spool.
+Also the credential had just been updated 5 minutes before this, successfully.
+[root@gpce01 condor-ce]# voms-proxy-info -all -file /storage/local/data1/condor-ce/spool/790/0/cluster840790.proc0.subproc0/credential_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID_124570
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=171567525/CN=277371275
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=171567525
+identity  &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov/CN=171567525
+type      &#58; RFC compliant proxy
+strength  &#58; 1024 bits
+path      &#58; /storage/local/data1/condor-ce/spool/790/0/cluster840790.proc0.subproc0/credential_fifebatchgpvmhead2_OSG_gWMSFrontend.GPGRID_124570
+timeleft  &#58; 191&#58;45&#58;53
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO fermilab extension information ===
+<div id='show_523589645' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_523589645'>VO        &#58; fermilab
+subject   &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=frontend/fifebatch.fnal.gov
+issuer    &#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms1.fnal.gov
+attribute &#58; /fermilab/Role=pilot/Capability=NULL
+attribute &#58; /fermilab/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/accelerator/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/annie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/argoneut/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/captmnv/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdf/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/cdms/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/chips/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/coupp/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/darkside/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/des/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/dune/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/genie/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/grid/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/icarus/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lar1nd/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/lariat/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/accel/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/gm2/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/lbne/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mars/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minerva/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/miniboone/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/minos/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/mu2e/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/noble/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/nova/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/numix/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/patriot/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/seaquest/Role=NULL/Capability=NULL
+attribute &#58; /fermilab/uboone/Role=NULL/Capability=NULL
+timeleft  &#58; 119&#58;41&#58;45
+uri       &#58; voms1.fnal.gov&#58;15001
+
+This holding of jobs seems more likely to happen approximately 5 minutes after the fermilab fife frontend has updated its credential and then we see it come in for each of the 2000-some jobs in the queue.  That has been true both at 08&#58;34 and at 14&#58;35 today.
+
+And that /DC=com/DC=DigiCert-Grid cert above can&#39;t have much more life left in it--it might not be an issue but why take chances?
+I have captured the full classad of the held job for reference.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm
+</div><script type='text/javascript'>
+        $('#show_523589645').click(function() {
+            $('#detail_523589645').slideDown("normal");
+            $('#show_523589645').hide();
+            $('#hide_523589645').show();
+        });
+        $('#hide_523589645').click(function() {
+            $('#detail_523589645').slideUp();
+            $('#hide_523589645').hide();
+            $('#show_523589645').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490278813'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T14:20:13+00:00">Mar 23, 2017 02:20 PM UTC</time><a class="anchor" name="1490278813">&nbsp;</a></div><pre>Also--these SYSTEM_PERIODIC_HOLDS tend to occur in batches, several get killed at a time, then not so many for a number of hours.  Early morning Fermilab time appears to be the most likely time.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490278651'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T14:17:31+00:00">Mar 23, 2017 02:17 PM UTC</time><a class="anchor" name="1490278651">&nbsp;</a></div><pre>This is Fermilab&#39;s 2 cents worth&#58;
+1) We see jobs coming into cmsosgce* and gpce* htcondor-ce&#39;s from all three factories and the same problem happens with all of them.
+2) I  have repeatedly checked the x509userproxyexpiration attribute as shown in the classads by condor_ce_q and the actual expiration
+time of the proxies as stored in the SPOOL area of the condor-ce and I have not once seen an expired proxy in any of those
+In particular both the lifetime of the proxy and the aclifetime of the voms attribute are both good for days.  It
+seems that the SYSTEM_PERIODIC_HOLD function of the condor-ce is holding these jobs in error.
+3) On the jobs that are getting held there is a clear record in the AuditLog that the proxies are getting forwarded every 6 hours which is the
+time interval that the frontend refreshes them.
+4) On all condor-ce&#39;s at Fermilab we are running htcondor 8.4.4
+5) With regards to Brian Lin&#39;s comment of whether this is linked to the condor ticket below--what we see is that the x509userproxyexpiration
+in the *factory* schedd queue does not get updated, but the one in the htcondor-ce queue and the one in the routed condor queue do.
+And it is the one in the htcondor-ce queue that should govern the SYSTEM_PERIODIC_HOLD.
+
+[root@gpce01 condor-ce]# condor_ce_config_val SYSTEM_PERIODIC_HOLD
+(x509userproxysubject =?= UNDEFINED) || (x509UserProxyExpiration =?= UNDEFINED) || (time() &#62; x509UserProxyExpiration) || (RoutedBy is null && JobUniverse =!= 1 && JobUniverse =!= 5 && JobUniverse =!= 7 && JobUniverse =!= 12) || ((JobStatus =?= 1 && time() - EnteredCurrentStatus &#62; 1800) && RoutedToJobId is null && RoutedJob =!= true)
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490277525'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T13:58:45+00:00">Mar 23, 2017 01:58 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1490277525">&nbsp;</a></div><pre>Hey all, I&#39;ll have time to look into this more closely later but my first thoughts are that it&#39;s related to this condor ticket&#58; <a href='https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=5985' target='_blank' rel='nofollow'>https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=5985</a>,86. Perhaps an update to 8.6.1 (available in osg-upcoming) is in order?</pre></div><div class='update_description'><i onclick="document.location='33110#1490231548'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-23T01:12:28+00:00">Mar 23, 2017 01:12 AM UTC</time><a class="anchor" name="1490231548">&nbsp;</a></div><pre>Fact Ops,
+
+Can you confirm you see this from all three factories? I want to discard this is coming from a glideinwms or Condor software problem.
+
+Thanks,
+
+Edgar
+OSG Software Support
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='33110#1490193998'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-22T14:46:38+00:00">Mar 22, 2017 02:46 PM UTC</time><a class="anchor" name="1490193998">&nbsp;</a></div><pre>The problem is happening on all of our CMS CEs, for example cmsgrid01.hep.wisc.edu.
+
+Here are package versions&#58;
+
+[dan@....&#58;~]$ rpm -qa | grep condor
+condor-8.4.8-1.osg33.el6.x86_64
+osg-configure-condor-1.4.1-1.osg33.el6.noarch
+htcondor-ce-2.0.7-1.osg33.el6.noarch
+osg-base-ce-condor-3.3-7.osg33.el6.x86_64
+condor-classads-8.4.8-1.osg33.el6.x86_64
+globus-gram-job-manager-condor-2.5-1.1.osg33.el6.noarch
+htcondor-ce-client-2.0.7-1.osg33.el6.noarch
+osg-htcondor-ce-3.3-7.osg33.el6.x86_64
+condor-python-8.4.8-1.osg33.el6.x86_64
+gratia-probe-condor-1.16.0-1.osg33.el6.noarch
+osg-ce-condor-3.3-7.osg33.el6.x86_64
+condor-procd-8.4.8-1.osg33.el6.x86_64
+htcondor-ce-condor-2.0.7-1.osg33.el6.noarch
+osg-htcondor-ce-condor-3.3-7.osg33.el6.x86_64
+
+Here is condor_history for one of the jobs that was killed.  At the time when this history was captured, the routed job had been killed and removed, and the corresponding job in the condor-ce queue had returned to an idle state after being released from hold by condor-g at the glidein factory.
+
+orig_OnExitHoldReason = undefined
+AccountingGroupOSG = ifThenElse(regexp(&#34;cms&#92;/uscms&#92;/Role=pilot&#34;,x509UserProxySubject),strcat(&#34;group_uscmspilot&#34;,&#34;.&#34;,Owner),ifThenElse(x509UserProxyFirstFQAN =!= undefined && regexp(&#34;cms&#92;/uscms&#92;/Role=pilot&#34;,x509UserProxyFirstFQAN),strcat(&#34;group_uscmspilot&#34;,&#34;.&#34;,Owner),ifThenElse(regexp(&#34;cms&#92;/Role=production&#34;,x509UserProxySubject),strcat(&#34;group_cmsprod&#34;,&#34;.&#34;,Owner),ifThenElse(x509UserProxyFirstFQAN =!= undefined && regexp(&#34;cms&#92;/Role=production&#34;,x509UserProxyFirstFQAN),strcat(&#34;group_cmsprod&#34;,&#34;.&#34;,Owner),ifThenElse(regexp(&#34;cms&#92;/Role=t1production&#34;,x509UserProxySubject),strcat(&#34;group_cmsprod&#34;,&#34;.&#34;,Owner),ifThenElse(x509UserProxyFirstFQAN =!= undefined && regexp(&#34;cms&#92;/Role=t1production&#34;,x509UserProxyFirstFQAN),strcat(&#34;group_cmsprod&#34;,&#34;.&#34;,Owner),ifThenElse(regexp(&#34;cms&#92;/Role=pilot&#34;,x509UserProxySubject),strcat(&#34;group_cmspilot&#34;,&#34;.&#34;,Owner),ifThenElse(x509UserProxyFirstFQAN =!= undefined && regexp(&#34;cms&#92;/Role=pilot&#34;,x509UserProxyFirstFQAN),strcat(&#34;group_cmspilot&#34;,&#34;.&#34;,Owner),Owner))))))))
+OnExitHoldSubCode = 42
+MaxHosts = 1
+GlideinSlotsLayout = &#34;fixed&#34;
+MemoryUsage = ( ( ResidentSetSize + 1023 ) / 1024 )
+GlideinFactory = &#34;SDSC&#34;
+GlideinCredentialIdentifier = &#34;411868&#34;
+Managed = &#34;Schedd&#34;
+AccountingGroup = &#34;group_cmspilot.osg_cmsuser504&#34;
+User = &#34;osg_cmsuser504@....&#34;
+JobFinishedHookDone = 1490022063
+remote_SMPGranularity = 8
+<div id='show_1048327283' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1048327283'>EncryptExecuteDirectory = false
+OnExitHold = false
+MachineAttrCpus0 = 8
+LastHoldReason = &#34;CE job in status 2 put on hold by SYSTEM_PERIODIC_HOLD due to expired user proxy.&#34;
+WantRemoteSyscalls = false
+MyType = &#34;Job&#34;
+Rank = 0.0
+CumulativeSuspensionTime = 0
+CondorCECollectorHost = ifThenElse(regexp(&#34;&#58;&#34;,&#34;cmsgrid01.hep.wisc.edu&#58;9619&#34;),&#34;cmsgrid01.hep.wisc.edu&#58;9619&#34;,strcat(&#34;cmsgrid01.hep.wisc.edu&#58;9619&#34;,&#34;&#58;&#34;,9619))
+orig_OnExitHold = undefined
+MinHosts = 1
+ReleaseReason = &#34;by gridmanager (by user osg_cmsuser504)&#34;
+xcount = 8
+orig_OnExitHoldSubCode = undefined
+Err = &#34;_condor_stderr&#34;
+ProcId = 0
+EnteredCurrentStatus = 1490022063
+remote_NodeNumber = 8
+Remote_JobUniverse = 5
+NumJobStarts = 1
+RoutedJob = true
+AutoClusterAttrs = &#34;JobUniverse,LastCheckpointPlatform,NumCkpts,IsExpressQueueJob,AccountingGroup,DiskUsage,HEP_VO,IsDesktop,OSG_VO,User,x509UserProxyVOName,MachineLastMatchTime,PassedTest,_condor_RequestCpus,_condor_RequestDisk,_condor_RequestMemory,MemoryRequirements,RequestCpus,RequestDisk,RequestMemory,Group,IsLocalCMSJob,IsLocalCMSSlot,IsSAMJob,MaxDiskTempC,IsSAMSlot,IsDedicated,JobStart,ConcurrencyLimits,NiceUser,Rank,Requirements,WantGlidein,_condor_RequestIoHeavy,RequestIoHeavy,Scheduler,Is_Resumable,WantFlocking,PartitionableSlot,_condor_RequestGPUs,RequestGPUs,DynamicSlot,is_icecube_job,IsResumable,WHEN_TO_TRANSFER_OUTPUT,IsCHTCSubmit,Owner,ClientMachine,IsBuildJob,IsMatlabBuildJob,Dockerimage,defined,ROOT_PART_GT_85_PERCENT,RemoteOwner,TmpIsFull,=?=,true,CMD,OSG_Requirements&#34;
+JobUniverse = 5
+AutoClusterId = 23101
+RoutedBy = &#34;htcondor-ce&#34;
+In = &#34;/dev/null&#34;
+SUBMIT_TransferOutputRemaps = &#34;_condor_stdout=/var/log/gwms-factory/client/user_fecmsglobal/glidein_gfactory_instance/entry_CMSHTPC_T2_US_Wisconsin_cmsgrid01/job.5470074.1.out;_condor_stderr=/var/log/gwms-factory/client/user_fecmsglobal/glidein_gfactory_instance/entry_CMSHTPC_T2_US_Wisconsin_cmsgrid01/job.5470074.1.err&#34;
+Requirements = MY.OSG_Requirements && ( ( TARGET.Arch == &#34;X86_64&#34; && TARGET.IsDesktop =!= true && ( TARGET.OSGlibc_major == 2 && ( ( TARGET.OSGlibc_minor == 3 && TARGET.OSGlibc_micro &#62;= 4 ) || ( TARGET.OSGlibc_minor &#62; 3 ) ) ) && TARGET.OSG_major =!= undefined && TARGET.UWCMS_CVMFS_Exists && TARGET.CMS_CVMFS_Exists && ( TARGET.Memory &#62;= 1800 && RequestMemory &#60;= 2100 || TARGET.Memory &#62;= RequestMemory ) && TARGET.TotalSlotDisk &#62;= RequestDisk && ( MY.IsSAMJob =!= true || TARGET.IsSAMSlot ) && ( TARGET.Cpus &#62;= MY.RequestCpus ) && ( MY.RequestMemory / MY.RequestCpus &#60; 4000 || TARGET.Site == &#34;HEP&#34; ) && ( TARGET.HAS_CMS_HDFS || TARGET.Site =!= &#34;HEP&#34; ) && ( regexp(&#34;group_uscmspilot&#34;,MY.AccountingGroup) =!= true || TARGET.Site =?= &#34;HEP&#34; ) && ( TARGET.Machine != &#34;e399.chtc.wisc.edu&#34; && TARGET.Machine != &#34;e137.chtc.wisc.edu&#34; && TARGET.Machine != &#34;e055.chtc.wisc.edu&#34; ) ) && MY.SleepJob =!= true || ( MY.SleepJob =?= true && TARGET.Site =?= &#34;AAA&#34; && SlotID =!= 1 ) )
+ClusterId = 3483864
+WhenToTransferOutput = &#34;ON_EXIT&#34;
+LastMatchTime = 1489850096
+remote_queue = &#34;&#34;
+CompletionDate = 0
+x509UserProxyVOName = &#34;cms&#34;
+Environment = &#34;HOME=/osghome/osg_cmsuser504 CONDORCE_COLLECTOR_HOST=cmsgrid01.hep.wisc.edu&#58;9619 OSG_GRID=&#39;/etc/osg/wn-client/&#39; OSG_SQUID_LOCATION=&#39;frontier.hep.wisc.edu&#58;3128&#39; OSG_APP=&#39;/cvmfs/cms.hep.wisc.edu/osg/app&#39; OSG_HOSTNAME=&#39;cmsgrid01.hep.wisc.edu&#39; OSG_DATA=&#39;/afs/hep.wisc.edu/osg/data&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; GLOBUS_LOCATION=&#39;/usr&#39; OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;GLOW&#39; OSG_WN_TMP=&#39;/tmp&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin&#39; OSG_DEFAULT_SE=&#39;cmssrm.hep.wisc.edu&#39; &#34;
+StartdPrincipal = &#34;execute-side@matchsession/144.92.180.112&#34;
+TargetType = &#34;Machine&#34;
+LeaveJobInQueue = JobStatus == 4
+x509UserProxyExpiration = 1490252408
+RouteName = &#34;Local_Condor&#34;
+JobNotification = 0
+Owner = &#34;osg_cmsuser504&#34;
+CommittedTime = 0
+x509userproxy = &#34;credential_CMSG-v1_0.main_411868&#34;
+QDate = 1489792269
+JobLeaseDuration = 2400
+TransferIn = false
+ExitStatus = 0
+LastReleaseReason = &#34;Data files spooled&#34;
+maxMemory = 20000
+RootDir = &#34;/&#34;
+NumJobMatches = 2
+LastHoldReasonSubCode = 0
+JobCurrentStartDate = 1489850096
+GlideinWebBase = &#34;<a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/stage&#34' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/stage&#34</a>;
+CurrentHosts = 0
+GlobalJobId = &#34;cmsgrid01.hep.wisc.edu#3483864.0#1489792269&#34;
+RemoteSysCpu = 10161.0
+TotalSuspensions = 0
+x509UserProxyFirstFQAN = &#34;/cms/Role=pilot/Capability=NULL&#34;
+remote_cerequirements = &#34;CondorCE == 1&#34;
+OnExitHoldReason = &#34;Job held for unknown reason.&#34;
+WantCheckpoint = false
+LastJobLeaseRenewal = 1490022063
+LastRemoteHost = &#34;slot1@....&#34;
+LastRejMatchTime = 1489850083
+ManagedManager = &#34;&#34;
+x509userproxysubject = &#34;/DC=ch/DC=cern/OU=computers/CN=cmspilot02/vocms080.cern.ch&#34;
+GlideinLogNr = &#34;20170314&#34;
+LastPublicClaimId = &#34;&#60;144.92.180.112&#58;38515&#62;#1478013263#21585#...&#34;
+NumCkpts_RAW = 0
+orig_environment = &#34;&#34;
+OSG_VO = ifThenElse(&#34;cmsgrid01.hep.wisc.edu&#34; == &#34;osggrid01.hep.wisc.edu&#34;,x509userproxyvoname,&#34;uscms&#34;)
+Out = &#34;_condor_stdout&#34;
+ShouldTransferFiles = &#34;IF_NEEDED&#34;
+DiskUsage = 18000000
+GlideinWorkDir = &#34;Condor&#34;
+JobRunCount = 1
+CumulativeSlotTime = 1375736.0
+CommittedSlotTime = 0
+LocalUserCpu = 0.0
+JobStartDate = 1489705127
+ExitBySignal = false
+StreamErr = false
+NumRestarts = 0
+NumSystemHolds = 0
+RequestDisk = 18000000
+ResidentSetSize_RAW = 11249088
+OrigMaxHosts = 1
+JobPrio = 0
+NumCkpts = 0
+RoutedFromJobId = &#34;1991175.0&#34;
+ImageSize = 21000000
+DiskUsage_RAW = 17318297
+CommittedSuspensionTime = 0
+RemoveReason = &#34;JobRouter aborted job (by user condor)&#34;
+GlideinSecurityClass = &#34;cmspilot&#34;
+Cmd = &#34;glidein_startup.sh&#34;
+Iwd = &#34;/var/lib/condor-ce/spool/1175/0/cluster1991175.proc0.subproc0&#34;
+LastHoldReasonCode = 26
+LocalSysCpu = 0.0
+GlideinFrontendName = &#34;CMSG-v1_0&#58;cmspilot&#34;
+GridResource = &#34;condor cmsgrid01.hep.wisc.educondor.hep.wisc.edu&#58;9618,condor02.hep.wisc.edu&#58;9618&#34;
+TransferInputSizeMB = 0
+SubmitterId = &#34;schedd_glideins9@....&#34;
+ExecutableSize_RAW = 75
+LastSuspensionTime = 0
+LastRejMatchReason = &#34;no match found &#34;
+GlideinName = &#34;gfactory_instance&#34;
+BytesSent = 0.0
+TransferOutputRemaps = undefined
+osg_environment = &#34;OSG_GRID=&#39;/etc/osg/wn-client/&#39; OSG_SQUID_LOCATION=&#39;frontier.hep.wisc.edu&#58;3128&#39; OSG_APP=&#39;/cvmfs/cms.hep.wisc.edu/osg/app&#39; OSG_HOSTNAME=&#39;cmsgrid01.hep.wisc.edu&#39; OSG_DATA=&#39;/afs/hep.wisc.edu/osg/data&#39; OSG_GLEXEC_LOCATION=&#39;/usr/sbin/glexec&#39; GLOBUS_LOCATION=&#39;/usr&#39; OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;GLOW&#39; OSG_WN_TMP=&#39;/tmp&#39; PATH=&#39;/bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin&#39; OSG_DEFAULT_SE=&#39;cmssrm.hep.wisc.edu&#39;&#34;
+TransferOutput = &#34;&#34;
+OSG_Requirements = true
+GlideinProxyURL = &#34;OSG&#34;
+JobStatus = 3
+ExecutableSize = 75
+GlideinEntryName = &#34;CMSHTPC_T2_US_Wisconsin_cmsgrid01&#34;
+MachineAttrSlotWeight0 = 8
+ImageSize_RAW = 20402652
+LastVacateTime = 1490022063
+RemoteWallClockTime = 171967.0
+IsSAMJob = MY.Owner == &#34;osg_cmslcgadmin&#34; || My.CMD == &#34;nagrun.sh&#34;
+Arguments = &#34;-v std -name gfactory_instance -entry CMSHTPC_T2_US_Wisconsin_cmsgrid01 -clientname CMSG-v1_0.main -schedd schedd_glideins9@.... -proxy OSG -factory SDSC -web <a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/stage' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/stage</a> -sign a59a913a0b4329d73a57c503cfa29e71a448c680 -signentry 8a054ff523d38550ebd76d42d0d6ee367fdd8bfc -signtype sha1 -descript description.h3db2V.cfg -descriptentry description.h3db2V.cfg -dir Condor -param_GLIDEIN_Client CMSG-v1_0.main -submitcredid 411868 -slotslayout fixed -clientweb <a href='http&#58;//vocms080.cern.ch/vofrontend/stage' target='_blank' rel='nofollow'>http&#58;//vocms080.cern.ch/vofrontend/stage</a> -clientsign aae094cee6a737f6422a435bb971c38fee001283 -clientsigntype sha1 -clientdescript description.h3ehb8.cfg -clientgroup main -clientwebgroup <a href='http&#58;//vocms080.cern.ch/vofrontend/stage/group_main' target='_blank' rel='nofollow'>http&#58;//vocms080.cern.ch/vofrontend/stage/group_main</a> -clientsigngroup f438d4592b512ffe76b5403712d538dfb259ca45 -clientdescriptgroup description.h3ehb8.cfg -param_CONDOR_VERSION 8.dot,4.dot,11 -param_GLIDEIN_Glexec_Use OPTIONAL -param_GLIDEIN_Job_Max_Time 34800 -param_GLIDECLIENT_ReqNode gfactory.minus,1.dot,t2.dot,ucsd.dot,edu -param_GLIDEIN_CLAIM_WORKLIFE_DYNAMIC cpus.star,.open,6.star,3600.close, -param_GLIDEIN_Report_Failed NEVER -param_MIN_DISK_GBS 1 -param_GLIDEIN_CCB vocms0806.dot,cern.dot,ch.colon,9619.minus,9720.semicolon,cmssrv258.dot,fnal.dot,gov.colon,9619.minus,9720 -param_GLIDEIN_Max_Idle 1200 -param_GLIDEIN_Monitoring_Enabled False -param_CONDOR_ARCH default -param_UPDATE_COLLECTOR_WITH_TCP True -param_GLIDEIN_Max_Tail 1200 -param_USE_MATCH_AUTH True -param_CONDOR_OS default -param_GLIDEIN_Collector cmssrv221.dot,fnal.dot,gov.colon,9621.minus,9720.semicolon,vocms032.dot,cern.dot,ch.colon,9621.minus,9720 -cluster 5470074 -subcluster 1&#34;
+KillSig = &#34;SIGTERM&#34;
+SUBMIT_x509userproxy = &#34;/var/lib/gwms-factory/client-proxies/user_fecmsglobal/glidein_gfactory_instance/credential_CMSG-v1_0.main_411868&#34;
+ResidentSetSize = 12500000
+StreamOut = false
+CmdHash = &#34;CmdMD5-13046a5d063fc39b82821fa610810b2c&#34;
+BytesRecvd = 138444.0
+RequestMemory = 20000
+RemoteUserCpu = 1217759.0
+NiceUser = false
+NumShadowStarts = 1
+RequestCpus = 8
+JobLastStartDate = 1489705127
+SUBMIT_Cmd = &#34;/data/gwms-factory/lib/work-dir/glidein_startup.sh&#34;
+WantRemoteIO = true
+x509UserProxyFQAN = &#34;/DC=ch/DC=cern/OU=computers/CN=cmspilot02/vocms080.cern.ch,/cms/Role=pilot/Capability=NULL,/cms/Role=NULL/Capability=NULL,/cms/dcms/Role=NULL/Capability=NULL,/cms/escms/Role=NULL/Capability=NULL,/cms/itcms/Role=NULL/Capability=NULL,/cms/local/Role=NULL/Capability=NULL,/cms/uscms/Role=NULL/Capability=NULL&#34;
+LastJobStatus = 2
+GlideinClient = &#34;CMSG-v1_0.main&#34;
+JobCurrentStartExecutingDate = 1489850096
+
+Here is a dump of the classad of the corresponding job in the condor-ce queue&#58;
+
+MaxHosts = 1
+GlideinSlotsLayout = &#34;fixed&#34;
+MemoryUsage = ( ( ResidentSetSize + 1023 ) / 1024 )
+GlideinFactory = &#34;SDSC&#34;
+GlideinCredentialIdentifier = &#34;411868&#34;
+Managed = &#34;External&#34;
+User = &#34;osg_cmsuser504@....&#34;
+EncryptExecuteDirectory = false
+CoreSize = 0
+LastHoldReason = &#34;CE job in status 2 put on hold by SYSTEM_PERIODIC_HOLD due to expired user proxy.&#34;
+WallClockCheckpoint = 169256
+WantRemoteSyscalls = false
+MyType = &#34;Job&#34;
+Rank = 0.0
+CumulativeSuspensionTime = 0
+MinHosts = 1
+ReleaseReason = &#34;by gridmanager (by user osg_cmsuser504)&#34;
+xcount = 8
+PeriodicRemove = ( StageInFinish &#62; 0 ) =!= true && time() &#62; QDate + 28800
+Err = &#34;_condor_stderr&#34;
+ProcId = 0
+EnteredCurrentStatus = 1490022760
+NumJobStarts = 0
+JobUniverse = 5
+In = &#34;/dev/null&#34;
+SUBMIT_TransferOutputRemaps = &#34;_condor_stdout=/var/log/gwms-factory/client/user_fecmsglobal/glidein_gfactory_instance/entry_CMSHTPC_T2_US_Wisconsin_cmsgrid01/job.5470074.1.out;_condor_stderr=/var/log/gwms-factory/client/user_fecmsglobal/glidein_gfactory_instance/entry_CMSHTPC_T2_US_Wisconsin_cmsgrid01/job.5470074.1.err&#34;
+Requirements = true
+ClusterId = 1991175
+WhenToTransferOutput = &#34;ON_EXIT&#34;
+CompletionDate = 0
+x509UserProxyVOName = &#34;cms&#34;
+BufferSize = 524288
+Environment = &#34;&#34;
+TargetType = &#34;Machine&#34;
+LeaveJobInQueue = JobStatus == 4
+x509UserProxyExpiration = 1490281208
+JobNotification = 0
+Owner = &#34;osg_cmsuser504&#34;
+CommittedTime = 0
+x509userproxy = &#34;credential_CMSG-v1_0.main_411868&#34;
+QDate = 1489543924
+JobLeaseDuration = 2400
+TransferIn = false
+ExitStatus = 0
+LastReleaseReason = &#34;by gridmanager (by user osg_cmsuser504)&#34;
+maxMemory = 20000
+RootDir = &#34;/&#34;
+NumJobMatches = 2
+LastHoldReasonSubCode = 0
+JobCurrentStartDate = 1489850096
+GlideinWebBase = &#34;<a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/stage&#34' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/stage&#34</a>;
+CurrentHosts = 0
+GlobalJobId = &#34;cmsgrid01.hep.wisc.edu#1991175.0#1489543929&#34;
+RemoteSysCpu = 0.0
+TotalSuspensions = 0
+x509UserProxyFirstFQAN = &#34;/cms/Role=pilot/Capability=NULL&#34;
+WantCheckpoint = false
+RoutedToJobId = &#34;3485780.0&#34;
+ManagedManager = &#34;htcondor-ce&#34;
+x509userproxysubject = &#34;/DC=ch/DC=cern/OU=computers/CN=cmspilot02/vocms080.cern.ch&#34;
+GlideinLogNr = &#34;20170314&#34;
+NumCkpts_RAW = 0
+Out = &#34;_condor_stdout&#34;
+ShouldTransferFiles = &#34;IF_NEEDED&#34;
+DiskUsage = 20000000
+GlideinWorkDir = &#34;Condor&#34;
+JobRunCount = 1
+CumulativeSlotTime = 0
+CommittedSlotTime = 0
+LocalUserCpu = 0.0
+JobStartDate = 1489705127
+ExitBySignal = false
+StreamErr = false
+NumSystemHolds = 2
+NumRestarts = 0
+ResidentSetSize_RAW = 12500000
+RequestDisk = DiskUsage
+JobPrio = 0
+NumCkpts = 0
+BufferBlockSize = 32768
+StageInStart = 1489543941
+ImageSize = 25000000
+DiskUsage_RAW = 18000000
+CommittedSuspensionTime = 0
+GlideinSecurityClass = &#34;cmspilot&#34;
+Cmd = &#34;glidein_startup.sh&#34;
+LocalSysCpu = 0.0
+LastHoldReasonCode = 26
+Iwd = &#34;/var/lib/condor-ce/spool/1175/0/cluster1991175.proc0.subproc0&#34;
+GlideinFrontendName = &#34;CMSG-v1_0&#58;cmspilot&#34;
+TransferInputSizeMB = 0
+SubmitterId = &#34;schedd_glideins9@....&#34;
+ServerTime = 1490046021
+LastSuspensionTime = 0
+ExecutableSize_RAW = 75
+GlideinName = &#34;gfactory_instance&#34;
+BytesSent = 0.0
+TransferOutputRemaps = undefined
+TransferOutput = &#34;&#34;
+GlideinProxyURL = &#34;OSG&#34;
+JobStatus = 1
+ExecutableSize = 75
+ShadowBday = 1489850096
+GlideinEntryName = &#34;CMSHTPC_T2_US_Wisconsin_cmsgrid01&#34;
+RemoteWallClockTime = 0.0
+ImageSize_RAW = 23000000
+KillSig = &#34;SIGTERM&#34;
+Arguments = &#34;-v std -name gfactory_instance -entry CMSHTPC_T2_US_Wisconsin_cmsgrid01 -clientname CMSG-v1_0.main -schedd schedd_glideins9@.... -proxy OSG -factory SDSC -web <a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/stage' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/stage</a> -sign a59a913a0b4329d73a57c503cfa29e71a448c680 -signentry 8a054ff523d38550ebd76d42d0d6ee367fdd8bfc -signtype sha1 -descript description.h3db2V.cfg -descriptentry description.h3db2V.cfg -dir Condor -param_GLIDEIN_Client CMSG-v1_0.main -submitcredid 411868 -slotslayout fixed -clientweb <a href='http&#58;//vocms080.cern.ch/vofrontend/stage' target='_blank' rel='nofollow'>http&#58;//vocms080.cern.ch/vofrontend/stage</a> -clientsign aae094cee6a737f6422a435bb971c38fee001283 -clientsigntype sha1 -clientdescript description.h3ehb8.cfg -clientgroup main -clientwebgroup <a href='http&#58;//vocms080.cern.ch/vofrontend/stage/group_main' target='_blank' rel='nofollow'>http&#58;//vocms080.cern.ch/vofrontend/stage/group_main</a> -clientsigngroup f438d4592b512ffe76b5403712d538dfb259ca45 -clientdescriptgroup description.h3ehb8.cfg -param_CONDOR_VERSION 8.dot,4.dot,11 -param_GLIDEIN_Glexec_Use OPTIONAL -param_GLIDEIN_Job_Max_Time 34800 -param_GLIDECLIENT_ReqNode gfactory.minus,1.dot,t2.dot,ucsd.dot,edu -param_GLIDEIN_CLAIM_WORKLIFE_DYNAMIC cpus.star,.open,6.star,3600.close, -param_GLIDEIN_Report_Failed NEVER -param_MIN_DISK_GBS 1 -param_GLIDEIN_CCB vocms0806.dot,cern.dot,ch.colon,9619.minus,9720.semicolon,cmssrv258.dot,fnal.dot,gov.colon,9619.minus,9720 -param_GLIDEIN_Max_Idle 1200 -param_GLIDEIN_Monitoring_Enabled False -param_CONDOR_ARCH default -param_UPDATE_COLLECTOR_WITH_TCP True -param_GLIDEIN_Max_Tail 1200 -param_USE_MATCH_AUTH True -param_CONDOR_OS default -param_GLIDEIN_Collector cmssrv221.dot,fnal.dot,gov.colon,9621.minus,9720.semicolon,vocms032.dot,cern.dot,ch.colon,9621.minus,9720 -cluster 5470074 -subcluster 1&#34;
+SUBMIT_x509userproxy = &#34;/var/lib/gwms-factory/client-proxies/user_fecmsglobal/glidein_gfactory_instance/credential_CMSG-v1_0.main_411868&#34;
+StreamOut = false
+ResidentSetSize = 12500000
+CmdHash = &#34;CmdMD5-13046a5d063fc39b82821fa610810b2c&#34;
+RequestMemory = ifthenelse(MemoryUsage =!= undefined,MemoryUsage,( ImageSize + 1023 ) / 1024)
+BytesRecvd = 138444.0
+NiceUser = false
+RemoteUserCpu = 0.0
+RequestCpus = 1
+SUBMIT_Cmd = &#34;/data/gwms-factory/lib/work-dir/glidein_startup.sh&#34;
+SUBMIT_Iwd = &#34;/data/gwms-factory/lib/work-dir&#34;
+WantRemoteIO = true
+x509UserProxyFQAN = &#34;/DC=ch/DC=cern/OU=computers/CN=cmspilot02/vocms080.cern.ch,/cms/Role=pilot/Capability=NULL,/cms/Role=NULL/Capability=NULL,/cms/dcms/Role=NULL/Capability=NULL,/cms/escms/Role=NULL/Capability=NULL,/cms/itcms/Role=NULL/Capability=NULL,/cms/local/Role=NULL/Capability=NULL,/cms/uscms/Role=NULL/Capability=NULL&#34;
+StageInFinish = 1489543941
+GlideinClient = &#34;CMSG-v1_0.main&#34;
+LastJobStatus = 5
+
+The shadow log for this job&#58;
+
+ClusterId = 03/18/17 10&#58;14&#58;56 Initializing a VANILLA shadow for job 3483864.0
+03/18/17 10&#58;14&#58;56 (3483864.0) (2896658)&#58; Request to run on slot1@....
+&#60;144.92.180.112&#58;38515?addrs=144.92.180.112-38515&#62; was ACCEPTED
+03/18/17 10&#58;14&#58;56 (3483864.0) (2896658)&#58; File transfer completed successfully.
+03/20/17 10&#58;01&#58;01 (3483864.0) (2896658)&#58; Requesting fast removal of job.
+03/20/17 10&#58;01&#58;03 (3483864.0) (2896658)&#58; Job 3483864.0 is being evicted from slot1@....
+03/20/17 10&#58;01&#58;03 (3483864.0) (2896658)&#58; **** condor_shadow (condor_SHADOW) pid 2896658 EXITING WITH STATUS 102
+
+The condor-ce SchedLog for the job&#58;
+
+03/20/17 10&#58;12&#58;40 Release jobs
+1991218.0,1991219.0,1991206.0,1991180.0,1991181.0,1991207.0,1991183.0,1991055.0,1991145.0,1991085.0,1991146.0,1991175.0,1991177.0,1991187.0,1991188.0
+03/20/17 10&#58;12&#58;40 Finished Release jobs
+1991218.0,1991219.0,1991206.0,1991180.0,1991181.0,1991207.0,1991183.0,1991055.0,1991145.0,1991085.0,1991146.0,1991175.0,1991177.0,1991187.0,1991188.0
+03/20/17 10&#58;12&#58;56 Received proxy for job 1991175.0
+03/20/17 10&#58;12&#58;56 proxy path&#58;
+/var/lib/condor-ce/spool/1175/0/cluster1991175.proc0.subproc0/credential_CMSG-v1_0.main_411868
+03/20/17 10&#58;12&#58;56 Refresh GSI cred for job 1991175.0 suceeded
+03/20/17 10&#58;23&#58;07 Received proxy for job 1991175.0
+03/20/17 10&#58;23&#58;07 proxy path&#58;
+/var/lib/condor-ce/spool/1175/0/cluster1991175.proc0.subproc0/credential_CMSG-v1_0.main_411868
+03/20/17 10&#58;23&#58;07 Refresh GSI cred for job 1991175.0 suceeded
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley
+</div><script type='text/javascript'>
+        $('#show_1048327283').click(function() {
+            $('#detail_1048327283').slideDown("normal");
+            $('#show_1048327283').hide();
+            $('#hide_1048327283').show();
+        });
+        $('#hide_1048327283').click(function() {
+            $('#detail_1048327283').slideUp();
+            $('#hide_1048327283').hide();
+            $('#show_1048327283').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='33110#1490137369'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-21T23:02:49+00:00">Mar 21, 2017 11:02 PM UTC</time><a class="anchor" name="1490137369">&nbsp;</a></div><pre>Hi Dan,
+
+We need the versions of condor-ce and condor running in your CE. I assume there is something funky going on with the delegation.
+
+Brian,
+
+I am assigning this one to you. I
+
+Dan,
+
+Can you get a condor_ce_history in one of the pilots killed. Also which is the hostname of this CE, I think I can do some queries from the outside.
+
+Thanks,
+
+Edgar
+OSG Software Support
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='33110#1490122222'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-21T18:50:22+00:00">Mar 21, 2017 06:50 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1490122222">&nbsp;</a></div><pre>Added Software Triage for review.</pre></div><div class='update_description'><i onclick="document.location='33110#1490112116'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-21T16:01:56+00:00">Mar 21, 2017 04:01 PM UTC</time><a class="anchor" name="1490112116">&nbsp;</a></div><pre>For what it&#39;s worth--we see the same problem with CMS production pilots on the tier1 @ FNAL, and with non-CMS pilots at gpce01.fnal.gov/ gpce02.fnal.gov
+It is happening from all factories. Krista has been in contact with factory ops.
+However the factories appear to be refreshing the proxies correctly as the proxies on the condor-ce itself are up to date across the board.  May need to bring condor team and osg software team in to help investigate.
+
+by /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Steven Timm/CN=UID&#58;timm</pre></div><div class='update_description'><i onclick="document.location='33110#1490106800'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-21T14:33:20+00:00">Mar 21, 2017 02:33 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1490106800">&nbsp;</a></div><pre>About 10% of CMS glideins that run at T2_US_Wisconsin are getting killed by a Condor-CE policy that puts jobs on hold when their proxy expires.  As far as we know, this is not caused by anything specific to the site.  It has been happening for at least several months.
+
+The recently affected jobs were submitted with the following DN&#58;
+
+/DC=ch/DC=cern/OU=computers/CN=cmspilot02/vocms080.cern.ch
+
+The affected jobs contain the following attribute&#58;
+
+LastHoldReason == &#34;CE job in status 2 put on hold by SYSTEM_PERIODIC_HOLD due to expired user proxy.&#34;&#39;
+
+The configuration setting that is causing this is in the default condor-ce configuration&#58;
+
+/etc/condor-ce/config.d/01-ce-router.conf&#58;
+SYSTEM_PERIODIC_HOLD = (x509userproxysubject =?= UNDEFINED) || (x509UserProxyExpiration =?= UNDEFINED) || (time() &#62; x509UserProxyExpiration) |
+| (RoutedBy is null && JobUniverse =!= 1 && JobUniverse =!= 5 && JobUniverse =!= 7 && JobUniverse =!= 12) || ((JobStatus =?= 1 && CurrentTime
+- EnteredCurrentStatus &#62; 1800) && RoutedToJobId is null && RoutedJob =!= true)
+
+SYSTEM_PERIODIC_HOLD_REASON = &#92;
+strcat(&#34;CE job in status &#34;, JobStatus, &#92;
+&#34; put on hold by SYSTEM_PERIODIC_HOLD due to &#34;, &#92;
+ifThenElse(isUndefined(x509userproxysubject) || isUndefined(x509UserProxyExpiration),  &#34;missing user proxy.&#34;, &#92;
+ifThenElse(time() &#62; x509UserProxyExpiration, &#34;expired user proxy.&#34;, &#92;
+ifThenElse(RoutedBy is null && JobUniverse =!= 1 && JobUniverse =!= 5 && JobUniverse =!= 7 && JobUniverse =!= 12, &#92;
+&#34;invalid job universe.&#34;, &#92;
+&#34;non-existent route in JOB_ROUTER_ENTRIES or route job limit.&#34; &#92;
+) &#92;
+) &#92;
+) &#92;
+)
+
+What happens in the cases we have spot-checked is that the job goes on hold and then the proxy gets updated about 10 minutes later.  Perhaps proxy updates are not always being scheduled far enough in advance.  Or perhaps there is something broken about proxy updates and Condor-CE.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dbradley/CN=614788/CN=Daniel Charles Bradley</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F33110">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 33110});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

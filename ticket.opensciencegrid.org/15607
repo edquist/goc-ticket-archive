@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[15607] Problems with rsv and condor configuration</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=15607" method="post">
+<div class="page-header">
+    <h3><span class="muted">15607</span> / Problems with rsv and condor configuration</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Jorge L. Rodriguez</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Jorge L. Rodriguez</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting in Customer</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-09-17</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=15607", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/15607?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/15607?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Problems%20with%20rsv%20and%20condor%20configuration%20ISSUE%3D15607%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='15607#1379439316'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-17T17:35:16+00:00">Sep 17, 2013 05:35 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1379439316">&nbsp;</a></div><pre>Jorge and Matyas,
+
+Since you have a viable solution and cause but it might take some time before you can reinstall the gatekeeper, I will close this ticket and if you run into any issues during that process, submit a new ticket and we can help you with that.
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='15607#1379364149'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T20:42:29+00:00">Sep 16, 2013 08:42 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1379364149">&nbsp;</a></div><pre>Hi Jorge,
+
+Our condor-cron package creating the cndrcron user is nothing special -- packages from the distro itself like httpd, sshd or squid also do the same thing. The users _must_ exist before the files are laid down or else the files will not have the correct ownership. The packages will only create the users if they do not already exist. It&#39;s fine for configuration management software to create users, but they must know not to change existing users, or else problems will result. Again, this happened to cndrcron, but it could have just as easily have happened to apache.
+
+Puppet/411/CFEngine might handle things differently, but I believe the users used for services (by convention those with a UID &#60; 1000) are supposed to be local, and human users (the rest) can be managed globally.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='15607#1379361621'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T20:00:21+00:00">Sep 16, 2013 08:00 PM UTC</time> by <b>jrodrig@....</b><a class="anchor" name="1379361621">&nbsp;</a></div><pre>Hi,
+
+I think Matyas has a viable solution and cause however, I&#39;d have to
+reinstall my gatekeeper to find out and I can&#39;t do that right now. I did
+suggest though that in general adding user accounts as part of any
+automated installation is a bad idea when it comes to deploying software
+on a cluster. Clusters usually use some kind of OS distribution which
+deal with users globally so adding a user on a single system is likely
+going to cause problems.
+
+Jorge
+On 16-Sep-13 02&#58;50 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='15607#1379357437'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T18:50:37+00:00">Sep 16, 2013 06:50 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1379357437">&nbsp;</a></div><pre>Matyas and Jorge,
+
+I looks like you were able to figure out the cause of the problem. Has it been resolved ?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='15607#1378503730'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-06T21:42:10+00:00">Sep 6, 2013 09:42 PM UTC</time> by <b>jrodrig@....</b><a class="anchor" name="1378503730">&nbsp;</a></div><pre>Sounds good! There may be other places too where installation creates
+account for one reason or another. This is typically a bad idea for
+clusters, given that accounts are typically the one thing done globally.
+Thanks
+Jorge
+On 06-Sep-13 05&#58;27 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='15607#1378502851'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-06T21:27:31+00:00">Sep 6, 2013 09:27 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1378502851">&nbsp;</a></div><pre>I added a warning to our RSV installation page and created some JIRA tickets&#58; SOFTWARE-1194 is a feature addition to rsv-profiler to detect the issue, and SOFTWARE-1195 is a feature request for osg-configure to fix the issue (by updating the condor-cron configuration).
+
+Is that sufficient?
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='15607#1378498689'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-06T20:18:09+00:00">Sep 6, 2013 08:18 PM UTC</time> by <b>jrodrig@....</b><a class="anchor" name="1378498689">&nbsp;</a></div><pre>Hey Mat,
+
+I do have something that manages the password files, rocks&#39; 411 system.
+Since I don&#39;t install the gatekeeper on the frontend, where one finds
+the set of globally distributed password files, so any account creation
+will not propagate nor be preserved once those 411 managed files update
+across the cluster.
+
+This is probably what happened here. I recommend that you guys adjust
+the installation so that it won&#39;t run afoul for anyone using a
+configuration manager, the most likely scenario. Or perhaps a
+documentation fix will suffice. Heck I hope it wasn&#39;t there and I missed
+it...
+
+Jorge
+
+On 06-Sep-13 03&#58;05 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='15607#1378494341'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-06T19:05:41+00:00">Sep 6, 2013 07:05 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1378494341">&nbsp;</a></div><pre>I now have a full CE install but still did not replicate the problem.
+
+Jorge, do you have some sort of configuration management system like puppet or cfengine that manages the passwd file? I&#39;m imagining the following sequence&#58;
+1. The package &#39;condor-cron&#39; gets installed and automatically does the following&#58;
+1.a. Creates a cndrcron user and group
+1.b. Records the UID and GID of the user and group it just created into /etc/condor-cron/config.d/condor_ids
+2. Puppet/cfengine/chef/something else runs and replaces /etc/passwd with one that has a different UID for cndrcron
+3. When the condor-cron service starts, it uses the UID that&#39;s recorded in condor_ids, which no longer matches the cndrcron user, so condor-cron starts up as the wrong user.
+
+Could something like this have happened?
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='15607#1377888222'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-30T18:43:42+00:00">Aug 30, 2013 06:43 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1377888222">&nbsp;</a></div><pre>Sorry, I haven&#39;t had time to work on this yet. I&#39;ll take a look next week.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='15607#1377823069'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-30T00:37:49+00:00">Aug 30, 2013 12:37 AM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1377823069">&nbsp;</a></div><pre>Mat,
+
+Do you have any updates on this issue?
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='15607#1377190755'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-22T16:59:15+00:00">Aug 22, 2013 04:59 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1377190755">&nbsp;</a></div><pre>Mat,
+Have you had the chance to try out that full CE install?
+- Brian</pre></div><div class='update_description'><i onclick="document.location='15607#1376432630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-13T22:23:50+00:00">Aug 13, 2013 10:23 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1376432630">&nbsp;</a></div><pre>I don&#39;t have a full rocks install though I successfully installed the 5.5 Condor roll onto a Fermicloud VM running SL 5. I created a cndrutil user by hand and installed rsv, a gatekeeper and job managers. Then I configured rsv via osg-configure, and ran (via rsv-control) the org.osg.general.osg-version probe with no issues. So I still haven&#39;t been able to replicate the problem.
+
+I&#39;ll try a full CE install next.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='15607#1376423229'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-13T19:47:09+00:00">Aug 13, 2013 07:47 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1376423229">&nbsp;</a></div><pre>Hello Software Team and Jorge,
+
+Do either of you have any new information regarding this problem?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='15607#1375729331'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-05T19:02:11+00:00">Aug 5, 2013 07:02 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1375729331">&nbsp;</a></div><pre>Hello All,
+
+Has there been any break troughs with replicating the install? Any new information to add?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='15607#1374779532'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-25T19:12:12+00:00">Jul 25, 2013 07:12 PM UTC</time> by <b>jrodrig@....</b><a class="anchor" name="1374779532">&nbsp;</a></div><pre>OK will do
+
+Keep me up to date on your progress. It may be interesting to compare
+your non-standard condor installation. For the record my condor comes
+from a rocks condor roll. They put condor in /opt/condor with the
+configuration files in /opt/condor/etc/ and log files go in
+/var/opt/condor/log. I am not sure how or where condor gets located in
+the tarball install.
+
+Jorge
+
+On 7/25/2013 1&#58;47 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='15607#1374778021'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-25T18:47:01+00:00">Jul 25, 2013 06:47 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1374778021">&nbsp;</a></div><pre>Just to summarize the status of this ticket; Mat is planning to try to replicate the problem Jorge had with a rocks install and condor in a non-standard location (when time permits) and then comment further.
+
+Jorge, if you see anything interesting specifically in /etc/condor-cron/config.d/condor_ids or /etc/condor-cron/config.d/condor_location relating to the UID/GID or installation location issues you mentioned, that could be helpful in investigating this also.
+
+Thanks!
+Carl</pre></div><div class='update_description'><i onclick="document.location='15607#1374243685'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-19T14:21:25+00:00">Jul 19, 2013 02:21 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1374243685">&nbsp;</a></div><pre>Jorge&#58; I see that you looked at condor_config but as Matyas said, values in that conf file are overriden by what&#39;s in /etc/condor-cron/config.d/*. Have you looked in there? If you have, you can promptly ignore this inquiry!
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='15607#1374180133'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-18T20:42:13+00:00">Jul 18, 2013 08:42 PM UTC</time> by <b>jrodrig@....</b><a class="anchor" name="1374180133">&nbsp;</a></div><pre>Yes and I responded. But for me to sort this out would require a re
+install of the gatekeeper which I don&#39;t really have the time now to do it.
+
+Jorge
+On 18-Jul-13 03&#58;05 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='15607#1374174308'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-18T19:05:08+00:00">Jul 18, 2013 07:05 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1374174308">&nbsp;</a></div><pre>Jorge,
+
+Have you had the chance to take a look at the files that Matyas suggested?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='15607#1373558088'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-11T15:54:48+00:00">Jul 11, 2013 03:54 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1373558088">&nbsp;</a></div><pre>Hi Jorge,
+
+The values in /etc/condor-cron/condor_config get overridden by the values in the files in /etc/condor-cron/config.d, so look at those instead. Specifically /etc/condor-cron/config.d/condor_ids and (if it exists) /etc/condor-cron/config.d/condor_location.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='15607#1373538608'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-11T10:30:08+00:00">Jul 11, 2013 10:30 AM UTC</time> by <b>jrodrig@....</b><a class="anchor" name="1373538608">&nbsp;</a></div><pre>Hi Matyas,
+
+Something went terribly wrong here. It doesn&#39;t seem that condor-cron is
+even looking at the condor_config file here since that file specifies
+that condor is installed in /usr and there are no condor files in
+/usr/sbin etc. I also noticed that the UID.GID in condor_config is set
+to 100.101 but cndrcron account on my system is set to 408.416. I am not
+sure how all this got mis-configured, or how it was decided to assign
+that UID/GID to the cndrcron account. Its been a few weeks now so it may
+have been something I did in trying to resolve the problem which I
+eventually &#34;fixed&#34; things by convoluted my own condor and the condor
+that comes with the OSG.
+
+A couple of things are apparent here.
+1. the procedure for installing the CE on a machine that already has a
+working condor didn&#39;t work for me.
+2. The condor used by condor cron is not setup properly in clusters with
+condor deployed in a non-standard location.
+
+I am not sure if I can fix or even figure out whats wrong here without
+knowning how this condor-cron gets installed or even what its used for.
+
+Jorge
+On 7/11/2013 3&#58;55 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='15607#1373507748'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-11T01:55:48+00:00">Jul 11, 2013 01:55 AM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1373507748">&nbsp;</a></div><pre>Hi Jorge,
+The files in /etc/condor-cron/config.d override /etc/condor-cron/condor_config. In particular, the &#34;condor_ids&#34; and (if exists) &#34;condor_location&#34; files are of interest. I notice that rsv-profiler did not send them, which is a bug -- I created <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1116' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1116</a> to fix that.
+There&#39;s a UID.GID pair in condor_ids -- what user/group does it map to on your system? Did that user have write access to /var/lock/condor-cron? The condor instance started by condor-cron uses that UID/GID for its daemons.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='15607#1373484097'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-10T19:21:37+00:00">Jul 10, 2013 07:21 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1373484097">&nbsp;</a></div><pre>Mats,
+
+Do you have any ideas for Jorge even though he has a workaround in place?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='15607#1372776490'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-02T14:48:10+00:00">Jul 2, 2013 02:48 PM UTC</time> by <b>jrodrig@....</b><a class="anchor" name="1372776490">&nbsp;</a></div><pre>Well kind of. I found a workaround which included changing the ownership
+of all directories owned by cndrcron to condor. I think there is s
+problem with the installation of the CE when there is already an
+existing condor using its own UID.
+
+Jorge
+On 7/1/2013 8&#58;23 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='15607#1372724619'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-02T00:23:39+00:00">Jul 2, 2013 12:23 AM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1372724619">&nbsp;</a></div><pre>Hi Jorge
+
+Have you been able to resolve the issue with Condor and RSV ?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='15607#1371930866'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-06-22T19:54:26+00:00">Jun 22, 2013 07:54 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1371930866">&nbsp;</a></div><pre>Assigning to Mat as this is RSV issue.</pre></div><div class='update_description'><i onclick="document.location='15607#1371841028'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-06-21T18:57:08+00:00">Jun 21, 2013 06:57 PM UTC</time> by <b>jrodrig@....</b><a class="anchor" name="1371841028">&nbsp;</a></div><pre>I think I may have fixed the problem with RSV.
+
+condor_cron wasn&#39;t starting properly because when condor starts at my
+site it uses the condor account and not the OSG CE configured cndrcron
+account. I am not sure why this conflict happened. There was nothing in
+the docs regarding different accounts for a local condor and the
+cndrcron accounts. This is PROBABLY a BUG in the new installation routines.
+
+I will investigate further and post any new developments. I won&#39;t close
+the ticket just yet.
+
+Regards
+Jorge</pre></div><div class='update_description'><i onclick="document.location='15607#1371754740'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-06-20T18:59:00+00:00">Jun 20, 2013 06:59 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1371754740">&nbsp;</a></div><pre>Most of the rsv probes are failing in the new CE installation + rsv I just completed. The problem seems to be with the rsv configuration, particularly with condor.
+The CE in question is fiupg.hep.fiu.edu, It is a rocks gatekeeper, running rocks version of condor (7.6.2) installed in /opt/condor instead of the usual place. I made sure that I followed the procedures outlined in the CE install docs for non-standard condor install by disabling the condor installs from the osg.repo and checked that condor wasn&#39;t replaced by the CE install. I am also able to submit jobs to condor normally from a regular account on this node so that verifies that condor is working properly at least as a standalone batch system.
+
+The main symptoms seems to be that none of the rsv probes that go through a condor-G work. For example here is the rsv output for one such simple test
+-------------------------------------- output -----------------------
+[root@fiupg config.d]# rsv-control -r org.osg.general.osg-version -u fiupg.hep.fiu.edu
+
+Running metric org.osg.general.osg-version&#58;
+
+ERROR&#58; Problem submitting job to condor.  Command output&#58;
+
+ERROR&#58; Can&#39;t find address of local schedd
+metricName&#58; org.osg.general.osg-version
+metricType&#58; status
+timestamp&#58; 2013-06-20 14&#58;47&#58;40 EDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-CE
+serviceURI&#58; fiupg.hep.fiu.edu
+gatheredAt&#58; fiupg.hep.fiu.edu
+summaryData&#58; CRITICAL
+detailsData&#58; Condor-G submission failed to remote host
+
+EOT
+------------------------------------------------
+
+A more verbose option doesn&#39;t yield more error info than this. I&#39;ve also run an rsv-control profile,(here <a href='http&#58;//www.hep.fiu.edu/' target='_blank' rel='nofollow'>http&#58;//www.hep.fiu.edu/</a>~jorge/src/rsv-profiler.tar.gz, (doesn&#39;t this ticketing system have an attachment?) , and it appears that the condor_config file created by the profiles has all of the wrong location information for my condor setup. I doubled checked that the location of condor is correctly defined in the 20-condor.ini file and there doesn&#39;t seem to be another place to tell osg-configure to find my condor either. So apparently the profiler and perhaps rsv is getting the wrong info on where to find my condor. This is probably what is wrong.
+
+by Jorge L. Rodriguez (guest)</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F15607">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 15607});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[11325] high initial memory use for GOC-submitted glideins.</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=11325" method="post">
+<div class="page-header">
+    <h3><span class="muted">11325</span> / high initial memory use for GOC-submitted glideins.</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Steve Timm</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">GOC glidein</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/resource</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Steve Timm</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Check for updates</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2012-01-18</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">OSG Glidein Factory Support <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">OSG-GOC <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=11325", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/11325?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/11325?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20high%20initial%20memory%20use%20for%20GOC-submitted%20glideins.%20ISSUE%3D11325%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='11325#1326473326'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-13T16:48:46+00:00">Jan 13, 2012 04:48 PM UTC</time><a class="anchor" name="1326473326">&nbsp;</a></div><pre>I believe the glideinWMS developers have given FermiGrid what we need to resolve/manage
+this problem and the ticket can be closed.  We haven&#39;t seen any problematic
+glideins from hcc since I submitted the ticket.
+
+Steve Timm
+
+-- by Steve Timm</pre></div><div class='update_description'><i onclick="document.location='11325#1326316685'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-11T21:18:05+00:00">Jan 11, 2012 09:18 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1326316685">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the Open Science Grid Operations Page&#58;
+<a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='11325#1325095931'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-28T18:12:11+00:00">Dec 28, 2011 06:12 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1325095931">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the Open Science Grid Operations Page&#58;
+<a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='11325#1324331325'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-19T21:48:45+00:00">Dec 19, 2011 09:48 PM UTC</time><a class="anchor" name="1324331325">&nbsp;</a></div><pre>We have now added STARTER_JOB_ENVIRONMENT=&#34;_JAVA_OPTIONS=-Xmx1024m&#34;
+to our condor head nodes. If someone from hcc could please try to send a few glideins our way I can see
+if it has any effect on the memory profile.  We may have to do it
+on the worker nodes too.
+
+For completeness I think the glideinWMS is going to have to add parameters like
+this as well because they also have a starter which would not be controlled by
+the host system condor_config file.
+
+Steve Timm
+
+-- by Steve Timm</pre></div><div class='update_description'><i onclick="document.location='11325#1323304507'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-08T00:35:07+00:00">Dec 8, 2011 12:35 AM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1323304507">&nbsp;</a></div><pre>I will try to add them on our side first and see if I can see the
+difference.  hcc is sending glideins regularly and I should be
+able to tell.
+
+Steve
+
+On Wed, 7 Dec 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11325#1323288130'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-07T20:02:10+00:00">Dec 7, 2011 08:02 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1323288130">&nbsp;</a></div><pre>This is an automatic reply.
+
+I will be on vacation and away from the laboratory from December 7-9.  I will have access to E-mail but my time to
+respond to it will be limited.  I will return to the lab on Dec. 12.  If you have any issues that require the attention of the FermiGrid Services Group, please contact the Service Desk at 630 840 2345 or <a href='http&#58;//servicedesk.fnal.gov.' target='_blank' rel='nofollow'>http&#58;//servicedesk.fnal.gov.</a>
+
+Steven Timm</pre></div><div class='update_description'><i onclick="document.location='11325#1323287993'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-07T19:59:53+00:00">Dec 7, 2011 07:59 PM UTC</time><a class="anchor" name="1323287993">&nbsp;</a></div><pre>We do run the Java benchmarks.
+If sites don&#39;t have &#34;reasonable&#34; default parameters for Java, we can add them at the factory/glidein level.
+
+The question is&#58;
+Should we?
+
+Igor
+
+-- by Igor Sfiligoi</pre></div><div class='update_description'><i onclick="document.location='11325#1323268868'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-07T14:41:08+00:00">Dec 7, 2011 02:41 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1323268868">&nbsp;</a></div><pre>Hi Derek, thanks
+
+A regular non-glidein condor_starter runs a short Java benchmark
+as it is firing up.  Do we know if glidein condor_starters
+do the same?  If so, Burt Holzman gave me an environment variable
+to pass to the condor_starter which would limit the java footprint
+it can use.. I will try that.
+
+Steve Timm
+
+On Wed, 7 Dec 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11325#1323236708'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-07T05:45:08+00:00">Dec 7, 2011 05:45 AM UTC</time><a class="anchor" name="1323236708">&nbsp;</a></div><pre>Regarding our verification scripts, we check versions of a few applications.  Specifically, we call&#58;
+lcg-cp --version
+java -version
+
+I put the full verification script is on pastebin&#58;
+<a href='http&#58;//pastebin.com/xxY23uur' target='_blank' rel='nofollow'>http&#58;//pastebin.com/xxY23uur</a>
+
+-- by Derek Weitzel</pre></div><div class='update_description'><i onclick="document.location='11325#1323225452'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-07T02:37:32+00:00">Dec 7, 2011 02:37 AM UTC</time><a class="anchor" name="1323225452">&nbsp;</a></div><pre>Hi Steve,
+
+I hear you about the group quota changes in 7.6 - was painful for us to adopt.  However, you can mix 7.6 WNs with a 7.4 negotiator...
+
+We have a set of environment verification scripts that are application-specific that have accumulated over the last year or two; Derek might have insights if any of them have a large VSIZE footprint.
+
+Another thought - do you have the procd log turned on?  It might inform you what processes are causing the blow-ups.
+
+Brian
+
+-- by Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='11325#1323183909'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-06T15:05:09+00:00">Dec 6, 2011 03:05 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1323183909">&nbsp;</a></div><pre>Hi Brian, no, condor 7.4 doesn&#39;t support RSS.  condor 7.6 does
+but has problems with its group quota structure that make
+it not an option for us at this time.
+
+Once we do get an accurate condor that supports killing on RSS
+we will move to a worker-node-based system using either the
+PREEMPT or the KILL expression, with the advantage that it can
+be set proportionately with the memory size of the various
+generations of hardware.
+
+So why would an HCC glidein suck up 10GB of RAM before ever
+starting a user job?  Is there an srmcp involved in your initial stage?
+I&#39;ve seen that cause a memory bloat before.  Several other
+VO&#39;s that use the GlideinWMS don&#39;t have this problem, but two or three
+others do, particularly LIGO.
+
+Steve Timm
+
+On Tue, 6 Dec 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11325#1323147075'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-06T04:51:15+00:00">Dec 6, 2011 04:51 AM UTC</time><a class="anchor" name="1323147075">&nbsp;</a></div><pre>Hi Steve,
+
+Does Condor 7.4 support the ResidentSetSize attribute?  We&#39;ve found that ImageSize is rather, erm, useless (as VSIZE is not very useful to begin with, and the fact that older Condors summed up the VSIZE of all processes it observed throughout the job).
+
+FWIW - are you sure you want to use SYSTEM_PERIODIC_REMOVE?  I would recommend using PREEMPT on the WNs themselves - they can respond move faster to kill run-away jobs than the schedd can.  Locally, we&#39;ve had a few cases where the node was too far gone by time SYSTEM_PERIODIC_REMOVE got evaluated.
+
+Brian
+
+-- by Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='11325#1323125387'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-12-05T22:49:47+00:00">Dec 5, 2011 10:49 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1323125387">&nbsp;</a></div><pre>[by Steve Timm]
+
+This ticket should be assigned to osg-gfactory support.
+
+From both the GOC-hosted glidein factory and the UCSD glidein factory
+we are seeing the same behavior.  Both for engage VO and for HCC VO
+we are seeing glideins report use of as much as 9.5GB of RAM very
+early into the cycle, only 5 minutes after startup, even before
+they are matched to any user job.
+
+(The memory usage report is coming from the ImageSize field in the
+condor classad of the job).  Condor 7.4 and before are known to
+inaccurately report  memory usage sometimes, particularly when there
+are a lot of short executables executed in rapid succession as there
+would be as a glidein is firing up.  But other VO&#39;s glideins submittted
+from other factories don&#39;t have this problem.
+
+We initially observed this behavior  in goc ticket 11321,
+but even in the case where the user has legitimate credentials
+and is using glexec and their job is running, the glidein job
+for engage and hcc VO&#39;s is often over-reporting memory use. I suspect
+this also happens for LIGO, which shares the same submit structure
+in the glideinwms.  It may also happen for gluex but has been masked
+until now by a real memory leak in that code.
+
+As of today, Fermilab put on a 10GB SYSTEM_PERIODIC_REMOVE
+on our GP Grid cluster gatekeepers so you may start to see more glideins
+submitted to Fermilab exiting abnormally.
+
+Steve Timm</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F11325">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 11325});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

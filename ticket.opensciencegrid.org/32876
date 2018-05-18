@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[32876] Glexec failing at UCSD</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=32876" method="post">
+<div class="page-header">
+    <h3><span class="muted">32876</span> / Glexec failing at UCSD</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Edgar Mauricio Fajardo Hernandez</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Edgar Mauricio Fajardo Hernandez</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-03-02</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=32876", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/32876?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/32876?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Glexec%20failing%20at%20UCSD%20ISSUE%3D32876%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='32876#1489081117'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-09T17:38:37+00:00">Mar 9, 2017 05:38 PM UTC</time><a class="anchor" name="1489081117">&nbsp;</a></div><pre>Alright after talking with Nick, we realized the problem was when creating an RFC proxy out of a non RFC proxy.
+
+So I am closing this ticket,
+
+Thank you,
+
+Edgar
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='32876#1488829722'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-06T19:48:42+00:00">Mar 6, 2017 07:48 PM UTC</time><a class="anchor" name="1488829722">&nbsp;</a></div><pre>Ok I did some testing on behalf of Nick&#58;
+
+[11&#58;37&#58;38] [namin@uaf-10] ~ &#62; export GLEXEC_CLIENT_CERT=/tmp/x509up_u31567
+[11&#58;38&#58;31] [namin@uaf-10] ~ &#62; export GLEXEC_CLIENT_CERT=/tmp/x509up_u31567
+[11&#58;43&#58;52] [namin@uaf-10] ~ &#62; /usr/sbin/glexec /usr/bin/id
+
+Message from syslogd@uaf-10 at Mar  6 11&#58;45&#58;44 ...
+ocess-tracking[1868894]&#58; TRACKING 1868892
+uid=31567(namin) gid=31567(namin) groups=31567(namin),1500(cms1) context=unconfined_u&#58;unconfined_r&#58;unconfined_t&#58;s0-s0&#58;c0.c1023
+
+His proxy definetly looks right now&#58;
+
+voms-proxy-info -all
+subject   &#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin/CN=3469951100
+issuer    &#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin
+identity  &#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin
+type      &#58; RFC compliant proxy
+strength  &#58; 1024 bits
+path      &#58; /tmp/x509up_u31567
+timeleft  &#58; 143&#58;37&#58;44
+key usage &#58; Digital Signature, Key Encipherment
+=== VO cms extension information ===
+VO        &#58; cms
+subject   &#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin
+issuer    &#58; /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+attribute &#58; /cms/Role=NULL/Capability=NULL
+attribute &#58; /cms/uscms/Role=NULL/Capability=NULL
+timeleft  &#58; 143&#58;37&#58;43
+uri       &#58; lcg-voms2.cern.ch&#58;15002
+
+So I do not understand the problem what happens with his proxy, when he submits.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='32876#1488642610'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-04T15:50:10+00:00">Mar 4, 2017 03:50 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1488642610">&nbsp;</a></div><pre>Or maybe you&#39;re one of those people who do the very unsafe practice of making a year long proxy and using that as the basis for your voms proxy so you can avoid typing in the passphrase.  In order to make that work you&#39;d need to do a grid-proxy-init -rfc.
+
+However, as I said, that is a very unsafe practice.  It is against IGTF rules to store a user certificate or proxy unencrypted that is valid longer than 10 days.  If it is stored on a remote filesystem, especially NFS, it is extremely insecure.   I see your example #3 is doing voms-proxy-init with a large number of hours; that is just as unsafe, but at least it shouldn&#39;t cause you to have a legacy proxy.</pre></div><div class='update_description'><i onclick="document.location='32876#1488636559'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-04T14:09:19+00:00">Mar 4, 2017 02:09 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1488636559">&nbsp;</a></div><pre>After you do each of those, please run
+
+openssl x509 -in /tmp/x509up_u&#96;id -u&#96; -noout -subject
+
+Look for if there&#39;s any /CN=proxy, the old style.
+
+I&#39;m suspecting that there&#39;s some script that runs after you do voms-proxy-init that messes things up.</pre></div><div class='update_description'><i onclick="document.location='32876#1488618849'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-04T09:14:09+00:00">Mar 4, 2017 09:14 AM UTC</time> by <b>namin@....</b><a class="anchor" name="1488618849">&nbsp;</a></div><pre>Hi Dave,
+
+I tried 3 different methods and saw no successes with any of them
+1)
+voms-proxy-init -hours 168 -voms cms
+2)
+voms-proxy-init -rfc
+3)
+# execute once
+voms-proxy-init -hours 9876543&#58;0 -out=blahblah
+# then do this to renew proxy
+voms-proxy-init -q -voms cms -hours 120 -valid=120&#58;0 -cert=blahblah
+
+Nick
+
+On Fri, Mar 3, 2017 at 7&#58;11 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32876#1488553890'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-03T15:11:30+00:00">Mar 3, 2017 03:11 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1488553890">&nbsp;</a></div><pre>Nick,
+
+On your machine, the -rfc option of voms-proxy-init should make no difference since that is the default.
+
+How exactly do you normally create your proxy certificate?
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='32876#1488513371'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-03T03:56:11+00:00">Mar 3, 2017 03:56 AM UTC</time> by <b>namin@....</b><a class="anchor" name="1488513371">&nbsp;</a></div><pre>Hi,
+
+When I do voms-proxy-init -debug, I see&#58;
+Detected Globus version&#58; 2.2
+Unspecified proxy version, settling on version 4 (RFC)
+PCI extension info&#58;
+Path length&#58; -1
+Policy language not specified.
+Policy file not specified.
+Number of bits in key &#58;1024
+
+For now, I have done voms-proxy-init -rfc and tried resubmitting.
+
+Nick
+
+On Thu, Mar 2, 2017 at 7&#58;07 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32876#1488510470'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-03T03:07:50+00:00">Mar 3, 2017 03:07 AM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1488510470">&nbsp;</a></div><pre>Well your voms-proxy-init is doing the right thing then.  What matters is what Nick Amin is doing.</pre></div><div class='update_description'><i onclick="document.location='32876#1488505927'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-03T01:52:07+00:00">Mar 3, 2017 01:52 AM UTC</time><a class="anchor" name="1488505927">&nbsp;</a></div><pre>[1751] efajardo@uaf-10 ~$ voms-proxy-init -debug
+Detected Globus version&#58; 2.2
+Unspecified proxy version, settling on version 4 (RFC)
+PCI extension info&#58;
+Path length&#58; -1
+Policy language not specified.
+Policy file not specified.
+Number of bits in key &#58;1024
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='32876#1488504726'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-03T01:32:06+00:00">Mar 3, 2017 01:32 AM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1488504726">&nbsp;</a></div><pre>What do you see with voms-proxy-init -debug ?  Mine starts with
+
+Detected Globus version&#58; 2.2
+Unspecified proxy version, settling on version 4 (RFC)</pre></div><div class='update_description'><i onclick="document.location='32876#1488498678'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-02T23:51:18+00:00">Mar 2, 2017 11:51 PM UTC</time><a class="anchor" name="1488498678">&nbsp;</a></div><pre>It looks like we are running the latest of globus too&#58;
+[1541] root@uaf-10 ~# yum update globus*
+Loaded plugins&#58; fastestmirror, priorities, security
+Setting up Update Process
+Loading mirror speeds from cached hostfile
+* base&#58; mirrors.kernel.org
+* epel&#58; mirror.n5tech.com
+* extras&#58; mirror.sigmanet.com
+* osg&#58; repo.grid.iu.edu
+* updates&#58; mirrors.ocf.berkeley.edu
+287 packages excluded due to repository priority protections
+No Packages marked for Update
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='32876#1488497912'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-02T23:38:32+00:00">Mar 2, 2017 11:38 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1488497912">&nbsp;</a></div><pre>&#39;man voms-proxy-init&#39; says the default version is decided by the underlying globus version.</pre></div><div class='update_description'><i onclick="document.location='32876#1488497388'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-02T23:29:48+00:00">Mar 2, 2017 11:29 PM UTC</time><a class="anchor" name="1488497388">&nbsp;</a></div><pre>Hi Dave,
+
+I see the version installed on uaf-10 is&#58;
+
+voms-proxy-init --version
+voms-proxy-init
+Version&#58; 2.0.14
+Compiled&#58; Dec 22 2016 14&#58;22&#58;21
+
+That seems to be the latest avaialable on uaf&#58;
+
+Installed Packages
+voms-clients-cpp.x86_64                                                             2.0.14-1.2.osg33.el6                                                             @osg
+
+So I do not think that is the problem.
+
+Nick,
+
+Can you creat your proxy with -rfc please?
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='32876#1488497130'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-02T23:25:30+00:00">Mar 2, 2017 11:25 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1488497130">&nbsp;</a></div><pre>It&#39;s complaining about that there&#39;s an old style proxy in the chain, with &#39;/CN=proxy&#39;.  The user can probably fix it by doing voms-proxy-init -rfc, or perhaps by upgrading to a newer version of voms-proxy-init.</pre></div><div class='update_description'><i onclick="document.location='32876#1488466595'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-02T14:56:35+00:00">Mar 2, 2017 02:56 PM UTC</time><a class="anchor" name="1488466595">&nbsp;</a></div><pre>Hi Dave,
+
+I wonder if you can take a look and give us your input in this.
+
+Thanks,
+
+Edgar
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='32876#1488466542'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-02T14:55:42+00:00">Mar 2, 2017 02:55 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1488466542">&nbsp;</a></div><pre>Hi All,
+
+At UCSD some of our users are failing to glexec in the worker nodes. Their proxy look like this&#58;
+
+[0650] root@vm-osg-02 /data1/condor_local/execute/dir_45502/glide_VvCv03/execute/dir_99878.condor# voms-proxy-info --file x509up_u31567 -all
+subject   &#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin/CN=proxy/CN=1888411140/CN=25813057
+issuer    &#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin/CN=proxy/CN=1888411140
+identity  &#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin/CN=proxy/CN=1888411140
+type      &#58; proxy
+strength  &#58; 1024 bits
+path      &#58; x509up_u31567
+timeleft  &#58; 9&#58;52&#58;47
+key usage &#58; Digital Signature, Key Encipherment
+=== VO cms extension information ===
+VO        &#58; cms
+subject   &#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin
+issuer    &#58; /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+attribute &#58; /cms/Role=NULL/Capability=NULL
+attribute &#58; /cms/uscms/Role=NULL/Capability=NULL
+timeleft  &#58; 78&#58;50&#58;13
+uri       &#58; lcg-voms2.cern.ch&#58;15002
+
+But when trying to glexec in the worker nodes&#58;
+
+[0651] cuser1@vm-osg-02 /data1/condor_local/execute/dir_45502/glide_VvCv03/execute/dir_99878.condor$ export export GLEXEC_CLIENT_CERT=^C
+[0651] cuser1@vm-osg-02 /data1/condor_local/execute/dir_45502/glide_VvCv03/execute/dir_99878.condor$ export GLEXEC_CLIENT_CERT=x509up_u31567
+[0651] cuser1@vm-osg-02 /data1/condor_local/execute/dir_45502/glide_VvCv03/execute/dir_99878.condor$ /usr/sbin/glexec /usr/bin/id
+[gLExec]&#58;  LCMAPS failed.
+The reason can be found in the syslog.
+
+Looking at the sys logs it says this&#58;
+
+Mar  2 06&#58;55&#58;00 vm-osg-02 glexec[748165]&#58; lcmaps&#58; LCMAPS failed to do mapping and return account information
+Mar  2 06&#58;55&#58;00 vm-osg-02 glexec[748165]&#58;   LCMAPS failed.
+Mar  2 06&#58;55&#58;00 vm-osg-02 glexec[748172]&#58; lcmaps&#58; Error&#58; grid_verifyChain&#58; Certificate chain not build in the right order&#58; Got RFC3820 Proxy certificate, but expected GT2/old-style proxy of any language. Cert at depth 1 of 6 with Subject DN&#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin/CN=proxy/CN=1888411140
+<div id='show_1593398887' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1593398887'>Mar  2 06&#58;55&#58;00 vm-osg-02 glexec[748172]&#58; lcmaps&#58; Error&#58; Verifying certificate chain&#58; error 28&#58; certificate rejected
+Mar  2 06&#58;55&#58;00 vm-osg-02 glexec[748172]&#58; lcmaps&#58; Error&#58; Failed at depth&#58; 0, DN&#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin/CN=proxy/CN=1888411140/CN=4263638
+Mar  2 06&#58;55&#58;00 vm-osg-02 glexec[748172]&#58; lcmaps&#58; LCMAPS failed to do mapping and return account information
+Mar  2 06&#58;55&#58;00 vm-osg-02 glexec[748172]&#58;   LCMAPS failed.
+Mar  2 06&#58;55&#58;01 vm-osg-02 glexec[748179]&#58; lcmaps&#58; Error&#58; grid_verifyChain&#58; Certificate chain not build in the right order&#58; Got RFC3820 Proxy certificate, but expected GT2/old-style proxy of any language. Cert at depth 1 of 6 with Subject DN&#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin/CN=proxy/CN=1888411140
+Mar  2 06&#58;55&#58;01 vm-osg-02 glexec[748179]&#58; lcmaps&#58; Error&#58; Verifying certificate chain&#58; error 28&#58; certificate rejected
+Mar  2 06&#58;55&#58;01 vm-osg-02 glexec[748179]&#58; lcmaps&#58; Error&#58; Failed at depth&#58; 0, DN&#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=namin/CN=746430/CN=Nick J Amin/CN=proxy/CN=1888411140/CN=2000826382
+Mar  2 06&#58;55&#58;01 vm-osg-02 glexec[748179]&#58; lcmaps&#58; LCMAPS failed to do mapping and return account information
+Mar  2 06&#58;55&#58;01 vm-osg-02 glexec[748179]&#58;   LCMAPS failed.
+
+But note the proxy was never an RFC proxy to begin with.
+
+Any idea on what is going on?
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020
+
+</div><script type='text/javascript'>
+        $('#show_1593398887').click(function() {
+            $('#detail_1593398887').slideDown("normal");
+            $('#show_1593398887').hide();
+            $('#hide_1593398887').show();
+        });
+        $('#hide_1593398887').click(function() {
+            $('#detail_1593398887').slideUp();
+            $('#hide_1593398887').hide();
+            $('#show_1593398887').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F32876">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 32876});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

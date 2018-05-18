@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[16691] Gratia sge probe does not handle accounting file rotation</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=16691" method="post">
+<div class="page-header">
+    <h3><span class="muted">16691</span> / Gratia sge probe does not handle accounting file rotation</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Iwona Sakrejda</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Iwona Sakrejda</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for release</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-04-09</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Carl Edquist <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Suchandra Thapa <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=16691", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/16691?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/16691?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Gratia%20sge%20probe%20does%20not%20handle%20accounting%20file%20rotation%20ISSUE%3D16691%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='16691#1396999640'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T23:27:20+00:00">Apr 8, 2014 11:27 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1396999640">&nbsp;</a></div><pre>Yes, the gratia-probe 1.13.25 release, which includes the updated sge probe from Lisa, went out today with the osg releases 3.1.32 and 3.2.8.
+
+So I believe we can close the ticket now.</pre></div><div class='update_description'><i onclick="document.location='16691#1396997112'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T22:45:12+00:00">Apr 8, 2014 10:45 PM UTC</time> by <b>echism</b><a class="anchor" name="1396997112">&nbsp;</a></div><pre>Hey Tim,
+
+Did this go out?
+
+Thank you.</pre></div><div class='update_description'><i onclick="document.location='16691#1395841835'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-26T13:50:35+00:00">Mar 26, 2014 01:50 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1395841835">&nbsp;</a></div><pre>It appears that the fix for this issue is in testing and is scheduled for the 8 April release.</pre></div><div class='update_description'><i onclick="document.location='16691#1393866311'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-03T17:05:11+00:00">Mar 3, 2014 05:05 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1393866311">&nbsp;</a></div><pre>Yes, the debugging and work is still ongoing.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1393450027'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-26T21:27:07+00:00">Feb 26, 2014 09:27 PM UTC</time> by <b>echism</b><a class="anchor" name="1393450027">&nbsp;</a></div><pre>Hey Suchandra,
+
+Is this still in the works?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1392311403'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-13T17:10:03+00:00">Feb 13, 2014 05:10 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1392311403">&nbsp;</a></div><pre>Just an update, debugging and testing by Doug at Colorado is still ongoing.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1391635577'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-05T21:26:17+00:00">Feb 5, 2014 09:26 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1391635577">&nbsp;</a></div><pre>Yes, Doug and Lisa are currently debugging/testing the probe out so this is currently in progress.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1391635495'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-02-05T21:24:55+00:00">Feb 5, 2014 09:24 PM UTC</time> by <b>echism</b><a class="anchor" name="1391635495">&nbsp;</a></div><pre>Hi Suchandra,
+
+Have you heard anything on this?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1391033728'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-29T22:15:28+00:00">Jan 29, 2014 10:15 PM UTC</time> by <b>echism</b><a class="anchor" name="1391033728">&nbsp;</a></div><pre>Hi all,
+
+Has there been anything from Doug?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1390418977'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-22T19:29:37+00:00">Jan 22, 2014 07:29 PM UTC</time><a class="anchor" name="1390418977">&nbsp;</a></div><pre>Hi Suchandra,
+
+Thanks for the heads up. Then I will move the date of this ticket for middle next week, when Doug could let us know the results of the test.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='16691#1390417178'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-22T18:59:38+00:00">Jan 22, 2014 06:59 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1390417178">&nbsp;</a></div><pre>Doug at colorado is out this week and should be able to test starting next week.  TTU is still wrapping up some issues so they can&#39;t get to testing right away.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1390330869'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-21T19:01:09+00:00">Jan 21, 2014 07:01 PM UTC</time><a class="anchor" name="1390330869">&nbsp;</a></div><pre>Hi Lisa, Suchandra
+
+Do you have any news on how the test went at Colorado and TTU?
+
+Thanks,
+
+Edgar
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='16691#1389823164'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-15T21:59:24+00:00">Jan 15, 2014 09:59 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1389823164">&nbsp;</a></div><pre>Thanks for the update Lisa.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1389722356'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-14T17:59:16+00:00">Jan 14, 2014 05:59 PM UTC</time> by <b>lgerhardt@....</b><a class="anchor" name="1389722356">&nbsp;</a></div><pre>Hi Brian and All,
+I&#39;m not Suchandra, but I can give you an update on this. I have a fix
+for this that&#39;s been running successfully at PDSF for over a month. With
+Suchandra&#39;s help, I&#39;ve reached out to a couple of other institutions
+that are running grid engine to ask them to test the fix. I haven&#39;t
+heard back from them yet, so it may have gotten forgotten in the holiday
+break. I&#39;ll reach out to them again.
+
+Bye,
+Lisa
+
+On 1/14/14 9&#58;40 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16691#1389721201'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-14T17:40:01+00:00">Jan 14, 2014 05:40 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1389721201">&nbsp;</a></div><pre>Suchandra,
+
+Could you give us an update on the status issue since you seem to be the most in the loop?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='16691#1389637142'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-13T18:19:02+00:00">Jan 13, 2014 06:19 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1389637142">&nbsp;</a></div><pre>I&#39;ve been out of the loop on the email thread Suchandra mentioned below...</pre></div><div class='update_description'><i onclick="document.location='16691#1389630030'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-13T16:20:30+00:00">Jan 13, 2014 04:20 PM UTC</time> by <b>echism</b><a class="anchor" name="1389630030">&nbsp;</a></div><pre>Suchandra or Carl,
+
+Do you know the status of this issue?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1389282471'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T15:47:51+00:00">Jan 9, 2014 03:47 PM UTC</time> by <b>echism</b><a class="anchor" name="1389282471">&nbsp;</a></div><pre>Hey all,
+
+It has been about a month. Is there anything new on this?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1387482583'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-12-19T19:49:43+00:00">Dec 19, 2013 07:49 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1387482583">&nbsp;</a></div><pre>Hi Elizabeth,
+
+There&#39;s an email thread ongoing.  Lisa is sending the probe to Doug for testing.  Amy needs to get some other issues fixed on the TTU system first before testing.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1386874410'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-12-12T18:53:30+00:00">Dec 12, 2013 06:53 PM UTC</time> by <b>echism</b><a class="anchor" name="1386874410">&nbsp;</a></div><pre>Hello all,
+
+Please send an update if one is available.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1386275550'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-12-05T20:32:30+00:00">Dec 5, 2013 08:32 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1386275550">&nbsp;</a></div><pre>There&#39;s been some discussion on email between Lisa, Amy and Doug.  Both TTU and UColorado have expressed interest in helping with the testing although I&#39;m not sure there&#39;s an ETA yet.  I&#39;ll ask Lisa.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1386274046'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-12-05T20:07:26+00:00">Dec 5, 2013 08:07 PM UTC</time> by <b>echism</b><a class="anchor" name="1386274046">&nbsp;</a></div><pre>Hi Suchandra,
+
+Where are we on this?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1385576650'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-27T18:24:10+00:00">Nov 27, 2013 06:24 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1385576650">&nbsp;</a></div><pre>It looks like Alan and Amy at TTU can help.  I&#39;m coordinating with them and Lisa on email.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1385500646'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-26T21:17:26+00:00">Nov 26, 2013 09:17 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1385500646">&nbsp;</a></div><pre>Not yet, I&#39;ll ask them.  It looks like aside from TTU, BU, Colorado and FSU are the only other sites that use SGE.  I&#39;ll send out emails and see if they can help out.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1385500150'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-26T21:09:10+00:00">Nov 26, 2013 09:09 PM UTC</time> by <b>echism</b><a class="anchor" name="1385500150">&nbsp;</a></div><pre>Suchandra,
+
+Did you already ask TTU?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1385403942'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-25T18:25:42+00:00">Nov 25, 2013 06:25 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1385403942">&nbsp;</a></div><pre>Hi,
+
+I&#39;m not sure who else uses SGE on OSG.  I&#39;ll check and try to see whether other sites can test this as well.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1385397765'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-25T16:42:45+00:00">Nov 25, 2013 04:42 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1385397765">&nbsp;</a></div><pre>Suchandra,
+
+Can you help Lisa with the testing here? Or do you know someone who would be able to?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='16691#1384534705'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-15T16:58:25+00:00">Nov 15, 2013 04:58 PM UTC</time><a class="anchor" name="1384534705">&nbsp;</a></div><pre>Hi Neha,
+Actually we were testing it yesterday. The gratia log file was reporting bundles sent successfully from 2&#58;00 pm PST until after 6&#58;00 pm PST when we stopped testing, but we didn&#39;t see the numbers on the web page updating. Our gratia cron was running every 15 minutes, but we only saw the numbers on the web page change one time (shortly after 5&#58;00 pm). Is there some other place we can look to see if the information is getting updated successfully?
+
+We were looking at
+<a href='http&#58;//myosg.grid.iu.edu/rgaccount/index?summary_attrs_showservice=on&summary_attrs_showrsvstatus=on&summary_attrs_showfqdn=on&gip_status_attrs_showtestresults=on&downtime_attrs_showpast=&account_type=job_count_byvo&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=specific&start_date=11%2F13%2F2013&end_type=now&end_date=11%2F15%2F2013&facility=on&facility_10024=on&gridtype=on&gridtype_1=on&active_value=1&disable_value=1' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu/rgaccount/index?summary_attrs_showservice=on&summary_attrs_showrsvstatus=on&summary_attrs_showfqdn=on&gip_status_attrs_showtestresults=on&downtime_attrs_showpast=&account_type=job_count_byvo&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=specific&start_date=11%2F13%2F2013&end_type=now&end_date=11%2F15%2F2013&facility=on&facility_10024=on&gridtype=on&gridtype_1=on&active_value=1&disable_value=1</a>
+
+Thanks,
+Lisa
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Lisa Gerhardt</pre></div><div class='update_description'><i onclick="document.location='16691#1384529329'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-15T15:28:49+00:00">Nov 15, 2013 03:28 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1384529329">&nbsp;</a></div><pre>Hi Lisa
+Any update on the testing of gratia code?
+
+Thanks
+-Neha</pre></div><div class='update_description'><i onclick="document.location='16691#1383615369'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-05T01:36:09+00:00">Nov 5, 2013 01:36 AM UTC</time> by <b>lgerhardt@....</b><a class="anchor" name="1383615369">&nbsp;</a></div><pre>Hi Elizabeth and Suchandra,
+Sorry for not responding sooner. We&#39;re planning to test the code this
+week at our site. If it works okay, then I&#39;ll see about committing the
+changes.
+
+Bye,
+Lisa
+On 10/30/13 2&#58;54 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16691#1383170083'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-30T21:54:43+00:00">Oct 30, 2013 09:54 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1383170083">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I put Lisa in touch with Tanya so Lisa should get commit privileges to the gratia repository and be able to commit the code into the repository.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1383167441'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-30T21:10:41+00:00">Oct 30, 2013 09:10 PM UTC</time> by <b>echism</b><a class="anchor" name="1383167441">&nbsp;</a></div><pre>Lisa and Iwona,
+
+Are you okay with Suchandra just deploying the code?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1382131338'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T21:22:18+00:00">Oct 18, 2013 09:22 PM UTC</time> by <b>echism</b><a class="anchor" name="1382131338">&nbsp;</a></div><pre>Where are we on this?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1381521497'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-11T19:58:17+00:00">Oct 11, 2013 07:58 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1381521497">&nbsp;</a></div><pre>Just fyi, I checked to see which sites use SGE and there aren&#39;t many.  I can try to contact Colorado and TTU if they might be able to test but barring that we may just accept the code if it works for you.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1381521339'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-11T19:55:39+00:00">Oct 11, 2013 07:55 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1381521339">&nbsp;</a></div><pre>I think I can help with this.  Things are pretty informal so I can talk to Tanya about having setting you up as a maintainer for the SGE probe.   Do you have suggestions as to others that might be interested in testing the SGE probe?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1381177030'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-07T20:17:10+00:00">Oct 7, 2013 08:17 PM UTC</time> by <b>echism</b><a class="anchor" name="1381177030">&nbsp;</a></div><pre>Suchandra,
+
+Do you have any ideas on who can accept this project?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1380585549'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-30T23:59:09+00:00">Sep 30, 2013 11:59 PM UTC</time> by <b>lgerhardt@....</b><a class="anchor" name="1380585549">&nbsp;</a></div><pre>Hi Elizabeth and Suchandra,
+I have a local copy that handles the rotation. I&#39;m not sure how to go
+about testing it.
+
+I spoke with Shreyas and he doesn&#39;t have time to be the maintainer of
+this piece of code any more. I&#39;m willing to take over as maintainer of
+the sge_meter code, I&#39;m just not sure who I talk to about that.
+
+I&#39;ll be at a conference until Saturday, with limited access to email, so
+there may be a delay in my responses.
+
+Thanks,
+Lisa
+
+On 9/30/13 8&#58;43 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16691#1380555829'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-30T15:43:49+00:00">Sep 30, 2013 03:43 PM UTC</time> by <b>echism</b><a class="anchor" name="1380555829">&nbsp;</a></div><pre>Hi Lisa,
+
+How is this going?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1379365761'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T21:09:21+00:00">Sep 16, 2013 09:09 PM UTC</time><a class="anchor" name="1379365761">&nbsp;</a></div><pre>Hi Elizabeth,
+I have a potential fix, but I&#39;m working on how to test it locally without interfering with our own accounting. We have a test system here called NERSC-PDSF2 which I can use, but it needs to be set it up.
+
+Bye,
+Lisa
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Lisa Gerhardt 1458</pre></div><div class='update_description'><i onclick="document.location='16691#1379364952'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T20:55:52+00:00">Sep 16, 2013 08:55 PM UTC</time> by <b>echism</b><a class="anchor" name="1379364952">&nbsp;</a></div><pre>Suchandra.
+
+Have you heard anything from Lisa?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1378420709'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-05T22:38:29+00:00">Sep 5, 2013 10:38 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1378420709">&nbsp;</a></div><pre>Spoke with Lisa and she&#39;ll look at this next week.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1378410472'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-05T19:47:52+00:00">Sep 5, 2013 07:47 PM UTC</time> by <b>echism</b><a class="anchor" name="1378410472">&nbsp;</a></div><pre>It looks like Suchandra is working on something with Lisa out of band. I&#39;ll keep this open.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16691#1377792138'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-29T16:02:18+00:00">Aug 29, 2013 04:02 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1377792138">&nbsp;</a></div><pre>Awaiting reply about keeping this ticket open.</pre></div><div class='update_description'><i onclick="document.location='16691#1377715366'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-28T18:42:46+00:00">Aug 28, 2013 06:42 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1377715366">&nbsp;</a></div><pre>I have created a JIRA ticket for this issue&#58; <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1181.' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1181.</a>
+
+For now I&#39;ve assigned it to Suchandra and added Iwona as a watcher.  Would you like to keep this goc ticket open or are you ok tracking the issue from JIRA?
+
+Suchandra, would you like to coordinate with Lisa Gerhardt about working on this?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='16691#1377707411'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-28T16:30:11+00:00">Aug 28, 2013 04:30 PM UTC</time> by <b>Iwona Sakrejda</b><a class="anchor" name="1377707411">&nbsp;</a></div><pre>Hi,
+
+Turns out that here at NERSC Lisa Gerhardt (
+/DC=org/DC=doegrids/OU=People/CN=Lisa Gerhardt 360735)
+is fluent in Python and willing to take on fixing this issue and we could
+test it on our spare gatekeeper.
+Lisa is registered with OSG. I still think it&#39;s a good idea to have a
+ticket in JIRA for the issue.
+Could you let us know how to proceed?
+
+Thanks!
+
+Iwona Sakrejda
+
+On Wed, Aug 28, 2013 at 6&#58;57 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16691#1377698278'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-28T13:57:58+00:00">Aug 28, 2013 01:57 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1377698278">&nbsp;</a></div><pre>Yes, if you can create a JIRA ticket for this, that&#39;ll be great.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='16691#1377640306'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-27T21:51:46+00:00">Aug 27, 2013 09:51 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1377640306">&nbsp;</a></div><pre>Thanks Iwona for reporting this.
+
+Suchandra, do you have any insight into this?  Should I create a JIRA ticket for the issue?
+
+Thanks!
+Carl</pre></div><div class='update_description'><i onclick="document.location='16691#1377215007'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-22T23:43:27+00:00">Aug 22, 2013 11:43 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1377215007">&nbsp;</a></div><pre>Gratia SGE probe is not designed to handle rotation of accounting files. There is a note to that effect in the code.
+What&#39;s worse - by default it is configured to use checkpointing and checkpointing uses the last processed line
+as a position indicator. When the accounting file is rotated all the jobs in the new file are skipped until the new file is
+larger than the old file and only then new jobs are reported. If the new file for the day does not grow big enough,
+nothing is reported.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Iwona Sakrejda 150</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F16691">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 16691});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[4150] update configure-osg.sh for configure_squid</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=4150" method="post">
+<div class="page-header">
+    <h3><span class="muted">4150</span> / update configure-osg.sh for configure_squid</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Karthik Arunachalam</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">rob to review</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2007-09-27</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Rob Quick <span class="muted"> / OSG GOC Management</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=4150", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/4150?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/4150?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20update%20configure-osg.sh%20for%20configure_squid%20ISSUE%3D4150%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='4150#1190926509'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-09-27T20:55:09+00:00">Sep 27, 2007 08:55 PM UTC</time> by <b>Thomas Wang</b><a class="anchor" name="1190926509">&nbsp;</a></div><pre>---------- Forwarded Message ----------
+Date&#58; September 27, 2007 3&#58;43&#58;10 PM -0500
+From&#58; Karthik Arunachalam &#60;karunach@....&#62;
+To&#58; Suchandra Thapa &#60;sthapa@....&#62;
+Subject&#58; Re&#58; Squid Validation -- ISSUE=4150
+
+On Thu, 27 Sep 2007, Suchandra Thapa wrote&#58;
+
+<font color='#7F7E6F'>&#62; What is the OSG_SQUID_LOCATION set to?</font>
+
+It was just set to osgitb1.nhn.ou.edu
+
+<font color='#7F7E6F'>&#62; Is squid installed on the same machine as the CE</font>
+
+Yes on osgitb1.nhn.ou.edu which is the CE.
+
+<font color='#7F7E6F'>&#62; but not from the the vdt installation?</font>
+
+To make things clear&#58;
+
+The main ITB installation is under /opt/osg
+The squid installation is under /opt/squid_validation
+
+So they are two separate installation directories on the same CE.
+
+Thanks,
+Karthik</pre></div><div class='update_description'><i onclick="document.location='4150#1190926474'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-09-27T20:54:34+00:00">Sep 27, 2007 08:54 PM UTC</time> by <b>Thomas Wang</b><a class="anchor" name="1190926474">&nbsp;</a></div><pre>Date&#58; September 27, 2007 3&#58;37&#58;31 PM -0500
+From&#58; Suchandra Thapa &#60;sthapa@....&#62;
+To&#58; Karthik Arunachalam &#60;karunach@....&#62;
+Subject&#58; Re&#58; Squid Validation -- ISSUE=4150
+
+Hi Karthik,
+
+What is the OSG_SQUID_LOCATION set to?  Is squid installed on the same
+machine as the CE but not from the the vdt installation?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='4150#1190915167'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-09-27T17:46:07+00:00">Sep 27, 2007 05:46 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1190915167">&nbsp;</a></div><pre>All,
+
+The following mail was sent to the GOC. Since it is an 0.7.0 service
+validation issue, I am sending it to the ITB mailing list for action
+and closing the GOC ticket, as ITB has it&#39;s own ticketing process
+outside of the GOC.
+
+Thanks,
+Rob</pre></div><div class='update_description'><i onclick="document.location='4150#1190915083'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-09-27T17:44:43+00:00">Sep 27, 2007 05:44 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1190915083">&nbsp;</a></div><pre>Sent this to the ITB for action and closing the GOC ticket.</pre></div><div class='update_description'><i onclick="document.location='4150#1190756135'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-09-25T21:35:35+00:00">Sep 25, 2007 09:35 PM UTC</time> by <b>Thomas Wang</b><a class="anchor" name="1190756135">&nbsp;</a></div><pre>---------- Forwarded Message ----------
+Date&#58; September 25, 2007 4&#58;03&#58;34 PM -0500
+From&#58; Karthik Arunachalam &#60;karunach@....&#62;
+To&#58; goc@....
+Subject&#58; Re&#58; Squid validation (fwd)
+
+Hi,
+
+I am working on squid validation for osg-0.7.0. I ran configure-osg.sh
+to provide the  squid information, but configure_squid failed. We have
+the squid  installation separately on another installation directory
+from the main osg-0.7.0  installation, but on the same host. But
+configure-osg.sh assumes that  squid is installed under the same
+installation directory as the main  osg-0.7.0 installation.
+
+It would be (or would it be) desirable to be update the script so that
+it  will accommodate the fact that squid could be in a separate
+installation  directory?
+
+Here is the error message&#58;
+... squid service is being used.
+
+## -----------------------------------------##
+Configuring squid now.
+... executing configure_squid script as
+/usr/local/opt/osg-0.7.0/vdt/setup/configure_squid --server y
+--mem-cache-size 128MB --disk-cache-size 2GB
+./configure-osg.sh&#58; line 1306&#58;
+/usr/local/opt/osg-0.7.0/vdt/setup/configure_squid&#58; No such file or
+directory
+ERROR&#58; configure_squid failed.
+
+Here is the relevant section of the code in configure-osg.sh
+-------------------------------------------------------------
+cmd=&#34;$VDT_LOCATION/vdt/setup/configure_squid $server_args&#34;
+<div id='show_294079015' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_294079015'>echo &#34;... executing configure_squid script as&#34;
+echo &#34;$cmd&#34;
+$cmd
+
+Also I was wondering as a work around if it will be OK for me to change
+the above code to
+
+cmd=&#34;/opt/squid_validation/vdt/setup/configure_squid $server_args&#34;
+
+and run configure-osg.sh again?
+
+Thanks,
+Karthik
+
+*********************************************
+* Karthikeyan Arunachalam                    *
+* Department of Physics and Astronomy        *
+* 440 W. Brooks St., Room 363                *
+* University of Oklahoma, Norman, OK 73019   *
+* Phone&#58; 405 325 3961 x 36363                *
+* <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a>                      *
+**********************************************
+
+---------- Forwarded message ----------
+Date&#58; Tue, 25 Sep 2007 15&#58;27&#58;39 -0500 (CDT)
+From&#58; Steven Timm &#60;timm@....&#62;
+To&#58; Karthik Arunachalam &#60;karunach@....&#62;
+Cc&#58; Dave Dykstra &#60;dwd@....&#62;, Horst Severini &#60;hs@....&#62;,
+bjb@.... Subject&#58; Re&#58; Squid validation
+
+This is one idea that the configure-osg.sh script hadn&#39;t considered.
+If the squid hostname entered is on the same machine name
+as your gatekeeper host, then it assumes that it is within
+the same VDT installation too and tries to configure it.
+
+If a different hostname is specified, it doesn&#39;t try to configure
+the squid.  This should be fed back to the maintainers of the
+configure-osg.sh script who I believe are at the GOC.
+
+Steve
+
+On Tue, 25 Sep 2007, Karthik Arunachalam wrote&#58;
+
+<font color='#7F7E6F'>&#62; Hi Steve,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Yes it is relevant. It is recommended that the squid installation</font>
+<font color='#7F7E6F'>&#62;&#62; is not part of the main ITB installation.  On a different machine if</font>
+<font color='#7F7E6F'>&#62;&#62; possible.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We ran configure-osg.sh from out main osg-0.7.0 installation and</font>
+<font color='#7F7E6F'>&#62; provided information about the squid server. At the end the</font>
+<font color='#7F7E6F'>&#62; configure-osg.sh failed when trying to configure squid. You can see</font>
+<font color='#7F7E6F'>&#62; the error below. Basically it seems to be looking for a</font>
+<font color='#7F7E6F'>&#62; configure_squid script inside of the existing osg-0.7.0 installation</font>
+<font color='#7F7E6F'>&#62; and please note that we have our installation of squid separate under</font>
+<font color='#7F7E6F'>&#62; /usr/local/opt/squid_validation, on the same machine. So the error</font>
+<font color='#7F7E6F'>&#62; seems to contradict what you have suggested above.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ## -----------------------------------------##</font>
+<font color='#7F7E6F'>&#62; Configuring squid now.</font>
+<font color='#7F7E6F'>&#62; ... executing configure_squid script as</font>
+<font color='#7F7E6F'>&#62; /usr/local/opt/osg-0.7.0/vdt/setup/configure_squid --server y</font>
+<font color='#7F7E6F'>&#62; --mem-cache-size 128MB --disk-cache-size 2GB</font>
+<font color='#7F7E6F'>&#62; ./configure-osg.sh&#58; line 1306&#58;</font>
+<font color='#7F7E6F'>&#62; /usr/local/opt/osg-0.7.0/vdt/setup/configure_squid&#58; No such file or</font>
+<font color='#7F7E6F'>&#62; directory</font>
+<font color='#7F7E6F'>&#62; ERROR&#58; configure_squid failed.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Any ideas?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62; Karthik</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Tue, 25 Sep 2007, Steven Timm wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; On Mon, 24 Sep 2007, Karthik Arunachalam wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Hi Steve,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I see. So does that mean we run the configure_osg.sh script on our</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; ITB 0.7.0 installation again and then set-up the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; OSG_SQUID_LOCATION? But will that be relevant given that our squid</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; installation has been done as a stand-alone from the main ITB</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; installation?</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Yes it is relevant. It is recommended that the squid installation</font>
+<font color='#7F7E6F'>&#62;&#62; is not part of the main ITB installation.  On a different machine if</font>
+<font color='#7F7E6F'>&#62;&#62; possible.</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Still we would like to know if</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; things will work if the squid installation is separate from the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; main OSG installation or does it has to be a part of the main one?</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; It will work if the squid installation is separate.  We do it this</font>
+<font color='#7F7E6F'>&#62;&#62; way at Fermilab. There is no</font>
+<font color='#7F7E6F'>&#62;&#62; client executable that is needed by the job.  The job environment</font>
+<font color='#7F7E6F'>&#62;&#62; just has to know where the squid location is, hostname and port.</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Steve Timm</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Karthik</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; On Mon, 24 Sep 2007, Steven Timm wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; OSG_SQUID_LOCATION is set when  you run configure_osg.sh.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; You only need to define it on the CE.  does this answer the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; question?</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Steve</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; ------------------------------------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Steven C. Timm, Ph.D  (630) 840-8525</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; timm@....  <a href='http&#58;//home.fnal.gov/' target='_blank' rel='nofollow'>http&#58;//home.fnal.gov/</a>~timm/</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Fermilab Computing Division, Scientific Computing Facilities,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Grid Facilities Department, FermiGrid Services Group, Assistant</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Group Leader.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; On Mon, 24 Sep 2007, Karthik Arunachalam wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; As a follow-up to the question if we need to install squid</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; separately, the question seems to be relevant only if</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; OSG_SQUID_LOCATION is available at least as a part of the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; setup.sh of the separate install of squid that I did on osgitb1.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; But when I looked into that setup.sh file, I don&#39;t seem to find</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; OSG_SQUID_LOCATION. Grepping for it doesn&#39;t yield a match as seen</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; below.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; So the question is why OSG_SQUID_LOCATION isn&#39;t available in the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; setup file that comes as part of the squid installation.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; [karunach@osgitb1 squid_validation]$ pwd</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; /opt/squid_validation</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; [karunach@osgitb1 squid_validation]$ cat setup.sh|grep -i</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; squid_location [karunach@osgitb1 squid_validation]$</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; Karthik</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; On Mon, 24 Sep 2007, Karthik Arunachalam wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; Hi Dave,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; job on the CE (that will be executed on the WN) (commented out</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; wget for the time being)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; ------------------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; [karunach@osgitb1 ~]$ cat tst.sh</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; # !/bin/sh</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; uname -a</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; export http_proxy=$OSG_SQUID_LOCATION&#58;3128</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; echo $http_proxy</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; # wget -d -O/dev/null <a href='http&#58;//www.fnal.gov' target='_blank' rel='nofollow'>http&#58;//www.fnal.gov</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; # wget -d -O/dev/null <a href='http&#58;//www.fnal.gov' target='_blank' rel='nofollow'>http&#58;//www.fnal.gov</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; This job was submitted to the Cluster using globus-job-run</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; ----------------------------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; ouhep4=&#62;16&#58;25&#58;48-/misc/home/karunach-1012=&#62;globus-job-run</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; osgitb1.nhn.ou.edu/jobmanager-condor /home/karunach/tst.sh Linux</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; osgitb2.nhn.ou.edu 2.6.18-8.1.10.el5 #1 SMP Thu Aug 30 20&#58;43&#58;15</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; EDT 2007 i686 i686 i386 GNU/Linux</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; UNAVAILABLE&#58;3128</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; As you can see the job was executed on a WN which is osgitb2.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; But the http_proxy is echoed as &#39;UNAVAILABLE&#39;. The thing I don&#39;t</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; understand is how the $OSG_SQUID_LOCATION is understood when the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; job is sent to the CE.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; Oh, wait, I talked to Horst here to discuss about this. He</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; pointed out that the issue might be that we have the squid</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; installation on osgitb1 as a separate installation from the main</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; OSG 0.7.0 ITB installation. That was because squid wasn&#39;t</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; installed originally and then we preferred to install it</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; separately, since we weren&#39;t sure if trying to install it as</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; part of the main installation might mess up something.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; So the question is should squid be installed as a part of the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; main OSG 0.7.0 installation in order to effectively do this</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; testing? Please let us know.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; Karthik</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; On Mon, 24 Sep 2007, Dave Dykstra wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; Karthik,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; This doesn&#39;t look to me as if you ran a script using</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; $OSG_SQUID_LOCATION to verify that variable is set on the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; worker nodes.  Also, the idea is not for you to execute the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; command globus-job-run on the worker node, it is for you to run</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; a globus-job-run command which causes the job to be run on the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; worker node!  Typically that is done by putting</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; /jobmanager-condor or something like that after the CE name.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; It depends on what your job manager is.  Alternatively you can</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; use something like condor-submit to run a grid job on your</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; worker node, if you&#39;re using condor.  It&#39;s probably a good idea</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; to include &#39;uname -a&#39; in your script so you can verify what</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; node the commands ran on.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; - Dave</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; On Mon, Sep 24, 2007 at 03&#58;01&#58;26PM -0500, Karthik Arunachalam</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Things have been set right now. The problem was I missed to</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; put the &#39;export&#39;. Once that was fixed the globus-job-run from</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; the WN made a HIT. But it was a HIT for both the 1st and the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 2nd wget attempts. I think this was due to the fact that &#34;wget</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -d -O/dev/null <a href='http&#58;//www.fnal.gov&#34' target='_blank' rel='nofollow'>http&#58;//www.fnal.gov&#34</a>; was already ran from the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; server and the data was already in the cache.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; But then I ran a &#34;wget -d -O/dev/null <a href='http&#58;//www.nhn.ou.edu&#34' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu&#34</a>;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; from the WN and I could confirm that it was a MISS the 1st</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; time and a HIT the 2nd time as expected. I ran the test from</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; more than one WN and could confirm the results.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; I turned off squid and then as expected the connection was</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; refused when trying to contact the squid server on port 3128.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; From these results I think we can conclude that the squid</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; validation has</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; been successful and has been completed. Let me know what you</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; think.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -Karthik</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Test results</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ===============</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; our_networks setup in the squid.conf file</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -----------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; acl our_networks src 129.15.31.0/255.255.254.0</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; http_access allow our_networks</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Here is the test grid-job on the CE&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; [karunach@osgitb1 ~]$ cat tst1.sh</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; # !/bin/sh</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; export http_proxy=osgitb1.nhn.ou.edu&#58;3128</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; wget -d -O/dev/null <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; wget -d -O/dev/null <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Here is the result from the WN&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; [karunach@osgitb6 ~]$ globus-job-run osgitb1.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; /home/karunach/tst1.sh Setting --output-document</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; (outputdocument) to /dev/null DEBUG output created by Wget</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 1.10.2 (Red Hat modified) on linux-gnu.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; --14&#58;46&#58;54--  <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Resolving osgitb1.nhn.ou.edu... 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Caching osgitb1.nhn.ou.edu =&#62; 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Connecting to osgitb1.nhn.ou.edu|129.15.31.41|&#58;3128...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; connected. Created socket 5.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Releasing 0x0832dc08 (new refcount 1).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---request begin---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; GET <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a> HTTP/1.0</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; User-Agent&#58; Wget/1.10.2 (Red Hat modified)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Accept&#58; */*</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Host&#58; www.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---request end---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Proxy request sent, awaiting response...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---response begin---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; HTTP/1.0 200 OK</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Date&#58; Mon, 24 Sep 2007 19&#58;46&#58;54 GMT</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Server&#58; Apache/2.0.59 (Unix) mod_ssl/2.0.59 OpenSSL/0.9.8d</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Last-Modified&#58; Wed, 13 Jun 2007 16&#58;05&#58;59 GMT</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ETag&#58; &#34;711e2-f5e-ca3407c0&#34;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Accept-Ranges&#58; bytes</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Content-Length&#58; 3934</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Content-Type&#58; text/html</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; X-Cache&#58; MISS from osgitb1.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Via&#58; 1.0 osgitb1.nhn.ou.edu&#58;3128 (squid/2.6.STABLE13)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Proxy-Connection&#58; close</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---response end---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 200 OK</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; hs-&#62;local_file is&#58; /dev/null (existing)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; TEXTHTML is on.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Length&#58; 3934 (3.8K) [text/html]</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Saving to&#58; &#96;/dev/null&#39;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;      0K ...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;      100% 96.0M=0s</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Closed fd 5</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 14&#58;46&#58;54 (96.0 MB/s) - &#96;/dev/null&#39; saved [3934/3934]</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Setting --output-document (outputdocument) to /dev/null</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; DEBUG output created by Wget 1.10.2 (Red Hat modified) on</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; linux-gnu.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; --14&#58;46&#58;54--  <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Resolving osgitb1.nhn.ou.edu... 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Caching osgitb1.nhn.ou.edu =&#62; 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Connecting to osgitb1.nhn.ou.edu|129.15.31.41|&#58;3128...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; connected. Created socket 5.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Releasing 0x095e9c08 (new refcount 1).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---request begin---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; GET <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a> HTTP/1.0</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; User-Agent&#58; Wget/1.10.2 (Red Hat modified)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Accept&#58; */*</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Host&#58; www.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---request end---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Proxy request sent, awaiting response...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---response begin---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; HTTP/1.0 200 OK</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Date&#58; Mon, 24 Sep 2007 19&#58;46&#58;54 GMT</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Server&#58; Apache/2.0.59 (Unix) mod_ssl/2.0.59 OpenSSL/0.9.8d</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Last-Modified&#58; Wed, 13 Jun 2007 16&#58;05&#58;59 GMT</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ETag&#58; &#34;711e2-f5e-ca3407c0&#34;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Accept-Ranges&#58; bytes</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Content-Length&#58; 3934</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Content-Type&#58; text/html</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; X-Cache&#58; HIT from osgitb1.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Via&#58; 1.0 osgitb1.nhn.ou.edu&#58;3128 (squid/2.6.STABLE13)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Proxy-Connection&#58; close</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---response end---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 200 OK</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; hs-&#62;local_file is&#58; /dev/null (existing)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; TEXTHTML is on.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Length&#58; 3934 (3.8K) [text/html]</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Saving to&#58; &#96;/dev/null&#39;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;      0K ...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;      100% 95.2M=0s</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Closed fd 5</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 14&#58;46&#58;54 (95.2 MB/s) - &#96;/dev/null&#39; saved [3934/3934]</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; After turning off the squid server&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -----------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; [karunach@osgitb6 ~]$ globus-job-run osgitb1.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; /home/karunach/tst1.sh Setting --output-document</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; (outputdocument) to /dev/null DEBUG output created by Wget</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 1.10.2 (Red Hat modified) on linux-gnu.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; --14&#58;54&#58;06--  <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Resolving osgitb1.nhn.ou.edu... 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Caching osgitb1.nhn.ou.edu =&#62; 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Connecting to osgitb1.nhn.ou.edu|129.15.31.41|&#58;3128... Closed</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; fd 5 failed&#58; Connection refused.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Releasing 0x080f1c08 (new refcount 1).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Setting --output-document (outputdocument) to /dev/null</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; DEBUG output created by Wget 1.10.2 (Red Hat modified) on</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; linux-gnu.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; --14&#58;54&#58;06--  <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Resolving osgitb1.nhn.ou.edu... 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Caching osgitb1.nhn.ou.edu =&#62; 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Connecting to osgitb1.nhn.ou.edu|129.15.31.41|&#58;3128... Closed</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; fd 5 failed&#58; Connection refused.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Releasing 0x08212c08 (new refcount 1).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; *********************************************</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * Karthikeyan Arunachalam                    *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * Department of Physics and Astronomy        *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * 440 W. Brooks St., Room 363                *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * University of Oklahoma, Norman, OK 73019   *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * Phone&#58; 405 325 3961 x 36363                *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a>                      *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; **********************************************</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; --</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; *********************************************</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * Karthikeyan Arunachalam                    *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * Department of Physics and Astronomy        *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * 440 W. Brooks St., Room 363                *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * University of Oklahoma, Norman, OK 73019   *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * Phone&#58; 405 325 3961 x 36363                *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a>                      *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; **********************************************</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+--
+------------------------------------------------------------------
+Steven C. Timm, Ph.D  (630) 840-8525
+timm@....  <a href='http&#58;//home.fnal.gov/' target='_blank' rel='nofollow'>http&#58;//home.fnal.gov/</a>~timm/
+Fermilab Computing Division, Scientific Computing Facilities,
+Grid Facilities Department, FermiGrid Services Group, Assistant Group
+Leader.
+
+---------- End Forwarded Message ----------
+</div><script type='text/javascript'>
+        $('#show_294079015').click(function() {
+            $('#detail_294079015').slideDown("normal");
+            $('#show_294079015').hide();
+            $('#hide_294079015').show();
+        });
+        $('#hide_294079015').click(function() {
+            $('#detail_294079015').slideUp();
+            $('#hide_294079015').hide();
+            $('#show_294079015').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='4150#0'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="1970-01-01T00:00:00+00:00">Jan 1, 1970 12:00 AM UTC</time> by <b>Thomas Wang&#58;</b><a class="anchor" name="0">&nbsp;</a></div><pre>---------- Forwarded Message ----------
+Date&#58; September 25, 2007 4&#58;03&#58;34 PM -0500
+From&#58; Karthik Arunachalam &#60;karunach@....&#62;
+To&#58; goc@....
+Subject&#58; Re&#58; Squid validation (fwd)
+
+Hi,
+
+I am working on squid validation for osg-0.7.0. I ran configure-osg.sh
+to provide the squid information, but configure_squid failed. We have
+the squid installation separately on another installation directory
+from the main osg-0.7.0 installation, but on the same host. But
+configure-osg.sh assumes that squid is installed under the same
+installation directory as the main osg-0.7.0 installation.
+
+It would be (or would it be) desirable to be update the script so that
+it will accommodate the fact that squid could be in a separate
+installation directory?
+
+Here is the error message&#58;
+... squid service is being used.
+
+## -----------------------------------------##
+Configuring squid now.
+... executing configure_squid script as
+/usr/local/opt/osg-0.7.0/vdt/setup/configure_squid --server y
+--mem-cache-size 128MB --disk-cache-size 2GB
+./configure-osg.sh&#58; line 1306&#58;
+/usr/local/opt/osg-0.7.0/vdt/setup/configure_squid&#58; No such file or
+directory
+ERROR&#58; configure_squid failed.
+
+Here is the relevant section of the code in configure-osg.sh
+-------------------------------------------------------------
+cmd=&#34;$VDT_LOCATION/vdt/setup/configure_squid $server_args&#34;
+<div id='show_28857603' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_28857603'>echo &#34;... executing configure_squid script as&#34;
+echo &#34;$cmd&#34;
+$cmd
+
+Also I was wondering as a work around if it will be OK for me to change
+the above code to
+
+cmd=&#34;/opt/squid_validation/vdt/setup/configure_squid $server_args&#34;
+
+and run configure-osg.sh again?
+
+Thanks,
+Karthik
+
+*********************************************
+* Karthikeyan Arunachalam *
+* Department of Physics and Astronomy *
+* 440 W. Brooks St., Room 363 *
+* University of Oklahoma, Norman, OK 73019 *
+* Phone&#58; 405 325 3961 x 36363 *
+* <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a> *
+**********************************************
+
+---------- Forwarded message ----------
+Date&#58; Tue, 25 Sep 2007 15&#58;27&#58;39 -0500 (CDT)
+From&#58; Steven Timm &#60;timm@....&#62;
+To&#58; Karthik Arunachalam &#60;karunach@....&#62;
+Cc&#58; Dave Dykstra &#60;dwd@....&#62;, Horst Severini &#60;hs@....&#62;,
+bjb@.... Subject&#58; Re&#58; Squid validation
+
+This is one idea that the configure-osg.sh script hadn&#39;t considered.
+If the squid hostname entered is on the same machine name
+as your gatekeeper host, then it assumes that it is within
+the same VDT installation too and tries to configure it.
+
+If a different hostname is specified, it doesn&#39;t try to configure
+the squid. This should be fed back to the maintainers of the
+configure-osg.sh script who I believe are at the GOC.
+
+Steve
+
+On Tue, 25 Sep 2007, Karthik Arunachalam wrote&#58;
+
+<font color='#7F7E6F'>&#62; Hi Steve,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Yes it is relevant. It is recommended that the squid installation</font>
+<font color='#7F7E6F'>&#62;&#62; is not part of the main ITB installation. On a different machine if</font>
+<font color='#7F7E6F'>&#62;&#62; possible.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We ran configure-osg.sh from out main osg-0.7.0 installation and</font>
+<font color='#7F7E6F'>&#62; provided information about the squid server. At the end the</font>
+<font color='#7F7E6F'>&#62; configure-osg.sh failed when trying to configure squid. You can see</font>
+<font color='#7F7E6F'>&#62; the error below. Basically it seems to be looking for a</font>
+<font color='#7F7E6F'>&#62; configure_squid script inside of the existing osg-0.7.0 installation</font>
+<font color='#7F7E6F'>&#62; and please note that we have our installation of squid separate under</font>
+<font color='#7F7E6F'>&#62; /usr/local/opt/squid_validation, on the same machine. So the error</font>
+<font color='#7F7E6F'>&#62; seems to contradict what you have suggested above.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ## -----------------------------------------##</font>
+<font color='#7F7E6F'>&#62; Configuring squid now.</font>
+<font color='#7F7E6F'>&#62; ... executing configure_squid script as</font>
+<font color='#7F7E6F'>&#62; /usr/local/opt/osg-0.7.0/vdt/setup/configure_squid --server y</font>
+<font color='#7F7E6F'>&#62; --mem-cache-size 128MB --disk-cache-size 2GB</font>
+<font color='#7F7E6F'>&#62; ./configure-osg.sh&#58; line 1306&#58;</font>
+<font color='#7F7E6F'>&#62; /usr/local/opt/osg-0.7.0/vdt/setup/configure_squid&#58; No such file or</font>
+<font color='#7F7E6F'>&#62; directory</font>
+<font color='#7F7E6F'>&#62; ERROR&#58; configure_squid failed.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Any ideas?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62; Karthik</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Tue, 25 Sep 2007, Steven Timm wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; On Mon, 24 Sep 2007, Karthik Arunachalam wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Hi Steve,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I see. So does that mean we run the configure_osg.sh script on our</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; ITB 0.7.0 installation again and then set-up the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; OSG_SQUID_LOCATION? But will that be relevant given that our squid</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; installation has been done as a stand-alone from the main ITB</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; installation?</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Yes it is relevant. It is recommended that the squid installation</font>
+<font color='#7F7E6F'>&#62;&#62; is not part of the main ITB installation. On a different machine if</font>
+<font color='#7F7E6F'>&#62;&#62; possible.</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Still we would like to know if</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; things will work if the squid installation is separate from the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; main OSG installation or does it has to be a part of the main one?</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; It will work if the squid installation is separate. We do it this</font>
+<font color='#7F7E6F'>&#62;&#62; way at Fermilab. There is no</font>
+<font color='#7F7E6F'>&#62;&#62; client executable that is needed by the job. The job environment</font>
+<font color='#7F7E6F'>&#62;&#62; just has to know where the squid location is, hostname and port.</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Steve Timm</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Karthik</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; On Mon, 24 Sep 2007, Steven Timm wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; OSG_SQUID_LOCATION is set when you run configure_osg.sh.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; You only need to define it on the CE. does this answer the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; question?</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Steve</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; ------------------------------------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Steven C. Timm, Ph.D (630) 840-8525</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; timm@.... <a href='http&#58;//home.fnal.gov/' target='_blank' rel='nofollow'>http&#58;//home.fnal.gov/</a>~timm/</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Fermilab Computing Division, Scientific Computing Facilities,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Grid Facilities Department, FermiGrid Services Group, Assistant</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Group Leader.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; On Mon, 24 Sep 2007, Karthik Arunachalam wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; As a follow-up to the question if we need to install squid</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; separately, the question seems to be relevant only if</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; OSG_SQUID_LOCATION is available at least as a part of the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; setup.sh of the separate install of squid that I did on osgitb1.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; But when I looked into that setup.sh file, I don&#39;t seem to find</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; OSG_SQUID_LOCATION. Grepping for it doesn&#39;t yield a match as seen</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; below.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; So the question is why OSG_SQUID_LOCATION isn&#39;t available in the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; setup file that comes as part of the squid installation.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; [karunach@osgitb1 squid_validation]$ pwd</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; /opt/squid_validation</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; [karunach@osgitb1 squid_validation]$ cat setup.sh|grep -i</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; squid_location [karunach@osgitb1 squid_validation]$</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; Karthik</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; On Mon, 24 Sep 2007, Karthik Arunachalam wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; Hi Dave,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; job on the CE (that will be executed on the WN) (commented out</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; wget for the time being)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; ------------------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; [karunach@osgitb1 ~]$ cat tst.sh</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; # !/bin/sh</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; uname -a</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; export http_proxy=$OSG_SQUID_LOCATION&#58;3128</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; echo $http_proxy</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; # wget -d -O/dev/null <a href='http&#58;//www.fnal.gov' target='_blank' rel='nofollow'>http&#58;//www.fnal.gov</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; # wget -d -O/dev/null <a href='http&#58;//www.fnal.gov' target='_blank' rel='nofollow'>http&#58;//www.fnal.gov</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; This job was submitted to the Cluster using globus-job-run</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; ----------------------------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; ouhep4=&#62;16&#58;25&#58;48-/misc/home/karunach-1012=&#62;globus-job-run</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; osgitb1.nhn.ou.edu/jobmanager-condor /home/karunach/tst.sh Linux</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; osgitb2.nhn.ou.edu 2.6.18-8.1.10.el5 #1 SMP Thu Aug 30 20&#58;43&#58;15</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; EDT 2007 i686 i686 i386 GNU/Linux</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; UNAVAILABLE&#58;3128</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; As you can see the job was executed on a WN which is osgitb2.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; But the http_proxy is echoed as &#39;UNAVAILABLE&#39;. The thing I don&#39;t</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; understand is how the $OSG_SQUID_LOCATION is understood when the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; job is sent to the CE.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; Oh, wait, I talked to Horst here to discuss about this. He</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; pointed out that the issue might be that we have the squid</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; installation on osgitb1 as a separate installation from the main</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; OSG 0.7.0 ITB installation. That was because squid wasn&#39;t</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; installed originally and then we preferred to install it</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; separately, since we weren&#39;t sure if trying to install it as</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; part of the main installation might mess up something.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; So the question is should squid be installed as a part of the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; main OSG 0.7.0 installation in order to effectively do this</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; testing? Please let us know.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; Karthik</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62; On Mon, 24 Sep 2007, Dave Dykstra wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; Karthik,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; This doesn&#39;t look to me as if you ran a script using</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; $OSG_SQUID_LOCATION to verify that variable is set on the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; worker nodes. Also, the idea is not for you to execute the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; command globus-job-run on the worker node, it is for you to run</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; a globus-job-run command which causes the job to be run on the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; worker node! Typically that is done by putting</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; /jobmanager-condor or something like that after the CE name.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; It depends on what your job manager is. Alternatively you can</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; use something like condor-submit to run a grid job on your</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; worker node, if you&#39;re using condor. It&#39;s probably a good idea</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; to include &#39;uname -a&#39; in your script so you can verify what</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; node the commands ran on.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; - Dave</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; On Mon, Sep 24, 2007 at 03&#58;01&#58;26PM -0500, Karthik Arunachalam</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Things have been set right now. The problem was I missed to</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; put the &#39;export&#39;. Once that was fixed the globus-job-run from</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; the WN made a HIT. But it was a HIT for both the 1st and the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 2nd wget attempts. I think this was due to the fact that &#34;wget</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -d -O/dev/null <a href='http&#58;//www.fnal.gov&#34' target='_blank' rel='nofollow'>http&#58;//www.fnal.gov&#34</a>; was already ran from the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; server and the data was already in the cache.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; But then I ran a &#34;wget -d -O/dev/null <a href='http&#58;//www.nhn.ou.edu&#34' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu&#34</a>;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; from the WN and I could confirm that it was a MISS the 1st</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; time and a HIT the 2nd time as expected. I ran the test from</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; more than one WN and could confirm the results.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; I turned off squid and then as expected the connection was</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; refused when trying to contact the squid server on port 3128.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; From these results I think we can conclude that the squid</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; validation has</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; been successful and has been completed. Let me know what you</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; think.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -Karthik</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Test results</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ===============</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; our_networks setup in the squid.conf file</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -----------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; acl our_networks src 129.15.31.0/255.255.254.0</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; http_access allow our_networks</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Here is the test grid-job on the CE&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ------------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; [karunach@osgitb1 ~]$ cat tst1.sh</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; # !/bin/sh</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; export http_proxy=osgitb1.nhn.ou.edu&#58;3128</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; wget -d -O/dev/null <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; wget -d -O/dev/null <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Here is the result from the WN&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; [karunach@osgitb6 ~]$ globus-job-run osgitb1.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; /home/karunach/tst1.sh Setting --output-document</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; (outputdocument) to /dev/null DEBUG output created by Wget</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 1.10.2 (Red Hat modified) on linux-gnu.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; --14&#58;46&#58;54-- <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Resolving osgitb1.nhn.ou.edu... 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Caching osgitb1.nhn.ou.edu =&#62; 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Connecting to osgitb1.nhn.ou.edu|129.15.31.41|&#58;3128...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; connected. Created socket 5.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Releasing 0x0832dc08 (new refcount 1).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---request begin---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; GET <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a> HTTP/1.0</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; User-Agent&#58; Wget/1.10.2 (Red Hat modified)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Accept&#58; */*</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Host&#58; www.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---request end---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Proxy request sent, awaiting response...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---response begin---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; HTTP/1.0 200 OK</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Date&#58; Mon, 24 Sep 2007 19&#58;46&#58;54 GMT</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Server&#58; Apache/2.0.59 (Unix) mod_ssl/2.0.59 OpenSSL/0.9.8d</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Last-Modified&#58; Wed, 13 Jun 2007 16&#58;05&#58;59 GMT</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ETag&#58; &#34;711e2-f5e-ca3407c0&#34;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Accept-Ranges&#58; bytes</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Content-Length&#58; 3934</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Content-Type&#58; text/html</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; X-Cache&#58; MISS from osgitb1.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Via&#58; 1.0 osgitb1.nhn.ou.edu&#58;3128 (squid/2.6.STABLE13)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Proxy-Connection&#58; close</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---response end---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 200 OK</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; hs-&#62;local_file is&#58; /dev/null (existing)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; TEXTHTML is on.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Length&#58; 3934 (3.8K) [text/html]</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Saving to&#58; &#96;/dev/null&#39;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 0K ...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 100% 96.0M=0s</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Closed fd 5</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 14&#58;46&#58;54 (96.0 MB/s) - &#96;/dev/null&#39; saved [3934/3934]</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Setting --output-document (outputdocument) to /dev/null</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; DEBUG output created by Wget 1.10.2 (Red Hat modified) on</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; linux-gnu.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; --14&#58;46&#58;54-- <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Resolving osgitb1.nhn.ou.edu... 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Caching osgitb1.nhn.ou.edu =&#62; 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Connecting to osgitb1.nhn.ou.edu|129.15.31.41|&#58;3128...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; connected. Created socket 5.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Releasing 0x095e9c08 (new refcount 1).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---request begin---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; GET <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a> HTTP/1.0</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; User-Agent&#58; Wget/1.10.2 (Red Hat modified)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Accept&#58; */*</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Host&#58; www.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---request end---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Proxy request sent, awaiting response...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---response begin---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; HTTP/1.0 200 OK</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Date&#58; Mon, 24 Sep 2007 19&#58;46&#58;54 GMT</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Server&#58; Apache/2.0.59 (Unix) mod_ssl/2.0.59 OpenSSL/0.9.8d</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Last-Modified&#58; Wed, 13 Jun 2007 16&#58;05&#58;59 GMT</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ETag&#58; &#34;711e2-f5e-ca3407c0&#34;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Accept-Ranges&#58; bytes</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Content-Length&#58; 3934</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Content-Type&#58; text/html</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; X-Cache&#58; HIT from osgitb1.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Via&#58; 1.0 osgitb1.nhn.ou.edu&#58;3128 (squid/2.6.STABLE13)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Proxy-Connection&#58; close</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---response end---</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 200 OK</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; hs-&#62;local_file is&#58; /dev/null (existing)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; TEXTHTML is on.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Length&#58; 3934 (3.8K) [text/html]</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Saving to&#58; &#96;/dev/null&#39;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 0K ...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 100% 95.2M=0s</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Closed fd 5</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 14&#58;46&#58;54 (95.2 MB/s) - &#96;/dev/null&#39; saved [3934/3934]</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; After turning off the squid server&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; -----------------------------------</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; [karunach@osgitb6 ~]$ globus-job-run osgitb1.nhn.ou.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; /home/karunach/tst1.sh Setting --output-document</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; (outputdocument) to /dev/null DEBUG output created by Wget</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 1.10.2 (Red Hat modified) on linux-gnu.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; --14&#58;54&#58;06-- <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Resolving osgitb1.nhn.ou.edu... 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Caching osgitb1.nhn.ou.edu =&#62; 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Connecting to osgitb1.nhn.ou.edu|129.15.31.41|&#58;3128... Closed</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; fd 5 failed&#58; Connection refused.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Releasing 0x080f1c08 (new refcount 1).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Setting --output-document (outputdocument) to /dev/null</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; DEBUG output created by Wget 1.10.2 (Red Hat modified) on</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; linux-gnu.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; --14&#58;54&#58;06-- <a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Resolving osgitb1.nhn.ou.edu... 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Caching osgitb1.nhn.ou.edu =&#62; 129.15.31.41</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Connecting to osgitb1.nhn.ou.edu|129.15.31.41|&#58;3128... Closed</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; fd 5 failed&#58; Connection refused.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Releasing 0x08212c08 (new refcount 1).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; *********************************************</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * Karthikeyan Arunachalam *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * Department of Physics and Astronomy *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * 440 W. Brooks St., Room 363 *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * University of Oklahoma, Norman, OK 73019 *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * Phone&#58; 405 325 3961 x 36363 *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; * <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a> *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; **********************************************</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; --</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; *********************************************</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * Karthikeyan Arunachalam *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * Department of Physics and Astronomy *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * 440 W. Brooks St., Room 363 *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * University of Oklahoma, Norman, OK 73019 *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * Phone&#58; 405 325 3961 x 36363 *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; * <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a> *</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; **********************************************</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+--
+------------------------------------------------------------------
+Steven C. Timm, Ph.D (630) 840-8525
+timm@.... <a href='http&#58;//home.fnal.gov/' target='_blank' rel='nofollow'>http&#58;//home.fnal.gov/</a>~timm/
+Fermilab Computing Division, Scientific Computing Facilities,
+Grid Facilities Department, FermiGrid Services Group, Assistant Group
+Leader.
+</div><script type='text/javascript'>
+        $('#show_28857603').click(function() {
+            $('#detail_28857603').slideDown("normal");
+            $('#show_28857603').hide();
+            $('#hide_28857603').show();
+        });
+        $('#hide_28857603').click(function() {
+            $('#detail_28857603').slideUp();
+            $('#hide_28857603').hide();
+            $('#show_28857603').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F4150">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 4150});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

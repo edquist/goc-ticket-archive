@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[27415] T3_US_OSU - glideins failing node validation</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=27415" method="post">
+<div class="page-header">
+    <h3><span class="muted">27415</span> / T3_US_OSU - glideins failing node validation</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Marty Kandes</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Marty Kandes</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier3</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Elevated</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">TX Incoming</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-02-08</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">USCMS_Tier3 <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=117572">117572</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=27415", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/27415?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/27415?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20T3_US_OSU%20-%20glideins%20failing%20node%20validation%20ISSUE%3D27415%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='27415#1455926441'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-20T00:00:41+00:00">Feb 20, 2016 12:00 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1455926441">&nbsp;</a></div><pre>This ticket was closed automatically. If this issue has not been resolved according your expectations or if you need further information, please submit a new ticket referencing this one.
+
+-- by GGUS SYSTEM at Fri Feb 19 23&#58;59&#58;35 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1454604969'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-04T16:56:09+00:00">Feb 4, 2016 04:56 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1454604969">&nbsp;</a></div><pre>Andrew,
+
+Glidein performance looks fairly normal to me. I think it&#39;s time to declare victory for the time being. Thanks for all your help debugging. Closing ticket.
+
+Marty Kandes
+UCSD Glidein Factory Operationsall node validation failures resolved; glidein performance has returned to normal
+
+-- by Marty Kandes at Thu Feb 04 16&#58;55&#58;27 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1454517122'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-03T16:32:02+00:00">Feb 3, 2016 04:32 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1454517122">&nbsp;</a></div><pre>Andrew,
+
+So far, things look good. I&#39;ll check back in tomorrow. If things run without issue over the next 24 hours, we should be good to go ahead and close out this ticket then.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Wed Feb 03 16&#58;31&#58;48 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1454511912'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-03T15:05:12+00:00">Feb 3, 2016 03:05 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1454511912">&nbsp;</a></div><pre>Thanks for the reminder, Kyle, and sorry for missing your message,
+Marty. We had a major HVAC failure in our computer farm room last week
+that distracted me.
+
+Related to this, the OS on some of our worker nodes had to be
+reinstalled, and they apparently didn&#39;t pick up the new configuration
+for glexec. I&#39;ve corrected this, and retested it on all the nodes.
+
+Could you please check the validation again? And thank you so much for
+your patience while we work through these problems.
+
+Cheers,
+Andrew</pre></div><div class='update_description'><i onclick="document.location='27415#1454498075'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-03T11:14:35+00:00">Feb 3, 2016 11:14 AM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1454498075">&nbsp;</a></div><pre>Andrew,
+
+Have you been able to see Marty&#39;s question for you?
+
+Thanks,
+Kyle</pre></div><div class='update_description'><i onclick="document.location='27415#1453855000'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-27T00:36:40+00:00">Jan 27, 2016 12:36 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1453855000">&nbsp;</a></div><pre>Hi Andrew,
+
+Unfortunately, when I checked on things today, it looks like glideins began failing node validation again due to this glexec-related error [1]. It looks like the problem began yesterday. Any recent changes on your end?
+
+Marty Kandes
+UCSD Gliden Factory Operations
+
+[1]
+
+glexec_setup.g1pnxC.sh&#58; OK
+Signature OK for main&#58;glexec_setup.g1pnxC.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /var/opt/condor/execute/dir_2463/glide_KEHYKS/main/glexec_setup.sh ===
+Tue Jan 26 15&#58;36&#58;56 EST 2016 Error running &#39;/var/opt/condor/execute/dir_2463/glide_KEHYKS/main/glexec_setup.sh&#39;
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  User uscms01 (uid=504) is not whitelisted, i.e. may not invoke gLExec.
+If this is unexpected, ask the sysadmin to check the syslog and the
+permissions of the config file.
+Tue Jan 26 15&#58;36&#58;57 EST 2016 Notifying VO of error
+
+-- by Marty Kandes at Wed Jan 27 00&#58;35&#58;41 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1453407258'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-21T20:14:18+00:00">Jan 21, 2016 08:14 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1453407258">&nbsp;</a></div><pre>Andrew,
+
+Thanks for checking on that and figuring it out. The good news is that I think I&#39;m finally starting to see more normal glidein performance. However, at the moment, the glideins are mostly going unused by user jobs. But the number of running glideins are low, so let&#39;s give it a few days. I&#39;ll check back again early next week and take another look at the glidein stats. If all still looks normal then, we can probably finally declare victory and close out this ticket.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Thu Jan 21 20&#58;13&#58;51 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1453389249'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-21T15:14:09+00:00">Jan 21, 2016 03:14 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1453389249">&nbsp;</a></div><pre>OK, we figured out why the glidein jobs were held. We have a few worker
+nodes with very little memory that mainly serve as datanodes in our
+Hadoop pool. The glidein jobs hit their memory quota on these machines
+and were held as a result.
+
+We removed these nodes from the HTCondor pool (they&#39;re pretty much
+useless for user jobs anyway), and the glideins are going through again,
+using the remaining worker nodes that have 2 GB/core of RAM. At this
+moment, there are no glidein jobs in the queue (running or suspended).
+
+Cheers,
+Andrew</pre></div><div class='update_description'><i onclick="document.location='27415#1453239565'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-19T21:39:25+00:00">Jan 19, 2016 09:39 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1453239565">&nbsp;</a></div><pre>Andrew,
+
+Yes, we&#39;re seeing 77 being reported back to us as running. However, there doesn&#39;t seem to be any user jobs being run by the glideins at the moment. This could be due to other outside factors. But you&#39;re seeing the glideins as held or suspended at the moment? i.e, not running locally?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Tue Jan 19 21&#58;38&#58;49 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1453237149'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-19T20:59:09+00:00">Jan 19, 2016 08:59 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1453237149">&nbsp;</a></div><pre>Hi Marty,
+
+I see 77 glidein jobs in the queue, but it looks like they&#39;re all
+suspended at the moment. Is that the number you&#39;re looking for?
+
+Cheers,
+Andrew</pre></div><div class='update_description'><i onclick="document.location='27415#1453228701'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-19T18:38:21+00:00">Jan 19, 2016 06:38 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1453228701">&nbsp;</a></div><pre>Hi Andrew,
+
+Can you double check one last thing for me before we close out this ticket? Can you give me a count of the number of glideins you see running at OSU in your local batch system?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Tue Jan 19 18&#58;37&#58;22 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1452882044'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-15T18:20:44+00:00">Jan 15, 2016 06:20 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1452882044">&nbsp;</a></div><pre>Hi,
+
+Great news, it looks like installing glexec did the trick, the errors have cleared up and we see normal running pilots again at OSU.
+
+From the factory ops perspective, we can close this ticket.
+
+Thanks,
+Jeff Dost
+OSG Glidein Factory Operations
+
+-- by Jeffrey Dost at Fri Jan 15 18&#58;20&#58;17 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1452807494'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-14T21:38:14+00:00">Jan 14, 2016 09:38 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1452807494">&nbsp;</a></div><pre>OK, glexec is now installed (executable at /usr/sbin/glexec) and working
+on all the worker nodes.
+
+Could you please check the validation again? Fingers crossed...
+
+Cheers,
+Andrew</pre></div><div class='update_description'><i onclick="document.location='27415#1452783015'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-14T14:50:15+00:00">Jan 14, 2016 02:50 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1452783015">&nbsp;</a></div><pre>Hi Marty,
+
+Thanks for the link. I&#39;ll check the installation of glexec on the worker
+nodes this afternoon and let you know what I find.
+
+Cheers,
+Andrew</pre></div><div class='update_description'><i onclick="document.location='27415#1452644695'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-13T00:24:55+00:00">Jan 13, 2016 12:24 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1452644695">&nbsp;</a></div><pre>HI Andrew,
+
+Did you check and test glexec on the actual worker nodes? I&#39;m still observing the glideins failing worker node validation due to they being unable to find the glexec binary [1]. I&#39;m no glexec expert, but maybe this documentation would be helpful&#58; <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallGlexec' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallGlexec</a>
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+glexec_setup.g1cnph.sh&#58; OK
+Signature OK for main&#58;glexec_setup.g1cnph.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /var/opt/condor/execute/dir_30034/glide_REzFjg/main/glexec_setup.sh ===
+Tue Jan 12 18&#58;51&#58;45 EST 2016 Error running &#39;/var/opt/condor/execute/dir_30034/glide_REzFjg/main/glexec_setup.sh&#39;
+gLExec binary &#39;/usr/sbin/glexec&#39; not found!
+
+-- by Marty Kandes at Wed Jan 13 00&#58;24&#58;18 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1452293166'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-08T22:46:06+00:00">Jan 8, 2016 10:46 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1452293166">&nbsp;</a></div><pre>Hey Andrew,
+
+Are you currently experiencing any issues with the CE? I&#39;ve been trying to check on this today, but the condor activity logs on the factories are filled with messages of the gatekeeper going down and coming back up [1].
+
+Brendan Dennis
+UCSD Glidein Factory Operations
+
+[1]
+020 (3795747.000.000) 01/08 14&#58;34&#58;58 Detected Down Globus Resource
+RM-Contact&#58; cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+...
+026 (3795747.000.000) 01/08 14&#58;34&#58;58 Detected Down Grid Resource
+GridResource&#58; gt2 cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+...
+020 (3795752.000.000) 01/08 14&#58;34&#58;58 Detected Down Globus Resource
+RM-Contact&#58; cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+...
+026 (3795752.000.000) 01/08 14&#58;34&#58;58 Detected Down Grid Resource
+GridResource&#58; gt2 cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+...
+019 (3795747.000.000) 01/08 14&#58;39&#58;58 Globus Resource Back Up
+RM-Contact&#58; cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+...
+025 (3795747.000.000) 01/08 14&#58;39&#58;58 Grid Resource Back Up
+GridResource&#58; gt2 cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+...
+019 (3795752.000.000) 01/08 14&#58;39&#58;58 Globus Resource Back Up
+RM-Contact&#58; cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+...
+025 (3795752.000.000) 01/08 14&#58;39&#58;58 Grid Resource Back Up
+GridResource&#58; gt2 cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+
+-- by Brendan Dennis at Fri Jan 08 22&#58;45&#58;39 UTC 2016
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1452202690'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-07T21:38:10+00:00">Jan 7, 2016 09:38 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1452202690">&nbsp;</a></div><pre>OK, I believe glexec is configured correctly now. When I run
+$ /usr/sbin/glexec /usr/bin/id
+the output seems sensible and the return value is 0.
+
+Could you try checking the validation again?
+
+Cheers,
+Andrew</pre></div><div class='update_description'><i onclick="document.location='27415#1451937361'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-04T19:56:01+00:00">Jan 4, 2016 07:56 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1451937361">&nbsp;</a></div><pre>Andrew,
+
+Now that the holidays are over, could you please let us know when you can look into this issue?
+
+Thanks!
+
+Kyle</pre></div><div class='update_description'><i onclick="document.location='27415#1450725533'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-21T19:18:53+00:00">Dec 21, 2015 07:18 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1450725533">&nbsp;</a></div><pre>Since this is the Holiday week, I will push this out one week.  But please update this ticket if there are any updates.
+
+Thanks,
+Kyle</pre></div><div class='update_description'><i onclick="document.location='27415#1450170257'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-15T09:04:17+00:00">Dec 15, 2015 09:04 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1450170257">&nbsp;</a></div><pre>Hey Andrew,
+
+We&#39;re seeing a new error, this time related to a missing gLExec binary causing validation to fail [1]. Can you check your configuration and make sure the proper gLExec location variables are set?
+
+Brendan Dennis
+UCSD Glidein Factory Operations
+
+[1]
+glexec_setup.fcadns.sh&#58; OK
+Signature OK for main&#58;glexec_setup.fcadns.sh.
+GLEXEC_BIN was glite, expand to &#39;/opt/glite/sbin/glexec&#39;
+=== Validation error in /var/opt/condor/execute/dir_18694/glide_OFx9WN/main/glexec_setup.sh ===
+Tue Dec 15 03&#58;29&#58;59 EST 2015 Error running &#39;/var/opt/condor/execute/dir_18694/glide_OFx9WN/main/glexec_setup.sh&#39;
+gLExec binary &#39;/opt/glite/sbin/glexec&#39; not found!
+Tue Dec 15 03&#58;29&#58;59 EST 2015 Notifying VO of error
+
+-- by Brendan Dennis at Tue Dec 15 09&#58;03&#58;36 UTC 2015
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1449690602'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-09T19:50:02+00:00">Dec 9, 2015 07:50 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1449690602">&nbsp;</a></div><pre>Andrew,
+
+Thanks for the OS info. We had the entry in the factory config&#39;d for RHEL5. I&#39;ve removed these out of date attributes. We should, hopefully, see the node validation problem go away now. I&#39;ll check back on things tomorrow to confirm if this is the case.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Wed Dec 09 19&#58;48&#58;55 UTC 2015
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1449617889'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-08T23:38:09+00:00">Dec 8, 2015 11:38 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1449617889">&nbsp;</a></div><pre>All the worker nodes are running SLC 6.5 with kernel
+2.6.32-431.el6.x86_64. The CE is running SLC 6.7 with kernel
+2.6.32-573.8.1.el6.x86_64.
+
+Cheers,
+Andrew</pre></div><div class='update_description'><i onclick="document.location='27415#1449612527'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-08T22:08:47+00:00">Dec 8, 2015 10:08 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1449612527">&nbsp;</a></div><pre>Hi Andrew,
+
+It looks like the node validation issue has changed into an OS-related issue [1]. What OS are you running on the worker nodes? We may or may not have to change out factory config to match the OS.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+=== Validation error in /var/opt/condor/execute/dir_26293/glide_9NpZBU/main/test_os.sh ===
+Tue Dec 8 14&#58;45&#58;11 EST 2015 Error running &#39;/var/opt/condor/execute/dir_26293/glide_9NpZBU/main/test_os.sh&#39;
+The test script did not produce an XML file. No further information available.
+Tue Dec 8 14&#58;45&#58;11 EST 2015 Notifying VO of error
+
+-- by Marty Kandes at Tue Dec 08 22&#58;08&#58;20 UTC 2015
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1449604948'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-08T20:02:28+00:00">Dec 8, 2015 08:02 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1449604948">&nbsp;</a></div><pre>I&#39;ve checked and CVMFS is mounted on all the worker nodes (I can list
+/cvmfs/cms.cern.ch/).
+
+I did go ahead and mount it on our CE, in case the script is trying to
+look for the CVMFS mount there. If the validation is still failing, do
+you have any other suggestions?
+
+Cheers,
+Andrew
+
+On 12/07/2015 02&#58;22 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27415#1449516131'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-07T19:22:11+00:00">Dec 7, 2015 07:22 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1449516131">&nbsp;</a></div><pre>Hi Andrew,
+
+I&#39;m still seeing the same validation failure [1] on the most recent glideins that have landed on the site. Can you check to make sure that CVMFS is setup and working correctly on the worker nodes? That tends to be the likely culprit of errors like this.
+
+Brendan Dennis
+UCSD Glidein Factory Operations
+
+[1]
+Signature OK for client&#58;discover_CMSSW.fajagu.sh.
+cmsset_default.sh not found!&#92;n
+Looked in /cms.cern.ch/cmsset_default.sh
+and /cvmfs/cms.cern.ch/cmsset_default.sh
+and /cmsset_default.sh
+and /cmssoft/cms/cmsset_default.sh
+and $PARROT_RUN_WORKS is set to
+=== Validation error in /var/lib/condor/execute/dir_19430/glide_YUjS0C/client/discover_CMSSW.sh ===
+Mon Dec 7 13&#58;45&#58;17 EST 2015 Error running &#39;/var/lib/condor/execute/dir_19430/glide_YUjS0C/client/discover_CMSSW.sh&#39;
+The test script did not produce an XML file. No further information available.
+Mon Dec 7 13&#58;45&#58;17 EST 2015 Notifying VO of error
+
+-- by Brendan Dennis at Mon Dec 07 19&#58;21&#58;46 UTC 2015
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1449501796'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-07T15:23:16+00:00">Dec 7, 2015 03:23 PM UTC</time> by <b>ahart@....</b><a class="anchor" name="1449501796">&nbsp;</a></div><pre>Hi Kyle,
+
+Yes, the upgrade is complete and we can at least contact our SE from the
+outside. Could you check the glidein validation again?
+
+Cheers,
+Andrew</pre></div><div class='update_description'><i onclick="document.location='27415#1449259756'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-04T20:09:16+00:00">Dec 4, 2015 08:09 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1449259756">&nbsp;</a></div><pre>Andrew,
+
+Has the upgrade been completed?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='27415#1448920497'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-30T21:54:57+00:00">Nov 30, 2015 09:54 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1448920497">&nbsp;</a></div><pre>Andrew,
+
+Has the upgrade been completed?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='27415#1448044629'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-20T18:37:09+00:00">Nov 20, 2015 06:37 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1448044629">&nbsp;</a></div><pre>Hi Andrew,
+
+Thanks for the information. Please let us know here on this ticket once the upgrade is complete. We can check the glidein performance then and let you know if we need to do any follow-up work to get them running again. Hopefully everything will simply begin working automagically.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+-- by Marty Kandes at Fri Nov 20 18&#58;36&#58;46 UTC 2015
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1447946603'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-19T15:23:23+00:00">Nov 19, 2015 03:23 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1447946603">&nbsp;</a></div><pre>Hi Marty,
+
+We&#39;re upgrading the network connection of cms-0, and it is currently
+offline. We will hopefully be online again before the end of the week,
+and I will investigate why the validation has been failing then.
+
+Thanks for letting us know about this!
+
+Cheers,
+Andrew
+
+-- by ndrew Hart &#60;ahart@.... at Thu Nov 19 15&#58;23&#58;00 UTC 2015
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a></pre></div><div class='update_description'><i onclick="document.location='27415#1447356160'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-12T19:22:40+00:00">Nov 12, 2015 07:22 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1447356160">&nbsp;</a></div><pre>Hi OSU admins,
+
+We&#39;re observing glideins fail node validation when they attempt to startup on your worker nodes behind the gatekeeper [1] due to the following validation error [2]. It looks like the glideins cannot find the required CMS software available the worker nodes. Maybe they lost an NFS or cvmfs mount? Can you have a look into this when you get a chance?
+
+Thanks,
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+cms-0.mps.ohio-state.edu&#58;2119/jobmanager-condor
+
+[2]
+
+=== Validation error in /var/lib/condor/execute/dir_30830/glide_uzaHLt/client/discover_CMSSW.sh ===
+Wed Nov 11 22&#58;16&#58;03 EST 2015 Error running &#39;/var/lib/condor/execute/dir_30830/glide_uzaHLt/client/discover_CMSSW.sh&#39;
+The test script did not produce an XML file. No further information available.
+Wed Nov 11 22&#58;16&#58;04 EST 2015 Notifying VO of error
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=117572</a>
+
+[Ticket History]
+Subject&#58; T3_US_OSU - glideins failing node validation
+Ticket Type&#58; USER
+CC&#58; ;cms-comp-ops-site-support-team@....
+-- by Marty Kandes at Thu Nov 12 19&#58;21&#58;46 UTC 2015</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F27415">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 27415});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

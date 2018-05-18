@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[25918] HTCondor PBS CE&#58; Permission denied problem</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=25918" method="post">
+<div class="page-header">
+    <h3><span class="muted">25918</span> / HTCondor PBS CE&#58; Permission denied problem</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Manoj Kumar Jha</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">Purdue-Hammer-CE</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Manoj Kumar Jha</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier2</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for User response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-08-27</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">USCMS Tier 2 <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">OSG Glidein Factory Support <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=25918", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/25918?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/25918?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20HTCondor%20PBS%20CE%26%2358%3B%20Permission%20denied%20problem%20ISSUE%3D25918%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='25918#1440525040'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-25T17:50:40+00:00">Aug 25, 2015 05:50 PM UTC</time><a class="anchor" name="1440525040">&nbsp;</a></div><pre>Ticket closed.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='25918#1440524589'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-25T17:43:09+00:00">Aug 25, 2015 05:43 PM UTC</time><a class="anchor" name="1440524589">&nbsp;</a></div><pre>Yes, you can close the ticket.  If need arises, we will create another ticket.
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1440523938'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-25T17:32:18+00:00">Aug 25, 2015 05:32 PM UTC</time><a class="anchor" name="1440523938">&nbsp;</a></div><pre>Manoj,
+
+Are you happy with how everything looks on your end? Can we close out this ticket?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='25918#1440523874'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-25T17:31:14+00:00">Aug 25, 2015 05:31 PM UTC</time><a class="anchor" name="1440523874">&nbsp;</a></div><pre>Edgar,
+
+I&#39;d be surprised if that was the case. I&#39;m pretty sure these errors occurred while the factory was down. I have to upgrade the GOC factory today, so it will be down for awhile. It&#39;ll give me a chance to double check this theory. I&#39;ll let you know how it goes.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='25918#1440431803'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-24T15:56:43+00:00">Aug 24, 2015 03:56 PM UTC</time><a class="anchor" name="1440431803">&nbsp;</a></div><pre>Hi Marty,
+
+This seems to be a problem with the CMS CCB. I would contact Farruk and company on why the CCB&#39;s vocms099.cern.ch and cmssrv221.fnal.gov seemed unreachable during those times. I would suspect both were down. Or the internet outward connectivity was screwed up at the sametime in the path to FNAL and CERN.
+
+Could it be some firewall problems in outbound connections?
+
+Edgar
+
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='25918#1440130511'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-21T04:15:11+00:00">Aug 21, 2015 04:15 AM UTC</time><a class="anchor" name="1440130511">&nbsp;</a></div><pre>Hi Manoj,
+
+I&#39;m fairly certain I&#39;ve found the source of the intermittent connectivity issues observed in the glidein logs. I believe we&#39;re only seeing these errors [1] when the factory is being / has been recently reconfigured. What&#39;s a bit misleading to me --- and which I don&#39;t quite understand yet --- is why the errors seem to implicate frontend condor collectors. Anyhow, this will probably require a bit more thought from us. But since it doesn&#39;t seem to really be adversely affecting user jobs from running on glideins at the site, we can probably close out this ticket since the original issue has been resolved, unless you&#39;re seeing something different from your end.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+8/20/15 12&#58;51&#58;27 (pid&#58;18431) condor_write()&#58; Socket closed when trying to write 4096 bytes to collector cmssrv221.fnal.gov&#58;9651, fd is 10, errno=110 Connection timed out
+08/20/15 12&#58;51&#58;27 (pid&#58;18431) Buf&#58;&#58;write()&#58; condor_write() failed
+08/20/15 12&#58;51&#58;27 (pid&#58;18431) condor_write()&#58; Socket closed when trying to write 4096 bytes to collector vocms099.cern.ch&#58;9651, fd is 12, errno=110 Connection timed out
+08/20/15 12&#58;51&#58;27 (pid&#58;18431) Buf&#58;&#58;write()&#58; condor_write() failed
+08/20/15 13&#58;00&#58;26 (pid&#58;18431) CCBListener&#58; no activity from CCB server in 1200s; assuming connection is dead.
+08/20/15 13&#58;00&#58;26 (pid&#58;18431) CCBListener&#58; connection to CCB server vocms099.cern.ch&#58;9651 failed; will try to reconnect in 60 seconds.
+08/20/15 13&#58;00&#58;35 (pid&#58;18431) condor_write()&#58; Socket closed when trying to write 4096 bytes to collector cmssrv221.fnal.gov&#58;9651, fd is 9, errno=110 Connection timed out
+08/20/15 13&#58;00&#58;35 (pid&#58;18431) Buf&#58;&#58;write()&#58; condor_write() failed
+08/20/15 13&#58;00&#58;35 (pid&#58;18431) condor_write()&#58; Socket closed when trying to write 4096 bytes to collector vocms099.cern.ch&#58;9651, fd is 10, errno=110 Connection timed out
+08/20/15 13&#58;00&#58;35 (pid&#58;18431) Buf&#58;&#58;write()&#58; condor_write() failed
+08/20/15 13&#58;01&#58;27 (pid&#58;18431) CCBListener&#58; registered with CCB server vocms099.cern.ch&#58;9651 as ccbid 128.142.141.17&#58;9651#734646
+08/20/15 13&#58;03&#58;06 (pid&#58;18431) CCBListener&#58; no activity from CCB server in 1200s; assuming connection is dead.
+08/20/15 13&#58;03&#58;06 (pid&#58;18431) CCBListener&#58; connection to CCB server cmssrv221.fnal.gov&#58;9651 failed; will try to reconnect in 60 seconds.
+08/20/15 13&#58;04&#58;06 (pid&#58;18431) CCBListener&#58; registered with CCB server cmssrv221.fnal.gov&#58;9651 as ccbid 131.225.207.128&#58;9651#226550
+08/20/15 13&#58;05&#58;44 (pid&#58;18431) Updated job ClassAd&#58;
+08/20/15 13&#58;09&#58;43 (pid&#58;18431) condor_write()&#58; Socket closed when trying to write 4096 bytes to collector cmssrv221.fnal.gov&#58;9651, fd is 8, errno=110 Connection timed out
+08/20/15 13&#58;09&#58;43 (pid&#58;18431) Buf&#58;&#58;write()&#58; condor_write() failed
+08/20/15 13&#58;09&#58;43 (pid&#58;18431) condor_write()&#58; Socket closed when trying to write 4096 bytes to collector vocms099.cern.ch&#58;9651, fd is 9, errno=110 Connection timed out
+08/20/15 13&#58;09&#58;43 (pid&#58;18431) Buf&#58;&#58;write()&#58; condor_write() failed
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) Starter pid 26383 exited with status 2
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) chmod(/tmp/glide_vG9qjI/execute/dir_26383) failed&#58; Operation not permitted (errno 1)
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) Failed to chmod(0700) /tmp/glide_vG9qjI/execute/dir_26383 and all subdirs
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) Can&#39;t remove &#34;/tmp/glide_vG9qjI/execute/dir_26383&#34; as Condor daemon user &#39;cms1854&#39; (385306.11697), giving up!
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) State change&#58; claim lease expired (condor_schedd gone?)
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) Changing state and activity&#58; Claimed/Busy -&#62; Preempting/Killing
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) State change&#58; No preempting claim, returning to owner
+<div id='show_77872476' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_77872476'>08/20/15 13&#58;10&#58;42 (pid&#58;18431) Changing state and activity&#58; Preempting/Killing -&#62; Owner/Idle
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) State change&#58; IS_OWNER is false
+08/20/15 13&#58;10&#58;42 (pid&#58;18431) Changing state&#58; Owner -&#62; Unclaimed
+08/20/15 13&#58;19&#58;07 (pid&#58;18431) CCBListener&#58; no activity from CCB server in 901s; assuming connection is dead.
+08/20/15 13&#58;19&#58;07 (pid&#58;18431) CCBListener&#58; connection to CCB server cmssrv221.fnal.gov&#58;9651 failed; will try to reconnect in 60 seconds.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049
+</div><script type='text/javascript'>
+        $('#show_77872476').click(function() {
+            $('#detail_77872476').slideDown("normal");
+            $('#show_77872476').hide();
+            $('#hide_77872476').show();
+        });
+        $('#hide_77872476').click(function() {
+            $('#detail_77872476').slideUp();
+            $('#hide_77872476').hide();
+            $('#show_77872476').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25918#1440093687'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-20T18:01:27+00:00">Aug 20, 2015 06:01 PM UTC</time><a class="anchor" name="1440093687">&nbsp;</a></div><pre>Hi Manoj,
+
+I&#39;m looking into the connectivity issue, but it looks like it&#39;s observed intermittently across all worker nodes&#58; hammer-a000.rcac.purdue.edu through hammer-a040.rcac.purdue.edu. In the meantime, maybe you can have a look at these worker nodes [1]? Yesterday, they each failed during the node validation process due to a glexec error [2] at various times. Note, however, this may have also been intermittent as their are only a handful of failed glidein logs. I&#39;ll check if there might be any correlation between these glexec failure times and the times we&#39;re seeing the connectivity issues.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+hammer-a017.rcac.purdue.edu
+hammer-a001.rcac.purdue.edu
+hammer-a004.rcac.purdue.edu
+hammer-a008.rcac.purdue.edu
+hammer-a016.rcac.purdue.edu
+hammer-a001.rcac.purdue.edu
+hammer-a021.rcac.purdue.edu
+hammer-a038.rcac.purdue.edu
+
+[2]
+
+glexec_setup.f2amKi.sh&#58; OK
+Signature OK for main&#58;glexec_setup.f2amKi.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /tmp/glide_ighS8r/main/glexec_setup.sh ===
+Wed Aug 19 02&#58;37&#58;21 EDT 2015 Error running &#39;/tmp/glide_ighS8r/main/glexec_setup.sh&#39;
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  LCMAPS failed.
+The reason can be found in the logfile.
+Wed Aug 19 02&#58;37&#58;21 EDT 2015 Notifying VO of error
+Removed condor variables
+Advertising failure to the VO collector
+
+<div id='show_1208562500' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1208562500'>glexec_setup.f2amKi.sh&#58; OK
+Signature OK for main&#58;glexec_setup.f2amKi.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /tmp/glide_W0ZXuH/main/glexec_setup.sh ===
+Wed Aug 19 02&#58;51&#58;23 EDT 2015 Error running &#39;/tmp/glide_W0ZXuH/main/glexec_setup.sh&#39;
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  LCMAPS failed.
+The reason can be found in the logfile.
+Wed Aug 19 02&#58;51&#58;24 EDT 2015 Notifying VO of error
+Removed condor variables
+Advertising failure to the VO collector
+
+glexec_setup.f2amKi.sh&#58; OK
+Signature OK for main&#58;glexec_setup.f2amKi.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /tmp/glide_GwAA4o/main/glexec_setup.sh ===
+Wed Aug 19 04&#58;07&#58;37 EDT 2015 Error running &#39;/tmp/glide_GwAA4o/main/glexec_setup.sh&#39;
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  LCMAPS failed.
+The reason can be found in the logfile.
+Wed Aug 19 04&#58;07&#58;37 EDT 2015 Notifying VO of error
+Removed condor variables
+Advertising failure to the VO collector
+
+glexec_setup.f2amKi.sh&#58; OK
+Signature OK for main&#58;glexec_setup.f2amKi.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /tmp/glide_EvBQZy/main/glexec_setup.sh ===
+Wed Aug 19 04&#58;03&#58;25 EDT 2015 Error running &#39;/tmp/glide_EvBQZy/main/glexec_setup.sh&#39;
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  LCMAPS failed.
+The reason can be found in the logfile.
+Wed Aug 19 04&#58;03&#58;25 EDT 2015 Notifying VO of error
+Removed condor variables
+Advertising failure to the VO collector
+
+glexec_setup.f2amKi.sh&#58; OK
+Signature OK for main&#58;glexec_setup.f2amKi.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /tmp/glide_fqgRAH/main/glexec_setup.sh ===
+Wed Aug 19 10&#58;58&#58;51 EDT 2015 Error running &#39;/tmp/glide_fqgRAH/main/glexec_setup.sh&#39;
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  LCMAPS failed.
+The reason can be found in the logfile.
+Wed Aug 19 10&#58;58&#58;51 EDT 2015 Notifying VO of error
+Removed condor variables
+Advertising failure to the VO collector
+
+setup_x509.f69iSJ.sh&#58; OK
+Signature OK for main&#58;setup_x509.f69iSJ.sh.
+=== Validation error in /tmp/glide_0LKpij/main/setup_x509.sh ===
+Wed Aug 19 10&#58;56&#58;38 EDT 2015 Error running &#39;/tmp/glide_0LKpij/main/setup_x509.sh&#39;
+Could not obtain -timeleft from grid-proxy-info/voms-proxy-info/openssl
+Wed Aug 19 10&#58;56&#58;38 EDT 2015 Sleeping 291
+Wed Aug 19 11&#58;01&#58;29 EDT 2015 Sleeping 296
+Wed Aug 19 11&#58;06&#58;25 EDT 2015 Sleeping 341
+Wed Aug 19 11&#58;12&#58;06 EDT 2015 Sleeping 271
+
+glexec_setup.f2amKi.sh&#58; OK
+Signature OK for main&#58;glexec_setup.f2amKi.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /tmp/glide_DirfFP/main/glexec_setup.sh ===
+Wed Aug 19 17&#58;15&#58;28 EDT 2015 Error running &#39;/tmp/glide_DirfFP/main/glexec_setup.sh&#39;
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  Error&#58; Could not open log file for gLExec.
+Wed Aug 19 17&#58;15&#58;28 EDT 2015 Notifying VO of error
+Removed condor variables
+Advertising failure to the VO collector
+
+glexec_setup.f2amKi.sh&#58; OK
+Signature OK for main&#58;glexec_setup.f2amKi.sh.
+GLEXEC_BIN was OSG, expand to &#39;/usr/sbin/glexec&#39;
+=== Validation error in /tmp/glide_Rqjg8n/main/glexec_setup.sh ===
+Wed Aug 19 17&#58;29&#58;43 EDT 2015 Error running &#39;/tmp/glide_Rqjg8n/main/glexec_setup.sh&#39;
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  LCMAPS failed.
+The reason can be found in the logfile.
+Wed Aug 19 17&#58;29&#58;43 EDT 2015 Notifying VO of error
+Removed condor variables
+Advertising failure to the VO collector
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049
+</div><script type='text/javascript'>
+        $('#show_1208562500').click(function() {
+            $('#detail_1208562500').slideDown("normal");
+            $('#show_1208562500').hide();
+            $('#hide_1208562500').show();
+        });
+        $('#hide_1208562500').click(function() {
+            $('#detail_1208562500').slideUp();
+            $('#hide_1208562500').hide();
+            $('#show_1208562500').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25918#1440088207'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-20T16:30:07+00:00">Aug 20, 2015 04:30 PM UTC</time><a class="anchor" name="1440088207">&nbsp;</a></div><pre>Hi Brendan,
+It would be really helpful if you can  send us the worker nodes name and time of connection failure for glideins  occurred during last  12 hrs.  It would help us in  troubleshooting the real cause.
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1440023681'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-19T22:34:41+00:00">Aug 19, 2015 10:34 PM UTC</time><a class="anchor" name="1440023681">&nbsp;</a></div><pre>Hey Manoj,
+
+For the connection problems, I took a look at the logs for Hammer on both the GOC & SDSC factories, and all of the connection failure errors occurred between the following blocks of time today, all in CST&#58;
+
+8&#58;06AM-8&#58;53AM
+10&#58;08AM-12&#58;17PM
+4&#58;51PM-5&#58;41PM
+
+More may have occurred after 5&#58;41PM CST today, as we may not have gotten the glidein logs that contain those errors back yet. I can also pull up similar stats for yesterday if today&#39;s isn&#39;t enough.
+
+I&#39;ve also checked today for anymore of &#34;no such file or directory&#34; errors, but I haven&#39;t seen any, so it looks like that was only a transient issue from the torque scheduler update.
+
+Brendan Dennis
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brendan Dennis 2659</pre></div><div class='update_description'><i onclick="document.location='25918#1440017015'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-19T20:43:35+00:00">Aug 19, 2015 08:43 PM UTC</time><a class="anchor" name="1440017015">&nbsp;</a></div><pre>Hi Marty,
+Concerning connectivity issue,  could it be possible to know how often  the  timed out problem appears in the   glidein logs ?   Yesterday, the torque version of the scheduler was updated on Hammer cluster.  This may be the reason behind privilege issue.
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1439935469'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-18T22:04:29+00:00">Aug 18, 2015 10:04 PM UTC</time><a class="anchor" name="1439935469">&nbsp;</a></div><pre>Hi Manoj,
+
+The most common problems I&#39;m seeing in the glidein logs are some connectivity issues [1] and some sort of missing directory / privileges issue [2].
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+08/18/15 04&#58;12&#58;43 (pid&#58;24432) Running job via glexec
+08/18/15 04&#58;12&#58;44 (pid&#58;24432) Create_Process succeeded, pid=24467
+08/18/15 04&#58;12&#58;44 (pid&#58;24432) Unable to write into oom_adj file for the starter&#58; (errno=13, Permission denied)
+08/18/15 04&#58;37&#58;53 (pid&#58;24432) condor_read()&#58; timeout reading 21 bytes from &#60;128.142.177.81&#58;4080&#62;.
+08/18/15 04&#58;37&#58;53 (pid&#58;24432) IO&#58; Failed to read packet header
+08/18/15 04&#58;37&#58;53 (pid&#58;24432) Lost connection to shadow, waiting 1200 secs for reconnect
+08/18/15 04&#58;39&#58;37 (pid&#58;24432) Process exited, pid=24467, status=85
+08/18/15 04&#58;39&#58;47 (pid&#58;24432) Failed to send job exit status to shadow
+08/18/15 04&#58;39&#58;47 (pid&#58;24432) JobExit() failed, waiting for job lease to expire or for a reconnect attempt
+08/18/15 04&#58;39&#58;47 (pid&#58;24432) Returning from CStarter&#58;&#58;JobReaper()
+08/18/15 04&#58;42&#58;53 (pid&#58;24432) CCBListener&#58; no activity from CCB server in 918s; assuming connection is dead.
+08/18/15 04&#58;42&#58;53 (pid&#58;24432) CCBListener&#58; connection to CCB server cmssrv221.fnal.gov&#58;9747 failed; will try to reconnect in 60 seconds.
+08/18/15 04&#58;42&#58;53 (pid&#58;24432) CCBListener&#58; no activity from CCB server in 917s; assuming connection is dead.
+08/18/15 04&#58;42&#58;53 (pid&#58;24432) CCBListener&#58; connection to CCB server vocms099.cern.ch&#58;9747 failed; will try to reconnect in 60 seconds.
+08/18/15 04&#58;43&#58;53 (pid&#58;24432) CCBListener&#58; registered with CCB server cmssrv221.fnal.gov&#58;9747 as ccbid 131.225.207.128&#58;9747#214317
+08/18/15 04&#58;43&#58;54 (pid&#58;24432) CCBListener&#58; registered with CCB server vocms099.cern.ch&#58;9747 as ccbid 128.142.141.17&#58;9747#727855
+08/18/15 04&#58;52&#58;16 (pid&#58;24432) Accepted request to reconnect from &#60;&#58;0&#62;
+08/18/15 04&#58;52&#58;16 (pid&#58;24432) Ignoring old shadow &#60;128.142.177.81&#58;4080?noUDP&sock=1826463_29ba_80580&#62;
+08/18/15 04&#58;52&#58;16 (pid&#58;24432) Communicating with shadow &#60;128.142.177.81&#58;4080?noUDP&sock=1826463_29ba_80580&#62;
+08/18/15 04&#58;52&#58;16 (pid&#58;24432) Recovered connection to shadow after 863 seconds
+08/18/15 04&#58;52&#58;17 (pid&#58;24432) Job cleanup finished, now Starter is exiting
+
+[2]
+
+08/18/15 07&#58;49&#58;08 (pid&#58;28326) Running job via glexec
+08/18/15 07&#58;49&#58;09 (pid&#58;28326) Create_Process succeeded, pid=28436
+<div id='show_1221050590' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1221050590'>08/18/15 07&#58;49&#58;09 (pid&#58;28326) Unable to write into oom_adj file for the starter&#58; (errno=13, Permission denied)
+08/18/15 07&#58;59&#58;18 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 07&#58;59&#58;18 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 07&#58;59&#58;18 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 07&#58;59&#58;18 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;04&#58;18 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;04&#58;18 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;04&#58;18 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;04&#58;18 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;09&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;09&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;09&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;09&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;14&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;14&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;14&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;14&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;19&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;19&#58;19 (pid&#58;28326) Can&#39;t open directory &#34;/tmp/glide_E4VGXW/execute/dir_28326&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+08/18/15 08&#58;22&#58;39 (pid&#58;28326) Got SIGTERM. Performing graceful shutdown.
+08/18/15 08&#58;22&#58;39 (pid&#58;28326) ShutdownGraceful all jobs.
+08/18/15 08&#58;22&#58;40 (pid&#58;28326) Process exited, pid=28436, signal=15
+08/18/15 08&#58;22&#58;41 (pid&#58;28326) GLExecPrivSepHelper&#58;&#58;run_script&#58; /tmp/glide_E4VGXW/main/condor/libexec/condor_glexec_cleanup exited with status 256 and following output&#58;
+tar&#58; /tmp/glide_E4VGXW/execute/dir_28326&#58; Cannot chdir&#58; No such file or directory
+tar&#58; Error is not recoverable&#58; exiting now
+tar&#58; This does not look like a tar archive
+tar&#58; Exiting with failure status due to previous errors
+08/18/15 08&#58;22&#58;41 (pid&#58;28326) ERROR &#34;failed to chown sandbox to condor after job completed&#34; at line 2829 in file /slots/03/dir_59220/userdir/src/condor_starter.V6.1/baseStarter.cpp
+08/18/15 08&#58;22&#58;41 (pid&#58;28326) ShutdownFast all jobs.
+08/18/15 08&#58;22&#58;41 (pid&#58;28326) GLExecPrivSepHelper&#58;&#58;run_script&#58; /tmp/glide_E4VGXW/main/condor/libexec/condor_glexec_cleanup exited with status 256 and following output&#58;
+[gLExec]&#58;  Failed to open $GLEXEC_CLIENT_CERT=/tmp/glide_E4VGXW/execute/dir_28326.condor/09dece81d04d2c587ccdc6263ddba8d22d79da5f or $GLEXEC_SOURCE_PROXY=(NULL).
+/tmp/glide_E4VGXW/main/condor/libexec/condor_glexec_cleanup&#58; line 31&#58; /tmp/glide_E4VGXW/execute/dir_28326.condor/_condor_glexec_rc&#58; No such file or directory
+tar&#58; This does not look like a tar archive
+tar&#58; Exiting with failure status due to previous errors
+cat&#58; /tmp/glide_E4VGXW/execute/dir_28326.condor/_condor_glexec_rc&#58; No such file or directory
+mv&#58; cannot stat &#96;/tmp/glide_E4VGXW/execute/dir_28326.condor&#39;&#58; No such file or directory
+08/18/15 08&#58;22&#58;41 (pid&#58;28326) ERROR &#34;failed to chown sandbox to condor after job completed&#34; at line 2829 in file /slots/03/dir_59220/userdir/src/condor_starter.V6.1/baseStarter.cpp
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049
+</div><script type='text/javascript'>
+        $('#show_1221050590').click(function() {
+            $('#detail_1221050590').slideDown("normal");
+            $('#show_1221050590').hide();
+            $('#hide_1221050590').show();
+        });
+        $('#hide_1221050590').click(function() {
+            $('#detail_1221050590').slideUp();
+            $('#hide_1221050590').hide();
+            $('#show_1221050590').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25918#1439911299'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-18T15:21:39+00:00">Aug 18, 2015 03:21 PM UTC</time><a class="anchor" name="1439911299">&nbsp;</a></div><pre>Hi Manjo,
+
+I&#39;ll have a look at the glideins from our end when I get into the office this morning. However, note, glideins will kill themselves off after 20 minutes automatically if they do not receive user jobs.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='25918#1439840516'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-17T19:41:56+00:00">Aug 17, 2015 07:41 PM UTC</time><a class="anchor" name="1439840516">&nbsp;</a></div><pre>Our cluster people are looking into it.   Glideins  are being aborted after running for  around 20 minutes.
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1439838071'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-17T19:01:11+00:00">Aug 17, 2015 07:01 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1439838071">&nbsp;</a></div><pre>Manoj,
+
+Do you have any update on this issue?  Thanks!
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='25918#1439580013'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-14T19:20:13+00:00">Aug 14, 2015 07:20 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1439580013">&nbsp;</a></div><pre>I will ping this monday.</pre></div><div class='update_description'><i onclick="document.location='25918#1439236740'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-10T19:59:00+00:00">Aug 10, 2015 07:59 PM UTC</time><a class="anchor" name="1439236740">&nbsp;</a></div><pre>There seems to be torque scheduler configuration   issue.  We are investigating into it.
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1439235565'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-10T19:39:25+00:00">Aug 10, 2015 07:39 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1439235565">&nbsp;</a></div><pre>Any updates on the status of this ticket?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='25918#1438977895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-07T20:04:55+00:00">Aug 7, 2015 08:04 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1438977895">&nbsp;</a></div><pre>Greetings all,
+
+Checking in to see if I can assist with this ticket.  Please advise.
+
+Thank you,
+Vince</pre></div><div class='update_description'><i onclick="document.location='25918#1438787679'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-05T15:14:39+00:00">Aug 5, 2015 03:14 PM UTC</time><a class="anchor" name="1438787679">&nbsp;</a></div><pre>The situation has improved than before.  But, we are still seeing some failure of glideins for this cluster.  Looking into it.
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1438781285'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-05T13:28:05+00:00">Aug 5, 2015 01:28 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1438781285">&nbsp;</a></div><pre>Has this problem been resolved, as per Manoj&#39;s last update?
+
+Thanks,
+Kyle</pre></div><div class='update_description'><i onclick="document.location='25918#1438356045'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-31T15:20:45+00:00">Jul 31, 2015 03:20 PM UTC</time><a class="anchor" name="1438356045">&nbsp;</a></div><pre>Thanks Brian  !  Our cluster people has setup a cron script which kicks out the user other than glidein  job. This problem will be fixed in coming days.
+
+Regards,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1438135604'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-29T02:06:44+00:00">Jul 29, 2015 02:06 AM UTC</time><a class="anchor" name="1438135604">&nbsp;</a></div><pre>Hi,
+
+Poking around at running jobs at Hammer (example running glidein is in PBS job ID 126897.hammer-adm.rcac.purdue.edu, worker node hammer-z035.rcac.purdue.edu, 07/28/15 21&#58;49&#58;52 EST) - indeed, the payload jobs are killed by SIGKILL.  Looking at the procd, startd, and master logs for the running glidein, the signal does not appear to originate from HTCondor.  It&#39;s possibly coming from the system or batch system itself.
+
+Based on prior issues at Purdue clusters, I would suspect that the Hammer sysadmins may be running a cronjob on the worker node to identify &#34;runaway&#34; processes and determine that the glexec&#39;d payload is &#39;runaway&#39; because its UID doesn&#39;t match any UID registered with PBS.  Manoj, Majid - can you follow-up on this theory?
+
+Finally - for the HTCondor-CE issues&#58; it appears that JobRouter mis-identifies queued jobs as being &#39;sandboxed&#39; if they were routed before job router started (i.e., you did a &#39;service condor-ce restart&#39;).  I&#39;m not 100% certain about this bug.  However, I cleared out the pilots older than the condor_job_router process and things seem much happier.
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25918#1438112079'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-28T19:34:39+00:00">Jul 28, 2015 07:34 PM UTC</time><a class="anchor" name="1438112079">&nbsp;</a></div><pre>Hi all,
+
+From the factory view, we&#39;re still pretty blind here. All *.err and *.out glidein logs on all factory are currently empty. However, we do see job submissions taking place in some of the condor activity logs [1]. Unfortunately, that&#39;s about all we see happening at the moment.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+000 (378042.005.000) 07/28 00&#58;48&#58;32 Job submitted from host&#58; &#60;128.142.40.118&#58;9615?sock=104233_c116_13&#62;
+...
+000 (378042.006.000) 07/28 00&#58;48&#58;32 Job submitted from host&#58; &#60;128.142.40.118&#58;9615?sock=104233_c116_13&#62;
+...
+000 (378042.007.000) 07/28 00&#58;48&#58;32 Job submitted from host&#58; &#60;128.142.40.118&#58;9615?sock=104233_c116_13&#62;
+...
+000 (378042.008.000) 07/28 00&#58;48&#58;32 Job submitted from host&#58; &#60;128.142.40.118&#58;9615?sock=104233_c116_13&#62;
+...
+027 (378042.000.000) 07/28 00&#58;48&#58;45 Job submitted to grid resource
+GridResource&#58; condor hammer-osg.rcac.purdue.edu hammer-osg.rcac.purdue.edu&#58;9619
+GridJobId&#58; condor hammer-osg.rcac.purdue.edu hammer-osg.rcac.purdue.edu&#58;9619 21435.0
+...
+027 (378042.001.000) 07/28 00&#58;48&#58;45 Job submitted to grid resource
+GridResource&#58; condor hammer-osg.rcac.purdue.edu hammer-osg.rcac.purdue.edu&#58;9619
+GridJobId&#58; condor hammer-osg.rcac.purdue.edu hammer-osg.rcac.purdue.edu&#58;9619 21436.0
+...
+027 (378042.002.000) 07/28 00&#58;48&#58;45 Job submitted to grid resource
+GridResource&#58; condor hammer-osg.rcac.purdue.edu hammer-osg.rcac.purdue.edu&#58;9619
+GridJobId&#58; condor hammer-osg.rcac.purdue.edu hammer-osg.rcac.purdue.edu&#58;9619 21437.0
+...
+027 (378042.003.000) 07/28 00&#58;48&#58;45 Job submitted to grid resource
+GridResource&#58; condor hammer-osg.rcac.purdue.edu hammer-osg.rcac.purdue.edu&#58;9619
+GridJobId&#58; condor hammer-osg.rcac.purdue.edu hammer-osg.rcac.purdue.edu&#58;9619 21438.0
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='25918#1438107815'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-28T18:23:35+00:00">Jul 28, 2015 06:23 PM UTC</time><a class="anchor" name="1438107815">&nbsp;</a></div><pre>Is it possible to involve glexec people into this ticket ?  We would like to understand why jobs are being aborted on worker nodes.  Aborted jobs don&#39;t have duration of more than ~ 4 minutes.    It seems condor_procd and condor_starter has problem in communicating with each other.
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1438107352'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-28T18:15:52+00:00">Jul 28, 2015 06:15 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1438107352">&nbsp;</a></div><pre>Has there been any movement on this ticket?  Any discussion outside of this channel?
+
+I haven&#39;t seen anything for a week, so I figured I&#39;d see what&#39;s going on.
+
+Thanks,
+Kyle</pre></div><div class='update_description'><i onclick="document.location='25918#1437516802'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-21T22:13:22+00:00">Jul 21, 2015 10:13 PM UTC</time><a class="anchor" name="1437516802">&nbsp;</a></div><pre>Hi Majid,
+
+Unfortunately, we don&#39;t have much information from the factory perspective. Nearly all of the recent glidein logs from Hammer are simply empty. However, from the few logs that we do get back occasionally, they usually seem to complain about being killed off for some reason, e.g. [1].
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+Received kill signal... shutting down child processes
+Terminated
+Terminated
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+Terminated
+Terminated
+Terminated
+Terminated
+Received kill signal... shutting down child processes
+Received kill signal... shutting down child processes
+Terminated
+Terminated
+rm&#58; cannot remove &#96;/tmp/glide_VAmIYF/execute/dir_32151/Unpacker.py&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/tmp/glide_VAmIYF/execute/dir_32151/_condor_stdout&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/tmp/glide_VAmIYF/execute/dir_32151/.machine.ad&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/tmp/glide_VAmIYF/execute/dir_32151/myproxy.pem&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/tmp/glide_VAmIYF/execute/dir_32151/Report.0.pkl&#39;&#58; Permission denied
+rm&#58; cannot remove &#96;/tmp/glide_VAmIYF/execute/dir_32151/.chirp.config&#39;&#58; Permission denied
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='25918#1437424777'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-20T20:39:37+00:00">Jul 20, 2015 08:39 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1437424777">&nbsp;</a></div><pre>Majid,
+
+Unfortunately, this sounds like an issue that you should be pressing the factory support team on. The software team can help if there are issues getting pilots to your batch system but once the pilot is able to claim a resource, it&#39;s up to the pilot payload (i.e. the condor_starter) to do the work and the pilots contents are managed by the factories.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1437424050'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-20T20:27:30+00:00">Jul 20, 2015 08:27 PM UTC</time><a class="anchor" name="1437424050">&nbsp;</a></div><pre>Hi Brian, Suchandra
+
+The jobs successfully goes on worker nodes and run successfully&#58;
+-----------------------
+[marabgol@cms-ce1-osg&#58;~ ] $ condor_ce_run -r hammer-osg&#58;9619  /bin/hostname
+hammer-a005.rcac.purdue.edu
+[marabgol@cms-ce1-osg&#58;~ ] $ condor_ce_run -r hammer-osg&#58;9619  /bin/uname -a
+Linux hammer-a004.rcac.purdue.edu 2.6.32-504.12.2.el6.x86_64 #1 SMP Sun Feb 1 12&#58;14&#58;02 EST 2015 x86_64 x86_64 x86_64 GNU/Linux
+-----------------------
+
+Even glide-in jobs sit and  running on worker nodes but after a while it seems ( maybe I am wrong ) condor_starter get disconnected to condor_shadow , how we can increase debug levels ?
+
+this is what pstree shows on worker nodes &#58;
+
+[marabgol@hammer-z032&#58;~ ] $ pstree -nua cms1854
+bash
+└─123657.hammer-a /var/spool/torque/mom_priv/jobs/123657.hammer-adm.rcac.purdue.edu.SC
+└─glidein_startup /var/lib/condor-ce/spool/5611/0/cluster15611.proc0.subproc0/glidein_startup.sh -v std -name gfactory_instance -entry CMS_T2_US_Purdue_Hammer -clientname CMSG-v1_0.main -schedd schedd_glideins1@.... ...
+└─condor_startup. /tmp/glide_zLLGQ7/main/condor_startup.sh glidein_config
+└─condor_master -f -pidfile /tmp/glide_zLLGQ7/condor_master2.pid
+├─condor_procd -A /tmp/glide_zLLGQ7/log/procd_address -L /tmp/glide_zLLGQ7/log/ProcLog -R 1000000 -S 60 -C 385306 -I /tmp/glide_zLLGQ7/main/condor/libexec/condor_glexec_kill /usr/sbin/glexec 3 30
+└─condor_startd -f
+└─condor_starter -f vocms0109.cern.ch
+└─condor_glexec_c /tmp/glide_zLLGQ7/main/condor/libexec/condor_glexec_cleanup /usr/sbin/glexec 36960264ea609bba99475ff43eb75422f722afca /tmp/glide_zLLGQ7/execute/dir_2317 3 30
+├─condor_glexec_c /tmp/glide_zLLGQ7/main/condor/libexec/condor_glexec_cleanup /usr/sbin/glexec 36960264ea609bba99475ff43eb75422f722afca /tmp/glide_zLLGQ7/execute/dir_2317 3 30
+│   └─glexec,root /bin/bash -c...
+└─tar -C /tmp/glide_zLLGQ7/execute/dir_2317.condor -x
+
+<a href='http&#58;//dashb-cms-job.cern.ch/dashboard/templates/web-job2/#user=&refresh=0&table=Jobs&p=1&records=25&activemenu=0&usr=&site=T2_US_Purdue&submissiontool=&application=&activity=hctest&status=&check=terminated&tier=&date1=2015-07-18+23%3A55&date2=2015-07-19+23%3A55&sortby=ce&scale=linear&bars=20&ce=&rb=&grid=&jobtype=&submissionui=&dataset=&submissiontype=&task=&subtoolver=&genactivity=&outputse=&appexitcode=&accesstype=&inputse=&cores=' target='_blank' rel='nofollow'>http&#58;//dashb-cms-job.cern.ch/dashboard/templates/web-job2/#user=&refresh=0&table=Jobs&p=1&records=25&activemenu=0&usr=&site=T2_US_Purdue&submissiontool=&application=&activity=hctest&status=&check=terminated&tier=&date1=2015-07-18+23%3A55&date2=2015-07-19+23%3A55&sortby=ce&scale=linear&bars=20&ce=&rb=&grid=&jobtype=&submissionui=&dataset=&submissiontype=&task=&subtoolver=&genactivity=&outputse=&appexitcode=&accesstype=&inputse=&cores=</a>
+
+Regards,
+-Majid
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=marabgol/CN=653155/CN=Majid Arabgol</pre></div><div class='update_description'><i onclick="document.location='25918#1437409521'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-20T16:25:21+00:00">Jul 20, 2015 04:25 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1437409521">&nbsp;</a></div><pre>Majid,
+
+You&#39;ll want to run that same command without the &#39;-l&#39; flag since that runs a job directly on your CE and doesn&#39;t exercise the CE-batch system interaction.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1437408503'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-20T16:08:23+00:00">Jul 20, 2015 04:08 PM UTC</time><a class="anchor" name="1437408503">&nbsp;</a></div><pre>Hi Suchandra,
+Jobs are running perfectly fine when running on CE itself.
+
+&#34;&#34;&#34;
+[marabgol@cms-ce1-osg&#58;~ ] $ condor_ce_run -lr hammer-osg&#58;9619 /bin/sleep 600; /bin/uname -a
+Linux cms-ce1-osg.rcac.purdue.edu 2.6.32-504.8.1.el6.x86_64 #1 SMP Fri Dec 19 12&#58;09&#58;25 EST 2014 x86_64 x86_64 x86_64 GNU/Linux
+
+&#34;&#34;&#34;
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1437405921'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-20T15:25:21+00:00">Jul 20, 2015 03:25 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1437405921">&nbsp;</a></div><pre>Hi,
+
+Can you send jobs directly to your gatekeeper and have them run successfully?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='25918#1437151871'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-17T16:51:11+00:00">Jul 17, 2015 04:51 PM UTC</time><a class="anchor" name="1437151871">&nbsp;</a></div><pre>Hi Elizabeth,
+We asked glidein factory to send single core glideins to Hammer CE.  Jobs are still being aborted after running few minutes.  In the log file &#39;Starter&#39;, we are observing following messages
+
+&#34;&#34;&#34;
+07/14/15 19&#58;00&#58;17 (pid&#58;16386) Unable to write into oom_adj file for the starter&#58; (errno=13, Permission denied)
+07/14/15 19&#58;01&#58;24 (pid&#58;16386) Process exited, pid=16490, status=0
+07/14/15 19&#58;01&#58;25 (pid&#58;16386) GLExecPrivSepHelper&#58;&#58;run_script&#58; /tmp/glide_Fd2WZ5/main/condor/libexec/condor_glexec_cleanup exited with status 256 and following output&#58;
+tar&#58; /tmp/glide_Fd2WZ5/execute/dir_16386&#58; Cannot chdir&#58; No such file or directory
+tar&#58; Error is not recoverable&#58; exiting now
+tar&#58; This does not look like a tar archive
+tar&#58; Exiting with failure status due to previous errors
+07/14/15 19&#58;01&#58;25 (pid&#58;16386) ERROR &#34;failed to chown sandbox to condor after job completed&#34; at line 2829 in file /slots/03/dir_59220/userdir/src/condor_starter.V6.1/baseStarter.cpp
+07/14/15 19&#58;01&#58;25 (pid&#58;16386) ShutdownFast all jobs.
+
+&#34;&#34;&#34;
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1437150860'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-17T16:34:20+00:00">Jul 17, 2015 04:34 PM UTC</time> by <b>echism</b><a class="anchor" name="1437150860">&nbsp;</a></div><pre>Are there any updates on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25918#1436887695'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-14T15:28:15+00:00">Jul 14, 2015 03:28 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1436887695">&nbsp;</a></div><pre>Ahh, good point. I&#39;ve never seen that error so I think it&#39;s up to the glidein folks to take a look at it at this point.</pre></div><div class='update_description'><i onclick="document.location='25918#1436886682'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-14T15:11:22+00:00">Jul 14, 2015 03:11 PM UTC</time><a class="anchor" name="1436886682">&nbsp;</a></div><pre>Hi Brian,
+The jobs are still being aborted.  The worker nodes are being managed by PBS batch system.  On the worker node, we don&#39;t have config file  in which we can use the option &#34; ALL_DEBUG=D_FULLDEBUG &#34;.  If you know the config file name, then please let us know.  Now we are going to ask the factory people to send single core glideins to this cluster.
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1436885659'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-14T14:54:19+00:00">Jul 14, 2015 02:54 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1436885659">&nbsp;</a></div><pre>Manoj,
+
+Are you still seeing the unexpected status errors still? Could you set ALL_DEBUG=D_FULLDEBUG on the worker nodes where you&#39;re experiencing this error? That will hopefully give us more information on why we&#39;re seeing these failures.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1436878792'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-14T12:59:52+00:00">Jul 14, 2015 12:59 PM UTC</time> by <b>echism</b><a class="anchor" name="1436878792">&nbsp;</a></div><pre>Hey Brian,
+
+Did you catch that last update?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25918#1436547236'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-10T16:53:56+00:00">Jul 10, 2015 04:53 PM UTC</time><a class="anchor" name="1436547236">&nbsp;</a></div><pre>We looked into more detail behind failure of jobs. It seems the daemon &#39;condor_procd&#39; has problem in communicating with the different processes &#39;condor_starter&#39; running on worker node. When communication problem happens, the process &#39;condor_procd&#39; kills the jobs being run by the process &#39;condor_starter&#39;. We also observed following things in ProcLog of the multicore glideins
+
+&#34;&#34;&#34;
+07/08/15 18&#58;55&#58;57 &#58; glexec_kill&#58; unexpected status from /tmp/glide_EwIpx0/main/condor/libexec/condor_glexec_kill&#58; 512
+07/08/15 18&#58;55&#58;57 &#58; glexec_kill&#58; unexpected status from /tmp/glide_EwIpx0/main/condor/libexec/condor_glexec_kill&#58; 512
+07/08/15 18&#58;55&#58;58 &#58; glexec_kill&#58; unexpected status from /tmp/glide_EwIpx0/main/condor/libexec/condor_glexec_kill&#58; 512
+07/08/15 18&#58;55&#58;58 &#58; glexec_kill&#58; unexpected status from /tmp/glide_EwIpx0/main/condor/libexec/condor_glexec_kill&#58; 512
+
+&#34;&#34;&#34;
+
+Has factory people seen the above problem before ? On following link, one can find the the list of RPMS being installed on worker nodes.
+
+<a href='https&#58;//web.rcac.purdue.edu/cms/Manoj/2015/Site/HTCondorCE/rpm_list_hammer-z303.txt' target='_blank' rel='nofollow'>https&#58;//web.rcac.purdue.edu/cms/Manoj/2015/Site/HTCondorCE/rpm_list_hammer-z303.txt</a>
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1435853501'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-02T16:11:41+00:00">Jul 2, 2015 04:11 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1435853501">&nbsp;</a></div><pre>Manoj, we can leave this ticket open in that case.</pre></div><div class='update_description'><i onclick="document.location='25918#1435851432'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-02T15:37:12+00:00">Jul 2, 2015 03:37 PM UTC</time><a class="anchor" name="1435851432">&nbsp;</a></div><pre>Brian,
+The cluster was working perfectly fine when CE was GRAM based.  When we switch over to  HTCondor based CE,  the jobs pulled by glidein  started aborted. If you think the problem is not related to HTCondor, then  ticket can be closed.
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1435850627'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-02T15:23:47+00:00">Jul 2, 2015 03:23 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1435850627">&nbsp;</a></div><pre>Manoj/Majid,
+
+Do you mind if we close this ticket then? If you continue to have issues with the CE, you can go ahead and open a new ticket but I think the original issue here has been solved.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1435783032'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-01T20:37:12+00:00">Jul 1, 2015 08:37 PM UTC</time><a class="anchor" name="1435783032">&nbsp;</a></div><pre>Ticket submitted to factory support
+
+<a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=114781' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=114781</a>
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1435775730'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-01T18:35:30+00:00">Jul 1, 2015 06:35 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1435775730">&nbsp;</a></div><pre>Your best bet is probably talking to factory support or someone from the CMS VO if the issue is with the user jobs themselves. I can keep this ticket open if you&#39;d like but I&#39;m not sure the OSG Software Team will be able to help you with your current problem.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1435774151'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-01T18:09:11+00:00">Jul 1, 2015 06:09 PM UTC</time><a class="anchor" name="1435774151">&nbsp;</a></div><pre>Hi Brian,
+The permission denied    problem  related to &#34;/var/lib/condor-ce/spool/&#34;  seems to be solved.  But, we are now facing different type of problem.  After migrating to HTCondor  CE,  glideins and   real jobs from CMS were failing at high rate ( ~ 99 %).  In order to debug it, we allowed glideins to run on two worker nodes (total 16 single core job slots) only.  During last 24 hrs, the  glideins itself have not failed.  But, all the real jobs (from CMS VO) being pulled by glideins had failed.  Attached file shows the distribution of analysis jobs being run by different CEs    at the site.  For the CE &#39;hammer-osg.rcac.purdue.edu&#39;, all the jobs failed.  We also did strace on one of the running  processes   on worker node and found following things
+
+&#34;&#34;&#34;
+open(&#34;/proc/32425/environ&#34;, O_RDONLY) = -1 EACCES (Permission denied)
+
+&#34;&#34;&#34;
+
+Are we moving in right direction for troubleshooting this problem ?
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1435769099'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-01T16:44:59+00:00">Jul 1, 2015 04:44 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1435769099">&nbsp;</a></div><pre>Manoj/Majid&#58; Any word on this?</pre></div><div class='update_description'><i onclick="document.location='25918#1435158434'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-24T15:07:14+00:00">Jun 24, 2015 03:07 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1435158434">&nbsp;</a></div><pre>You should remove those two lines. HTCondor should handle the stdout/stderr output from your job in the submit file with the &#39;output&#39; and &#39;error&#39; fields.
+
+If you want the stdout/stderr files from condor_ce_run, you can run it with the &#39;-n&#39; option (no cleanup) and output will be returned as &#39;.log_*&#39;, &#39;.stdout_*&#39;, and &#39;.stderr_*&#39; files.</pre></div><div class='update_description'><i onclick="document.location='25918#1435098814'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-23T22:33:34+00:00">Jun 23, 2015 10:33 PM UTC</time><a class="anchor" name="1435098814">&nbsp;</a></div><pre>Hi Brian,
+
+I have updated condor  to 8.2.8. still the result the same&#58;
+-------------------------------
+condor_ce_run -r hammer-osg&#58;9619 /bin/env
+
+DCSchedd&#58;&#58;receiveJobSandbox&#58;7003&#58;File transfer failed for target job 19474.0&#58; SCHEDD at 128.211.140.101 failed to send file(s) to &#60;128.211.140.115&#58;37462&#62;&#58; error reading from /var/lib/condor-ce/spool/9474/0/cluster19474.proc0.subproc0/stdout&#58; (errno 13) Permission denied; TOOL failed to receive file(s) from &#60;128.211.140.101&#58;9620&#62;
+AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+ERROR&#58; Failed to spool job files.
+Failed to retrieve job output sandbox; condor_transfer_data exited with code 1.
+-------------------------------
+
+BUT,  I should mention that we put these two lines in pbs_local_submit_attributes.sh&#58;
+
+echo &#34;#PBS -o stdout&#34;
+echo &#34;#PBS -e stderr&#34;
+
+If I remove these lines the above command return with no error but  pbs submit jobs will not have stdout and stderr and both goes to /dev/null , we need std files  for debug purpose.
+
+Thanks for your help
+
+Regards,
+-Majid
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=marabgol/CN=653155/CN=Majid Arabgol</pre></div><div class='update_description'><i onclick="document.location='25918#1435082416'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-23T18:00:16+00:00">Jun 23, 2015 06:00 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1435082416">&nbsp;</a></div><pre>Have you tried updating to 8.2.8?</pre></div><div class='update_description'><i onclick="document.location='25918#1435072533'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-23T15:15:33+00:00">Jun 23, 2015 03:15 PM UTC</time><a class="anchor" name="1435072533">&nbsp;</a></div><pre>Hi Brian,
+We upgraded condor to the version &#34;8.2.7&#34;  on HTCondor CE.
+
+&#34;&#34;&#34;
+
+[jha2@hammer-osg ~]$ rpm -qa | grep condor
+condor-8.2.7-300022.x86_64
+htcondor-ce-1.13-1.osg32.el6.x86_64
+osg-htcondor-ce-pbs-3.2-8.osg32.el6.x86_64
+osg-htcondor-ce-3.2-8.osg32.el6.x86_64
+htcondor-ce-pbs-1.13-1.osg32.el6.x86_64
+condor-cron-1.0.9-3.osg32.el6.noarch
+htcondor-ce-client-1.13-1.osg32.el6.x86_64
+[jha2@hammer-osg ~]$
+
+&#34;&#34;&#34;
+
+But the permission denied problem still persists.  Please see below.
+
+^^^
+[jha2@cms-ce1-osg ~]$ condor_ce_run -r hammer-osg&#58;9619 /bin/env
+
+DCSchedd&#58;&#58;receiveJobSandbox&#58;7003&#58;File transfer failed for target job 19054.0&#58; SCHEDD at 128.211.140.101 failed to send file(s) to &#60;128.211.140.115&#58;44357&#62;&#58; error reading from /var/lib/condor-ce/spool/9054/0/cluster19054.proc0.subproc0/stdout&#58; (errno 13) Permission denied; TOOL failed to receive file(s) from &#60;128.211.140.101&#58;9620&#62;
+AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+ERROR&#58; Failed to spool job files.
+Failed to retrieve job output sandbox; condor_transfer_data exited with code 1.
+[jha2@cms-ce1-osg ~]$
+
+^^^
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1435003168'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-22T19:59:28+00:00">Jun 22, 2015 07:59 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1435003168">&nbsp;</a></div><pre>Manoj,
+
+When the job is in the batch system, its files in the spool directory are owned by the owner of the job. After completion, ownership changes to the condor user and when the client (in this case, condor_ce_trace) requests the output files, the files are read as the condor user. If we&#39;ve verified that UID/GID&#39;s match across all your machines then this sounds like perhaps the job owner owns the files when the transfer is initiated.
+
+There was a race condition that occurred that is similar to this problem but it was fixed in 8.2.6&#58; <a href='https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=3379' target='_blank' rel='nofollow'>https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=3379</a>
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1434650728'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T18:05:28+00:00">Jun 18, 2015 06:05 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434650728">&nbsp;</a></div><pre>Manoj,
+
+I need to talk to an HTCondor dev to get the exact details on how the permissions work on spool dirs but what you&#39;re seeing doesn&#39;t strike me as strange. Like I said before, the daemons use setuid to switch between users so something may be off there.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1434650514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T18:01:54+00:00">Jun 18, 2015 06:01 PM UTC</time><a class="anchor" name="1434650514">&nbsp;</a></div><pre>Brian,
+
+The folder &#34;/var/lib/condor-ce/spool/3086/0/cluster13086.proc0.subproc0/stdout&#34;  is owned by condor.  The user &#39;cms1169&#39;  is trying to acess it and hence jobs failed.  Please see below.
+
+&#34;&#34;&#34;
+bash-4.1$ hostname
+hammer-osg.rcac.purdue.edu
+bash-4.1$ whoami
+cms1169
+bash-4.1$ pwd
+/var/lib/condor-ce/spool/3086/0/cluster13086.proc0.subproc0
+bash-4.1$ ll
+bash&#58; ll&#58; command not found
+bash-4.1$ ls -l
+total 44
+-rw-r--r-- 1 condor condor     0 Jun 18 13&#58;32 _condor_stderr
+-rw-r--r-- 1 condor condor  2599 Jun 18 13&#58;32 _condor_stdout
+-rwxr-xr-x 1 condor condor 26368 Jun 18 13&#58;31 env
+-rw------- 1 condor condor     0 Jun 18 13&#58;32 stderr
+-rw------- 1 condor condor     0 Jun 18 13&#58;32 stdout
+-rw------- 1 condor condor 10179 Jun 18 13&#58;31 x509up_u401208
+bash-4.1$ cat stdout
+cat&#58; stdout&#58; Permission denied
+bash-4.1$
+
+&#34;&#34;&#34;
+
+Is it expected ?
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1434649053'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T17:37:33+00:00">Jun 18, 2015 05:37 PM UTC</time><a class="anchor" name="1434649053">&nbsp;</a></div><pre>After trying from another host &#39;cms-ce1-osg.rcac.purdue.edu&#39;, I am getting messages like
+
+&#34;error reading from /var/lib/condor-
+ce/spool/3086/0/cluster13086.proc0.subproc0/stdout&#58; (errno 13) Permission
+denied&#34;
+
+Please see below in detail.
+
+&#34;&#34;&#34;
+[jha2@cms-ce1-osg ~]$ condor_ce_trace --debug hammer-osg.rcac.purdue.edu
+06/18/15 13&#58;31&#58;12 Result of reading /etc/issue&#58;  Unknown
+06/18/15 13&#58;31&#58;12 Result of reading /etc/redhat-release&#58;  Red Hat Enterprise Linux Server release 6.6 (Santiago)
+
+06/18/15 13&#58;31&#58;12 Using IDs&#58; 2 processors, 2 CPUs, 0 HTs
+06/18/15 13&#58;31&#58;12 Enumerating interfaces&#58; lo 127.0.0.1 up
+06/18/15 13&#58;31&#58;12 Enumerating interfaces&#58; eth0 128.211.140.115 up
+06/18/15 13&#58;31&#58;12 Initializing Directory&#58; curr_dir = /usr/share/condor-ce/config.d
+06/18/15 13&#58;31&#58;12 Initializing Directory&#58; curr_dir = /etc/condor-ce/config.d
+Testing HTCondor-CE collector connectivity.
+***** condor_ping output *****
+06/18/15 13&#58;31&#58;13 recognized READ as authorization level, using command 60020.
+Remote Version&#58;              $CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $
+Local  Version&#58;              $CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $
+Session ID&#58;                  hammer-osg&#58;38122&#58;1434648673&#58;105
+Instruction&#58;                 READ
+Command&#58;                     60020
+Encryption&#58;                  none
+Integrity&#58;                   none
+Authentication&#58;              none
+Remote Mapping&#58;              unauthenticated@unmapped
+Authorized&#58;                  TRUE
+
+********************
+- Successful ping of collector on &#60;128.211.140.101&#58;9619&#62;.
+
+<div id='show_862072592' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_862072592'>06/18/15 13&#58;31&#58;13 Will use TCP to update collector hammer-osg.rcac.purdue.edu &#60;128.211.140.101&#58;9619&#62;
+06/18/15 13&#58;31&#58;13 Trying to query collector &#60;128.211.140.101&#58;9619&#62;
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; checking hammer-osg.rcac.purdue.edu against 128.211.140.101
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; matched 128.211.140.101 to 128.211.140.101
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; ip found is 1
+Testing HTCondor-CE schedd connectivity.
+***** condor_ping output *****
+06/18/15 13&#58;31&#58;13 recognized WRITE as authorization level, using command 60021.
+Remote Version&#58;              $CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $
+Local  Version&#58;              $CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $
+Session ID&#58;                  hammer-osg&#58;38129&#58;1434648673&#58;495
+Instruction&#58;                 WRITE
+Command&#58;                     60021
+Encryption&#58;                  none
+Integrity&#58;                   MD5
+Authenticated using&#58;         GSI
+All authentication methods&#58;  FS,GSI
+Remote Mapping&#58;              cms1169@....
+Authorized&#58;                  TRUE
+
+Information about authentication methods that were attempted but failed&#58;
+AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+
+********************
+- Successful ping of schedd on &#60;128.211.140.101&#58;9620?sock=38117_f2f0_4&#62;.
+
+Job ad, pre-submit&#58;
+[
+Log = &#34;/home/jha2/.log_18008_evDxK0&#34;;
+x509UserProxyVOName = &#34;cms&#34;;
+x509userproxysubject = &#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha/CN=proxy&#34;;
+Out = &#34;/home/jha2/.stdout_18008_71szMR&#34;;
+LeaveJobInQueue = ( StageOutFinish &#62; 0 ) isnt true;
+x509UserProxyFirstFQAN = &#34;/cms/Role=NULL/Capability=NULL&#34;;
+x509userproxy = &#34;/tmp/x509up_u401208&#34;;
+x509UserProxyFQAN = &#34;/cms/Role=NULL/Capability=NULL,/cms/uscms/Role=NULL/Capability=NULL&#34;;
+Args = &#34;&#34;;
+Err = &#34;/home/jha2/.stderr_18008_WvwSrj&#34;;
+Cmd = &#34;/bin/env&#34;;
+x509UserProxyExpiration = 1435080668
+]
+Submitting job to schedd &#60;128.211.140.101&#58;9620?sock=38117_f2f0_4&#62;
+06/18/15 13&#58;31&#58;13 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+06/18/15 13&#58;31&#58;13 This process has a valid certificate & key
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; checking hammer-osg.rcac.purdue.edu against 128.211.140.101
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; matched 128.211.140.101 to 128.211.140.101
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; ip found is 1
+06/18/15 13&#58;31&#58;13 MapFile&#58; Canonicalization File&#58; method=&#39;gsi&#39; principal=&#39;^&#92;/DC&#92;=com&#92;/DC&#92;=DigiCert-Grid&#92;/O=Open Science Grid&#92;/OU&#92;=Services&#92;/CN&#92;=(host&#92;/)?([A-Za-z0-9.&#92;-]*)$&#39; canonicalization=&#39;&#92;2@....&#39;
+06/18/15 13&#58;31&#58;13 MapFile&#58; Canonicalization File&#58; method=&#39;gsi&#39; principal=&#39;^&#92;/DC&#92;=DigiCert-Grid&#92;/DC&#92;=com&#92;/O=Open Science Grid&#92;/OU&#92;=Services&#92;/CN&#92;=(host&#92;/)?([A-Za-z0-9.&#92;-]*)$&#39; canonicalization=&#39;&#92;2@....&#39;
+06/18/15 13&#58;31&#58;13 MapFile&#58; Canonicalization File&#58; method=&#39;gsi&#39; principal=&#39;(.*)&#39; canonicalization=&#39;GSS_ASSIST_GRIDMAP&#39;
+06/18/15 13&#58;31&#58;13 MapFile&#58; Canonicalization File&#58; method=&#39;claimtobe&#39; principal=&#39;.*&#39; canonicalization=&#39;anonymous@claimtobe&#39;
+06/18/15 13&#58;31&#58;13 MapFile&#58; Canonicalization File&#58; method=&#39;fs&#39; principal=&#39;(.*)&#39; canonicalization=&#39;&#92;1&#39;
+06/18/15 13&#58;31&#58;13 Activating Globus GSI_GSSAPI_ASSIST module.
+06/18/15 13&#58;31&#58;13 ZKM&#58; successful mapping to hammer-osg.rcac.purdue.edu@....
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; checking hammer-osg.rcac.purdue.edu against 128.211.140.101
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; matched 128.211.140.101 to 128.211.140.101
+06/18/15 13&#58;31&#58;13 IPVERIFY&#58; ip found is 1
+06/18/15 13&#58;31&#58;13 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+- Successful submission; cluster ID 13086
+Resulting job ad&#58;
+[
+BufferSize = 524288;
+NiceUser = false;
+CoreSize = -1;
+CumulativeSlotTime = 0;
+OnExitHold = false;
+RequestCpus = 1;
+Err = &#34;_condor_stderr&#34;;
+BufferBlockSize = 32768;
+x509userproxy = &#34;/tmp/x509up_u401208&#34;;
+TransferOutputRemaps = &#34;_condor_stdout=/home/jha2/.stdout_18008_71szMR;_condor_stderr=/home/jha2/.stderr_18008_WvwSrj&#34;;
+ImageSize = 100;
+CurrentTime = time();
+WantCheckpoint = false;
+CommittedTime = 0;
+TargetType = &#34;Machine&#34;;
+WhenToTransferOutput = &#34;ON_EXIT&#34;;
+Cmd = &#34;/bin/env&#34;;
+JobUniverse = 5;
+ExitBySignal = false;
+HoldReasonCode = 16;
+Iwd = &#34;/home/jha2&#34;;
+NumRestarts = 0;
+CommittedSuspensionTime = 0;
+Owner = undefined;
+NumSystemHolds = 0;
+CumulativeSuspensionTime = 0;
+RequestDisk = DiskUsage;
+Requirements = true && TARGET.OPSYS == &#34;LINUX&#34; && TARGET.ARCH == &#34;X86_64&#34; && TARGET.HasFileTransfer && TARGET.Disk &#62;= RequestDisk && TARGET.Memory &#62;= RequestMemory;
+MinHosts = 1;
+JobNotification = 0;
+NumCkpts = 0;
+LastSuspensionTime = 0;
+NumJobStarts = 0;
+WantRemoteSyscalls = false;
+JobPrio = 0;
+RootDir = &#34;/&#34;;
+CurrentHosts = 0;
+x509UserProxyExpiration = 1435080668;
+StreamOut = false;
+WantRemoteIO = true;
+OnExitRemove = true;
+DiskUsage = 1;
+In = &#34;/dev/null&#34;;
+PeriodicRemove = false;
+RemoteUserCpu = 0.0;
+LocalUserCpu = 0.0;
+LocalSysCpu = 0.0;
+RemoteSysCpu = 0.0;
+ClusterId = 13086;
+Log = &#34;/home/jha2/.log_18008_evDxK0&#34;;
+CompletionDate = 0;
+RemoteWallClockTime = 0.0;
+x509UserProxyFQAN = &#34;/cms/Role=NULL/Capability=NULL,/cms/uscms/Role=NULL/Capability=NULL&#34;;
+LeaveJobInQueue = JobStatus == 4 && ( CompletionDate is UNDDEFINED || CompletionDate == 0 || ( ( time() - CompletionDate ) &#60; 864000 ) );
+CondorVersion = &#34;$CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $&#34;;
+MyType = &#34;Job&#34;;
+StreamErr = false;
+HoldReason = &#34;Spooling input data files&#34;;
+PeriodicHold = false;
+ProcId = 0;
+x509UserProxyFirstFQAN = &#34;/cms/Role=NULL/Capability=NULL&#34;;
+Out = &#34;_condor_stdout&#34;;
+JobStatus = 5;
+PeriodicRelease = false;
+RequestMemory = ifthenelse(MemoryUsage isnt undefined,MemoryUsage,( ImageSize + 1023 ) / 1024);
+Args = &#34;&#34;;
+MaxHosts = 1;
+TotalSuspensions = 0;
+CommittedSlotTime = 0;
+x509userproxysubject = &#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha/CN=proxy&#34;;
+x509UserProxyVOName = &#34;cms&#34;;
+CondorPlatform = &#34;$CondorPlatform&#58; x86_64_RedHat6 $&#34;;
+ShouldTransferFiles = &#34;YES&#34;;
+ExitStatus = 0;
+QDate = 1434648673;
+EnteredCurrentStatus = 1434648673
+]
+Spooling cluster 13086 files to schedd &#60;128.211.140.101&#58;9620?sock=38117_f2f0_4&#62;
+06/18/15 13&#58;31&#58;13 SharedPortClient&#58; sent connection request to &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+06/18/15 13&#58;31&#58;13 entering FileTransfer&#58;&#58;SimpleInit
+06/18/15 13&#58;31&#58;13 Input files&#58;
+06/18/15 13&#58;31&#58;13 FILETRANSFER&#58; protocol &#34;http&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/18/15 13&#58;31&#58;13 FILETRANSFER&#58; protocol &#34;ftp&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/18/15 13&#58;31&#58;13 FILETRANSFER&#58; protocol &#34;file&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/18/15 13&#58;31&#58;13 FILETRANSFER&#58; protocol &#34;data&#34; handled by &#34;/usr/libexec/condor/data_plugin&#34;
+06/18/15 13&#58;31&#58;13 entering FileTransfer&#58;&#58;UploadFiles (final_transfer=0)
+06/18/15 13&#58;31&#58;13 entering FileTransfer&#58;&#58;Upload
+06/18/15 13&#58;31&#58;13 entering FileTransfer&#58;&#58;DoUpload
+06/18/15 13&#58;31&#58;13 DoUpload&#58; sending file /tmp/x509up_u401208
+06/18/15 13&#58;31&#58;13 FILETRANSFER&#58; outgoing file_command is 4 for /tmp/x509up_u401208
+06/18/15 13&#58;31&#58;13 Received GoAhead from peer to send /tmp/x509up_u401208 and all further files.
+06/18/15 13&#58;31&#58;13 Sending GoAhead for 128.211.140.101 to receive /tmp/x509up_u401208 and all further files.
+06/18/15 13&#58;31&#58;14 DoUpload&#58; put_x509_delegation() returned 0
+06/18/15 13&#58;31&#58;14 DoUpload&#58; sending file /bin/env
+06/18/15 13&#58;31&#58;14 FILETRANSFER&#58; outgoing file_command is 1 for /bin/env
+06/18/15 13&#58;31&#58;14 ReliSock&#58;&#58;put_file_with_permissions()&#58; going to send permissions 100755
+06/18/15 13&#58;31&#58;14 put_file&#58; going to send from filename /bin/env
+06/18/15 13&#58;31&#58;14 put_file&#58; Found file size 26368
+06/18/15 13&#58;31&#58;14 put_file&#58; sending 26368 bytes
+06/18/15 13&#58;31&#58;14 ReliSock&#58; put_file&#58; sent 26368 bytes
+06/18/15 13&#58;31&#58;14 DoUpload&#58; exiting at 3335
+- Successful spooling
+Querying job status (1/600)
+06/18/15 13&#58;31&#58;14 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+Job status&#58; Held
+Querying job status (2/600)
+06/18/15 13&#58;31&#58;15 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+Job status&#58; Idle
+Querying job status (3/600)
+06/18/15 13&#58;31&#58;16 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+Job status&#58; Idle
+Querying job status (4/600)
+06/18/15 13&#58;31&#58;17 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+Job status&#58; Idle
+....
+...
+...
+
+Querying job status (96/600)
+06/18/15 13&#58;32&#58;51 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+Job status&#58; Completed
+06/18/15 13&#58;32&#58;51 SharedPortClient&#58; sent connection request to &#60;128.211.140.101&#58;9620&#62; for shared port id 38117_f2f0_4
+06/18/15 13&#58;32&#58;51 This process has a valid certificate & key
+06/18/15 13&#58;32&#58;51 IPVERIFY&#58; checking hammer-osg.rcac.purdue.edu against 128.211.140.101
+06/18/15 13&#58;32&#58;51 IPVERIFY&#58; matched 128.211.140.101 to 128.211.140.101
+06/18/15 13&#58;32&#58;51 IPVERIFY&#58; ip found is 1
+06/18/15 13&#58;32&#58;51 ZKM&#58; successful mapping to hammer-osg.rcac.purdue.edu@....
+06/18/15 13&#58;32&#58;51 DCSchedd&#58;receiveJobSandbox&#58; 1 jobs matched my constraint (ClusterID == 13086)
+06/18/15 13&#58;32&#58;51 entering FileTransfer&#58;&#58;SimpleInit
+06/18/15 13&#58;32&#58;51 FILETRANSFER&#58; protocol &#34;http&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/18/15 13&#58;32&#58;51 FILETRANSFER&#58; protocol &#34;ftp&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/18/15 13&#58;32&#58;51 FILETRANSFER&#58; protocol &#34;file&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/18/15 13&#58;32&#58;51 FILETRANSFER&#58; protocol &#34;data&#34; handled by &#34;/usr/libexec/condor/data_plugin&#34;
+06/18/15 13&#58;32&#58;51 Initializing Directory&#58; curr_dir = /home/jha2
+06/18/15 13&#58;32&#58;52 Entering FileTransfer&#58;&#58;InitDownloadFilenameRemaps
+06/18/15 13&#58;32&#58;52 FileTransfer&#58; output file remaps&#58; _condor_stdout=/home/jha2/.stdout_18008_71szMR;_condor_stderr=/home/jha2/.stderr_18008_WvwSrj
+06/18/15 13&#58;32&#58;52 entering FileTransfer&#58;&#58;DownloadFiles
+06/18/15 13&#58;32&#58;52 entering FileTransfer&#58;&#58;Download
+06/18/15 13&#58;32&#58;52 entering FileTransfer&#58;&#58;DoDownload sync=0
+06/18/15 13&#58;32&#58;52 REMAP&#58; begin with rules&#58; _condor_stdout=/home/jha2/.stdout_18008_71szMR;_condor_stderr=/home/jha2/.stderr_18008_WvwSrj
+06/18/15 13&#58;32&#58;52 REMAP&#58; 0&#58; stdout
+06/18/15 13&#58;32&#58;52 REMAP&#58; res is 0 -&#62;  !
+06/18/15 13&#58;32&#58;52 Sending GoAhead for 128.211.140.101 to send /home/jha2/stdout and all further files.
+06/18/15 13&#58;32&#58;52 Received GoAhead from peer to receive /home/jha2/stdout and all further files.
+06/18/15 13&#58;32&#58;52 get_file()&#58; going to write to filename /home/jha2/stdout
+06/18/15 13&#58;32&#58;52 get_file&#58; Receiving 0 bytes
+06/18/15 13&#58;32&#58;52 get_file&#58; wrote 0 bytes to file
+06/18/15 13&#58;32&#58;52 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 600
+06/18/15 13&#58;32&#58;52 REMAP&#58; begin with rules&#58; _condor_stdout=/home/jha2/.stdout_18008_71szMR;_condor_stderr=/home/jha2/.stderr_18008_WvwSrj
+06/18/15 13&#58;32&#58;52 REMAP&#58; 0&#58; stderr
+06/18/15 13&#58;32&#58;52 REMAP&#58; res is 0 -&#62;  !
+06/18/15 13&#58;32&#58;52 get_file()&#58; going to write to filename /home/jha2/stderr
+06/18/15 13&#58;32&#58;52 get_file&#58; Receiving 0 bytes
+06/18/15 13&#58;32&#58;52 get_file&#58; wrote 0 bytes to file
+06/18/15 13&#58;32&#58;52 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 600
+06/18/15 13&#58;32&#58;52 REMAP&#58; begin with rules&#58; _condor_stdout=/home/jha2/.stdout_18008_71szMR;_condor_stderr=/home/jha2/.stderr_18008_WvwSrj
+06/18/15 13&#58;32&#58;52 REMAP&#58; 0&#58; _condor_stderr
+06/18/15 13&#58;32&#58;52 REMAP&#58; 1&#58; /home/jha2/.stderr_18008_WvwSrj
+06/18/15 13&#58;32&#58;52 REMAP&#58; 2&#58; /home/jha2
+06/18/15 13&#58;32&#58;52 REMAP&#58; 3&#58; /home
+06/18/15 13&#58;32&#58;52 REMAP&#58; 4&#58;
+06/18/15 13&#58;32&#58;52 REMAP&#58; res is 1 -&#62; /home/jha2/.stderr_18008_WvwSrj !
+06/18/15 13&#58;32&#58;52 Remapped downloaded file from _condor_stderr to /home/jha2/.stderr_18008_WvwSrj
+06/18/15 13&#58;32&#58;52 get_file()&#58; going to write to filename /home/jha2/.stderr_18008_WvwSrj
+06/18/15 13&#58;32&#58;52 get_file&#58; Receiving 0 bytes
+06/18/15 13&#58;32&#58;52 get_file&#58; wrote 0 bytes to file
+06/18/15 13&#58;32&#58;52 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 644
+06/18/15 13&#58;32&#58;52 REMAP&#58; begin with rules&#58; _condor_stdout=/home/jha2/.stdout_18008_71szMR;_condor_stderr=/home/jha2/.stderr_18008_WvwSrj
+06/18/15 13&#58;32&#58;52 REMAP&#58; 0&#58; _condor_stdout
+06/18/15 13&#58;32&#58;52 REMAP&#58; 1&#58; /home/jha2/.stdout_18008_71szMR
+06/18/15 13&#58;32&#58;52 REMAP&#58; 2&#58; /home/jha2
+06/18/15 13&#58;32&#58;52 REMAP&#58; 3&#58; /home
+06/18/15 13&#58;32&#58;52 REMAP&#58; 4&#58;
+06/18/15 13&#58;32&#58;52 REMAP&#58; res is 1 -&#62; /home/jha2/.stdout_18008_71szMR !
+06/18/15 13&#58;32&#58;52 Remapped downloaded file from _condor_stdout to /home/jha2/.stdout_18008_71szMR
+06/18/15 13&#58;32&#58;52 get_file()&#58; going to write to filename /home/jha2/.stdout_18008_71szMR
+06/18/15 13&#58;32&#58;52 get_file&#58; Receiving 2599 bytes
+06/18/15 13&#58;32&#58;52 get_file&#58; wrote 2599 bytes to file
+06/18/15 13&#58;32&#58;52 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 644
+06/18/15 13&#58;32&#58;52 DoDownload&#58; SCHEDD at 128.211.140.101 failed to send file(s) to &#60;128.211.140.115&#58;39343&#62;&#58; error reading from /var/lib/condor-ce/spool/3086/0/cluster13086.proc0.subproc0/stdout&#58; (errno 13) Permission denied; TOOL failed to receive file(s) from &#60;128.211.140.101&#58;9620&#62;
+06/18/15 13&#58;32&#58;52 DoDownload&#58; exiting with upload errors
+********************************************************************************
+2015-06-18 13&#58;32&#58;52 Failed to retrieve output from hammer-osg.rcac.purdue.edu
+due to the following error&#58; DCSchedd&#58;&#58;receiveJobSandbox&#58;7003&#58;File transfer
+failed for target job 13086.0&#58; SCHEDD at 128.211.140.101 failed to send file(s)
+to &#60;128.211.140.115&#58;39343&#62;&#58; error reading from /var/lib/condor-
+ce/spool/3086/0/cluster13086.proc0.subproc0/stdout&#58; (errno 13) Permission
+denied; TOOL failed to receive file(s) from &#60;128.211.140.101&#58;9620&#62;
+AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+********************************************************************************
+[jha2@cms-ce1-osg ~]$
+
+&#34;&#34;&#34;
+
+It seems permission related problem with the folder &#34;/var/lib/condor-
+ce/spool/&#39; ?
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha
+</div><script type='text/javascript'>
+        $('#show_862072592').click(function() {
+            $('#detail_862072592').slideDown("normal");
+            $('#show_862072592').hide();
+            $('#hide_862072592').show();
+        });
+        $('#hide_862072592').click(function() {
+            $('#detail_862072592').slideUp();
+            $('#hide_862072592').hide();
+            $('#show_862072592').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25918#1434648472'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T17:27:52+00:00">Jun 18, 2015 05:27 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434648472">&nbsp;</a></div><pre>Actually Manoj,
+
+I think I see why your local trace jobs may be failing&#58;
+
+Authenticated using&#58;         FS
+All authentication methods&#58;  FS,GSI
+Remote Mapping&#58;              jha2@....
+Authorized&#58;                  TRUE
+
+You&#39;re being mapped to the jha2 user. Does that user exist on your worker nodes? Can you try the trace command from another machine with the &#39;htcondor-ce-client&#39; installed?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1434648328'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T17:25:28+00:00">Jun 18, 2015 05:25 PM UTC</time><a class="anchor" name="1434648328">&nbsp;</a></div><pre>Following  error was due to typo  in the file &#34;/usr/libexec/blahp/pbs_local_submit_attributes.sh&#34;
+
+&#34;&#34;&#34;
+06/18/15 11&#58;29&#58;32 [54840] (12900.0) blah_job_submit() failed&#58; submission command failed (exit code = 1) (stdout&#58;) (stderr&#58;[qsub&#58; illegal -r value (y/n)]--usage&#58; qsub [-a date_time] [-A account_string] [-b secs]-    [-c [ none | { enabled | periodic | shutdown |-    depth=&#60;int&#62; | dir=&#60;path&#62; | interval=&#60;minutes&#62;}... ]-    [-C directive_prefix] [-d path] [-D path]-    [-e path] [-h] [-I] [-j oe|eo|n] [-k {oe}] [-l resource_list] [-m n|{abe}]-    [-M user_list] [-N jobname] [-o path] [-p priority] [-P proxy_user [-J &#60;jobid]]-    [-q queue] [-r y|n] [-S path] [-t number_to_submit] [-T type]  [-u user_list]-    [-w] path-      [-W additional_attributes] [-v variable_list] [-V ] [-x] [-X] [-z] [script]--)
+
+&#34;&#34;&#34;
+
+Now it has been fixed.
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1434647886'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T17:18:06+00:00">Jun 18, 2015 05:18 PM UTC</time><a class="anchor" name="1434647886">&nbsp;</a></div><pre>Brian,
+By default,   the attributes &#34;blah_delegate_renewed_proxies=&#34;  points to &#34;no&#34;.  Now we have explicitly  pointed it to &#34;no&#34;  in &#34;/etc/blah.config&#34; .  It seems to us the condor and CMS users share UID&#39;s across  CE and all the  worker nodes.  Is there any way to check it ?
+
+We also added the attribute &#39;blah_debug_save_submit_info=/tmp/blahp&#39;.  Please submit your jobs again.
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1434647574'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T17:12:54+00:00">Jun 18, 2015 05:12 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434647574">&nbsp;</a></div><pre>I also see a lot of the following&#58;
+
+06/18/15 11&#58;29&#58;32 [54840] (12900.0) blah_job_submit() failed&#58; submission command failed (exit code = 1) (stdout&#58;) (stderr&#58;[qsub&#58; illegal -r value (y/n)]--usage&#58; qsub [-a date_time] [-A account_string] [-b secs]-    [-c [ none | { enabled | periodic | shutdown |-    depth=&#60;int&#62; | dir=&#60;path&#62; | interval=&#60;minutes&#62;}... ]-    [-C directive_prefix] [-d path] [-D path]-    [-e path] [-h] [-I] [-j oe|eo|n] [-k {oe}] [-l resource_list] [-m n|{abe}]-    [-M user_list] [-N jobname] [-o path] [-p priority] [-P proxy_user [-J &#60;jobid]]-    [-q queue] [-r y|n] [-S path] [-t number_to_submit] [-T type]  [-u user_list]-    [-w] path-      [-W additional_attributes] [-v variable_list] [-V ] [-x] [-X] [-z] [script]--)
+
+Could you add &#39;blah_debug_save_submit_info=/tmp&#39; (<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#BLAHP_Configuration_File' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#BLAHP_Configuration_File</a>) to /etc/blah.config? This will save the submit file into /tmp/bl_*/ and I&#39;m curious how we&#39;re setting such a bad value for &#39;-r&#39;.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1434647353'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T17:09:13+00:00">Jun 18, 2015 05:09 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434647353">&nbsp;</a></div><pre>Manoj,
+
+One thing I noticed is that you have not set the following in /etc/blah.config&#58;
+
+blah_delegate_renewed_proxies=no
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#Configuring_the_batch_system' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#Configuring_the_batch_system</a>
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1434646725'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T16:58:45+00:00">Jun 18, 2015 04:58 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434646725">&nbsp;</a></div><pre>Manoj,
+
+That dir should be owned by the condor user. The condor daemon uses setuid to switch between the condor user and the job owner to run the job and write files. Mostly this Just Works (TM) but we may have run into an issue where it does not. Do the condor and CMS users share UID&#39;s across your CE and all your worker nodes? I&#39;ll take a closer look at your GridmanagerLog and see if I can find out why there are issues creating the folder in spool
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1434644319'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T16:18:39+00:00">Jun 18, 2015 04:18 PM UTC</time><a class="anchor" name="1434644319">&nbsp;</a></div><pre>Changed the requirements  to
+(target.x509UserProxyVOName is &#34;cms&#34;) || (target.x509UserProxyVOName is &#34;GLOW&#34;)
+
+It seems to me problem is related to creating  folder in  &#34;/var/lib/condor-ce/spool&#34;.   There are several messages like in the file &#34; /var/log/condor-ce/GridmanagerLog.cms1854&#34;.
+
+&#34;&#34;&#34;
+06/18/15 12&#58;07&#58;01 [10972] GAHP[10991] -&#62; &#39;73&#39; &#39;1&#39; &#39;submission command failed (exit code = 1) (stdout&#58;Error-) (stderr&#58;/usr/libexec/blahp/blah_common_submit_functions.sh&#58; line 743&#58; cd&#58; /var/lib/condor-ce/spool/2761/0/cluster12761.proc0.subproc0&#58; No such file or directory-Failed to CD to Initial Working Directory.-)&#39; &#39;N/A&#39;
+06/18/15 12&#58;07&#58;01 [10972] (12771.0) doEvaluateState called&#58; gmState GM_SUBMIT, remoteState -1
+06/18/15 12&#58;07&#58;01 [10972] (12771.0) blah_job_submit() failed&#58; submission command failed (exit code = 1) (stdout&#58;Error-) (stderr&#58;/usr/libexec/blahp/blah_common_submit_functions.sh&#58; line 743&#58; cd&#58; /var/lib/condor-ce/spool/2761/0/cluster12761.proc0.subproc0&#58; No such file or directory-Failed to CD to Initial Working Directory.-)
+
+&#34;&#34;&#34;
+
+We have created the folder  &#34;/var/lib/condor-ce&#34;  on the CE  hammer-osg.   The folder &#34;/var/lib/condor-ce&#34; is available on worker nodes through NSF mount.   The sub folders are being owned by condor.
+^^^
+[jha2@hammer-osg condor-ce]$ cd /var/lib/condor-ce
+[jha2@hammer-osg condor-ce]$ ll
+total 8
+drwxr-xr-x  2 condor condor 4096 Apr 27 23&#58;38 execute
+drwxr-xr-x 85 condor condor 4096 Jun 18 12&#58;10 spool
+[jha2@hammer-osg condor-ce]$
+
+^^^
+Is the folder &#34;/var/lib/condor-ce/spool&#34;  should also be writeable by individual users like &#39;cms11854&#39;  or by the user &#39;condor&#39;  only ?  If we don&#39;t set the stderr and stdout  path for PBS job, then job is starting perfectly.  Presently, job is in held state, seems to be related to creating/accessing file in the subfolders &#34;/var/lib/condor-ce/spool&#34; ?
+
+-Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1434643002'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T15:56:42+00:00">Jun 18, 2015 03:56 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434643002">&nbsp;</a></div><pre>Manoj,
+
+Would you be able to update the requirements of your job route to accept GLOW jobs? I tried submitting a test job and it sits in the queue because the job router ignores it. You&#39;ll want the requirements statement to look something like&#58;
+
+(target.x509UserProxyVOName is &#34;cms&#34;) || (target.x509UserProxyVOName is &#34;GLOW&#34;)
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1434642333'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T15:45:33+00:00">Jun 18, 2015 03:45 PM UTC</time> by <b>manoj.jha@....</b><a class="anchor" name="1434642333">&nbsp;</a></div><pre>Please find the content of &#34;/var/log/condor-ce&#34;  on following link
+
+<a href='http&#58;//web.rcac.purdue.edu/cms/Manoj/2015/condor-ce.tar' target='_blank' rel='nofollow'>http&#58;//web.rcac.purdue.edu/cms/Manoj/2015/condor-ce.tar</a>
+
+Thanks,
+Manoj
+
+On 06/18/2015 11&#58;37 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='25918#1434642293'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T15:44:53+00:00">Jun 18, 2015 03:44 PM UTC</time><a class="anchor" name="1434642293">&nbsp;</a></div><pre>Please find the content of &#34;/var/log/condor-ce&#34;  on following link
+
+<a href='http&#58;//web.rcac.purdue.edu/cms/Manoj/2015/condor-ce.tar' target='_blank' rel='nofollow'>http&#58;//web.rcac.purdue.edu/cms/Manoj/2015/condor-ce.tar</a>
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='25918#1434641869'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T15:37:49+00:00">Jun 18, 2015 03:37 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434641869">&nbsp;</a></div><pre>Manoj,
+
+Could you attach the contents of /var/log/condor-ce?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='25918#1434568467'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-17T19:14:27+00:00">Jun 17, 2015 07:14 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1434568467">&nbsp;</a></div><pre>I am adding Brian Lin on this ticket.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='25918#1434563962'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-17T17:59:22+00:00">Jun 17, 2015 05:59 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1434563962">&nbsp;</a></div><pre>Hello,
+We are trying to install HTCondor CE managed by PBS batch batch system.   The output of the command &#34;condor_ce_trace --debug hammer-osg.rcac.purdue.edu&#34;  says it has permission denied problem.  Please see below.
+
+&#34;&#34;&#34;
+[jha2@hammer-osg HTCE]$ condor_ce_trace --debug hammer-osg.rcac.purdue.edu
+06/17/15 13&#58;08&#58;13 Result of reading /etc/issue&#58;  Unknown
+06/17/15 13&#58;08&#58;13 Result of reading /etc/redhat-release&#58;  Red Hat Enterprise Linux Server release 6.6 (Santiago)
+
+06/17/15 13&#58;08&#58;13 Using IDs&#58; 2 processors, 2 CPUs, 0 HTs
+06/17/15 13&#58;08&#58;13 Enumerating interfaces&#58; lo 127.0.0.1 up
+06/17/15 13&#58;08&#58;13 Enumerating interfaces&#58; eth0 128.211.140.101 up
+06/17/15 13&#58;08&#58;13 Initializing Directory&#58; curr_dir = /usr/share/condor-ce/config.d
+06/17/15 13&#58;08&#58;13 Initializing Directory&#58; curr_dir = /etc/condor-ce/config.d
+Testing HTCondor-CE collector connectivity.
+***** condor_ping output *****
+Remote Version&#58;              $CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $
+Local  Version&#58;              $CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $
+Session ID&#58;                  hammer-osg&#58;16941&#58;1434560894&#58;1191
+Instruction&#58;                 READ
+Command&#58;                     60020
+Encryption&#58;                  none
+Integrity&#58;                   none
+Authentication&#58;              none
+Remote Mapping&#58;              unauthenticated@unmapped
+Authorized&#58;                  TRUE
+
+********************
+- Successful ping of collector on &#60;128.211.140.101&#58;9619&#62;.
+
+06/17/15 13&#58;08&#58;14 Will use TCP to update collector hammer-osg.rcac.purdue.edu &#60;128.211.140.101&#58;9619&#62;
+06/17/15 13&#58;08&#58;14 Trying to query collector &#60;128.211.140.101&#58;9619&#62;
+06/17/15 13&#58;08&#58;14 IPVERIFY&#58; checking hammer-osg.rcac.purdue.edu against 128.211.140.101
+06/17/15 13&#58;08&#58;14 IPVERIFY&#58; matched 128.211.140.101 to 128.211.140.101
+06/17/15 13&#58;08&#58;14 IPVERIFY&#58; ip found is 1
+Testing HTCondor-CE schedd connectivity.
+<div id='show_817884530' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_817884530'>***** condor_ping output *****
+Remote Version&#58;              $CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $
+Local  Version&#58;              $CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $
+Session ID&#58;                  hammer-osg&#58;17002&#58;1434560894&#58;34160
+Instruction&#58;                 WRITE
+Command&#58;                     60021
+Encryption&#58;                  none
+Integrity&#58;                   MD5
+Authenticated using&#58;         FS
+All authentication methods&#58;  FS,GSI
+Remote Mapping&#58;              jha2@....
+Authorized&#58;                  TRUE
+
+********************
+- Successful ping of schedd on &#60;128.211.140.101&#58;9620?sock=16934_74e6_4&#62;.
+
+Job ad, pre-submit&#58;
+[
+Log = &#34;/home/jha2/Work/Scripts/HTCE/.log_44057_F5_RGH&#34;;
+x509UserProxyVOName = &#34;cms&#34;;
+x509userproxysubject = &#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha/CN=proxy&#34;;
+Out = &#34;/home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk&#34;;
+LeaveJobInQueue = ( StageOutFinish &#62; 0 ) isnt true;
+x509UserProxyFirstFQAN = &#34;/cms/Role=NULL/Capability=NULL&#34;;
+x509userproxy = &#34;/tmp/x509up_u401208&#34;;
+x509UserProxyFQAN = &#34;/cms/Role=NULL/Capability=NULL,/cms/uscms/Role=NULL/Capability=NULL&#34;;
+Args = &#34;&#34;;
+Err = &#34;/home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1&#34;;
+Cmd = &#34;/bin/env&#34;;
+x509UserProxyExpiration = 1434919341
+]
+Submitting job to schedd &#60;128.211.140.101&#58;9620?sock=16934_74e6_4&#62;
+06/17/15 13&#58;08&#58;14 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 16934_74e6_4
+06/17/15 13&#58;08&#58;14 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 16934_74e6_4
+- Successful submission; cluster ID 11955
+Resulting job ad&#58;
+[
+BufferSize = 524288;
+NiceUser = false;
+CoreSize = -1;
+CumulativeSlotTime = 0;
+OnExitHold = false;
+RequestCpus = 1;
+Err = &#34;_condor_stderr&#34;;
+BufferBlockSize = 32768;
+x509userproxy = &#34;/tmp/x509up_u401208&#34;;
+TransferOutputRemaps = &#34;_condor_stdout=/home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk;_condor_stderr=/home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1&#34;;
+ImageSize = 100;
+CurrentTime = time();
+WantCheckpoint = false;
+CommittedTime = 0;
+TargetType = &#34;Machine&#34;;
+WhenToTransferOutput = &#34;ON_EXIT&#34;;
+Cmd = &#34;/bin/env&#34;;
+JobUniverse = 5;
+ExitBySignal = false;
+HoldReasonCode = 16;
+Iwd = &#34;/home/jha2/Work/Scripts/HTCE&#34;;
+NumRestarts = 0;
+CommittedSuspensionTime = 0;
+Owner = undefined;
+NumSystemHolds = 0;
+CumulativeSuspensionTime = 0;
+RequestDisk = DiskUsage;
+Requirements = true && TARGET.OPSYS == &#34;LINUX&#34; && TARGET.ARCH == &#34;X86_64&#34; && TARGET.HasFileTransfer && TARGET.Disk &#62;= RequestDisk && TARGET.Memory &#62;= RequestMemory;
+MinHosts = 1;
+JobNotification = 0;
+NumCkpts = 0;
+LastSuspensionTime = 0;
+NumJobStarts = 0;
+WantRemoteSyscalls = false;
+JobPrio = 0;
+RootDir = &#34;/&#34;;
+CurrentHosts = 0;
+x509UserProxyExpiration = 1434919341;
+StreamOut = false;
+WantRemoteIO = true;
+OnExitRemove = true;
+DiskUsage = 1;
+In = &#34;/dev/null&#34;;
+PeriodicRemove = false;
+RemoteUserCpu = 0.0;
+LocalUserCpu = 0.0;
+LocalSysCpu = 0.0;
+RemoteSysCpu = 0.0;
+ClusterId = 11955;
+Log = &#34;/home/jha2/Work/Scripts/HTCE/.log_44057_F5_RGH&#34;;
+CompletionDate = 0;
+RemoteWallClockTime = 0.0;
+x509UserProxyFQAN = &#34;/cms/Role=NULL/Capability=NULL,/cms/uscms/Role=NULL/Capability=NULL&#34;;
+LeaveJobInQueue = JobStatus == 4 && ( CompletionDate is UNDDEFINED || CompletionDate == 0 || ( ( time() - CompletionDate ) &#60; 864000 ) );
+CondorVersion = &#34;$CondorVersion&#58; 8.2.7 Feb 09 2015 BuildID&#58; 300022 $&#34;;
+MyType = &#34;Job&#34;;
+StreamErr = false;
+HoldReason = &#34;Spooling input data files&#34;;
+PeriodicHold = false;
+ProcId = 0;
+x509UserProxyFirstFQAN = &#34;/cms/Role=NULL/Capability=NULL&#34;;
+Out = &#34;_condor_stdout&#34;;
+JobStatus = 5;
+PeriodicRelease = false;
+RequestMemory = ifthenelse(MemoryUsage isnt undefined,MemoryUsage,( ImageSize + 1023 ) / 1024);
+Args = &#34;&#34;;
+MaxHosts = 1;
+TotalSuspensions = 0;
+CommittedSlotTime = 0;
+x509userproxysubject = &#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha/CN=proxy&#34;;
+x509UserProxyVOName = &#34;cms&#34;;
+CondorPlatform = &#34;$CondorPlatform&#58; x86_64_RedHat6 $&#34;;
+ShouldTransferFiles = &#34;YES&#34;;
+ExitStatus = 0;
+QDate = 1434560894;
+EnteredCurrentStatus = 1434560894
+]
+Spooling cluster 11955 files to schedd &#60;128.211.140.101&#58;9620?sock=16934_74e6_4&#62;
+06/17/15 13&#58;08&#58;14 SharedPortClient&#58; sent connection request to &#60;128.211.140.101&#58;9620&#62; for shared port id 16934_74e6_4
+06/17/15 13&#58;08&#58;14 entering FileTransfer&#58;&#58;SimpleInit
+06/17/15 13&#58;08&#58;14 Input files&#58;
+06/17/15 13&#58;08&#58;14 FILETRANSFER&#58; protocol &#34;http&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/17/15 13&#58;08&#58;14 FILETRANSFER&#58; protocol &#34;ftp&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/17/15 13&#58;08&#58;14 FILETRANSFER&#58; protocol &#34;file&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/17/15 13&#58;08&#58;14 FILETRANSFER&#58; protocol &#34;data&#34; handled by &#34;/usr/libexec/condor/data_plugin&#34;
+06/17/15 13&#58;08&#58;14 entering FileTransfer&#58;&#58;UploadFiles (final_transfer=0)
+06/17/15 13&#58;08&#58;14 entering FileTransfer&#58;&#58;Upload
+06/17/15 13&#58;08&#58;14 entering FileTransfer&#58;&#58;DoUpload
+06/17/15 13&#58;08&#58;14 DoUpload&#58; sending file /tmp/x509up_u401208
+06/17/15 13&#58;08&#58;14 FILETRANSFER&#58; outgoing file_command is 4 for /tmp/x509up_u401208
+06/17/15 13&#58;08&#58;14 Received GoAhead from peer to send /tmp/x509up_u401208 and all further files.
+06/17/15 13&#58;08&#58;14 Sending GoAhead for 128.211.140.101 to receive /tmp/x509up_u401208 and all further files.
+06/17/15 13&#58;08&#58;14 DoUpload&#58; put_x509_delegation() returned 0
+06/17/15 13&#58;08&#58;14 DoUpload&#58; sending file /bin/env
+06/17/15 13&#58;08&#58;14 FILETRANSFER&#58; outgoing file_command is 1 for /bin/env
+06/17/15 13&#58;08&#58;14 ReliSock&#58;&#58;put_file_with_permissions()&#58; going to send permissions 100755
+06/17/15 13&#58;08&#58;14 put_file&#58; going to send from filename /bin/env
+06/17/15 13&#58;08&#58;14 put_file&#58; Found file size 26368
+06/17/15 13&#58;08&#58;14 put_file&#58; sending 26368 bytes
+06/17/15 13&#58;08&#58;14 ReliSock&#58; put_file&#58; sent 26368 bytes
+06/17/15 13&#58;08&#58;14 DoUpload&#58; exiting at 3335
+- Successful spooling
+Querying job status (1/600)
+06/17/15 13&#58;08&#58;14 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 16934_74e6_4
+Job status&#58; Held
+Querying job status (2/600)
+06/17/15 13&#58;08&#58;15 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 16934_74e6_4
+Job status&#58; Idle
+
+....
+....
+....
+
+Querying job status (390/600)
+06/17/15 13&#58;14&#58;48 SharedPortClient&#58; sent connection request to schedd at &#60;128.211.140.101&#58;9620&#62; for shared port id 16934_74e6_4
+Job status&#58; Completed
+06/17/15 13&#58;14&#58;48 SharedPortClient&#58; sent connection request to &#60;128.211.140.101&#58;9620&#62; for shared port id 16934_74e6_4
+06/17/15 13&#58;14&#58;48 DCSchedd&#58;receiveJobSandbox&#58; 1 jobs matched my constraint (ClusterID == 11955)
+06/17/15 13&#58;14&#58;48 entering FileTransfer&#58;&#58;SimpleInit
+06/17/15 13&#58;14&#58;48 FILETRANSFER&#58; protocol &#34;http&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/17/15 13&#58;14&#58;48 FILETRANSFER&#58; protocol &#34;ftp&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/17/15 13&#58;14&#58;48 FILETRANSFER&#58; protocol &#34;file&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+06/17/15 13&#58;14&#58;48 FILETRANSFER&#58; protocol &#34;data&#34; handled by &#34;/usr/libexec/condor/data_plugin&#34;
+06/17/15 13&#58;14&#58;48 Initializing Directory&#58; curr_dir = /home/jha2/Work/Scripts/HTCE
+06/17/15 13&#58;14&#58;48 Entering FileTransfer&#58;&#58;InitDownloadFilenameRemaps
+06/17/15 13&#58;14&#58;48 FileTransfer&#58; output file remaps&#58; _condor_stdout=/home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk;_condor_stderr=/home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1
+06/17/15 13&#58;14&#58;48 entering FileTransfer&#58;&#58;DownloadFiles
+06/17/15 13&#58;14&#58;48 entering FileTransfer&#58;&#58;Download
+06/17/15 13&#58;14&#58;48 entering FileTransfer&#58;&#58;DoDownload sync=0
+06/17/15 13&#58;14&#58;48 REMAP&#58; begin with rules&#58; _condor_stdout=/home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk;_condor_stderr=/home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1
+06/17/15 13&#58;14&#58;48 REMAP&#58; 0&#58; stdout
+06/17/15 13&#58;14&#58;48 REMAP&#58; res is 0 -&#62;  !
+06/17/15 13&#58;14&#58;48 Sending GoAhead for 128.211.140.101 to send /home/jha2/Work/Scripts/HTCE/stdout and all further files.
+06/17/15 13&#58;14&#58;48 Received GoAhead from peer to receive /home/jha2/Work/Scripts/HTCE/stdout and all further files.
+06/17/15 13&#58;14&#58;48 get_file()&#58; going to write to filename /home/jha2/Work/Scripts/HTCE/stdout
+06/17/15 13&#58;14&#58;48 get_file&#58; Receiving 0 bytes
+06/17/15 13&#58;14&#58;48 get_file&#58; wrote 0 bytes to file
+06/17/15 13&#58;14&#58;48 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 600
+06/17/15 13&#58;14&#58;48 REMAP&#58; begin with rules&#58; _condor_stdout=/home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk;_condor_stderr=/home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1
+06/17/15 13&#58;14&#58;48 REMAP&#58; 0&#58; stderr
+06/17/15 13&#58;14&#58;48 REMAP&#58; res is 0 -&#62;  !
+06/17/15 13&#58;14&#58;48 get_file()&#58; going to write to filename /home/jha2/Work/Scripts/HTCE/stderr
+06/17/15 13&#58;14&#58;48 get_file&#58; Receiving 0 bytes
+06/17/15 13&#58;14&#58;48 get_file&#58; wrote 0 bytes to file
+06/17/15 13&#58;14&#58;48 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 600
+06/17/15 13&#58;14&#58;48 REMAP&#58; begin with rules&#58; _condor_stdout=/home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk;_condor_stderr=/home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1
+06/17/15 13&#58;14&#58;48 REMAP&#58; 0&#58; _condor_stderr
+06/17/15 13&#58;14&#58;48 REMAP&#58; 1&#58; /home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1
+06/17/15 13&#58;14&#58;48 REMAP&#58; 2&#58; /home/jha2/Work/Scripts/HTCE
+06/17/15 13&#58;14&#58;48 REMAP&#58; 3&#58; /home/jha2/Work/Scripts
+06/17/15 13&#58;14&#58;48 REMAP&#58; 4&#58; /home/jha2/Work
+06/17/15 13&#58;14&#58;48 REMAP&#58; 5&#58; /home/jha2
+06/17/15 13&#58;14&#58;48 REMAP&#58; 6&#58; /home
+06/17/15 13&#58;14&#58;48 REMAP&#58; 7&#58;
+06/17/15 13&#58;14&#58;48 REMAP&#58; res is 1 -&#62; /home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1 !
+06/17/15 13&#58;14&#58;48 Remapped downloaded file from _condor_stderr to /home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1
+06/17/15 13&#58;14&#58;48 get_file()&#58; going to write to filename /home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1
+06/17/15 13&#58;14&#58;48 get_file&#58; Receiving 0 bytes
+06/17/15 13&#58;14&#58;48 get_file&#58; wrote 0 bytes to file
+06/17/15 13&#58;14&#58;48 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 644
+06/17/15 13&#58;14&#58;48 REMAP&#58; begin with rules&#58; _condor_stdout=/home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk;_condor_stderr=/home/jha2/Work/Scripts/HTCE/.stderr_44057_BBa5v1
+06/17/15 13&#58;14&#58;48 REMAP&#58; 0&#58; _condor_stdout
+06/17/15 13&#58;14&#58;48 REMAP&#58; 1&#58; /home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk
+06/17/15 13&#58;14&#58;48 REMAP&#58; 2&#58; /home/jha2/Work/Scripts/HTCE
+06/17/15 13&#58;14&#58;48 REMAP&#58; 3&#58; /home/jha2/Work/Scripts
+06/17/15 13&#58;14&#58;48 REMAP&#58; 4&#58; /home/jha2/Work
+06/17/15 13&#58;14&#58;48 REMAP&#58; 5&#58; /home/jha2
+06/17/15 13&#58;14&#58;48 REMAP&#58; 6&#58; /home
+06/17/15 13&#58;14&#58;48 REMAP&#58; 7&#58;
+06/17/15 13&#58;14&#58;48 REMAP&#58; res is 1 -&#62; /home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk !
+06/17/15 13&#58;14&#58;48 Remapped downloaded file from _condor_stdout to /home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk
+06/17/15 13&#58;14&#58;48 get_file()&#58; going to write to filename /home/jha2/Work/Scripts/HTCE/.stdout_44057_0sbYCk
+06/17/15 13&#58;14&#58;48 get_file&#58; Receiving 3222 bytes
+06/17/15 13&#58;14&#58;48 get_file&#58; wrote 3222 bytes to file
+06/17/15 13&#58;14&#58;48 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 644
+06/17/15 13&#58;14&#58;48 DoDownload&#58; SCHEDD at 128.211.140.101 failed to send file(s) to &#60;128.211.140.101&#58;44256&#62;&#58; error reading from /var/lib/condor-ce/spool/1955/0/cluster11955.proc0.subproc0/stdout&#58; (errno 13) Permission denied; TOOL failed to receive file(s) from &#60;128.211.140.101&#58;9620&#62;
+06/17/15 13&#58;14&#58;48 DoDownload&#58; exiting with upload errors
+********************************************************************************
+2015-06-17 13&#58;14&#58;48 Failed to retrieve output from hammer-osg.rcac.purdue.edu
+due to the following error&#58;
+DCSchedd&#58;&#58;receiveJobSandbox&#58;7003&#58;File transfer
+failed for target job 11955.0&#58; SCHEDD at 128.211.140.101 failed to send file(s)
+to &#60;128.211.140.101&#58;44256&#62;&#58; error reading from /var/lib/condor-
+ce/spool/1955/0/cluster11955.proc0.subproc0/stdout&#58; (errno 13) Permission
+denied; TOOL failed to receive file(s) from &#60;128.211.140.101&#58;9620&#62;
+********************************************************************************
+[jha2@hammer-osg HTCE]$
+
+[jha2@hammer-osg spool]$ pwd
+/var/lib/condor-ce/spool
+[jha2@hammer-osg spool]$ ll 1955/0/cluster11955.proc0.subproc0
+total 44
+-rw------- 1 condor condor 10179 Jun 17 13&#58;08 x509up_u401208
+-rwxr-xr-x 1 condor condor 26368 Jun 17 13&#58;08 env
+-rw------- 1 condor condor     0 Jun 17 13&#58;13 stdout
+-rw------- 1 condor condor     0 Jun 17 13&#58;13 stderr
+-rw-r--r-- 1 condor condor     0 Jun 17 13&#58;14 _condor_stderr
+-rw-r--r-- 1 condor condor  3222 Jun 17 13&#58;14 _condor_stdout
+[jha2@hammer-osg spool]$
+
+&#34;&#34;&#34;
+
+How do we setup the folder &#34;/var/lib/condor-ce/spool&#34;  to avoid the permission denied problem ?   Please also find the attached file as output of the command &#39;osg-system-profiler&#39;.
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha
+
+</div><script type='text/javascript'>
+        $('#show_817884530').click(function() {
+            $('#detail_817884530').slideDown("normal");
+            $('#show_817884530').hide();
+            $('#hide_817884530').show();
+        });
+        $('#hide_817884530').click(function() {
+            $('#detail_817884530').slideUp();
+            $('#hide_817884530').hide();
+            $('#show_817884530').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F25918">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 25918});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

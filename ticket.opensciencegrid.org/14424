@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[14424] SEG gives exit status -1 errors exactly at midnight local time, panda jobs fail with lost heartbeat</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=14424" method="post">
+<div class="page-header">
+    <h3><span class="muted">14424</span> / SEG gives exit status -1 errors exactly at midnight local time, panda jobs fail with lost heartbeat</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Saul Youssef</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">ATLAS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Saul Youssef</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USATLAS</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">High</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ping</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-04-12</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=92946">92946</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">USATLAS (BNL Prod)&nbsp;<a target="_blank" href="https://rt.racf.bnl.gov/rt/Ticket/Display.html?id=23106">23106</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=14424", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/14424?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/14424?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20SEG%20gives%20exit%20status%20-1%20errors%20exactly%20at%20midnight%20local%20time%2C%20panda%20jobs%20fail%20with%20lost%20heartbeat%20ISSUE%3D14424%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='14424#1365187579'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-05T18:46:19+00:00">Apr 5, 2013 06:46 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1365187579">&nbsp;</a></div><pre>Workaround in use while a patch is prepared by OSG.
+-- by youssef@.... at Fri Apr 05 18&#58;46&#58;05 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=23106</pre></div><div class='update_description'><i onclick="document.location='14424#1365187552'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-05T18:45:52+00:00">Apr 5, 2013 06:45 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1365187552">&nbsp;</a></div><pre>We have a hack for this that&#39;s worked for the past couple of days, so this
+isn&#39;t causing lost heartbeat jobs anymore.
+
+We&#39;re going to continue that way while the OSG guys are working on a patch to
+the SEG that&#39;s being discussed in a separate email thread.
+
+Since we have a workaround, this isn&#39;t a super-urgent problem anymore. I&#39;m
+going to close this ticket so people aren&#39;t distracted by the urgent status.
+
+- Saul
+
+On Tue Apr 02 10&#58;18&#58;33 2013, youssef@.... wrote&#58;
+<font color='#7F7E6F'>&#62; Let&#39;s wait. We&#39;ve got a very productive email thread with Brian, Jeff</font>
+<font color='#7F7E6F'>&#62; Porter,</font>
+<font color='#7F7E6F'>&#62; Iwona and Suchandra going. SGE has the documented but unusual feature</font>
+<font color='#7F7E6F'>&#62; of</font>
+<font color='#7F7E6F'>&#62; putting an extra entry into it&#39;s record file only for long running</font>
+<font color='#7F7E6F'>&#62; jobs (most</font>
+<font color='#7F7E6F'>&#62; ATLAS jobs) exactly at midnight every night and with exit code -1. SEG</font>
+<font color='#7F7E6F'>&#62; is not</font>
+<font color='#7F7E6F'>&#62; written to expect this and basically has to be patched to ignore the</font>
+<font color='#7F7E6F'>&#62; extra</font>
+<font color='#7F7E6F'>&#62; records. Suchandra may be working on a patch and corresponding</font>
+<font color='#7F7E6F'>&#62; development rpm.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; It&#39;s likely that this is the cause of the problems we see where PanDA</font>
+<font color='#7F7E6F'>&#62; and/or</font>
+<font color='#7F7E6F'>&#62; APF thinks we have a different number of jobs than we think we have</font>
+<font color='#7F7E6F'>&#62; locally.</font>
+<font color='#7F7E6F'>&#62; It&#39;s likely the cause of the periodic spikes of lost heartbeat jobs,</font>
+<font color='#7F7E6F'>&#62; local</font>
+<font color='#7F7E6F'>&#62; disks filling up and the site draining due to lack of pilots when APF</font>
+<font color='#7F7E6F'>&#62; is</font>
+<font color='#7F7E6F'>&#62; getting the wrong information from SEG via condor.</font>
+<font color='#7F7E6F'>&#62;</font>
+<div id='show_846688035' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_846688035'><font color='#7F7E6F'>&#62; On Mon Apr 01 19&#58;12&#58;20 2013, osg-goc-rest wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; NET2,</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Shall we wait for further investigation? Have you seen success this</font>
+<font color='#7F7E6F'>&#62; &#62; weekend with this method? Shall I close this?</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Thank you,</font>
+<font color='#7F7E6F'>&#62; &#62; Elizabeth</font>
+<font color='#7F7E6F'>&#62; &#62; -- by Elizabeth Prout at Mon Apr 01 23&#58;11&#58;08 UTC 2013</font>
+-- by youssef@.... at Fri Apr 05 18&#58;45&#58;43 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=23106
+</div><script type='text/javascript'>
+        $('#show_846688035').click(function() {
+            $('#detail_846688035').slideDown("normal");
+            $('#show_846688035').hide();
+            $('#hide_846688035').show();
+        });
+        $('#hide_846688035').click(function() {
+            $('#detail_846688035').slideUp();
+            $('#hide_846688035').hide();
+            $('#show_846688035').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='14424#1364912322'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-02T14:18:42+00:00">Apr 2, 2013 02:18 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1364912322">&nbsp;</a></div><pre>Let&#39;s wait. We&#39;ve got a very productive email thread with Brian, Jeff Porter,
+Iwona and Suchandra going. SGE has the documented but unusual feature of
+putting an extra entry into it&#39;s record file only for long running jobs (most
+ATLAS jobs) exactly at midnight every night and with exit code -1. SEG is not
+written to expect this and basically has to be patched to ignore the extra
+records. Suchandra may be working on a patch and corresponding development rpm.
+
+It&#39;s likely that this is the cause of the problems we see where PanDA and/or
+APF thinks we have a different number of jobs than we think we have locally.
+It&#39;s likely the cause of the periodic spikes of lost heartbeat jobs, local
+disks filling up and the site draining due to lack of pilots when APF is
+getting the wrong information from SEG via condor.
+
+On Mon Apr 01 19&#58;12&#58;20 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; NET2,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Shall we wait for further investigation? Have you seen success this</font>
+<font color='#7F7E6F'>&#62; weekend with this method? Shall I close this?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thank you,</font>
+<font color='#7F7E6F'>&#62; Elizabeth</font>
+<font color='#7F7E6F'>&#62; -- by Elizabeth Prout at Mon Apr 01 23&#58;11&#58;08 UTC 2013</font>
+-- by youssef@.... at Tue Apr 02 14&#58;18&#58;33 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=23106</pre></div><div class='update_description'><i onclick="document.location='14424#1364857868'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-01T23:11:08+00:00">Apr 1, 2013 11:11 PM UTC</time> by <b>echism</b><a class="anchor" name="1364857868">&nbsp;</a></div><pre>NET2,
+
+Shall we wait for further investigation? Have you seen success this weekend with this method? Shall I close this?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='14424#1364593508'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-29T21:45:08+00:00">Mar 29, 2013 09:45 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1364593508">&nbsp;</a></div><pre>The time structure of the Panda errors that we think are coming from the SEG
+errors might be interesting. If you go here
+
+<a href='http&#58;//egg.bu.edu/net2/studies' target='_blank' rel='nofollow'>http&#58;//egg.bu.edu/net2/studies</a>{type&#58;egg.Hatch}/seg_and_lost_heartbeat/
+
+You can see that we have essentially a daily loss of 1000 or more production
+jobs in a daily giant spike.
+
+It may be a clue that analysis jobs seem to be unaffected by this problem.
+We&#39;re going to run nearly 100% analysis on the BU side of NET2 to avoid this
+daily loss over the weekend.
+
+- Saul, John and Augustine
+NET2
+
+On Fri Mar 29 05&#58;40&#58;11 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; We find that exactly at midnight to the microsecond, we get</font>
+<font color='#7F7E6F'>&#62; approximately one error for each running SGE job in the SEG logs. We</font>
+<font color='#7F7E6F'>&#62; suspect that this is causing PanDA to lose track of many of these</font>
+<font color='#7F7E6F'>&#62; jobs,</font>
+<font color='#7F7E6F'>&#62; ending up as &#34;lost heartbeat&#34; and ultimately lost.</font>
+<font color='#7F7E6F'>&#62; Received error message&#58; Exit status -1 in the SEG logs (see attached)</font>
+<font color='#7F7E6F'>&#62; Softwareversion&#58; OSG 3</font>
+<font color='#7F7E6F'>&#62; Affected site&#58; BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62; Affected VO&#58; atlas</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Ticket Origin]</font>
+<font color='#7F7E6F'>&#62; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=92946' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=92946</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Ticket History]</font>
+<font color='#7F7E6F'>&#62; Subject&#58; SEG gives exit status -1 errors exactly at midnight local</font>
+<font color='#7F7E6F'>&#62; time, panda jobs fail with lost heartbeat</font>
+<font color='#7F7E6F'>&#62; Ticket Type&#58; USER</font>
+<font color='#7F7E6F'>&#62; CC&#58; augustine@....</font>
+<font color='#7F7E6F'>&#62; -- by Saul Youssef at Thu Mar 28 20&#58;46&#58;37 UTC 2013</font>
+<div id='show_1743559237' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1743559237'><font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Added attachment SEG_errors_at_midnight.png</font>
+<font color='#7F7E6F'>&#62; <a href='https&#58;//ggus.eu/pages/windownload.php?attid=ATT102772' target='_blank' rel='nofollow'>https&#58;//ggus.eu/pages/windownload.php?attid=ATT102772</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; -- by Saul Youssef at Thu Mar 28 20&#58;46&#58;38 UTC 2013</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; -- by sara bertocco at Fri Mar 29 09&#58;38&#58;49 UTC 2013</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Ticket Origin]</font>
+<font color='#7F7E6F'>&#62; <a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=14424#1364549948' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=14424#1364549948</a></font>
+-- by youssef@.... at Fri Mar 29 21&#58;44&#58;59 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=23106
+</div><script type='text/javascript'>
+        $('#show_1743559237').click(function() {
+            $('#detail_1743559237').slideDown("normal");
+            $('#show_1743559237').hide();
+            $('#hide_1743559237').show();
+        });
+        $('#hide_1743559237').click(function() {
+            $('#detail_1743559237').slideUp();
+            $('#hide_1743559237').hide();
+            $('#show_1743559237').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='14424#1364549948'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-29T09:39:08+00:00">Mar 29, 2013 09:39 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1364549948">&nbsp;</a></div><pre>We find that exactly at midnight to the microsecond, we get approximately one error for each running SGE job in the SEG logs.  We suspect that this is causing PanDA to lose track of many of these jobs, ending up as &#34;lost heartbeat&#34; and ultimately lost.
+Received error message&#58; Exit status -1 in the SEG logs (see attached)
+Softwareversion&#58; OSG 3
+Affected site&#58; BU_ATLAS_Tier2
+Affected VO&#58; atlas
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=92946' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=92946</a>
+
+[Ticket History]
+Subject&#58; SEG gives exit status -1 errors exactly at midnight local time, panda jobs fail with lost heartbeat
+Ticket Type&#58; USER
+CC&#58; augustine@....
+-- by Saul Youssef at Thu Mar 28 20&#58;46&#58;37 UTC 2013
+
+Added attachment SEG_errors_at_midnight.png
+<a href='https&#58;//ggus.eu/pages/windownload.php?attid=ATT102772' target='_blank' rel='nofollow'>https&#58;//ggus.eu/pages/windownload.php?attid=ATT102772</a>
+
+-- by Saul Youssef at Thu Mar 28 20&#58;46&#58;38 UTC 2013
+
+-- by sara bertocco at Fri Mar 29 09&#58;38&#58;49 UTC 2013</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F14424">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 14424});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

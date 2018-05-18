@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[22049] Switching to SHA-2 completely</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=22049" method="post">
+<div class="page-header">
+    <h3><span class="muted">22049</span> / Switching to SHA-2 completely</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Mine Altunay</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Mine Altunay</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Check for reply back from Mine</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-10-13</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">OSG RA <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Scott Teige <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">Security Team <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Rob Quick <span class="muted"> / OSG GOC Management</span></div><div class="assignee" style="width: 60%">Dave Dykstra <span class="muted"> / OSG Security Coordinators</span></div><div class="assignee" style="width: 60%">Tim Cartwright <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=22049", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/22049?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/22049?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Switching%20to%20SHA-2%20completely%20ISSUE%3D22049%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='22049#1446581748'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-03T20:15:48+00:00">Nov 3, 2015 08:15 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1446581748">&nbsp;</a></div><pre>DigiCert has pushed this change to the live server today. All certificates issued from your account from this point on will be issued from the new SHA2 intermediate &#34;DigiCert Grid CA-1 G2&#34; as defined on the page www.digicert-grid.com.
+
+Thank you,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1444142555'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-10-06T14:42:35+00:00">Oct 6, 2015 02:42 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1444142555">&nbsp;</a></div><pre>From&#58; Mine Altunay &#60;maltunay@....&#62;
+Date&#58; October 6, 2015 at 10&#58;39&#58;05 AM EDT
+To&#58; &#34;Deximo, Alain John&#34; &#60;adeximo@....&#62;, Jeny Teheran &#60;jteheran@....&#62;
+Subject&#58; RE&#58; Current status on ticket
+
+please close the ticket
+Thank you
+Mine
+________________________________________
+From&#58; Deximo, Alain John [adeximo@....]
+Sent&#58; Tuesday, October 06, 2015 8&#58;01 AM
+To&#58; Mine Altunay; Jeny Teheran
+Subject&#58; Current status on ticket
+
+Mine,
+
+What’s the current status for this ticket?  There hasn’t been an update in it for some time now.
+Can it be closed out?
+
+Switching to SHA-2 completely - <a href='https&#58;//ticket.grid.iu.edu/22049' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/22049</a>
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1441217227'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-02T18:07:07+00:00">Sep 2, 2015 06:07 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1441217227">&nbsp;</a></div><pre>I forgot to mention that I also verified that a test host certificate and user certificate signed by the new intermediate CA looked good.</pre></div><div class='update_description'><i onclick="document.location='22049#1441217203'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-02T18:06:43+00:00">Sep 2, 2015 06:06 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1441217203">&nbsp;</a></div><pre>DigiCert will plan the cut over to DigiCert Grid CA-1 G2 for the morning of November 3rd 2015. This will mean that all certificates issued from that date will be issued from the SHA2 intermediate named DigiCert Grid CA-1 G2.
+
+Thank you,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1441216798'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-02T17:59:58+00:00">Sep 2, 2015 05:59 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1441216798">&nbsp;</a></div><pre>The OSG security team and Digicert have agreed to a date of Tuesday, November 3, for the cutover.  The announcement to go out to OSG should be ready today.  The website <a href='http&#58;//digicert-grid.com' target='_blank' rel='nofollow'>http&#58;//digicert-grid.com</a> has been updated to only have the certificate that will go into production, not the one that was rejected.</pre></div><div class='update_description'><i onclick="document.location='22049#1440445778'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-24T19:49:38+00:00">Aug 24, 2015 07:49 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1440445778">&nbsp;</a></div><pre>On the Ops call Jen said that there are still some issues the security team is still working on to get resolved.</pre></div><div class='update_description'><i onclick="document.location='22049#1438710996'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-04T17:56:36+00:00">Aug 4, 2015 05:56 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1438710996">&nbsp;</a></div><pre>Hello Darin,
+My answers are below&#58;
+1. I do not quite understand what you mean? did we release the ca bundle for v3.1? If we do not support security updates for this release, no problem then.
+2. should i email the csr to you?
+3. we need 2 months.
+
+Thank you
+Mine Altunay</pre></div><div class='update_description'><i onclick="document.location='22049#1438650021'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-04T01:00:21+00:00">Aug 4, 2015 01:00 AM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1438650021">&nbsp;</a></div><pre>From M. Altunay&#58; 1. do we still provide security updates to v3.1. If so, we must release the CA bundle for that version as well.
+Darin&#58; Kevin was the one who referred to updating to the June software release.
+
+From M. Altunay&#58; 2. can we get a test host cert to do a quick test on the format of the intermediate ca file? We are not going to do any extensive testing, we did that 2 years ago. Bt I want to do a quick sanity test on if there is any obvious problems with the new intermediate ca.
+Darin&#58; I will send a request to our PKI admin for a test certificate. Will you please create a private key on your side and send me a CSR for the test cert?
+
+From M. Altunay&#58; 3. Most importantly we need to alert our users that they need to install this new intermediate CA to their browser trust store. We need some time to make the announcement and give everyone a chance to respond.
+Darin&#58; Do you have any idea of how long it will take for everyone to import the new intermediate CA?
+
+Darin Andrew
+DigiCert, Inc.</pre></div><div class='update_description'><i onclick="document.location='22049#1438636357'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-03T21:12:37+00:00">Aug 3, 2015 09:12 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1438636357">&nbsp;</a></div><pre>Hello
+I need a few things sorted out before we make the switch.
+1. do we still provide security updates to v3.1. If so, we must release the CA bundle for that version as well.
+2. can we get a test host cert to do a quick test on the format of the intermediate ca file? We are not going to do any extensive tetsing, we did that 2 years ago. Bt I want to do a quick sanity test on if there is any obvious problems with the new intermediate ca.
+3. Most importantly we need to alert our users that they need to instal this new intermediate CA to their browser trust store. We need some time to make the announcement and give everyone a chance to respond.
+
+Mine</pre></div><div class='update_description'><i onclick="document.location='22049#1438633992'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-03T20:33:12+00:00">Aug 3, 2015 08:33 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1438633992">&nbsp;</a></div><pre>Security,
+
+Are we ready to have DigiCert make the switch to SHA2?
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1436824029'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T21:47:09+00:00">Jul 13, 2015 09:47 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1436824029">&nbsp;</a></div><pre>Darin&#58; I did not intend to authorize July 28 yet, I was just mentioning that was the next possibility.   Let&#39;s wait until we discuss things further here.</pre></div><div class='update_description'><i onclick="document.location='22049#1436823897'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T21:44:57+00:00">Jul 13, 2015 09:44 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1436823897">&nbsp;</a></div><pre>Ah, OK, that&#39;s a good way to contact them then.
+
+Ok, so Digicert folks&#58; I see the new SHA2 &#34;CA-1 G2&#34; certs at <a href='http&#58;//digicert-grid.com.' target='_blank' rel='nofollow'>http&#58;//digicert-grid.com.</a>   I have some questions for you&#58;
+1. What&#39;s the difference between &#34;CA-1 G2 New&#34; and &#34;CA-1 G2 &#58; Updated Newest (updated)&#34;?
+2. Is there a way I can get some test certificates using the new completely SHA-2 system ahead of time, to try them on a few services?
+3. Our web user instructions at <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/CertificateGetWeb' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/CertificateGetWeb</a> say to install both the root and intermediate certs; does that mean all web browsers that had the intermediate cert will now need to also install the new one in order to continue to work with host certificates that are generated with the new sha2 intermediate CA?
+4. I don&#39;t see an updated SHA2 rootCA key, it is still SHA1.  Is that OK?
+
+This may be too complicated to rush through before Mine comes back, especially since I am not very aware of the history of this.</pre></div><div class='update_description'><i onclick="document.location='22049#1436823735'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T21:42:15+00:00">Jul 13, 2015 09:42 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1436823735">&nbsp;</a></div><pre>DigiCert will plan on switching your live account to use the new SHA2 intermediate on the 28th of July.
+
+Thank you,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1436822837'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T21:27:17+00:00">Jul 13, 2015 09:27 PM UTC</time> by <b>Kevin Hill</b><a class="anchor" name="1436822837">&nbsp;</a></div><pre>Hi Dave,
+Looks like there are several folks from Digicert cc-ed on this ticket.
+
+-kevin
+
+On 7/13/15 4&#58;20 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22049#1436822410'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T21:20:10+00:00">Jul 13, 2015 09:20 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1436822410">&nbsp;</a></div><pre>Kevin,
+
+Do you know who the contact is at Digicert?  I wonder if they will recognize my authority.  Maybe they could confirm by trying to send an email to Mine and seeing her auto-responder.
+
+As for a date, it seems that a GOC maintenance day would be most appropriate.  The next available one would be July 28, and it needs to be announced a week in advance.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='22049#1436822136'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T21:15:36+00:00">Jul 13, 2015 09:15 PM UTC</time> by <b>Kevin Hill</b><a class="anchor" name="1436822136">&nbsp;</a></div><pre>Hi Dave,
+So this is letting Digicert know its ok to switch over to using the
+SHA-2 signed signing cert for signing new cert requests. In theory,
+should be transparent, but it would probably be best to pick a date in
+the future and let everyone know, just in case someone happens to have
+1000 host certs expiring the day after and it turns out there is a
+problem...
+
+-kevin
+
+On 7/13/15 3&#58;50 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22049#1436820622'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T20:50:22+00:00">Jul 13, 2015 08:50 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1436820622">&nbsp;</a></div><pre>Alain,
+
+I don&#39;t know how, I&#39;d have to investigate that.  Maybe Kevin knows.  Is it urgent so it can&#39;t wait for Mine?
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='22049#1436815561'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T19:26:01+00:00">Jul 13, 2015 07:26 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1436815561">&nbsp;</a></div><pre>Greetings Dave,
+
+Since Mine is away, is there any way you can schedule a
+time for Digicert to switch over to signing new requests with the sha-2
+intermediate cert.
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1435155536'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-24T14:18:56+00:00">Jun 24, 2015 02:18 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1435155536">&nbsp;</a></div><pre>Mine,
+
+Can we close out this ticket or are we still waiting on something else?
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1434724780'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-19T14:39:40+00:00">Jun 19, 2015 02:39 PM UTC</time> by <b>Kevin Hill</b><a class="anchor" name="1434724780">&nbsp;</a></div><pre>Hi Alain,
+Yup, the new sha2 digicert cert was in the last osg bundle in the June software release. Note that there was not an update for OSG v3.1, so this is a good time for everyone to upgrade if they haven&#39;t...
+
+-kevin</pre></div><div class='update_description'><i onclick="document.location='22049#1434626737'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T11:25:37+00:00">Jun 18, 2015 11:25 AM UTC</time> by <b>OSG RA</b><a class="anchor" name="1434626737">&nbsp;</a></div><pre>Greetings Kevin & Mine,
+
+Do you guys know if the new certificate has appeared in an IGTF release?
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1432895427'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-29T10:30:27+00:00">May 29, 2015 10:30 AM UTC</time> by <b>OSG RA</b><a class="anchor" name="1432895427">&nbsp;</a></div><pre>Hi Alain,
+I don&#39;t think there is anything we need to do, at this point we are
+waiting for the new certificate to appear in an IGTF release.
+
+thanks,
+-kevin</pre></div><div class='update_description'><i onclick="document.location='22049#1432697989'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-27T03:39:49+00:00">May 27, 2015 03:39 AM UTC</time> by <b>OSG RA</b><a class="anchor" name="1432697989">&nbsp;</a></div><pre>Hi Alain,
+Doesn&#39;t look like I got anything from anyone directly at digicert, but
+it does appear that the new intermediate ca cert is on the website now
+and it&#39;s subject matches that in the signing_policy file.
+
+thanks,
+-kevin
+
+On 5/26/15 1&#58;03 PM, Deximo, Alain John wrote&#58;
+Kevin,
+
+Did Scott Rae with DigiCert ever get a hold of you since Mine had requested he do so before he spread
+the CA any further?  If so, I didn&#39;t see anything about it in the ticket.
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1431545785'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-13T19:36:25+00:00">May 13, 2015 07:36 PM UTC</time> by <b>scott.rea@....</b><a class="anchor" name="1431545785">&nbsp;</a></div><pre>Yes - need to update the naming file of the Root - it will be up later today
+
+Regards,
+-Scott
+
+Sent from my Verizon Wireless 4G LTE DROID
+On May 13, 2015 1&#58;31 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='22049#1431545418'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-13T19:30:18+00:00">May 13, 2015 07:30 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1431545418">&nbsp;</a></div><pre>Hi Scott
+DigiCert also had an issue with name info in IGTF distribution and they appear invalid due to this problem.
+Please check with Kevin before we spread this CA further. maybe this other issue is already fixed, kevin can help you.
+Mine</pre></div><div class='update_description'><i onclick="document.location='22049#1431527610'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-13T14:33:30+00:00">May 13, 2015 02:33 PM UTC</time> by <b>scott.rea@....</b><a class="anchor" name="1431527610">&nbsp;</a></div><pre>The New Updated SHA2 intermediate is now on the DigiCert-Grid site so it
+can be accessed from there.
+I will fill in the rest of the details by end of today on the site like
+we have for all the other intermediates.
+I need to check with IGTF to see when this version will be distributed
+by default, but it can at least be pulled down from our Grid Repository
+for now and manually installed
+
+Regards,
+_Scott
+
+On 5/12/2015 4&#58;17 PM, Darin Andrew wrote&#58;
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Alain,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We will have the updated SHA2 Intermediate uploaded to</font>
+<font color='#7F7E6F'>&#62; digicert-grid.com tomorrow. You can have your server admins start</font>
+<font color='#7F7E6F'>&#62; uploading the new SHA2 intermediate at that time.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We will need you to let us know a date by which all of your servers</font>
+<font color='#7F7E6F'>&#62; have received the updated SHA2 intermediate. This will be a part of</font>
+<font color='#7F7E6F'>&#62; the change control approval to move to the new SHA2 intermediate.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Once we have approval we will make the code change on your live</font>
+<font color='#7F7E6F'>&#62; account. After the change each certificate will be issued from the</font>
+<font color='#7F7E6F'>&#62; SHA2 intermediate instead of the SHA1 intermediate.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;</font>
+<div id='show_1144077563' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1144077563'><font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; *Darin Andrew, CISSP*</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Technical Engineer</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; DigiCert, Inc.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; darin.andrew@....</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; p. (801) 770-1776</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; c. (801) 885-0514</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; *From&#58;*Open Science Grid FootPrints [mailto&#58;osg@....]</font>
+<font color='#7F7E6F'>&#62; *Sent&#58;* Tuesday, May 12, 2015 12&#58;53 PM</font>
+<font color='#7F7E6F'>&#62; *To&#58;* Darin Andrew</font>
+<font color='#7F7E6F'>&#62; *Subject&#58;* Open Science Grid&#58; Switching to SHA-2 completely</font>
+<font color='#7F7E6F'>&#62; ISSUE=22049 PROJ=71</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1144077563').click(function() {
+            $('#detail_1144077563').slideDown("normal");
+            $('#show_1144077563').hide();
+            $('#hide_1144077563').show();
+        });
+        $('#hide_1144077563').click(function() {
+            $('#detail_1144077563').slideUp();
+            $('#hide_1144077563').hide();
+            $('#show_1144077563').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22049#1431469056'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-12T22:17:36+00:00">May 12, 2015 10:17 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1431469056">&nbsp;</a></div><pre>Alain,
+
+We will have the updated SHA2 Intermediate uploaded to digicert-grid.com tomorrow. You can have your server admins start uploading the new SHA2 intermediate at that time.
+
+We will need you to let us know a date by which all of your servers have received the updated SHA2 intermediate. This will be a part of the change control approval to move to the new SHA2 intermediate.
+Once we have approval we will make the code change on your live account. After the change each certificate will be issued from the SHA2 intermediate instead of the SHA1 intermediate.
+
+Thanks,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1431456782'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-12T18:53:02+00:00">May 12, 2015 06:53 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1431456782">&nbsp;</a></div><pre>Darin,
+
+Has the following been done yet?
+
+Next Steps&#58;
+- Scott replaces the intermediate file on digicert-grid.com (It will also be re-submitted to IGTF)
+- The intermediate is replaced on all of your servers
+
+It doesn&#39;t look like the website has been updated.
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1431456710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-12T18:51:50+00:00">May 12, 2015 06:51 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1431456710">&nbsp;</a></div><pre>From&#58; &#34;Kevin M. Hill&#34; &#60;kevinh@....&#62;
+Date&#58; May 12, 2015 2&#58;41&#58;16 PM EDT
+To&#58; &#34;Deximo, Alain John&#34; &#60;adeximo@....&#62;
+Subject&#58; Re&#58; Switching to SHA-2 completely
+
+Hi Alain,
+Doesn&#39;t look like the cert has been changed on the website. Also, since
+it&#39;s igtf approved, the new cert will have to be added to the official
+igtf release as well.
+
+-kevin
+
+On 5/12/15 1&#58;33 PM, Deximo, Alain John wrote&#58;
+Kevin,
+
+Have you been able to download the new intermediate file from DigiCert?  If so, have you
+confirmed that they have in fact made the correction?
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1430830709'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-05T12:58:29+00:00">May 5, 2015 12:58 PM UTC</time> by <b>echism</b><a class="anchor" name="1430830709">&nbsp;</a></div><pre>Darin,
+
+Where are we on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22049#1429905745'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-24T20:02:25+00:00">Apr 24, 2015 08:02 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1429905745">&nbsp;</a></div><pre>Alain,
+
+We discovered that the new SHA2 grid intermediate named &#34;DigiCert Grid CA-1 G2&#34; had the &#34;DC=digicert-grid, DC=com&#34; order reversed from what it should be. We have re-issued the intermediate so it has the proper order.
+
+Scott Rea will post the new intermediate file to the site digicert-grid.com so you can distribute it to all of your servers.
+
+Next Steps&#58;
+- Scott replaces the intermediate file on digicert-grid.com (It will also be re-submitted to IGTF)
+- The intermediate is replaced on all of your servers
+
+Thanks,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1429874176'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-24T11:16:16+00:00">Apr 24, 2015 11:16 AM UTC</time> by <b>OSG RA</b><a class="anchor" name="1429874176">&nbsp;</a></div><pre>We&#39;re still waiting on a response back from DigiCert into the issue with the signing_policy mismatch that Kevin reported.</pre></div><div class='update_description'><i onclick="document.location='22049#1429271250'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-17T11:47:30+00:00">Apr 17, 2015 11:47 AM UTC</time> by <b>OSG RA</b><a class="anchor" name="1429271250">&nbsp;</a></div><pre>Darin,
+
+Is there any way you can look into the issue with the signing_policy mismatch that Kevin reported?
+Your assistance is greatly appreciated.
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1428935239'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-13T14:27:19+00:00">Apr 13, 2015 02:27 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1428935239">&nbsp;</a></div><pre>Date&#58; April 10, 2015 3&#58;17&#58;07 PM EDT
+To&#58; &#34;Deximo, Alain John&#34; &#60;adeximo@....&#62;
+Subject&#58; Re&#58; Switching to SHA-2 completely
+
+Hi Alain,
+Doesn&#39;t look like digicert has responded to the issue with the
+signing_policy mismatch. The sha-2 test signing cert did work though.
+
+-kevin
+
+On 4/10/15 1&#58;49 PM, Deximo, Alain John wrote&#58;
+Hi Kevin,
+
+Where are we on this ticket?  <a href='https&#58;//ticket.grid.iu.edu/22049' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/22049</a>
+Are we any closer to closing it out?  Are there any issues
+still coming from EGI?
+
+Thanks,
+-Alain
+
+--
+Kevin M. Hill
+Fermilab                              <a href='http&#58;//www.fnal.gov/' target='_blank' rel='nofollow'>http&#58;//www.fnal.gov/</a>
+OSG Security Team          <a href='http&#58;//www.opensciencegrid.org/' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/</a></pre></div><div class='update_description'><i onclick="document.location='22049#1426709366'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-18T20:09:26+00:00">Mar 18, 2015 08:09 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1426709366">&nbsp;</a></div><pre>I will be out of the office on Monday the 16th of March and will return on Thursday the 19th.
+
+If the matter is urgent please contact&#58;
+Jared Mensinger (Sales Engineer)
+Jared.mensinger@....&#60;mailto&#58;Jared.mensinger@....&#62;
+o. 801-701-9628
+
+Kris Singh (Sr. Manager of Emerging Markets) (Sales)
+kris.singh@....
+o. 801-701-9642
+
+Jason Lewis (Sr. Manager of Business Development) (Sales)
+jason.lewis@....
+o. 801-770-1783
+
+Thank you,
+
+Darin Andrew, CISSP
+Techical Engineer
+DigiCert, Inc.
+e. darin.andrew@....
+o. 801-770-1776
+c. 801-885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1426709299'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-18T20:08:19+00:00">Mar 18, 2015 08:08 PM UTC</time> by <b>Kevin Hill</b><a class="anchor" name="1426709299">&nbsp;</a></div><pre>Hi,
+Just noting here that I was able to successfully run jobs with the test sha-2 intermediate cert. However, looks like there is a problem with the production sha-2 cert.
+
+Reports from EGI revealed that the &#34;Digicert Grid CA-1 G2&#34; certificate&#39;s subject does not match the DN in the signing_policy and other files. The subject in the certificate starts with &#39;/DC=DigiCert-grid/DC=com/...&#39; whereas the text files show the dn as expected starting with &#39;/DC=com/DC=DigiCert-grid/...&#39;
+
+Looks like the certificate itself is wrong, but the problem is coming from the mismatch with the text files.
+-kevin</pre></div><div class='update_description'><i onclick="document.location='22049#1425644415'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-06T12:20:15+00:00">Mar 6, 2015 12:20 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1425644415">&nbsp;</a></div><pre>Kevin reported on the Ops call this week that he was still performing some tests on his end.</pre></div><div class='update_description'><i onclick="document.location='22049#1423626018'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-02-11T03:40:18+00:00">Feb 11, 2015 03:40 AM UTC</time> by <b>OSG RA</b><a class="anchor" name="1423626018">&nbsp;</a></div><pre>Update status was provided during the Ops call yesterday by Kevin Hill.</pre></div><div class='update_description'><i onclick="document.location='22049#1423504109'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-02-09T17:48:29+00:00">Feb 9, 2015 05:48 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1423504109">&nbsp;</a></div><pre>I&#39;ve suggested Kevin to create a RPM to install test G2 CA so that I (or anyone else) can more easily test the CA on their test CEs.</pre></div><div class='update_description'><i onclick="document.location='22049#1423062917'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-02-04T15:15:17+00:00">Feb 4, 2015 03:15 PM UTC</time> by <b>Kevin Hill</b><a class="anchor" name="1423062917">&nbsp;</a></div><pre>Hi Soichi,
+Anything I can do to help test the running-jobs-with-new-test-certs part? I believe I already successfully got test certs for a host and user, but I can double check.
+
+-kevin</pre></div><div class='update_description'><i onclick="document.location='22049#1422986444'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-02-03T18:00:44+00:00">Feb 3, 2015 06:00 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1422986444">&nbsp;</a></div><pre>Hello Darin,
+Soichi has been testing the new SHA-2 intermediate CA with job submission systems. if his tests were successful, we have nothing blocking us form making the transition.
+Mine Altunay
+On Feb 2, 2015, at 4&#58;56 PM, Darin Andrew &#60;darin.andrew@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; OSG,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; According to the IGTF timeline you must be switched to SHA2 certificates and SHA2 intermediates as of February 1st. You have already been issuing your certificates at SHA2 but we still need to switch your account to use the SHA2 intermediate. According to the change control process we have established, we need approval to push the code to your production server so the move to SHA2 can be completed.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; According to IGTF, certificates issued from your account at this time will be out of compliance because they are not issued from a SHA2 intermediate.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Will you please let us know what your time frame is for approving DigiCert to switch your account to the SHA2 intermediate?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Darin Andrew, CISSP</font>
+<font color='#7F7E6F'>&#62; Technical Engineer</font>
+<font color='#7F7E6F'>&#62; DigiCert, Inc.</font>
+<font color='#7F7E6F'>&#62; darin.andrew@....</font>
+<font color='#7F7E6F'>&#62; p. (801) 770-1776</font>
+<font color='#7F7E6F'>&#62; c. (801) 885-0514</font></pre></div><div class='update_description'><i onclick="document.location='22049#1422917893'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-02-02T22:58:13+00:00">Feb 2, 2015 10:58 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1422917893">&nbsp;</a></div><pre>OSG,
+
+According to the IGTF timeline you must be switched to SHA2 certificates and SHA2 intermediates as of February 1st. You have already been issuing your certificates at SHA2 but we still need to switch your account to use the SHA2 intermediate. According to the change control process we have established, we need approval to push the code to your production server so the move to SHA2 can be completed.
+
+According to IGTF, certificates issued from your account at this time will be out of compliance because they are not issued from a SHA2 intermediate.
+
+Will you please let us know what your time frame is for approving DigiCert to switch your account to the SHA2 intermediate?
+
+Thanks,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1421864723'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-21T18:25:23+00:00">Jan 21, 2015 06:25 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1421864723">&nbsp;</a></div><pre>Greetings Mine,
+
+Is there anyone else assisting Soichi with testing?  If so, where are we on as far as testing?
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1420646292'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-07T15:58:12+00:00">Jan 7, 2015 03:58 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1420646292">&nbsp;</a></div><pre>Sorry, I haven&#39;t had time to volunteer on this recently.. Has anyone else tried it?
+
+Also, has the transition to G2 CA already happened on Digicert production account?</pre></div><div class='update_description'><i onclick="document.location='22049#1420575281'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-01-06T20:14:41+00:00">Jan 6, 2015 08:14 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1420575281">&nbsp;</a></div><pre>Soichi,
+
+Was Darin&#39;s last advice helpful to you at all?
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1418939531'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-18T21:52:11+00:00">Dec 18, 2014 09:52 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1418939531">&nbsp;</a></div><pre>Team,
+I ran this issue by Scott Rea here at DigiCert. He said you may want to check the namespace on your server for the TEST Root to ensure it was updated for the new G2 test intermediate named &#34;DigiCert Grid test CA-1 G2&#34;. You can get the new updated namespace files from <a href='http&#58;//www.digicert-grid.com/.' target='_blank' rel='nofollow'>http&#58;//www.digicert-grid.com/.</a>
+
+Thanks,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514
+
+________________________________
+Notification of Ticket Change
+
+<a href='https&#58;//ticket.grid.iu.edu/goc/22049' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/22049</a>
+
+Description&#58;
+I don&#39;t see anything off in the /var/log/globus-gatekeeper.log
+
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 6&#58; Got connection &#58;&#58;ffff&#58;129.79.53.144 at Thu Dec 18 21&#58;35&#58;26 2014
+
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; Authenticated globus user&#58; /DC=com/DC=DigiCert-Grid/O=OSG Pilot/OU=People/CN=Soichi Hayashi 238 (test2)
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; GATEKEEPER_JM_ID 2014-12-18.21&#58;35&#58;26.0000002260.0000001222 for /DC=com/DC=DigiCert-Grid/O=OSG Pilot/OU=People/CN=Soichi Hayashi 238 (test2) on &#58;&#58;ffff&#58;129.79.53.144
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; Requested service&#58; jobmanager
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; Authorized as local user&#58; mis
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; Authorized as local uid&#58; 48417
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; and local gid&#58; 48417
+<div id='show_2073150315' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2073150315'>TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; executing /usr/sbin/globus-job-manager
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; GRID_SECURITY_CONTEXT_FD=10
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; GRID_SECURITY_HTTP_BODY_FD=11
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; Child 7771 started
+JMA 2014/12/18 21&#58;35&#58;27 GATEKEEPER_JM_ID 2014-12-18.21&#58;35&#58;26.0000002260.0000001222 for /DC=com/DC=DigiCert-Grid/O=OSG Pilot/OU=People/CN=Soichi Hayashi 238 (test2) on &#58;&#58;ffff&#58;129.79.53.144
+JMA 2014/12/18 21&#58;35&#58;27 GATEKEEPER_JM_ID 2014-12-18.21&#58;35&#58;26.0000002260.0000001222 mapped to mis (48417, 48417)
+JMA 2014/12/18 21&#58;35&#58;27 GATEKEEPER_JM_ID 2014-12-18.21&#58;35&#58;26.0000002260.0000001222 has GRAM_SCRIPT_JOB_ID 7791 manager type fork
+
+It&#39;s all in the /var/log/globus/gram_mis.log
+
+ts=2014-12-18T21&#58;35&#58;28.535912Z id=7771 event=gram.callback.start level=DEBUG gramid=/16434195270411971016/13983113894446648250/ state=4 restart_when_done=false
+ts=2014-12-18T21&#58;35&#58;28.536152Z id=7771 event=gram.callback.end level=DEBUG gramid=/16434195270411971016/13983113894446648250/ state=4 status=0 msg=&#34;Done queuing callback messages&#34;
+ts=2014-12-18T21&#58;35&#58;28.536329Z id=7771 event=gram.directory_destroy.end level=DEBUG gramid=/16434195270411971016/13983113894446648250/ path=&#34;/home/mis/.globus/mis/.globus/job/ce/16434195270411971016.13983113894446648250&#34; failures=0 status=0
+ts=2014-12-18T21&#58;35&#58;28.537008Z id=7771 event=gram.job.end level=ERROR gramid=/16434195270411971016/13983113894446648250/ job_status=4 status=-73 reason=&#34;the job manager failed to open stdout&#34;
+
+Soichi Hayashi
+</div><script type='text/javascript'>
+        $('#show_2073150315').click(function() {
+            $('#detail_2073150315').slideDown("normal");
+            $('#show_2073150315').hide();
+            $('#hide_2073150315').show();
+        });
+        $('#hide_2073150315').click(function() {
+            $('#detail_2073150315').slideUp();
+            $('#hide_2073150315').hide();
+            $('#show_2073150315').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22049#1418938608'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-18T21:36:48+00:00">Dec 18, 2014 09:36 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1418938608">&nbsp;</a></div><pre>I don&#39;t see anything off in the /var/log/globus-gatekeeper.log
+
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 6&#58; Got connection &#58;&#58;ffff&#58;129.79.53.144 at Thu Dec 18 21&#58;35&#58;26 2014
+
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; Authenticated globus user&#58; /DC=com/DC=DigiCert-Grid/O=OSG Pilot/OU=People/CN=Soichi Hayashi 238 (test2)
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; GATEKEEPER_JM_ID 2014-12-18.21&#58;35&#58;26.0000002260.0000001222 for /DC=com/DC=DigiCert-Grid/O=OSG Pilot/OU=People/CN=Soichi Hayashi 238 (test2) on &#58;&#58;ffff&#58;129.79.53.144
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; Requested service&#58; jobmanager
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; Authorized as local user&#58; mis
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58; Authorized as local uid&#58; 48417
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 5&#58;           and local gid&#58; 48417
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; executing /usr/sbin/globus-job-manager
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; GRID_SECURITY_CONTEXT_FD=10
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; GRID_SECURITY_HTTP_BODY_FD=11
+TIME&#58; Thu Dec 18 21&#58;35&#58;26 2014
+PID&#58; 7770 -- Notice&#58; 0&#58; Child 7771 started
+JMA 2014/12/18 21&#58;35&#58;27 GATEKEEPER_JM_ID 2014-12-18.21&#58;35&#58;26.0000002260.0000001222 for /DC=com/DC=DigiCert-Grid/O=OSG Pilot/OU=People/CN=Soichi Hayashi 238 (test2) on &#58;&#58;ffff&#58;129.79.53.144
+JMA 2014/12/18 21&#58;35&#58;27 GATEKEEPER_JM_ID 2014-12-18.21&#58;35&#58;26.0000002260.0000001222 mapped to mis (48417, 48417)
+JMA 2014/12/18 21&#58;35&#58;27 GATEKEEPER_JM_ID 2014-12-18.21&#58;35&#58;26.0000002260.0000001222 has GRAM_SCRIPT_JOB_ID 7791 manager type fork
+
+It&#39;s all in the /var/log/globus/gram_mis.log
+
+ts=2014-12-18T21&#58;35&#58;28.535912Z id=7771 event=gram.callback.start level=DEBUG gramid=/16434195270411971016/13983113894446648250/ state=4 restart_when_done=false
+ts=2014-12-18T21&#58;35&#58;28.536152Z id=7771 event=gram.callback.end level=DEBUG gramid=/16434195270411971016/13983113894446648250/ state=4 status=0 msg=&#34;Done queuing callback messages&#34;
+ts=2014-12-18T21&#58;35&#58;28.536329Z id=7771 event=gram.directory_destroy.end level=DEBUG gramid=/16434195270411971016/13983113894446648250/ path=&#34;/home/mis/.globus/mis/.globus/job/ce/16434195270411971016.13983113894446648250&#34; failures=0 status=0
+ts=2014-12-18T21&#58;35&#58;28.537008Z id=7771 event=gram.job.end level=ERROR gramid=/16434195270411971016/13983113894446648250/ job_status=4 status=-73 reason=&#34;the job manager failed to open stdout&#34;</pre></div><div class='update_description'><i onclick="document.location='22049#1418644453'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-15T11:54:13+00:00">Dec 15, 2014 11:54 AM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1418644453">&nbsp;</a></div><pre>I will be out of the office until December 15th
+
+On Dec 12, 2014, at 8&#58;13 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22049#1418433217'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-13T01:13:37+00:00">Dec 13, 2014 01:13 AM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1418433217">&nbsp;</a></div><pre>What do you see in /var/log/messages and globus-gatekeeper.log around the time you run the test?
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22049#1418416271'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-12T20:31:11+00:00">Dec 12, 2014 08:31 PM UTC</time> by <b>Kevin Hill</b><a class="anchor" name="1418416271">&nbsp;</a></div><pre>For the record, I&#39;ve been here for a while now, however the current gram issue is beyond my level of gram-fu. Perhaps I&#39;ll try to set up my own test system and give it a go.
+
+-kevin</pre></div><div class='update_description'><i onclick="document.location='22049#1418414600'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-12T20:03:20+00:00">Dec 12, 2014 08:03 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1418414600">&nbsp;</a></div><pre>Adding Kevin to this thread. please inform Kevin if you need any help form the security team. Otherwise we will watch this ticket.
+Mine Altunay
+On Dec 12, 2014, at 12&#58;42 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22049#1418409759'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-12T18:42:39+00:00">Dec 12, 2014 06:42 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1418409759">&nbsp;</a></div><pre>I&#39;ve run dos2unix on DigiCertGridTESTRootCA.cer, and rebooted ce.grid.iu.edu, but I am still seeing the same message in /var/log/globus/gram_mis.log
+
+[on my submit host]
+$globus-job-run ce.grid.iu.edu /usr/bin/whoami
+
+[ce.grid.iu.edu&#58;//var/log/globus/gram_mis.log]
+ts=2014-12-12T18&#58;39&#58;44.095574Z id=5896 event=gram.callback.start level=DEBUG gramid=/16433967651509174076/13983113894446687622/ state=4 restart_when_done=false
+ts=2014-12-12T18&#58;39&#58;44.095892Z id=5896 event=gram.callback.end level=DEBUG gramid=/16433967651509174076/13983113894446687622/ state=4 status=0 msg=&#34;Done queuing callback messages&#34;
+ts=2014-12-12T18&#58;39&#58;44.096059Z id=5896 event=gram.directory_destroy.end level=DEBUG gramid=/16433967651509174076/13983113894446687622/ path=&#34;/home/mis/.globus/mis/.globus/job/ce/16433967651509174076.13983113894446687622&#34; failures=0 status=0
+ts=2014-12-12T18&#58;39&#58;44.096651Z id=5896 event=gram.job.end level=ERROR gramid=/16433967651509174076/13983113894446687622/ job_status=4 status=-73 reason=&#34;the job manager failed to open stdout&#34;</pre></div><div class='update_description'><i onclick="document.location='22049#1418404856'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-12T17:20:56+00:00">Dec 12, 2014 05:20 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1418404856">&nbsp;</a></div><pre>One of your cert files, DigiCertGridTESTRootCA.cer, has CRLF line terminators. You should run dos2unix on the file and try again.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22049#1418403955'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-12T17:05:55+00:00">Dec 12, 2014 05:05 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1418403955">&nbsp;</a></div><pre>Tim,
+
+I&#39;ve tar-ed up the CA files I&#39;ve download & crafted on ce.grid.iu.edu.
+<font color='#7F7E6F'>&#62; <a href='http&#58;//pub.soichi.us/DigiCertGridTEST.tar.bz2' target='_blank' rel='nofollow'>http&#58;//pub.soichi.us/DigiCertGridTEST.tar.bz2</a></font>
+If you could double check this, that will be great!</pre></div><div class='update_description'><i onclick="document.location='22049#1418396879'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-12T15:07:59+00:00">Dec 12, 2014 03:07 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1418396879">&nbsp;</a></div><pre>Adding Brian Lin and Mat Selmeci here in OSG Software/Madison, as they may have some insight into certificates and GRAM. Soichi, could you attach the complete set of CA files that you created for the G2 CA cert? Small mistakes there can lead to weird issues, as we have discovered in our testing framework.</pre></div><div class='update_description'><i onclick="document.location='22049#1418329382'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-11T20:23:02+00:00">Dec 11, 2014 08:23 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1418329382">&nbsp;</a></div><pre>No, I haven&#39;t found any help with the GRAM issue I was having.</pre></div><div class='update_description'><i onclick="document.location='22049#1418328155'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-11T20:02:35+00:00">Dec 11, 2014 08:02 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1418328155">&nbsp;</a></div><pre>Soichi,
+
+What&#39;s the status on your end?  Were you ever able to find any assistance in resolving your GRAM issue
+that your encountered?
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1417647877'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-12-03T23:04:37+00:00">Dec 3, 2014 11:04 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1417647877">&nbsp;</a></div><pre>Darin,
+
+I was finally able to test the user certificate issued through the pilot account and saw that it was signed with G2 certificate.
+
+Signature Algorithm&#58; sha256WithRSAEncryption
+Issuer&#58; DC=com, DC=DigiCert-Grid, O=DigiCert Grid, CN=DigiCert Grid TEST CA-1 G2
+Validity
+Not Before&#58; Dec  3 00&#58;00&#58;00 2014 GMT
+Not After &#58; Jan  3 12&#58;00&#58;00 2016 GMT
+Subject&#58; DC=com, DC=DigiCert-Grid, O=OSG Pilot, OU=People, CN=Soichi Hayashi 238 (test2)
+
+I then created a grid proxy certificate, and used it to submit a job on my test CE (ce.grid.iu.edu). After manually downloading the certificate from digicert-grid.com, and handcrafting various openssl related files (.0, .signing_policy, .namespace, etc..) under /etc/grid-security/certificate directory, and entering my test DN in gridmap file on my test CE, the CE&#39;s gatekeeper was able to hand off my test job to the local fork job manager.
+
+<font color='#7F7E6F'>&#62; JMA 2014/12/03 22&#58;53&#58;09 GATEKEEPER_JM_ID 2014-12-03.22&#58;53&#58;09.0000002261.0000000273 for /DC=com/DC=DigiCert-Grid/O=OSG Pilot/OU=People/CN=Soichi Hayashi 238 (test2) on &#58;&#58;ffff&#58;129.79.53.144</font>
+<font color='#7F7E6F'>&#62; JMA 2014/12/03 22&#58;53&#58;09 GATEKEEPER_JM_ID 2014-12-03.22&#58;53&#58;09.0000002261.0000000273 mapped to mis (48417, 48417)</font>
+<font color='#7F7E6F'>&#62; JMA 2014/12/03 22&#58;53&#58;09 GATEKEEPER_JM_ID 2014-12-03.22&#58;53&#58;09.0000002261.0000000273 has GRAM_SCRIPT_JOB_ID 3793 manager type fork</font>
+
+However, I am seeing following error message in the /var/log/globus/gram_mis.log (I am submitting it as mis VO).
+<font color='#7F7E6F'>&#62; ts=2014-12-03T22&#58;55&#58;31.409324Z id=4140 event=gram.directory_destroy.end level=DEBUG gramid=/16433986313646044026/13983113894446684091/ path=&#34;/home/mis/.globus/mis/.globus/job/ce/16433986313646044026.13983113894446684091&#34; failures=0 status=0</font>
+<font color='#7F7E6F'>&#62; ts=2014-12-03T22&#58;55&#58;31.409918Z id=4140 event=gram.job.end level=ERROR gramid=/16433986313646044026/13983113894446684091/ job_status=4 status=-73 reason=&#34;the job manager failed to open stdout&#34;</font>
+
+And my job never ran.
+
+This doesn&#39;t happen if I use my regular Digicert (production) certificate. I don&#39;t know enough about globus to say for sure that this is just some miss-configuration inside ce.grid.iu.edu, or error message has to do with the fact that I am using G2 certificate. Most likely though, I think it has to do with the DigiCert *TEST* CA (and not G1 v.s. G2 issue)..
+
+So, my test in inconclusive..., I am hoping someone else could help me resolve my gram issue above.
+
+Soichi</pre></div><div class='update_description'><i onclick="document.location='22049#1416874094'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-25T00:08:14+00:00">Nov 25, 2014 12:08 AM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1416874094">&nbsp;</a></div><pre>Soichi,
+
+The user certificates issued from the DigiCert Pilot account are now being issued from the SHA2 &#34;DigiCert Grid TEST CA-1 G2&#34; CA. Please test that the certificate issuance is working in your test environment.
+
+What we are working towards is twofold.
+1. All of your end entity Grid certificates are being issued as SHA2 (disable the ability to request a SHA1 cert)
+2. The intermediate CA certificate that the certificates are issued from is also SHA2 (DigiCert Grid Test CA-1 G2)
+
+Once you are done on the test (pilot) account we would like to push the following changes to your production account.
+1. Disable the ability for you to issue SHA1 certificates
+2. Switch the intermediate CA that signs your certificates to the SHA2 production Grid intermediate named &#34;DigiCert Grid CA-1 G2&#34;.
+
+DigiCert is ready and waiting for the approval from OSG to push the changes to your production account. If DigiCert can receive approval to push the changes for SHA2 compliance live on your production account on Tuesday the 25th of November 2014 that would be best for IGTF compliance. If you are not ready at that time we can shoot for Tuesday the 9th of December 2014.
+
+Thank you,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.</pre></div><div class='update_description'><i onclick="document.location='22049#1416504484'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-20T17:28:04+00:00">Nov 20, 2014 05:28 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1416504484">&nbsp;</a></div><pre>Darin,
+
+I was able to verify a test host certificate using &#34;CN = DigiCert Grid TEST CA-1 G2&#34; CA published in <a href='http&#58;//www.digicert-grid.com' target='_blank' rel='nofollow'>http&#58;//www.digicert-grid.com</a> I was able to use it with my test apache server, access it using curl with CA-1 G2 CA configured. (wget didn&#39;t work, but wget has always being problematic)
+
+I couldn&#39;t test the user certificate (with grid-proxy-init, globus-job-run, etc..) because DigiCert pilot account still issues user certificate with &#34;DigiCert Grid TEST CA-1&#34; CA.
+Like &#62; <a href='https&#58;//oim-itb.grid.iu.edu/oim/certificateuser?id=2237' target='_blank' rel='nofollow'>https&#58;//oim-itb.grid.iu.edu/oim/certificateuser?id=2237</a>
+Is there anyway you could switch to issuing user certificate with G2 CA for OSG pilot account?
+
+Security Team,
+
+Please confirm my finding (as far as the host certificate goes) just to make sure that my testings are valid.</pre></div><div class='update_description'><i onclick="document.location='22049#1415910016'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-13T20:20:16+00:00">Nov 13, 2014 08:20 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1415910016">&nbsp;</a></div><pre>Soichi,
+
+We have posted the SHA2 test intermediate CA to <a href='http&#58;//www.digicert-grid.com' target='_blank' rel='nofollow'>http&#58;//www.digicert-grid.com</a> (DigiCert Grid Test CA-1 G2). You can retrieve the intermediate from that page.
+
+Thanks,
+
+Darin Andrew, CISSP darin.andrew@....&#60;mailto&#58;darin.andrew@....&#62;
+Technical Engineer
+DigiCert, Inc.</pre></div><div class='update_description'><i onclick="document.location='22049#1415832254'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-12T22:44:14+00:00">Nov 12, 2014 10:44 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1415832254">&nbsp;</a></div><pre>Soichi,
+
+We are adding the SHA2 test intermediate CA to <a href='http&#58;//www.digicert-grid.com/.' target='_blank' rel='nofollow'>http&#58;//www.digicert-grid.com/.</a> The link should be there by tomorrow at mid-day.
+
+Thanks,
+
+Darin Andrew, CISSP darin.andrew@....
+Technical Engineer
+DigiCert, Inc.</pre></div><div class='update_description'><i onclick="document.location='22049#1415818439'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-12T18:53:59+00:00">Nov 12, 2014 06:53 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1415818439">&nbsp;</a></div><pre>Darin,
+
+Where can Soichi download this intermediate CA so that he can test his certificate?  Is the following link
+correct?   <a href='http&#58;//www.digicert-grid.com/' target='_blank' rel='nofollow'>http&#58;//www.digicert-grid.com/</a>
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='22049#1415290206'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-06T16:10:06+00:00">Nov 6, 2014 04:10 PM UTC</time> by <b>Kevin Hill</b><a class="anchor" name="1415290206">&nbsp;</a></div><pre>I think verifying both a user and host cert, and requesting with both the web and cli tools, should be sufficient. I don&#39;t believe we have the sha1 test certs in the production ca bundle, right?
+
+thanks,
+-kevin</pre></div><div class='update_description'><i onclick="document.location='22049#1414751607'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-31T10:33:27+00:00">Oct 31, 2014 10:33 AM UTC</time> by <b>OSG RA</b><a class="anchor" name="1414751607">&nbsp;</a></div><pre>Mine & Kevin,
+
+Do you have any suggestion to Soichi&#39;s inquiry for the kind of testing needed to be done to certify the update?
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1414014014'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-22T21:40:14+00:00">Oct 22, 2014 09:40 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1414014014">&nbsp;</a></div><pre>I&#39;ve just issued a new host certificate via OIM-ITB (<a href='https&#58;//oim-itb.grid.iu.edu/oim/certificatehost?id=4376' target='_blank' rel='nofollow'>https&#58;//oim-itb.grid.iu.edu/oim/certificatehost?id=4376</a>) and confirmed that it is indeed signed with CA-1 G2 intermediate.
+
+<font color='#7F7E6F'>&#62;     Signature Algorithm&#58; sha256WithRSAEncryption</font>
+<font color='#7F7E6F'>&#62;       Issuer&#58; DC=com, DC=DigiCert-Grid, O=DigiCert Grid, CN=DigiCert Grid TEST CA-1 G2</font>
+
+I don&#39;t have the &#34;DigiCert Grid TEST CA-1 G2&#34; CA installed under /etc/grid-security/certificatificate, and I don&#39;t see it listed in <a href='http&#58;//www.digicert-grid.com/' target='_blank' rel='nofollow'>http&#58;//www.digicert-grid.com/</a> either, so I don&#39;t know where I can download this intermediate CA so that I can test my certificate. Darin, should it be published under <a href='http&#58;//www.digicert-grid.com/' target='_blank' rel='nofollow'>http&#58;//www.digicert-grid.com/</a> ?
+
+Mine, Kevin,
+What sort of testing do we need to do to certify this update?</pre></div><div class='update_description'><i onclick="document.location='22049#1413956530'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-22T05:42:10+00:00">Oct 22, 2014 05:42 AM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1413956530">&nbsp;</a></div><pre>OSG Security Team,
+
+We have created the new SHA2 intermediate which chains up to the DigiCert Grid TEST Root CA. The new intermediate is named &#34;DigiCert Grid TEST CA-1 G2&#34;.
+
+As of 5&#58;29pm MT today (10/21/2014), the OSG test account (account number 052062) has been setup to only allow SHA2 certificates to be issued. The SHA2 certificates will all be issued from the new SHA2 intermediate as well. This will allow you to test your code to not allow SHA1 certificates from being issued and to ensure the new SHA2 test intermediate will not cause issues.
+
+This change was only made to the test account. No changes have been made to your production account. The plan now is that DigiCert will wait for you to test this change to your test account. Once you have completed your testing you will give us the go ahead to make the switch to your production account. Along with your approval to apply the change to the production account please provide the exact date when you want DigiCert to apply the change to the production account.
+
+Thank you,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1413214328'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-13T15:32:08+00:00">Oct 13, 2014 03:32 PM UTC</time> by <b>OSG RA</b><a class="anchor" name="1413214328">&nbsp;</a></div><pre>Greetings Darin,
+
+Have you been able to push the SHA2 intermediate to our test account so that security can test it?
+Any information of your current status from your end is greatly appreciated.
+
+Thanks,
+-Alain</pre></div><div class='update_description'><i onclick="document.location='22049#1410550636'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T19:37:16+00:00">Sep 12, 2014 07:37 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1410550636">&nbsp;</a></div><pre>Hello
+I agree with this plan. As soon as we turn on the test sha-2 ca and test it successfully, we can switch to aha-2 in production too.
+Mine
+
+On Sep 12, 2014, at 2&#58;28 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22049#1410550093'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T19:28:13+00:00">Sep 12, 2014 07:28 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1410550093">&nbsp;</a></div><pre>DigiCert will be creating the SHA2 intermediate for Grid TEST Root CA in the next couple of weeks.
+
+As I understand it, the plan is to push the SHA2 intermediate to your test account in time for your next test cycle which would be the middle of October 2014. Then after you have had time to test in the test environment you will give DigiCert the green light to switch the production account to the SHA2 intermediate for the DigiCert Grid Root CA.
+
+Does this sound like an acceptable plan?
+
+Thanks,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='22049#1410546791'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T18:33:11+00:00">Sep 12, 2014 06:33 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1410546791">&nbsp;</a></div><pre>Mine,
+
+Can you please respond to Darin&#39;s question in his previous update?
+
+Thanks,
+Kyle</pre></div><div class='update_description'><i onclick="document.location='22049#1409701358'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-02T23:42:38+00:00">Sep 2, 2014 11:42 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1409701358">&nbsp;</a></div><pre>DigiCert will be creating a new SHA2 intermediate for the test account which chains up to the Grid TEST Root CA. I am working on identifying what the ETA will be on it. Does DigiCert have the green light to switch to the SHA2 intermediate for the Grid TEST Root CA as soon as we get it created? Switching to the SHA2 intermediate on the test account can be done separately from the production account in this case.
+
+Thanks,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.
+darin.andrew@....
+p. (801) 770-1776
+c. (801) 885-0514</pre></div><div class='update_description'><i onclick="document.location='22049#1409685096'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-02T19:11:36+00:00">Sep 2, 2014 07:11 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1409685096">&nbsp;</a></div><pre>Hello Darin,
+did you find out about the test CA? We do not want to delay the transition any longer than necessary. Thank you</pre></div><div class='update_description'><i onclick="document.location='22049#1409093530'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T22:52:10+00:00">Aug 26, 2014 10:52 PM UTC</time> by <b>darin.andrew@....</b><a class="anchor" name="1409093530">&nbsp;</a></div><pre>DigiCert has not created a test SHA2 intermediate to chain up to the Grit TEST Root CA. I will find out from our team here if that is something we will do to enable for the test account first.
+
+Thanks,
+
+Darin Andrew, CISSP
+Technical Engineer
+DigiCert, Inc.</pre></div><div class='update_description'><i onclick="document.location='22049#1409085963'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T20:46:03+00:00">Aug 26, 2014 08:46 PM UTC</time><a class="anchor" name="1409085963">&nbsp;</a></div><pre>I think once we get a thumbs up from Darin about completing this transition we can move forward. Now that the ticket is publicly viewable he should be able to view and comment. If we do not hear from Darin by the EOW please ping him directly.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Robert Quick 62</pre></div><div class='update_description'><i onclick="document.location='22049#1409057404'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T12:50:04+00:00">Aug 26, 2014 12:50 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1409057404">&nbsp;</a></div><pre>Switching to Problem/Request ticket type per request from Security (Mine Altunay)
+
+Hello Scott,
+I opened a ticket about completing our switch to SHA2 cert. Unfortunately, the ticket is classified as security and Darin cannot view it.
+I put a note on they ticket asking if someone from GOC can change it to a regular non-security ticket type, but I got no responses so far.
+Can you please help me?
+I also appreciate f you and Rob review the ticket and put your response ; this final work item will complete our move to sha-2.
+Mine</pre></div><div class='update_description'><i onclick="document.location='22049#1408639413'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-21T16:43:33+00:00">Aug 21, 2014 04:43 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1408639413">&nbsp;</a></div><pre>Hello,
+Can we please make this ticket non-security so Darin can see it?
+Mine</pre></div><div class='update_description'><i onclick="document.location='22049#1408115981'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-15T15:19:41+00:00">Aug 15, 2014 03:19 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1408115981">&nbsp;</a></div><pre>Just realized this is a security ticket.. so Darin won&#39;t be able to see our questions. We should either make this non-security ticket, or discuss this via email thread with Darin.</pre></div><div class='update_description'><i onclick="document.location='22049#1408106307'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-15T12:38:27+00:00">Aug 15, 2014 12:38 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1408106307">&nbsp;</a></div><pre>Darin,
+
+Could you answer Mine&#39;s question below?</pre></div><div class='update_description'><i onclick="document.location='22049#1407525612'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-08T19:20:12+00:00">Aug 8, 2014 07:20 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1407525612">&nbsp;</a></div><pre>Understood. I thought you were talking about the Trust CA. Never mind.
+
+Darin&#58; Can Digicert also provide a test sha-2 CA?
+Mine</pre></div><div class='update_description'><i onclick="document.location='22049#1407524407'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-08T19:00:07+00:00">Aug 8, 2014 07:00 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1407524407">&nbsp;</a></div><pre>Mine,
+
+All of our test certificates (certificates issued via OIM-ITB) are signed by following CA
+<font color='#7F7E6F'>&#62; &#34;DigiCert Grid TEST CA-1&#34;</font>
+
+If you look under &#34;DigiCert-Grid Test CAs&#34; section on the website, I see no SHA2 CA listed.
+
+It&#39;s not a show stopper that there is no such CA. it&#39;s just that, if there is one, then we can ask Digicert to first start issuing test certificates signed by test sha2 CA to make sure that everything works properly. That is all.</pre></div><div class='update_description'><i onclick="document.location='22049#1407521591'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-08T18:13:11+00:00">Aug 8, 2014 06:13 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1407521591">&nbsp;</a></div><pre>Soichi, what you mean for #2?
+I see the DigiCertGridTrustCAG2 under the www.digicert-grid.com. It is not called G2, but they wrote DigiCert Grid Trust CA New On-line Subordinate CA (SHA2) to provide long-term user, host and service certificates. This sub-CA is Accredited as part of the IGTF Classic distribution. I think this is the G2 CA, they simply forgot to write this on the website.
+
+does that answer your question?
+
+On Aug 8, 2014, at 10&#58;56 AM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22049#1407513407'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-08T15:56:47+00:00">Aug 8, 2014 03:56 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1407513407">&nbsp;</a></div><pre>For 1), OIM is currently configured to make request with sha256 hash with all Digicert API. I don&#39;t know of any plan to revert to sha1, so I have no objection to this plan.
+
+For 2), I just confirmed that I am seeing the DigiCertGridTrustCAG2 in my  /etc/grid-security/certificates distributed by OSG. Is there a plan to make the G2 CA available for Digicert-Pilot? Currently it&#39;s not listed in <a href='http&#58;//www.digicert-grid.com/' target='_blank' rel='nofollow'>http&#58;//www.digicert-grid.com/</a> If there is, and if Digicert can start issuing pilot certs with G2 CA, then we can test to make sure that nothing is missed.
+
+Soichi</pre></div><div class='update_description'><i onclick="document.location='22049#1407512652'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-08T15:44:12+00:00">Aug 8, 2014 03:44 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1407512652">&nbsp;</a></div><pre>It is now time to complete our transition to SHA-2 certs, which we earlier decided to postpone this until after June 2014.  What this means is that&#58;
+
+1) DigiCert will reject any cert request with a sha-1 algorithm.
+2) DigiCert will start using an intermediate CA that the CA certificate itself is signed with SHA-2 algorithm.
+
+About 1, we have been giving out SHA-1 certs to our users by default for a while. So, this change has minimum impact on our systems and our users. A potential although unlikely problem is if OIM code requests a certificate with hash&#39; = &#39;sha1&#39; then we will get an error message from Digicert. Since OIM code already uses sha-2 as its default, this is unlikely, but it is better to double check.
+
+About 2, this is a change in the intermediate CA itself. DigiCert created a new intermediate CA that has the sha-2 hash. The new CA cert has been inn IGTF distribution since April and been released to OSG production on April 8th. Resources having a CA distribution newer or equal to 3.2.8 and 3.1.32 already have the necessary trust roots. If a resource has an older CA distribution, then they will not be able to work with new certificates issued by this intermediate CA. This change has no impact on the way our users requests certificates or our users certificate DN. We expect no action from our users. We expect our resource providers to update their certificate distribution.
+
+With this ticket, I intend to start the change request process with DigiCert to 1) turn off the sha-1 capability and 2) installing the new sha-2 compliant intermediate CA.
+
+Operations team&#58; please tell us whether you approve this request. For the record, Security team is in favor of the change.
+Thank you
+Mine Altunay</pre></div><div class='update_description'><i onclick="document.location='22049#1407510909'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-08T15:15:09+00:00">Aug 8, 2014 03:15 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1407510909">&nbsp;</a></div><pre>Earlier we decided that OSG will complete its SHA-2 transition after June 2014. Since it is already August,</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F22049">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 22049});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

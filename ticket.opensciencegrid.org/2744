@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[2744] Questions regarding OSG installation and Pacman vs. RPM</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=2744" method="post">
+<div class="page-header">
+    <h3><span class="muted">2744</span> / Questions regarding OSG installation and Pacman vs. RPM</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Vinod Gupta</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Rob will review/respond</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2006-11-29</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Rob Quick <span class="muted"> / OSG GOC Management</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=2744", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/2744?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/2744?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Questions%20regarding%20OSG%20installation%20and%20Pacman%20vs.%20RPM%20ISSUE%3D2744%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='2744#1164809108'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-11-29T14:05:08+00:00">Nov 29, 2006 02:05 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1164809108">&nbsp;</a></div><pre>Vinod,
+
+Since this is a development issue and not an operations issue I am closing this
+ticket. I would suggest two forums to take this issue up in&#58;
+
+The VDT Office Hours&#58; Thursday&#39;s Noon EDT
+<a href='http&#58;//vdt.cs.wisc.edu/office-hours/index.html' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/office-hours/index.html</a>
+and
+The OSG-ITB Meeting&#58; Thursday&#39;s 3&#58;30pm EDT
+<a href='http&#58;//osg.ivdgl.org/twiki/bin/view/Integration/MeetingMinutes' target='_blank' rel='nofollow'>http&#58;//osg.ivdgl.org/twiki/bin/view/Integration/MeetingMinutes</a>
+
+Let me know if you have any other questions,
+Rob
+
+respectively</pre></div><div class='update_description'><i onclick="document.location='2744#1164055229'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-11-20T20:40:29+00:00">Nov 20, 2006 08:40 PM UTC</time> by <b>vinod@....</b><a class="anchor" name="1164055229">&nbsp;</a></div><pre>OSG Support and Youssef,
+
+As per <a href='http&#58;//www.faqs.org/docs/Linux-HOWTO/RPM-for-Unix-HOWTO.html' target='_blank' rel='nofollow'>http&#58;//www.faqs.org/docs/Linux-HOWTO/RPM-for-Unix-HOWTO.html</a>, RPM
+is also available for /Solaris, HPUX, AIX, SCO, Sinix, BSD, NetBSD,
+Apple Macintosh (which is BSD), UnixWare, /Windows etc. So, apart from
+platform-independence, RPM has many advantages stemming out of rpm
+database that keeps track of all the details of the packages. This
+database can be queried by any one or any application, at any time to
+let you know what a package contains, file-list, dependencies, version,
+date, author, description, license, signatures etc. RPM is a powerful
+true package-management system which makes installing, updating,
+removing packages so easy and efficient.
+
+If pacman has been preferred over RPM in the Grid world, it must have
+some other advantages which I am unable to see for the moment. Any
+insight will be appreciated.
+
+Thanks,
+Vinod
+
+On 2006-11-17 12&#58;24, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='2744#1163784238'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-11-17T17:23:58+00:00">Nov 17, 2006 05:23 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1163784238">&nbsp;</a></div><pre>Vinod,
+
+I think the base of using pacman is that it is not platform dependent. If you would
+like more technical details about Pacman I would suggest contacting Saul Youssef at
+youssef@.... he is the developer and out resident expert in all things Pacman.
+Pacman documentation can be found here&#58;
+
+<a href='http&#58;//physics.bu.edu/' target='_blank' rel='nofollow'>http&#58;//physics.bu.edu/</a>~youssef/pacman/
+
+Some VDT packages are available as RPMs
+
+<a href='http&#58;//vdt.cs.wisc.edu/releases/1.4.0/installing-rpms.html' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/releases/1.4.0/installing-rpms.html</a>
+
+The OSG client installation is exactly the same as the VDT client installation with
+the exception of a vomses file that provides specific information about the VOMS
+servers used in OSG. So there is not much difference.
+
+Let me know if this answers your OSG and pacman questions.
+
+Thanks,
+Rob</pre></div><div class='update_description'><i onclick="document.location='2744#1163626378'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-11-15T21:32:58+00:00">Nov 15, 2006 09:32 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1163626378">&nbsp;</a></div><pre>From&#58; 	  vinod@....
+Subject&#58; 	Re&#58; OSG client installation instructions
+Date&#58; 	November 15, 2006 4&#58;15&#58;02 PM EST
+To&#58; 	  goc@....
+Cc&#58; 	  rquick@...., narora@....
+
+I am glad that you recognize our problems and we appreciate your kind offer for help. Please take
+my emails as my feedback and not as any complaint.
+
+As I mentioned earlier (and I am sure you already know this) RPM is lot more than an installer. It
+does a true package management which is a lot more than just creating a few installation logs. I
+am wondering what pacman provides that built-in rpm doesn&#39;t?
+
+Coming back to my VDT/OSG question - for our grid client goals, do we need to install full VDT, if
+we do that does it install OSG. What does OSG has which VDT doesn&#39;t?
+
+Thanks,
+Vinod
+
+On 2006-11-15 15&#58;41, Grid Operations Center wrote&#58;
+Vinod,
+
+Believe me, I know what you mean. There&#39;s a lot to wrap your head around. The information is out
+there, finding it isn&#39;t always easy, but OSG is working on that and we&#39;ll be happy to assist you if
+you have any questions. To answer the question about the logs, the VDT package keeps a log in the
+directory where you&#39;ve installed the OSG client. Review the file vdt-install.log Pacman keeps a log
+too, but it doesn&#39;t look as useful. I&#39;m copying Rob Quick on this email because he is more
+experienced with the software installation than I. He should be able to provide more information if
+I&#39;ve left out anything.
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Web&#58; <a href='http&#58;//www.grid.iu.edu/' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a>
+<div id='show_1431732768' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1431732768'>
+On Nov 15, 2006, at 2&#58;49 PM, Vinod Gupta wrote&#58;
+
+Thanks for the info. Yes, indeed it is a little confusing for the first timers. We are used to yum +
+RPM based system installation which takes care of all the dependencies. It keeps a database of all
+the packages and related information (name, version, date, source, destination, provider,
+description...) which can be queried, before as well after installation. This database is a good nice
+central info store which is used while installing new packages, updating the existing ones and un-
+installing the obsolete ones, or just for querying description of any package any time. Does the
+pacman package manager provide similar functionality?
+
+Our goal is simple - install CMS software (already done), install necessary grid client components
+so that tools like PhEDEx could download CMS data and submit analysis jobs from Princeton to US
+CMS Tier2 centers. We are not going to provide any grid-wide services (at least not immediately).
+We have already installed PhEDEx (yet to be configured), obtained personal certificates from
+DoEGrids.org. Is there a simple, single source of documentation that gives us about one page
+(neither one liner nor an overwhelming 100 pages reference manual) what and how to install
+necessary grid components and in what sequence?
+
+I am sorry for such a stupidly simple question but I guess you can appreciate the confusions the
+novice people have while hopping between a web of OSG, VDT, FNAL, USCMS, DoEgrids...sites and
+tonnes of documentations scattered all over.
+
+Thanks in advance for your help.
+
+Vinod Gupta
+IT Manager
+Physics Department
+Princeton University
+Princeton, NJ 08544
+Tel&#58; 609-258-6302
+
+On 2006-11-15 12&#58;15, Grid Operations Center wrote&#58;
+Vinod,
+
+Here are the instructions for installing the OSG client&#58;
+
+<a href='http&#58;//osg.ivdgl.org/twiki/bin/view/ReleaseDocumentation/ClientInstallationGuide' target='_blank' rel='nofollow'>http&#58;//osg.ivdgl.org/twiki/bin/view/ReleaseDocumentation/ClientInstallationGuide</a>
+
+As for the other question, the OSG software is a part of the VDT. They package the software, and
+that software is made up of various packages. In this instance, you&#39;ll be pulling the OSG client
+package from the VDT software. Make sense? It is confusing because I don&#39;t refer to VDT as a
+package, I refer to them as the software provider. &#58;-)
+
+Have a good day,
+
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Web&#58; <a href='http&#58;//www.grid.iu.edu/' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a>
+</div><script type='text/javascript'>
+        $('#show_1431732768').click(function() {
+            $('#detail_1431732768').slideDown("normal");
+            $('#show_1431732768').hide();
+            $('#hide_1431732768').show();
+        });
+        $('#hide_1431732768').click(function() {
+            $('#detail_1431732768').slideUp();
+            $('#hide_1431732768').hide();
+            $('#show_1431732768').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F2744">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 2744});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[27458] [Usatlas-grid-l] Adding support for LIGO</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=27458" method="post">
+<div class="page-header">
+    <h3><span class="muted">27458</span> / [Usatlas-grid-l] Adding support for LIGO</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Horst Severini</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Horst Severini</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Check for update</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-03-31</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=27458", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/27458?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/27458?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20%5BUsatlas-grid-l%5D%20Adding%20support%20for%20LIGO%20ISSUE%3D27458%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='27458#1490878594'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-30T12:56:34+00:00">Mar 30, 2017 12:56 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1490878594">&nbsp;</a></div><pre>Since there is a Jira ticket, I&#39;m closing this ticket.</pre></div><div class='update_description'><i onclick="document.location='27458#1479154605'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-11-14T20:16:45+00:00">Nov 14, 2016 08:16 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1479154605">&nbsp;</a></div><pre>Spoke with Carl,
+
+there is a Jira ticket on ending the distribution of the old gums format, <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2535' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2535</a>
+
+~Chris</pre></div><div class='update_description'><i onclick="document.location='27458#1479142031'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-11-14T16:47:11+00:00">Nov 14, 2016 04:47 PM UTC</time> by <b>boj@....</b><a class="anchor" name="1479142031">&nbsp;</a></div><pre>I am on vacation and will have no access to email until Sunday, November 20.</pre></div><div class='update_description'><i onclick="document.location='27458#1479141844'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-11-14T16:44:04+00:00">Nov 14, 2016 04:44 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1479141844">&nbsp;</a></div><pre>I&#39;ve emailed carl about the gums template. I&#39;m a little out of the loop on where we are with this process but, I&#39;ll update this when I know more.
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='27458#1465840934'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-13T18:02:14+00:00">Jun 13, 2016 06:02 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1465840934">&nbsp;</a></div><pre>This will need to wait until we have stopped distributing the old version of the GUMS Template.... which should be soon.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='27458#1452100710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-06T17:18:30+00:00">Jan 6, 2016 05:18 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1452100710">&nbsp;</a></div><pre>sorry, I don&#39;t Kyle
+
+- Neha</pre></div><div class='update_description'><i onclick="document.location='27458#1452092633'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-06T15:03:53+00:00">Jan 6, 2016 03:03 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1452092633">&nbsp;</a></div><pre>All,
+
+Some of these changes (old ligo voms removal) will go into the VO Package that will go out next week.  The rest will get sorted for the release after that.  The reason for this is that the security team needs a change to be put in asap so we will be doing that.  My apologies on splitting this.
+
+In the meantime... Neha, do you have any way to convert your newer gums template format to the old version?  There is a utility to move from old to new, but not the other direction.  I hope we will soon look at seeing if we can just host a newer version of the gums template.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='27458#1450133785'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-14T22:56:25+00:00">Dec 14, 2015 10:56 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1450133785">&nbsp;</a></div><pre>Hi Kyle,
+
+okay, fair enough! &#58;)
+
+Thanks,
+
+Horst
+
+On 12/14/2015 04&#58;09 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27458#1450130943'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-14T22:09:03+00:00">Dec 14, 2015 10:09 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1450130943">&nbsp;</a></div><pre>Horst,
+
+Bo and I decided to hold off on it for a few reasons&#58;
+
+1. It isn&#39;t a pressing issue for LIGO because they won&#39;t get a substantial amount computing out of Oklahoma at this point. (Based on what the OSG VO gets)  Bo can correct me if I&#39;m wrong.
+
+2. This ticket took quite a substantial turn away from just adding support for LIGO, and it muddied the needs of this ticket quite a bit.
+
+3. We are looking for some other package changes to come in with regards to a few other VOMS servers.
+
+I&#39;m keeping this ticket open because I&#39;ll need to refer back to it and separate out the LIGO and non-LIGO issues for the upcoming release.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='27458#1449597197'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-08T17:53:17+00:00">Dec 8, 2015 05:53 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1449597197">&nbsp;</a></div><pre>Hi all,
+
+<font color='#7F7E6F'>&#62; We are pleased to announce OSG Software versions 3.2.32 and 3.3.6.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Changes to OSG 3.2.32 and 3.3.6 include&#58;</font>
+<font color='#7F7E6F'>&#62; * CA Certificates based on the IGTF 1.70 release</font>
+<font color='#7F7E6F'>&#62; * Restored the &#39;Sign AUP on behalf of user&#39; feature in VOMS Admin Server</font>
+
+So I take it this LIGO edg-mkgridmap/gums/voms update hasn&#39;t quite made it
+into this new release? Or was it just not mentioned in the release notes?
+
+Just checking,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='27458#1449166196'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-03T18:09:56+00:00">Dec 3, 2015 06:09 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1449166196">&nbsp;</a></div><pre>This is what I have in my GUMS config file ( we already support this usecase for ligo)
+You may need to convert this to format you use for GUMS template
+
+&#60;vomsUserGroup
+name=&#39;osgligo&#39;
+access=&#39;read all&#39;
+description=&#39;&#39;
+vomsServer=&#39;osg&#39;
+matchFQAN=&#39;exact&#39;
+acceptProxyWithoutFQAN=&#39;false&#39;
+voGroup=&#39;/osg/ligo&#39;/&#62;
+
+&#60;groupAccountMapper
+name=&#39;osgligo&#39;
+description=&#39;&#39;
+accountName=&#39;aligoosg&#39;
+groupName=&#39;9652&#39;/&#62;
+
+&#60;groupToAccountMapping
+name=&#39;osgligo&#39;
+description=&#39;&#39;
+accountingVoSubgroup=&#39;osg&#39;
+accountingVo=&#39;OSG&#39;
+userGroups=&#39;osgligo&#39;
+accountMappers=&#39;osgligo&#39;/&#62;</pre></div><div class='update_description'><i onclick="document.location='27458#1449165952'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-03T18:05:52+00:00">Dec 3, 2015 06:05 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1449165952">&nbsp;</a></div><pre>Brian, I believe the edg-mkgridmap file is changed just fine, however... what goes in the GUMS file?
+
+&#60;!-- 12 LIGO --&#62;
+&#60;groupMapping name=&#39;LIGO&#39; accountingVo=&#39;ligo&#39; accountingDesc=&#39;LIGO&#39;&#62;
+&#60;userGroup className=&#39;gov.bnl.gums.VOMSGroup&#39;
+url=&#39;<a href='https&#58;//voms.ligo.org&#58;8443/voms/LIGO/services/VOMSAdmin&#39' target='_blank' rel='nofollow'>https&#58;//voms.ligo.org&#58;8443/voms/LIGO/services/VOMSAdmin&#39</a>;
+persistenceFactory=&#39;mysql&#39;
+name=&#39;LIGO&#39;
+voGroup=&#39;/LIGO&#39;
+sslCertfile=&#39;/etc/grid-security/http/httpcert.pem&#39;
+sslKey=&#39;/etc/grid-security/http/httpkey.pem&#39;
+matchFQAN=&#34;vo&#34; acceptProxyWithoutFQAN=&#39;true&#39; /&#62;
+&#60;accountMapping className=&#39;gov.bnl.gums.GroupAccountMapper&#39;
+groupName=&#39;ligo&#39; /&#62;
+&#60;/groupMapping&#62;
+
+I have this&#58; <a href='https&#58;//voms.opensciencegrid.org&#58;8443/voms/osg?/osg/ligo' target='_blank' rel='nofollow'>https&#58;//voms.opensciencegrid.org&#58;8443/voms/osg?/osg/ligo</a>
+
+What else needs to be done to that URL to make sure it&#39;s fine in this GUMS template?</pre></div><div class='update_description'><i onclick="document.location='27458#1449078876'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-02T17:54:36+00:00">Dec 2, 2015 05:54 PM UTC</time><a class="anchor" name="1449078876">&nbsp;</a></div><pre>But to be clear - updated entries for the edg-mkgridmap and GUMS defaults are needed.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='27458#1449078092'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-02T17:41:32+00:00">Dec 2, 2015 05:41 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1449078092">&nbsp;</a></div><pre>Kyle -- no new entry for ligo is needed in the vomses file
+
+If you want, you can remove the existing one. As per previous update from Bo - &#34;Brian raises a valid point that voms.ligo.org doesn&#39;t even resolve as an address anymore (and probably hasn&#39;t for years). I would agree that we can simply remove the entry for voms.ligo.org&#34;
+
+- Neha</pre></div><div class='update_description'><i onclick="document.location='27458#1449077215'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-02T17:26:55+00:00">Dec 2, 2015 05:26 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1449077215">&nbsp;</a></div><pre>So this ticket seems to have gone off the rails a bit.  Neha, can you give me the ligo entry for the vomses file, please?
+
+Thanks,
+Kyle</pre></div><div class='update_description'><i onclick="document.location='27458#1448062875'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-20T23:41:15+00:00">Nov 20, 2015 11:41 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1448062875">&nbsp;</a></div><pre>Hi Neha,
+
+yes, I have all these in my edg-mkgridmap, and they&#39;re not throwing
+any errors, so I&#39;m pretty sure they all work.
+
+openssl-1.0.1e-30 is quite old, actually. Can you update to the latest
+version, openssl-1.0.1e-42, and see if that fixes your problem?
+I think there were significant changes between the two versions.
+
+Thanks,
+
+Horst
+
+Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27458#1448060418'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-20T23:00:18+00:00">Nov 20, 2015 11:00 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1448060418">&nbsp;</a></div><pre>Here is OS and openssl info for GUMS server node
+
+[neha@gums1 ~]$ uname -a
+Linux gums1.fnal.gov 2.6.32-573.3.1.el6.x86_64 #1 SMP Thu Aug 13 12&#58;55&#58;33 CDT 2015 x86_64 x86_64 x86_64 GNU/Linux
+[neha@gums1 ~]$
+[neha@gums1 ~]$ rpm -qa | grep openssl
+globus-openssl-module-4.6-1.osg32.el6.x86_64
+openssl-1.0.1e-30.el6_6.11.x86_64
+openssl098e-0.9.8e-18.el6_5.2.i686
+globus-gsi-openssl-error-3.5-1.osg32.el6.x86_64
+openssl-1.0.1e-30.el6_6.11.i686
+[neha@gums1 ~]$
+
+Looks ok to me.
+
+Comparing your list to mine -- suragrid, compbiogrid, dosar, dream, nysgrid should work.
+
+Can you confirm you have these in your edg-mkgridmap? If you do, I&#39;ll create fermi internal ticket with GUMS operations team to look further.</pre></div><div class='update_description'><i onclick="document.location='27458#1448039662'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-20T17:14:22+00:00">Nov 20, 2015 05:14 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1448039662">&nbsp;</a></div><pre>Hi Neha,
+
+actually, I&#39;m afraid most of these errors must be happening on your end,
+since I don&#39;t see these; just like you also got an error for the new
+LIGO VOMS server which I don&#39;t get.
+
+Have you updated your machines with the newest openssl RPMs? I got
+similar errors on an old test host before I updated that. Or is that
+client still running RHEL5? I&#39;m seeing some errors when I run from a
+RHEL5 test client as well. That may be related to openssl as well, since
+RHEL5 doesn&#39;t have openssl-1.0.1 available, and that may cause problems
+connecting to updated VOMS servers.
+
+The only errors I&#39;m seeing are these&#58;
+
+----
+voms
+search(<a href='https&#58;//vdvoms.vcell.uchc.edu&#58;8443/voms/CompBioGrid/services/VOMSCompatibility?method=getGridmapUsers' target='_blank' rel='nofollow'>https&#58;//vdvoms.vcell.uchc.edu&#58;8443/voms/CompBioGrid/services/VOMSCompatibility?method=getGridmapUsers</a>)&#58;
+Can&#39;t connect to vdvoms.vcell.uchc.edu&#58;8443 (Bad hostname
+&#39;vdvoms.vcell.uchc.edu&#39;)
+
+voms
+search(<a href='https&#58;//voms.fnal.gov&#58;8443/voms/ilc/services/VOMSCompatibility?method=getGridmapUsers' target='_blank' rel='nofollow'>https&#58;//voms.fnal.gov&#58;8443/voms/ilc/services/VOMSCompatibility?method=getGridmapUsers</a>)&#58;
+Internal Server Error
+
+voms
+search(<a href='https&#58;//hpc.sbgrid.org&#58;8443/voms/SBGrid/services/VOMSCompatibility?method=getGridmapUsers' target='_blank' rel='nofollow'>https&#58;//hpc.sbgrid.org&#58;8443/voms/SBGrid/services/VOMSCompatibility?method=getGridmapUsers</a>)&#58;
+Not Found
+
+voms
+search(<a href='https&#58;//gc-voms.javeriana.edu.co&#58;8443/voms/gcvo/services/VOMSCompatibility?method=getGridmapUsers' target='_blank' rel='nofollow'>https&#58;//gc-voms.javeriana.edu.co&#58;8443/voms/gcvo/services/VOMSCompatibility?method=getGridmapUsers</a>)&#58;
+Connect failed&#58; connect&#58; Connection timed out; Connection timed out
+
+voms
+search(<a href='https&#58;//gc-voms.javeriana.edu.co&#58;8443/voms/gcedu/services/VOMSCompatibility?method=getGridmapUsers' target='_blank' rel='nofollow'>https&#58;//gc-voms.javeriana.edu.co&#58;8443/voms/gcedu/services/VOMSCompatibility?method=getGridmapUsers</a>)&#58;
+<div id='show_1010729071' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1010729071'>Connect failed&#58; connect&#58; Connection timed out; Connection timed out
+----
+
+So the VOMS servers which are having problems are compbiogrid, ilc,
+sbgrid, gcvo, and gcedu. And of course the FNAL CMS VOMS server. All the
+others look fine to me.
+
+You don&#39;t mention sbgrid and ilc in your list of problematic ones. Are
+you testing them?
+
+Or maybe there&#39;s a difference between edg-mkgridmap accesses to VOMS
+servers and GUMS accesses? I don&#39;t have a GUMS server installed here, so
+I can&#39;t test that ...
+
+Thanks,
+
+Horst
+
+On 11/20/2015 10&#58;41 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1010729071').click(function() {
+            $('#detail_1010729071').slideDown("normal");
+            $('#show_1010729071').hide();
+            $('#hide_1010729071').show();
+        });
+        $('#hide_1010729071').click(function() {
+            $('#detail_1010729071').slideUp();
+            $('#hide_1010729071').hide();
+            $('#show_1010729071').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='27458#1448037688'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-20T16:41:28+00:00">Nov 20, 2015 04:41 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1448037688">&nbsp;</a></div><pre>This is list of VOs fermilab GUMS server is unable to contact each time it runs the VO member updates -- this has been going on for many many months...
+I would LOVE for these to either work or go away!
+
+suragrid - Couldn&#39;t retrieve users&#58; ; nested exception is&#58;
+compbiogrid - Couldn&#39;t retrieve users&#58; ; nested exception is&#58;
+dosar - Couldn&#39;t retrieve users&#58; ; nested exception is&#58;
+dream - Couldn&#39;t retrieve users&#58; ; nested exception is&#58;
+gcedu - Couldn&#39;t retrieve users&#58; ; nested exception is&#58;
+gcvo - Couldn&#39;t retrieve users&#58; ; nested exception is&#58;
+nysgrid - Couldn&#39;t retrieve users&#58; (404)Not Found</pre></div><div class='update_description'><i onclick="document.location='27458#1448035449'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-20T16:04:09+00:00">Nov 20, 2015 04:04 PM UTC</time><a class="anchor" name="1448035449">&nbsp;</a></div><pre>Hi,
+
+Can we simply remove all references (vo-client, edg-mkgridmap, gums) to all VOMS that obviously can&#39;t work and haven&#39;t for more than, say, 2 months?
+
+I don&#39;t think we need to wait for error reports.
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='27458#1448034428'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-20T15:47:08+00:00">Nov 20, 2015 03:47 PM UTC</time><a class="anchor" name="1448034428">&nbsp;</a></div><pre>Brian raises a valid point that voms.ligo.org doesn&#39;t even resolve as an address anymore (and probably hasn&#39;t for years). I would agree that we can simply remove the entry for voms.ligo.org.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Bodhitha Jayatilaka 2312</pre></div><div class='update_description'><i onclick="document.location='27458#1448033870'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-20T15:37:50+00:00">Nov 20, 2015 03:37 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1448033870">&nbsp;</a></div><pre>This entry is for old LIGO and after checking with Bo, looks like it should not be used by anyone. He will check with Brian B. if we can just remove it.
+
+Please note that it is different from the new LIGO use case we need to support and for which, we just need the OSG entry in the vomses file. That exists already, so no change is needed to vomses file.</pre></div><div class='update_description'><i onclick="document.location='27458#1447961365'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-19T19:29:25+00:00">Nov 19, 2015 07:29 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1447961365">&nbsp;</a></div><pre>Hi Kyle,
+
+oh, I thought that was going into today&#39;s release ... &#58;)
+
+Cheers,
+
+Horst
+
+On 11/19/2015 01&#58;16 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27458#1447960566'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-19T19:16:06+00:00">Nov 19, 2015 07:16 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1447960566">&nbsp;</a></div><pre>Horst,
+
+I would assume that as well.  However, since we have plenty of time before the next release date (early December) I&#39;ll wait on Neha to chime in and confirm so that we can get things right.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='27458#1447953329'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-19T17:15:29+00:00">Nov 19, 2015 05:15 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1447953329">&nbsp;</a></div><pre>Hi Kyle,
+
+that&#39;s a good question, I have no idea. &#58;)
+
+Comparing this to the edg-mkgridmap.conf entry for the OSG VO&#58;
+
+group vomss&#58;//voms.opensciencegrid.org&#58;8443/voms/osg osg
+
+I see three entries in /etc/vomses&#58;
+
+&#34;osg&#34; &#34;voms.grid.iu.edu&#34; &#34;15027&#34; &#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=http/voms.grid.iu.edu&#34; &#34;osg&#34;
+&#34;osg&#34; &#34;voms1.opensciencegrid.org&#34; &#34;15027&#34; &#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=voms1.opensciencegrid.org&#34; &#34;osg&#34;
+&#34;osg&#34; &#34;voms2.opensciencegrid.org&#34; &#34;15027&#34; &#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=voms2.opensciencegrid.org&#34; &#34;osg&#34;
+
+So I would assume one or all of the above, but with &#34;ligo&#34; at the beginning
+and the end? That&#39;s just a guess, though.
+
+I&#39;m also not very familiar with GUMS, so I don&#39;t know how that template
+needs to be fixed, either. Bob Ball would probably know, since he fixed it
+at AGLT2.
+
+Cheers,
+
+Horst
+
+Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27458#1447952455'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-19T17:00:55+00:00">Nov 19, 2015 05:00 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1447952455">&nbsp;</a></div><pre>Ok, great.
+
+What should we have here for the vomses file then?
+
+&#34;LIGO&#34; &#34;voms.ligo.org&#34; &#34;15001&#34; &#34;/DC=org/DC=doegrids/OU=Services/CN=voms.ligo.org&#34; &#34;LIGO&#34;</pre></div><div class='update_description'><i onclick="document.location='27458#1447949800'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-19T16:16:40+00:00">Nov 19, 2015 04:16 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1447949800">&nbsp;</a></div><pre>Yes, it is ok. Both Horst and I have tested this.
+
+- Neha</pre></div><div class='update_description'><i onclick="document.location='27458#1447948101'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-19T15:48:21+00:00">Nov 19, 2015 03:48 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1447948101">&nbsp;</a></div><pre>Hi Kyle,
+
+yes, that&#39;s the line that works for me, even though it looks quite strange,
+I agree ... &#58;)
+
+And please be sure to also remove or comment out the FNAL CMS VOMS
+server line as well, since that doesn&#39;t seem to be working anymore,
+and is causing all CMS updates to fail right now&#58;
+
+group vomss&#58;//voms.fnal.gov&#58;8443/voms/cms uscms01
+
+Thanks a lot,
+
+Horst
+
+Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27458#1447946008'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-19T15:13:28+00:00">Nov 19, 2015 03:13 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1447946008">&nbsp;</a></div><pre>Neha,
+
+Based on the ticket here, can you confirm that this is what should be in the gridmap file?
+
+group vomss&#58;//voms.opensciencegrid.org&#58;8443/voms/osg?/osg/ligo ligo
+
+That&#39;s quite a different looking VOMS url than I&#39;m used to seeing and it makes me feel like it could be incorrect.
+
+Thanks for any info you have!
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='27458#1447800946'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-11-17T22:55:46+00:00">Nov 17, 2015 10:55 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1447800946">&nbsp;</a></div><pre>Hi all,
+
+so I guess we should open a ticket and make sure that the LIGO VOMS
+server access method is fixed for both GUMS and edg-mkgridmap, and also
+remove the FNAL CMS VOMS server from the templates -- or get it fixed. ;)
+
+See below for the details, and let me know if you have any further
+questions.
+
+Thanks a lot,
+
+Horst
+
+On 11/17/15 4&#58;06 PM, Brian Bockelman wrote&#58;
+<font color='#7F7E6F'>&#62; Hi Horst,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Can you do me a favor and file a ticket?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks!</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Brian</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;On Nov 17, 2015, at 3&#58;48 PM, Horst Severini&#60;hs@....&#62;  wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;Hi Brian and all,</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;sorry for the delay, I had to take care of some other stuff this morning. I had gotten this working yesterday, with the syntax Neha and you advertised&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;group vomss&#58;//voms.opensciencegrid.org&#58;8443/voms/osg?/osg/ligo ligo</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;So someone should update the OSG /etc/edg-mkgridmap.conf template with that, since what&#39;s currently in there is clearly outdated&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;group vomss&#58;//voms.ligo.org&#58;8443/voms/LIGO ligo</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;And then that somebody should probably also talk to Bob and apply whatever steps he needed to get the GUMS template fixed as well.</font>
+<div id='show_1247338538' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1247338538'><font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;Oh, and I think the FNAL CMS VOMS server needs to be removed from the template as well&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;group vomss&#58;//voms.fnal.gov&#58;8443/voms/cms uscms01</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;That&#39;s causing an error&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;2015-11-17T14-59-37 Running /usr/libexec/edg-mkgridmap/edg-mkgridmap.pl</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;voms search(<a href='https&#58;//voms.fnal.gov&#58;8443/voms/cms/services/VOMSCompatibility?method=getGridmapUsers' target='_blank' rel='nofollow'>https&#58;//voms.fnal.gov&#58;8443/voms/cms/services/VOMSCompatibility?method=getGridmapUsers</a>)&#58; Internal Server Error</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;which prevents ANY CMS updates at all, since that&#39;s currently AFTER</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;group vomss&#58;//voms2.cern.ch&#58;8443/voms/cms uscms01</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;(which works fine), and that apparently makes it ignore ALL changes to CMS DNs, and that&#39;s why Brian and the uclhc-fe-1.t2.ucsd.edu DNs weren&#39;t mapped to ligo yesterday when I tried this, since they were still mapped to uscms01 and refused to be changed from that because of this error. Now they&#39;re all mapped to ligo, after I commented the FNAL one out.</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;Cheers,</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;	Horst</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;On 11/17/2015 01&#58;31 PM, Bob Ball wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;The correct mapping is now in place at AGLT2 for the 2 specified DNs,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;mapping them to the local ligo account and to the ligo VO. This was done</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;in GUMS, so, I&#39;ll gladly send what I did to anyone on this list who may</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;ask for it.  Or, I can send to the list.  5 steps, not so hard, no</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;screen shots.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;Bo or Brian, please test it out now to see if this looks right for you.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;The mapped DNs are&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;DN&#58; /DC=ch/DC=cern/OU=Organic</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;FQAN&#58; /osg/ligo</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;DN&#58; /DC=com/DC=DigiCert-Grid/O=Open Science</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;Grid/OU=Services/CN=osg-ligo-1.t2.ucsd.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62; &#62;bob</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;&#62; &#62;On 11/17/2015 08&#58;31 AM, Brian Bockelman wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;Hi Horst,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;Apologies - I was out of the office on Friday and Monday.  Were you able to resolve this in the end?</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;To answer the questions below - LIGO work has come up faster than we have been able to release updated templates.  I’m hoping the updated templates make it for the December release.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;Until then, mapping&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=osg-ligo-1.t2.ucsd.edu</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;a new account name should be sufficient.  As with the OSG VO, only the pilot certificates need to be mapped - not users.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;I’m less familiar with the edg-mkgridmap configuration file, but I believe this is the appropriate format&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;group vomss&#58;//voms.opensciencegrid.org&#58;8443/voms/osg?/osg/ligo ligo</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;(i.e., the VOMS group name is specified by the text after the ‘?’)</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; &#62;&#62;Brian</font>
+</div><script type='text/javascript'>
+        $('#show_1247338538').click(function() {
+            $('#detail_1247338538').slideDown("normal");
+            $('#show_1247338538').hide();
+            $('#hide_1247338538').show();
+        });
+        $('#hide_1247338538').click(function() {
+            $('#detail_1247338538').slideUp();
+            $('#hide_1247338538').hide();
+            $('#show_1247338538').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F27458">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 27458});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

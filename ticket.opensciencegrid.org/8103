@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[8103] Twiki Bugs / Requests - Regular expression searches are slow?</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=8103" method="post">
+<div class="page-header">
+    <h3><span class="muted">8103</span> / Twiki Bugs / Requests - Regular expression searches are slow?</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Rob Quick</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2010-03-01</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Rob Quick <span class="muted"> / OSG GOC Management</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=8103", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/8103?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/8103?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Twiki%20Bugs%20%2F%20Requests%20-%20Regular%20expression%20searches%20are%20slow%3F%20ISSUE%3D8103%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='8103#1267826408'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-05T22:00:08+00:00">Mar 5, 2010 10:00 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1267826408">&nbsp;</a></div><pre>Rob,
+
+I appreciate the time you are taking to resolve the issue. As I
+previously said, the average of (11+-2)s is dominated by the Twiki
+software, while the peaks (22+-5)s are dominated by the cronjobs. While
+the average is not &#39;great&#39;, it is acceptable. The problem are the peaks
+that occur too often (every 5min).
+
+So indeed you are right, that there is no reason to change anything when
+you compare 10.5s and 9-12s. Both results are acceptable. The problem
+are the peaks that go often up to 40s rather than the 18s you mention. I
+could collect a peak statistics that proves that point, but we wouldn&#39;t
+be a step further then. I would still recommend to host the Twiki on its
+own hardware, in which case the peaks from the cronjob would be gone.
+That is all I asked for when opening the Ticket. I am aware of the fact
+that Twiki is not great at search and never will be.
+
+Thanks,
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1267822260'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-05T20:51:00+00:00">Mar 5, 2010 08:51 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1267822260">&nbsp;</a></div><pre>Based on my entry from this morning I am closing this ticket. If anyone would like to discuss this further at the All Hands Meeting I&#39;ll be available.
+
+Rob</pre></div><div class='update_description'><i onclick="document.location='8103#1267806005'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-05T16:20:05+00:00">Mar 5, 2010 04:20 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1267806005">&nbsp;</a></div><pre>Arvind researched a bit by testing an instance of the production twiki
+(an exact replica with all the data) on an unused physical server.
+He tested the searches on both the production twiki and this test
+instance over an hour&#39;s time.
+
+He found that the average time to search ALL=ALL on the physical server
+based twiki was 8 seconds. The average time on the VM-based production
+twiki was 10.5 seconds [9-12&#39;ish seconds] -- only a difference of 2.5
+seconds. Indeed, there were the odd spikes in search time when done
+against the VM based host, the odd one going up to 18 seconds. Some of
+these spikes occurred at the 5 minute interval while others happened
+randomly. We suspect that the Munin cron job that runs every 5
+minutes might be causing some of the delay but it could also be that
+other services on other VMs are trying to do something CPU or I/O
+intensive.
+
+Decreasing the frequency of running Munin is not practical from a GOC
+stand point. We do not have production quality physical servers to
+dedicate to the twiki at this point. Given the average time increase is only
+2.5 seconds, and the baseline twiki test itself takes more than 8
+seconds, I am not inclined to pursue this as the main reason for twiki slowness
+any further. It is Arvind and my belief that the real issues with search time
+are related to the TWiki software itself, not the hardware or system it is run on.
+
+I understand from OSG management that the documentation activity is a
+non-technical exercise and putting effort into finding technical solutions
+to the documentation issues is not part of the activities directive.</pre></div><div class='update_description'><i onclick="document.location='8103#1267633987'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T16:33:07+00:00">Mar 3, 2010 04:33 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1267633987">&nbsp;</a></div><pre>The hardware sounds fine, but the problem with VMs is the IO to the
+underlaying disk. If several VMs on one host share the same local disk
+(RAID-5), then IO operations on one VM will have a severe impact on the
+other VMs. I know this might not be doable quickly, but a better
+configuration would be to have the Twiki be running on dedicated
+hardware that has a fast disk system. A RAID-5 is good - a SSD would do
+exceptionally well in such a situation and be worth the money.
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1267633448'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T16:24:08+00:00">Mar 3, 2010 04:24 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1267633448">&nbsp;</a></div><pre>1) The Twiki search in general is acceptable. The time to query the
+entire Twiki with a regular expression search is approx. 10s on the main
+Twiki. However, it takes 3 to 4 times as long for the same query to
+complete whenever a cronjob is active in the background. I have written
+a benchmark for that and can provide detailed statistics. You are saying
+that it would be inconvenient and hard to improve the situation. How
+inconvenient do you think it is for all those people working on
+documentation over the next year to be interrupted every 5 minutes by
+some cronjob?
+
+2) How could I have access to another Twiki, with the same amount of
+data running the same query in order to provide you with statistics? If
+I would have that in the first place and, it really were 4 times faster,
+then why would I even bother to work with the main Twiki at all in the
+first place? It is legitimate but silly question.
+
+3) We do not run the query across the entire Twiki, but across the Webs
+we work with (Tier3, Documentation, ReleaseDocumentation). Neither over
+all documents. We exclude documents like WebPreferences or MeetingNotes.
+Since you were talking about &#39;design flaws&#39; I may assume that you are a
+skilled software developer. In this case I want to encourage you to take
+a look at WebPreferences where the query code is located. I will be very
+interested in your suggestion how we could improve the situation.
+
+Arvind, I&#39;ll write my report to the executive team. Ruth mentioned to me
+recently, that she is willing to pay for hosting the Twiki on a
+commercial platform. I don&#39;t think that this waste of money will benefit
+the reputation of the GOC.
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1267632049'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T16:00:49+00:00">Mar 3, 2010 04:00 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1267632049">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; just to get a perspective on the problem, ... a quick description of your hardware</font>
+
+Forgot to mention this -- Our VM hosts are either this specification or a slight variant of it&#58; Dell PowerEdge 2950 (II); 2xIntel &#34;Woodcrest&#34; Dual-Core Intel Xeon 5150 2.66 GHz, 4MB L2 Cache, 1333 MT/s FSB ; tons of RAM and disk space (RAID-5)</pre></div><div class='update_description'><i onclick="document.location='8103#1267631081'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T15:44:41+00:00">Mar 3, 2010 03:44 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1267631081">&nbsp;</a></div><pre>Sure, I will give you a rough summary...
+
+We have about 7-10 VMs with various services including the twiki, and MyOSG, GOCticket, rsv-client to monitor GOC services, software cache, GOC VOMS, OIM etc, running on our production VM hosts. This has not caused any problems with performance on any of the aforementioned services thus far.
+
+Ditto with the ITB VM host which is a bit more loaded since we don&#39;t care about performance as much.
+
+-------
+
+I have some questions I will restate from previous notes on the ticket hoping you will respond with details&#58;
+
+1) IMO, we need to figure out why the twiki search is slow to begin with, and the possible cron jobs induced increase in slowness is a red-herring, do you agree?
+
+2) If yes, then where else have you run similar searches? For example, do you have a statistic that a similar search&#58;
+- on a different twiki server elsewhere
+- with similar amount of data
+... is super fast? or much faster than the average speed of search on the GOC / GOC-ITB twiki?
+
+3) Are users always going to run a search on the entire twiki? Isn&#39;t this a design flaw? I mean if I was looking for a word in a file within my home directory, I&#39;d run a grep like this &#34;grep -Ri &#34;foo&#34; /home/agopu/*&#34; ... and not &#34;grep -Ri &#34;foo&#34; /*&#34; on a machine with several terabytes of data.
+
+4) Even if we figure out a solution to make the ITB twiki search faster, unless we (a) know twiki search can be faster (see bullet 2 above) (b) have addressed the root cause of the slowness, it&#39;s likely going to be useless since the size of the production and ITB twikis are vastly different. In other words, unless I dump the production twiki&#39;s data on the ITB twiki (say, after backing up work you, Jim, et al. have done) and let you experiment there, solutions we find will hardly be relevant.
+
+Thank you.</pre></div><div class='update_description'><i onclick="document.location='8103#1267630207'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T15:30:07+00:00">Mar 3, 2010 03:30 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1267630207">&nbsp;</a></div><pre>Arvind,
+
+just to get a perspective on the problem, what are these other VMs
+exactly? Also a quick description of your hardware and how many VMs are
+running there would be very helpful.
+
+Thanks,
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1267629781'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T15:23:01+00:00">Mar 3, 2010 03:23 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1267629781">&nbsp;</a></div><pre>Robert,
+
+In short, yes.
+
+I mentioned this a couple of times including this note&#58; <a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=8103#1266946265' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=8103#1266946265</a>
+
+&#34;There are several cron jobs on the VM host as well as the several other VMs running on the host. It would be very hard and impractical for us to stop all those cron jobs.&#34;
+
+Replace &#34;stop&#34; in the above sentence with &#34;reengineer&#34; and/or &#34;mess around for experimentation&#34;.
+
+-ag</pre></div><div class='update_description'><i onclick="document.location='8103#1267629487'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T15:18:07+00:00">Mar 3, 2010 03:18 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1267629487">&nbsp;</a></div><pre>Rob,
+
+can you please explain what other services you mean, that could be
+impacted by changes to the Twiki? Are you saying that there are other
+services (VM&#39;s) running on the same hardware as the Twiki?
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1267624986'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T14:03:06+00:00">Mar 3, 2010 02:03 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1267624986">&nbsp;</a></div><pre>I must be missing this factor of 3 somewhere in the mails you and
+Arvind exchanged.
+
+What I get from your mails, recorded in the ticket at  <a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=8103' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=8103</a>
+#1266429546. Is a factor of 1/3 when tested on the ITB TWiki but with
+heavy spikes at times. In fact these spikes are much worse than
+regularly experienced. (This is with all cron jobs off on the machine,
+and I assume we are talking about ~1 of every 5 queries affected.)
+Right now in the production freeze environment I just don&#39;t this as
+conclusive evidence we should tamper with a production service. I will
+have Arvind continue to look into the issue, and if we identify a way
+to help that does not impact the service we run, we can consider the
+change.
+
+Rob
+
+On Mar 2, 2010, at 9&#58;33 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1267583586'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T02:33:06+00:00">Mar 3, 2010 02:33 AM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1267583586">&nbsp;</a></div><pre>Rob,
+
+I cannot follow your logic at all. I run a benchmark against the
+Twiki which proves that the 5 minute cronjobs past the hour are
+effecting the query performance by a factor of 3. If you are saying this
+is not so, then please present your line of reasoning or your own benchmark.
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1267578314'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-03T01:05:14+00:00">Mar 3, 2010 01:05 AM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1267578314">&nbsp;</a></div><pre>Adding Ruth and Dan to the CC on this ticket.
+
+Robert,
+
+This was discussed today on the Operations Change Mgmt call. At this point there is not enough evidence to suggest the cronjobs are actually affecting the TWiki performance, it seems from the history of this ticket we are just hoping this may help the problem, and with no system on the same scale as the production TWiki to run analysis against, we are not willing to move past the current freeze in Operations services to play with the production TWiki settings.
+
+If you and Jim would like to talk about this tomorrow I&#39;ll be available to go further into our decision making process.
+
+Thanks,
+Rob</pre></div><div class='update_description'><i onclick="document.location='8103#1266956226'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-23T20:17:06+00:00">Feb 23, 2010 08:17 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1266956226">&nbsp;</a></div><pre>I forgot, but a solution would of course not require to shut down all
+cron jobs. Just evaluate each cronjob and see if you could decrease
+their frequency and distribute them better over time. Run your own
+benchmark against your trials and please report results back to me as
+soon as you can.
+
+Thanks,
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1266956047'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-23T20:14:07+00:00">Feb 23, 2010 08:14 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1266956047">&nbsp;</a></div><pre>Arvind,
+
+I have confidence in your abilities to make this work. I will just
+point out one more time, that yes indeed this is critical. Every editor,
+reviewer and tester for documentation will use this feature on a daily
+basis. I have a team of people waiting to get started with the tools we
+developed. Every day we are loosing with discussions like this one
+without a solution is a day we loose before the All Hands Meeting!
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1266946265'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-23T17:31:05+00:00">Feb 23, 2010 05:31 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1266946265">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; In general the average improved. You could check what cronjobs are running on the machine</font>
+<font color='#7F7E6F'>&#62; that hosts the VM for twiki-itb. They might share the same harddisk for IO.</font>
+
+Robert,
+
+There are several cron jobs on the VM host as well as the several other VMs running on the host. It would be very hard and impractical for us to stop all those cron jobs.
+
+I still don&#39;t have a concrete idea from you on who will use this search, how often someone will use this search, how critical is the slowness, etc. To give you an extreme example, if 3 OSG users are going to use the search once a month, I don&#39;t see why it&#39;s a critical item. I tried asking about this previously on this ticket - can you please give me a better idea? Or, perhaps you should ask the executive team, if you don&#39;t know. Like I already stated, we do not have the person-power to chase down marginal problems.
+
+-ag</pre></div><div class='update_description'><i onclick="document.location='8103#1266875960'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-22T21:59:20+00:00">Feb 22, 2010 09:59 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1266875960">&nbsp;</a></div><pre>Removing myself from this ticket as Arvind/Soichi are looking into it.</pre></div><div class='update_description'><i onclick="document.location='8103#1266531066'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-18T22:11:06+00:00">Feb 18, 2010 10:11 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1266531066">&nbsp;</a></div><pre>Arvind, any updates on the issue?
+
+Thanks,
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1266429546'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-17T17:59:06+00:00">Feb 17, 2010 05:59 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1266429546">&nbsp;</a></div><pre>The results are mixed. The spikes at the 5min interval are still there,
+but less prominent (from 15s to about 10s)&#58;
+
+Wed Feb 17 12&#58;30&#58;02 2010 - 9
+Wed Feb 17 12&#58;35&#58;05 2010 - 8
+Wed Feb 17 12&#58;40&#58;00 2010 - 16
+Wed Feb 17 12&#58;45&#58;03 2010 - 12
+Wed Feb 17 12&#58;50&#58;05 2010 - 10
+
+However, I also saw several heavy spikes at&#58;
+
+Wed Feb 17 12&#58;38&#58;38 2010 - 34
+Wed Feb 17 12&#58;43&#58;00 2010 - 34
+Wed Feb 17 12&#58;47&#58;18 2010 - 35
+
+In general the average improved. You could check what cronjobs are
+running on the machine that hosts the VM for twiki-itb. They might share
+the same harddisk for IO.
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1266424380'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-17T16:33:00+00:00">Feb 17, 2010 04:33 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1266424380">&nbsp;</a></div><pre>Hi Robert,
+
+I&#39;ve removed all the cron jobs from twiki-itb, can you run another test? Let&#39;s see what happens. If we can confirm the cron jobs are indeed the problem, then we could go about trying to find which one in particular is the problem.
+
+-ag</pre></div><div class='update_description'><i onclick="document.location='8103#1266417847'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-17T14:44:07+00:00">Feb 17, 2010 02:44 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1266417847">&nbsp;</a></div><pre>Arvind,
+
+I see the same situation on the twiki-itb. The query times are
+(4+-1)s for&#58;
+
+<a href='https&#58;//twiki-itb.grid.iu.edu/bin/view/Documentation/DocumentationTeam/FindIt?ALL=ALL' target='_blank' rel='nofollow'>https&#58;//twiki-itb.grid.iu.edu/bin/view/Documentation/DocumentationTeam/FindIt?ALL=ALL</a>
+
+Spikes of up to 15s occur precisely at 25,30,35,40... past the hour
+every 5 minutes. The smaller average is due to the smaller document
+number in twiki-itb. Whatever cronjob is running at these times on both
+machines is likely disk-io intensive and impacts all queries by a factor
+of 3.
+
+Depending on what the cronjobs are doing, one could try to throttle the
+cronjob themselfs and perhaps also decrease their frequency.
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1266416450'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-17T14:20:50+00:00">Feb 17, 2010 02:20 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1266416450">&nbsp;</a></div><pre>Robert,
+
+We don&#39;t run anything related to the twiki *every five minutes* via cron or some such administrative configuration.
+
+We DO run other system administrative tools via cron, one of which runs every 5 minutes [0, 5, 10... minutes after the hour], while another runs every 5 mins [2, 7, 12 ... minutes after the hour], and yet another one runs every 5 minutes [1, 6, 11... minutes after the hour]; and system statistics tool runs every ten minutes [0, 10, 20 ...]
+
+Additionally the following twiki cron jobs exist&#58;
+- There are two cron jobs scheduled to run at 0&#58;00 UTC (Mail notify and statistics regeneration); and
+- There are cron jobs that run every two hours to backup data/pub files, and these run in the *even* hours at 40, 45, 50 mins past the hour (UTC)
+
+Are you coming from 71.234.192.210? Presumably so. I notice an increase CPU usage between 5 and 6 AM UTC this morning when you did the aforementioned benchmarking [note&#58; reasonable and unremarkable load average of around 2]
+
+- There were 93 attempts at &#34;DocFind?ALL&#34; between 4 AM - 5 AM UTC
+- There were 226 attempts at &#34;DocFind?ALL&#34; between 5 AM - 6 AM UTC
+
+Do you see the same behavior on twiki-itb? How fast/slow is the search on twiki-itb? I tried running it on twiki-itb but that form does not seem to exist on twiki-itb.
+
+From a server point of view, both twiki and twiki-itb run on almost identical VMs (virtual CPU, memory, disk) but on slightly different host configurations including hosts that are differently loaded.
+
+Cheers,
+-ag
+
+PS&#58; Previously, I&#39;d said&#58; &#34;I&#39;ve seen the load average on the production twiki spike to 80+ once  in a while - I wonder if that had anything to do with your searches?&#34;  --- please ignore this line, I misinterpreted a graph. The load average rarely goes over 2.5.</pre></div><div class='update_description'><i onclick="document.location='8103#1266385446'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-17T05:44:06+00:00">Feb 17, 2010 05:44 AM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1266385446">&nbsp;</a></div><pre>Arvind,
+
+I run a benchmark against the Twiki, essentially using the &#39;ALL&#39; search&#58;
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/DocumentationTeam/DocFind?ALL=ALL' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/DocumentationTeam/DocFind?ALL=ALL</a>
+
+taking the time each query takes. I took 220 samples between 12am and
+1am. The results show that while the average query time is is (11+-2)
+seconds, peaks occur every 300s when query times exceed 20s with the
+maximum at about 25s. Not unreasonable to suspect that something is
+running on the Twiki machine every 300s which has a severe impact on
+query times.
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1266274746'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-15T22:59:06+00:00">Feb 15, 2010 10:59 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1266274746">&nbsp;</a></div><pre>Arvin,
+
+I need to compile a report for the OSG executive team that will
+include my experiences with the Twiki. Can you please outline what you
+did exactly to make sure that the performance numbers we reported are
+expected and that there is indeed nothing you could do to improve the
+situation?
+
+Thanks,
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1266262517'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-15T19:35:17+00:00">Feb 15, 2010 07:35 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1266262517">&nbsp;</a></div><pre>Hi,
+
+10-20 seconds for a regex search on fairly textually stored format (of the twiki which stores all its files in plain text, and user perl regexes) does not sound too bad to me. Do you have metrics from other twikis that indicate ours is especially bad?
+
+We don&#39;t have the person-power to go on potential issue&#39;s causes when we are not even certain there is a problem or where the problem is! If you find the exact problem, please let us know, and we will try to fix that. Even better it would be if provide us a solution!
+
+Unless I hear a concrete problem description with comparison metrics, and potential leads for solution, I am inclined to close this ticket.
+
+Thanks,
+-ag
+
+PS&#58; &#62; load 80 ... Robert&#39;s comment
+
+I was just speculating, and I was not even sure about it. Those load averages may be due to search spiders or something else. Unless it&#39;s a consistent issue, we don&#39;t plan to delve into it.</pre></div><div class='update_description'><i onclick="document.location='8103#1265986930'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-12T15:02:10+00:00">Feb 12, 2010 03:02 PM UTC</time> by <b>engel_r@....</b><a class="anchor" name="1265986930">&nbsp;</a></div><pre>- slow&#58; 10s...20s for 500 documents.
+- benchmark&#58; hit &#39;ALL&#39; button
+- load&#58; 80 for a single process of a user search? I don&#39;t think so, we
+are talking single threaded application here. But perhaps the load issue
+is where you should start. Jim just reported that he experiences search
+times of &#60;5s. I just got &#62;20s. I think that the search might not be at
+all the problem, but something else on the Twiki.
+
+Robert
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8103#1265918727'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-11T20:05:27+00:00">Feb 11, 2010 08:05 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1265918727">&nbsp;</a></div><pre>Updated title to be more descriptive.</pre></div><div class='update_description'><i onclick="document.location='8103#1265918346'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-11T19:59:06+00:00">Feb 11, 2010 07:59 PM UTC</time> by <b>Arvind Gopu</b><a class="anchor" name="1265918346">&nbsp;</a></div><pre>I need more details from Jim/Robert. &#34;Slow&#34; is a very relative term.
+
+1) Also what is your standard for comparison? Are you comparing how fast the regex search is with regex search on another twiki server? What is the order of magnitude? Several seconds? Several tens of seconds? Several minutes? Several hours?
+
+-- The way the twiki files are setup, I&#39;d not be surprised if a regex search on all its files is super slow to the order of several seconds.
+
+When I go to <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/DocumentationTeam/DocFind' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/DocumentationTeam/DocFind</a>, I see a form with blue background, and a lot of drop downs. Am I supposed to select random values and hit search? It&#39;s not obvious.
+
+2) If you can send me a proper example URL that would help.
+
+I&#39;ve seen the load average on the production twiki spike to 80+ once  in a while - I wonder if that had anything to do with your searches?
+
+-ag</pre></div><div class='update_description'><i onclick="document.location='8103#1265834758'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-10T20:45:58+00:00">Feb 10, 2010 08:45 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1265834758">&nbsp;</a></div><pre>This is JIRA ticket MISC-23.</pre></div><div class='update_description'><i onclick="document.location='8103#1265834743'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-10T20:45:43+00:00">Feb 10, 2010 08:45 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1265834743">&nbsp;</a></div><pre>Adding Jim and Robert to this ticket as CCs.</pre></div><div class='update_description'><i onclick="document.location='8103#1265834521'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-02-10T20:42:01+00:00">Feb 10, 2010 08:42 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1265834521">&nbsp;</a></div><pre>We&#39;d like to do an analysis of why regular expression searches are so slow. Examples of the searches can be found at&#58;
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/DocumentationTeam/DocFind' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/DocumentationTeam/DocFind</a>
+
+This seems to be taking quite a bit longer than you would expect. I&#39;ll create a internal JIRA ticket, but interaction with Robert and Jim should happen in this ticket.</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F8103">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 8103});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

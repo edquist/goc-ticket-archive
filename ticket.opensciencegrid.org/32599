@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[32599] UConn-OSG_CE - Glideins unable to run HTCondor / Authentication Errors</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=32599" method="post">
+<div class="page-header">
+    <h3><span class="muted">32599</span> / UConn-OSG_CE - Glideins unable to run HTCondor / Authentication Errors</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Marty Kandes</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">UConn-OSG_CE</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Gluex</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Marty Kandes</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">GLUEX</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-03-20</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Thomas Lee <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">GLUEX <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=32599", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/32599?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/32599?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20UConn-OSG_CE%20-%20Glideins%20unable%20to%20run%20HTCondor%20%2F%20Authentication%20Errors%20ISSUE%3D32599%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='32599#1489769077'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-17T16:44:37+00:00">Mar 17, 2017 04:44 PM UTC</time><a class="anchor" name="1489769077">&nbsp;</a></div><pre>Richard,
+
+Will do. Thanks again for the help. Closing ticket.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1489709830'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-17T00:17:10+00:00">Mar 17, 2017 12:17 AM UTC</time> by <b>GLUEX</b><a class="anchor" name="1489709830">&nbsp;</a></div><pre>Marty,
+
+Good news! Glad the problem seems to have disappeared, let me know if it
+comes back.
+
+-Richard J.
+
+On Thu, Mar 16, 2017 at 7&#58;05 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32599#1489705544'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-16T23:05:44+00:00">Mar 16, 2017 11:05 PM UTC</time><a class="anchor" name="1489705544">&nbsp;</a></div><pre>Richard,
+
+We actually don&#39;t run glideins for ATLAS. But the good new is that checking back today there are no longer any problems with the held glideins that I could find. Moreover, I can no longer find any of the authentication errors I was trying to understand before the AHM last week. As such, it seems like everything is working fairly well at the moment. Sorry for the wild goose chase. If you don&#39;t have anything further, I don&#39;t think I do at this point. We can probably close out this ticket if you&#39;re ready to do so as well.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+P.S. Understood about the watch dog script. This kind of preemption can look like problems occurring at a site for us sometimes, even though it is the desired result. Just remind us about it next time we&#39;re helping debug something at site.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1489623969'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-16T00:26:09+00:00">Mar 16, 2017 12:26 AM UTC</time> by <b>GLUEX</b><a class="anchor" name="1489623969">&nbsp;</a></div><pre>Marty,
+
+I see one held right now, as listed below. Is this the one you are
+referring to?
+
+6230713.0   usatlas1        3/15 18&#58;54   0+00&#58;55&#58;38 H  0   3662.1
+wrapper-0.9.15-opp
+
+I don&#39;t know why this particular job is in Hold state, but one reason might
+be the script that runs on my CE every 10 minutes to find and hold any jobs
+that have consistently overflowed the slot resources by more than some
+margin. Up until a year ago, I used to let jobs run without per-job
+resource limits and trust that users respect the advertised per-node
+memory, disk, etc. But then starting about 8 months ago the rate of users
+violating those bounds started to increase and I was spending an increasing
+amount of my time contacting VO&#39;s and asking them to speak with
+this-or-that user who was using 8GB of ram on a 2GB-per-slot machine, etc
+etc. So at some point, I just built a watch-dog script to watch hog
+processes and Hold them before they spread to all of the nodes and bring
+the cluster to a crawl. Normally I do not see violations in atlas jobs, but
+as you can see, this one has tried to run with 3.7GB of ram in a 2GB slot.
+This is probably how it ended up in Hold.
+
+-Richard Jones
+
+On Wed, Mar 15, 2017 at 5&#58;16 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32599#1489612584'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-15T21:16:24+00:00">Mar 15, 2017 09:16 PM UTC</time><a class="anchor" name="1489612584">&nbsp;</a></div><pre>Hi Richard,
+
+I don&#39;t see any time that factories reported no glideins at UConn during past few weeks. e.g., see [1] [2].
+
+Note, however, while investigating today I did find some older, stale glideins hanging around from 3/3 again, which I also noticed 12 days ago on 3/3 before you set &#34;DISABLE_GLIDEIN_ADS=True&#34;. There were also new held glideins with hold reason [3]. Do you see these held glideins on the CE?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+<a href='http&#58;//glidein.grid.iu.edu/factory/monitor/factoryStatus.html?entry=OSG_US_UConn_gluskap&frontend=total&infoGroup=running&elements=StatusRunning' target='_blank' rel='nofollow'>http&#58;//glidein.grid.iu.edu/factory/monitor/factoryStatus.html?entry=OSG_US_UConn_gluskap&frontend=total&infoGroup=running&elements=StatusRunning</a>,ClientGlideRunning,ClientGlideIdle,&rra=2&window_min=0&window_max=0&timezone=-7
+
+[2]
+
+<a href='http&#58;//gfactory-1.t2.ucsd.edu/factory/monitor/factoryStatus.html?entry=OSG_US_UConn_gluskap&frontend=total&infoGroup=running&elements=StatusRunning' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/factory/monitor/factoryStatus.html?entry=OSG_US_UConn_gluskap&frontend=total&infoGroup=running&elements=StatusRunning</a>,ClientGlideRunning,ClientGlideIdle,&rra=2&window_min=0&window_max=0&timezone=-7
+
+[3]
+
+4911292.0   fesbgrid        3/15 14&#58;02 HTCondor-CE held job due to no matching routes, route job limit, or route failure threshold; see &#39;HTCondor-CE Troubleshooting Guide&#39;
+4911360.0   feglow          3/15 14&#58;03 HTCondor-CE held job due to no matching routes, route job limit, or route failure threshold; see &#39;HTCondor-CE Troubleshooting Guide&#39;
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1489508599'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-14T16:23:19+00:00">Mar 14, 2017 04:23 PM UTC</time> by <b>echism</b><a class="anchor" name="1489508599">&nbsp;</a></div><pre>Marty, please revisit this one.</pre></div><div class='update_description'><i onclick="document.location='32599#1489161311'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-10T15:55:11+00:00">Mar 10, 2017 03:55 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1489161311">&nbsp;</a></div><pre>Hello Elizabeth,
+
+Yes, my queues are empty. Is this because of the change that Marty
+suggested I add? I will take it out and see if that fixes it.
+
+-Richard Jones
+
+On Fri, Mar 10, 2017 at 10&#58;46 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32599#1489160791'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-10T15:46:31+00:00">Mar 10, 2017 03:46 PM UTC</time> by <b>echism</b><a class="anchor" name="1489160791">&nbsp;</a></div><pre>Richard,
+
+Do you need new jobs?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='32599#1488998744'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-08T18:45:44+00:00">Mar 8, 2017 06:45 PM UTC</time> by <b>echism</b><a class="anchor" name="1488998744">&nbsp;</a></div><pre>Richard,
+
+Did you see that last entry? The two of you are in different time zones, so I thought you may have missed it.
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='32599#1488565701'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-03T18:28:21+00:00">Mar 3, 2017 06:28 PM UTC</time><a class="anchor" name="1488565701">&nbsp;</a></div><pre>Richard,
+
+Unfortunately, no new glidein logs have been returned yet to the factory since you set &#34;DISABLE_GLIDEIN_ADS=True&#34;. Can you maybe try to find some *.out and *.err logs on  your side for current running glideins? They will be on the worker nodes in one of the directories that look something like this [1].
+
+I also found some old, stale looking glideins running and/or idle on the factory-side from more than 3+ days ago (some as old as 2/12). I cleared them out to make sure we have all fresh proxies, etc.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+GLIDEIN_WORK_DIR /local/execute/dir_3679907/glide_qBhLY4/main
+GLIDEIN_ENTRY_WORK_DIR /local/execute/dir_3679907/glide_qBhLY4/entry_OSG_US_UConn_gluskap
+TMP_DIR /local/execute/dir_3679907/glide_qBhLY4/tmp
+GLIDEIN_LOCAL_TMP_DIR /tmp/glide_prod05_cMSK1u
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1488563674'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-03T17:54:34+00:00">Mar 3, 2017 05:54 PM UTC</time><a class="anchor" name="1488563674">&nbsp;</a></div><pre>Richard,
+
+I&#39;m not exactly sure what part of the OSG accounting this attribute will affect. Maybe you can check if there has been a change while the change has been in place. And thank you for the change. Let me take a quick look to see if anything has change with respect to the authentication errors in the logs and get back to you with the go ahead to remove the change.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1488544150'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-03T12:29:10+00:00">Mar 3, 2017 12:29 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1488544150">&nbsp;</a></div><pre>Hello Marty,
+
+Won&#39;t this prevent me from seeing the hours that osg jobs are logging on my
+site being accumulated in the OSG statistics? I rely on that to keep track
+of how much work we have contributed to osg. Still I can try it as a test.
+I am just restarting my condor-ce at this moment with this change in place.
+
+-Richard Jones
+
+On Thu, Mar 2, 2017 at 1&#58;23 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32599#1488478987'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-03-02T18:23:07+00:00">Mar 2, 2017 06:23 PM UTC</time><a class="anchor" name="1488478987">&nbsp;</a></div><pre>Hi Richard,
+
+I may have come across a what&#39;s causing the error messages in another ticket. Can you try the following [1] when you get a chance? I want to see if the error messages go away with this set. Then at least we&#39;ll know what feature they are associated with.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+&#34;The rest of the errors, as far as I can tell, are related to the GLIDEIN_Site_Collector setting. I don&#39;t think it is fully understood why that is happening, but one thing to try is disabling the local collector reporting (unless the site uses that information)&#58;
+
+In /etc/sysconfig/condor-ce, add&#58;
+
+DISABLE_GLIDEIN_ADS=True
+export DISABLE_GLIDEIN_ADS&#34;
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1487895514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-24T00:18:34+00:00">Feb 24, 2017 12:18 AM UTC</time><a class="anchor" name="1487895514">&nbsp;</a></div><pre>Richard,
+
+Ah, I see. Well, let&#39;s still push further discussion on this until during and/or after the AHM meeting. I have to setup my own CE for another site in the next week. Between that and consulting with some the CE experts themselves, maybe I&#39;ll come up with a better idea of how to eliminate this authentication error in the glidein startd logs. It could also just be an errant error message in condor itself. I recently came across something like this in another context. Anyhow, let&#39;s put this ticket on hold for now.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1487882172'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-23T20:36:12+00:00">Feb 23, 2017 08:36 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1487882172">&nbsp;</a></div><pre>Hello Marty,
+
+Sure, this can wait. I am scheduled to speak at the All-Hands Mtg, but I am
+actually not able to come in person, will be dialing in to present
+remotely. We will have be be creative about how to move forward with
+resolving this issue.
+
+-Richard
+
+On Thu, Feb 23, 2017 at 3&#58;26 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32599#1487881564'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-23T20:26:04+00:00">Feb 23, 2017 08:26 PM UTC</time><a class="anchor" name="1487881564">&nbsp;</a></div><pre>Hi Richard,
+
+Thanks for the SEC information. I haven&#39;t had a chance to think about this more yet. And with the AHM meeting bearing down, people out sick, my mental bandwidth is way oversubscribed right now.
+However, I see you&#39;re coming to the AHM. Since this is not an urgent issue, but something I&#39;d like to understand how to fix so we know what to do when we see it at other sites, how about we maybe just get together sometime while you&#39;re here and troubleshoot it a bit? We&#39;ll also have more CE experts around who can help out as well.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1487691215'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-21T15:33:35+00:00">Feb 21, 2017 03:33 PM UTC</time><a class="anchor" name="1487691215">&nbsp;</a></div><pre>Marty, sorry for the delay. Here is the requested information.
+
+$ grep SEC_ /etc/condor-c/config.d/*
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_ADMINISTRATOR_AUTHENTICATION = REQUIRED
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_OWNER_AUTHENTICATION = REQUIRED
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_CLIENT_AUTHENTICATION = OPTIONAL
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_CLIENT_AUTHENTICATION_METHODS = FS, FS_REMOTE
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;#SEC_CLIENT_AUTHENTICATION_METHODS = $(SEC_CLIENT_AUTHENTICATION_METHODS), PASSWORD
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_CLIENT_INTEGRITY = OPTIONAL
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_DEFAULT_AUTHENTICATION = PREFERRED
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_DEFAULT_AUTHENTICATION_METHODS = FS, FS_REMOTE
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;#SEC_DEFAULT_AUTHENTICATION_METHODS = $(SEC_DEFAULT_AUTHENTICATION_METHODS), PASSWORD
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_DEFAULT_INTEGRITY = PREFERRED
+/etc/condor/config.d/00_UConn-OSG_condor.config&#58;SEC_PASSWORD_FILE = $(TILDE)/pool_password
+
+$ grep SEC_ /etc/condor-ce/config.d/*
+/etc/condor-ce/config.d/01-ce-auth.conf&#58;SCHEDD.SEC_WRITE_AUTHENTICATION_METHODS = FS,GSI
+/etc/condor-ce/config.d/01-ce-auth.conf&#58;SCHEDD.SEC_DAEMON_AUTHENTICATION_METHODS = FS,GSI
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_DEFAULT_AUTHENTICATION = REQUIRED
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_READ_AUTHENTICATION = OPTIONAL
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_CLIENT_AUTHENTICATION = OPTIONAL
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_DEFAULT_AUTHENTICATION_METHODS = GSI
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_CLIENT_AUTHENTICATION_METHODS=FS,GSI
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_DEFAULT_ENCRYPTION = OPTIONAL
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_DEFAULT_INTEGRITY = REQUIRED
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_READ_INTEGRITY = OPTIONAL
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_CLIENT_INTEGRITY = OPTIONAL
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_READ_ENCRYPTION = OPTIONAL
+/etc/condor-ce/config.d/01-common-auth.conf&#58;SEC_CLIENT_ENCRYPTION = OPTIONAL
+/etc/condor-ce/config.d/05-ce-view.conf&#58;# CEVIEW.SEC_CLIENT_NEGOTIATION = OPTIONAL
+/etc/condor-ce/config.d/05-ce-view.conf.rpmnew&#58;# CEVIEW.SEC_CLIENT_NEGOTIATION = OPTIONAL
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='32599#1487628542'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-20T22:09:02+00:00">Feb 20, 2017 10:09 PM UTC</time> by <b>echism</b><a class="anchor" name="1487628542">&nbsp;</a></div><pre>Hey Richard,
+
+Did you see that last request?
+
+Marty asked&#58;
+Can you give me an overview of the security configuration for gluskap.phys.uconn.edu? e.g., Maybe do a grep -H SEC_ * in /etc/condor/config.d and /etc/condor-ce/config.d?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='32599#1487103075'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-14T20:11:15+00:00">Feb 14, 2017 08:11 PM UTC</time><a class="anchor" name="1487103075">&nbsp;</a></div><pre>Richard,
+
+Can you give me an overview of the security configuration for gluskap.phys.uconn.edu? e.g., Maybe do a grep -H SEC_ * in /etc/condor/config.d and /etc/condor-ce/config.d?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1486749552'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-10T17:59:12+00:00">Feb 10, 2017 05:59 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1486749552">&nbsp;</a></div><pre>Marty,
+
+The answer to all of these questions is yes&#58; certificates are shared over
+nfs, visible via symlink at /etc/grid-security/certificates, all slave
+nodes authenticate correctly over GSI to all other nodes including gluskap.
+I am not sure what in the glidein configuration is interfering with this
+working, but when I do ordinary commands (eg. globus-url-transfer) between
+workers and the CE this works without any problem.
+
+-Richard Jones
+
+On Fri, Feb 10, 2017 at 11&#58;30 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32599#1486744245'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-10T16:30:45+00:00">Feb 10, 2017 04:30 PM UTC</time><a class="anchor" name="1486744245">&nbsp;</a></div><pre>Richard,
+
+Yes, FS authentication is fine for your underlying condor cluster. However, the glideins running as jobs within the cluster use GSI authentication when trying to talk to grid resources like your HTCondor-CE. Do your worker nodes each have the  CA certificates stored in /etc/grid-security/certificates? i.e., Do they all have an up-to-date osg-ca-certs package installed? Are they distributed to the worker nodes via NFS? Basically, the problem looks like the glideins do not trust your HTCondor-CE because they are unable to authenticate its credentials. It&#39;s not too big deal because this like of communication is only for monitoring purposes. The glideins are successfully running useful work. However, it&#39;d be good to get all the pieces talking to each other properly if we can.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1486658830'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T16:47:10+00:00">Feb 9, 2017 04:47 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1486658830">&nbsp;</a></div><pre>Marty,
+
+Yes, gluskap.phys.uconn.edu is the condor head node for our site. The only
+mechanism that I set up for authenticating between the head node and worker
+nodes in our condor system is the FS authentication. I thought that one
+mechanism should be sufficient.
+
+-Richard Jones
+
+On Thu, Feb 9, 2017 at 11&#58;22 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32599#1486657352'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T16:22:32+00:00">Feb 9, 2017 04:22 PM UTC</time><a class="anchor" name="1486657352">&nbsp;</a></div><pre>Richard,
+
+I can confirm that I no longer see glideins attempting to run on geo6.
+
+Thanks for your explanation on the issue regarding your underlying filesystem-based security configuration at UConn. However, the authentication-related errors reported earlier [1], and which continue to persist, appears to be regarding GSI authentication (not FS authentication) between the glidein&#39;s Startds (not your worker nodes) and the HTCondor-CE. What is a bit confusing to me is why the glideins are attempting to update a condor collector on the CE. Is gluskap.phys.uconn.edu also your Central Manager for the local condor batch system?
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+02/07/17 23&#58;56&#58;50 (pid&#58;1291407) SECMAN&#58; required authentication with collector gluskap.phys.uconn.edu&#58;9619 failed, so aborting command UPDATE_STARTD_AD.
+02/07/17 23&#58;56&#58;50 (pid&#58;1291407) ERROR&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5006&#58;Failed to authenticate because the subject &#39;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gluskap.phys.uconn.edu&#39; is not currently trusted by you.  If it should be, add it to GSI_DAEMON_NAME or undefine GSI_DAEMON_NAME.
+02/07/17 23&#58;56&#58;50 (pid&#58;1291407) Failed to start non-blocking update to &#60;137.99.79.130&#58;9619&#62;.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1486656379'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-09T16:06:19+00:00">Feb 9, 2017 04:06 PM UTC</time><a class="anchor" name="1486656379">&nbsp;</a></div><pre>Hi Elizabeth,
+
+Yes, I see it. Thanks. I&#39;m checking on this now.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049</pre></div><div class='update_description'><i onclick="document.location='32599#1486418789'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-06T22:06:29+00:00">Feb 6, 2017 10:06 PM UTC</time> by <b>echism</b><a class="anchor" name="1486418789">&nbsp;</a></div><pre>Marty,
+
+Did you see that last update?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='32599#1486157710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-03T21:35:10+00:00">Feb 3, 2017 09:35 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1486157710">&nbsp;</a></div><pre>Marty,
+
+The node geo6 is obsolete. Every once in a while someone switches it on
+again and it boots, but this should not happen again.
+
+The SECMAN mechanism you are referring to uses a shared nfs filesystem to
+authenticate the condor head node to the workers. Every once in a while
+(10-30 days) there is a period when the nfs server is so overloaded that
+this nfs filesystem becomes unreachable, at which time these
+authentications requests back up (can be for an hour or more if contention
+is high). This is typically the sign that some user&#39;s jobs are violating
+their resource limits. Whatever the reason, I find that the problem fixes
+itself, as jobs fail to start for some period until the contention is
+relieved. It is a &#34;feature&#34; of the filesystem authentication mechanism, and
+I find it works quite well for this purpose. Make sense?
+
+-Richard Jones
+
+On Fri, Feb 3, 2017 at 3&#58;39 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='32599#1486154363'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-02-03T20:39:23+00:00">Feb 3, 2017 08:39 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1486154363">&nbsp;</a></div><pre>Hi UConn admins,
+
+We&#39;re observing glideins that attempt to startup on the worker node [1] behind your HTCondor-CE [2] are unable to run their HTCondor tarballs for some reason [3]. Can you investigate whether or not there is a problem with running on this node?
+
+We&#39;re also observing authentication-related errors [4] in the glidein StartdLogs across a number of other nodes [5]. This appears to indicate that the glideins do not trust your CE [2]. Did you recently update the host certificate on the CE? Can you also make sure your osg-ca-certs and CRLs are up-to-date on the CE and worker nodes? Note, however, this authentication issue is probably not affecting user jobs running on the glideins, probably only the updates the glidein factories get from the CE. So no big rush here on this issue.
+
+Marty Kandes
+UCSD Glidein Factory Operations
+
+[1]
+
+geo6.phys.uconn.edu
+
+[2]
+
+gluskap.phys.uconn.edu
+
+[3]
+
+/local/execute/dir_19983/glide_WINz1r/main/condor_startup.sh&#58; line 972&#58; /local/execute/dir_19983/glide_WINz1r/main/condor/sbin/condor_master&#58; cannot execute binary file
+
+[4]
+
+02/01/17 06&#58;09&#58;15 (pid&#58;2746516) Failed to start non-blocking update to &#60;137.99.79.130&#58;9619&#62;.
+02/01/17 06&#58;10&#58;32 (pid&#58;2746516) Updated job ClassAd&#58;
+02/01/17 06&#58;14&#58;07 (pid&#58;2746516) SECMAN&#58; required authentication with collector gluskap.phys.uconn.edu&#58;9619 failed, so aborting command UPDATE_STARTD_AD.
+02/01/17 06&#58;14&#58;07 (pid&#58;2746516) ERROR&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5006&#58;Failed to authenticate because the subject &#39;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gluskap.phys.uconn.edu&#39; is not currently trusted by you.  If it should be, add it to GSI_DAEMON_NAME or undefine GSI_DAEMON_NAME.
+
+[5]
+
+nod13.phys.uconn.edu
+nod21.phys.uconn.edu
+nod22.phys.uconn.edu
+nod25.phys.uconn.edu
+stat112.phys.uconn.edu
+<div id='show_1292078930' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1292078930'>
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Marty Kandes 3049
+
+</div><script type='text/javascript'>
+        $('#show_1292078930').click(function() {
+            $('#detail_1292078930').slideDown("normal");
+            $('#show_1292078930').hide();
+            $('#hide_1292078930').show();
+        });
+        $('#hide_1292078930').click(function() {
+            $('#detail_1292078930').slideUp();
+            $('#hide_1292078930').hide();
+            $('#show_1292078930').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F32599">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 32599});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

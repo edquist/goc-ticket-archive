@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[11441] UCSDT2 not reporting to Gratia</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=11441" method="post">
+<div class="page-header">
+    <h3><span class="muted">11441</span> / UCSDT2 not reporting to Gratia</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Weigand</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">UCSDT2</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/resource</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">John Weigand</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2012-01-30</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">USCMS <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=11441", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/11441?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/11441?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20UCSDT2%20not%20reporting%20to%20Gratia%20ISSUE%3D11441%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='11441#1330637227'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-01T21:27:07+00:00">Mar 1, 2012 09:27 PM UTC</time> by <b>fermi@....</b><a class="anchor" name="1330637227">&nbsp;</a></div><pre>Plain text links moved here&#58;
+Click here if your issue was not properly resolved INC000000188668 mailto&#58;fermi@....?subject=Re%3AINC000000188668%20-%20please%20reopen&body=%0A%0ARef%3AMSG0334213%20
+LINK <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=b843dddce02f1c8492f9954a12d5a917%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=b843dddce02f1c8492f9954a12d5a917%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true</a>
+
+Your incident INC000000188668 has been resolved and will automatically close in 72 hours. If you feel the issue is not resolved, please click the following link to reopen your incident&#58;
+Click here if your issue was not properly resolved INC000000188668
+
+Short Description&#58;
+Short description&#58; Open Science Grid&#58;UCSDT2 not reporting to Gratia ISSUE=11441 PROJ=71
+Priority&#58; 2 - High
+Category&#58;
+Comments&#58;
+Additional comments&#58;
+2012-01-09 14&#58;38&#58;01 CST - GuestAdditional comments
+reply from&#58; osg@....
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='11441#1327601347'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-26T18:09:07+00:00">Jan 26, 2012 06:09 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1327601347">&nbsp;</a></div><pre>I would agree we can close this ticket.
+
+Note&#58; the system will be taken offline to address that disk issue this
+afternoon. The OS disk will be replaced and a new OS installed. The
+collector install is being backed up to the RAID array in the system and
+will hopefully start back up once the system is re-installed. &#58;)
+
+Terrence
+
+On 01/26/2012 06&#58;33 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11441#1327588382'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-26T14:33:02+00:00">Jan 26, 2012 02:33 PM UTC</time><a class="anchor" name="1327588382">&nbsp;</a></div><pre>Terrence,
+
+From what I can see this morning, everything looks good.
+Your local collector is still running, all data has been
+replicated to the OSG Collector and reported to WLCG.
+
+Changing the memory size on tomcat from
+-Xmx1024M -XX&#58;MaxPermSize=256m
+... to ...
+-Xmx1536m -XX&#58;MaxPermSize=256m
+... may have been the resolution.
+
+There were also the disk IO problems you noticed
+and it could be that was causing the problem.  I&#39;ll
+let you address that if you want.
+
+From my perspective, we are now good on this ticket.
+
+John Weigand
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1327500312'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-25T14:05:12+00:00">Jan 25, 2012 02:05 PM UTC</time><a class="anchor" name="1327500312">&nbsp;</a></div><pre>Terrence,
+
+It looks like it stopped again last night.
+Can you restart it.
+I will see what they are running with here
+to see if the 1Gb is satisfactory.  This does not
+make any sense unless something has changed recently.
+
+John Weigand
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1327435196'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-24T19:59:56+00:00">Jan 24, 2012 07:59 PM UTC</time><a class="anchor" name="1327435196">&nbsp;</a></div><pre>Status Update
+
+The UCSD Gratia collector apparently ran into a java memory
+problem sometime last night.  Not sure why.  Using 1Gb which
+was not a problem in the past.
+
+Anyway, Terrence recycled the collector and it started accepting
+probe data.  The replication of JobUsageRecords to the main OSG
+FNAL Collector is still only up 1/18/12 on the data.
+
+We are in a wait and see mode to see if this reoccurs tonight.
+
+John Weigand
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1327414127'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-24T14:08:47+00:00">Jan 24, 2012 02:08 PM UTC</time><a class="anchor" name="1327414127">&nbsp;</a></div><pre>Terrence,
+
+Your Gratia collector has appeared to have stopped processing
+probe data.  There are 4401 records in the queue based on
+what I see here <a href='http&#58;//www.t2.ucsd.edu&#58;8880/gratia-administration/' target='_blank' rel='nofollow'>http&#58;//www.t2.ucsd.edu&#58;8880/gratia-administration/</a>
+and nothing processed in the last 6 hours at least.
+
+Replication appears to still be running but very slowly.  I see
+data up through 1/17 in the main OSG collector.
+
+Do you resolve the space issue that originally caused the problem?
+
+John Weigand
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1327351659'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-23T20:47:39+00:00">Jan 23, 2012 08:47 PM UTC</time><a class="anchor" name="1327351659">&nbsp;</a></div><pre>Just wanted to include some notes for future reference
+related to why replication appeared not to be working after
+we re-created the JobUsageRecord related tables (assuming
+someone remembers this ticket).
+
+It took a while to remember that replication goes off the dbid
+of the table being replicated and since we basically started over
+with a new JobUsageRecord table, the dbid started at 1.  The last
+dbid sent was currently at 23,000,000+ so it would be a while
+before we started replicating again.
+
+We reset the dbid for that table to zero for those going off the
+JobUsageRecord data.  Once we did that, the central Gratia collector
+started getting the updates.
+
+Another note&#58; to determine which tables were being replicated from,
+we did a &#39;select * from Replication&#39; which tells you the db table
+being replicated.
+
+I will verify tomorrow if we are caught up and reporting to WLCG
+for the site.
+
+John Weigand
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1327345146'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-23T18:59:06+00:00">Jan 23, 2012 06:59 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1327345146">&nbsp;</a></div><pre>I am waiting for John to return from a trip to help out with the issue.
+As far as we can tell gratia is reporting locally, the upload to the
+central system seems to be bugged at the moment.
+
+Terrence
+
+On 01/23/2012 10&#58;54 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11441#1327344889'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-23T18:54:49+00:00">Jan 23, 2012 06:54 PM UTC</time> by <b>echism</b><a class="anchor" name="1327344889">&nbsp;</a></div><pre>John or Terrence,
+
+Are there any updates on this?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='11441#1326829090'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-17T19:38:10+00:00">Jan 17, 2012 07:38 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1326829090">&nbsp;</a></div><pre>No problem John, we can talk then.
+
+Thanks again,
+
+Terrence
+
+On 01/14/2012 07&#58;35 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11441#1326555307'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-14T15:35:07+00:00">Jan 14, 2012 03:35 PM UTC</time> by <b>John Weigand</b><a class="anchor" name="1326555307">&nbsp;</a></div><pre>I will be unavailable from 1/14 to 1/22.
+I will get back to you at that time.</pre></div><div class='update_description'><i onclick="document.location='11441#1326555159'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-14T15:32:39+00:00">Jan 14, 2012 03:32 PM UTC</time><a class="anchor" name="1326555159">&nbsp;</a></div><pre>Terrence,
+
+We can&#39;t close it yet.
+
+I am thinking the replication for the USCDT2 collector got disabled
+when you deleted the JobUsageRecord tables.
+
+Can you check it out on the gratia-adminstration screens... should
+be under the Replication menu options.  I don&#39;t know whether they
+would have beed deleted or just deactivated.  And I don&#39;t know what
+you had set up before.
+
+What I do know is that even though your local collector has the data,
+it is not getting forwarded (replicated) to the OSG Gratia collector
+which is the one we use to send the data to APEL/WLCG.
+
+If we can&#39;t get it done now, we can look at it when I get back on the 23rd.
+We still have plenty of time for the data to get to WLCG.
+The important part has been resolved and that is getting the data to
+your collector.
+
+John Weigand
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1326487792'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-13T20:49:52+00:00">Jan 13, 2012 08:49 PM UTC</time><a class="anchor" name="1326487792">&nbsp;</a></div><pre>Terrence and I implemented the proposed recovery procedure
+and it appears all is well now.  It even appears that all
+of the queued CE probe data has been processed.
+
+I will leave it to Terrence to make the final determination
+on closing this ticket.
+
+John Weigand
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1326430289'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-13T04:51:29+00:00">Jan 13, 2012 04:51 AM UTC</time><a class="anchor" name="1326430289">&nbsp;</a></div><pre>Elizabeth,
+
+He is off-site for this week.  And apparently there
+is no backup on this one.  So we just wait.
+Unfortunately, I will be gone all of next week.
+So we will hope for the best.
+
+John Weigand
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1326406495'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-12T22:14:55+00:00">Jan 12, 2012 10:14 PM UTC</time> by <b>echism</b><a class="anchor" name="1326406495">&nbsp;</a></div><pre>Sorry about that! I meant to say&#58;
+
+Terrence,
+
+Here is the original inquiry&#58;
+
+A problem was detected with the Gratia Collector for UCSDT2 which will have an impact on the CEs reporting to it.
+
+My concern (involvement) here is that UCSDT2 is a WLCG interfaced site.
+
+The problem occurred on 1/5 when the JobUsageRecord.ibd file was physically deleted from the Gratia Collector database to resolve a space problem.  My concern is that until the Collector problem is resolved, the CE/SE nodes reporting accounting data to that collector will be accumulating Gratia probe data in the VDT_LOCATION/gratia/var/data directory which could result in disk space issues for those nodes.
+
+This could have been addressed as a Gratia issue but the impact may be more on the CEs if not resolved shortly.
+
+The resolution to the Collector issue can be addressed by doing the following on the Gratia Collector node&#58;
+1. stop the collector (leave mysql running)
+vdt-control --off tomcat-55
+
+2. execute these commands in the mysql client
+DROP TABLE JobUsageRecord_Meta;
+DROP TABLE JobUsageRecord_Origin;
+DROP TABLE JobUsageRecord_Report;
+DROP TABLE JobUsageRecord_Xml;
+DROP TABLE Disk;
+DROP TABLE Swap;
+DROP TABLE VolumeResource;
+DROP TABLE ConsumableResource;
+DROP TABLE DupRecord;
+DROP TABLE ServiceLevel;
+DROP TABLE PhaseResource;
+DROP TABLE TimeInstant;
+DROP TABLE TimeDuration;
+DROP TABLE Network;
+DROP TABLE Memory;
+DROP TABLE Resource;
+<div id='show_570198766' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_570198766'>DROP TABLE TDCorr;
+DROP TABLE TransferDetails;
+DROP TABLE JobUsageRecord;
+
+3. start the collector
+vdt-control --on tomcat-55
+
+All the tables associated with the JUR record are now clean and the physical files empty.
+Gratia will recreate the tables on startup.
+New records will start to be processed.
+No data is lost.
+
+The only caveat is that this might cause some duplicates, not likely, but possible.
+
+I have tried this on a test collector to verify.
+
+Let me know if you have any questions.
+
+John Weigand
+</div><script type='text/javascript'>
+        $('#show_570198766').click(function() {
+            $('#detail_570198766').slideDown("normal");
+            $('#show_570198766').hide();
+            $('#hide_570198766').show();
+        });
+        $('#hide_570198766').click(function() {
+            $('#detail_570198766').slideUp();
+            $('#hide_570198766').hide();
+            $('#show_570198766').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='11441#1326406306'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-12T22:11:46+00:00">Jan 12, 2012 10:11 PM UTC</time> by <b>echism</b><a class="anchor" name="1326406306">&nbsp;</a></div><pre>Terrence,</pre></div><div class='update_description'><i onclick="document.location='11441#1326141715'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-09T20:41:55+00:00">Jan 9, 2012 08:41 PM UTC</time><a class="anchor" name="1326141715">&nbsp;</a></div><pre>forgot to add Terrence
+
+-- by John Weigand</pre></div><div class='update_description'><i onclick="document.location='11441#1326141667'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-09T20:41:07+00:00">Jan 9, 2012 08:41 PM UTC</time> by <b>fermi@....</b><a class="anchor" name="1326141667">&nbsp;</a></div><pre>Last update&#58; 2012-01-09 14&#58;38&#58;01 - Guest (Additional comments)
+reply from&#58; osg@....
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='11441#1326141309'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-09T20:35:09+00:00">Jan 9, 2012 08:35 PM UTC</time> by <b>fermi@....</b><a class="anchor" name="1326141309">&nbsp;</a></div><pre>Short description&#58; Open Science Grid&#58; UCSDT2 not reporting to Gratia ISSUE=11441 PROJ=71
+Click here to view&#58; LINK
+
+Summary&#58;
+FootPrints Ticket Description&#58;
+[by John Weigand]
+A problem was detected with the Gratia Collector for UCSDT2 which will have an impact on the CEs reporting to it.
+My concern (involvement) here is that UCSDT2 is a WLCG interfaced site.
+The problem occurred on 1/5 when the JobUsageRecord.ibd file was physically deleted from the Gratia Collector database to resolve a space problem.  My concern is that until the Collector problem is resolved, the CE/SE nodes reporting accounting data to that collector will be accumulating Gratia probe data in the VDT_LOCATION/gratia/var/data directory which could result in disk space issues for those nodes.
+This could have been addressed as a Gratia issue but the impact may be more on the CEs if not resolved shortly.
+The resolution to the Collector issue can be addressed by doing the following on the Gratia Collector node&#58;
+1. stop the collector (leave mysql running)
+vdt-control --off tomcat-55
+2. execute these commands in the mysql client
+DROP TABLE JobUsageRecord_Meta;
+DROP TABLE JobUsageRecord_Origin;
+DROP TABLE JobUsageRecord_Report;
+DROP TABLE JobUsageRecord_Xml;
+DROP TABLE Disk;
+DROP TABLE Swap;
+DROP TABLE VolumeResource;
+DROP TABLE ConsumableResource;
+DROP TABLE DupRecord;
+DROP TABLE ServiceLevel;
+DROP TABLE PhaseResource;
+DROP TABLE TimeInstant;
+DROP TABLE TimeDuration;
+DROP TABLE Network;
+DROP TABLE Memory;
+DROP TABLE Resource;
+DROP TABLE TDCorr;
+DROP TABLE TransferDetails;
+DROP TABLE JobUsageRecord;
+3. start the collector
+vdt-control --on tomcat-55
+<div id='show_1578501217' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1578501217'>All the tables associated with the JUR record are now clean and the physical files empty.
+Gratia will recreate the tables on startup.
+New records will start to be processed.
+No data is lost.
+The only caveat is that this might cause some duplicates, not likely, but possible.
+I have tried this on a test collector to verify.
+Let me know if you have any questions.
+John Weigand
+</div><script type='text/javascript'>
+        $('#show_1578501217').click(function() {
+            $('#detail_1578501217').slideDown("normal");
+            $('#show_1578501217').hide();
+            $('#hide_1578501217').show();
+        });
+        $('#hide_1578501217').click(function() {
+            $('#detail_1578501217').slideUp();
+            $('#hide_1578501217').hide();
+            $('#show_1578501217').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='11441#1326141180'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-01-09T20:33:00+00:00">Jan 9, 2012 08:33 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1326141180">&nbsp;</a></div><pre>[by John Weigand]
+
+A problem was detected with the Gratia Collector for UCSDT2 which will have an impact on the CEs reporting to it.
+
+My concern (involvement) here is that UCSDT2 is a WLCG interfaced site.
+
+The problem occurred on 1/5 when the JobUsageRecord.ibd file was physically deleted from the Gratia Collector database to resolve a space problem.  My concern is that until the Collector problem is resolved, the CE/SE nodes reporting accounting data to that collector will be accumulating Gratia probe data in the VDT_LOCATION/gratia/var/data directory which could result in disk space issues for those nodes.
+
+This could have been addressed as a Gratia issue but the impact may be more on the CEs if not resolved shortly.
+
+The resolution to the Collector issue can be addressed by doing the following on the Gratia Collector node&#58;
+1. stop the collector (leave mysql running)
+vdt-control --off tomcat-55
+
+2. execute these commands in the mysql client
+DROP TABLE JobUsageRecord_Meta;
+DROP TABLE JobUsageRecord_Origin;
+DROP TABLE JobUsageRecord_Report;
+DROP TABLE JobUsageRecord_Xml;
+DROP TABLE Disk;
+DROP TABLE Swap;
+DROP TABLE VolumeResource;
+DROP TABLE ConsumableResource;
+DROP TABLE DupRecord;
+DROP TABLE ServiceLevel;
+DROP TABLE PhaseResource;
+DROP TABLE TimeInstant;
+DROP TABLE TimeDuration;
+DROP TABLE Network;
+DROP TABLE Memory;
+DROP TABLE Resource;
+DROP TABLE TDCorr;
+DROP TABLE TransferDetails;
+DROP TABLE JobUsageRecord;
+
+<div id='show_1975693042' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1975693042'>3. start the collector
+vdt-control --on tomcat-55
+
+All the tables associated with the JUR record are now clean and the physical files empty.
+Gratia will recreate the tables on startup.
+New records will start to be processed.
+No data is lost.
+
+The only caveat is that this might cause some duplicates, not likely, but possible.
+
+I have tried this on a test collector to verify.
+
+Let me know if you have any questions.
+
+John Weigand
+
+</div><script type='text/javascript'>
+        $('#show_1975693042').click(function() {
+            $('#detail_1975693042').slideDown("normal");
+            $('#show_1975693042').hide();
+            $('#hide_1975693042').show();
+        });
+        $('#hide_1975693042').click(function() {
+            $('#detail_1975693042').slideUp();
+            $('#hide_1975693042').hide();
+            $('#show_1975693042').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F11441">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 11441});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

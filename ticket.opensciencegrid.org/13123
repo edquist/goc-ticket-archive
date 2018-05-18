@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[13123] cemon issue after upgrading to OSG 3.1.11</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=13123" method="post">
+<div class="page-header">
+    <h3><span class="muted">13123</span> / cemon issue after upgrading to OSG 3.1.11</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Xin Zhao</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Xin Zhao</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-03-18</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=13123", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/13123?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/13123?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20cemon%20issue%20after%20upgrading%20to%20OSG%203.1.11%20ISSUE%3D13123%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='13123#1363198061'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-13T18:07:41+00:00">Mar 13, 2013 06:07 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1363198061">&nbsp;</a></div><pre>Closing per Xin&#39;s response</pre></div><div class='update_description'><i onclick="document.location='13123#1363192268'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-13T16:31:08+00:00">Mar 13, 2013 04:31 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1363192268">&nbsp;</a></div><pre>Hi Suchandra,
+
+Feel free to close the ticket, we have a workaround now, and the long
+term is to get the new information system into OSG.
+
+Thanks,
+Xin
+
+On 3/13/2013 11&#58;54 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1363190094'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-13T15:54:54+00:00">Mar 13, 2013 03:54 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1363190094">&nbsp;</a></div><pre>Hi Xin,
+
+How do you want to proceed on this ticket?  It sounds like the issue is inherent to CEMon and that won&#39;t really get fixed quickly.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='13123#1361916189'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-26T22:03:09+00:00">Feb 26, 2013 10:03 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1361916189">&nbsp;</a></div><pre>This is a CEMon limitation, not a GIP one, so the new implementation
+should work (although I do not know who is supporting it).
+
+I was hoping to find some statically allocated buffers in the CEMon code
+that would be obvious, but everything looked ok to me where I was
+looking (it may be a problem in some intermediate code or somewhere else
+-- my Java is really rusty.)
+
+- B
+
+On 02/26/13 14&#58;18, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1361909895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-26T20:18:15+00:00">Feb 26, 2013 08:18 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1361909895">&nbsp;</a></div><pre>Hello,
+
+After cutting off some old atlas releases information, CEMon now can
+publish to BDII.
+
+I don&#39;t know how long we can live with this mode, as new releases
+information will continue to come.
+So I would like to see this CEMon issue be understood and solved
+eventually, maybe with the new implementation.
+
+Thanks,
+Xin
+
+On 2/25/2013 2&#58;03 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1361818991'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T19:03:11+00:00">Feb 25, 2013 07:03 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1361818991">&nbsp;</a></div><pre>Hi Steve,
+
+I don&#39;t see the usual outofmemory error, but anyway, I increased the
+memory (triple), now it&#39;s like this&#58;
+
+[root@gridgk01 tomcat6]# ps -ef | grep tomcat
+tomcat    3802     1 69 13&#58;50 ?        00&#58;05&#58;55
+/usr/lib/jvm/java/bin/java -Xmx4096M -XX&#58;MaxPermSize=2048m
+-Djavax.sql.DataSource.Factory=org.apache.commons.dbcp.BasicDataSourceFactory
+-classpath
+&#58;/usr/share/tomcat6/bin/bootstrap.jar&#58;/usr/share/tomcat6/bin/tomcat-juli.jar&#58;/usr/share/java/commons-daemon.jar
+-Dcatalina.base=/usr/share/tomcat6 -Dcatalina.home=/usr/share/tomcat6
+-Djava.endorsed.dirs= -Djava.io.tmpdir=/var/cache/tomcat6/temp
+-Djava.util.logging.config.file=/usr/share/tomcat6/conf/logging.properties
+-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+org.apache.catalina.startup.Bootstrap start
+
+Still, I get that NamingException error&#58;
+
+javax.naming.NamingException
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CacheManager.storeObject(CacheManager.java&#58;415)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CacheManager.putObject(CacheManager.java&#58;190)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContext.internalBind(CEGeneralDirContext.java&#58;252)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContext.bind(CEGeneralDirContext.java&#58;214)
+at
+org.glite.ce.monitor.holder.TopicEventInfoPersistent.bindTopicEvent(TopicEventInfoPersistent.java&#58;539)
+at
+org.glite.ce.monitor.holder.TopicHolder.setCurrentEvent(TopicHolder.java&#58;394)
+at
+org.glite.ce.monitor.holder.TopicHolder.setCurrentEvent(TopicHolder.java&#58;352)
+at
+<div id='show_1899109330' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1899109330'>org.glite.ce.monitor.CEMonitorService.doOnSensorEvent(CEMonitorService.java&#58;630)
+at
+org.glite.ce.monitorapij.sensor.AbstractSensor.fireSensorEvent(AbstractSensor.java&#58;156)
+at org.glite.ce.osgceplugin.OSGCESensor.execute(OSGCESensor.java&#58;201)
+at
+org.glite.ce.monitorapij.sensor.AbstractSensor.run(AbstractSensor.java&#58;375)
+at java.lang.Thread.run(Thread.java&#58;662)
+
+Thanks,
+Xin
+
+On 2/25/2013 1&#58;24 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1899109330').click(function() {
+            $('#detail_1899109330').slideDown("normal");
+            $('#show_1899109330').hide();
+            $('#hide_1899109330').show();
+        });
+        $('#hide_1899109330').click(function() {
+            $('#detail_1899109330').slideUp();
+            $('#hide_1899109330').hide();
+            $('#show_1899109330').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13123#1361817194'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T18:33:14+00:00">Feb 25, 2013 06:33 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1361817194">&nbsp;</a></div><pre>Hi Burt,
+
+Is the limit I hit on the client side or server side?
+
+Several choices I can think of now&#58;
+
+1) maybe I can run cemon with increased memory usage, if that&#39;s the
+problem?
+
+2) I know Brian has a new cemon implementation, maybe I should switch to
+it, if the limit I hit is on my client side, not on server side.
+
+3) as a temporary solution, I may be able to cut off some of the very
+old releases tags, to reduce the amount of info published. For this, I
+need to consult with other ATLAS people, though.
+
+Thanks,
+Xin
+
+On 2/25/2013 1&#58;19 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1361816650'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T18:24:10+00:00">Feb 25, 2013 06:24 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1361816650">&nbsp;</a></div><pre>CEMon old and new is known to sometimes crash on memory limit..have
+you tried to increase the -Xmx limit with which tomcat is started?
+
+Steve Timm
+
+On Mon, 25 Feb 2013, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1361816383'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T18:19:43+00:00">Feb 25, 2013 06:19 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1361816383">&nbsp;</a></div><pre>Hi Xin,
+
+I grabbed a copy of your LDIF and ran it through our test node here.  I believe GIP is working correctly; I am able to reproduce the problem, and it does seem to be due to the increased number of software tags --
+you must be hitting some internallimitation.
+
+How do you want to proceed?  I don&#39;t think we have the expertise or ability to debug CEMon (or even build it?) at this point.
+
+- B</pre></div><div class='update_description'><i onclick="document.location='13123#1361814316'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T17:45:16+00:00">Feb 25, 2013 05:45 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1361814316">&nbsp;</a></div><pre>Hi Burt,
+
+I have saved the ldif files into this URL&#58;
+<a href='http&#58;//www.usatlas.bnl.gov/' target='_blank' rel='nofollow'>http&#58;//www.usatlas.bnl.gov/</a>~xinzhao/gridgk01-cemon-bdii/
+
+There are the static ldif file I manually made, called gridgk01.ldif,
+and the ldif files
+generated by gip in the subdir there.
+
+Thanks,
+Xin
+
+On 2/25/2013 12&#58;37 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1361813873'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T17:37:53+00:00">Feb 25, 2013 05:37 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1361813873">&nbsp;</a></div><pre>And it looks like the &#39;ops&#39; VO is already enabled in gridgk01 -- great! I&#39;ll see if I can debug this from here.</pre></div><div class='update_description'><i onclick="document.location='13123#1361813821'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T17:37:01+00:00">Feb 25, 2013 05:37 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1361813821">&nbsp;</a></div><pre>(to be clear -- I&#39;m speaking of the .ldif files that go into /var/cache/gip)</pre></div><div class='update_description'><i onclick="document.location='13123#1361813746'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T17:35:46+00:00">Feb 25, 2013 05:35 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1361813746">&nbsp;</a></div><pre>I added osg-gip in the cc&#58;
+
+Well, this is a new one to me.
+
+Xin, can you send on the intermediate .ldif output?  From all of the reponses below, it looks like we&#39;re somehow emitting corrupted ldif that CEMon can&#39;t handle.
+If you add me to the gridmap file (or the ops or cms vo), I can try to run some diagnostics remotely too.</pre></div><div class='update_description'><i onclick="document.location='13123#1361811843'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T17:04:03+00:00">Feb 25, 2013 05:04 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1361811843">&nbsp;</a></div><pre>Hi,
+
+I&#39;ll get in touch with Burt and see if he or someone from the gip team can help out.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='13123#1361565485'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-22T20:38:05+00:00">Feb 22, 2013 08:38 PM UTC</time><a class="anchor" name="1361565485">&nbsp;</a></div><pre>Now think about it more, I wonder if this issue is related to the amount of info involved. Because the difference between the two app_dir pathname,
+could be the info inside the app_dir/etc/grid3-locations.txt, where one holds the releases info for NFS, and the other holds the info for cvmfs. And I
+notice the entries in grid3-locations.txt for the NFS area is bigger.
+
+Thanks,
+Xin
+
+by /DC=org/DC=doegrids/OU=People/CN=Xin Zhao 102397</pre></div><div class='update_description'><i onclick="document.location='13123#1361561195'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-22T19:26:35+00:00">Feb 22, 2013 07:26 PM UTC</time><a class="anchor" name="1361561195">&nbsp;</a></div><pre>Hello,
+
+This is now a stopper for us to upgrade our last CE (gridgk02) to OSG3, as both gridgk01 and gridgk02 use NFS as OSG_APP, and if both of them can&#39;t publish BDII info, we lose the NFS info to WLCG users. So we will have to continue to run OSG 1.2 on gridgk02, till we solve the cemon/gip issue on gridgk01, in this ticket.
+
+Just a summary of the current situation&#58;
+
+1) if I use &#34;app_dir = /usatlas/OSG/&#34; in /etc/osg/config.d/10-storage.ini, cemon can&#39;t publish info  to BDII, the error message is javax.naming.NamingException, as shown in the ticket history.
+2) if I use &#34;app_dir = /usatlas/OSG/BNL_CVMFS/&#34; instead, cemon/bdii works. But, this config is not what we want.
+
+So today I did another testing&#58;
+I saved the ldif information published to OSG BDII ( <a href='http&#58;//is.grid.iu.edu/cgi-bin/status.cgi' target='_blank' rel='nofollow'>http&#58;//is.grid.iu.edu/cgi-bin/status.cgi</a> ), in case 1) as mentioned above, make it into a static gridgk01.ldif file, and substitute the app_dir value with the one I want in it;
+then switched to case 2) as mentioned above, ran osg-configure, cemon doesn&#39;t work in this case of course;
+then changed the /usr/libexec/gip/osg-info-wrapper script, all it does now is to just cat the static gridgk01.ldif file;
+then restart tomcat, now cemon can publish the info in the static ldif file to BDII.
+Of course, the static info is not what I want, either, as many time related info will expire. I just did it as a test.
+
+Not sure if the above test tells anything.
+
+If we can&#39;t solve this puzzle, as the next step, I wonder if I can try the new &#34;cemon&#34; from Brian, as I heard they&#39;ve been running the new cemon at Nebraska and FNAL, so I add Brian and Tony in CC.
+
+Thanks.
+
+by /DC=org/DC=doegrids/OU=People/CN=Xin Zhao 102397</pre></div><div class='update_description'><i onclick="document.location='13123#1361555695'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-22T17:54:55+00:00">Feb 22, 2013 05:54 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1361555695">&nbsp;</a></div><pre>Software team,
+
+Is there any other information for Xin?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='13123#1360348030'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-08T18:27:10+00:00">Feb 8, 2013 06:27 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1360348030">&nbsp;</a></div><pre>Hi Suchandra,
+
+It might be. So, what&#39;s the correct procedure to update the info to be
+published by cemon?
+
+What I did is&#58;
+
+1) stop tomcat, and killall -u tomcat
+2) cleanup the /var/lib/glite-ce-monitor directory as Mat suggested
+early in this ticket
+3) change 10-storage.ini
+4) run osg-configure -c
+5) restart tomcat.
+
+Thanks,
+Xin
+
+On 2/8/2013 1&#58;14 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1360347252'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-08T18:14:12+00:00">Feb 8, 2013 06:14 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1360347252">&nbsp;</a></div><pre>Hi Xin,
+
+That&#39;s odd.  Are you running osg-configure in between?  There might be a GIP interaction that&#39;s causing the problem.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='13123#1360184411'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-06T21:00:11+00:00">Feb 6, 2013 09:00 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1360184411">&nbsp;</a></div><pre>Hi Suchandra,
+
+The listed issues don&#39;t occur in my case.
+
+After several attempts, I find the attribute that caused the trouble is
+this line in 10-storage.ini file&#58;
+
+app_dir = /usatlas/OSG/
+
+If I change it to&#58;
+
+app_dir = /usatlas/OSG/BNL_CVMFS/
+
+then cemon can publish info to BDII.  But if I use &#34;/usatlas/OSG&#34;, it
+gives the
+&#34;javax.naming.NamingException&#34; error.
+
+This is weird, as the string should be a random string, ..., and
+certainly I want to use /usatlas/OSG, not
+/usatlas/OSG/BNL_CVMFS/
+
+Any idea why this is happening?
+
+Thanks,
+Xin
+
+On 2/5/2013 2&#58;33 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1360092824'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-05T19:33:44+00:00">Feb 5, 2013 07:33 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1360092824">&nbsp;</a></div><pre>Hi Xin,
+
+There are some gotchas regarding CEMON that you might be running into if you aren&#39;t using the latest osg-configure version.  See <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-811' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-811</a> .    Do these apply?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='13123#1359406630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-28T20:57:10+00:00">Jan 28, 2013 08:57 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1359406630">&nbsp;</a></div><pre>Hi Mat,
+
+I did the OS/OSG upgrade on this CE, now it&#39;s RHEL6, with OSG-3.1.11.
+But the cemon issue is still there.
+The following message repeats in the glite-ce-monitor.log file&#58;
+
+28 Jan 2013 15&#58;50&#58;24,116 org.glite.ce.monitor.holder.TopicHolder -
+javax.naming.NamingException
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CacheManager.storeObject(CacheManager.java&#58;415)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CacheManager.putObject(CacheManager.java&#58;190)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContext.internalBind(CEGeneralDirContext.java&#58;252)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContext.bind(CEGeneralDirContext.java&#58;214)
+at
+org.glite.ce.monitor.holder.TopicEventInfoPersistent.bindTopicEvent(TopicEventInfoPersistent.java&#58;539)
+at
+org.glite.ce.monitor.holder.TopicHolder.setCurrentEvent(TopicHolder.java&#58;394)
+at
+org.glite.ce.monitor.holder.TopicHolder.setCurrentEvent(TopicHolder.java&#58;352)
+at
+org.glite.ce.monitor.CEMonitorService.doOnSensorEvent(CEMonitorService.java&#58;630)
+at
+org.glite.ce.monitorapij.sensor.AbstractSensor.fireSensorEvent(AbstractSensor.java&#58;156)
+at
+org.glite.ce.osgceplugin.OSGCESensor.execute(OSGCESensor.java&#58;201)
+at
+org.glite.ce.monitorapij.sensor.AbstractSensor.run(AbstractSensor.java&#58;375)
+at java.lang.Thread.run(Thread.java&#58;662)
+
+Any more help will be appreciated.
+
+Thanks,
+<div id='show_692177587' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_692177587'>Xin
+
+On 1/18/2013 4&#58;39 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_692177587').click(function() {
+            $('#detail_692177587').slideDown("normal");
+            $('#show_692177587').hide();
+            $('#hide_692177587').show();
+        });
+        $('#hide_692177587').click(function() {
+            $('#detail_692177587').slideUp();
+            $('#hide_692177587').hide();
+            $('#show_692177587').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13123#1358545157'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-18T21:39:17+00:00">Jan 18, 2013 09:39 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1358545157">&nbsp;</a></div><pre>Hi Mat,
+
+Following your instruction, it does remove some files&#58;
+
+[root@gridgk01 glite-ce-monitor]# for x in $(find . -type f); do file $x
+| grep -q serialization && rm -vf $x; done
+removed
+&#96;./subscription/.subscription-http___is2_grid_iu_edu_14001-OSG_CE-RAW&#39;
+removed
+&#96;./subscription/subscription-https___osg-ress-1_fnal_gov_8443_ig_services_CEInfoCollector-OSG_CE-OLD_CLASSAD&#39;
+removed
+&#96;./subscription/subscription-http___is2_grid_iu_edu_14001-OSG_CE-RAW&#39;
+removed
+&#96;./subscription/.subscription-http___is1_grid_iu_edu_14001-OSG_CE-RAW&#39;
+removed
+&#96;./subscription/.subscription-https___osg-ress-1_fnal_gov_8443_ig_services_CEInfoCollector-OSG_CE-OLD_CLASSAD&#39;
+removed &#96;./subscription/..root-attributes&#39;
+removed
+&#96;./subscription/subscription-http___is1_grid_iu_edu_14001-OSG_CE-RAW&#39;
+removed &#96;./.OSG_CE&#39;
+removed &#96;./OSG_CE/.ALL&#39;
+removed &#96;./..root-attributes&#39;
+
+But after restart, it&#39;s still not reporting BDII info.  If nothing else,
+I will do a reinstall of the CE, as we will upgrade the OS to RHEL6 soon
+anyway.
+
+Thanks,
+Xin
+
+On 1/11/2013 6&#58;58 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1357959537'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-12T02:58:57+00:00">Jan 12, 2013 02:58 AM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1357959537">&nbsp;</a></div><pre>Hi Xin,
+
+Try the following&#58;
+
+First, stop tomcat and back up /var/lib/glite-ce-monitor.
+Then, cd into it and run the following&#58;
+for x in $(find . -type f); do file $x | grep -q serialization && rm -vf $x; done
+That should have removed several files; let me know if it didn&#39;t remove any.
+After that, start tomcat.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='13123#1357959523'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-12T02:58:43+00:00">Jan 12, 2013 02:58 AM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1357959523">&nbsp;</a></div><pre>Hi Xin,
+
+Try the following&#58;
+
+First, stop tomcat and back up /var/lib/glite-ce-monitor.
+Then, cd into it and run the following&#58;
+for x in $(find . -type f); do file $x | grep -q serialization && rm -vf $x; done
+That should have removed several files; let me know if it didn&#39;t remove any.
+After that, start tomcat.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='13123#1357757042'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-09T18:44:02+00:00">Jan 9, 2013 06:44 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1357757042">&nbsp;</a></div><pre>Mat,
+
+Have you been able to reply to Xin&#39;s question?
+
+-kyle</pre></div><div class='update_description'><i onclick="document.location='13123#1356183189'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-12-22T13:33:09+00:00">Dec 22, 2012 01:33 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1356183189">&nbsp;</a></div><pre>Hi Mat,
+
+Yes, the setting is correct, and the permission of that dir is ok, owned
+by tomcat.
+How can I clean up the cache ?
+
+Thanks,
+Xin
+
+On 12/21/2012 5&#58;05 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1356127544'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-12-21T22:05:44+00:00">Dec 21, 2012 10:05 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1356127544">&nbsp;</a></div><pre>Hi Xin,
+
+Sadly, the one thing that did not become more verbose was the exception.
+Some more digging in the source code suggests that it is most likely trying to write to a file in a cache, the location of which is set by a config option called &#34;backendLocation&#34; which should be getting set in /etc/glite-ce-monitor/cemonitor-config.xml. On a standard osg 3.x install, that&#39;s set to /var/lib/glite-ce-monitor, but check to see if that is what it&#39;s set to on your system.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='13123#1355762727'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-12-17T16:45:27+00:00">Dec 17, 2012 04:45 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1355762727">&nbsp;</a></div><pre>Hi Mat,
+
+I increased the log level to debug, and now there are more info in the
+log file&#58;
+
+<a href='http&#58;//www.usatlas.bnl.gov/' target='_blank' rel='nofollow'>http&#58;//www.usatlas.bnl.gov/</a>~xinzhao/dbg/cemon/glite-ce-monitor.log
+
+Thanks,
+Xin
+
+On 12/17/2012 11&#58;03 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13123#1355760214'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-12-17T16:03:34+00:00">Dec 17, 2012 04:03 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1355760214">&nbsp;</a></div><pre>Yes, I saw the traceback. Problem is, here&#39;s the code&#58;
+} catch (IOException ioEx) {
+throw new NamingException(ioEx.getMessage());
+}
+according to that, the NamingException is supposed to have some kind of text in it, like the details of the IOException that triggered it -- which would hopefully include the file that it was trying to write to. And either that message is not getting generated or not getting printed for some reason.
+Is there some sort of setting you can change in either the cemon configs or the tomcat configs that would print more debugging information? That might help.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='13123#1355759651'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-12-17T15:54:11+00:00">Dec 17, 2012 03:54 PM UTC</time> by <b>Xin zhao</b><a class="anchor" name="1355759651">&nbsp;</a></div><pre>Hi Mat,
+
+Yes, the tomcat account can write to /var/lib/glite-ce-monitor, which is
+owned by tomcat.
+
+Here is the NamingException error from glite-ce-monitor log
+
+javax.naming.NamingException
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CacheManager.storeObject(CacheManager.java&#58;415)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CacheManager.putObject(CacheManager.java&#58;190)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContext.internalBind(CEGeneralDirContext.java&#58;252)
+at
+org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContext.bind(CEGeneralDirContext.java&#58;214)
+at
+org.glite.ce.monitor.holder.TopicEventInfoPersistent.bindTopicEvent(TopicEventInfoPersistent.java&#58;539)
+at
+org.glite.ce.monitor.holder.TopicHolder.setCurrentEvent(TopicHolder.java&#58;394)
+at
+org.glite.ce.monitor.holder.TopicHolder.setCurrentEvent(TopicHolder.java&#58;352)
+at
+org.glite.ce.monitor.CEMonitorService.doOnSensorEvent(CEMonitorService.java&#58;630)
+at
+org.glite.ce.monitorapij.sensor.AbstractSensor.fireSensorEvent(AbstractSensor.java&#58;156)
+at
+org.glite.ce.osgceplugin.OSGCESensor.execute(OSGCESensor.java&#58;201)
+at
+org.glite.ce.monitorapij.sensor.AbstractSensor.run(AbstractSensor.java&#58;375)
+at java.lang.Thread.run(Thread.java&#58;662)
+
+Or is there any other log you are looking for? Any intermediate commands
+that I can try to narrow down the issue?
+
+<div id='show_976341102' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_976341102'>Thanks,
+Xin
+
+On 12/17/2012 10&#58;29 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_976341102').click(function() {
+            $('#detail_976341102').slideDown("normal");
+            $('#show_976341102').hide();
+            $('#hide_976341102').show();
+        });
+        $('#hide_976341102').click(function() {
+            $('#detail_976341102').slideUp();
+            $('#hide_976341102').hide();
+            $('#show_976341102').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13123#1355758191'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-12-17T15:29:51+00:00">Dec 17, 2012 03:29 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1355758191">&nbsp;</a></div><pre>Hi Xin,
+Unfortunately the log file is missing the exact details of the NamingException, but by following a stack trace I found that the code was getting an IOException (that wasn&#39;t a FileNotFoundException) while trying to write an object out to a file. (Again, no luck determining which file). See if you have a permissions issue? Make sure the user CEMon is running under (probably tomcat) can write to everything in /var/lib/glite-ce-monitor.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='13123#1355429051'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-12-13T20:04:11+00:00">Dec 13, 2012 08:04 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1355429051">&nbsp;</a></div><pre>Software Team,
+
+Have you been able to look into this issue?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='13123#1354806754'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-12-06T15:12:34+00:00">Dec 6, 2012 03:12 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1354806754">&nbsp;</a></div><pre>Hello,
+
+I recently upgraded a OSG2 CE to OSG 3.1.11. But CEmon stops working after the upgrade. Below is some error messages from the /var/log/glite-ce-monitor/glite-ce-monitor.log&#58;
+
+javax.naming.NamingException
+at org.glite.ce.commonj.jndi.provider.fscachedprovider.CacheManager.storeObject(CacheManager.java&#58;415)
+at org.glite.ce.commonj.jndi.provider.fscachedprovider.CacheManager.putObject(CacheManager.java&#58;190)
+at org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContext.internalBind(CEGeneralDirContext.java&#58;252)
+at org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContext.bind(CEGeneralDirContext.java&#58;214)
+at org.glite.ce.monitor.holder.TopicEventInfoPersistent.bindTopicEvent(TopicEventInfoPersistent.java&#58;539)
+at org.glite.ce.monitor.holder.TopicHolder.setCurrentEvent(TopicHolder.java&#58;394)
+at org.glite.ce.monitor.holder.TopicHolder.setCurrentEvent(TopicHolder.java&#58;352)
+at org.glite.ce.monitor.CEMonitorService.doOnSensorEvent(CEMonitorService.java&#58;630)
+at org.glite.ce.monitorapij.sensor.AbstractSensor.fireSensorEvent(AbstractSensor.java&#58;156)
+at org.glite.ce.osgceplugin.OSGCESensor.execute(OSGCESensor.java&#58;201)
+at org.glite.ce.monitorapij.sensor.AbstractSensor.run(AbstractSensor.java&#58;375)
+at java.lang.Thread.run(Thread.java&#58;662)
+06 Dec 2012 09&#58;59&#58;37,797 org.glite.voms.PKIStore - Initializing VOMS certificate store from directory&#58; /etc/grid-security/vomsdir
+06 Dec 2012 10&#58;00&#58;07,796 org.glite.voms.PKIStore - Initializing VOMS certificate store from directory&#58; /etc/grid-security/vomsdir
+06 Dec 2012 10&#58;00&#58;25,926 org.glite.ce.monitor.holder.NotificationHolder - [name=subscription-http___is2_grid_iu_edu_14001-OSG_CE-RAW] - the notification doesn&#39;t contains messages to be notified! [aborted]
+06 Dec 2012 10&#58;00&#58;25,927 org.glite.ce.monitor.holder.NotificationHolder - [name=subscription-http___is1_grid_iu_edu_14001-OSG_CE-RAW] - the notification doesn&#39;t contains messages to be notified! [aborted]
+
+The whole log file is visible from this URL&#58; <a href='http&#58;//www.usatlas.bnl.gov/' target='_blank' rel='nofollow'>http&#58;//www.usatlas.bnl.gov/</a>~xinzhao/dbg/cemon/glite-ce-monitor.log
+GIP expert (Anthony Tiradani ) helped check the gip part, which seems fine. So we are hoping to have some CEmon experts to help look into it.
+
+Thanks,
+Xin
+
+I asked
+
+by /DC=org/DC=doegrids/OU=People/CN=Xin Zhao 102397</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F13123">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 13123});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

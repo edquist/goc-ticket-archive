@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[21104] SBGrid glideins failing validation at MIT</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=21104" method="post">
+<div class="page-header">
+    <h3><span class="muted">21104</span> / SBGrid glideins failing validation at MIT</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Jeffrey Michael Dost</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">MIT_CMS</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Jeffrey Michael Dost</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier2</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-07-17</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">USCMS Tier 2 <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=21104", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/21104?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/21104?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20SBGrid%20glideins%20failing%20validation%20at%20MIT%20ISSUE%3D21104%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='21104#1405621311'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-17T18:21:51+00:00">Jul 17, 2014 06:21 PM UTC</time><a class="anchor" name="1405621311">&nbsp;</a></div><pre>Yes I think jobs are running fine at MIT and that this ticket can be closed. Thanks for the help.
+
+Regards
+-Mick
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Michael Timony (Portal) 888</pre></div><div class='update_description'><i onclick="document.location='21104#1405459757'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-15T21:29:17+00:00">Jul 15, 2014 09:29 PM UTC</time><a class="anchor" name="1405459757">&nbsp;</a></div><pre>Hi all,
+
+From the factory side, I see just a few small spikes of SBGrid glideins at MIT over the past few weeks. They all passed validation, though in the recent spike, the glideins only lasted a few seconds each. If these are test jobs, then the behavior isn&#39;t abnormal, though if they&#39;re payload glideins, then things aren&#39;t quite right. Mick, how do things look from your end?
+
+Best,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21104#1405433129'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-15T14:05:29+00:00">Jul 15, 2014 02:05 PM UTC</time><a class="anchor" name="1405433129">&nbsp;</a></div><pre>I saw sbgrid jobs running for quite some time. Not sure though about the exit status.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=maxi/CN=682514/CN=Maxim Goncharov</pre></div><div class='update_description'><i onclick="document.location='21104#1405427715'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-15T12:35:15+00:00">Jul 15, 2014 12:35 PM UTC</time> by <b>echism</b><a class="anchor" name="1405427715">&nbsp;</a></div><pre>Hey everyone,
+
+Is this resolved? If not, I&#39;m eager to push it along in any way I can.
+
+Thank you.</pre></div><div class='update_description'><i onclick="document.location='21104#1402339916'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-09T18:51:56+00:00">Jun 9, 2014 06:51 PM UTC</time><a class="anchor" name="1402339916">&nbsp;</a></div><pre>Not at the moment. Our Glidein certs expired and I&#39;m having issues creating new ones (<a href='https&#58;//ticket.grid.iu.edu/21369' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/21369</a>).
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Michael Timony (Portal) 888</pre></div><div class='update_description'><i onclick="document.location='21104#1402338843'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-09T18:34:03+00:00">Jun 9, 2014 06:34 PM UTC</time> by <b>echism</b><a class="anchor" name="1402338843">&nbsp;</a></div><pre>Hi Mick,
+
+Are there any updates on this?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='21104#1401980726'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-05T15:05:26+00:00">Jun 5, 2014 03:05 PM UTC</time><a class="anchor" name="1401980726">&nbsp;</a></div><pre>There might still be some problems. Looks like the contents of $OSG_APP and $OSG_DATA isn&#39;t being pushed out or updated on the compute nodes. My jobs find OSG_APP in /osg/app/ and then try to run a command in /osg/app/sbgrid/opt/cns. The command isn&#39;t being found&#58;
+
+&#96;&#96;&#96;
+&&& Creating results file
+Wed Jun 4 10&#58;30&#58;12 EDT 2014
+JOB_MARKER MIT_CMS_CE2 ce02.cmsaf.mit.edu 1401892212 sbgrid@....&#58;/export/data1/condor/execute/dir_17197/glide_YoZdf6/execute/dir_7820 2014/06/04&#58;T10h30
+*** CNS refinement job with seed 646
+x86_64 Linux
+&&& Prepare job
+Sourcing CNS locally from /osg/app/sbgrid/opt/cns
+EXIT_MARKER no local CNS dir found
+&#96;&#96;&#96;
+However, I&#39;m rerunning a job which looks for the command in Oasis and if that works then we can ignore any issues with OSG_APP.
+
+Thanks
+Mick
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Michael Timony (Portal) 888</pre></div><div class='update_description'><i onclick="document.location='21104#1401728023'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-02T16:53:43+00:00">Jun 2, 2014 04:53 PM UTC</time><a class="anchor" name="1401728023">&nbsp;</a></div><pre>Thanks Elizabeth. From the glidein side, the last several days were a mixed bag of successes and failures. At the current moment, I basically have no indications one way or another.
+
+Cheers,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21104#1401726513'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-02T16:28:33+00:00">Jun 2, 2014 04:28 PM UTC</time> by <b>echism</b><a class="anchor" name="1401726513">&nbsp;</a></div><pre>I&#39;m not sure how the glideins are doing, but for an update, Mick is in discussion with Scott and Tanya on storage options.</pre></div><div class='update_description'><i onclick="document.location='21104#1400623206'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-20T22:00:06+00:00">May 20, 2014 10:00 PM UTC</time><a class="anchor" name="1400623206">&nbsp;</a></div><pre>All our data should be staged and if it&#39;s accessible on the compute nodes then we should see the errors on Glidein go away.
+
+In the future I think we may end  up staging all our app and data into Oasis. I need to confirm that this is OK with the Oasis admins. But hopefully it&#39;ll mean that this type of problem will go away.
+
+Thanks
+Mick
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Michael Timony 888</pre></div><div class='update_description'><i onclick="document.location='21104#1400608597'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-20T17:56:37+00:00">May 20, 2014 05:56 PM UTC</time><a class="anchor" name="1400608597">&nbsp;</a></div><pre>I can see both directories. I&#39;ll push our app and data files to both now. This will take a while and we probably won&#39;t know until later today if this has resolved these errors.
+
+Thanks
+--Mick
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Michael Timony 888</pre></div><div class='update_description'><i onclick="document.location='21104#1400607123'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-20T17:32:03+00:00">May 20, 2014 05:32 PM UTC</time><a class="anchor" name="1400607123">&nbsp;</a></div><pre>Well, I thought /osg/data/sbgrid directory is needed.
+I created /osg/app/sbgrid as well.
+
+Please check if it resolves the problem.
+
+--Max
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=maxi/CN=682514/CN=Maxim Goncharov</pre></div><div class='update_description'><i onclick="document.location='21104#1400606274'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-20T17:17:54+00:00">May 20, 2014 05:17 PM UTC</time><a class="anchor" name="1400606274">&nbsp;</a></div><pre>Hi Max,
+
+Mick already predicted it, but I just thought I&#39;d confirm from the factory side&#58; SBGrid glideins continue to fail at MIT. At the moment, the error message I see reads &#34;/osg/app/sbgrid doesn&#39;t exist, exiting...&#34;.
+
+Best,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21104#1400600193'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-20T15:36:33+00:00">May 20, 2014 03:36 PM UTC</time><a class="anchor" name="1400600193">&nbsp;</a></div><pre>Hi Max,
+
+That&#39;s not a silly question, that&#39;s a very good question! My understanding is that the Oasis stuff is to replace OSG_APP which is for &#34;VO-wide software installations&#34;, OSG_DATA is for more transient data, more info here&#58;
+
+* <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Integration/LocalStorageRequirements#OSG_APP' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Integration/LocalStorageRequirements#OSG_APP</a>
+* <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Integration/LocalStorageRequirements#OSG_DATA' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Integration/LocalStorageRequirements#OSG_DATA</a>
+
+From my end the OSG_DATA directory looks empty (I get the same results for either ce01 or ce02)&#58;
+&#96;&#96;&#96;
+$ globus-job-run  ce01.cmsaf.mit.edu&#58;2119/jobmanager-fork /bin/bash -c &#34;ls -l &#92;$OSG_DATA/sbgrid&#34;
+total 0
+&#96;&#96;&#96;
+And I don&#39;t see a SBGrid directory in $OSG_APP&#58;
+&#96;&#96;&#96;
+$ globus-job-run  ce02.cmsaf.mit.edu&#58;2119/jobmanager-fork /bin/bash -c &#34;ls -l &#92;$OSG_APP/&#34;
+total 12
+lrwxrwxrwx  1 root root   26 May  6 09&#58;48 app -&#62; /net/t2srv0008/d00/osg/app
+drwxr-xr-x  3 root root 4096 Apr 19 06&#58;52 cmssoft
+drwxr-xr-x  2 root root 4096 Apr 19 06&#58;51 etc
+drwxr-xr-x 11 root root 4096 May 13  2010 glite
+&#96;&#96;&#96;
+
+Maybe I&#39;m checking OSG_APP & _DATA incorrectly? Also, I thought that Oasis was to replace OSG_APP, and that OSG_APP would point to the cvms location, or maybe I&#39;m just misunderstanding the implementation?
+
+Thanks
+Mick
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Michael Timony 888</pre></div><div class='update_description'><i onclick="document.location='21104#1400594292'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-20T13:58:12+00:00">May 20, 2014 01:58 PM UTC</time><a class="anchor" name="1400594292">&nbsp;</a></div><pre>Hi Mick,
+
+I have a silly question. What is the reason you need to repopulate data?
+For example, from any worker node I do see this&#58;
+ls /cvmfs/oasis.opensciencegrid.org/sbgrid/
+algebra.nb  exp                i386  local  opt    osx_intel      scripts  update.details
+etc         hierarchy.graffle  lib   log    osgmm  sbgridosg.cfg  tensor   x86_64
+
+which tells me that sbgrid is in the OASIS, and it can be seen by all our WNs.
+
+--Max
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=maxi/CN=682514/CN=Maxim Goncharov</pre></div><div class='update_description'><i onclick="document.location='21104#1400517234'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-19T16:33:54+00:00">May 19, 2014 04:33 PM UTC</time><a class="anchor" name="1400517234">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62;This directory is delivered to worker nodes through NFS which we want to phase out since we are switching to CVMFS instead of NFS</font>
+That&#39;s good to know, I&#39;ll follow up with the OSG folks to see what they recommend we do.
+
+If you just created the directory then I need to repopulate it with our data as jobs will still fail, just with a different error message.
+
+Thanks
+Mick
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Michael Timony 888</pre></div><div class='update_description'><i onclick="document.location='21104#1400516242'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-19T16:17:22+00:00">May 19, 2014 04:17 PM UTC</time> by <b>echism</b><a class="anchor" name="1400516242">&nbsp;</a></div><pre>Hey Dan,
+
+If you have a chance to revisit this today, let us know how it goes.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='21104#1400349623'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-17T18:00:23+00:00">May 17, 2014 06:00 PM UTC</time><a class="anchor" name="1400349623">&nbsp;</a></div><pre>Hi Dan,
+
+I just (May 17, 18&#58;00 UTC) created the directory with the right permissions. Do the jobs crash after that?
+As far as I can see sbgrid is the only one that relies on that directory (or may be others simply do not complain?).
+This directory is delivered to worker nodes through NFS which we want to phase out since we are switching to CVMFS instead of NFS.
+We can leave it as is for now, but it would be good to find long term solution.
+
+Cheers, --Max
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=maxi/CN=682514/CN=Maxim Goncharov</pre></div><div class='update_description'><i onclick="document.location='21104#1400284355'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-16T23:52:35+00:00">May 16, 2014 11:52 PM UTC</time><a class="anchor" name="1400284355">&nbsp;</a></div><pre>Hi Max,
+
+According to our factory monitoring, the last time SBGrid glideins passed validation at MIT was April 17th. Our logs don&#39;t extend quite that far back, but I can confirm that the problem was occurring at least a week ago. I think it&#39;s likely it has been happening this entire time.
+
+Let me amend Jeff&#39;s original statement of the problem&#58; /scratch/osg/sbgrid is the missing path at another site. At MIT, the glideins complain about /osg/data/sbgrid.
+
+/osg/data/sbgrid doesn&#39;t exist, exiting...
+=== Validation error in /condor/execute/dir_8848/glide_04On8U/client_group_main/osg_glidein.sh ===
+Wed May 14 02&#58;30&#58;46 EDT 2014 Error running &#39;/condor/execute/dir_8848/glide_04On8U/client_group_main/osg_glidein.sh&#39;
+The test script did not produce an XML file. No further information available.
+
+In the environment variables, I see&#58;
+OSG_DATA=/osg/data
+
+so that the missing location is $OSG_DATA/sbgrid.
+
+Best,
+Dan Klein
+UCSD Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21104#1400270261'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-16T19:57:41+00:00">May 16, 2014 07:57 PM UTC</time><a class="anchor" name="1400270261">&nbsp;</a></div><pre>When did that start happening?
+
+And where do you point $OSG_DATA ?
+
+Thank you, --Max
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=maxi/CN=682514/CN=Maxim Goncharov</pre></div><div class='update_description'><i onclick="document.location='21104#1400264464'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-16T18:21:04+00:00">May 16, 2014 06:21 PM UTC</time><a class="anchor" name="1400264464">&nbsp;</a></div><pre>Hi,
+
+If $OSG_DATA is no longer supported, where can we deploy our data instead?
+
+Thanks
+--Mick
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Michael Timony 888</pre></div><div class='update_description'><i onclick="document.location='21104#1400010708'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-05-13T19:51:48+00:00">May 13, 2014 07:51 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1400010708">&nbsp;</a></div><pre>Hi,
+
+We are seeing 100% of SBGrid glideins failing at MIT with the following error&#58;
+/scratch/osg/sbgrid doesn&#39;t exist, exiting...
+
+It appears that the glideins expect this location to be defined from $OSG_DATA
+
+We are submitting to&#58;
+gatekeeper=&#34;ce01.cmsaf.mit.edu&#58;2119/jobmanager-condor&#34;
+gatekeeper=&#34;ce02.cmsaf.mit.edu&#58;2119/jobmanager-condor&#34;
+rsl=&#34;(queue=cms)(jobtype=single)&#34;
+
+Can someone at MIT please help us understand why this path doesn&#39;t exist?  I&#39;m also CC&#39;ing Mick, the SBGrid VO Frontend admin.
+
+Thanks,
+Jeff Dost
+OSG Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F21104">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 21104});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

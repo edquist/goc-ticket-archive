@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[5901] dCache - rmdir fails to delete empty directory in PNFS</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=5901" method="post">
+<div class="page-header">
+    <h3><span class="muted">5901</span> / dCache - rmdir fails to delete empty directory in PNFS</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">NEHA SHARMA</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2008-12-10</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Neha Sharma <span class="muted"> / OSG Storage Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=5901", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/5901?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/5901?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20dCache%20-%20rmdir%20fails%20to%20delete%20empty%20directory%20in%20PNFS%20ISSUE%3D5901%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='5901#1228336480'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-12-03T20:34:40+00:00">Dec 3, 2008 08:34 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1228336480">&nbsp;</a></div><pre>Hi Neha,
+
+PNFS server is updated at Purdue.
+The md3tool from the new pnfs server works and the
+directory is deleted according to Vladimir&#39;s instructions.
+
+Thank you all!
+
+Fengping Hu
+Unix Systems Administrator
+Rosen Center for Advanced Computing, Purdue University
+email&#58;fhu@.... phone&#58; 765-494-0032</pre></div><div class='update_description'><i onclick="document.location='5901#1228334943'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-12-03T20:09:03+00:00">Dec 3, 2008 08:09 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1228334943">&nbsp;</a></div><pre>hi fengping
+
+did you get a chance to do the test upgrade?
+
+thanks
+-neha</pre></div><div class='update_description'><i onclick="document.location='5901#1228252053'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-12-02T21:07:33+00:00">Dec 2, 2008 09:07 PM UTC</time> by <b>echism</b><a class="anchor" name="1228252053">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='5901#1227744933'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-27T00:15:33+00:00">Nov 27, 2008 12:15 AM UTC</time> by <b>echism</b><a class="anchor" name="1227744933">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='5901#1227110727'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-19T16:05:27+00:00">Nov 19, 2008 04:05 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1227110727">&nbsp;</a></div><pre>Hi Fengping,
+
+It is good idea - to try first on a test system. One thing to pay
+attention to - as far as I remember you have &#34;home-made&#34; startup script
+in /etc/init.d/ directory named postgres-boot. Some time ago we switched
+to the standard startup script installed by RPM named postgresql. You
+have to disable the old one. There is one drawback with the new one
+though, it has username &#34;postgres&#34; hardcoded in a few places, so as I
+already mentioned you have to change it to &#34;enstore&#34; to keep everything
+working as before.
+
+Let me know if you have any problems.
+
+Vladimir.</pre></div><div class='update_description'><i onclick="document.location='5901#1227043391'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-18T21:23:11+00:00">Nov 18, 2008 09:23 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1227043391">&nbsp;</a></div><pre>Dear Vladimir,
+
+Thank you so much for the instructions.
+
+I will practice them before performing the upgrade on
+the production system.(I plan to do the upgrade on NOV 25
+when there will be a networking upgrade)
+
+Thanks,
+
+Fengping Hu
+Unix Systems Administrator
+Rosen Center for Advanced Computing, Purdue University
+email&#58;fhu@.... phone&#58; 765-494-0032
+
+Vladimir Podstavkov wrote&#58;
+Hi Fengping,
+
+In order to upgrade your databases *and* PNFS server you need to do
+several steps in the right order.
+
+*0. STOP PNFS!*
+
+1. Dump and save your data
+
+pg_dumpall &#62; backup.sql
+pg_ctl stop
+mv /....../psql-data /....../psql-data.old
+
+2. Now install RPMs version 8.1.15 from postgresql.org
+
+You need the following RPMs corresponding to your node architecture&#58;
+postgresql, postgresql-libs, postgresql-server
+If you have a64-bit node you also need 32-bit version of
+postgresql-libs installed.
+<div id='show_1477902451' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1477902451'>
+3. Change the startup script
+
+Modify startup script /etc/init.d/postgresql, change username
+&#34;postgres&#34; to &#34;enstore&#34; everywhere it is used in the commands as you
+run you server using &#34;enstore&#34; account.
+
+4. Prepare configuration file
+
+Create the file /etc/sysconfig/pgsql/postgresql with such content&#58;
+PGDATA=/opt/pnfs/db/psql-data
+Put the your real data directory name there
+
+5. Create new data directory and initialize it
+
+initdb -D /opt/pnfs/db/psql-data
+
+6. Restore the data from backup
+
+/etc/init.d/postgresql start
+psql -f backup.sql template1
+
+7. Make sure you adjust postgresql.conf file according your node resources. Make sure you have autovacuuming
+enabled!
+
+.........
+shared_buffers = ????? # Number of 8KB buffers in shared memory. You need at least 256MB
+.........
+work_mem = 102400
+.........
+max_fsm_pages = 1000000
+.........
+effective_cache_size = 163840     .........
+stats_row_level = on
+.........
+autovacuum = on     .........
+
+7. Install PNFS RPM
+
+8. Restart the PNFS
+
+(Documentation recommends that you use the pg_dumpall program from the newer version of PostgreSQL (i.e.
+8.1.x))
+
+Vladimir.
+</div><script type='text/javascript'>
+        $('#show_1477902451').click(function() {
+            $('#detail_1477902451').slideDown("normal");
+            $('#show_1477902451').hide();
+            $('#hide_1477902451').show();
+        });
+        $('#hide_1477902451').click(function() {
+            $('#detail_1477902451').slideUp();
+            $('#hide_1477902451').hide();
+            $('#show_1477902451').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5901#1227030845'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-18T17:54:05+00:00">Nov 18, 2008 05:54 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1227030845">&nbsp;</a></div><pre>Dear Vladimir,
+
+With the database name not using full path, md3tool still fails with the same error&#58;
+# md3tool modifydirentrycount data1 0001000000000000033B88F8 0
+Can&#39;t open data1 &#58; -1
+
+We are still running PNFS with Postgres 7.4. I will find a time when the dcache services is not heavily used to
+update the postgresql server to the latest version.
+My question is shall I update the pnfs server too?
+
+I&#39;d prefer to do the update since at least with pnfs-postgresql-3.1.10-7, the md3tool will work.
+I&#39;ve practiced the update on a testing setup. I wonder if there&#39;s any other concerns when you told me not to
+update the pnfs server in the previous emails.
+
+Thanks!</pre></div><div class='update_description'><i onclick="document.location='5901#1226521498'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T20:24:58+00:00">Nov 12, 2008 08:24 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1226521498">&nbsp;</a></div><pre>Hi Fengping,
+
+Sorry for delay, I took a break to make some &#34;archeological&#34;
+investigation &#58;-) . I dug out my e-mails from March 2005 when I did a
+conversion of your PNFS to the Postgres version, and I found out that it
+was Postgres 7.4 at that time. (BTW, are you still running PNFS with
+Postgres 7.4?)
+
+It looks like md3tool was not &#34;smart&#34; enough at that time, it didn&#39;t
+understand the full path as a database name. Could you try it again like
+this&#58;
+
+# md3tool modifydirentrycount data1 0001000000000000033B88F8 0
+
+I hope it will help.
+
+And if you are still running PNFS with Postgres 7.4, I would recommend
+to upgrade it at least to the version you were using on your test stand.
+
+Please let me know if it works for you.
+
+Vladimir.
+[root@pnfs fhu]# source /usr/etc/pnfsSetup
+[root@pnfs fhu]# export dbConnectString=&#34;user=enstore&#34;
+[root@pnfs fhu]# PATH=$PATH&#58;$pnfs/tools
+[root@pnfs fhu]# md3tool modifydirentrycount /opt/pnfsdb/pnfs/databases/data1
+0001000000000000033B88F8 0
+Can&#39;t open /opt/pnfsdb/pnfs/databases/data1 &#58; -1
+
+root@pnfs QCD_Pt_230_300-1]# cat &#39;.(get)(database)&#39;
+data1&#58;1&#58;r&#58;enabled&#58;/opt/pnfsdb/pnfs/databases/data1
+
+Thanks,
+Hi Fengping,
+
+<div id='show_1428040730' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1428040730'>Please issue the command as root&#58;
+
+# export dbConnectString=&#34;user=enstore&#34;
+
+before running md3tool, and try it again. Let me know the result.
+
+Vladimir.
+###############################################
+
+~$ps -efwww |fgrep post
+postgres  1459  3725  0 Oct24 ?        00&#58;06&#58;30 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres
+1460  3725  0 Oct24 ?        00&#58;08&#58;30 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres  1461  3725
+0 Oct24 ?        00&#58;08&#58;30 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres  3725     1  0 Aug28 ?
+00&#58;00&#58;04 /usr/bin/postmaster -p 5432 -D /var/lib/pgsql/data
+postgres  3727  3725  0 Aug28 ?        00&#58;00&#58;00 postgres&#58; stats buffer process                   postgres  3728
+3727  0 Aug28 ?        00&#58;00&#58;00 postgres&#58; stats collector process                postgres  3757  3725  0 Aug28 ?
+00&#58;00&#58;19 postgres&#58; enstore admin [local] idle             postgres  3761  3725  0 Aug28 ?        14&#58;40&#58;14
+postgres&#58; enstore data1 [local] idle             postgres  3765  3725  0 Aug28 ?        00&#58;00&#58;00 postgres&#58; enstore
+data2 [local] idle             postgres  3769  3725  0 Aug28 ?        00&#58;21&#58;45 postgres&#58; enstore data3 [local] idle
+postgres  3773  3725  0 Aug28 ?        00&#58;00&#58;00 postgres&#58; enstore data4 [local] idle             fhu      13713
+13687  0 17&#58;37 pts/0    00&#58;00&#58;00 fgrep post
+postgres 18676  3725  0 Oct24 ?        00&#58;08&#58;20 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres
+18677  3725  0 Oct24 ?        00&#58;09&#58;41 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres 18678
+3725  0 Oct24 ?        00&#58;06&#58;48 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres 18679  3725  0
+Oct24 ?        00&#58;08&#58;06 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres 18680  3725  0 Oct24 ?
+00&#58;10&#58;00 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres 18681  3725  0 Oct24 ?        00&#58;06&#58;08
+postgres&#58; srmdcache companion 127.0.0.1 idle     postgres 24105  3725  0 Oct25 ?        00&#58;09&#58;05 postgres&#58;
+srmdcache companion 127.0.0.1 idle     postgres 24106  3725  0 Oct25 ?        00&#58;07&#58;02 postgres&#58; srmdcache
+companion 127.0.0.1 idle     postgres 24107  3725  0 Oct25 ?        00&#58;08&#58;52 postgres&#58; srmdcache companion
+127.0.0.1 idle postgres 31484  3725  0 Oct24 ?        00&#58;09&#58;40 postgres&#58; srmdcache companion 127.0.0.1 idle
+postgres 31485  3725  0 Oct24 ?        00&#58;06&#58;02 postgres&#58; srmdcache companion 127.0.0.1 idle     postgres
+31486  3725  0 Oct24 ?        00&#58;09&#58;11 postgres&#58; srmdcache companion 127.0.0.1 idle
+
+###############################################
+
+~$cat /usr/etc/pnfsSetup
+shmkey=1122
+shmclients=10
+shmservers=50
+#pnfs=/opt/pnfs.3.1.10-f5b/pnfs
+pnfs=/opt/pnfs.3.1.10/pnfs
+environment=/0/root/fs/admin/etc/environment
+database=/opt/pnfsdb/pnfs/info
+trash=/opt/pnfsdb/pnfs/trash
+pnfscopies=8
+#
+#   define md2pMOREINFO  (3)
+#   define md2pINFO      (4)
+#   define md2pMODINFO   (5)
+#
+pmountdLog=/dev/null
+dbserverLog=/dev/null
+pnfsdLog=/dev/null
+pnfsdLevel=6
+pmountdLevel=6
+dbserverLevel=6
+hardlinks=on
+netmask=32
+levelmask=0&#58;-1&#58;-1&#58;-1&#58;-1&#58;-1&#58;-1&#58;-1
+
+###############################################
+
+Thanks!
+Hi Fengping,
+
+Unfortunately there is no direct way to use psql to modify this
+counter, this information is actually packed into binary array which is
+stored as a blob in the database. That&#39;s why these md{2,3}tools exist.
+
+Could you do on your PNFS server such command&#58;
+ps -efwww | fgrep post
+and send me the output along with your /usr/etc/pnfsSetup file?
+
+Vladimir.
+
+Dear Vladimir,
+
+It&#39;s assuring to find the expert who performed the initial works
+and yes, this is a postgresql version.
+
+There&#39;s no other problems with the current installation except &#34;
+md3tool modifydirentrycount&#34; command is failing.
+I guess you might be able to provide me a &#34;psql&#34; command that
+can modify the database directly so then I will be able to remove the
+directory I wanted to remove?
+
+Thanks!
+Hi Fengping,
+
+I guess it was me who upgraded your server to postgresql version of
+PNFS (if I am not mistaken, it was several years ago). Frankly, it is
+hard to remember now what pnfs-3.1.10-15 was, but this is postgresql
+version, right?
+If you don&#39;t see any problems with your current installation then
+there is no need to upgrade it. Just remove the directory you wanted to
+remove, and that&#39;s it.
+
+Vladimir.
+I tested this md3tool on a testing setup and it worked.
+
+But the problem is that the pnfs server on the production
+system is different than the one on the testing setup&#58;
+production system&#58; pnfs-3.1.10-15
+test system&#58; pnfs-postgresql-3.1.10-7
+
+According to Preston, the pnfs server on the production is initially a GDBM version and upgraded
+to postgresql version by some expert from FNAL.
+
+I am assuming the pnfs server on our production is a little bit outdated. So the question now is&#58;
+1) Shall I upgrade this?
+2) if yes, then what will be the procedure to guarantee no data lose.(Considering there are currently several
+hundred TB data on the system, this is very important.)
+
+I can test the upgrade on a testing setup. But rather than figure out the upgrade procedure myself, which
+might not even be possible, I think it&#39;s better to have expert&#39;s opinion.
+
+Thanks!
+That&#39;s strange...
+
+Try &#34;source /usr/etc/pnfsSetup&#34; before using md3tool. And you do have
+postgres running, don&#39;t you?
+
+Vladimir.
+
+Dear Vladimir,
+[root@pnfs QCD_Pt_230_300-1]# /opt/pnfs.3.1.10/pnfs/tools/linux/md3tool modifydirentrycount
+/opt/pnfsdb/pnfs/databases/data1 0001000000000000033B88F8 0
+Can&#39;t open /opt/pnfsdb/pnfs/databases/data1 &#58; -1
+
+Is this because we are using PostgreSQL version of |pnfs?
+|If it is, then what command should I use to modify the database?
+
+Thanks!
+Hi Fengping,
+
+Please see comments inline...
+
+Vladimir.
+
+Fengping Hu wrote&#58;
+Hi Neha,
+
+I still have several questions concerning the procedure provided by
+Vladimir.
+
+1)  &#34;ls -al&#34; command shows there&#39;s no file in the directory. But
+&#34;scandir.sh&#34; shows
+there are still several files. Can I just remove these files as normal
+files, i.e., with &#34;rm&#34; command.
+I am sure these files are no longer needed. They can&#39;t be accessed
+anyway. But I am not sure
+if &#34;rm filename&#34; is the correct way to remove them.
+Also can I ignore the error message from the scandir.sh command&#58; &#34;cat&#58;
+.(showid)(0001000000000000033B9118)&#58; No such file or directory&#34;?
+###############################################
+/pnfs/rcac.purdue.edu/data/store/user/Trash/uscms/fkw/QCD_Pt_230_300-
+1$/opt/pnfs.3.1.10/pnfs/tools/scandir.sh
+
+0001000000000000033B8978 0001000000000000033B8970 0000000000000000 0
+newWBFhiggs_7.root
+cat&#58; .(showid)(0001000000000000033B9118)&#58; No such file or directory
+/opt/pnfs.3.1.10/pnfs/tools/scandir.sh&#58; line 72&#58; [&#58; !=&#58; unary operator
+expected
+0001000000000000033B8AA0 0001000000000000033B8A98 0000000000000000 0
+newWBFhiggs_8.root
+0001000000000000033B8B08 0001000000000000033B8B00 0000000000000000 0
+newWBFhiggs_10.root
+0001000000000000033B89F0 0001000000000000033B89E8 0000000000000000 0
+newWBFhiggs_9.root
+.....
+###############################################
+You can fix this problem separately, but I believe  it will go away if
+you fix the main one. See below.
+
+2) I have question about the md3tool command. Should the entrycount be
+0, 2 or
+some other value in case the directory is empty?
+Suppose the dbname is /opt/pnfsdb/pnfs/databases/data1, the pnfsid of
+the directory is 0001000000000000033B88F8,
+Is this command correct&#58;
+###################################################
+/opt/pnfs/tools/linux/md3tool modifydirentrycount
+/opt/pnfsdb/pnfs/databases/data1 0001000000000000033B88F8 2
+###################################################
+Yes, except the entrycount, it should be 0 for empty directory.
+
+3) Is there a command determine the database name for the directory,
+e.g.,
+does the pnfsid of the directory indicates which database does the
+directory belong.
+Or do I have to get this information from the one who setup the dcache
+initially.
+Yes, there is such command. Inside the directory do &#34;cat
+&#39;.(get)(database)&#39; &#34;
+
+Thanks,
+
+Fengping Hu
+Unix Systems Administrator
+Rosen Center for Advanced Computing, Purdue University
+email&#58;fhu@.... phone&#58; 765-494-0032
+
+Neha Sharma wrote&#58;
+Thanks Vladimir, for your expert opinion.
+
+Fengping - does this solve your problem?
+
+-Neha
+On Oct 30, 2008, at 4&#58;47 PM, Vladimir Podstavkov wrote&#58;
+
+Hi Neha,
+
+Usually such things happen when the number of entries in the directory
+does not correspond to the actual number of objects in it. Yes, it
+happens from time to time. The easiest way to handle it just ignore it
+&#58;-) .
+
+But if you want to fix it, you can do it&#58;
+* First, make sure there is actually *nothing* in the directory you
+want to remove. You can use /opt/pnfs/tools/scandir.sh script inside
+this directory to verify it.
+* Second, use &#34;/opt/pnfs/tools/linux/md3tool modifydirentrycount
+&#60;dbname&#62; &#60;dirID&#62; &#60;newDirentryCount&#62;&#34; with caution! You need the
+*correct* pnfsid for the directory you want to modify. Md3tool is a low
+level utility which modifies the database directly!
+* Third, run &#34;find .&#34; command in the parent directory for a few
+seconds to flush the PNFS server cache.
+* Finally, remove the directory you want to remove.
+
+Vladimir.
+</div><script type='text/javascript'>
+        $('#show_1428040730').click(function() {
+            $('#detail_1428040730').slideDown("normal");
+            $('#show_1428040730').hide();
+            $('#hide_1428040730').show();
+        });
+        $('#hide_1428040730').click(function() {
+            $('#detail_1428040730').slideUp();
+            $('#hide_1428040730').hide();
+            $('#show_1428040730').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5901#1225827301'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-04T19:35:01+00:00">Nov 4, 2008 07:35 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1225827301">&nbsp;</a></div><pre>Thanks Vladimir, for your expert opinion.
+
+Fengping - does this solve your problem?
+
+-Neha
+On Oct 30, 2008, at 4&#58;47 PM, Vladimir Podstavkov wrote&#58;
+
+Hi Neha,
+
+Usually such things happen when the number of entries in the directory
+does not correspond to the actual number of objects in it. Yes, it
+happens from time to time. The easiest way to handle it just ignore it
+&#58;-) .
+
+But if you want to fix it, you can do it&#58;
+* First, make sure there is actually *nothing* in the directory you
+want to remove. You can use /opt/pnfs/tools/scandir.sh script inside
+this directory to verify it.
+* Second, use &#34;/opt/pnfs/tools/linux/md3tool modifydirentrycount
+&#60;dbname&#62; &#60;dirID&#62; &#60;newDirentryCount&#62;&#34; with caution! You need the
+*correct* pnfsid for the directory you want to modify. Md3tool is a low
+level utility which modifies the database directly!
+* Third, run &#34;find .&#34; command in the parent directory for a few
+seconds to flush the PNFS server cache.
+* Finally, remove the directory you want to remove.
+
+Vladimir.
+
+Alex Kulyavtsev wrote&#58;
+I&#39;m forwarding mail to Vladimir may be he can help, he is pnfs expert.
+
+Alex.</pre></div><div class='update_description'><i onclick="document.location='5901#1225304758'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-29T18:25:58+00:00">Oct 29, 2008 06:25 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1225304758">&nbsp;</a></div><pre>Hi All,
+
+I found this while doing some cleanup of the pnfs(dcache) file system&#58;
+&#34;ls&#34; command shows there no files in the directory ,
+but the &#34;rmdir&#34; command still fails due to &#34;Directory not empty&#34;.
+
+####################################
+#ls -al QCD_Pt_230_300-1/
+total 1
+drwxrwxr-x  1 uscms01 osgusers 512 Oct 24 15&#58;04 .
+drwxrwxr-x  1 uscms01 osgusers 512 Oct 24 15&#58;19 ..
+# rmdir QCD_Pt_230_300-1/
+rmdir&#58; &#96;QCD_Pt_230_300-1/&#39;&#58; Directory not empty
+####################################
+
+so what should I do to get this directory deleted?
+Thanks for any help.</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F5901">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 5901});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

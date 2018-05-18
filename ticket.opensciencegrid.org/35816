@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[35816] Refactor services on psds0 to run on two VMs&#58; psds0 and psrsv</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=35816" method="post">
+<div class="page-header">
+    <h3><span class="muted">35816</span> / Refactor services on psds0 to run on two VMs&#58; psds0 and psrsv</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Shawn McKee</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">psds0</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Ops</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Shawn McKee</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">OSG-GOC</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2018-01-25</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Thomas Lee <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">Scott Teige <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">OSG-GOC <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Edgar Fajardo <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=35816", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/35816?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/35816?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Refactor%20services%20on%20psds0%20to%20run%20on%20two%20VMs%26%2358%3B%20psds0%20and%20psrsv%20ISSUE%3D35816%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='35816#1524237008'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-20T15:10:08+00:00">Apr 20, 2018 03:10 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1524237008">&nbsp;</a></div><pre>I&#39;m closing this out.</pre></div><div class='update_description'><i onclick="document.location='35816#1522676806'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-02T13:46:46+00:00">Apr 2, 2018 01:46 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1522676806">&nbsp;</a></div><pre>Does this ticket still need to be open?</pre></div><div class='update_description'><i onclick="document.location='35816#1518564601'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T23:30:01+00:00">Feb 13, 2018 11:30 PM UTC</time><a class="anchor" name="1518564601">&nbsp;</a></div><pre>Shawn,
+
+I removed the software from psds0&#58;
+
+sudo yum remove rsv* condor-cron
+Loaded plugins&#58; fastestmirror, presto, priorities, security
+Setting up Remove Process
+Resolving Dependencies
+--&#62; Running transaction check
+---&#62; Package condor-cron.noarch 0&#58;1.1.3-1.osg33.el6 will be erased
+---&#62; Package rsv.noarch 0&#58;3.14.2-1.osg33.el6 will be erased
+---&#62; Package rsv-consumers.noarch 0&#58;3.14.2-1.osg33.el6 will be erased
+---&#62; Package rsv-core.noarch 0&#58;3.14.2-1.osg33.el6 will be erased
+---&#62; Package rsv-metrics.noarch 0&#58;3.14.2-1.osg33.el6 will be erased
+---&#62; Package rsv-perfsonar.noarch 0&#58;1.5.1-1.osg33.el6 will be erased
+--&#62; Finished Dependency Resolution
+
+And freed up some spaces and Inodes from /usr/local/rsv-perfsonar-timestamps/ in psds0
+
+by emfajardohernandez@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518556329'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T21:12:09+00:00">Feb 13, 2018 09:12 PM UTC</time><a class="anchor" name="1518556329">&nbsp;</a></div><pre>Update&#58;  I added psrsv to the check_mk monitoring&#58;
+
+<a href='https&#58;//psetf.grid.iu.edu/etf/check_mk/index.py?start_url=%2Fetf%2Fcheck_mk%2Fview.py%3Fview_name%3Dhost%26host%3Dpsrsv%26site%3Detf' target='_blank' rel='nofollow'>https&#58;//psetf.grid.iu.edu/etf/check_mk/index.py?start_url=%2Fetf%2Fcheck_mk%2Fview.py%3Fview_name%3Dhost%26host%3Dpsrsv%26site%3Detf</a>
+
+Needed to edit the main.mk file on psetf FYI.    This pointed out the problem that &#39;redsocks&#39; needs to be migrated from psds0 to psrsv, since Edgar&#39;s perfSONAR RSV probes will need that to reach LHCONE/LHCOPN only toolkit instances.
+
+Also the stompctl and simplevisor processes are still running on psds0.
+
+Shawn
+
+by smckee@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518553189'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T20:19:49+00:00">Feb 13, 2018 08:19 PM UTC</time><a class="anchor" name="1518553189">&nbsp;</a></div><pre>OK, thanks everyone.  Let&#39;s watch things for a day or two and then we can close this ticket.   I sent an email about a config issue on the Postgresql 9.6 we have running on psds0, psds1 and psds2.   It is also fixed and it cleaned up the extra WAL files on psds0.
+
+Shawn
+
+by smckee@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518551603'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T19:53:23+00:00">Feb 13, 2018 07:53 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1518551603">&nbsp;</a></div><pre>The psrsv resource just changed to a green light.</pre></div><div class='update_description'><i onclick="document.location='35816#1518549556'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T19:19:16+00:00">Feb 13, 2018 07:19 PM UTC</time><a class="anchor" name="1518549556">&nbsp;</a></div><pre>Thanks for the update Edgar.
+
+The problem is that psds0 has its /usr/local partition 96% full.  Not sure if the perfSONAR RSV was storing stuff there, but, if it is, we should remove it.
+
+I also don&#39;t want to accidentally restart any RSV stuff in the future.  Just seems cleanest to remove it from psds0.
+
+Thanks,
+
+Shawn
+
+by smckee@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518549422'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T19:17:02+00:00">Feb 13, 2018 07:17 PM UTC</time><a class="anchor" name="1518549422">&nbsp;</a></div><pre>Hi Shawn,
+
+I did shut them down. But I have not removed anything. Do we really need to?
+
+I can do yum remove but not sure if it is needed to remove anythign from psds0
+
+by emfajardohernandez@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518549134'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T19:12:14+00:00">Feb 13, 2018 07:12 PM UTC</time><a class="anchor" name="1518549134">&nbsp;</a></div><pre>Thanks Edgar, Tom,
+
+I can see the rsv page at <a href='http&#58;//psrsv.grid.iu.edu/rsv/' target='_blank' rel='nofollow'>http&#58;//psrsv.grid.iu.edu/rsv/</a>
+
+Edgar, have you shut-off and removed the psds0 perfSONAR RSV services?
+
+Tom, can you add psrsv to this page?&#58;   <a href='http&#58;//myosg.grid.iu.edu/rgstatushistory/index?downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=yesterday&start_date=11%2F08%2F2017&end_type=now&end_date=11%2F08%2F2017&rg=on&rg_sel%5B%5D=432&gridtype=on&gridtype_1=on&active=on&active_value=1&disable_value=1' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu/rgstatushistory/index?downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=yesterday&start_date=11%2F08%2F2017&end_type=now&end_date=11%2F08%2F2017&rg=on&rg_sel%5B%5D=432&gridtype=on&gridtype_1=on&active=on&active_value=1&disable_value=1</a>
+
+Thanks,
+
+Shawn
+
+by smckee@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518547683'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T18:48:03+00:00">Feb 13, 2018 06:48 PM UTC</time><a class="anchor" name="1518547683">&nbsp;</a></div><pre>Thanks Tom.
+
+I think this should be good. Leave this ticket for a day or two and then we can close it.
+
+by emfajardohernandez@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518547403'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T18:43:23+00:00">Feb 13, 2018 06:43 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1518547403">&nbsp;</a></div><pre>TCP port 80 (and 443 in case HTTPS becomes necessary later) are now open in the firewall on psrsv.grid.iu.edu.</pre></div><div class='update_description'><i onclick="document.location='35816#1518547214'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T18:40:14+00:00">Feb 13, 2018 06:40 PM UTC</time><a class="anchor" name="1518547214">&nbsp;</a></div><pre>I have tried to update this ticket several times. But the move is done and it is working.
+
+The only missing piece is that&#58;
+
+<a href='http&#58;//psrsv.grid.iu.edu/rsv/' target='_blank' rel='nofollow'>http&#58;//psrsv.grid.iu.edu/rsv/</a>
+
+Seems to not be accessible. So can you open the firewall in port 80?
+
+Thanks,
+
+Edgar
+
+by emfajardohernandez@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518542028'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T17:13:48+00:00">Feb 13, 2018 05:13 PM UTC</time> by <b>Raynor Moore</b><a class="anchor" name="1518542028">&nbsp;</a></div><pre>Incoming call from Edgar looking to speak to Tom Lee or Scott regarding a machine at GOC he&#39;s trying to clone. Attempted transfer to Tom. He said to
+call Scott. Called Scott&#39;s desk, left voicemail. Called Scott&#39;s Cell. No answer No VM option. Called Tom back, no answer, no VM option.
+
+Asked Edgar for number to provide return call but he said not to worry, he&#39;d just update the ticket directly.</pre></div><div class='update_description'><i onclick="document.location='35816#1518450238'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-12T15:43:58+00:00">Feb 12, 2018 03:43 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1518450238">&nbsp;</a></div><pre>There are now LDAP groups &#34;shell-psrsv&#34; and &#34;sudo-psrsv&#34; containing users emfajard,mbabik,smckee. Existing SSH keys for those three users are now installed on psrsv.grid.iu.edu via Puppet.</pre></div><div class='update_description'><i onclick="document.location='35816#1518198182'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-09T17:43:02+00:00">Feb 9, 2018 05:43 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1518198182">&nbsp;</a></div><pre>Tom is trapped by a snowstorm in Chicago (last I heard), nothing will happen before Monday.
+S</pre></div><div class='update_description'><i onclick="document.location='35816#1518196044'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-09T17:07:24+00:00">Feb 9, 2018 05:07 PM UTC</time><a class="anchor" name="1518196044">&nbsp;</a></div><pre>Hi Shawn,
+
+So we are not clonning the VM? IF we are installing it and doing it from scratch, and just copying over the timestamps. I can probably do that on Monday.
+
+RIght now I cannot ssh into the machine&#58;
+
+[255] 17&#58;04&#58;59 UTC [emfajard@jump&#58;~]$ ssh root@....
+Permission denied (publickey).
+[255] 17&#58;05&#58;07 UTC [emfajard@jump&#58;~]$ ssh emfajard@....
+Permission denied (publickey).
+
+by emfajardohernandez@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518194343'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-09T16:39:03+00:00">Feb 9, 2018 04:39 PM UTC</time><a class="anchor" name="1518194343">&nbsp;</a></div><pre>Thanks Scott,
+
+Please make sure that Marian, Edgar and I have root access on this node.
+
+I guess the next step will be for Edgar to get the current perfSONAR RSV installed on psrsv and then disable it on psds0.  Edgar, is this straightforward to do?
+
+Thanks,
+
+Shawn
+
+by smckee@....</pre></div><div class='update_description'><i onclick="document.location='35816#1518194079'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-09T16:34:39+00:00">Feb 9, 2018 04:34 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1518194079">&nbsp;</a></div><pre>The machine has been added to the status infrastructure here&#58;
+<a href='http&#58;//monitor.grid.iu.edu/availability/perfsonar.html' target='_blank' rel='nofollow'>http&#58;//monitor.grid.iu.edu/availability/perfsonar.html</a>
+Shortly after that it reported its configuration and that information was propagated to the config. mgt. system.
+
+Shawn&#58; next step is who get login accounts on this machine?</pre></div><div class='update_description'><i onclick="document.location='35816#1518032878'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-07T19:47:58+00:00">Feb 7, 2018 07:47 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1518032878">&nbsp;</a></div><pre>I attempted to update the ticket earlier, and I tried to do so again a few minutes ago, but I don&#39;t think my messages went through, due to the maintenance on the ticket system. Yes, I did create the VM once the DNS change went through.</pre></div><div class='update_description'><i onclick="document.location='35816#1518026463'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-07T18:01:03+00:00">Feb 7, 2018 06:01 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1518026463">&nbsp;</a></div><pre>The psrsv machine exists.
+Scott&#58; add it to the status/configuration infrastructure</pre></div><div class='update_description'><i onclick="document.location='35816#1518018333'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-07T15:45:33+00:00">Feb 7, 2018 03:45 PM UTC</time><a class="anchor" name="1518018333">&nbsp;</a></div><pre>Made the core reductions on meshconfig, psds1, and psds2.
+
+Requested psrsv.grid.iu.edu from the DNS admins and set up psrsv.goc on the LAN. Waiting for the DNS change to take effect before creating the VM.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Tom Lee 472</pre></div><div class='update_description'><i onclick="document.location='35816#1518010898'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-07T13:41:38+00:00">Feb 7, 2018 01:41 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1518010898">&nbsp;</a></div><pre>Will do this&#58;
+take meshconfig from 4 cores to 1
+psds1 from 8 cores to 4
+psds2 from 8 cores to 4
+
+spin up a VM named psrsv
+CentOS 6
+8 cores
+8 GB RAM
+
+Assigning Tom for this part.</pre></div><div class='update_description'><i onclick="document.location='35816#1518007291'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-07T12:41:31+00:00">Feb 7, 2018 12:41 PM UTC</time><a class="anchor" name="1518007291">&nbsp;</a></div><pre>Any update on this?  Thanks,
+
+Shawn
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=mckee/CN=500323/CN=Shawn Mc Kee</pre></div><div class='update_description'><i onclick="document.location='35816#1516804798'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-24T14:39:58+00:00">Jan 24, 2018 02:39 PM UTC</time> by <b>echism</b><a class="anchor" name="1516804798">&nbsp;</a></div><pre>Unassigning myself and leaving it to Scott and Shawn to work out.</pre></div><div class='update_description'><i onclick="document.location='35816#1516392947'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-19T20:15:47+00:00">Jan 19, 2018 08:15 PM UTC</time><a class="anchor" name="1516392947">&nbsp;</a></div><pre>Hi Scott,
+
+No, I think we still need to split the services into separate VMs.   But it is good to know we have some CPU headroom to use for future tuning.
+
+Thanks,
+
+Shawn
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=mckee/CN=500323/CN=Shawn Mc Kee</pre></div><div class='update_description'><i onclick="document.location='35816#1516391370'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-19T19:49:30+00:00">Jan 19, 2018 07:49 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1516391370">&nbsp;</a></div><pre>Right on all counts, my eyes are not what they once were.
+
+On the allocation of cores, meshconfig shows almost no load, it could give up 3 cores.
+psds1 and psds2 have 8 cores each and are at 20% load, they could give up 4 cores
+each and end up at 40% load.
+
+By this reckoning, there are 11 cores available that could be given to psds0 now.
+
+Want to try that before rearranging the internal workings?</pre></div><div class='update_description'><i onclick="document.location='35816#1516288993'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-18T15:23:13+00:00">Jan 18, 2018 03:23 PM UTC</time> by <b>Shawn McKee</b><a class="anchor" name="1516288993">&nbsp;</a></div><pre>Hi Scott,
+
+You must have mis-read the memory on the Cassandra nodes?  They are each
+10G not 1G.
+
+Total core use from your accounting&#58;  3+4+12+2*8+6 = 41 used
+Total memory use&#58;   30+4+12+2*6+1 = 59G
+
+However the check_mk monitoring also shows that psetf is 12GB ram, not 1GB?!
+
+That means total memory use is 70G
+
+(perfsonar2 == psds0, right?)
+
+So we have extra memory to play with and slightly oversubscribed cores.
+
+Let&#39;s drop the Cassandra1/2/3 memory to 6GB (down from 10GB each)
+
+Increase psetf from 12GB to 16GB   (these match the 35815 ticket request)
+
+Once we split/clone psds0 into a (new) psds0 and psrsv we should try to
+assign resources like&#58;
+
+psds0    4 cores, 4 GB
+psrsv     8 cores, 8 GB
+
+We may need to tweak as we monitor the new service config behavior.   We
+will still have extra memory to assign as needed.
+
+Thanks,
+
+Shawn
+
+On Thu, Jan 18, 2018 at 9&#58;51 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+<div id='show_753552554' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_753552554'>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_753552554').click(function() {
+            $('#detail_753552554').slideDown("normal");
+            $('#show_753552554').hide();
+            $('#hide_753552554').show();
+        });
+        $('#hide_753552554').click(function() {
+            $('#detail_753552554').slideUp();
+            $('#hide_753552554').hide();
+            $('#show_753552554').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='35816#1516287060'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-18T14:51:00+00:00">Jan 18, 2018 02:51 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1516287060">&nbsp;</a></div><pre>Resources of one VM can be reallocated to another if both are in the same VM host.
+Cassandra1,2 and 3, meshconfig, psds0,1 and 2 and psetf are all on the same host, psvm01.
+cassandra1,2 and 3 have one core and 1 GB RAM.
+meshconfig has 4 cores, 4 GB RAM
+psds0 has 12 cores, 12 GB RAM
+psds1,2 have 8 cores and 6 GB RAM
+psetf has 6 cores ans 1 GB RAM
+
+The host has 40 cores and 128 GB RAM. Cores can be &#34;overallocated&#34;, RAM cannot and some RAM must be reserved for the host OS.
+
+A metric, &#34;normalized load&#34;, has been defined as the 5 minute average load divided by the number of cores. Normalized load
+can be seen for the machines in question here&#58;
+<a href='http&#58;//monitor.grid.iu.edu/availability/perfsonar.html' target='_blank' rel='nofollow'>http&#58;//monitor.grid.iu.edu/availability/perfsonar.html</a>
+by clicking on the status icon for the machine.
+
+Just let me know how you&#39;d like things reallocated.</pre></div><div class='update_description'><i onclick="document.location='35816#1516214877'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-17T18:47:57+00:00">Jan 17, 2018 06:47 PM UTC</time><a class="anchor" name="1516214877">&nbsp;</a></div><pre>Hi Shawn,
+
+Yes there are two ways of doing this&#58;
+
+1. Clonning
+2. Installing and configuring
+
+If we do the cloning then the procedure would be like the following&#58;
+
+1. service rsv stop
+2. Check there are no probes running (condor_cron_q)
+3. Wait till the activemq dir is empty (/usr/local/rsv-perfsonar/)
+4. Turn off the simplevisor (service simplevisor stop)
+5. From here the machine can be turnded off.
+6. Start cloning.
+7. In psrsv.grid.iu.edu modify /etc/rsv/metrics/org.osg.general.perfsonar-simple.conf&#58;
+7.a change from goc = http&#58;//localhost to goc = <a href='http&#58;//psds0.grid.iu.edu' target='_blank' rel='nofollow'>http&#58;//psds0.grid.iu.edu</a>
+8. Make sure httpd and http24 are running on psds0
+9. Restart simplevisor
+10. Restart condor-cron
+11. Restart rsv
+
+If we do the reconfiguring the important dir to rsync are  /usr/local/rsv-perfsonar-timestamps/ and  /var/log/rsv/metrics/
+
+And then we can do reconfiguration. Clonning seems more resilinet but also can take longer.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='35816#1516213440'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-17T18:24:00+00:00">Jan 17, 2018 06:24 PM UTC</time> by <b>echism</b><a class="anchor" name="1516213440">&nbsp;</a></div><pre>Adding Edgar and Scott.</pre></div><div class='update_description'><i onclick="document.location='35816#1516204723'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-17T15:58:43+00:00">Jan 17, 2018 03:58 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1516204723">&nbsp;</a></div><pre>We would like to partition the services currently running on psds0 into two VMs.   Currently psds0 serves as the postgresql master (write instance) and runs the perfSONAR RSV probes.  We want to move the perfSONAR RSV probes onto their own instance.  This will require coordination between Edgar, Shawn and OSG Operations.
+
+My suggestion is to clone the current psds0 instance and rename it to be psrsv.grid.iu.edu.   Then we can disable the perfSONAR RSV services on psds0 and disable the postgesql instances on psrsv.   Of course this requires creating DNS entries and IP allocations for the new psrsv instance.
+
+Specifically psds0 should turn off at least the following services (Edgar should verify which services are used for RSV that we can shut down)
+- simplevisor
+- rsv
+- redsocks
+(Not sure if httpd24-httpd and condor-cron are only used by RSV?  If so, they should be shut down)
+
+And psrsv should turn off the following service&#58;
+- postgresql-9.6  (and recover the disk space used by postgresql)
+
+Monitoring configurations in check_mk (psetf) and in munin and elsewhere will need updating.
+
+Initially memory and CPU resources will need to be reallocated to support the new VM.   I suggest giving 1/2 the cores (12 originally) to each VM (psds0 and psrsv).   The memory (12GB) should be divided as follows&#58;   psds0 (4GB) and psrsv (8GB).   [Once ticket 35815 is completed we will have more memory to augment either VM if required]
+
+Since this ticket involves a few steps it would be good to discuss any concerns in advance so we have the right process in place.  Please respond to this ticket with concerns or suggestions.
+
+Thanks,
+Shawn
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=mckee/CN=500323/CN=Shawn Mc Kee</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F35816">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 35816});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

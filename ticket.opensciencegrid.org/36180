@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[36180] Transitioning Minnesota to LCMAPS VOMS authentication</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=36180" method="post">
+<div class="page-header">
+    <h3><span class="muted">36180</span> / Transitioning Minnesota to LCMAPS VOMS authentication</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Brian Lin</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">UMN-CMS-CE</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Brian Lin</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier3</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Close issue</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2018-04-25</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">OSG Glidein Factory Support <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">USCMS_Tier3 <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=36180", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/36180?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/36180?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Transitioning%20Minnesota%20to%20LCMAPS%20VOMS%20authentication%20ISSUE%3D36180%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='36180#1524679667'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-25T18:07:47+00:00">Apr 25, 2018 06:07 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1524679667">&nbsp;</a></div><pre>OK. We&#39;ll close this ticket for now; if you want to start running pilots and run into any problems, let us know.
+
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='36180#1524154489'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-19T16:14:49+00:00">Apr 19, 2018 04:14 PM UTC</time><a class="anchor" name="1524154489">&nbsp;</a></div><pre>Hello,
+
+That&#39;s likely for the best then I think; but will work with the faculty here to make changes if necessary.
+
+Cheers,
+
+by bren0288@....</pre></div><div class='update_description'><i onclick="document.location='36180#1524154360'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-19T16:12:40+00:00">Apr 19, 2018 04:12 PM UTC</time><a class="anchor" name="1524154360">&nbsp;</a></div><pre>Hi,
+
+I can&#39;t find anything that matches &#34;grep spa.umn.edu * -r&#34; in the factory configuration files.
+
+Marco
+
+by m.masche@....</pre></div><div class='update_description'><i onclick="document.location='36180#1524154062'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-19T16:07:42+00:00">Apr 19, 2018 04:07 PM UTC</time><a class="anchor" name="1524154062">&nbsp;</a></div><pre>The new SL7 CE is gc2-ce.spa.umn.edu; The old (SL5...) CE is gc1-ce.spa.umn.edu which I&#39;m working to retire (we&#39; a storage element also which will be next). From my preliminary tests I&#39;m able to submit jobs from the new CE to our local condor master; and RSV seems to indicate most other CE related things are working properly.
+
+gc1-hn.spa.umn.edu is our (also SL5 but still working) local condor master; my goal was to update the CE and SE and thus shutdown GUMS on gc1-hn
+
+Currently the only CMS account we&#39;re mapping is cmsuser (e.g. no cmspilot,, cmsprod, etc.). I&#39;m not 100% sure if our local cms people even want to run CMS factory / production jobs at our site but have progressed to replace our old infrastructure nonetheless.
+
+by bren0288@....</pre></div><div class='update_description'><i onclick="document.location='36180#1524153370'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-19T15:56:10+00:00">Apr 19, 2018 03:56 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1524153370">&nbsp;</a></div><pre>Actually, factory ops folks, could you check if this CE (Jesse, is the
+hostname gc1-hn.spa.umn.edu?) has any CMS entries?
+
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='36180#1524080586'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-18T19:43:06+00:00">Apr 18, 2018 07:43 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1524080586">&nbsp;</a></div><pre>Hi Jesse,
+
+Check condor_ce_q; if you see CMS pilots running, that should be good enough.
+
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='36180#1524069733'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-18T16:42:13+00:00">Apr 18, 2018 04:42 PM UTC</time> by <b>bren0288@....</b><a class="anchor" name="1524069733">&nbsp;</a></div><pre>Hi Mat,
+
+Well I added the new CE this morning as a resource to our site. Currently
+it&#39;s meant to run CE and GridFtp services. Since our only supported VO is
+CMS I have added the cmsuser to the voms-mapfile; I also added mis though
+we don&#39;t currently have a local account for that user.
+
+What can we do to test things are working properly on the CE?
+
+Thanks,
+
+On Wed, Apr 18, 2018 at 10&#58;38 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='36180#1524065927'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-18T15:38:47+00:00">Apr 18, 2018 03:38 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1524065927">&nbsp;</a></div><pre>Hi Jesse,
+
+How is the transition going? Any problems?
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='36180#1523885287'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-16T13:28:07+00:00">Apr 16, 2018 01:28 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1523885287">&nbsp;</a></div><pre>Unassigning myself and assigning to Brian Lin</pre></div><div class='update_description'><i onclick="document.location='36180#1523481154'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-11T21:12:34+00:00">Apr 11, 2018 09:12 PM UTC</time><a class="anchor" name="1523481154">&nbsp;</a></div><pre>Yes that&#39;s fixed the problem at hand, thanks. Of course it&#39;s something silly.
+
+I&#39;ll let you know if anything else comes up, thank you again.
+
+Cheers,
+Jesse
+
+by bren0288@....</pre></div><div class='update_description'><i onclick="document.location='36180#1523472530'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-11T18:48:50+00:00">Apr 11, 2018 06:48 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1523472530">&nbsp;</a></div><pre>Hi Jesse,
+
+Looks like you have a couple of gridftp packages that came from the EPEL
+repos, not the OSG repos.  This probably happened because
+&#34;/etc/yum.repos.d/osg.repo&#34; got modified and does not contain the
+&#34;priority=98&#34; line.  You should look at
+&#34;/etc/yum.repos.d/osg.repo.rpmnew&#34; to see what we distribute.
+
+The packages in question are globus-gridftp-server,
+globus-gridftp-server-progs, and globus-gridftp-server-control.  OSG
+provides patched versions of those, which are a bit behind in version to
+their EPEL counterparts.  Because the priority line was missing, yum
+pulled in the EPEL versions instead of the OSG versions.
+
+You should do the following&#58;
+
+1.  Edit /etc/yum.repos.d/osg.repo and add &#34;priority=98&#34;. (Also make sure
+puppet doesn&#39;t overwrite that next time it runs.)
+
+Also, we suggest changing repo.grid.iu.edu in the baseurl line to
+repo.opensciencegrid.org.  repo.grid.iu.edu is deprecated and may go
+away soon.
+
+2.  Clear your yum cache&#58;
+
+yum clean all --enablerepo=&#92;*
+
+3.  Downgrade the above packages&#58;
+
+yum downgrade globus-gridftp-server globus-gridftp-server-progs &#92;
+globus-gridftp-server-control
+
+Make sure yum picks packages with &#34;osg34&#34; in the version.
+
+Let me know how things go.
+<div id='show_2036808956' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2036808956'>
+Thanks,
+-Mat
+</div><script type='text/javascript'>
+        $('#show_2036808956').click(function() {
+            $('#detail_2036808956').slideDown("normal");
+            $('#show_2036808956').hide();
+            $('#hide_2036808956').show();
+        });
+        $('#hide_2036808956').click(function() {
+            $('#detail_2036808956').slideUp();
+            $('#hide_2036808956').hide();
+            $('#show_2036808956').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='36180#1523468258'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-11T17:37:38+00:00">Apr 11, 2018 05:37 PM UTC</time><a class="anchor" name="1523468258">&nbsp;</a></div><pre>Sure thing, attached. Thanks for your help.
+
+by bren0288@....</pre></div><div class='update_description'><i onclick="document.location='36180#1523464965'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-11T16:42:45+00:00">Apr 11, 2018 04:42 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1523464965">&nbsp;</a></div><pre>Interesting. I cannot find that error message in either lcmaps or any of the globus source code.
+
+Could you please run osg-system-profiler and attach the output to this ticket?
+
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='36180#1523043735'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-06T19:42:15+00:00">Apr 6, 2018 07:42 PM UTC</time><a class="anchor" name="1523043735">&nbsp;</a></div><pre>Yes that was my original thought too to I pulled the DN from the logs and added to the grid-mapfile&#58;
+
+[777]bren@gc2-ce&#58;~&#62; getent passwd rsv
+rsv&#58;x&#58;6528&#58;7000&#58;System User&#58;/export/scratch/users/rsv&#58;/bin/bash
+
+[778]bren@gc2-ce&#58;~&#62; grep rsv /etc/grid-security/grid-mapfile
+&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=rsv/gc2-ce.spa.umn.edu&#34; rsv
+
+This line from system messages makes it seem that the user is being mapped properly too, but it&#39;s followed by some root-mapping info which I&#39;m not sure is good / bad / insignificant&#58;
+
+Apr  6 19&#58;08&#58;00 gc2-ce globus-gridftp-server&#58; lcmaps&#58; LCMAPS CRED FINAL&#58; DN&#58;&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=rsv/gc2-ce.spa.umn.edu&#34;-&#62;mapped uid&#58;&#39;6528&#39;,pgid&#58;&#39;7000&#39;,sgid&#58;&#39;7000&#39;
+Apr  6 19&#58;08&#58;00 gc2-ce globus-gridftp-server&#58; You are still root after the LCMAPS execution. The implicit root-mapping safety is enabled. See documentation for details.
+
+Thank you,
+Jesse
+
+by bren0288@....</pre></div><div class='update_description'><i onclick="document.location='36180#1523039024'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-06T18:23:44+00:00">Apr 6, 2018 06:23 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1523039024">&nbsp;</a></div><pre>Hi Jesse,
+
+I can take a closer look next week but I think that because the RSV user
+does not have any VOMS attributes in its proxy, its DN will need to be
+mapped to a user in /etc/grid-security/grid-mapfile on
+gc2-ce.spa.umn.edu, and that user must exist on that machine. Is that
+the case?
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='36180#1523022917'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-06T13:55:17+00:00">Apr 6, 2018 01:55 PM UTC</time><a class="anchor" name="1523022917">&nbsp;</a></div><pre>Hi Mat,
+
+Since you offered I have encountered a bit of an issue&#58; I&#39;ve build the new CE for our site, configured it to be able to submit to our local condor master and that is all working. I&#39;ve configured and have RSV running on the CE as well but it continually fails on one specific metric - org.osg.globus.gridftp-simple
+
+I read somewhere (can&#39;t find it now...) that some older commands are configured to use the newer auth methods, otherwise I assumed it&#39;s something wrong with our grid user mapping. The RSV metric info&#58;
+
+----
+
+metricName&#58; org.osg.globus.gridftp-simple
+metricType&#58; status
+timestamp&#58; 2018-04-05 14&#58;08&#58;00 UTC
+metricStatus&#58; CRITICAL
+serviceType&#58; GridFTP
+serviceURI&#58; gc2-ce.spa.umn.edu
+gatheredAt&#58; gc2-ce.spa.umn.edu
+summaryData&#58; CRITICAL
+detailsData&#58; Failed to transfer to remote host.
+Command&#58; globus-url-copy &#39;file&#58;///usr/share/rsv/probe-helper-files/gridftp-probe-test-file&#39; &#39;<a href='gsiftp&#58;//gc2-ce.spa.umn.edu//tmp/gridftp-probe-test-file.1522937280.44725.remote&#39' target='_blank' rel='nofollow'>gsiftp&#58;//gc2-ce.spa.umn.edu//tmp/gridftp-probe-test-file.1522937280.44725.remote&#39</a>; 2&#62;&1
+Output&#58;
+
+error&#58; globus_ftp_client&#58; the server responded with an error
+530 530-Login incorrect. &#58; globus_gss_assist&#58; Error invoking callout
+530-globus_callout_module&#58; The callout returned an error
+530-an unknown error occurred
+530 End.
+
+EOT
+
+----
+
+So it seems to be an auth issue. LCMAPS though does appear to be working (please pardon the long output)&#58;
+
+----
+
+[553]bren@gc2-ce&#58;~&#62; voms-proxy-init
+<div id='show_1912175497' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1912175497'>Enter GRID pass phrase&#58;
+Your identity&#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jbren/CN=817661/CN=Jesse Clair Bren
+Creating proxy ............................................................... Done
+
+Your proxy is valid until Sat Apr  7 01&#58;53&#58;52 2018
+[554]bren@gc2-ce&#58;~&#62; llrun -s -l mode=pem,policy=authorize_only,db=/etc/lcmaps.db -p/tmp/x509up_u&#96;id -u&#96;
+[llrun]&#58; WARNING&#58; X509_USER_PROXY is not set.
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; lcmaps_credential_store_x509_and_sub_elements&#58; No VOMS FQANs found in X509 credentials
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; Starting policy&#58; authorize_only
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58; Cert at depth 3 is a root CA&#58; &#34;/C=ch/O=CERN/CN=CERN Root Certification Authority 2&#34;
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    Key strength&#58; 4096
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58; Cert at depth 2 is a CA&#58; &#34;/DC=ch/DC=cern/CN=CERN Grid Certification Authority&#34;
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    signature algorithm&#58; sha512WithRSAEncryption (=1.2.840.113549.1.1.13)
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    Key strength&#58; 4096
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58; Cert at depth 1 is an EEC&#58; &#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jbren/CN=817661/CN=Jesse Clair Bren&#34;
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    signature algorithm&#58; sha512WithRSAEncryption (=1.2.840.113549.1.1.13)
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    Key strength&#58; 2048
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    CA hash&#58; 5168735f, serial&#58; 2F478D56000000052B4F
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    subjAltName rfc822Name&#58; bren0288@....
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    policy OID&#58; 1.3.6.1.4.1.96.10.4.2.2.3.1
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    policy OID&#58; 1.2.840.113612.5.2.2.1
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58; Cert at depth 0 (proxylevel 0) is a RFC3820 Proxy&#58; &#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jbren/CN=817661/CN=Jesse Clair Bren/CN=479292927&#34;
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    signature algorithm&#58; sha512WithRSAEncryption (=1.2.840.113549.1.1.13)
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58;    Key strength&#58; 1024
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58; The verification of the certificate has succeeded.
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; verify_log&#58; Verification of chain with private key is OK
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; lcmaps_plugin_verify_proxy-plugin_run()&#58; verify proxy plugin succeeded
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; lcmaps_ban_dn-plugin_run()&#58; ban_dn plugin succeeded
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; lcmaps_ban_fqan-plugin_run()&#58; no (valid) VOMS groups found --&#62; no mapping
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; lcmaps_ban_fqan-plugin_run()&#58; ban_fqan plugin succeeded
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; lcmaps_gridmapfile&#58; Found mapping bren for &#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jbren/CN=817661/CN=Jesse Clair Bren&#34; (line 1)
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; lcmaps_localaccount-plugin_run()&#58; localaccount plugin succeeded
+lcmaps[84248]    LOG_INFO&#58; 2018-04-06.13&#58;53&#58;54Z&#58; lcmaps_dummy_good-plugin_run()&#58; good plugin succeeded
+lcmaps[84248]  LOG_NOTICE&#58; 2018-04-06.13&#58;53&#58;54Z&#58; LCMAPS CRED FINAL&#58; DN&#58;&#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jbren/CN=817661/CN=Jesse Clair Bren&#34;-&#62;mapped uid&#58;&#39;6850&#39;,pgid&#58;&#39;5744&#39;,sgid&#58;&#39;200&#39;,sgid&#58;&#39;1012&#39;,sgid&#58;&#39;5001&#39;,sgid&#58;&#39;5046&#39;,sgid&#58;&#39;5103&#39;,sgid&#58;&#39;5413&#39;,sgid&#58;&#39;5742&#39;,sgid&#58;&#39;5744&#39;,sgid&#58;&#39;5748&#39;
+[llrun]&#58; LCMAPS succeeded.
+[llrun]&#58; uid=6850(bren)
+[llrun]&#58; primary gids&#58; 1
+[llrun]&#58; pgid[0]=5744(users)
+[llrun]&#58; secondary gids&#58; 9
+[llrun]&#58; sgid[0]=200(web)
+[llrun]&#58; sgid[1]=1012(jupyterhub)
+[llrun]&#58; sgid[2]=5001(sysadm)
+[llrun]&#58; sgid[3]=5046(adminwiki)
+[llrun]&#58; sgid[4]=5103(htphysics)
+[llrun]&#58; sgid[5]=5413(mock)
+[llrun]&#58; sgid[6]=5742(staff)
+[llrun]&#58; sgid[7]=5744(users)
+[llrun]&#58; sgid[8]=5748(hdfsroot)
+[llrun]&#58; poolindex=undefined
+
+----
+
+Thanks!
+
+by bren0288@....
+</div><script type='text/javascript'>
+        $('#show_1912175497').click(function() {
+            $('#detail_1912175497').slideDown("normal");
+            $('#show_1912175497').hide();
+            $('#hide_1912175497').show();
+        });
+        $('#hide_1912175497').click(function() {
+            $('#detail_1912175497').slideUp();
+            $('#hide_1912175497').hide();
+            $('#show_1912175497').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='36180#1522792062'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-03T21:47:42+00:00">Apr 3, 2018 09:47 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1522792062">&nbsp;</a></div><pre>OK, let us know if you run into trouble.
+
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='36180#1522783999'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-03T19:33:19+00:00">Apr 3, 2018 07:33 PM UTC</time> by <b>bren0288@....</b><a class="anchor" name="1522783999">&nbsp;</a></div><pre>Hi Kyle,
+
+Still working on this. Upon further investigation we discovered that our
+current CE and SE are too old to use LCMAPS. I&#39;m working on bringing up two
+new ones currently.
+
+On Tue, Apr 3, 2018 at 11&#58;47 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='36180#1522770667'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-03T15:51:07+00:00">Apr 3, 2018 03:51 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1522770667">&nbsp;</a></div><pre>Any updates on this?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='36180#1521567104'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-20T17:31:44+00:00">Mar 20, 2018 05:31 PM UTC</time><a class="anchor" name="1521567104">&nbsp;</a></div><pre>Hi Brian,
+
+I&#39;ve received your message (yes previous site admin&#39;s Nick and Graham are no longer with us). I&#39;ll look into making these changes; it&#39;s likely we&#39;ll just be installing / updating lcmaps as described.
+
+When that is complete will there be any way to confirm on your end that we are up-to-date as needed?
+
+Thanks,
+Jesse Bren
+
+by bren0288@....</pre></div><div class='update_description'><i onclick="document.location='36180#1521561332'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-20T15:55:32+00:00">Mar 20, 2018 03:55 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1521561332">&nbsp;</a></div><pre>Jessie,
+
+Please see below about the LCMAPS VOMS transition, whose deadline is fast approaching. We hope to have all sites done with this transition by the end of March.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='36180#1521560364'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-20T15:39:24+00:00">Mar 20, 2018 03:39 PM UTC</time> by <b>klannon@....</b><a class="anchor" name="1521560364">&nbsp;</a></div><pre>Hello Brian,
+
+That is a good question.  The only person listed for Minnesota in our Site DB is Jeremy Mans, who is a physics professor.  I think he operates as the site PI, but I don’t think he’s involved in the day-to-day systems administration.  There is also this ticket about granting Jessie Bren a GridAdmin privileges for Minnesota&#58;
+
+<a href='https&#58;//ticket.opensciencegrid.org/36176//' target='_blank' rel='nofollow'>https&#58;//ticket.opensciencegrid.org/36176//</a>
+
+It looks like that went through, so he would probably be a good person to contact.
+
+Sincerely,
+Kevin
+
+On Mar 20, 2018, 10&#58;29 AM -0500, Open Science Grid FootPrints &#60;osg@....&#62;, wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='36180#1521559656'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-20T15:27:36+00:00">Mar 20, 2018 03:27 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1521559656">&nbsp;</a></div><pre>CMS T3 support&#58; is Nick Bertrand still the correct contact for University of Minnesota?</pre></div><div class='update_description'><i onclick="document.location='36180#1521206117'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-16T13:15:17+00:00">Mar 16, 2018 01:15 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1521206117">&nbsp;</a></div><pre>Hi Nick,
+
+Have you had a chance to take a look at the transition information?
+
+Thanks,
+Kyle</pre></div><div class='update_description'><i onclick="document.location='36180#1520383102'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-07T00:38:22+00:00">Mar 7, 2018 12:38 AM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1520383102">&nbsp;</a></div><pre>Hi Nick,
+
+Have you had a chance to take a look at the transition information?
+
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='36180#1519663357'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-26T16:42:37+00:00">Feb 26, 2018 04:42 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1519663357">&nbsp;</a></div><pre>Hi Nick,
+
+Have you seen this ticket?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='36180#1518802678'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-16T17:37:58+00:00">Feb 16, 2018 05:37 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1518802678">&nbsp;</a></div><pre>As part of the VOMS Admin server retirement (<a href='https&#58;//opensciencegrid.github.io/technology/policy/voms-admin-retire/' target='_blank' rel='nofollow'>https&#58;//opensciencegrid.github.io/technology/policy/voms-admin-retire/</a>), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (<a href='http&#58;//opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/</a>). If you are receiving this e-mail, we&#39;ve identified the following hosts at your site querying VOMS Admin servers in the OSG&#58;
+
+- gc1-hn.spa.umn.edu
+
+For edg-mkgridmap users, you can find specific instructions here&#58;
+<a href='http&#58;//opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.</a>
+
+For GUMS users, you can find specific instructions here&#58;
+<a href='http&#58;//opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-gums' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-gums</a>
+
+If you are unable to update your GUMS server at this time, you need to update the lcmaps package (latest OSG 3.3 version is 1.6.6-1.9) for all clients of your GUMS server (HTCondor-CE, GridFTP, XRootD, dCache, or BeStMan hosts). This causes lcmaps to perform VOMS attribute verification instead of GUMS. Note&#58; as VOMS Admin servers are retired, errors will appear in GUMS when VO member lists are updated. This is OK if you have updated lcmaps on your clients.</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><a href="35885"><b>35885</b> Transitioning FNAL to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+    - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=cmssrv226.fnal.gov
+    - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gums1.fnal.gov
+    - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gums2.fnal.gov
+    - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gums3.fnal.gov
+    - /DC=org/DC=opensciencegrid/O=Open </p><a href="35956"><b>35956</b> Transitioning OSCER to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+        - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=grid1.oscer.ou.edu
+        - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=ouhep0.nhn.ou.edu
+        - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=se1.oscer.ou.edu
+        - 43.39.RZ42.oscer.ou.edu
+        - 43.41.RZ42.oscer.ou.edu
+
+For edg-mkgridmap users, you can fi</p><a href="35954"><b>35954</b> Transitioning BNL to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+        - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gums.racf.bnl.gov
+
+For edg-mkgridmap users, you can find specific instructions here: http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, we can assist with the transition. If you would like help, please attach '/etc/gums/gums.config',</p><a href="36189"><b>36189</b> Transitioning UTA to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+  - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=http/gk02.swt2.uta.edu
+
+
+For edg-mkgridmap users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps</p><a href="36187"><b>36187</b> Transitioning BU to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+  - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=atlas-ce.bu.edu
+
+
+For edg-mkgridmap users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-a</p><a href="35958"><b>35958</b> Transitioning SLAC to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+        - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=osggums02.slac.stanford.edu
+
+For edg-mkgridmap users, you can find specific instructions here: http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, we can assist with the transition. If you would like help, please attach '/etc/gums/gum</p><a href="35886"><b>35886</b> Transitioning Purdue to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+    - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=vo.rcac.purdue.edu
+
+
+For edg-mkgridmap users, you can find specific instructions here: http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, we can assist with the transition. If you would like help, please attach '/etc/gums/gums.config', </p><a href="35889"><b>35889</b> Transitioning Brown to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+    - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=http/gums.hep.brown.edu
+
+For edg-mkgridmap users, you can find specific instructions here: http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, we can assist with the transition. If you would like help, please attach '/etc/gums/gums.config</p><a href="36343"><b>36343</b> CalTech - Transitioning to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement
+(https://opensciencegrid.github.io/technology/policy/voms-admin-retire/),
+we are encouraging sites using edg-mkgridmap or GUMS to make the
+transition to LCMAPS VOMS Admin
+(http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If
+you are receiving this e-mail, we've identified the following hosts at
+your site querying VOMS Admin servers in the OSG at least once in the past few months:
+
+- Caltech
+  - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gums2.ultralight.org
+
+For edg-mkgridmap users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, you can find specific instructions here:
+htt</p><a href="36341"><b>36341</b> UCR - Transitioning to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement
+(https://opensciencegrid.github.io/technology/policy/voms-admin-retire/),
+we are encouraging sites using edg-mkgridmap or GUMS to make the
+transition to LCMAPS VOMS Admin
+(http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If
+you are receiving this e-mail, we've identified the following hosts at
+your site querying VOMS Admin servers in the OSG at least once in the past few months:
+
+- UC Riverside
+  - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=http/bottom.ucr.edu
+
+For edg-mkgridmap users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, you can find specific instructions here:
+</p><a href="36178"><b>36178</b> Transitioning Bellarmine to LCMAPS VOMS authentication (Resolved)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+  - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=tier2-osg1.bellarmine.edu
+  - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=tier2-osg2.bellarmine.edu
+
+For edg-mkgridmap users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, y</p><a href="36340"><b>36340</b> SMU - Transitioning to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement
+(https://opensciencegrid.github.io/technology/policy/voms-admin-retire/),
+we are encouraging sites using edg-mkgridmap or GUMS to make the
+transition to LCMAPS VOMS Admin
+(http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If
+you are receiving this e-mail, we've identified the following hosts at
+your site querying VOMS Admin servers in the OSG at least once in the past few months:
+
+- SMU
+  - /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=http/mfosggums.hpc.smu.edu
+
+For edg-mkgridmap users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, you can find specific instructions here:
+h</p><a href="36181"><b>36181</b> Transitioning TAMU to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+  - gw01.brazos.tamu.edu
+
+For edg-mkgridmap users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-gums
+
+If you are unable to </p><a href="36339"><b>36339</b> KISTI - Transitioning to LCMAPS VOMS authentication (Closed)</a><p>As part of the VOMS Admin server retirement
+(https://opensciencegrid.github.io/technology/policy/voms-admin-retire/),
+we are encouraging sites using edg-mkgridmap or GUMS to make the
+transition to LCMAPS VOMS Admin
+(http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If
+you are receiving this e-mail, we've identified the following hosts at
+your site querying VOMS Admin servers in the OSG at least once in the past few months:
+
+- KISTI
+   - /C=KR/O=KISTI/O=KISTI/CN=host/gums.sdfarm.kr
+
+For edg-mkgridmap users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, you can find specific instructions here:
+http://opensciencegrid.github.io/docs/secu</p><a href="35880"><b>35880</b> Transitioning UMD_GUMS to LCMAPS VOMS authentication (Closed)</a><p>Dear Shabnam Jabeen,
+
+As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+UMD_GUMS ( hepcmsdev-6.umd.edu )
+
+For edg-mkgridmap users, you can find specific instructions here: http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, we can assist with the transition. If you would like help, please attach '/etc/gums/gums.config', redacting the 'hibernate.connect</p><a href="35883"><b>35883</b> Transitioning Hyak_CE to LCMAPS VOMS authentication (Closed)</a><p>Dear Stephen Fralich,
+
+As part of the VOMS Admin server retirement (https://opensciencegrid.github.io/technology/policy/voms-admin-retire/), we are encouraging sites using edg-mkgridmap or GUMS to make the transition to LCMAPS VOMS Admin (http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/). If you are receiving this e-mail, we've identified the following hosts at your site querying VOMS Admin servers in the OSG:
+
+Hyak_CE ( globus1.hyak.washington.edu )
+
+For edg-mkgridmap users, you can find specific instructions here: http://opensciencegrid.github.io/docs/security/lcmaps-voms-authentication/#migrating-from-edg-mkgridmap.
+
+For GUMS users, we can assist with the transition. If you would like help, please attach '/etc/gums/gums.config', redacting the 'hibernate</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F36180">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 36180});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

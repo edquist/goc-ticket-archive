@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[26291] HTCondor-CE JobRouter Hook crashes condor_job_router</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=26291" method="post">
+<div class="page-header">
+    <h3><span class="muted">26291</span> / HTCondor-CE JobRouter Hook crashes condor_job_router</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Dockendorf</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">John Dockendorf</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for User Response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-08-19</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Edgar Fajardo <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=26291", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/26291?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/26291?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20HTCondor-CE%20JobRouter%20Hook%20crashes%20condor_job_router%20ISSUE%3D26291%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='26291#1439930482'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-18T20:41:22+00:00">Aug 18, 2015 08:41 PM UTC</time><a class="anchor" name="1439930482">&nbsp;</a></div><pre>Then I am closing this ticket and I guess we will follow it from the Condor ticket.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26291#1439911674'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-18T15:27:54+00:00">Aug 18, 2015 03:27 PM UTC</time><a class="anchor" name="1439911674">&nbsp;</a></div><pre>I opened a ticket - <a href='https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=5224' target='_blank' rel='nofollow'>https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=5224</a>
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='26291#1439841467'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-17T19:57:47+00:00">Aug 17, 2015 07:57 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1439841467">&nbsp;</a></div><pre>Was a ticket opened for this?  Does this ticket need to remain open?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='26291#1439318755'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-11T18:45:55+00:00">Aug 11, 2015 06:45 PM UTC</time><a class="anchor" name="1439318755">&nbsp;</a></div><pre>Hi Trey,
+
+Now I see. This is interesting and definetly looks like a bug in condor land. Could you please open a ticket there&#58;
+
+<a href='https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktnew' target='_blank' rel='nofollow'>https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktnew</a>
+
+Reference this ticket,
+
+Thank You,
+
+Edgar
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26291#1439317421'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-11T18:23:41+00:00">Aug 11, 2015 06:23 PM UTC</time><a class="anchor" name="1439317421">&nbsp;</a></div><pre>I see this in the log file&#58;
+
+08/10/15 17&#58;07&#58;21 Hook PILOT_HOOK_TRANSLATE_JOB&#58; /usr/libexec/htcondor-pilot-job-router/pilot-translate.py
+08/10/15 17&#58;07&#58;21 error opening watchdog pipe /var/lock/condor-ce/procd_pipe.watchdog&#58; Permission denied (13)
+08/10/15 17&#58;07&#58;21 ProcFamilyClient&#58; error initializing LocalClient
+08/10/15 17&#58;07&#58;21 ProcFamilyProxy&#58; error initializing ProcFamilyClient
+08/10/15 17&#58;07&#58;21 waiting a second to allow the ProcD to be restarted
+
+That repeats a few times then logs show procd as being restarted since it crashed.  The procd_pipe.watchdog file is condor&#58;condor 0600 and when I print the UID of the unix account executing pilot-translate.py it prints as the UID of the job&#39;s Owner, not condor.  The UID of the account executing pilot-translate.py doesn&#39;t change when JOB_ROUTER.USE_PROCD=False but it appears the procd_pipe.watchdog is not used when False.
+
+I may have run the condor_ce_config_val command when I had commented out JOB_ROUTER.USE_PROCD to reproduce the error.  I&#39;ve re-attached the config values.
+
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='26291#1439313617'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-11T17:20:17+00:00">Aug 11, 2015 05:20 PM UTC</time><a class="anchor" name="1439313617">&nbsp;</a></div><pre>Hi John,
+
+I am lost. In the log file JobRouterLog-20150810.tar.bz2.txt I don&#39;t see any error, but in the condor_ce_config_val I don&#39;t see this JOB_ROUTER.USE_PROCD = False. Does it mean it is no longer crashing?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26291#1439244785'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-10T22:13:05+00:00">Aug 10, 2015 10:13 PM UTC</time><a class="anchor" name="1439244785">&nbsp;</a></div><pre>My mistake, the issue is still present.  I guess commenting out JOB_ROUTER.USE_PROCD = False and running &#34;condor_ce_reconfig&#34; was not enough to remove that setting.  I restarted the condor-ce service and immediately my test jobs produced the &#34;permission denied&#34; errors.  I&#39;ve attached the log as JobRouterLog-20150810.tar.bz2.txt.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='26291#1439240244'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-10T20:57:24+00:00">Aug 10, 2015 08:57 PM UTC</time><a class="anchor" name="1439240244">&nbsp;</a></div><pre>Is JOB_ROUTER_LOG_DEBUG different than JOB_ROUTER_DEBUG?  I had JOB_ROUTER_DEBUG set to D_FULLDEBUG.  In case those are somehow different, I set both to D_FULLDEBUG.
+
+/var/lock/condor-ce/procd_pipe.watchdog is recreated when condor-ce service is restarted.  I removed it, restarted condor-ce, and it was back.
+
+I&#39;ve removed JOB_ROUTER.USE_PROCD=false and now I&#39;m not seeing the error.
+
+When I received the error previously was when my hook was not enabled globally via JOB_ROUTER_HOOK_KEYWORD = PILOT but instead was invoked by passing +HookKeyword = &#34;PILOT&#34; in my submit file.  This was done during early testing to avoid interfering with real jobs.
+
+I&#39;ve attached condor_ce_config_val -dump output.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='26291#1439240239'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-10T20:57:19+00:00">Aug 10, 2015 08:57 PM UTC</time><a class="anchor" name="1439240239">&nbsp;</a></div><pre>Is JOB_ROUTER_LOG_DEBUG different than JOB_ROUTER_DEBUG?  I had JOB_ROUTER_DEBUG set to D_FULLDEBUG.  In case those are somehow different, I set both to D_FULLDEBUG.
+
+/var/lock/condor-ce/procd_pipe.watchdog is recreated when condor-ce service is restarted.  I removed it, restarted condor-ce, and it was back.
+
+I&#39;ve removed JOB_ROUTER.USE_PROCD=false and now I&#39;m not seeing the error.
+
+When I received the error previously was when my hook was not enabled globally via JOB_ROUTER_HOOK_KEYWORD = PILOT but instead was invoked by passing +HookKeyword = &#34;PILOT&#34; in my submit file.  This was done during early testing to avoid interfering with real jobs.
+
+I&#39;ve attached condor_ce_config_val -dump output.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='26291#1438724022'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-04T21:33:42+00:00">Aug 4, 2015 09:33 PM UTC</time><a class="anchor" name="1438724022">&nbsp;</a></div><pre>Hi Trey, John,
+
+Can you run the JobRouter with FULL_DEBUG, aka
+
+JOB_ROUTER_LOG_DEBUG = D_FULLDEBUG
+
+Also include your  condor_ce_config_val- dump output.
+
+Have you tried removing the file&#58;
+
+/var/lock/condor-ce/procd_pipe.watchdog
+
+And restarting the htcondor-ce to see what happens?
+
+Brian,
+
+Do you want me to open a ticket for HTCondor?
+
+Cheers,
+
+Edgar
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26291#1438721831'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-04T20:57:11+00:00">Aug 4, 2015 08:57 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1438721831">&nbsp;</a></div><pre>Edgar, can you take a look at this?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='26291#1438633521'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-03T20:25:21+00:00">Aug 3, 2015 08:25 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1438633521">&nbsp;</a></div><pre>What is the status of this?  Have we created any sort of bug report?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='26291#1438020186'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-27T18:03:06+00:00">Jul 27, 2015 06:03 PM UTC</time><a class="anchor" name="1438020186">&nbsp;</a></div><pre>FWIW - Trey and I confirmed this goes away if the procd is disabled by the job router&#58;
+
+JOB_ROUTER.USE_PROCD=false
+
+So it&#39;s very likely a condor bug.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='26291#1437783828'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-25T00:23:48+00:00">Jul 25, 2015 12:23 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1437783828">&nbsp;</a></div><pre>I&#39;m testing a JobRouter translate hook with HTCondor-CE and everytime my jobs invoke the hook the CE&#39;s condor_job_router process crashes.
+
+Hook config in /etc/condo-ce/config.d/99-local.conf (entire file attached)&#58;
+
+PILOT_HOOK_TRANSLATE_JOB = /usr/libexec/htcondor-job-router/pilot-translate.py
+
+My submit script (attached) contains this line&#58;
+
++HookKeyword = &#34;PILOT&#34;
+
+The error in JobRouterLog&#58;
+
+07/24/15 17&#58;58&#58;27 JobRouter (src=80283.0,route=Local_PBS)&#58; claimed job
+07/24/15 17&#58;58&#58;27 Hook PILOT_HOOK_TRANSLATE_JOB&#58; /usr/libexec/htcondor-job-router/pilot-translate.py
+07/24/15 17&#58;58&#58;27 error opening watchdog pipe /var/lock/condor-ce/procd_pipe.watchdog&#58; Permission denied (13)
+07/24/15 17&#58;58&#58;27 ProcFamilyClient&#58; error initializing LocalClient
+07/24/15 17&#58;58&#58;27 ProcFamilyProxy&#58; error initializing ProcFamilyClient
+07/24/15 17&#58;58&#58;27 waiting a second to allow the ProcD to be restarted
+
+The above errors repeat a few times then this is printed&#58;
+
+07/24/15 17&#58;58&#58;32 ERROR &#34;unable to restart the ProcD after several tries&#34; at line 677 in file /builddir/build/BUILD/condor-8.2.8/src/condor_utils/proc_family_proxy.cpp
+
+The file mentioned in log&#58;
+
+prw------- 1 condor root 0 Jul 24 18&#58;25 /var/lock/condor-ce/procd_pipe.watchdog
+
+My Python script is also attached.  Right now I&#39;m just testing that the script receives the data and returns the same data.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F26291">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 26291});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

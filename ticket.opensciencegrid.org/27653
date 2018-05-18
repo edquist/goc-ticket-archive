@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[27653] Shutdown IPv6 on OSG ITB network datastore instances</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=27653" method="post">
+<div class="page-header">
+    <h3><span class="muted">27653</span> / Shutdown IPv6 on OSG ITB network datastore instances</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Shawn McKee</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">psds-itb1</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Ops</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Shawn McKee</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">OSG-GOC</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-01-08</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Thomas Lee <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">OSG-GOC <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=27653", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/27653?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/27653?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Shutdown%20IPv6%20on%20OSG%20ITB%20network%20datastore%20instances%20ISSUE%3D27653%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='27653#1452286571'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-08T20:56:11+00:00">Jan 8, 2016 08:56 PM UTC</time> by <b>Shawn McKee</b><a class="anchor" name="1452286571">&nbsp;</a></div><pre>Yes, we can close this one.
+
+We may need to open another one about the ongoing issues with only getting
+a little of the expected data.
+
+Thanks,
+
+Shawn
+
+On Fri, Jan 8, 2016 at 3&#58;29 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27653#1452284953'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-08T20:29:13+00:00">Jan 8, 2016 08:29 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1452284953">&nbsp;</a></div><pre>Can this ticket be closed?   IPv6 has been disabled on ITB for a month; the rest were all other problems.</pre></div><div class='update_description'><i onclick="document.location='27653#1452068819'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-06T08:26:59+00:00">Jan 6, 2016 08:26 AM UTC</time><a class="anchor" name="1452068819">&nbsp;</a></div><pre>Tom, thanks for the full report on simplevisor, I think it was hitting timeouts since the workload on the ITB servers back in October was too high (if I remember correctly). This was fixed by Edgar by reducing the number of RSV tests, but perhaps we forgot to check back on simplevisor/stompclt to see if they&#39;re running correctly. I can confirm that no messages were sent to netmon-test-mb broker since 22nd October until yesterday. I will monitor netmon-test-mb situation and let you know in case simplevisor dies again. If it happens then we can try to tune up some of it&#39;s parameters (like timeouts, number of supervision cycles, etc.). It has been working fine in production, so I think it was just due to the high load on ITB.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=mbabik/CN=555091/CN=Marian Babik</pre></div><div class='update_description'><i onclick="document.location='27653#1452021748'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T19:22:28+00:00">Jan 5, 2016 07:22 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1452021748">&nbsp;</a></div><pre>I just rebooted the VM.  Directories have been appearing in /usr/local/rsv-perfsonar, and files have been appearing within those directories.</pre></div><div class='update_description'><i onclick="document.location='27653#1452021644'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T19:20:44+00:00">Jan 5, 2016 07:20 PM UTC</time><a class="anchor" name="1452021644">&nbsp;</a></div><pre>Tom did you restast postgres?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='27653#1452021371'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T19:16:11+00:00">Jan 5, 2016 07:16 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1452021371">&nbsp;</a></div><pre>The simplevisor log is now˘ just showing messages such as this&#58;
+
+2016-01-05 18&#58;59&#58;33,672 simplevisor[958]&#58; [INFO] supervision cycle executed successfully in 0.774s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2016-01-05 19&#58;00&#58;05,394 simplevisor[958]&#58; [INFO] supervision cycle executed successfully in 1.661s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2016-01-05 19&#58;00&#58;37,567 simplevisor[958]&#58; [INFO] supervision cycle executed successfully in 2.081s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2016-01-05 19&#58;01&#58;08,642 simplevisor[958]&#58; [INFO] supervision cycle executed successfully in 0.992s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+
+This is very similar to how it looked back on October 22&#58;
+
+2015-10-22 18&#58;31&#58;04,914 simplevisor[2444]&#58; [INFO] supervision cycle executed successfully in 0.717s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;31&#58;35,858 simplevisor[2444]&#58; [INFO] supervision cycle executed successfully in 0.887s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;32&#58;06,554 simplevisor[2444]&#58; [INFO] supervision cycle executed successfully in 0.630s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;32&#58;37,798 simplevisor[2444]&#58; [INFO] supervision cycle executed successfully in 1.183s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;33&#58;08,444 simplevisor[2444]&#58; [INFO] supervision cycle executed successfully in 0.574s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;33&#58;19,922 simplevisor[2444]&#58; [INFO] caught SIGTERM
+2015-10-22 18&#58;33&#58;19,923 simplevisor[2444]&#58; [INFO] stopping all the children
+2015-10-22 18&#58;33&#58;21,836 simplevisor[2444]&#58; [INFO] service dashb-test-mb found running, stopped with result&#58; (0, &#39;stompclt (pid 21607) is being told to quit...&#92;nstompclt does not seem to be running anymore&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;33&#58;21,838 simplevisor[2444]&#58; [INFO] stopping
+2015-10-22 18&#58;33&#58;21,840 simplevisor[2444]&#58; [INFO] stopped
+
+I&#39;m not sure what stopped it -- it wasn&#39;t regular OS updates, because that was a Thursday and updates are on Tuesdays.  However, when it started back up, it looked different&#58;
+
+2015-10-22 18&#58;33&#58;25,275 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 6645) started&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;33&#58;25,283 simplevisor[6620]&#58; [INFO] started
+2015-10-22 18&#58;33&#58;25,925 simplevisor[6620]&#58; [INFO] supervision cycle executed successfully in 0.642s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;33&#58;57,145 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 6892) started&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;33&#58;57,147 simplevisor[6620]&#58; [INFO] supervision cycle executed successfully in 1.179s&#58; 0 services OK, 1 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;34&#58;28,466 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 7140) started&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;34&#58;28,468 simplevisor[6620]&#58; [INFO] supervision cycle executed successfully in 1.260s&#58; 0 services OK, 1 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;34&#58;59,584 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 7380) started&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;34&#58;59,586 simplevisor[6620]&#58; [INFO] supervision cycle executed successfully in 1.062s&#58; 0 services OK, 1 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;35&#58;30,912 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 8086) started&#92;n&#39;, &#39;&#39;)
+
+Then things started to get strange.
+
+<div id='show_723661938' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_723661938'>2015-10-22 18&#58;35&#58;30,921 simplevisor[6620]&#58; [ERROR] perfsonar1 handled 4 adjustments in 12 supervision cycles
+2015-10-22 18&#58;35&#58;30,921 simplevisor[6620]&#58; [ERROR] perfsonar1 handled 4 adjustments in 12 supervision cycles
+2015-10-22 18&#58;35&#58;32,269 simplevisor[6620]&#58; [INFO] service dashb-test-mb found running, stopped with result&#58; (0, &#39;stompclt does not seem to be running (no pid file)&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;35&#58;32,270 simplevisor[6620]&#58; [INFO] supervisor perfsonar1 stopped, starting it
+2015-10-22 18&#58;35&#58;33,517 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 8109) started&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;35&#58;33,519 simplevisor[6620]&#58; [INFO] supervision cycle executed successfully in 3.857s&#58; 0 services OK, 1 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;36&#58;04,714 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 8349) started&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;36&#58;04,716 simplevisor[6620]&#58; [ERROR] perfsonar1 handled 5 adjustments in 12 supervision cycles
+2015-10-22 18&#58;36&#58;04,716 simplevisor[6620]&#58; [ERROR] perfsonar1 handled 5 adjustments in 12 supervision cycles
+2015-10-22 18&#58;36&#58;05,339 simplevisor[6620]&#58; [INFO] supervisor perfsonar1 stopped, starting it
+2015-10-22 18&#58;36&#58;06,595 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 8368) started&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;36&#58;06,597 simplevisor[6620]&#58; [INFO] supervision cycle executed successfully in 3.029s&#58; 0 services OK, 1 services needed adjustment, 0 services failed adjustment
+2015-10-22 18&#58;36&#58;37,868 simplevisor[6620]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 8609) started&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;36&#58;37,870 simplevisor[6620]&#58; [ERROR] perfsonar1 handled 6 adjustments in 12 supervision cycles
+2015-10-22 18&#58;36&#58;37,871 simplevisor[6620]&#58; [ERROR] perfsonar1 handled 6 adjustments in 12 supervision cycles
+
+There were repeated incidents of &#34;stompclt does not seem to be running (no pid file)&#34;, until this happened&#58;
+
+2015-10-22 18&#58;37&#58;15,136 simplevisor[6620]&#58; [INFO] service dashb-test-mb found running, stopped with result&#58; (0, &#39;stompclt does not seem to be running (no pid file)&#92;n&#39;, &#39;&#39;)
+2015-10-22 18&#58;37&#58;15,420 simplevisor[6620]&#58; [ERROR] supervision interrupted/failed
+
+It seems to have stayed down until the following Tuesday (a production OS update day, and psds-itb1 is running on a VM host designated production), because the next log entries occur then.  It didn&#39;t stay up for long&#58;
+
+2015-10-27 17&#58;42&#58;16,754 simplevisor[2443]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 2449) started&#92;n&#39;, &#39;&#39;)
+2015-10-27 17&#58;42&#58;16,808 simplevisor[2443]&#58; [INFO] started
+2015-10-27 17&#58;42&#58;17,169 simplevisor[2443]&#58; [INFO] supervision cycle executed successfully in 0.360s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2015-10-27 17&#58;42&#58;47,663 simplevisor[2443]&#58; [INFO] supervision cycle executed successfully in 0.420s&#58; 1 services OK, 0 services needed adjustment, 0 services failed adjustment
+2015-10-27 17&#58;44&#58;17,515 simplevisor[2443]&#58; [INFO] service dashb-test-mb stopped for cleaning with result&#58; (0, &#39;stompclt (pid 2449) is being told to quit...&#92;nstompclt does not see
+m to be running anymore&#92;n&#39;, &#39;&#39;)
+2015-10-27 17&#58;44&#58;18,010 simplevisor[2443]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 4191) started&#92;n&#39;, &#39;&#39;)
+2015-10-27 17&#58;44&#58;18,013 simplevisor[2443]&#58; [ERROR] perfsonar1 handled 8 adjustments in 12 supervision cycles
+2015-10-27 17&#58;44&#58;18,013 simplevisor[2443]&#58; [ERROR] perfsonar1 handled 8 adjustments in 12 supervision cycles
+2015-10-27 17&#58;44&#58;21,526 simplevisor[2443]&#58; [INFO] service dashb-test-mb found running, stopped with result&#58; (0, &#39;stompclt (pid 4191) is being told to quit...&#92;nstompclt does not s
+eem to be running anymore&#92;n&#39;, &#39;&#39;)
+2015-10-27 17&#58;44&#58;21,528 simplevisor[2443]&#58; [INFO] supervisor perfsonar1 stopped, starting it
+2015-10-27 17&#58;44&#58;22,257 simplevisor[2443]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 4224) started&#92;n&#39;, &#39;&#39;)
+2015-10-27 17&#58;44&#58;22,259 simplevisor[2443]&#58; [ERROR] perfsonar-supervisor handled 5 adjustments in 12 supervision cycles
+2015-10-27 17&#58;44&#58;22,259 simplevisor[2443]&#58; [ERROR] perfsonar-supervisor handled 5 adjustments in 12 supervision cycles
+2015-10-27 17&#58;44&#58;25,854 simplevisor[2443]&#58; [INFO] service dashb-test-mb found running, stopped with result&#58; (0, &#39;stompclt (pid 4224) is being told to quit...&#92;nstompclt does not s
+eem to be running anymore&#92;n&#39;, &#39;&#39;)
+2015-10-27 17&#58;44&#58;25,880 simplevisor[2443]&#58; [ERROR] supervision interrupted/failed
+
+On 11/10 (a production update day, so psds-itb1 was rebooted), simplevisor started again, ran for about 5 minutes, and died again, complaining of timeouts.
+
+2015-11-10 15&#58;54&#58;45,962 simplevisor[2440]&#58; [WARNING] /usr/bin/stompclt --pidfile /var/lock/perfsonar-stompclt-dashb-test-mb.pid --quit timed out 60 seconds
+2015-11-10 15&#58;54&#58;45,964 simplevisor[2440]&#58; [INFO] service dashb-test-mb found in dirty state&#58; 4, stopped for cleaningwith result&#58; (1, &#39;&#39;, &#39;timeout&#39;)
+2015-11-10 15&#58;54&#58;45,964 simplevisor[2440]&#58; [ERROR] error during service dashb-test-mb action stop&#58; (1, &#39;&#39;, &#39;timeout&#39;)
+2015-11-10 15&#58;54&#58;45,998 simplevisor[2440]&#58; [ERROR] supervision interrupted/failed
+
+Very similar messages occured on 12/01 and 12/08, when it also would have been routinely rebooted.  There is then nothing until yesterday.
+</div><script type='text/javascript'>
+        $('#show_723661938').click(function() {
+            $('#detail_723661938').slideDown("normal");
+            $('#show_723661938').hide();
+            $('#hide_723661938').show();
+        });
+        $('#hide_723661938').click(function() {
+            $('#detail_723661938').slideUp();
+            $('#hide_723661938').hide();
+            $('#show_723661938').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='27653#1452019677'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T18:47:57+00:00">Jan 5, 2016 06:47 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1452019677">&nbsp;</a></div><pre>I&#39;m sorry, but I&#39;ve already deleted everything in /usr/local/rsv-perfsonar -- the volume had 100% inodes used, so no new files could ever be created on it.  Nothing will work in such an environment for obvious reasons, and the fact that there were over 8 million files probably means that anything that tries to clean them up will exceed most timeouts.
+
+With simplevisor stopped, I ran the command you suggested, though this is probably going to work just fine after the cleanup&#58;
+
+psds-itb1# stompclt --outgoing-broker-uri stomp+ssl&#58;//netmon-test-mb.cern.ch&#58;61523 --conf /etc/rsv/stompclt/default.conf --debug
+# 2016/01/05-18&#58;43&#58;30 stompclt[32158]&#58; main starting
+# 2016/01/05-18&#58;43&#58;30 stompclt[32158]&#58; incoming queue DQS /usr/local/rsv-perfsonar/
+# 2016/01/05-18&#58;43&#58;31 stompclt[32158]&#58; outgoing broker netmon-test-mb.cern.ch (128.142.35.235) port 61523 using STOMP 1.2
+# 2016/01/05-18&#58;43&#58;31 stompclt[32158]&#58; server=ActiveMQ/5.11.0.redhat-621084 session=ID&#58;mb096.cern.ch-6854-1449643216715-1&#58;160577 =&#62; type=ActiveMQ
+# 2016/01/05-18&#58;43&#58;31 stompclt[32158]&#58; main running
+
+It then ceased output, probably indicating normal operation, until I hit Ctrl-C&#58;
+
+# 2016/01/05-18&#58;46&#58;19 stompclt[32158]&#58; caught SIGINT
+# 2016/01/05-18&#58;46&#58;19 stompclt[32158]&#58; main lingering
+# 2016/01/05-18&#58;46&#58;19 stompclt[32158]&#58; main stopping
+# 2016/01/05-18&#58;46&#58;19 stompclt[32158]&#58; main processed 0 messages in 169.192 seconds
+# 2016/01/05-18&#58;46&#58;19 stompclt[32158]&#58; cleanup
+
+I then started simplevisor back up and am monitoring the log.</pre></div><div class='update_description'><i onclick="document.location='27653#1452019273'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T18:41:13+00:00">Jan 5, 2016 06:41 PM UTC</time> by <b>Shawn McKee</b><a class="anchor" name="1452019273">&nbsp;</a></div><pre>Since this is the test instance we can (at some point after diagnosing the
+problem) clean up any old files and restart.   It would be good to
+understand what may have gone wrong first though.  Thanks,
+
+Shawn
+
+On Tue, Jan 5, 2016 at 1&#58;35 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27653#1452018944'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T18:35:44+00:00">Jan 5, 2016 06:35 PM UTC</time><a class="anchor" name="1452018944">&nbsp;</a></div><pre>Tom,
+
+I see really old files there in /usr/local/rsv-perfsonar
+
+Suggesting this service had problems for a while.
+
+Can you please run this&#58;
+
+stompclt --outgoing-broker-uri stomp+ssl&#58;//netmon-test-mb.cern.ch&#58;61523 --conf /etc/rsv/stompclt/default.conf --debug
+
+and let me know the outcome.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='27653#1452018314'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T18:25:14+00:00">Jan 5, 2016 06:25 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1452018314">&nbsp;</a></div><pre>I started the simplevisor service and watched the log file.  Just as it did yesterday when I rebooted the VM, simplevisor died in 5 minutes, leaving these messages as the only clue as to why&#58;
+
+2016-01-05 18&#58;23&#58;26,290 simplevisor[28617]&#58; [WARNING] /usr/bin/stompclt --pidfile /var/lock/perfsonar-stompclt-dashb-test-mb.pid --quit timed out 60 seconds
+2016-01-05 18&#58;23&#58;26,292 simplevisor[28617]&#58; [INFO] service dashb-test-mb found in dirty state&#58; 4, stopped for cleaningwith result&#58; (1, &#39;&#39;, &#39;timeout&#39;)
+2016-01-05 18&#58;23&#58;26,293 simplevisor[28617]&#58; [ERROR] error during service dashb-test-mb action stop&#58; (1, &#39;&#39;, &#39;timeout&#39;)
+2016-01-05 18&#58;23&#58;26,297 simplevisor[28617]&#58; [ERROR] supervision interrupted/failed</pre></div><div class='update_description'><i onclick="document.location='27653#1452017583'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T18:13:03+00:00">Jan 5, 2016 06:13 PM UTC</time><a class="anchor" name="1452017583">&nbsp;</a></div><pre>Hi Tom,
+
+If you check the configuration here&#58;
+
+/etc/rsv/metrics/org.osg.general.perfsonar-simple.conf
+
+The directiry is used by the message passing queue&#58;
+
+directoryqueue = /usr/local/rsv-perfsonar/
+
+The probes are not in charge of cleaning this directroy is the simplevisor and it is stopped&#58;
+
+2016-01-05 18&#58;10&#58;37 UTC [emfajard@psds-itb1&#58;/usr/local/rsv-perfsonar]$ service simplevisor status
+Stopped
+
+If you check here /var/log/publisher-simplevisor.log&#58;
+
+It looks like it stopped&#58;
+
+2016-01-04 17&#58;11&#58;21,217 simplevisor[2439]&#58; [INFO] service dashb-test-mb stopped for cleaning with result&#58; (1, &#39;&#39;, &#39;timeout&#39;)
+2016-01-04 17&#58;11&#58;21,584 simplevisor[2439]&#58; [INFO] service dashb-test-mb started with result&#58; (0, &#39;stompclt (pid 4205) started&#92;n&#39;, &#39;&#39;)
+2016-01-04 17&#58;11&#58;21,586 simplevisor[2439]&#58; [ERROR] perfsonar-supervisor handled 6 adjustments in 12 supervision cycles
+2016-01-04 17&#58;11&#58;21,586 simplevisor[2439]&#58; [ERROR] perfsonar-supervisor handled 6 adjustments in 12 supervision cycles
+2016-01-04 17&#58;12&#58;21,920 simplevisor[2439]&#58; [WARNING] /usr/bin/stompclt --pidfile /var/lock/perfsonar-stompclt-dashb-test-mb.pid --quit timed out 60 seconds
+2016-01-04 17&#58;12&#58;21,922 simplevisor[2439]&#58; [INFO] service dashb-test-mb found in dirty state&#58; 4, stopped for cleaningwith result&#58; (1, &#39;&#39;, &#39;timeout&#39;)
+2016-01-04 17&#58;12&#58;21,922 simplevisor[2439]&#58; [ERROR] error during service dashb-test-mb action stop&#58; (1, &#39;&#39;, &#39;timeout&#39;)
+2016-01-04 17&#58;12&#58;21,979 simplevisor[2439]&#58; [ERROR] supervision interrupted/failed
+
+So maybe is just a thing of starting it up. But this is basically the scenario we talked on when the directoy of the passing queue is filled.
+
+Cheers,
+
+Edgar
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='27653#1452007977'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T15:32:57+00:00">Jan 5, 2016 03:32 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1452007977">&nbsp;</a></div><pre>/var/log/pgsql/pgstartup.log shows many &#34;no space left on device&#34; messages.  Strange that this wasn&#39;t a problem a short time ago.
+
+The only device near full is /usr/local, at 96% (but a &#34;df -i&#34; reveals that 100% of its inodes are in use).  It would be my guess that the culprit is /usr/local/rsv-perfsonar, which has 80,206 subdirectories, many of which have over 100 files in them (I&#39;m not going to look through each one to find out!).  I&#39;m not sure what creates files in that directory, but seemingly it never deletes anything?  What can we delete to make things work for now?</pre></div><div class='update_description'><i onclick="document.location='27653#1452007334'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T15:22:14+00:00">Jan 5, 2016 03:22 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1452007334">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; If so, why won&#39;t it start unless cassandra is also running?</font>
+Postgresql doesn&#39;t depends on cassnadra. So I am not sure why this is the case. Do you see anything in the postgresql log as to why it&#39;s not starting? I will be officially back to work on 11th so I can help you with troubleshooting in more detail then.</pre></div><div class='update_description'><i onclick="document.location='27653#1452006758'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T15:12:38+00:00">Jan 5, 2016 03:12 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1452006758">&nbsp;</a></div><pre>Should postgresql be running on psds-itb1?  If so, why won&#39;t it start unless cassandra is also running?  If not, why is it enabled to start at boot?</pre></div><div class='update_description'><i onclick="document.location='27653#1452006675'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T15:11:15+00:00">Jan 5, 2016 03:11 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1452006675">&nbsp;</a></div><pre>cassandra shouldn&#39;t be running on psds-itb1. It should be using the ITB cassandra cluster running on cassandra-itb1 and -itb2.
+
+If you are wondering how everything is setup, here is the ITB infrastructure diagram
+<font color='#7F7E6F'>&#62; <a href='https&#58;//docs.google.com/drawings/d/1DI_xHTuN-qwxqRw8Zk6wiAT1RIXa1-W8mj9rZaQBsAw/edit?ths=true' target='_blank' rel='nofollow'>https&#58;//docs.google.com/drawings/d/1DI_xHTuN-qwxqRw8Zk6wiAT1RIXa1-W8mj9rZaQBsAw/edit?ths=true</a></font>
+
+Soichi</pre></div><div class='update_description'><i onclick="document.location='27653#1452005403'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-05T14:50:03+00:00">Jan 5, 2016 02:50 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1452005403">&nbsp;</a></div><pre>I was not aware that cassandra needed to be running on psds-itb1 -- although there&#39;s an /etc/init.d/cassandra, there was no symlink to either start or stop cassandra in /etc/rc3.d (meaning that either no one ever ran &#34;chkconfig --add cassandra&#34;, or someone ran &#34;chkconfig --del cassandra&#34; in the past).  I just ran &#34;chkconfig --add cassandra&#34; and &#34;service cassandra start&#34;.
+
+As for postgresql, the service is called &#34;postgresql-9.4&#34; for some reason.  I tried starting it by hand yesterday, and it failed, probably because cassandra wasn&#39;t running.  It also didn&#39;t start when I rebooted the VM, probably for the same reason.  I just ran &#34;service postgresql-9.4 start&#34;, and this time it successfully started it.</pre></div><div class='update_description'><i onclick="document.location='27653#1451934840'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-04T19:14:00+00:00">Jan 4, 2016 07:14 PM UTC</time><a class="anchor" name="1451934840">&nbsp;</a></div><pre>I cannot understand what is going on. But it is not related to the IPv6.
+
+Things look in a weird state. I cannot even access this page&#58;
+
+<a href='http&#58;//psds-itb.grid.iu.edu/rsv/' target='_blank' rel='nofollow'>http&#58;//psds-itb.grid.iu.edu/rsv/</a>
+
+It looks like cassandra is down&#58;
+
+2016-01-04 19&#58;09&#58;57 UTC [emfajard@psds-itb1&#58;/usr/local]$ service cassandra status
+cassandra is stopped
+
+But even weirder postgressql&#58;
+
+2016-01-04 19&#58;11&#58;27 UTC [emfajard@psds-itb1&#58;/usr/local]$ service postgresql status
+postgresql&#58; unrecognized service
+
+is not doing anything.
+
+Unfortunately since the move to full fallback on SSL the messages are cluttered with unhelpful warnings from SSL. I will work on how to fix this afternoon.
+
+Cheers
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='27653#1451927663'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-04T17:14:23+00:00">Jan 4, 2016 05:14 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1451927663">&nbsp;</a></div><pre>I have no idea what might be wrong.  In case some service spontaneously stopped running during the two weeks I&#39;ve been on vacation, I just rebooted psds-itb1, psds-itb2, and perfsonar-itb.  Once things are back up, let&#39;s check again.
+
+As for whether it&#39;s IPv6-related, I highly doubt it.  IPv6 is completely disabled on psds-itb1 and psds-itb2, and has been for a month.  perfsonar-itb still has IPv6 enabled, but I was not told to disable it there (from what I know, it would make no difference).  I&#39;m not the expert on perfsonar here, so I can&#39;t say for certain, but it doesn&#39;t look like it&#39;s IPv6-related to me.</pre></div><div class='update_description'><i onclick="document.location='27653#1451925129'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-04T16:32:09+00:00">Jan 4, 2016 04:32 PM UTC</time> by <b>Shawn McKee</b><a class="anchor" name="1451925129">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I am not sure.   I am seeing no data showing up on the ITB MaDDash at this
+point&#58;
+
+<a href='http&#58;//perfsonar-itb.grid.iu.edu/maddash-webui/index.cgi?dashboard=OSG%20Grid%20Operations%20Center%20Test%20Mesh%20Config' target='_blank' rel='nofollow'>http&#58;//perfsonar-itb.grid.iu.edu/maddash-webui/index.cgi?dashboard=OSG%20Grid%20Operations%20Center%20Test%20Mesh%20Config</a>
+
+(Check a few of the meshes from the menu and they all show no data).
+
+Edgar, Thom, Soichi, any ideas what is wrong?    This is likely not IPv6
+related and, if not, we should be able to close this ticket.  However I
+would like to confirm IPv6 issues are not in play.
+
+Thanks,
+
+Shawn
+
+On Mon, Jan 4, 2016 at 11&#58;27 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27653#1451924876'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-04T16:27:56+00:00">Jan 4, 2016 04:27 PM UTC</time> by <b>echism</b><a class="anchor" name="1451924876">&nbsp;</a></div><pre>May I close this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27653#1451395549'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-29T13:25:49+00:00">Dec 29, 2015 01:25 PM UTC</time> by <b>echism</b><a class="anchor" name="1451395549">&nbsp;</a></div><pre>I&#39;ll check on this after the new year.</pre></div><div class='update_description'><i onclick="document.location='27653#1450728509'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-21T20:08:29+00:00">Dec 21, 2015 08:08 PM UTC</time> by <b>echism</b><a class="anchor" name="1450728509">&nbsp;</a></div><pre>Hey all,
+
+I&#39;d like to finish as much as I can before the holidays. Edgar or Shawn, please confirm that this is done to your satisfaction.</pre></div><div class='update_description'><i onclick="document.location='27653#1450367826'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-17T15:57:06+00:00">Dec 17, 2015 03:57 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1450367826">&nbsp;</a></div><pre>Can this ticket be closed, then?</pre></div><div class='update_description'><i onclick="document.location='27653#1450210819'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-15T20:20:19+00:00">Dec 15, 2015 08:20 PM UTC</time><a class="anchor" name="1450210819">&nbsp;</a></div><pre>Hi Tom,
+
+It looks fixed to me. Since the command is timing out it means it is pulling information. It is timing out because bsically the itb instance datastore is not poweful enough. I have been traveling and I am writing this now from the airport in Atlanta.
+
+But things look good to me.
+
+Edgar
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='27653#1450191551'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-15T14:59:11+00:00">Dec 15, 2015 02:59 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1450191551">&nbsp;</a></div><pre>Still waiting to hear whether the disabling of IPv6 on the ITB instance fixed the problem they were seeing.</pre></div><div class='update_description'><i onclick="document.location='27653#1450113570'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-14T17:19:30+00:00">Dec 14, 2015 05:19 PM UTC</time> by <b>echism</b><a class="anchor" name="1450113570">&nbsp;</a></div><pre>Hello,
+
+Is there anything new on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='27653#1449605759'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-08T20:15:59+00:00">Dec 8, 2015 08:15 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1449605759">&nbsp;</a></div><pre>OK, two things were happening.
+
+The config file change was my fault.  I run rpmconf after every OS update to make sure there aren&#39;t any leftover .rpmsave or .rpmnew files on any system, and rpmconf lets you simply type &#34;Y&#34; to replace the old file with the new one or &#34;N&#34; to keep the old file -- I probably just typed &#34;Y&#34; when I should have typed &#34;N&#34;.  I&#39;ve gotten the original file back.
+
+The other problem is that on all of our machines we run a local dnsmasq to act as a caching/forwarding nameserver, and psds-itb1 is one of the only machines we have where we&#39;ve disabled IPv6 utterly and completely; when a service isn&#39;t IPv6 compatible we usually just remove the public IPv6 address and leave the private one in place.  But dnsmasq was still configured to listen on &#58;&#58;1, and with IPv6 disabled in the kernel that caused an error on startup, meaning the machine couldn&#39;t resolve hostnames anymore.  I&#39;ve commented out anything IPv6 related in /etc/dnsmasq.conf now.  I hope the disabling of IPv6 is a temporary measure here, because IPv6 can&#39;t be ignored forever.
+
+With those things fixed, let&#39;s see how it all works.</pre></div><div class='update_description'><i onclick="document.location='27653#1449514863'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-07T19:01:03+00:00">Dec 7, 2015 07:01 PM UTC</time><a class="anchor" name="1449514863">&nbsp;</a></div><pre>Tom if you did a yum udpate the rpm won&#39;t replace your conf file. But I will try to repoduce it
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='27653#1449511529'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-07T18:05:29+00:00">Dec 7, 2015 06:05 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1449511529">&nbsp;</a></div><pre>Tom,
+
+Here is the current ansible template for rsv-perfsonar.
+<font color='#7F7E6F'>&#62;</font>
+<a href='https&#58;//github.iu.edu/opensciencegrid/ansible/blob/master/roles/datastore-rsv-perfsonar/templates/org.osg.general.perfsonar-simple.conf' target='_blank' rel='nofollow'>https&#58;//github.iu.edu/opensciencegrid/ansible/blob/master/roles/datastore-rsv-perfsonar/templates/org.osg.general.perfsonar-simple.conf</a>
+
+You should just be able to run the Ansible rule for ITB to fix / restart
+things.
+
+Soichi
+
+On Mon, Dec 7, 2015 at 12&#58;55 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='27653#1449510901'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-07T17:55:01+00:00">Dec 7, 2015 05:55 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1449510901">&nbsp;</a></div><pre>Well, there were ITB OS updates last Tuesday, so if there was an updated configuration file it might have replaced the old one.  Is there a source for the proper configuration file?</pre></div><div class='update_description'><i onclick="document.location='27653#1449503704'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-07T15:55:04+00:00">Dec 7, 2015 03:55 PM UTC</time><a class="anchor" name="1449503704">&nbsp;</a></div><pre>The problem seems to be while posting&#58;
+
+&#92;n
+Apache/2.2.15 (Scientific Linux) Server at fermicloud077.fnal.gov Port 9090
+&#92;n&#92;n&#39;, trying SSL
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;53 Sample of the data being posted {}
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;53 For event type failures, 0 new data points
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;52 For event type packet-trace, 73 new data points
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;52 first time for 00e2a8e9613f48db8062b4fcc8fb78f9
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;52 Reading New METADATA/DATA 00e2a8e9613f48db8062b4fcc8fb78f9
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;49 Reading Summaries
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;49 Only reading data for event types&#58; [&#39;packet-loss-rate&#39;, &#39;packet-trace&#39;, &#39;packet-retransmits&#39;, &#39;throughput&#39;, &#39;throughput-subintervals&#39;, &#39;failures&#39;, &#39;packet-count-sent&#39;, &#39;packet-count-lost&#39;, &#39;histogram-owdelay&#39;, &#39;histogram-ttl&#39;, &#39;packet-retransmits-subintervals&#39;, &#39;packet-loss-rate-bidir&#39;, &#39;packet-count-lost-bidir&#39;]
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;49 Metada interval is from 1449244189 to now
+MSG&#58; Mon, 07 Dec 2015 15&#58;49&#58;49 Data interval is from Sun, 06 Dec 2015 15&#58;49&#58;49  to Mon, 07 Dec 2015 15&#58;49&#58;49
+
+I do not understand why it is trying to post to fermicloud077.fnal.gov which is my dev machine.
+
+It looks like the configuration file was replaced by the one coming from the rpm&#58;
+
+/etc/rsv/metrics/org.osg.general.perfsonar-simple.conf
+
+[org.osg.general.perfsonar-simple]
+cron-interval = */15 * * * *
+probe-interval = 60
+job-timeout   = 1500
+no-ping = True
+[org.osg.general.perfsonar-simple args]
+username = perfsonar
+key = ab132837b1f49139e7d1f1f635956ee15c37068e
+goc = <a href='http&#58;//fermicloud077.fnal.gov&#58;9090' target='_blank' rel='nofollow'>http&#58;//fermicloud077.fnal.gov&#58;9090</a>
+
+So of course it is failling, I guess something in the ANSI configuration went really bad. Tom, Soichi, can you please check?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='27653#1449503282'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-07T15:48:02+00:00">Dec 7, 2015 03:48 PM UTC</time><a class="anchor" name="1449503282">&nbsp;</a></div><pre>All RSV probes in ITB are critical now, so I&#39;m afraid it didn&#39;t work as expected (<a href='http&#58;//psds-itb1.grid.iu.edu/rsv/' target='_blank' rel='nofollow'>http&#58;//psds-itb1.grid.iu.edu/rsv/</a>)
+
+Edgar, could you please take a look ?
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=mbabik/CN=555091/CN=Marian Babik</pre></div><div class='update_description'><i onclick="document.location='27653#1449157514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-03T15:45:14+00:00">Dec 3, 2015 03:45 PM UTC</time> by <b>Thomas Lee</b><a class="anchor" name="1449157514">&nbsp;</a></div><pre>IPv6 is now disabled on psds-itb[12].grid.iu.edu.  Please let me know whether this solves the problem.</pre></div><div class='update_description'><i onclick="document.location='27653#1449067715'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-02T14:48:35+00:00">Dec 2, 2015 02:48 PM UTC</time> by <b>echism</b><a class="anchor" name="1449067715">&nbsp;</a></div><pre>Sending this to Tom.</pre></div><div class='update_description'><i onclick="document.location='27653#1449067101'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-12-02T14:38:21+00:00">Dec 2, 2015 02:38 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1449067101">&nbsp;</a></div><pre>The OSG network datastore is sometimes failing to correctly gather network data when remote perfSONAR instances are dual-stacked (IPv4 and IPv6).  We need to disable IPv6 to on the OSG collector hosts (those running the RSV probes).
+
+I believe we only need to run the following command to change the configuration on the host&#58;
+
+sysctl -w net.ipv6.conf.all.disable_ipv6=1
+
+But see below as changes to /etc/hosts and ifcfg-&#60;x&#62; configs may need editing.
+
+To make this persistent across reboots, we may need to modify the Ansible configuration.
+
+Marian Babik provided his Puppet Snippet on how he disables IPv6&#58;
+
+# Disable IPv6
+
+file_line { &#34;/etc/sysconfig/network-scripts/ifcfg-eth0&#34;&#58;
+match =&#62; &#39;DHCPV6C=&#34;yes&#34;&#39;,
+line =&#62; &#39;DHCPV6C=&#34;no&#34;&#39;,
+path =&#62; &#34;/etc/sysconfig/network-scripts/ifcfg-eth0&#34;,
+notify =&#62; Service[&#34;network&#34;]
+} -&#62;
+
+sysctl { &#39;net.ipv6.conf.all.disable_ipv6&#39;&#58; val =&#62; &#39;1&#39; } -&#62;
+
+file_line { &#34;/etc/hosts&#34;&#58;
+line =&#62; &#34;#&#58;&#58;1 localhost localhost.localdomain localhost6 localhost6.localdomain6&#34;,
+match =&#62; &#34;.*localhost6.*&#34;,
+path =&#62; &#34;/etc/hosts”
+}
+
+It is important to do this ASAP since we are missing data from a few dual-stacked instances.    After we verify this works on ITB we will need to do this on the Production instance.  I will open another ticket for that.
+
+Shawn
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Shawn McKee 83467</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F27653">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 27653});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

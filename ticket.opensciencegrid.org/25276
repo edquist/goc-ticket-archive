@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[25276] Bestman2 and Adler32 checksum</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=25276" method="post">
+<div class="page-header">
+    <h3><span class="muted">25276</span> / Bestman2 and Adler32 checksum</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Vikas Bansal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Vikas Bansal</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Resolved</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-09-23</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Carl Edquist <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=25276", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/25276?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/25276?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Bestman2%20and%20Adler32%20checksum%20ISSUE%3D25276%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='25276#1442960557'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-22T22:22:37+00:00">Sep 22, 2015 10:22 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1442960557">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.
+Please submit problems, requests, and questions at&#58; <a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a> OSG Grid Operations Center goc@...., 317-278-9699 Visit the OSG Operations Page&#58; <a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='25276#1442957529'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-22T21:32:09+00:00">Sep 22, 2015 09:32 PM UTC</time><a class="anchor" name="1442957529">&nbsp;</a></div><pre>Hi Brian and All,
+
+I did my FTS3 transfer test via DIRAC. It was successful.
+The log file confirm that FTS transfer is configured to do - Checksum enabled&#58;Strict comparison
+A file was written to PNNL from KEK successfully.
+
+I would like to think that this issue is resolved.
+Thanks to everyone.
+
+Vikas
+
+PS&#58; For record, here is the complete FTS3 transfer log.
+
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Transfer accepted
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Proxy&#58;/tmp/x509up_h2937619310554711159XdcXcomXdcXdigicertXgridXoXopenXscienceXgridXouXpeopleXcnXmalachiXschramX1012
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     User DN&#58;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Malachi Schram 1012
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     VO&#58;belle
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Job id&#58;e23bfb0e-af62-475e-a6ee-5b7b3b77d516
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     File id&#58;2898527
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Source url&#58;<a href='srm&#58;//kek2-se01.cc.kek.jp&#58;8444/srm/managerv2?SFN=//belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>srm&#58;//kek2-se01.cc.kek.jp&#58;8444/srm/managerv2?SFN=//belle/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Dest url&#58;<a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Overwrite enabled&#58;1
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Dest space token&#58;
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Source space token&#58;
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Pin lifetime&#58;-1
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     BringOnline&#58;-1
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Checksum&#58;048733e4
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Checksum enabled&#58;Strict comparison
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     User filesize&#58;0
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     File metadata&#58;
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Job metadata&#58;
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Bringonline token&#58;
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Multihop&#58; 0
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     UDT&#58; 0
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Active&#58; 0
+<div id='show_2107508493' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2107508493'>Tue Sep 22 14&#58;13&#58;38 2015 INFO     Debug level&#58; 0
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     BDII&#58;lcg-bdii.cern.ch&#58;2170
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     Checksum timeout 1800
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     User  provided checksum
+Tue Sep 22 14&#58;13&#58;38 2015 INFO     SOURCE Stat the source surl start
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     Source file size&#58; 10485760000
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     Overwrite is enabled
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     Transfer timeout&#58;23600
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     Add 0 seconds per MB transfer timeout
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     Resetting global timeout thread to 27200 seconds
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     TCP streams&#58; 16
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     TCP buffer size&#58; 0
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     Update protocol stuff, report back to the server
+Tue Sep 22 14&#58;13&#58;39 2015 INFO     Transfer Starting
+Tue Sep 22 14&#58;13&#58;40 2015 INFO     [1442956420120] BTH SRM	PREPARE&#58;ENTER
+Tue Sep 22 14&#58;13&#58;40 2015 INFO     [1442956420120] SRC SRM	CHECKSUM&#58;ENTER
+Tue Sep 22 14&#58;13&#58;40 2015 INFO     [1442956420948] SRC SRM	CHECKSUM&#58;EXIT
+Tue Sep 22 14&#58;13&#58;43 2015 INFO     [1442956423781] SRC GFAL2&#58;&#58;PLUGINS&#58;&#58;SRM	SRM&#58;GET	Got TURL <a href='srm&#58;//kek2-se01.cc.kek.jp&#58;8444/srm/managerv2?SFN=//belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>srm&#58;//kek2-se01.cc.kek.jp&#58;8444/srm/managerv2?SFN=//belle/DC2014/in/10G_DC_001.dat</a> =&#62; <a href='gsiftp&#58;//kek2-storm02.cc.kek.jp&#58;2811//ghi/fs01/belle/grid/storm/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//kek2-storm02.cc.kek.jp&#58;2811//ghi/fs01/belle/grid/storm/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;13&#58;43 2015 INFO     [1442956423928] DST SRM	OVERWRITE	Deleted <a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;13&#58;43 2015 INFO     [1442956423934] DST GFAL2&#58;&#58;PLUGINS&#58;&#58;SRM	SRM&#58;PUT	Got TURL <a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat</a> =&#62; <a href='gsiftp&#58;//gridftp00.hep.pnnl.gov//se/belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//gridftp00.hep.pnnl.gov//se/belle/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;13&#58;43 2015 INFO     [1442956423934] BTH SRM	PREPARE&#58;EXIT
+Tue Sep 22 14&#58;13&#58;43 2015 INFO     [1442956423935] BTH GSIFTP	TRANSFER&#58;ENTER	(202.13.206.32&#58;2811) <a href='gsiftp&#58;//kek2-storm02.cc.kek.jp&#58;2811//ghi/fs01/belle/grid/storm/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//kek2-storm02.cc.kek.jp&#58;2811//ghi/fs01/belle/grid/storm/DC2014/in/10G_DC_001.dat</a> =&#62; (192.101.107.153&#58;0) <a href='gsiftp&#58;//gridftp00.hep.pnnl.gov//se/belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//gridftp00.hep.pnnl.gov//se/belle/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;13&#58;52 2015 INFO     bytes&#58; 39059456, avg KB/sec&#58;7628, inst KB/sec&#58;7628, elapsed&#58;9
+Tue Sep 22 14&#58;13&#58;57 2015 INFO     bytes&#58; 310116352, avg KB/sec&#58;30284, inst KB/sec&#58;52940, elapsed&#58;14
+Tue Sep 22 14&#58;14&#58;02 2015 INFO     bytes&#58; 902037504, avg KB/sec&#58;58726, inst KB/sec&#58;115609, elapsed&#58;19
+Tue Sep 22 14&#58;14&#58;07 2015 INFO     bytes&#58; 1246494720, avg KB/sec&#58;60864, inst KB/sec&#58;67276, elapsed&#58;24
+Tue Sep 22 14&#58;14&#58;12 2015 INFO     bytes&#58; 1250689024, avg KB/sec&#58;48855, inst KB/sec&#58;819, elapsed&#58;29
+Tue Sep 22 14&#58;14&#58;17 2015 INFO     bytes&#58; 1383858176, avg KB/sec&#58;45047, inst KB/sec&#58;26009, elapsed&#58;34
+Tue Sep 22 14&#58;14&#58;22 2015 INFO     bytes&#58; 2109472768, avg KB/sec&#58;58858, inst KB/sec&#58;141721, elapsed&#58;39
+Tue Sep 22 14&#58;14&#58;27 2015 INFO     bytes&#58; 2700869632, avg KB/sec&#58;65939, inst KB/sec&#58;115507, elapsed&#58;44
+Tue Sep 22 14&#58;14&#58;32 2015 INFO     bytes&#58; 3477078016, avg KB/sec&#58;75457, inst KB/sec&#58;151603, elapsed&#58;49
+Tue Sep 22 14&#58;14&#58;37 2015 INFO     bytes&#58; 3996647424, avg KB/sec&#58;78059, inst KB/sec&#58;101478, elapsed&#58;54
+Tue Sep 22 14&#58;14&#58;42 2015 INFO     bytes&#58; 4096524288, avg KB/sec&#58;72736, inst KB/sec&#58;19507, elapsed&#58;59
+Tue Sep 22 14&#58;14&#58;47 2015 INFO     bytes&#58; 4126932992, avg KB/sec&#58;67170, inst KB/sec&#58;5939, elapsed&#58;64
+Tue Sep 22 14&#58;14&#58;53 2015 INFO     bytes&#58; 4164157440, avg KB/sec&#58;62179, inst KB/sec&#58;6731, elapsed&#58;70
+Tue Sep 22 14&#58;14&#58;57 2015 INFO     bytes&#58; 4304928768, avg KB/sec&#58;60057, inst KB/sec&#58;29885, elapsed&#58;74
+Tue Sep 22 14&#58;15&#58;02 2015 INFO     bytes&#58; 4638113792, avg KB/sec&#58;60392, inst KB/sec&#58;65075, elapsed&#58;79
+Tue Sep 22 14&#58;15&#58;07 2015 INFO     bytes&#58; 5194383360, avg KB/sec&#58;63408, inst KB/sec&#58;108646, elapsed&#58;84
+Tue Sep 22 14&#58;15&#58;12 2015 INFO     bytes&#58; 5786828800, avg KB/sec&#58;66484, inst KB/sec&#58;115712, elapsed&#58;89
+Tue Sep 22 14&#58;15&#58;17 2015 INFO     bytes&#58; 6375079936, avg KB/sec&#58;69174, inst KB/sec&#58;114892, elapsed&#58;94
+Tue Sep 22 14&#58;15&#58;22 2015 INFO     bytes&#58; 6967787520, avg KB/sec&#58;71626, inst KB/sec&#58;115763, elapsed&#58;99
+Tue Sep 22 14&#58;15&#58;27 2015 INFO     bytes&#58; 7559708672, avg KB/sec&#58;73825, inst KB/sec&#58;115609, elapsed&#58;104
+Tue Sep 22 14&#58;15&#58;32 2015 INFO     bytes&#58; 8153726976, avg KB/sec&#58;75834, inst KB/sec&#58;116019, elapsed&#58;109
+Tue Sep 22 14&#58;15&#58;37 2015 INFO     bytes&#58; 8744599552, avg KB/sec&#58;77633, inst KB/sec&#58;115404, elapsed&#58;114
+Tue Sep 22 14&#58;15&#58;44 2015 INFO     bytes&#58; 8887992320, avg KB/sec&#58;74439, inst KB/sec&#58;21216, elapsed&#58;121
+Tue Sep 22 14&#58;15&#58;47 2015 INFO     bytes&#58; 9047113728, avg KB/sec&#58;73625, inst KB/sec&#58;45703, elapsed&#58;124
+Tue Sep 22 14&#58;15&#58;54 2015 INFO     bytes&#58; 9367191552, avg KB/sec&#58;72256, inst KB/sec&#58;47360, elapsed&#58;131
+Tue Sep 22 14&#58;15&#58;57 2015 INFO     bytes&#58; 9534701568, avg KB/sec&#58;71624, inst KB/sec&#58;48112, elapsed&#58;134
+Tue Sep 22 14&#58;16&#58;02 2015 INFO     bytes&#58; 10485760000, avg KB/sec&#58;75964, inst KB/sec&#58;193493, elapsed&#58;139
+Tue Sep 22 14&#58;16&#58;02 2015 INFO     [1442956562550] BTH GSIFTP	TRANSFER&#58;EXIT	(202.13.206.32&#58;2811) <a href='gsiftp&#58;//kek2-storm02.cc.kek.jp&#58;2811//ghi/fs01/belle/grid/storm/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//kek2-storm02.cc.kek.jp&#58;2811//ghi/fs01/belle/grid/storm/DC2014/in/10G_DC_001.dat</a> =&#62; (192.101.107.153&#58;0) <a href='gsiftp&#58;//gridftp00.hep.pnnl.gov//se/belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//gridftp00.hep.pnnl.gov//se/belle/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;16&#58;02 2015 INFO     [1442956562550] DST SRM	CLOSE&#58;ENTER	<a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;16&#58;02 2015 INFO     [1442956562553] DST SRM	CLOSE&#58;EXIT	<a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2014/in/10G_DC_001.dat</a>
+Tue Sep 22 14&#58;16&#58;02 2015 INFO     [1442956562553] DST SRM	CHECKSUM&#58;ENTER
+Tue Sep 22 14&#58;16&#58;52 2015 INFO     [1442956612131] DST SRM	CHECKSUM&#58;EXIT
+Tue Sep 22 14&#58;16&#58;53 2015 INFO     Transfer completed successfully
+Tue Sep 22 14&#58;16&#58;53 2015 INFO     DESTINATION Stat the dest surl start
+Tue Sep 22 14&#58;16&#58;53 2015 INFO     DESTINATION  file size&#58; 10485760000
+Tue Sep 22 14&#58;16&#58;53 2015 INFO     DESTINATION Source and destination file size matching
+Tue Sep 22 14&#58;16&#58;53 2015 INFO     Report FINISHED back to the server
+Tue Sep 22 14&#58;16&#58;53 2015 INFO     Send monitoring complete message
+Tue Sep 22 14&#58;16&#58;54 2015 INFO     Closing the log stream
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Vikas Bansal 2413
+</div><script type='text/javascript'>
+        $('#show_2107508493').click(function() {
+            $('#detail_2107508493').slideDown("normal");
+            $('#show_2107508493').hide();
+            $('#hide_2107508493').show();
+        });
+        $('#hide_2107508493').click(function() {
+            $('#detail_2107508493').slideUp();
+            $('#hide_2107508493').hide();
+            $('#show_2107508493').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25276#1442866389'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-21T20:13:09+00:00">Sep 21, 2015 08:13 PM UTC</time><a class="anchor" name="1442866389">&nbsp;</a></div><pre>Hi Vikas,
+
+Any luck?
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1442542474'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-18T02:14:34+00:00">Sep 18, 2015 02:14 AM UTC</time><a class="anchor" name="1442542474">&nbsp;</a></div><pre>Hi Vikas,
+
+Any luck?
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1442453927'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-17T01:38:47+00:00">Sep 17, 2015 01:38 AM UTC</time><a class="anchor" name="1442453927">&nbsp;</a></div><pre>Hi Vikas,
+
+Thanks for the update!  We&#39;ll keep an eye on this ticket.
+
+Since your adler32 script may be of interest to other bestman2 sites, can you please attach it (including a license in the header - BSD is preferable for bestman2) to this ticket?
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1442448676'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-17T00:11:16+00:00">Sep 17, 2015 12:11 AM UTC</time> by <b>vikas.bansal@....</b><a class="anchor" name="1442448676">&nbsp;</a></div><pre>Hello,
+
+I did some FTS3 server direct transfers to-and-fro PNNL. They worked fine with checksum. But they used to work fine before too (after setting in best man config file adler32 option).
+One of the difficulty was when DIRAC schedules fts transfers.
+
+I am having some technical difficulty with my DIRAC server and configuration for PNNL as a site inside DIRAC. An independent issue. Hope to resolve it soon.
+As soon as that is done, I would like to do a test fts transfer from some other site to PNNL via DIRAC.
+
+On positive side, fts3 transfers from PNNL to other sites are progressing well from another DIRAC server not managed by me.
+
+I would say things are looking good. But please wait before you close this ticket.
+I will try to have an update sooner.
+
+Thanks,
+Vikas</pre></div><div class='update_description'><i onclick="document.location='25276#1442334201'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-15T16:23:21+00:00">Sep 15, 2015 04:23 PM UTC</time><a class="anchor" name="1442334201">&nbsp;</a></div><pre>Thanks Vikas!
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1442333731'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-15T16:15:31+00:00">Sep 15, 2015 04:15 PM UTC</time> by <b>vikas.bansal@....</b><a class="anchor" name="1442333731">&nbsp;</a></div><pre>I will test it via DIRAC. I will get back by tomorrow if not today.
+
+Thanks,
+Vikas</pre></div><div class='update_description'><i onclick="document.location='25276#1442274435'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-14T23:47:15+00:00">Sep 14, 2015 11:47 PM UTC</time><a class="anchor" name="1442274435">&nbsp;</a></div><pre>Due to a gums issue, we couldn&#39;t fully implement the solution until earlier today. We just brought all the fixes online in the last hour. So far so good. Hopefully in the next day or so we&#39;ll know if it holds up.
+
+Vikas, can you please test on your end?
+
+Thanks,
+Kevin
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1442274078'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-14T23:41:18+00:00">Sep 14, 2015 11:41 PM UTC</time> by <b>bbockelm</b><a class="anchor" name="1442274078">&nbsp;</a></div><pre>Hi,
+
+Just checking in -
+
+Any news (good or bad) on the testing with DIRAC?
+
+Thanks,
+
+Brian
+
+Sent from my iPhone</pre></div><div class='update_description'><i onclick="document.location='25276#1442005413'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T21:03:33+00:00">Sep 11, 2015 09:03 PM UTC</time><a class="anchor" name="1442005413">&nbsp;</a></div><pre>If you still see the MD5 sum check back, we&#39;ll look at fixing Globus gridftp next...
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1442005050'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T20:57:30+00:00">Sep 11, 2015 08:57 PM UTC</time><a class="anchor" name="1442005050">&nbsp;</a></div><pre>I think its working now. There was a revision 25 package and we were on 21 still.
+
+Very strangely, I still don&#39;t see any execve&#39;s in the strace, but do see the EA getting updated.
+
+Anyway, I think we&#39;re good. Thanks for the help. Malachi, can you please give it a try and see?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1442004413'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T20:46:53+00:00">Sep 11, 2015 08:46 PM UTC</time><a class="anchor" name="1442004413">&nbsp;</a></div><pre>Oh - I should add, if I set the event log to &#34;DEBUG&#34; in bestman2.rc, I get the following in /var/log/bestman2/event.srm.log&#58;
+
+ts=2015-09-11T20&#58;40&#58;40.623Z level=Debug class=gov.lbl.srm.server.TSRMFileAccessDefault event=listAttrStarts /tmp/se/foo tid=qtp1083069032-15
+ts=2015-09-11T20&#58;40&#58;40.623Z level=Debug class=gov.lbl.srm.util.Checksum event=startCalc path=/tmp/se/foo tid=qtp1083069032-15
+ts=2015-09-11T20&#58;40&#58;40.627Z level=Console class=gov.lbl.srm.util.TSRMUtil OUTPUT&#62;deadbeef tid=Thread-23
+ts=2015-09-11T20&#58;40&#58;40.628Z level=Debug class=gov.lbl.srm.util.Checksum event=endCalc path=/tmp/se/foo tid=qtp1083069032-15
+ts=2015-09-11T20&#58;40&#58;40.704Z level=Debug class=gov.lbl.srm.server.TSRMFileAccessDefault event=listAttrEnds /tmp/se/foo tid=qtp1083069032-15
+ts=2015-09-11T20&#58;40&#58;40.705Z level=Info  class=gov.lbl.srm.impl.TSRMService event=outcoming.SrmLs tid=qtp1083069032-15
+
+(look for &#34;startCalc&#34; and &#34;endCalc&#34;, as well as the OUTPUT line.)
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1442003878'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T20:37:58+00:00">Sep 11, 2015 08:37 PM UTC</time><a class="anchor" name="1442003878">&nbsp;</a></div><pre>Nah - there&#39;s no caching mechanism.  There _is_  a built-in adler32 computation that is in-thread (no fork/exec).
+
+Can you replace your script with my silly one (which returns &#39;deadbeef&#39; in all cases) just to verify it isn&#39;t being executed?
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1442003637'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T20:33:57+00:00">Sep 11, 2015 08:33 PM UTC</time><a class="anchor" name="1442003637">&nbsp;</a></div><pre>I wasn&#39;t adding the -fulldetailed I don&#39;t think recently, so I added that back. I am seeing adler32&#39;s now, so that looks good.
+
+something puzzling though&#58;
+no execve&#39;s are showing in a strace -f -F -p &#60;pid&#62; -o /tmp/dump
+I&#39;m seeing an adler32 sum for test.txt in the srm-ls output, and I see a stat in the dump, but nothing else. not an open on the file or an execve. no reference to adler/ADLER in the strace either.
+
+checking the file after the run, the EA on the file isn&#39;t there either. so it isn&#39;t running the adler32 script on it, but returning an adler32 sum somehow else.
+
+Maybe it had previously done the adler32 sum itself and cached it?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1442001917'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T20:05:17+00:00">Sep 11, 2015 08:05 PM UTC</time><a class="anchor" name="1442001917">&nbsp;</a></div><pre>Hi Kevin,
+
+I took your configuration and did minor tweaks (set the SE path to be /tmp/se, checksum command to /tmp/adler32) and made this my adler32 command&#58;
+
+$ cat /tmp/adler32
+#!/bin/sh
+echo &#34;deadbeef&#34;
+
+Now, if I do the following&#58;
+
+srm-ls <a href='srm&#58;//hcc-briantest.unl.edu&#58;8443/srm/v2/server?SFN=/tmp/se/foo' target='_blank' rel='nofollow'>srm&#58;//hcc-briantest.unl.edu&#58;8443/srm/v2/server?SFN=/tmp/se/foo</a> -fulldetailed
+
+I see this text&#58;
+
+SRM-DIR&#58; ..........................
+Status    &#58; SRM_SUCCESS
+Explanation &#58; null
+Request token=null
+
+SURL=/tmp/se/foo
+Bytes=13
+FileType=FILE
+StorageType=null
+Status=SRM_SUCCESS
+Explanation=Read from disk..
+OwnerPermission=owner
+LifetimeLeft=-1
+CheckSumType=ADLER32
+CheckSumValue=deadbeef
+FileLocality=ONLINE
+OwnerPermission.userId=owner
+OwnerPermission.mode=RWX
+GroupPermission.groupId=defaultGroup
+GroupPermission.mode=RX
+OtherPermission=RX
+<div id='show_1435674185' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1435674185'>LastModificationTime=Fri Sep 11 14&#58;51&#58;00 CDT 2015
+
+(Note &#34;CheckSumValue=deadbeef&#34;)
+
+Seems to be working fine.  When testing by hand, are you doing &#34;-fulldetailed&#34;?
+
+Just in case, here are my versions&#58;
+
+$ rpm -qa | grep bestman
+bestman2-client-2.3.0-21.osg32.el6.noarch
+bestman2-server-dep-libs-2.3.0-21.osg32.el6.noarch
+bestman2-client-libs-2.3.0-21.osg32.el6.noarch
+bestman2-server-2.3.0-21.osg32.el6.noarch
+bestman2-common-libs-2.3.0-21.osg32.el6.noarch
+bestman2-server-libs-2.3.0-21.osg32.el6.noarch
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman
+</div><script type='text/javascript'>
+        $('#show_1435674185').click(function() {
+            $('#detail_1435674185').slideDown("normal");
+            $('#show_1435674185').hide();
+            $('#hide_1435674185').show();
+        });
+        $('#hide_1435674185').click(function() {
+            $('#detail_1435674185').slideUp();
+            $('#hide_1435674185').hide();
+            $('#show_1435674185').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25276#1441998743'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T19:12:23+00:00">Sep 11, 2015 07:12 PM UTC</time><a class="anchor" name="1441998743">&nbsp;</a></div><pre>Yeah. me neither. It seems to be configured ok. is just isn&#39;t working... digging through the code, everything looks like it should do the right thing. Though my java&#39;s pretty rusty.
+
+I&#39;ve attached the whole config, minus the comments as a text file.
+---------
+Ah. I forgot gridftp uses a separate control/data channel. That&#39;s a very good trick. Thanks. In that case, I can probably just use our OpenStack LBaaS to front it...
+
+Thanks,
+Kevin
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1441995933'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T18:25:33+00:00">Sep 11, 2015 06:25 PM UTC</time><a class="anchor" name="1441995933">&nbsp;</a></div><pre>Ah, ok!  That confused me quite a bit - I thought &#39;adler32&#39; was the one we shipped, not the custom one.
+
+Based on the output from the config snippet, I don&#39;t understand why you don&#39;t see a fork/exec of the adler32 script.  According to my reading of the code, these two lines are the key&#58;
+
+....... ls(file) shows checksum?true
+....... checksum command&#58; /usr/bin/adler32
+
+Can you attach the bestman2.rc to the ticket?  (Looks like it got sent previously via email but not on the ticket).  I&#39;d be curious about replicating the issue.
+
+------------------
+
+Yup - you have the same reservations about DNS load-balancing as we did.
+
+For LVS&#58; the trick is only the *command channel* goes via the load-balanced IP.  GridFTP opens a separate TCP session for the data channel(s), which then goes through the non-load-balanced IP.  With this setup, we&#39;ve been able to do &#62;50Gbps (I forget what our current speed record is locally, might be significantly higher than that).  To make the data interface separate from the control interface, you setup a file like this
+
+# cat /etc/gridftp.d/data_interface.conf
+######### Do Not Edit, Maintained by Puppet ###########3
+
+data_interface red-gridftp3.unl.edu
+
+(at our site, Puppet alters the hostname appropriately for the non-shared-interface.)
+
+Even when you have a SRM server in front of the GridFTP host, I find the LVS setup useful.
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1441995076'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T18:11:16+00:00">Sep 11, 2015 06:11 PM UTC</time><a class="anchor" name="1441995076">&nbsp;</a></div><pre>Yes, we placed our caching version of the script at /usr/bin/adler32. bestman2 seems to be configured to call it, but it never does. If I manually call the script as the bestman user, it works correctly.
+
+---------
+
+We currently have 2 x 10gig attached gridftp servers. Hopefully more in the future.
+
+DNS load balancing would perform well, but our ability to quickly reconfigure it when things change is... suboptimal. Its a more then 24 hour delay. So no good for production when we have to pull nodes in/out without downtime. Unfortunately, we can&#39;t really change this at the moment.
+
+Hardware IP based load balancers would have to be able to handle that much bandwidth, and those are pricy and still tend to present a single point of failure.
+
+LVS works, but funnels all upload traffic through one node, while download goes direct. So it wouldn&#39;t scale past 10g and still would have a single point of failure?
+
+Probably our best alternative for a gridftp only cluster would be to do a hybrid approach where we do a DNS pool of VIP&#39;s, then setup haproxy&#39;s and keepalived&#39;s across the nodes so that failure can keep the ip&#39;s up when a node is pulled out.
+
+But its much simpler to just have the request go in through the SRM pool which is low bandwidth, then get the client redirected to a physical host to its specific dns name. When we need to pull one out, we just ask the SRM to stop advertising its existence and drain it out.
+
+Thanks,
+Kevin
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1441993325'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T17:42:05+00:00">Sep 11, 2015 05:42 PM UTC</time><a class="anchor" name="1441993325">&nbsp;</a></div><pre>Hi Kevin,
+
+With respect to the comment from 2 months ago, I saw the following config output
+
+....... checksum command&#58; /usr/bin/adler32
+....... checksum type=ADLER32
+
+Are you saying that /usr/bin/adler32 implements caching?  Indeed, if you get the printout &#39;checksum command&#39;.  I was perhaps confused because one of the RPMs OSG ships provides a binary of the same name which does not cache.
+
+With respect to load-balancing&#58;
+- GridFTP provides mkdir/ls/rm/etc functionality these days.  FTS handles this automatically; newer clients (gfal-*) also figure out the protocol type automatically.  However, check with DIRAC upstream as I&#39;m less familiar with that.
+- CERN uses DNS load-balancing for GridFTP.  I do not like this (DNS changes take a long time to propagate); at Nebraska, we use LVS  to load-balance a single IP.  If you do &#39;telnet red-gridftp.unl.edu 2811&#39; repeatedly, you&#39;ll see a different server respond each time (even though the same IP is used).
+- Personally, I&#39;m a much happier person with One Less Layer.  Check with your VO, however.
+
+Brian
+
+(PS - if you have time today to debug, you can find me on IM at bockelman@....; should have lower latency.)
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='25276#1441992753'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T17:32:33+00:00">Sep 11, 2015 05:32 PM UTC</time><a class="anchor" name="1441992753">&nbsp;</a></div><pre>We did exactly path forward option 1, but with the config options as documented in the wiki, bestman2 isn&#39;t actually calling the script as advertised. We&#39;re baffled by it and have asked for someone to look into why that&#39;s the case. No response in months. See my comment on this thread from 2 months ago for details. If we can figure out why its not executing, that would be a good path forward.
+
+We&#39;d be happy to contribute back our version of the adler32 script to put in the package to make it easier for others to use, if we can get it to work. Its very generic.
+
+Does gridftp provide mkdir/ls/rm/etc functionality these days? What are you using to load balance gridftp? We&#39;ve been using the SE to do the load balancing.
+
+Thanks,
+Kevin
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1441900060'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-10T15:47:40+00:00">Sep 10, 2015 03:47 PM UTC</time><a class="anchor" name="1441900060">&nbsp;</a></div><pre>Hi Vikas, Kevin,
+
+I think I can clear some things up.
+
+1) Bestman2 is a stateless SRM implementation; that means it delegates all actions to the underlying filesystem.  For example, when you do a &#34;srm-mkdir&#34;, it&#39;s going to eventually fork/exec /bin/mkdir.
+2) Hence, when you enable checksums, it&#39;s going to recompute the checksum from scratch each time (as no state = no cached checksum).
+- Note that if you don&#39;t provide an executable, it has a built-in checksum calculator for md5/adler32/crc32.  So, you may not always see a fork&#39;d process.
+3) When you enabled checksums (showChecksumWhenListingFile=true), bestman2 started calculating checksums for each srmLs.
+- This made FTS happy, but the length of time it took to list a single file went way up and DIRAC started seeing timeouts.
+4) When you disabled checksums (showChecksumWhenListingFile=false), FTS will fallback to asking the corresponding *gridftp* server for the checksum.
+5) Globus GridFTP only supports md5; in fact, it will return the md5sum for any checksum type requested (instead of throwing an error).
+- This is probably what triggered the original issue (and maybe why Carl couldn&#39;t find the culprit in the bestman2 code)&#58; it wasn&#39;t actually bestman2 returning the md5sum.
+
+So, that&#39;s where we are.
+
+Now, how do we move forward?  There&#39;s a few options&#58;
+
+1) Some OSG sites have written their own script that wraps the adler32 command and caches the checksum (typically in an extended attribute if the filesystem supports that or in a different directory).
+- This means that the checksum will be instantly available for DIRAC -- no timeouts!
+- I&#39;m sure Carl can help find one of these sample scripts; I think it&#39;d be a reasonable change for us to package it in future releases, especially if extattrs are an option.
+2) HDFS sites run a gridftp plugin which correctly implements the checksums.
+- I would be interested in having OSG work with the Globus team to port the GridFTP plugin to the base Globus GridFTP server.  It&#39;s been a big irritation for me that they have this broken out-of-the-box.  This would take a week or so, of course, before we could put a patch in your hand.
+- Hm - even if you don&#39;t go this direction, I might bug Globus about this anyway.  I&#39;ve had to rediscover this bug one time too many...
+- This would still recompute the checksum each FTS transfer *but* DIRAC does not appear to fall back to the GridFTP server (can&#39;t verify this 100%, but just a guess from reading the logs below).
+3) I noticed that you only have one GridFTP server behind the bestman2 server currently.  FTS3 can work with GridFTP directly.  Especially as SRM is not a technology that is receiving investments (some WLCG VOs are working toward deprecating / avoiding SRM; all the SRM implementations I know of are on maintenance mode, even as the underlying storage elements and other protocols are continuously improved), it may be worth checking if DIRAC can work with GridFTP directly.
+- At Nebraska, we strongly encourage users to use our load-balanced GridFTP endpoint directly.  bestman2-on-top-of-load-balanced-GridFTP adds essentially no new features.
+- CERN, which uses bestman2 for EOS, is pushing VOs to do this so they can eliminate use of SRM.
+4) Switch to a more feature-full SRM implementation.  Bestman2 won&#39;t ever have a featureset comparable to Storm-SE or DPM-lite (especially as those tend to involve databases or assume things about the filesystem to help keep state).  The downside of this is, of course, we won&#39;t be able to provide support for the SRM endpoint / SE.  However, eyeballing the ticket history, this may not be the end of the world.
+
+Lots of things to think about!  In fact, it&#39;s worth having a conversation over (and tickets are notoriously poor mechanism for a detailed conversation).  Would you have time to chat over the phone in the next day or two?
+
+Thanks,
+
+Brian
+
+<div id='show_546243512' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_546243512'>PS - the TLS token errors you report below look suspiciously like the error message we saw in older versions of Java, which have problematic implementations of a few SSL algorithms.  What version of Java is on the system?  That&#39;s not necessarily the error (there&#39;s a handful of possibilities), but it&#39;d be good to eliminate that...
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman
+</div><script type='text/javascript'>
+        $('#show_546243512').click(function() {
+            $('#detail_546243512').slideDown("normal");
+            $('#show_546243512').hide();
+            $('#hide_546243512').show();
+        });
+        $('#hide_546243512').click(function() {
+            $('#detail_546243512').slideUp();
+            $('#hide_546243512').hide();
+            $('#show_546243512').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25276#1441752013'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-08T22:40:13+00:00">Sep 8, 2015 10:40 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1441752013">&nbsp;</a></div><pre>Kevin,
+
+I&#39;m sorry that this problem is still affecting your site. I will speak with Carl and the rest of the software team to see if can decide on some next steps to get Adler support working again.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25276#1441381610'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-04T15:46:50+00:00">Sep 4, 2015 03:46 PM UTC</time><a class="anchor" name="1441381610">&nbsp;</a></div><pre>It has not been resolved and it has become such a severe problem to our collaboration that we are strongly considering switching to the StoRM SRM instead of Bestman2. Our SE is unusable without adler32 at this point. We will be forced to switch if its not resolved shortly. We were asked to stay with Bestman2 by OSG with the promise of support, but we just aren&#39;t getting the support we need. Any help you can provide to quickly rectify the issue would be greatly appreciated.
+
+Thanks,
+Kevin
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1441373023'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-04T13:23:43+00:00">Sep 4, 2015 01:23 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1441373023">&nbsp;</a></div><pre>Greetings all,
+
+Has this issue been abandoned or resolved?  It&#39;s been quite some time since updates were provided unless they have been offline.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='25276#1440424102'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-24T13:48:22+00:00">Aug 24, 2015 01:48 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1440424102">&nbsp;</a></div><pre>Greetings,
+
+Any offline updates available for this request?  If I can assist please let me know.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='25276#1439836777'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-17T18:39:37+00:00">Aug 17, 2015 06:39 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1439836777">&nbsp;</a></div><pre>Greetings,
+
+Any offline updates available for this request?  If I can assist please let me know.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='25276#1438700028'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-04T14:53:48+00:00">Aug 4, 2015 02:53 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1438700028">&nbsp;</a></div><pre>Hi Carl,
+
+Have you had an opportunity to review this issue?  Please let me know if I can assist.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='25276#1438623161'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-03T17:32:41+00:00">Aug 3, 2015 05:32 PM UTC</time><a class="anchor" name="1438623161">&nbsp;</a></div><pre>Any idea? This has been plaguing us for a while.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1438197624'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-29T19:20:24+00:00">Jul 29, 2015 07:20 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1438197624">&nbsp;</a></div><pre>Hi Carl,
+Can you take a look at this when you have time?
+-Mat</pre></div><div class='update_description'><i onclick="document.location='25276#1437482946'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-21T12:49:06+00:00">Jul 21, 2015 12:49 PM UTC</time> by <b>echism</b><a class="anchor" name="1437482946">&nbsp;</a></div><pre>Hi all,
+
+I&#39;m co-assigning Vince Neal as it does not appear that this will be resolved before I&#39;m out of office. Carl, please revisit this.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1437150753'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-17T16:32:33+00:00">Jul 17, 2015 04:32 PM UTC</time><a class="anchor" name="1437150753">&nbsp;</a></div><pre>Yes, I installed it as &#34;/usr/bin/adler32&#34; ?  And its executable. It works fine when executed manually.
+
+The strace shows bestman2 not ever calling the script. So adding logging to it won&#39;t help.
+
+I wrote the script so it could cache the checksum in a Lustre EA so it doesn&#39;t have to recalculate it all the time.
+
+Its based on the scripts here&#58; <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Storage/BestmanAdler32Checksum' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Storage/BestmanAdler32Checksum</a>
+but cleaned up for maintainability and performance.
+
+Thanks,
+Kevin
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1437150399'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-17T16:26:39+00:00">Jul 17, 2015 04:26 PM UTC</time> by <b>echism</b><a class="anchor" name="1437150399">&nbsp;</a></div><pre>Hi Carl,
+
+Did anything come of this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='25276#1436797417'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-13T14:23:37+00:00">Jul 13, 2015 02:23 PM UTC</time> by <b>echism</b><a class="anchor" name="1436797417">&nbsp;</a></div><pre>Hi Carl,
+
+Did anything come of this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='25276#1436390432'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-08T21:20:32+00:00">Jul 8, 2015 09:20 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1436390432">&nbsp;</a></div><pre>Thanks Kevin, and sorry again for the slow response time.
+
+<font color='#7F7E6F'>&#62; digging further, I notice this in the logs&#58;</font>
+<font color='#7F7E6F'>&#62; unrecognized configuration entry&#58; hexChecksumCommand</font>
+<font color='#7F7E6F'>&#62; hexChecksumCommand=/usr/bin/adler32</font>
+<font color='#7F7E6F'>&#62; ...</font>
+<font color='#7F7E6F'>&#62; Did support for it get dropped out of bestman at somepoint?</font>
+
+I don&#39;t think support for it was ever dropped from bestman, but then again I don&#39;t know how well it was tested in the past...  (This is the first time I&#39;ve heard of needing to change the default checksum type.)  Using the fts-client commands (instead of glite-fts-client) is still fairly new territory for us too.
+
+<font color='#7F7E6F'>&#62; I wrote an adler32 script and put it in place.</font>
+
+So did you install it as &#34;/usr/bin/adler32&#34; ?  And is it executable?
+
+If you have a script in place for adler32, maybe you can have it output a line to a log file or something with the date and command line arguments, just to make sure whether or not it&#39;s getting run.
+
+A side note, repoquery shows that &#34;/usr/bin/adler32&#34; comes from the dcache-srmclient package.  And this &#34;/usr/bin/adler32&#34; is actually a small wrapper script that uses the java class &#34;org.dcache.srm.util.Adler32&#34; ...  But again the whole thing is a little odd to me because it looked like bestman2 supported adler32 internally with the java.util.zip.Adler32 class.
+
+I&#39;m going to contact the rest of the software team about this also to try to get some more input...
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='25276#1436371460'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-08T16:04:20+00:00">Jul 8, 2015 04:04 PM UTC</time> by <b>echism</b><a class="anchor" name="1436371460">&nbsp;</a></div><pre>Carl,
+
+Was that last update helpful?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1435871144'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-02T21:05:44+00:00">Jul 2, 2015 09:05 PM UTC</time><a class="anchor" name="1435871144">&nbsp;</a></div><pre>Just went back to try and double check everything.... The config options are there...
+
+1998 ?        Sl     1&#58;27 /etc/alternatives/java_sdk/bin/java -server -Xmx1024m -XX&#58;MaxDirectMemorySize=1024m -DX509_CERT_DIR=/etc/grid-security/certificates -DCADIR=/etc/grid-security/certificates -Daxis.socketSecureFactory=org.glite.security.trustmanager.axis.AXISSocketFactory -DsslCAFiles=/etc/grid-security/certificates/*.0 -DsslCertfile=/etc/grid-security/bestman/bestmancert.pem -DsslKey=/etc/grid-security/bestman/bestmankey.pem -DJettyConfiguration=/etc/bestman2/conf/WEB-INF/jetty.xml -DJettyDescriptor=/etc/bestman2/conf/WEB-INF/web.xml -DJettyResource=/etc/bestman2/conf/ -Dorg.eclipse.jetty.util.log.IGNORE=true gov.lbl.srm.server.Server /etc/bestman2/conf/bestman2.rc
+4863 pts/0    D+     0&#58;00 grep bestman
+[root@se ~]# strace -s 1000 -p 1998 -e execve
+Process 1998 attached - interrupt to quit
+^CProcess 1998 detached
+
+Ran an srm-ls while attached. So its not trying to run the command for sure....
+
+Here&#39;s whats in the logs&#58;
+BeStMan (Gateway mode)   2.2.2.3.0  Wed Nov  7 16&#58;03&#58;09 CST 2012
+
+BeStMan and SRM-Clients Copyright(c) 2007-2012,
+Lawrence Berkeley National Laboratory. All rights reserved.
+Support at SRM@.... and documents at <a href='http&#58;//sdm.lbl.gov/bestman' target='_blank' rel='nofollow'>http&#58;//sdm.lbl.gov/bestman</a>
+OSG Support at osg-software@.... and
+documentation at <a href='https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/' target='_blank' rel='nofollow'>https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/</a>
+
+............. invoking&#58; Thread.interrupt() on timed out threads
+....... file system will be accessed through class&#58;null
+....... ls(file) shows checksum?true
+....... checksum command&#58; /usr/bin/adler32
+....... checksum type=ADLER32
+==&#62; assigned event log to be&#58; /var/log/bestman2/event.srm.log max bytes to rotate&#58;50000000
+no cache log
+Log level is setting to&#58;INFO
+sudo =sudo
+.......local file system will be accessed through sudo
+sudo -v -S succeed.
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; unrecognized configuration entry&#58; hexChecksumCommand</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Gateway mode specific&#58; checkSizeWithFS</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Gateway mode specific&#58; fsConcurrency</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; unrecognized configuration entry&#58; defaultChecksumType</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Gateway mode specific&#58; pathForToken</font>
+<div id='show_1362191670' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1362191670'><font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Gateway mode specific&#58; checkSizeWithGsiftp</font>
+## countIpAddress&#58; loopback
+## countIpAddress&#58; found 0th address=se.hep.pnnl.gov
+## found 1 host addresses
+## found assigned hostname=null
+## using local host&#58; se.hep.pnnl.gov as web service host.
+.........assuming httpg&#58; is the protocol to access SRM.
+###### using default gridmap filename&#58;/etc/grid-security/grid-mapfile
+validate voms proxy? =false
+Finding credential from cert&#58;/etc/grid-security/bestman/bestmancert.pem key&#58;/etc/grid-security/bestman/bestmankey.pem
+SLF4J&#58; Class path contains multiple SLF4J bindings.
+SLF4J&#58; Found binding in [jar&#58;file&#58;/usr/share/java/bestman2/others/slf4j-simple-1.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J&#58; Found binding in [jar&#58;file&#58;/usr/share/java/bestman2/others/slf4j-log4j12-1.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J&#58; See <a href='http&#58;//www.slf4j.org/codes.html#multiple_bindings' target='_blank' rel='nofollow'>http&#58;//www.slf4j.org/codes.html#multiple_bindings</a> for an explanation.
+.. gums host dn/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=se.hep.pnnl.gov
+initiating XACML to talk to GUMS
+hich vomsvalidator?jar&#58;file&#58;/usr/share/java/voms-api-java.jar!/org/glite/voms/VOMSValidator.class
+......[gsiftp retry options]&#58; wait_interval(seconds)=120  max=2
+==&#62; input&#58; gsiftp 0th&#58; gridftp00.hep.pnnl.gov
+..............blocking access to path&#58; /root
+..............blocking access to path&#58; /etc
+...............allowed access to path&#58; /hep/belle2/se
+...............allowed access to path&#58; /se
+-- listing properties --
+noCacheLog=true
+hexChecksumCommand=/usr/bin/adler32
+noSudoOnLs=false
+supportedProtocolList=<a href='gsiftp&#58;//gridftp00.hep.pnnl.gov' target='_blank' rel='nofollow'>gsiftp&#58;//gridftp00.hep.pnnl.gov</a>
+KeyFileName=/etc/grid-security/bestman/bestmankey...
+disableSpaceMgt=true
+accessFileSysViaSudo=true
+MaxMappedIDCached=1000
+LifetimeSecondsMappedIDCached=1800
+localPathListAllowed=/se
+GUMSserviceURL=<a href='https&#58;//gums.pnl.gov&#58;8443/gums/servic...' target='_blank' rel='nofollow'>https&#58;//gums.pnl.gov&#58;8443/gums/servic...</a>
+CertFileName=/etc/grid-security/bestman/bestmancer...
+eventLogLevel=INFO
+checkSizeWithFS=true
+fsConcurrency=40
+MaxNumberOfFileRequests=1000000
+useBerkeleyDB=false
+EventLogLocation=/var/log/bestman2/event.srm.log
+defaultChecksumType=adler32
+FactoryID=srm/v2/server
+pathForToken=true
+Concurrency=40
+noEventLog=false
+checkSizeWithGsiftp=false
+staticTokenList=BELLE[desc&#58;belle][owner&#58;belle][path&#58;/...
+MaxConcurrentFileTransfer=10000
+GridFTPNumStreams=5
+GridFTPBufferSizeMB=2
+showChecksumWhenListingFile=true
+localPathListToBlock=/root;/etc
+securePort=8443
+-- done with listing web service parameters --
+BeStMan&#58; space mgt component is disabled.
+[Note&#58;] srmcacheKeywordOn is set to true automatically when space mgt is disabled.
+
+It seems to partially know the config, but complains about it too. Not sure why.
+
+Thanks,
+Kevin
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461
+</div><script type='text/javascript'>
+        $('#show_1362191670').click(function() {
+            $('#detail_1362191670').slideDown("normal");
+            $('#show_1362191670').hide();
+            $('#hide_1362191670').show();
+        });
+        $('#hide_1362191670').click(function() {
+            $('#detail_1362191670').slideUp();
+            $('#hide_1362191670').hide();
+            $('#show_1362191670').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25276#1435867920'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-02T20:12:00+00:00">Jul 2, 2015 08:12 PM UTC</time><a class="anchor" name="1435867920">&nbsp;</a></div><pre>digging further, I notice this in the logs&#58;
+unrecognized configuration entry&#58; hexChecksumCommand
+hexChecksumCommand=/usr/bin/adler32
+
+Thats probably part of it...
+
+Did support for it get dropped out of bestman at somepoint?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1435863202'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-02T18:53:22+00:00">Jul 2, 2015 06:53 PM UTC</time> by <b>echism</b><a class="anchor" name="1435863202">&nbsp;</a></div><pre>Hi Carl,
+
+Please update this.</pre></div><div class='update_description'><i onclick="document.location='25276#1435691667'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-30T19:14:27+00:00">Jun 30, 2015 07:14 PM UTC</time> by <b>echism</b><a class="anchor" name="1435691667">&nbsp;</a></div><pre>Carl,
+
+Please revisit this.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1435610939'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-29T20:48:59+00:00">Jun 29, 2015 08:48 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1435610939">&nbsp;</a></div><pre>Carl,
+
+Could you please look into this issue again?  We&#39;ve been waiting for a while for a response and would like to help move things forward.
+
+Thanks,
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='25276#1435092216'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-23T20:43:36+00:00">Jun 23, 2015 08:43 PM UTC</time> by <b>echism</b><a class="anchor" name="1435092216">&nbsp;</a></div><pre>Hey Carl,
+
+Please revisit this.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1434660820'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T20:53:40+00:00">Jun 18, 2015 08:53 PM UTC</time> by <b>echism</b><a class="anchor" name="1434660820">&nbsp;</a></div><pre>Hey Carl,
+
+Please revisit this.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1434458056'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-16T12:34:16+00:00">Jun 16, 2015 12:34 PM UTC</time> by <b>echism</b><a class="anchor" name="1434458056">&nbsp;</a></div><pre>Hey Carl,
+
+Please revisit this.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1433971867'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-10T21:31:07+00:00">Jun 10, 2015 09:31 PM UTC</time><a class="anchor" name="1433971867">&nbsp;</a></div><pre>I wrote an adler32 script and put it in place. If I manually run the adler32 script on a file as the bestman user, I can see it set the EA if it doesn&#39;t exist, and it always returns the adler32 checksum.
+
+But it does not seem to be called from bestman.
+
+I set the following in bestman2.rc
+
+showChecksumWhenListingFile=true
+defaultChecksumType=adler32
+hexChecksumCommand=/usr/bin/adler32
+
+Any ideas?
+
+Thanks,
+Kevin
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Kevin M Fox 2461</pre></div><div class='update_description'><i onclick="document.location='25276#1433970691'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-10T21:11:31+00:00">Jun 10, 2015 09:11 PM UTC</time> by <b>vikas.bansal@....</b><a class="anchor" name="1433970691">&nbsp;</a></div><pre>Hi Carl,
+
+without showChecksumWhenListingFile=true
+
+Transfer jobs also fail because of checksum problem now (the original problem). So I confirm.
+
+The problem with metadata and DIRAC when showChecksumWhenListingFile=true are my own words. I am not an expert in either so just my understanding.
+
+cGSI-SOAP errors are also a problem for FTS3 server itself. E.g. In /var/log/fts3/fts3server.log I routinely have these ERROR lines
+
+INFO    Wed Jun 10 13&#58;58&#58;50 2015 ;accepted connection from host=192.101.107.167, socket=32
+
+ERR     Wed Jun 10 13&#58;58&#58;50 2015 ;/builddir/build/BUILD/fts-3.2.32/src/server/gsoap_request_handler.cpp;handle;107;Error -1 fault&#58; SOAP-ENV&#58;Server [no subcode]
+
+&#34;CGSI-gSOAP running on fts.hep.pnnl.gov reports Error retrieveing the userca/VOMS credentials&#34;
+
+Detail&#58; [no detail]
+
+INFO    Wed Jun 10 13&#58;58&#58;50 2015 ;accepted connection from host=192.101.107.167, socket=30
+
+I am not sure if these errors in fts3server may be related to that instance of fts3 job failure but such failure rates are pretty small.
+
+On a side track, would you have any idea about how to avoid above error lines on my fts3server?
+
+Coming back to checking versions.
+
+On fts3 server (fts.hep.pnnl.gov)
+
+$ rpm -q CGSI-gSOAP srm-ifce
+
+CGSI-gSOAP-1.3.7-1.el6.x86_64
+
+srm-ifce-1.22.2-1.el6.x86_64
+
+I tried the transfer commands from a client, which returns these different versions
+<div id='show_1808579632' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1808579632'>
+CGSI-gSOAP-1.3.6-5.osg32.el6.x86_64
+
+srm-ifce-1.18.0-1.el6.x86_64
+
+DIRAC-server which is also one of my client does not have those rpm installed.
+
+I am not sure if this sheds light on the original problem at hand.
+
+Thank you for your input.
+
+Vikas
+</div><script type='text/javascript'>
+        $('#show_1808579632').click(function() {
+            $('#detail_1808579632').slideDown("normal");
+            $('#show_1808579632').hide();
+            $('#hide_1808579632').show();
+        });
+        $('#hide_1808579632').click(function() {
+            $('#detail_1808579632').slideUp();
+            $('#hide_1808579632').hide();
+            $('#show_1808579632').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25276#1433955614'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-10T17:00:14+00:00">Jun 10, 2015 05:00 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1433955614">&nbsp;</a></div><pre>Hi Vikas,
+
+Thanks for the summary and sorry for my delay.
+
+So do I understand right that with
+
+showChecksumWhenListingFile=true
+
+the transfers (with fts-transfer-submit) work but DIRAC jobs fail to submit, due to the metadata error, but without showChecksumWhenListingFile=true, the transfers fail also?
+
+I&#39;m not really sure why this is happening.
+
+This may not be relevant, but based on the error message&#58;
+
+Error reason&#58; DESTINATION CHECKSUM srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on fts.hep.pnnl.gov reports Error reading token data header&#58; Connection closed
+
+could you check the version of CGSI-gSOAP and srm-ifce running on both the client and the server (fts.hep.pnnl.gov) ?
+
+rpm -q CGSI-gSOAP srm-ifce
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='25276#1433863975'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-09T15:32:55+00:00">Jun 9, 2015 03:32 PM UTC</time> by <b>echism</b><a class="anchor" name="1433863975">&nbsp;</a></div><pre>Hey Carl,
+
+Could you take another look at this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1433518190'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-05T15:29:50+00:00">Jun 5, 2015 03:29 PM UTC</time> by <b>echism</b><a class="anchor" name="1433518190">&nbsp;</a></div><pre>Hey Carl,
+
+Please revisit this.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1433353565'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-03T17:46:05+00:00">Jun 3, 2015 05:46 PM UTC</time><a class="anchor" name="1433353565">&nbsp;</a></div><pre>Hi Carl,
+
+This looks interesting. Have u seen the behavior that Vikas shows before?
+
+Cheers,
+Edgar
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='25276#1432684077'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T23:47:57+00:00">May 26, 2015 11:47 PM UTC</time><a class="anchor" name="1432684077">&nbsp;</a></div><pre>Hi Elizabeth, Carl, Brain
+
+My apologies for getting back on this so late. I was traveling.
+The solution works and not. Let me explain.
+
+In  /etc/bestman2/conf/bestman2.rc
+I did this
+
+showChecksumWhenListingFile=true
+defaultChecksumType=adler32
+
+and restarted bestman2 service.
+
+After trying first time like this
+
+$ fts-transfer-submit -s <a href='https&#58;//fts.hep.pnnl.gov&#58;8443' target='_blank' rel='nofollow'>https&#58;//fts.hep.pnnl.gov&#58;8443</a> -f TestKITWithCheckSum.txt -o -S BELLE -K
+$ cat TestKITWithCheckSum.txt
+<a href='srm&#58;//gridka-dcache.fzk.de&#58;8443/srm/managerv2?SFN=//pnfs/gridka.de/belle/disk-only/belle/DC2015/in/10G_DC2015_002.dat' target='_blank' rel='nofollow'>srm&#58;//gridka-dcache.fzk.de&#58;8443/srm/managerv2?SFN=//pnfs/gridka.de/belle/disk-only/belle/DC2015/in/10G_DC2015_002.dat</a> <a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=//se//belle/DC2015/in/10G_DC2015_002.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=//se//belle/DC2015/in/10G_DC2015_002.dat</a> ADLER32&#58;822b0001
+
+It failed with this error
+Error reason&#58; DESTINATION CHECKSUM srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on fts.hep.pnnl.gov reports Error reading token data header&#58; Connection closed
+
+Trying again it succeeded. So yes it worked.
+
+But here comes the problem. And I do not understand this behavior.
+
+I am submitting some FTS jobs from my SITE (PNNL-SE) - <a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=//se//belle/DC2015/in' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=//se//belle/DC2015/in</a> to other sites via DIRAC
+After above change in bestman2 config, DIRAC fails to submit FTS jobs. In log files I see these messages
+
+&#34;ReplicateAndRegister WARN&#58; unable to get metadata at PNNL-SE for /belle/DC2015/in/10G_DC2015_005.dat 540 seconds timeout for &#34;__gfal_wrapper&#34; call&#34;
+
+It looks like now it cannot get metadata on the files.
+
+As soon as I comment out, this line
+
+<div id='show_709295479' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_709295479'>showChecksumWhenListingFile=true
+
+in
+bestman2.rc file and restart the service,
+
+DIRAC resumes to schedule FTS jobs again.
+
+So it looks like
+showChecksumWhenListingFile=true
+
+somehow fails to let DIRAC get &#34;proper&#34; metadata on the files.
+
+Do you understand it? As per the comment on the line, I see showChecksumWhenListingFile to return checksum in srmLs.
+
+Is it because the files were registered in first place at PNNL-SE with showChecksumWhenListingFile=true commented out? So now when enabled checksum cannot be returned and hence failure?
+
+Any help is appreciated.
+
+Thanks,
+Vikas
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Vikas Bansal 2413
+</div><script type='text/javascript'>
+        $('#show_709295479').click(function() {
+            $('#detail_709295479').slideDown("normal");
+            $('#show_709295479').hide();
+            $('#hide_709295479').show();
+        });
+        $('#hide_709295479').click(function() {
+            $('#detail_709295479').slideUp();
+            $('#hide_709295479').hide();
+            $('#show_709295479').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25276#1432647751'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T13:42:31+00:00">May 26, 2015 01:42 PM UTC</time> by <b>echism</b><a class="anchor" name="1432647751">&nbsp;</a></div><pre>Hey Vikas,
+
+We haven&#39;t heard back from you in about three weeks. I will assume you&#39;ve resolved this on your own in two days.</pre></div><div class='update_description'><i onclick="document.location='25276#1432004891'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-19T03:08:11+00:00">May 19, 2015 03:08 AM UTC</time> by <b>echism</b><a class="anchor" name="1432004891">&nbsp;</a></div><pre>This is a quick note to say that I am at a workshop this week, so please email
+goc@.... if you need anything from my group before Monday.
+
+Best,
+Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='25276#1431965991'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-18T16:19:51+00:00">May 18, 2015 04:19 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1431965991">&nbsp;</a></div><pre>Vikas,
+
+Have you seen Carl&#39;s latest comment?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='25276#1431455365'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-12T18:29:25+00:00">May 12, 2015 06:29 PM UTC</time> by <b>echism</b><a class="anchor" name="1431455365">&nbsp;</a></div><pre>Vikas,
+
+Do you have anything new on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='25276#1431014712'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-07T16:05:12+00:00">May 7, 2015 04:05 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1431014712">&nbsp;</a></div><pre>Ok, maybe I had it backwards then; I was thinking fts was doing md5sum but bestman2 was doing adler32 (so I was suggesting making &#34;md5&#34; the default).  I was especially thinking this because I think adler32 is the default for bestman2.  But you&#39;re saying you confirmed it&#39;s the other way around, right?
+
+<font color='#7F7E6F'>&#62; my hypothesis was it gets it from the system, .i.e. /usr/bin/md5sum (I could be wrong)</font>
+<font color='#7F7E6F'>&#62; Or else how does one explain md5sum in the fts log file?</font>
+
+My impression is that md5, adler32, and crc32 are all supported internally by bestman2 (and, I would guess fts), that is, they calculate the md5 sum or adler32 sum without having to use an external program like md5sum or a calc_adler32.py script.  In bestman2, it looks like it uses the java.util.zip.Adler32 class to calculate it.
+
+That BestmanAdler32Checksum link is a little confusing though since it makes it seem like you need to use an external program to calculate it... But the way I read the source code that is optional and if you don&#39;t specify a command it just uses the internal one.
+
+Anyway, sure, try setting
+defaultChecksumType=adler32
+
+on the bestman2 server and see if that makes any difference.  Maybe it will, but it won&#39;t surprise me if it doesn&#39;t either since as far as I can see adler32 is the bestman2 default.  If it still doesn&#39;t work, then just in case, try
+defaultChecksumType=md5
+
+... this is just in case somehow the fts end is the one that&#39;s generating the md5 and the bestman2 end is generating adler32.
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='25276#1430966301'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-07T02:38:21+00:00">May 7, 2015 02:38 AM UTC</time><a class="anchor" name="1430966301">&nbsp;</a></div><pre>Thanks Carl.
+
+I have tried without -K, it still fails. But if do not give checksum too then it succeeds. fts without -K  still checks for checksum if it is supplied.
+In my understanding fts computes/asks for adler32 and then md5sum. The error occurs because returned checksum is md5sum type (I confirm that) and which is different in value from adler32 value.
+
+Since checksums are commented out in /etc/bestman2/conf/bestman2.rc, my hypothesis was it gets it from the system, .i.e. /usr/bin/md5sum (I could be wrong) Or else how does one explain md5sum in the fts log file?
+
+We will try to un comment the lines and enable checksums.
+
+BTW, looking here
+<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Storage/BestmanAdler32Checksum' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Storage/BestmanAdler32Checksum</a>
+
+do you mean
+defaultChecksumType=adler32
+or md5. If md5, then I do not follow.
+
+Thanks for your quick replies and help on this.
+
+Vikas
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Vikas Bansal 2413</pre></div><div class='update_description'><i onclick="document.location='25276#1430956537'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-06T23:55:37+00:00">May 6, 2015 11:55 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1430956537">&nbsp;</a></div><pre>Ah ok, thanks Vikas!
+
+So it sounds like fts-transfer-submit and bestman2-server are somehow not communicating about which checksum algorithm they&#39;re using.  It sounds like a bug to me that we can look into, but in the mean time a configuration change might fix it also.
+
+adler32, md5, and crc32 are internal checksum algorithms supported by bestman2 -- I don&#39;t think it&#39;s a problem that there is no adler32 program installed.  I get the impression fts-transfer-submit (part of the fts-client package) supports adler32 also, it&#39;s just that somehow the server and client have different ideas about which one&#39;s getting used..!
+
+Anyway, you can confirm this by putting the adler32 checksum at the end, and dropping the &#39;-K&#39; option&#58;
+
+fts-transfer-submit -s <a href='https&#58;//fts.hep.pnnl.gov&#58;8443' target='_blank' rel='nofollow'>https&#58;//fts.hep.pnnl.gov&#58;8443</a> -f TestKITWithCheckSum.txt -o -S BELLE ADLER32&#58;822b0001
+
+If that works it confirms both sides support adler32.
+
+You can always leave off the &#39;-K&#39; option, but then it won&#39;t check the checksums.
+
+But otherwise I would recommend editing /etc/bestman2/conf/bestman2.rc on the server and setting
+
+defaultChecksumType=md5
+
+(&#34;md5&#34; not &#34;md5sum&#34;), then restart the bestman2 server and see if you still get the error.  I&#39;m hoping that will get bestman2 to send the md5 checksum that fts-client is expecting.
+
+Let me know how it goes..!
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='25276#1430954070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-06T23:14:30+00:00">May 6, 2015 11:14 PM UTC</time><a class="anchor" name="1430954070">&nbsp;</a></div><pre>Hello Carl,
+
+My apologies for the delay. I miss-spelled my email address so did not receive any updates.
+
+$ rpm -qa | grep ^bestman2
+bestman2-tester-2.3.0-21.osg32.el6.noarch
+bestman2-client-libs-2.3.0-21.osg32.el6.noarch
+bestman2-tester-libs-2.3.0-21.osg32.el6.noarch
+bestman2-common-libs-2.3.0-21.osg32.el6.noarch
+bestman2-client-2.3.0-21.osg32.el6.noarch
+bestman2-server-2.3.0-21.osg32.el6.noarch
+bestman2-server-libs-2.3.0-21.osg32.el6.noarch
+bestman2-server-dep-libs-2.3.0-21.osg32.el6.noarch
+
+I am calling fts-transfer-submit from fts3.2.32 inside DIRAC framework.
+DIRAC calls this command
+
+$fts-transfer-submit -s <a href='https&#58;//fts.hep.pnnl.gov&#58;8443' target='_blank' rel='nofollow'>https&#58;//fts.hep.pnnl.gov&#58;8443</a> -f TestKITWithCheckSum.txt -o -K -S BELLE
+
+With
+
+$ cat TestKITWithCheckSum.txt
+<a href='srm&#58;//gridka-dcache.fzk.de&#58;8443/srm/managerv2?SFN=//pnfs/gridka.de/belle/disk-only/belle/DC2015/in/10G_DC2015_002.dat' target='_blank' rel='nofollow'>srm&#58;//gridka-dcache.fzk.de&#58;8443/srm/managerv2?SFN=//pnfs/gridka.de/belle/disk-only/belle/DC2015/in/10G_DC2015_002.dat</a> <a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=//se//belle/DC2015/in/10G_DC2015_002.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=//se//belle/DC2015/in/10G_DC2015_002.dat</a> ADLER32&#58;822b0001
+
+Sorry, I am not  well verse with Bestman2, so my initial saying about not available may be misplaced. Just looked at /etc/bestman2/conf/bestman2.rc
+
+### accessFileSysViaGsiftp=false
+###########################################################
+### showChecksumWhenListingFile to return checksum in srmLs
+### defaultChecksumType supports adler32, md5, crc32
+###########################################################
+### showChecksumWhenListingFile=false
+### defaultChecksumType=adler32
+###########################################################
+### hexChecksumCommand to plugin checksum calculation callout
+<div id='show_709311256' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_709311256'>### defaultChecksumType should be adler32 in hex
+### only valid when showChecksumWhenListingFile=true
+### e.g. hexChecksumCommand=/usr/local/mychecksum -adler32
+###########################################################
+### hexChecksumCommand=CHECKSUM_CALLOUT
+
+So it is commented out. Will un-commenting do the trick? If so I can ask my sys admin to do it. Perhaps there was a good reason to comment it out?
+
+The reason I mentioned it was not available in the first place was because of this
+
+$ which md5sum
+/usr/bin/md5sum
+[bans718@se ~]$ which adler32
+/usr/bin/which&#58; no adler32 in (/usr/lib64/ccache&#58;/usr/local/bin&#58;/bin&#58;/usr/bin&#58;/usr/local/sbin&#58;/usr/sbin)
+[bans718@se ~]$ which adler
+/usr/bin/which&#58; no adler in (/usr/lib64/ccache&#58;/usr/local/bin&#58;/bin&#58;/usr/bin&#58;/usr/local/sbin&#58;/usr/sbin)
+
+Thank you for quick updates.
+Vikas
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Vikas Bansal 2413
+</div><script type='text/javascript'>
+        $('#show_709311256').click(function() {
+            $('#detail_709311256').slideDown("normal");
+            $('#show_709311256').hide();
+            $('#hide_709311256').show();
+        });
+        $('#hide_709311256').click(function() {
+            $('#detail_709311256').slideUp();
+            $('#hide_709311256').hide();
+            $('#show_709311256').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='25276#1430867154'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-05T23:05:54+00:00">May 5, 2015 11:05 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1430867154">&nbsp;</a></div><pre>Also, can you see if defaultChecksumType is set to anything in /etc/bestman2/conf/bestman2.rc on the server end?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='25276#1430861483'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-05T21:31:23+00:00">May 5, 2015 09:31 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1430861483">&nbsp;</a></div><pre>Hi Vikas,
+
+What versions of bestman2 do you have installed on the client and server ends?  (rpm -qa | grep ^bestman2)
+
+Can you give me an example of the command line you are using from the client side?
+
+And when you say adler32 is not available on the source node - se.hep.pnnl.gov, do you mean in a config file, or something is not installed?  (Just trying to better understand)
+
+Thanks!
+Carl</pre></div><div class='update_description'><i onclick="document.location='25276#1430859565'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-05T20:59:25+00:00">May 5, 2015 08:59 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1430859565">&nbsp;</a></div><pre>Assigning to Carl</pre></div><div class='update_description'><i onclick="document.location='25276#1430851288'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-05T18:41:28+00:00">May 5, 2015 06:41 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1430851288">&nbsp;</a></div><pre>Hello,
+
+I have a local site that deploys BestMan2. In short incoming file transfers fail after checksum is compared. The file is completely copied and then checksum is compared and which fails. This happens because incoming file has adler32 check sum type whereas after copying md5sum is evaluated for the same transferred file and when compared it of course fails.
+
+Here are some relevant lines from fts-transfer-submit log file
+
+Sat May  2 03&#58;10&#58;49 2015 INFO     Transfer accepted
+Sat May  2 03&#58;10&#58;49 2015 INFO     Proxy&#58;/tmp/x509up_h13678561619719268883XdcXcomXdcXdigicertXgridXoXopenXscienceXgridXouXpeopleXcnXmalachiXschramX1012
+Sat May  2 03&#58;10&#58;49 2015 INFO     User DN&#58;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Malachi Schram 1012
+Sat May  2 03&#58;10&#58;49 2015 INFO     VO&#58;belle
+Sat May  2 03&#58;10&#58;49 2015 INFO     Job id&#58;97f34fef-7020-4ca9-a836-28da2162805e
+Sat May  2 03&#58;10&#58;49 2015 INFO     File id&#58;1236723
+Sat May  2 03&#58;10&#58;49 2015 INFO     Source url&#58;<a href='srm&#58;//dcache-se-desy.desy.de&#58;8443/srm/managerv2?SFN=/pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>srm&#58;//dcache-se-desy.desy.de&#58;8443/srm/managerv2?SFN=/pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat</a>
+Sat May  2 03&#58;10&#58;49 2015 INFO     Dest url&#58;<a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2015/in/10G_DC2015_001.dat</a>
+Sat May  2 03&#58;10&#58;49 2015 INFO     Overwrite enabled&#58;1
+Sat May  2 03&#58;10&#58;49 2015 INFO     Dest space token&#58;belle
+Sat May  2 03&#58;10&#58;49 2015 INFO     Source space token&#58;
+Sat May  2 03&#58;10&#58;49 2015 INFO     Pin lifetime&#58;-1
+Sat May  2 03&#58;10&#58;49 2015 INFO     BringOnline&#58;-1
+Sat May  2 03&#58;10&#58;49 2015 INFO     Checksum&#58;822b0001
+Sat May  2 03&#58;10&#58;49 2015 INFO     Checksum enabled&#58;Relaxed comparison
+...
+Sat May  2 03&#58;10&#58;50 2015 INFO     Transfer Starting
+Sat May  2 03&#58;10&#58;51 2015 INFO     [1430561451452] BTH SRM	PREPARE&#58;ENTER
+Sat May  2 03&#58;10&#58;51 2015 INFO     [1430561451452] SRC SRM	CHECKSUM&#58;ENTER
+Sat May  2 03&#58;10&#58;52 2015 INFO     [1430561452194] SRC SRM	CHECKSUM&#58;EXIT
+Sat May  2 03&#58;10&#58;52 2015 INFO     [1430561452395] SRC GFAL2&#58;&#58;PLUGINS&#58;&#58;SRM	SRM&#58;GET	Got TURL <a href='srm&#58;//dcache-se-desy.desy.de&#58;8443/srm/managerv2?SFN=/pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>srm&#58;//dcache-se-desy.desy.de&#58;8443/srm/managerv2?SFN=/pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat</a> =&#62; <a href='gsiftp&#58;//dcache-door-desy10.desy.de&#58;2811//pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//dcache-door-desy10.desy.de&#58;2811//pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat</a>
+Sat May  2 03&#58;10&#58;54 2015 INFO     [1430561454213] DST GFAL2&#58;&#58;PLUGINS&#58;&#58;SRM	SRM&#58;PUT	Got TURL <a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2015/in/10G_DC2015_001.dat</a> =&#62; <a href='gsiftp&#58;//gridftp01.hep.pnnl.gov//se/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//gridftp01.hep.pnnl.gov//se/belle/DC2015/in/10G_DC2015_001.dat</a>
+Sat May  2 03&#58;10&#58;54 2015 INFO     [1430561454213] BTH SRM	PREPARE&#58;EXIT
+Sat May  2 03&#58;10&#58;54 2015 INFO     [1430561454217] BTH GSIFTP	TRANSFER&#58;ENTER	(131.169.191.50&#58;2811) <a href='gsiftp&#58;//dcache-door-desy10.desy.de&#58;2811//pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//dcache-door-desy10.desy.de&#58;2811//pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat</a> =&#62; (192.101.107.154&#58;0) <a href='gsiftp&#58;//gridftp01.hep.pnnl.gov//se/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//gridftp01.hep.pnnl.gov//se/belle/DC2015/in/10G_DC2015_001.dat</a>
+Sat May  2 03&#58;11&#58;02 2015 INFO     bytes&#58; 82051072, avg KB/sec&#58;16025, inst KB/sec&#58;16025, elapsed&#58;8
+Sat May  2 03&#58;11&#58;07 2015 INFO     bytes&#58; 570556416, avg KB/sec&#58;55718, inst KB/sec&#58;95411, elapsed&#58;13
+Sat May  2 03&#58;11&#58;12 2015 INFO     bytes&#58; 1156579328, avg KB/sec&#58;75298, inst KB/sec&#58;114457, elapsed&#58;18
+...
+Sat May  2 03&#58;15&#58;04 2015 INFO     bytes&#58; 10441719808, avg KB/sec&#58;41316, inst KB/sec&#58;5966, elapsed&#58;250
+<div id='show_925881666' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_925881666'>Sat May  2 03&#58;15&#58;06 2015 INFO     bytes&#58; 10737418240, avg KB/sec&#58;42264, inst KB/sec&#58;222129, elapsed&#58;252
+Sat May  2 03&#58;15&#58;06 2015 INFO     [1430561706064] BTH GSIFTP	TRANSFER&#58;EXIT	(131.169.191.50&#58;2811) <a href='gsiftp&#58;//dcache-door-desy10.desy.de&#58;2811//pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//dcache-door-desy10.desy.de&#58;2811//pnfs/desy.de/belle/belle2/belle/DC2015/in/10G_DC2015_001.dat</a> =&#62; (192.101.107.154&#58;0) <a href='gsiftp&#58;//gridftp01.hep.pnnl.gov//se/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>gsiftp&#58;//gridftp01.hep.pnnl.gov//se/belle/DC2015/in/10G_DC2015_001.dat</a>
+Sat May  2 03&#58;15&#58;06 2015 INFO     [1430561706064] DST SRM	CLOSE&#58;ENTER	<a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2015/in/10G_DC2015_001.dat</a>
+Sat May  2 03&#58;15&#58;06 2015 INFO     [1430561706243] DST SRM	CLOSE&#58;EXIT	<a href='srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2015/in/10G_DC2015_001.dat' target='_blank' rel='nofollow'>srm&#58;//se.hep.pnnl.gov&#58;8443/srm/v2/server?SFN=/se/belle/DC2015/in/10G_DC2015_001.dat</a>
+Sat May  2 03&#58;15&#58;06 2015 INFO     [1430561706243] DST SRM	CHECKSUM&#58;ENTER
+Sat May  2 03&#58;16&#58;19 2015 INFO     [1430561779114] DST SRM	CHECKSUM&#58;EXIT
+Sat May  2 03&#58;16&#58;21 2015 ERROR    TRANSFER CHECKSUM Source and destination checksums do not match 822b0001 != 2dd26c4d4799ebd29fa31e48d49e8e53
+Sat May  2 03&#58;16&#58;21 2015 INFO     Report FAILED back to the server
+Sat May  2 03&#58;16&#58;21 2015 INFO     Send monitoring complete message
+Sat May  2 03&#58;16&#58;22 2015 INFO     Closing the log stream
+
+---
+
+For the file in question, 822b0001 is Adler32 checksum
+and
+2dd26c4d4799ebd29fa31e48d49e8e53 is md5sum for the same file
+
+I also noticed that on the source node - se.hep.pnnl.gov, adler32 is not available but md5sum is available.
+My hypothesis is that adler32 is missing in the software.
+
+Can you please comment and rectify?
+
+Thanks,
+Vikas
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Vikas Bansal 2413
+
+</div><script type='text/javascript'>
+        $('#show_925881666').click(function() {
+            $('#detail_925881666').slideDown("normal");
+            $('#show_925881666').hide();
+            $('#hide_925881666').show();
+        });
+        $('#hide_925881666').click(function() {
+            $('#detail_925881666').slideUp();
+            $('#hide_925881666').hide();
+            $('#show_925881666').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F25276">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 25276});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

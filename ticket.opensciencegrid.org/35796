@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[35796] Condor-CE Routing Issue</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=35796" method="post">
+<div class="page-header">
+    <h3><span class="muted">35796</span> / Condor-CE Routing Issue</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Akhtar Mahmood</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Akhtar Mahmood</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Akhtar attach logs with correct extensions.</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2018-02-19</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=35796", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/35796?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/35796?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Condor-CE%20Routing%20Issue%20ISSUE%3D35796%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='35796#1518555978'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T21:06:18+00:00">Feb 13, 2018 09:06 PM UTC</time> by <b>amahmood@....</b><a class="anchor" name="1518555978">&nbsp;</a></div><pre>Brian&#58;
+
+I was just reading this from your email-
+
+---------------------------------------------------------------------
+
+Information about authentication methods that were attempted but failed&#58;
+AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+
+----------------------------------------------------------------------
+
+I now understand that this is fine and expected as you stated.
+
+We are all set then.
+
+Thanks.
+
+-Akhtar</pre></div><div class='update_description'><i onclick="document.location='35796#1518534070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T15:01:10+00:00">Feb 13, 2018 03:01 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1518534070">&nbsp;</a></div><pre>Akhtar,
+
+What command are you seeing that from? Are there any other messages around that one? I believe it&#39;s fine as the security model should fall back to GSI authentication after an FS auth failure.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='35796#1518483255'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T00:54:15+00:00">Feb 13, 2018 12:54 AM UTC</time> by <b>amahmood@....</b><a class="anchor" name="1518483255">&nbsp;</a></div><pre>Hello Brian&#58;
+
+Information about authentication methods that were attempted but failed&#58;
+AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS
+
+-------------------------------------------------------------------
+
+Does this mean there is still an issue?
+
+Thanks.
+
+-Akhtar</pre></div><div class='update_description'><i onclick="document.location='35796#1518481829'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-13T00:30:29+00:00">Feb 13, 2018 12:30 AM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1518481829">&nbsp;</a></div><pre>condor_ping checks look good from my end. Closing.
+
+$ ce=tier2-osg1.bellarmine.edu
+$ condor_ping -name $ce -pool $ce&#58;9619 -verbose READ
+Remote Version&#58;              $CondorVersion&#58; 8.4.12 Oct 31 2017 $
+Local  Version&#58;              $CondorVersion&#58; 8.6.8 Nov 13 2017 BuildID&#58; RH-8.6.8-1.fc27 $
+Session ID&#58;                  tier2-osg1&#58;1980933&#58;1518481763&#58;3878
+Instruction&#58;                 READ
+Command&#58;                     60020
+Encryption&#58;                  none
+Integrity&#58;                   none
+Authentication&#58;              none
+Remote Mapping&#58;              unauthenticated@unmapped
+Authorized&#58;                  TRUE
+
+$ condor_ping -name $ce -pool $ce&#58;9619 -verbose WRITE
+Remote Version&#58;              $CondorVersion&#58; 8.4.12 Oct 31 2017 $
+Local  Version&#58;              $CondorVersion&#58; 8.6.8 Nov 13 2017 BuildID&#58; RH-8.6.8-1.fc27 $
+Session ID&#58;                  tier2-osg1&#58;1980933&#58;1518481765&#58;3879
+Instruction&#58;                 WRITE
+Command&#58;                     60021
+Encryption&#58;                  none
+Integrity&#58;                   MD5
+Authenticated using&#58;         GSI
+All authentication methods&#58;  FS,GSI
+Remote Mapping&#58;              osg@....
+Authorized&#58;                  TRUE
+
+Information about authentication methods that were attempted but failed&#58;
+AUTHENTICATE&#58;1004&#58;Failed to authenticate using FS</pre></div><div class='update_description'><i onclick="document.location='35796#1518477676'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-12T23:21:16+00:00">Feb 12, 2018 11:21 PM UTC</time> by <b>amahmood@....</b><a class="anchor" name="1518477676">&nbsp;</a></div><pre>Hello Edgar&#58;
+
+This information was very helpful. We checked at the IT end here and it was a indeed a firewall issue with port 9619.
+
+Can you please run your test again and check if it is all good now.
+
+If so, we can then close this ticket.
+
+Thanks.
+
+-Akhtar</pre></div><div class='update_description'><i onclick="document.location='35796#1518457839'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-12T17:50:39+00:00">Feb 12, 2018 05:50 PM UTC</time><a class="anchor" name="1518457839">&nbsp;</a></div><pre>HI Akhtar,
+
+When attaching the log files ot the ticket, you need to change the extension from .log to .txt
+
+But probably just tail your /var/log/condor-ce/CondorLOg after you do a condor_ce_trace
+
+I got curious abot this ticket. So I tried something&#58;
+
+condor_status -debug -pool tier2-osg1.bellarmine.edu&#58;9619
+02/12/18 09&#58;48&#58;12 condor_read()&#58; timeout reading 5 bytes from collector at &#60;205.159.178.244&#58;9619&#62;.
+02/12/18 09&#58;48&#58;12 IO&#58; Failed to read packet header
+Error&#58; communication error
+
+Error&#58; Couldn&#39;t contact the condor_collector on tier2-osg1.bellarmine.edu
+(&#60;205.159.178.244&#58;9619&#62;).
+
+and did a tcpdump from the packets coming from that host&#58;
+
+tcpdump -n src tier2-osg1.bellarmine.edu
+tcpdump&#58; verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+09&#58;47&#58;12.066135 IP 205.159.178.244.9619 &#62; 169.228.130.52.49185&#58; Flags [S.], seq 1144217691, ack 544432519, win 14480, options [mss 1460,sackOK,TS val 2538274360 ecr 1249136711,nop,wscale 8], length 0
+09&#58;47&#58;12.129038 IP 205.159.178.244.9619 &#62; 169.228.130.52.49185&#58; Flags [.], ack 369, win 61, options [nop,nop,TS val 2538274423 ecr 1249136773], length 0
+09&#58;47&#58;12.129933 IP 205.159.178.244.9619 &#62; 169.228.130.52.49185&#58; Flags [P.], seq 1&#58;261, ack 369, win 61, options [nop,nop,TS val 2538274424 ecr 1249136773], length 260
+09&#58;47&#58;12.130033 IP 205.159.178.244.9619 &#62; 169.228.130.52.49185&#58; Flags [P.], seq 261&#58;457, ack 369, win 61, options [nop,nop,TS val 2538274424 ecr 1249136773], length 196
+09&#58;47&#58;12.195579 IP 205.159.178.244.9619 &#62; 169.228.130.52.49185&#58; Flags [R.], seq 1, ack 369, win 58, length 0
+
+So I would say there is a firewall problem in tier2-osg1.bellarmine.edu can you make sure 9619 port is open for incoming tcp and udp?
+
+My 2c,
+
+Edgar
+OSG Software Support
+
+by emfajardohernandez@....</pre></div><div class='update_description'><i onclick="document.location='35796#1518447256'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-12T14:54:16+00:00">Feb 12, 2018 02:54 PM UTC</time> by <b>amahmood@....</b><a class="anchor" name="1518447256">&nbsp;</a></div><pre>Brian&#58;
+
+For some reason I was not able to attach the files to the ticket. So I am attaching these two files with this email.
+
+Thanks.
+
+-Akhtar</pre></div><div class='update_description'><i onclick="document.location='35796#1517846351'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-05T15:59:11+00:00">Feb 5, 2018 03:59 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1517846351">&nbsp;</a></div><pre>Akhtar,
+
+I don&#39;t see any attachments. Could you try attaching via the ticket interface (<a href='https&#58;//ticket.grid.iu.edu/35796' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/35796</a>)?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='35796#1517846339'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-05T15:58:59+00:00">Feb 5, 2018 03:58 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1517846339">&nbsp;</a></div><pre>Akhtar and Muhammed,
+
+This log file isn&#39;t quite what I was looking for. Please follow the instructions from my previous comment [1]. I&#39;m interested in the entire condor-ce log dir as well as the output of your other commands.
+
+Thanks,
+Brian
+
+[1]
+
+<font color='#7F7E6F'>&#62; Have you increased the debug level of your logs as specified in the troubleshooting doc? If not, please do so and re-run your tests with condor_ce_trace and telnet. Then do the following</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 1. Run condor_ce_status -any</font>
+<font color='#7F7E6F'>&#62; 2. Attach the contents of /var/log/condor-ce/ to this ticket</font>
+<font color='#7F7E6F'>&#62; 3. Attach the contents of &#96;condor_ce_config_val -dump&#96; to this ticket</font></pre></div><div class='update_description'><i onclick="document.location='35796#1517444573'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-01T00:22:53+00:00">Feb 1, 2018 12:22 AM UTC</time><a class="anchor" name="1517444573">&nbsp;</a></div><pre>File is attached, as Akhtar mentioned.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Muhammad Saleem 4281</pre></div><div class='update_description'><i onclick="document.location='35796#1517429526'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-31T20:12:06+00:00">Jan 31, 2018 08:12 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1517429526">&nbsp;</a></div><pre>Akhtar,
+
+I don&#39;t see any attachments. Could you try attaching via the ticket interface (<a href='https&#58;//ticket.grid.iu.edu/35796' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/35796</a>)?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='35796#1517363292'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-31T01:48:12+00:00">Jan 31, 2018 01:48 AM UTC</time> by <b>amahmood@....</b><a class="anchor" name="1517363292">&nbsp;</a></div><pre>Hello Brian and Kyle&#58;
+
+I am attaching the log file.
+
+The time stamp for 01/29/18 is
+
+12&#58;13-12&#58;14
+
+-Akhtar</pre></div><div class='update_description'><i onclick="document.location='35796#1517336840'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-30T18:27:20+00:00">Jan 30, 2018 06:27 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1517336840">&nbsp;</a></div><pre>Akhtar,
+
+Do you have any updates for Brian?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='35796#1516811310'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-24T16:28:30+00:00">Jan 24, 2018 04:28 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1516811310">&nbsp;</a></div><pre>Akhtar,
+
+Did you see my last message where I asked for some attachments and command output?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='35796#1516748234'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-23T22:57:14+00:00">Jan 23, 2018 10:57 PM UTC</time> by <b>amahmood@....</b><a class="anchor" name="1516748234">&nbsp;</a></div><pre>Hello Brian&#58;
+
+Just trying to follow up.
+
+Thanks.
+
+-Akhtar
+
+________________________________
+From&#58; Mahmood, Dr. Akhtar
+Sent&#58; Sunday, January 21, 2018 10&#58;40&#58;36 PM
+To&#58; osg@....
+Cc&#58; blin@....
+Subject&#58; Re&#58; Open Science Grid&#58; Condor-CE Routing Issue ISSUE=35796 PROJ=71
+
+Hello Brian&#58;
+
+Sorry about the delay.  Here are the answers to your questions-
+
+What version of HTCondor-CE are you running?
+
+htcondor-ce-2.2.4-1.osg33.el6.noarch
+
+----------------------------------------------------------------------------
+
+If your CE is IPv6-enabled, there was a bug that was recently fixed in htcondor-ce-2.2.4 (in OSG 3.3) and htcondor-ce-3.0.3 (in OSG 3.4).
+
+No, we do not have Internet2 connectivity. So IPv6 is not enabled.  We only have IPv4.
+
+-------------------------------------------------------------------------------
+
+What was the exact condor_ping command that you ran?
+
+Have you tried running condor_ce_trace with the &#39;--debug&#39; flag (<a href='http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#condor_ce_trace' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#condor_ce_trace</a>)?
+
+<div id='show_554264273' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_554264273'>Is there anything fishy looking in the logs (<a href='http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#htcondor-ce-troubleshooting-data' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#htcondor-ce-troubleshooting-data</a>)?
+
+We did this from two different sites – one from OU and one from CERN.  Here are the results.  They are not the same.
+
+FROM OU&#58;
+
+[hs@osgitb1 ~]$ condor_ce_trace --debug tier2-osg1.bellarmine.edu
+01/19/18 11&#58;41&#58;22 Result of reading /etc/issue&#58;  Red Hat Enterprise
+Linux Server release 6.9 (Santiago)
+
+01/19/18 11&#58;41&#58;22 Using IDs&#58; 8 processors, 4 CPUs, 4 HTs
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; lo 127.0.0.1 up
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; eth0 10.1.1.1 up
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; eth1 129.15.31.41 up
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; lo &#58;&#58;1 up
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; eth1 fe80&#58;&#58;204&#58;23ff&#58;feb7&#58;1cb1 up
+01/19/18 11&#58;41&#58;22 Will use TCP to update collector
+tier2-osg1.bellarmine.edu &#60;205.159.178.244&#58;9619&#62;
+01/19/18 11&#58;41&#58;22 Trying to query collector &#60;205.159.178.244&#58;9619&#62;
+01/19/18 11&#58;42&#58;22 condor_read()&#58; timeout reading 5 bytes from collector
+at &#60;205.159.178.244&#58;9619&#62;.
+01/19/18 11&#58;42&#58;22 IO&#58; Failed to read packet header
+********************************************************************************
+2018-01-19 11&#58;42&#58;22 ERROR&#58; Could not contact CE collector at
+&#39;tier2-osg1.bellarmine.edu&#58;9619&#39;. Verify that the collector daemon is up
+with &#96;condor_ce_status&#96;.
+********************************************************************************
+
+FROM CERN&#58;
+
+[psvirin@lxplus049 src]$ ./condor_ce_trace --debug tier2-osg1.bellarmine.edu&#60;<a href='http&#58;//tier2-osg1.bellarmine.edu/&#62' target='_blank' rel='nofollow'>http&#58;//tier2-osg1.bellarmine.edu/&#62</a>;
+
+File specified in CONDOR_CONFIG environment variable&#58;
+
+&#34;/etc/condor-ce/condor_config&#34; does not exist.
+
+Neither the environment variable CONDOR_CONFIG,
+
+/etc/condor/, /usr/local/etc/, nor ~condor/ contain a condor_config source.
+
+Either set CONDOR_CONFIG to point to a valid config source,
+
+or put a &#34;condor_config&#34; file in /etc/condor/ /usr/local/etc/ or ~condor/
+
+01/19/18 18&#58;33&#58;46 Result of reading /etc/issue&#58;  Scientific Linux CERN SLC release 6.9 (Carbon)
+
+01/19/18 18&#58;33&#58;46 Using processor count&#58; 10 processors, 10 CPUs, 0 HTs
+
+01/19/18 18&#58;33&#58;46 Will use TCP to update collector tier2-osg1.bellarmine.edu&#60;<a href='http&#58;//tier2-osg1.bellarmine.edu/&#62' target='_blank' rel='nofollow'>http&#58;//tier2-osg1.bellarmine.edu/&#62</a>; &#60;205.159.178.244&#58;9619&#62;
+
+01/19/18 18&#58;33&#58;46 Trying to query collector &#60;205.159.178.244&#58;9619&#62;
+
+01/19/18 18&#58;33&#58;46 ERROR &#34;Unwilling or unable to try IPv4 or IPv6.  Check the settings ENABLE_IPV4, ENABLE_IPV6, and NETWORK_INTERFACE.
+
+&#34; at line 1202 in file /slots/06/dir_154016/userdir/.tmpxOYfa5/BUILD/condor-8.6.6/src/condor_io/sock.cpp
+
+I do not see anything unusual in the log file.  I can email you the log file so that you can have a look.  I can also create an account for you on the cluster so that you can login and explore this more.
+
+Thanks for your help.
+
+-Akhtar
+</div><script type='text/javascript'>
+        $('#show_554264273').click(function() {
+            $('#detail_554264273').slideDown("normal");
+            $('#show_554264273').hide();
+            $('#hide_554264273').show();
+        });
+        $('#hide_554264273').click(function() {
+            $('#detail_554264273').slideUp();
+            $('#hide_554264273').hide();
+            $('#show_554264273').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='35796#1516739944'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-23T20:39:04+00:00">Jan 23, 2018 08:39 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1516739944">&nbsp;</a></div><pre>Akhtar,
+
+Have you increased the debug level of your logs as specified in the troubleshooting doc? If not, please do so and re-run your tests with condor_ce_trace and telnet. Then do the following
+
+1. Run condor_ce_status -any
+2. Attach the contents of /var/log/condor-ce/ to this ticket
+3. Attach the contents of &#96;condor_ce_config_val -dump&#96; to this ticket
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='35796#1516592533'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-22T03:42:13+00:00">Jan 22, 2018 03:42 AM UTC</time> by <b>amahmood@....</b><a class="anchor" name="1516592533">&nbsp;</a></div><pre>Hello Brian&#58;
+
+Sorry about the delay.  Here are the answers to your questions-
+
+What version of HTCondor-CE are you running?
+
+htcondor-ce-2.2.4-1.osg33.el6.noarch
+
+----------------------------------------------------------------------------
+
+If your CE is IPv6-enabled, there was a bug that was recently fixed in htcondor-ce-2.2.4 (in OSG 3.3) and htcondor-ce-3.0.3 (in OSG 3.4).
+
+No, we do not have Internet2 connectivity. So IPv6 is not enabled.  We only have IPv4.
+
+-------------------------------------------------------------------------------
+
+What was the exact condor_ping command that you ran?
+
+Have you tried running condor_ce_trace with the &#39;--debug&#39; flag (<a href='http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#condor_ce_trace' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#condor_ce_trace</a>)?
+
+Is there anything fishy looking in the logs (<a href='http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#htcondor-ce-troubleshooting-data' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#htcondor-ce-troubleshooting-data</a>)?
+
+We did this from two different sites – one from OU and one from CERN.  Here are the results.  They are not the same.
+
+FROM OU&#58;
+
+[hs@osgitb1 ~]$ condor_ce_trace --debug tier2-osg1.bellarmine.edu
+01/19/18 11&#58;41&#58;22 Result of reading /etc/issue&#58;  Red Hat Enterprise
+Linux Server release 6.9 (Santiago)
+
+01/19/18 11&#58;41&#58;22 Using IDs&#58; 8 processors, 4 CPUs, 4 HTs
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; lo 127.0.0.1 up
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; eth0 10.1.1.1 up
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; eth1 129.15.31.41 up
+01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; lo &#58;&#58;1 up
+<div id='show_774982604' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_774982604'>01/19/18 11&#58;41&#58;22 Enumerating interfaces&#58; eth1 fe80&#58;&#58;204&#58;23ff&#58;feb7&#58;1cb1 up
+01/19/18 11&#58;41&#58;22 Will use TCP to update collector
+tier2-osg1.bellarmine.edu &#60;205.159.178.244&#58;9619&#62;
+01/19/18 11&#58;41&#58;22 Trying to query collector &#60;205.159.178.244&#58;9619&#62;
+01/19/18 11&#58;42&#58;22 condor_read()&#58; timeout reading 5 bytes from collector
+at &#60;205.159.178.244&#58;9619&#62;.
+01/19/18 11&#58;42&#58;22 IO&#58; Failed to read packet header
+********************************************************************************
+2018-01-19 11&#58;42&#58;22 ERROR&#58; Could not contact CE collector at
+&#39;tier2-osg1.bellarmine.edu&#58;9619&#39;. Verify that the collector daemon is up
+with &#96;condor_ce_status&#96;.
+********************************************************************************
+
+FROM CERN&#58;
+
+[psvirin@lxplus049 src]$ ./condor_ce_trace --debug tier2-osg1.bellarmine.edu&#60;<a href='http&#58;//tier2-osg1.bellarmine.edu/&#62' target='_blank' rel='nofollow'>http&#58;//tier2-osg1.bellarmine.edu/&#62</a>;
+
+File specified in CONDOR_CONFIG environment variable&#58;
+
+&#34;/etc/condor-ce/condor_config&#34; does not exist.
+
+Neither the environment variable CONDOR_CONFIG,
+
+/etc/condor/, /usr/local/etc/, nor ~condor/ contain a condor_config source.
+
+Either set CONDOR_CONFIG to point to a valid config source,
+
+or put a &#34;condor_config&#34; file in /etc/condor/ /usr/local/etc/ or ~condor/
+
+01/19/18 18&#58;33&#58;46 Result of reading /etc/issue&#58;  Scientific Linux CERN SLC release 6.9 (Carbon)
+
+01/19/18 18&#58;33&#58;46 Using processor count&#58; 10 processors, 10 CPUs, 0 HTs
+
+01/19/18 18&#58;33&#58;46 Will use TCP to update collector tier2-osg1.bellarmine.edu&#60;<a href='http&#58;//tier2-osg1.bellarmine.edu/&#62' target='_blank' rel='nofollow'>http&#58;//tier2-osg1.bellarmine.edu/&#62</a>; &#60;205.159.178.244&#58;9619&#62;
+
+01/19/18 18&#58;33&#58;46 Trying to query collector &#60;205.159.178.244&#58;9619&#62;
+
+01/19/18 18&#58;33&#58;46 ERROR &#34;Unwilling or unable to try IPv4 or IPv6.  Check the settings ENABLE_IPV4, ENABLE_IPV6, and NETWORK_INTERFACE.
+
+&#34; at line 1202 in file /slots/06/dir_154016/userdir/.tmpxOYfa5/BUILD/condor-8.6.6/src/condor_io/sock.cpp
+
+I do not see anything unusual in the log file.  I can email you the log file so that you can have a look.  I can also create an account for you on the cluster so that you can login and explore this more.
+
+Thanks for your help.
+
+-Akhtar
+</div><script type='text/javascript'>
+        $('#show_774982604').click(function() {
+            $('#detail_774982604').slideDown("normal");
+            $('#show_774982604').hide();
+            $('#hide_774982604').show();
+        });
+        $('#hide_774982604').click(function() {
+            $('#detail_774982604').slideUp();
+            $('#hide_774982604').hide();
+            $('#show_774982604').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='35796#1516216349'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-17T19:12:29+00:00">Jan 17, 2018 07:12 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1516216349">&nbsp;</a></div><pre>Akhtar,
+
+What version of HTCondor-CE are you running? If your CE is IPv6-enabled, there was a bug that was recently fixed in htcondor-ce-2.2.4 (in OSG 3.3) and htcondor-ce-3.0.3 (in OSG 3.4). What was the exact condor_ping command that you ran?
+
+Have you tried running condor_ce_trace with the &#39;--debug&#39; flag (<a href='http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#condor_ce_trace' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#condor_ce_trace</a>)?  Is there anything fishy looking in the logs (<a href='http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#htcondor-ce-troubleshooting-data' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#htcondor-ce-troubleshooting-data</a>)?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='35796#1516215946'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-17T19:05:46+00:00">Jan 17, 2018 07:05 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1516215946">&nbsp;</a></div><pre>Hello,
+
+I apologize for missing this ticket, but I have routed it to the OSG Software team.  They should be able to answer your question or at least get you in touch with the proper condor expert.
+
+Again, I apologize for the time that it took to route this ticket.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='35796#1515798766'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-12T23:12:46+00:00">Jan 12, 2018 11:12 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1515798766">&nbsp;</a></div><pre>I would like to open a ticket regarding the following issue on the Tier2 LSST cluster at Bellarmine University (tier2-ogs1.bellarimine.edu).
+
+We have an issue with Condor-CE that we are unable to resolve.  It looks like a routing issue.  So we need help from a Condor expert.   Here is the problem-
+
+telnet tier2-osg1.bellarmine.edu 9619 connects just fine.
+
+We’ve tested condor_ping together with tcpdump and it was not showing TCP packages from response, only request ones were displayed.
+
+We just ran a quick local condor test job on tier2-osg1, and that ran fine, so I&#39;m pretty sure there&#39;s nothing wrong with that.
+
+When we ran a condor_ce_trace against the Condor-CE, that hung, so there&#39;s most definitely a problem with that.
+
+----
+$ condor_ce_trace tier2-osg1.bellarmine.edu
+Testing HTCondor-CE collector connectivity.
+----
+It just hangs instead of keep going.
+
+So this is most definitely a Condor-CE issue, and most likely routing related, since Condor-CE does respond to telnet tier2-osg1.bellarmine.edu 9619 with an initial connection, so it&#39;s not a firewall or other
+outside or network block problem.
+
+Condor-CE isn&#39;t properly forwarding the job to the local Condor scheduler. So it must be a Condor-CE routing issue.  So we need help to track down where this routing issue is.
+
+Thanks
+-Akhtar Mahmood
+Bellarmine University
+
+by Akhtar Mahmood (guest)</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F35796">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 35796});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[12354] All Engage glideins failing at RENCI-Blueridge with TCP / openssl errors</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=12354" method="post">
+<div class="page-header">
+    <h3><span class="muted">12354</span> / All Engage glideins failing at RENCI-Blueridge with TCP / openssl errors</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Jeffrey Michael Dost</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">RENCI-Blueridge</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">RENCI-Blueridge</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Jeffrey Michael Dost</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">Engagement</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2012-08-14</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Engagement <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Tim Cartwright <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=12354", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/12354?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/12354?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20All%20Engage%20glideins%20failing%20at%20RENCI-Blueridge%20with%20TCP%20%2F%20openssl%20errors%20ISSUE%3D12354%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='12354#1344359780'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-07T17:16:20+00:00">Aug 7, 2012 05:16 PM UTC</time><a class="anchor" name="1344359780">&nbsp;</a></div><pre>Great news,
+
+Glideins have resumed running normally on Blueridge as of August 1st.  Thank you everyone who was able to assist in figuring this out and thank your Jon for your patience.
+
+I&#39;m closing this ticket.
+
+Jeff
+
+-- by Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='12354#1344356948'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-07T16:29:08+00:00">Aug 7, 2012 04:29 PM UTC</time> by <b>mcgee@....</b><a class="anchor" name="1344356948">&nbsp;</a></div><pre>I see, thanks. I will get the RENCI resources in EngageVO supporting jobs from the MIS VO on the schedule.</pre></div><div class='update_description'><i onclick="document.location='12354#1344353493'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-07T15:31:33+00:00">Aug 7, 2012 03:31 PM UTC</time><a class="anchor" name="1344353493">&nbsp;</a></div><pre>John,
+
+The MIS VO stands for Monitoring and Information Services. The GOC uses it to run test jobs when appropriate for troubleshooting. When we did central monitoring, it was required on all production resources, but with decentralized monitoring, we are now only able to run jobs on resources who prefer us to be able to do so. We haven&#39;t made any sweeping requests for MIS support lately. Maybe we should. I&#39;ll talk to the team about it.
+
+Thank you,
+Elizabeth
+
+-- by Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='12354#1344353169'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-07T15:26:09+00:00">Aug 7, 2012 03:26 PM UTC</time> by <b>mcgee@....</b><a class="anchor" name="1344353169">&nbsp;</a></div><pre>what is the MIS VO?  I&#39;m not aware of a request from MIS VO to use BlueRidge.</pre></div><div class='update_description'><i onclick="document.location='12354#1344351984'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-07T15:06:24+00:00">Aug 7, 2012 03:06 PM UTC</time><a class="anchor" name="1344351984">&nbsp;</a></div><pre>Jeff,
+
+Blueridge doesn&#39;t support MIS VO, so I can&#39;t test it. Their RSV status is green though, so I suspect it&#39;s time to close this.
+
+Thank you,
+Elizabeth
+
+-- by Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='12354#1343750708'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-31T16:05:08+00:00">Jul 31, 2012 04:05 PM UTC</time> by <b>jonmills@....</b><a class="anchor" name="1343750708">&nbsp;</a></div><pre>Hey Jeff&#58;
+
+Again, on Blue Ridge, we use NFS to make the certs available to the
+worker nodes.  The Pacman install has a convoluted set of symlinks.  We
+noticed that deep in the OSG/VDT stack in the NFS mount, one of these
+symlinks was broken, meaning that the worker node clients could not
+fully traverse into the actual directory holding the certificates.
+
+We are hopeful that the issue is now resolved, but please keep your eye
+on things for a little bit longer, until we see some successful jobs.
+
+--
+Jonathan Mills
+Systems Administrator
+Renaissance Computing Institute
+UNC-Chapel Hill</pre></div><div class='update_description'><i onclick="document.location='12354#1343673112'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-30T18:31:52+00:00">Jul 30, 2012 06:31 PM UTC</time><a class="anchor" name="1343673112">&nbsp;</a></div><pre>Hi Tim,
+
+We are still seeing the same problem&#58;
+
+07/30/12 13&#58;46&#58;15 (pid&#58;30170) SECMAN&#58; required authentication with daemon at &#60;10.9.15.248&#58;59832&#62; failed, so aborting command DC_CHILDALIVE.
+07/30/12 13&#58;46&#58;15 (pid&#58;30170) ChildAliveMsg&#58; failed to send DC_CHILDALIVE to parent daemon at &#60;10.9.15.248&#58;59832&#62; (try 2 of 3)&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5004&#58;Failed to authenticate.  Globus is reporting error (655360&#58;45)|AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5004&#58;Failed to authenticate.  Globus is reporting error (655360&#58;30)
+07/30/12 13&#58;46&#58;15 (pid&#58;30170) Condor GSI authentication failure
+GSS Major Status&#58; Authentication Failed
+GSS Minor Status Error Chain&#58;
+init.c&#58;globus_gss_assist_init_sec_context&#58;282&#58;
+Error during context initialization
+init_sec_context.c&#58;gss_init_sec_context&#58;200&#58;
+SSLv3 handshake problems
+globus_i_gsi_gss_utils.c&#58;globus_i_gsi_gss_handshake&#58;997&#58;
+Unable to verify remote side&#39;s credentials
+globus_i_gsi_gss_utils.c&#58;globus_i_gsi_gss_handshake&#58;970&#58;
+SSLv3 handshake problems&#58; Couldn&#39;t do ssl handshake
+OpenSSL Error&#58; s3_clnt.c&#58;976&#58; in library&#58; SSL routines, function SSL3_GET_SERVER_CERTIFICATE&#58; certificate verify failed
+globus_gsi_callback.c&#58;globus_gsi_callback_handshake_callback&#58;552&#58;
+Could not verify credential
+globus_gsi_callback.c&#58;globus_i_gsi_callback_cred_verify&#58;874&#58;
+Could not verify credential
+globus_gsi_callback.c&#58;globus_i_gsi_callback_check_signing_policy&#58;1259&#58;
+Error with signing policy
+globus_gsi_callback.c&#58;globus_i_gsi_callback_check_gaa_auth&#58;1325&#58;
+Error with signing policy
+globus_gsi_system_config.c&#58;globus_gsi_sysconfig_get_signing_policy_filename_unix&#58;6272&#58;
+Error getting signing policy file
+globus_gsi_system_config.c&#58;globus_i_gsi_sysconfig_file_exists_unix&#58;4573&#58;
+File does not exist&#58; /etc/grid-security/certificates//d1b603c3.signing_policy is not a valid file
+
+Tim Mortensen
+OSG Glidein Factory Operations
+
+-- by Timothy B Mortensen
+<div id='show_1940330373' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1940330373'>
+</div><script type='text/javascript'>
+        $('#show_1940330373').click(function() {
+            $('#detail_1940330373').slideDown("normal");
+            $('#show_1940330373').hide();
+            $('#hide_1940330373').show();
+        });
+        $('#hide_1940330373').click(function() {
+            $('#detail_1940330373').slideUp();
+            $('#hide_1940330373').hide();
+            $('#show_1940330373').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='12354#1343671507'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-30T18:05:07+00:00">Jul 30, 2012 06:05 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1343671507">&nbsp;</a></div><pre>Jonathan & Jeff&#58;
+
+Last week, there were two tickets from RENCI with similar but not identical problems.  At your request, we closed out one of them.  However, is this one also cleared up?  It is about the problems with brgw1.
+
+-- Tim</pre></div><div class='update_description'><i onclick="document.location='12354#1343231589'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-25T15:53:09+00:00">Jul 25, 2012 03:53 PM UTC</time> by <b>jonmills@....</b><a class="anchor" name="1343231589">&nbsp;</a></div><pre>Attaching all VDT logs from brgw1.
+
+--
+Jonathan Mills
+Systems Administrator
+Renaissance Computing Institute
+UNC-Chapel Hill</pre></div><div class='update_description'><i onclick="document.location='12354#1343155069'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-24T18:37:49+00:00">Jul 24, 2012 06:37 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1343155069">&nbsp;</a></div><pre>Hi, this is Tim Cartwright from the OSG Software team.  There seems to be a lot of information in this ticket already, but it is hard to get a clear picture of the current state.  I will try to summarize what I see.
+
+It seems that the core problem is that Engage glidein jobs are failing 100% of the time.  Just making sure&#58; This is still the problem, right?
+
+Now, there was a lot of discussion about the state of the certificates on brgw1, which appears to be the gatekeeper for the glideins.  From what I can tell, it looks like things are OK with the certificate install there.  That is&#58;
+
+* The certificates are actually installed in /opt/osg/1.2.13/osg-1.2.13/globus/TRUSTED_CA
+* There is a symlink from /etc/grid-security/certificates to that directory
+* The certificates directory contains a symlink at d1b603c3.signing_policy
+* The symlink points to ESnet.signing_policy, which does also exist
+
+So from the profiler output, at least, it seems that this particular file is OK.
+
+Also, according to the profiler output, fetch-crl itself seems to be installed, enabled, and running.
+
+Alain had me look at the RSV information on MyOSG, and it does have one outstanding issue&#58; The certificates themselves are not up to date.  This is puzzling, since it does appear that vdt-update-certs is installed, enabled, and running.  The one potential clue in the profiler output is this&#58;
+
+vdt-update-certs info&#58;
+Last run&#58; 2012-07-18T08-47-02
+WARNING&#58; last update time unknown
+Status&#58; Installed and running
+
+That warning is a concern.  vdt-update-certs writes to a log file, which should be located at &#34;/opt/osg/1.2.13/osg-1.2.13/vdt/logs/vdt-update-certs.log&#34;.  Could you please look for that file and, if available, send it into the ticket?
+
+-- Tim</pre></div><div class='update_description'><i onclick="document.location='12354#1342713669'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-19T16:01:09+00:00">Jul 19, 2012 04:01 PM UTC</time> by <b>echism</b><a class="anchor" name="1342713669">&nbsp;</a></div><pre>Software team,
+
+After looking through the vdt-profile.txt, I can&#39;t seem to decipher why fetch-crl stopped working. I&#39;m sending this ticket your way in the hopes that you will see something I didn&#39;t.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='12354#1342644788'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T20:53:08+00:00">Jul 18, 2012 08:53 PM UTC</time> by <b>jonmills@....</b><a class="anchor" name="1342644788">&nbsp;</a></div><pre>vdt-profile.txt
+
+--
+Jonathan Mills
+Systems Administrator
+Renaissance Computing Institute
+UNC-Chapel Hill</pre></div><div class='update_description'><i onclick="document.location='12354#1342643785'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T20:36:25+00:00">Jul 18, 2012 08:36 PM UTC</time> by <b>echism</b><a class="anchor" name="1342643785">&nbsp;</a></div><pre>Jonathan,
+
+I understand now. The command vdt-ca-manage fetchCRL should force it to run so long as it&#39;s in the cron, if you haven&#39;t already tried that.
+
+Would you mind running vdt-system-profiler and sending us the vdt-profile.txt that it produces? It&#39;s really helpful for troubleshooting.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='12354#1342642806'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T20:20:06+00:00">Jul 18, 2012 08:20 PM UTC</time> by <b>jonmills@....</b><a class="anchor" name="1342642806">&nbsp;</a></div><pre>What I&#39;m saying, Elizabeth, is that it is not doing its job.
+
+[root@brgw1&#58;/etc/grid-security/certificates]$ vdt-control --list
+Service                 | Type   | Desired State
+------------------------+--------+--------------
+fetch-crl              | cron    | enable
+vdt-rotate-logs        | cron    | enable
+vdt-update-certs       | cron    | enable
+globus-gatekeeper      | inetd   | enable
+gsiftp                 | inetd   | enable
+mysql5                 | init    | enable
+globus-ws              | init    | do not enable
+gums-host-cron         | cron    | do not enable
+MLD                    | init    | do not enable
+condor-cron            | init    | enable
+apache                 | init    | enable
+tomcat-55              | init    | enable
+gratia-pbs             | cron    | enable
+edg-mkgridmap          | cron    | enable
+osg-rsv                | init    | enable
+
+Clearly the cert updating services are enabled.  And yet, certs are
+constantly out of date.
+
+--
+Jonathan Mills
+Systems Administrator
+Renaissance Computing Institute
+UNC-Chapel Hill
+
+On 07/18/2012 04&#58;08 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12354#1342642090'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T20:08:10+00:00">Jul 18, 2012 08:08 PM UTC</time> by <b>echism</b><a class="anchor" name="1342642090">&nbsp;</a></div><pre>Jonathan,
+
+When you say none of the tools are working, can you be more specific about what you used and what did and didn&#39;t happen? Does fetch-crl-cron claim it&#39;s working via some command like /sbin/service fetch-crl-cron status (for release 3) or is it enabled in vdt-control --list (for pacman)?
+
+Thank you,
+Elizabeth
+
+On Jul 18, 2012, at 3&#58;23 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12354#1342639746'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T19:29:06+00:00">Jul 18, 2012 07:29 PM UTC</time> by <b>jonmills@....</b><a class="anchor" name="1342639746">&nbsp;</a></div><pre>Correction.  I meant to say hpgw0.renci.org
+
+--
+Jonathan Mills
+Systems Administrator
+Renaissance Computing Institute
+UNC-Chapel Hill
+
+On 07/18/2012 03&#58;23 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12354#1342639391'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T19:23:11+00:00">Jul 18, 2012 07:23 PM UTC</time> by <b>jonmills@....</b><a class="anchor" name="1342639391">&nbsp;</a></div><pre>The actual file does not exist.  Also, none of the tools for updating
+the certs appear to work.  To keep it running, I&#39;ve been scp&#39;ing certs
+from hpgw1.renci.org (BlueBerry cluster).  But now hpgw1 seems to no
+longer be working either.
+
+--
+Jonathan Mills
+Systems Administrator
+Renaissance Computing Institute
+UNC-Chapel Hill
+
+On 07/18/2012 03&#58;16 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12354#1342639001'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T19:16:41+00:00">Jul 18, 2012 07:16 PM UTC</time><a class="anchor" name="1342639001">&nbsp;</a></div><pre>Unfortunately I still see 100% failures, complaining about the same file&#58;
+/etc/grid-security/certificates//d1b603c3.signing_policy
+
+Is it possible the file is there but the permissions are messed up somewhere?
+
+Jeff
+
+-- by Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='12354#1342638307'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T19:05:07+00:00">Jul 18, 2012 07:05 PM UTC</time> by <b>jonmills@....</b><a class="anchor" name="1342638307">&nbsp;</a></div><pre>Hello,
+
+*sigh*
+
+Just a few days ago, I had all green lights on both my resources in
+MyOSG.  Now I see that both of them have problems, again.
+
+Can you tell me if my updates to the certs on BlueRidge (a few days ago)
+had any effect on the failing Engage glideins?
+
+--
+Jonathan Mills
+Systems Administrator
+Renaissance Computing Institute
+UNC-Chapel Hill
+
+On 07/18/2012 02&#58;55 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12354#1342637706'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-18T18:55:06+00:00">Jul 18, 2012 06:55 PM UTC</time> by <b>echism</b><a class="anchor" name="1342637706">&nbsp;</a></div><pre>Jon,
+
+Are you back from your conference?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='12354#1341950710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-10T20:05:10+00:00">Jul 10, 2012 08:05 PM UTC</time> by <b>rynge@....</b><a class="anchor" name="1341950710">&nbsp;</a></div><pre>I bet that the main problem is&#58;
+
+File does not exist&#58;
+/etc/grid-security/certificates//d1b603c3.signing_policy is not a valid file
+
+Make sure that you are updating the ca certs on one machine, and that
+the certificates directory is shared (shared fs, rsync, ...) and current
+on all the compute nodes.
+
+On 07/10/2012 12&#58;22 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12354#1341949450'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-10T19:44:10+00:00">Jul 10, 2012 07:44 PM UTC</time> by <b>jonmills@....</b><a class="anchor" name="1341949450">&nbsp;</a></div><pre>Hey Jeff,
+
+That is pretty unfortunate. I wonder if it is related to the stuff we did with the certs a month or so ago. There was a ticket on it.
+
+I am at a conference right now, and I have limited availability. The earliest I can address this would be tomorrow or Thurs.
+
+I&#39;ll be in touch.
+
+On Jul 10, 2012, at 3&#58;23 PM, &#34;Open Science Grid FootPrints&#34; &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12354#1341948148'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-10T19:22:28+00:00">Jul 10, 2012 07:22 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1341948148">&nbsp;</a></div><pre>[by Jeffrey Michael Dost]
+
+Hello,
+
+We only just now noticed that 100% of all Engage glideins running at Blueridge have been failing for the past few months.
+
+We are submitting to&#58;
+gatekeeper=&#34;brgw1.renci.org&#58;2119/jobmanager-pbs&#34;
+gridtype=&#34;gt2&#34;
+rsl=&#34;(jobtype=single)&#34;
+
+We see these errors on all our logs&#58;
+07/10/12 14&#58;41&#58;24 (pid&#58;24171) Condor GSI authentication failure
+GSS Major Status&#58; Authentication Failed
+GSS Minor Status Error Chain&#58;
+init.c&#58;globus_gss_assist_init_sec_context&#58;282&#58;
+Error during context initialization
+init_sec_context.c&#58;gss_init_sec_context&#58;200&#58;
+SSLv3 handshake problems
+globus_i_gsi_gss_utils.c&#58;globus_i_gsi_gss_handshake&#58;997&#58;
+Unable to verify remote side&#39;s credentials
+globus_i_gsi_gss_utils.c&#58;globus_i_gsi_gss_handshake&#58;970&#58;
+SSLv3 handshake problems&#58; Couldn&#39;t do ssl handshake
+OpenSSL Error&#58; s3_clnt.c&#58;976&#58; in library&#58; SSL routines, function SSL3_GET_SERVER_CERTIFICATE&#58; certificate verify failed
+globus_gsi_callback.c&#58;globus_gsi_callback_handshake_callback&#58;552&#58;
+Could not verify credential
+globus_gsi_callback.c&#58;globus_i_gsi_callback_cred_verify&#58;874&#58;
+Could not verify credential
+globus_gsi_callback.c&#58;globus_i_gsi_callback_check_signing_policy&#58;1259&#58;
+Error with signing policy
+globus_gsi_callback.c&#58;globus_i_gsi_callback_check_gaa_auth&#58;1325&#58;
+Error with signing policy
+globus_gsi_system_config.c&#58;globus_gsi_sysconfig_get_signing_policy_filename_unix&#58;6272&#58;
+Error getting signing policy file
+globus_gsi_system_config.c&#58;globus_i_gsi_sysconfig_file_exists_unix&#58;4573&#58;
+<div id='show_1520163002' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1520163002'>File does not exist&#58; /etc/grid-security/certificates//d1b603c3.signing_policy is not a valid file
+
+07/10/12 14&#58;41&#58;24 (pid&#58;24171) SECMAN&#58; required authentication with collector engage-submit3.renci.org&#58;9628 failed, so aborting command CCB_REGISTER.
+07/10/12 14&#58;41&#58;24 (pid&#58;24171) ERROR&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5004&#58;Failed to authenticate.  Globus is reporting error (655360&#58;15)
+07/10/12 14&#58;41&#58;24 (pid&#58;24171) CCBListener&#58; connection to CCB server engage-submit3.renci.org&#58;9628 failed; will try to reconnect in 60 seconds.
+
+I don&#39;t fully understand what is going on here but the glideins need to create an outbound TCP connection to the condor collector.  From what I can tell this is failing because openssl is expecting a cert file that doesn&#39;t exist.  As long as glideins continue to fail like this they will never run on blueridge.
+
+Can the admins please take a look and let us know what may be wrong?
+
+Thanks,
+Jeff Dost
+OSG Glidein Factory Operations
+
+</div><script type='text/javascript'>
+        $('#show_1520163002').click(function() {
+            $('#detail_1520163002').slideDown("normal");
+            $('#show_1520163002').hide();
+            $('#hide_1520163002').show();
+        });
+        $('#hide_1520163002').click(function() {
+            $('#detail_1520163002').slideUp();
+            $('#hide_1520163002').hide();
+            $('#show_1520163002').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F12354">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 12354});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

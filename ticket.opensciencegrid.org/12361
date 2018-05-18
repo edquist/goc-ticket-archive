@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[12361] rsv probe srmcp-readwrite failing</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=12361" method="post">
+<div class="page-header">
+    <h3><span class="muted">12361</span> / rsv probe srmcp-readwrite failing</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Jack Fowler</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Jack Fowler 1528</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">TX Incoming</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2012-07-13</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Doug Strain <span class="muted"> / OSG Storage Team</span></div><div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=84210">84210</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=12361", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/12361?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/12361?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20rsv%20probe%20srmcp-readwrite%20failing%20ISSUE%3D12361%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='12361#1342461056'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-16T17:50:56+00:00">Jul 16, 2012 05:50 PM UTC</time><a class="anchor" name="1342461056">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.  Please submit problems, requests, and questions at&#58; <a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a> OSG Grid Operations Center goc@...., 317-278-9699 Visit the OSG Operations Page&#58; <a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a>
+
+-- by Douglas Strain</pre></div><div class='update_description'><i onclick="document.location='12361#1342459962'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-16T17:32:42+00:00">Jul 16, 2012 05:32 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1342459962">&nbsp;</a></div><pre>That fixed it . You can close this ticket now. Thanks for your help.
+regards,
+Jack
+
+-- by Jack Fowler 1528 at Mon Jul 16 17&#58;32&#58;06 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=84210' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=84210</a></pre></div><div class='update_description'><i onclick="document.location='12361#1342209317'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T19:55:17+00:00">Jul 13, 2012 07:55 PM UTC</time><a class="anchor" name="1342209317">&nbsp;</a></div><pre>First note that you have a very old version of BeStMan.  You should consider upgrading at some point to a newer version (BeStMan2 can be installed while still using pacman).
+
+Look at $VDT_LOCATION/bestman/conf/bestman.rc.  There should be CertFileName and KeyFileName lines that contain your service cert.  This is likely the certificate you need to modify.  You may also want to look at $VDT_LOCATION/bestman/sbin/bestman.server to make sure that CERTPATH,KEYPATH,GUMSCERTPATH,GUMSKEYPATH are also updated.
+
+Doug Strain
+OSG Software
+
+-- by Douglas Strain</pre></div><div class='update_description'><i onclick="document.location='12361#1342208299'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T19:38:19+00:00">Jul 13, 2012 07:38 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1342208299">&nbsp;</a></div><pre>This is a pacman install. bestman isn&#39;t starting because it believes a cert has expired&#58;
+
+[root@grid-0 ~]# tail /sharesoft2/osg/ce-1.2/vdt-app-data/bestman/logs/bestman.log
+... got an obj&#58; gov.lbl.srm.storage.Volatile.TVolatilePublicToken@513c6a22
+.........# of tokens Read&#58; 1
+== SRM is initialized ==
+.............is this a secure container? = true
+## Subject DC=org,DC=doegrids,OU=Services,CN=grid-0.hep.brown.edu
+## Issuer DC=org,DC=DOEGrids,OU=Certificate Authorities,CN=DOEGrids CA 1
+## Id /DC=org/DC=doegrids/OU=Services/CN=grid-0.hep.brown.edu
+## Timeleft 0
+Credential is expired. Exiting.
+=========== Good bye! ========
+[root@grid-0 ~]#
+
+But the certificate is current, just renewed in fact&#58;
+
+[root@grid-0 ~]# openssl x509 -text -noout -in /etc/grid-security/hostcert.pem
+.
+.
+Issuer&#58; DC=org, DC=DOEGrids, OU=Certificate Authorities, CN=DOEGrids CA 1
+Validity
+Not Before&#58; Jul 11 16&#58;14&#58;01 2012 GMT
+Not After &#58; Jul 17 16&#58;14&#58;01 2013 GMT
+Subject&#58; DC=org, DC=doegrids, OU=Services, CN=grid-0.hep.brown.edu
+.
+.
+
+Is there another cert somewhere I&#39;m missing?
+
+thanks,
+Jack
+
+-- by Jack Fowler 1528 at Fri Jul 13 19&#58;37&#58;33 UTC 2012
+
+<div id='show_1582296296' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1582296296'>GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=84210' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=84210</a>
+</div><script type='text/javascript'>
+        $('#show_1582296296').click(function() {
+            $('#detail_1582296296').slideDown("normal");
+            $('#show_1582296296').hide();
+            $('#hide_1582296296').show();
+        });
+        $('#hide_1582296296').click(function() {
+            $('#detail_1582296296').slideUp();
+            $('#hide_1582296296').hide();
+            $('#show_1582296296').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='12361#1342202684'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T18:04:44+00:00">Jul 13, 2012 06:04 PM UTC</time><a class="anchor" name="1342202684">&nbsp;</a></div><pre>Are you running BeStMan on your SRM instance?  Are you using the pacman version or the RPM version?
+I would guess that the service has stopped for some reason.  You should be able to see the process running with &#34;ps -ef | grep -i bestman&#34;.
+
+With pacman, you can start it with either &#34;vdt-control --on&#34; followed by the name of the process (bestman or bestman2).  With the RPM, &#34;service bestman2 start&#34;.
+You may also have to start the gridftp server if that is off too.
+
+You may also want to check the logs in $VDT_LOCATION/vdt-app-data/bestman2/logs (pacman) or /var/logs/bestman2 (RPM) to see if an error is preventing the process from starting up.
+
+Doug Strain
+OSG Software
+
+-- by Douglas Strain</pre></div><div class='update_description'><i onclick="document.location='12361#1342200431'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T17:27:11+00:00">Jul 13, 2012 05:27 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1342200431">&nbsp;</a></div><pre>Hi,
+
+Yes, this is the correct address/port. These probes have been fine until now. As a check, I stopped the firewall, re-ran the probe, and got same error.
+Not sure how to check for the SRM instance running? Please advise.
+
+thanks,
+Jack
+
+-- by Jack Fowler 1528 at Fri Jul 13 17&#58;26&#58;58 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=84210' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=84210</a></pre></div><div class='update_description'><i onclick="document.location='12361#1342197502'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T16:38:22+00:00">Jul 13, 2012 04:38 PM UTC</time><a class="anchor" name="1342197502">&nbsp;</a></div><pre>Hello,
+
+This RSV instance is pointing to <a href='srm&#58;//grid-0.hep.brown.edu&#58;8443.' target='_blank' rel='nofollow'>srm&#58;//grid-0.hep.brown.edu&#58;8443.</a>  Either this is firewalled off from the world or there is no SRM instance running here.  The RSV instance is getting connection refused.  I can also verify that srm-ping is also returning connection refused.  Is this the correct address and port?
+
+Doug Strain
+OSG Software
+
+-- by Douglas Strain</pre></div><div class='update_description'><i onclick="document.location='12361#1342197476'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T16:37:56+00:00">Jul 13, 2012 04:37 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1342197476">&nbsp;</a></div><pre>The detail output gives additional debugging information, it follows.
+
+The detail data from the failed ping&#58;
+-----------------------------------------
+SRM server running on grid-0.hep.brown.edu is not responding to the srmping command. The error message printed by srmping was&#58; Storage Resource Manager (SRM) Client version 2.1.5-23
+Copyright (c) 2002-2009 Fermi National Accelerator Laboratory
+
+SRM Configuration&#58;
+default_port=8443
+debug=true
+srmcphome=..
+urlcopy=sbin/urlcopy.sh
+gsiftpclient=globus-url-copy
+help=false
+h=false
+gsissl=true
+mapfile=conf/SRMServerV1.map
+webservice_path=srm/v2/server
+webservice_protocol=https
+use_proxy=true
+x509_user_proxy=/tmp/rsvproxy
+x509_user_cert=null
+x509_user_key=null
+x509_user_trusted_certificates=/sharesoft2/osg/ce-1.2/globus/TRUSTED_CA
+globus_tcp_port_range=null
+gss_expected_name=null
+protocols=gsiftp,dcap,http
+pushmode=false
+buffer_size=131072
+tcp_buffer_size=0
+streams_num=10
+conf=/home/rsvuser/.srmconfig/config.xml
+save_conf=null
+do_remove=false
+copy=false
+<div id='show_1569343795' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1569343795'>bringOnline=false
+ping=true
+reserveSpace=false
+array_of_client_networks=null
+retention_policy=null
+space_desc=null
+access_latency=null
+access_pattern=null
+connection_type=null
+desired_size=null
+guaranteed_size=null
+lifetime=null
+releaseSpace=false
+space_token=null
+force=false
+getSpaceMetaData=false
+space_tokens=null
+copyjobfile=null
+wsdl_url=null
+use_urlcopy_script=false
+getFileMetaData=false
+ls=false
+getSpaceTokens=false
+rm=false
+rmdir=false
+mv=false
+mkdir=false
+getPermissions=false
+checkPermissions=false
+setPermissions=false
+getRequestSummary=false
+getRequestTokens=false
+abortFiles=false
+releaseFiles=false
+request_desc=null
+type=null
+owner=null
+group=null
+other=null
+request_tokens=null
+request_token=null
+file_lifetime=null
+pin_lifetime=null
+extendFileLifetime=false
+advisoryDelete=false
+getRequestStatus=false
+request_id=0
+getStorageElementInfo=false
+retry_timeout=10000
+retry_num=0
+connect_to_wsdl=false
+delegate=true
+full_delegation=true
+version=false
+report=null
+server_mode=null
+storagetype=null
+stage=false
+l=false
+recursive=false
+offset=0
+count=null
+srm_protocol_version=2
+request_lifetime=86400
+priority=0
+overwrite_mode=null
+send_cksm=true
+cksm_type=null
+cksm_value=null
+abortRequest=false
+repeat=null
+dryrun=false
+Fri Jul 13 10&#58;53&#58;01 EDT 2012&#58; In SRMClient ExpectedName&#58; host
+Fri Jul 13 10&#58;53&#58;01 EDT 2012&#58; SRMClient(https,srm/v2/server,true)
+SRMClientV2 &#58; user credentials are&#58; /DC=org/DC=doegrids/OU=Services/CN=rsv/grid-0.hep.brown.edu
+SRMClientV2 &#58; connecting to srm at httpg&#58;//grid-0.hep.brown.edu&#58;8443/srm/v2/server
+SRMClientV2 &#58; srmPing , contacting service httpg&#58;//grid-0.hep.brown.edu&#58;8443/srm/v2/server
+SRMClientV2 &#58; srmPing&#58; try # 0 failed with error
+SRMClientV2 &#58; ; nested exception is&#58;
+java.net.ConnectException&#58; Connection refused
+Exception in thread &#34;main&#34; AxisFault
+faultCode&#58; {<a href='http&#58;//schemas.xmlsoap.org/soap/envelope/' target='_blank' rel='nofollow'>http&#58;//schemas.xmlsoap.org/soap/envelope/</a>}Server.userException
+faultSubcode&#58;
+faultString&#58; java.net.ConnectException&#58; Connection refused
+faultActor&#58;
+faultNode&#58;
+faultDetail&#58;
+{<a href='http&#58;//xml.apache.org/axis/' target='_blank' rel='nofollow'>http&#58;//xml.apache.org/axis/</a>}stackTrace&#58;java.net.ConnectException&#58; Connection refused
+at java.net.PlainSocketImpl.socketConnect(Native Method)
+at java.net.PlainSocketImpl.doConnect(PlainSocketImpl.java&#58;351)
+at java.net.PlainSocketImpl.connectToAddress(PlainSocketImpl.java&#58;213)
+at java.net.PlainSocketImpl.connect(PlainSocketImpl.java&#58;200)
+at java.net.SocksSocketImpl.connect(SocksSocketImpl.java&#58;366)
+at java.net.Socket.connect(Socket.java&#58;529)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;39)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;25)
+at java.lang.reflect.Method.invoke(Method.java&#58;597)
+at org.apache.axis.components.net.DefaultSocketFactory.create(DefaultSocketFactory.java&#58;153)
+at org.apache.axis.components.net.DefaultSocketFactory.create(DefaultSocketFactory.java&#58;120)
+at org.apache.axis.transport.http.HTTPSender.getSocket(HTTPSender.java&#58;191)
+at org.globus.axis.transport.GSIHTTPSender.getSocket(GSIHTTPSender.java&#58;137)
+at org.apache.axis.transport.http.HTTPSender.writeToSocket(HTTPSender.java&#58;404)
+at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java&#58;138)
+at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java&#58;32)
+at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java&#58;118)
+at org.apache.axis.SimpleChain.invoke(SimpleChain.java&#58;83)
+at org.apache.axis.client.AxisClient.invoke(AxisClient.java&#58;165)
+at org.apache.axis.client.Call.invokeEngine(Call.java&#58;2784)
+at org.apache.axis.client.Call.invoke(Call.java&#58;2767)
+at org.apache.axis.client.Call.invoke(Call.java&#58;2443)
+at org.apache.axis.client.Call.invoke(Call.java&#58;2366)
+at org.apache.axis.client.Call.invoke(Call.java&#58;1812)
+at org.dcache.srm.v2_2.SrmSoapBindingStub.srmPing(SrmSoapBindingStub.java&#58;2740)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;39)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;25)
+at java.lang.reflect.Method.invoke(Method.java&#58;597)
+at org.dcache.srm.client.SRMClientV2.handleClientCall(SRMClientV2.java&#58;178)
+at org.dcache.srm.client.SRMClientV2.srmPing(SRMClientV2.java&#58;279)
+at gov.fnal.srm.util.SRMPingClientV2.start(SRMPingClientV2.java&#58;118)
+at gov.fnal.srm.util.SRMDispatcher.work(SRMDispatcher.java&#58;822)
+at gov.fnal.srm.util.SRMDispatcher.main(SRMDispatcher.java&#58;372)
+
+{<a href='http&#58;//xml.apache.org/axis/' target='_blank' rel='nofollow'>http&#58;//xml.apache.org/axis/</a>}hostname&#58;grid-0.hep.brown.edu
+
+java.net.ConnectException&#58; Connection refused
+at org.apache.axis.AxisFault.makeFault(AxisFault.java&#58;101)
+at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java&#58;154)
+at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java&#58;32)
+at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java&#58;118)
+at org.apache.axis.SimpleChain.invoke(SimpleChain.java&#58;83)
+at org.apache.axis.client.AxisClient.invoke(AxisClient.java&#58;165)
+at org.apache.axis.client.Call.invokeEngine(Call.java&#58;2784)
+at org.apache.axis.client.Call.invoke(Call.java&#58;2767)
+at org.apache.axis.client.Call.invoke(Call.java&#58;2443)
+at org.apache.axis.client.Call.invoke(Call.java&#58;2366)
+at org.apache.axis.client.Call.invoke(Call.java&#58;1812)
+at org.dcache.srm.v2_2.SrmSoapBindingStub.srmPing(SrmSoapBindingStub.java&#58;2740)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;39)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;25)
+at java.lang.reflect.Method.invoke(Method.java&#58;597)
+at org.dcache.srm.client.SRMClientV2.handleClientCall(SRMClientV2.java&#58;178)
+at org.dcache.srm.client.SRMClientV2.srmPing(SRMClientV2.java&#58;279)
+at gov.fnal.srm.util.SRMPingClientV2.start(SRMPingClientV2.java&#58;118)
+at gov.fnal.srm.util.SRMDispatcher.work(SRMDispatcher.java&#58;822)
+at gov.fnal.srm.util.SRMDispatcher.main(SRMDispatcher.java&#58;372)
+Caused by&#58; java.net.ConnectException&#58; Connection refused
+at java.net.PlainSocketImpl.socketConnect(Native Method)
+at java.net.PlainSocketImpl.doConnect(PlainSocketImpl.java&#58;351)
+at java.net.PlainSocketImpl.connectToAddress(PlainSocketImpl.java&#58;213)
+at java.net.PlainSocketImpl.connect(PlainSocketImpl.java&#58;200)
+at java.net.SocksSocketImpl.connect(SocksSocketImpl.java&#58;366)
+at java.net.Socket.connect(Socket.java&#58;529)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;39)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;25)
+at java.lang.reflect.Method.invoke(Method.java&#58;597)
+at org.apache.axis.components.net.DefaultSocketFactory.create(DefaultSocketFactory.java&#58;153)
+at org.apache.axis.components.net.DefaultSocketFactory.create(DefaultSocketFactory.java&#58;120)
+at org.apache.axis.transport.http.HTTPSender.getSocket(HTTPSender.java&#58;191)
+at org.globus.axis.transport.GSIHTTPSender.getSocket(GSIHTTPSender.java&#58;137)
+at org.apache.axis.transport.http.HTTPSender.writeToSocket(HTTPSender.java&#58;404)
+at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java&#58;138)
+... 19 more
+
+---------------------------------------
+The detail data from the failed read/write&#58;
+---------------------------------------
+ERROR&#58; Cannot copy file&#58; file&#58;////sharesoft2/osg/ce-1.2/osg-rsv/bin/probes/storage-probe-test-file to <a href='srm&#58;//grid-0.hep.brown.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/data/1342189680-storage-probe-test-file-remote.11993' target='_blank' rel='nofollow'>srm&#58;//grid-0.hep.brown.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/data/1342189680-storage-probe-test-file-remote.11993</a> using SRM protocol 2 ... Bailing now. Actual error message was&#58; SRMClientV2 &#58; srmPrepareToPut&#58; try # 0 failed with error
+SRMClientV2 &#58; ; nested exception is&#58;
+java.net.ConnectException&#58; Connection refused
+Fri Jul 13 10&#58;28&#58;03 EDT 2012&#58; java.net.ConnectException&#58; Connection refused
+srm client error&#58;
+java.lang.Exception&#58;  stopped
+</div><script type='text/javascript'>
+        $('#show_1569343795').click(function() {
+            $('#detail_1569343795').slideDown("normal");
+            $('#show_1569343795').hide();
+            $('#hide_1569343795').show();
+        });
+        $('#hide_1569343795').click(function() {
+            $('#detail_1569343795').slideUp();
+            $('#hide_1569343795').hide();
+            $('#show_1569343795').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='12361#1342196099'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T16:14:59+00:00">Jul 13, 2012 04:14 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1342196099">&nbsp;</a></div><pre>I am passing this to the Software Support team.  They should be able to more quickly diagnose an SRM problem.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='12361#1342190341'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-07-13T14:39:01+00:00">Jul 13, 2012 02:39 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1342190341">&nbsp;</a></div><pre>here&#39;s the error message&#58;
+
+metricName&#58; org.osg.srm.srmcp-readwrite
+metricType&#58; status
+timestamp&#58; 2012-07-13 10&#58;09&#58;11 EDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-SRM
+serviceURI&#58; grid-0.hep.brown.edu
+gatheredAt&#58; grid-0.hep.brown.edu
+summaryData&#58; CRITICAL
+detailsData&#58; ERROR&#58; Cannot copy file&#58; file&#58;////sharesoft2/osg/ce-1.2/osg-rsv/bin/probes/storage-probe-test-file to <a href='srm&#58;//grid-0.hep.brown.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/data/1342188551-storage-probe-test-file-remote.8346' target='_blank' rel='nofollow'>srm&#58;//grid-0.hep.brown.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/data/1342188551-storage-probe-test-file-remote.8346</a> using SRM protocol 2 ... Bailing now.
+Actual error message was&#58; SRMClientV2 &#58; srmPrepareToPut&#58; try # 0 failed with error
+SRMClientV2 &#58; ; nested exception is&#58;
+java.net.ConnectException&#58; Connection refused
+Fri Jul 13 10&#58;09&#58;19 EDT 2012&#58; java.net.ConnectException&#58; Connection refused
+srm client error&#58;
+java.lang.Exception&#58;  stopped
+EOT
+Used commandline&#58; rsv-control --run --host grid-0.hep.brown.edu org.osg.srm.srmcp-readwrite
+Received error message&#58; see above
+Affected site&#58; brown-cms
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=84210' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=84210</a>
+
+[Ticket History]
+Subject&#58; rsv probe srmcp-readwrite failing
+CC&#58;
+-- by Jack Fowler 1528 at Fri Jul 13 14&#58;35&#58;00 UTC 2012
+
+-- by Vania Boccia at Fri Jul 13 14&#58;37&#58;57 UTC 2012</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F12361">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 12361});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

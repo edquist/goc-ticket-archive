@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[14603] Condor job routing problem from Condor-7.8.7/OSG-3 CE to OSG-3 LSF jobmanager</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=14603" method="post">
+<div class="page-header">
+    <h3><span class="muted">14603</span> / Condor job routing problem from Condor-7.8.7/OSG-3 CE to OSG-3 LSF jobmanager</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Horst Severini</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/custom</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Horst Severini</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-05-09</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Tim Cartwright <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Suchandra Thapa <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=14603", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/14603?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/14603?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Condor%20job%20routing%20problem%20from%20Condor-7.8.7%2FOSG-3%20CE%20to%20OSG-3%20LSF%20jobmanager%20ISSUE%3D14603%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='14603#1368201911'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T16:05:11+00:00">May 10, 2013 04:05 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1368201911">&nbsp;</a></div><pre>Excellent. I&#39;m glad to hear that the problem is solved.
+I&#39;ve create a ticket with Globus about their command-line tools not notifying the user about failures&#58;
+<a href='http&#58;//jira.globus.org/browse/GT-389' target='_blank' rel='nofollow'>http&#58;//jira.globus.org/browse/GT-389</a>
+
+Another possible improvement is to have the jobmanager return a real gram error code when the batch system kills the job (for exceeding wall time or whatever other reason). Right now, it&#39;s reporting an error code of 0. Gram already has the error code GLOBUS_GRAM_PROTOCOL_ERROR_SYSTEM_CANCELLED.
+
+-- Jaime Frey
+
+On May 10, 2013, at 9&#58;20 AM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='14603#1368197375'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T14:49:35+00:00">May 10, 2013 02:49 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1368197375">&nbsp;</a></div><pre>Horst&#58; Thanks for the hard work and updates! Glad we got to the bottom of it. I am closing this ticket now.</pre></div><div class='update_description'><i onclick="document.location='14603#1368197051'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T14:44:11+00:00">May 10, 2013 02:44 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1368197051">&nbsp;</a></div><pre>Hi Tim,
+
+yes, maxwalltime and queue can be set in direct Condor-g submissions with
+
+globusrsl = (queue=hep_debug)(maxwalltime=30)
+
+and in globus-job-run commands with
+
+-q hsp_debug -m 30 (for 30 minutes)
+
+Hmm, -m doesn&#39;t seem to work, but &#34;-x &#39;(maxwalltime=30)&#39;&#34; does.
+Anyway, I digress ...
+
+So no, there&#39;s nothing else we need to do with the OSG stack, we&#39;re done there.
+
+What I still need to figure out is how to add this info into the Condor
+job router. I just tried
+
+JOB_ROUTER_ENTRIES =
+[ GridResource = &#34;gt5 grid1.oscer.ou.edu/jobmanager-lsf&#34;;
+name = &#34;grid1.oscer.ou.edu&#34;;
+rsl = &#34;(queue=hep_debug)(maxwalltime=30)&#34;;
+]
+
+(and also globusrsl = ), but that doesn&#39;t seem to do the trick,
+since the jobs still end up in the normal queue.
+
+I can&#39;t find anything in the logs about it, either, though, so this line
+seems to be silently ignored? Not nice ... &#58;)
+
+Oh wait, I think I found it! Here&#58;
+
+<a href='http&#58;//research.cs.wisc.edu/htcondor/manual/v7.7/5_6Condor_Job.html' target='_blank' rel='nofollow'>http&#58;//research.cs.wisc.edu/htcondor/manual/v7.7/5_6Condor_Job.html</a>
+
+It&#39;s set_GlobusRSL ... obviously! ;)
+<div id='show_185003377' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_185003377'>
+Yeah, that does the trick&#58;
+
+JOB_ROUTER_ENTRIES =
+[ GridResource = &#34;gt5 grid1.oscer.ou.edu/jobmanager-lsf&#34;;
+name = &#34;grid1.oscer.ou.edu&#34;;
+set_GlobusRSL = &#34;(queue=hep_debug)(maxwalltime=30)&#34;;
+]
+
+Okay, now we&#39;re really done!
+
+Thanks again for all your help,
+sorry it took so long to find the REAL issue!
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_185003377').click(function() {
+            $('#detail_185003377').slideDown("normal");
+            $('#show_185003377').hide();
+            $('#hide_185003377').show();
+        });
+        $('#hide_185003377').click(function() {
+            $('#detail_185003377').slideUp();
+            $('#hide_185003377').hide();
+            $('#show_185003377').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='14603#1368195609'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T14:20:09+00:00">May 10, 2013 02:20 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1368195609">&nbsp;</a></div><pre>Ah, so you can affect the walltime limit within the queue via submission parameters? If so, is this something that is always site-specific, or should we do something in the jobmanager?
+
+Again, are there any OSG Software tasks here? Or are we basically done?
+
+— Tim</pre></div><div class='update_description'><i onclick="document.location='14603#1368194349'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T13:59:09+00:00">May 10, 2013 01:59 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1368194349">&nbsp;</a></div><pre>Hi Tim,
+
+right -- it&#39;s LSF that&#39;s killing the jobs locally, since by default most
+of the LSF queues have a walltime limit of one minute. So the OSG stack
+including the jobmanager-lsf have nothing to do with it. I think
+everything is working fine in principle. Hence my apology. =)
+
+So the only thing I need now is the proper syntax to add the right queue
+and maxwalltime to the routing daemon configuration on osgitb1,
+so that any overflow jobs which are routed to grid1/jobmanager-lsf
+will end up in the right queue with a reasonable maxwalltime,
+so that they won&#39;t get killed off.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1368193989'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T13:53:09+00:00">May 10, 2013 01:53 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1368193989">&nbsp;</a></div><pre>OK, I am still trying to understand ...
+
+Are you saying that it is the LSF queue itself that is killing the jobs after 60 seconds? Or something in the LSF jobmanager that loses track of the job in the LSF queue after that long?
+
+Put another way, what do we need to do, here in OSG Software, to make things better?
+
+— Tim</pre></div><div class='update_description'><i onclick="document.location='14603#1368193634'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T13:47:14+00:00">May 10, 2013 01:47 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1368193634">&nbsp;</a></div><pre>Hi Tim,
+
+actually, it doesn&#39;t seem to be a jobmanager issue, either -- it was just
+a string of unlucky circumstances! =)
+
+I was able to get the routing to work, too, simply by dropping the
+sleep command from 60 to 45, which was long enough for the routing daemon
+to pick up a job, and short enough for the LSF normal queue not to kill it!
+
+So I think the only thing we still need now is the correct syntax
+in the routing configuration to add both queue name and walltime here&#58;
+
+[ GridResource = &#34;gt2 grid1.oscer.ou.edu/jobmanager-lsf&#34;;
+name = &#34;grid1.oscer.ou.edu&#34;;
+]
+
+Can I just add a line like this&#58;
+
+globusrsl = &#34;(queue=hep_debug)(maxwalltime=30)&#34;
+
+Or just &#39;rsl = ...&#39;?
+Or would that not be the correct syntax in this context?
+
+What does &#39;name&#39; describe here, anyway?
+
+Thanks a lot,
+and again my deepest apologies for all the false accusations, ;)
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1368192731'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T13:32:11+00:00">May 10, 2013 01:32 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1368192731">&nbsp;</a></div><pre>I dropped Brian Lin and added Suchandra Thapa to this ticket, since it is starting to sound like an LSF jobmanager issue. Good hunting, everyone!</pre></div><div class='update_description'><i onclick="document.location='14603#1368153489'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-10T02:38:09+00:00">May 10, 2013 02:38 AM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1368153489">&nbsp;</a></div><pre>Hi again;
+
+Arrghh -- well, while it&#39;s not true that the batch system kills off
+jobs that are not consuming CPU for more than a minute, what IS true
+is that the normal and the hep_debug queue by default only give you
+one minute of walltime before LSF kills off your job!
+
+I figured that out by submitting a longer sleep job to the hep, hep_debug,
+and normal queues, and then step by step increasing the requested walltime.
+The hep queue already has a default walltime of 48h, since we had
+requested that, but I would&#39;ve expected at least a default of 30 minutes
+for the other ones as well!
+
+Anyway, that&#39;s what it is, and I was able to successfully run direct
+Condor-g submissions of arbitrary length with this RSL&#58;
+
+globusrsl = (queue=hep_debug)(maxwalltime=30)
+
+So the question is now, how do I tell the routing daemon to either
+request more walltime, or to run in the hep queue, which already
+has a long enough walltime?
+
+I.e., I&#39;m looking for the proper queue or walltime syntax addition
+to this entry&#58;
+
+[ GridResource = &#34;gt2 grid1.oscer.ou.edu/jobmanager-lsf&#34;;
+name = &#34;grid1.oscer.ou.edu&#34;;
+]
+
+Hopefully that&#39;ll fix all our problems!
+
+Thanks a lot,
+and sorry for all the red herrings,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1368141251'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-09T23:14:11+00:00">May 9, 2013 11:14 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1368141251">&nbsp;</a></div><pre>No, it&#39;s not the batch system, I know that from submitting sleep jobs
+directly via bsub.
+
+I&#39;m reasonably confident that the jobmanager is losing track of the job.
+I&#39;ll try and dig through the log files tomorrow.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1368139992'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-09T22:53:12+00:00">May 9, 2013 10:53 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1368139992">&nbsp;</a></div><pre>Something else to possibly investigate&#58; In the past, we&#39;ve encountered batch systems that would kill jobs if they weren&#39;t using enough cpu. You can try submitting a job that will use all of the cpu for 2 minutes, then exit.
+
+On May 9, 2013, at 5&#58;29 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='14603#1368138550'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-09T22:29:10+00:00">May 9, 2013 10:29 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1368138550">&nbsp;</a></div><pre>Hi Jaime,
+
+<font color='#7F7E6F'>&#62; Here&#39;s a fun little fact I just learned&#58; If the GRAM jobmanager reports that a job has failed, globus-job-run just exits immediately with exit code 0. No indication that the job failed. globusrun does the same when given the -s option. I believe some of your globus-job-run tests were silently failing.</font>
+
+How fun indeed! &#58;)
+
+<font color='#7F7E6F'>&#62; This command will show failures&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; % globusrun -r grid1.oscer.ou.edu/jobmanager-lsf &#39;&(executable=/bin/sleep)(arguments=120)&#39;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; The executable is not transferred when globusrun is used this way. It needs to be a file that&#39;s already on the CE. I don&#39;t know of a way to have globusrun or globus-job-run transfer the executable and tell you if the job fails.</font>
+
+Okay, now we&#39;re making progress! I just ran a bunch of globusrun sleep jobs,
+like you suggested, and they succeed as long as they run less than 60s;
+anything longer and they fail!
+
+----
+[hs@ouhep1 ~]$ globusrun -r grid1.oscer.ou.edu/jobmanager-lsf &#39;&(executable=/bin/sleep)(arguments=55)&#39;
+globus_gram_client_callback_allow successful
+GRAM Job submission successful
+GLOBUS_GRAM_PROTOCOL_JOB_STATE_PENDING
+GLOBUS_GRAM_PROTOCOL_JOB_STATE_ACTIVE
+GLOBUS_GRAM_PROTOCOL_JOB_STATE_DONE
+
+[hs@ouhep1 ~]$ globusrun -r grid1.oscer.ou.edu/jobmanager-lsf &#39;&(executable=/bin/sleep)(arguments=57)&#39;
+globus_gram_client_callback_allow successful
+GRAM Job submission successful
+GLOBUS_GRAM_PROTOCOL_JOB_STATE_PENDING
+GLOBUS_GRAM_PROTOCOL_JOB_STATE_ACTIVE
+GLOBUS_GRAM_PROTOCOL_JOB_STATE_DONE
+
+[hs@ouhep1 ~]$ globusrun -r grid1.oscer.ou.edu/jobmanager-lsf &#39;&(executable=/bin/sleep)(arguments=58)&#39;
+globus_gram_client_callback_allow successful
+GRAM Job submission successful
+GLOBUS_GRAM_PROTOCOL_JOB_STATE_PENDING
+<div id='show_1519647394' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1519647394'>GLOBUS_GRAM_PROTOCOL_JOB_STATE_ACTIVE
+GLOBUS_GRAM_PROTOCOL_JOB_STATE_FAILED
+----
+
+So I guess something in the jobmanager-lsf isn&#39;t tracking the progress
+of the job properly, and is timing out after a minute, regardless of
+whether the job is still running? How do we fix that?
+
+<font color='#7F7E6F'>&#62; I think you&#39;ll find useful information about the failed jobs in the gram jobmanager and lsf logs on the CE.</font>
+
+I&#39;ll try to look through that later, too.
+
+<font color='#7F7E6F'>&#62; To force a short job to be routed, you can set &#39;requirements = false&#39; in the submit file. That will prevent it from matching against any local machines, and the requirements expression is ignored for Condor-G jobs where you specify the resource to submit to.</font>
+
+Okay, I&#39;ll try that, too.
+
+Thanks,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_1519647394').click(function() {
+            $('#detail_1519647394').slideDown("normal");
+            $('#show_1519647394').hide();
+            $('#hide_1519647394').show();
+        });
+        $('#hide_1519647394').click(function() {
+            $('#detail_1519647394').slideUp();
+            $('#hide_1519647394').hide();
+            $('#show_1519647394').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='14603#1368126131'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-09T19:02:11+00:00">May 9, 2013 07:02 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1368126131">&nbsp;</a></div><pre>Here&#39;s a fun little fact I just learned&#58; If the GRAM jobmanager reports that a job has failed, globus-job-run just exits immediately with exit code 0. No indication that the job failed. globusrun does the same when given the -s option. I believe some of your globus-job-run tests were silently failing.
+
+This command will show failures&#58;
+
+% globusrun -r grid1.oscer.ou.edu/jobmanager-lsf &#39;&(executable=/bin/sleep)(arguments=120)&#39;
+
+The executable is not transferred when globusrun is used this way. It needs to be a file that&#39;s already on the CE. I don&#39;t know of a way to have globusrun or globus-job-run transfer the executable and tell you if the job fails.
+
+I think you&#39;ll find useful information about the failed jobs in the gram jobmanager and lsf logs on the CE.
+
+To force a short job to be routed, you can set &#39;requirements = false&#39; in the submit file. That will prevent it from matching against any local machines, and the requirements expression is ignored for Condor-G jobs where you specify the resource to submit to.
+
+-- Jaime Frey
+
+On May 9, 2013, at 12&#58;35 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='14603#1368120915'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-09T17:35:15+00:00">May 9, 2013 05:35 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1368120915">&nbsp;</a></div><pre>P.S.&#58; I would like to test a simpler script with job routing, but
+unfortunately I don&#39;t know of a way to do this, since if I don&#39;t put
+at least a sleep 60 in there, then all jobs will run locally before
+the routing daemon picks one up to run on the remote site.</pre></div><div class='update_description'><i onclick="document.location='14603#1368120371'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-09T17:26:11+00:00">May 9, 2013 05:26 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1368120371">&nbsp;</a></div><pre>Hi Jaime,
+
+no, there&#39;s definitely nothing wrong with that &#39;executable&#39;, it&#39;s trivial&#58;
+
+----
+[hs@osgitb1 route]$ cat htpc-test.sh
+#!/bin/sh
+
+echo &#34;----------------------------------------------------------------&#34;
+sleep 60
+/bin/hostname
+/usr/bin/uptime
+/bin/uname -a
+#cat /proc/cpuinfo
+ps auxwwr
+echo &#34;----------------------------------------------------------------&#34;
+
+#exit 0
+----
+
+And it runs just fine when I submit it to another site, like
+ouhep0.nhn.ou.edu/jobmanager-condor or osgitb1.nhn.ou.edu/jobmanager-condor.
+
+I just ran
+
+globus-job-run grid1.oscer.ou.edu/jobmanager-lsf -s htpc-test.sh
+
+and that ran and returned, but didn&#39;t produce any output.
+Is that expected? I guess I&#39;ve never run a script like that with -s.
+
+Hmm, when I run it against osgitb1.nhn.ou.edu/jobmanager-condor,
+it does produce output, though&#58;
+
+[hs@osgitb1 route]$ globus-job-run osgitb1.nhn.ou.edu/jobmanager-condor -s htpc-test.sh
+----------------------------------------------------------------
+<div id='show_1228039621' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1228039621'>osgitb1.nhn.ou.edu
+11&#58;50&#58;54 up 4 days, 23&#58;40,  2 users,  load average&#58; 0.06, 0.05, 0.05
+Linux osgitb1.nhn.ou.edu 2.6.18-348.4.1.el5 #1 SMP Fri Mar 22 05&#58;43&#58;34 EDT 2013 i686 i686 i386 GNU/Linux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+hs        5648  0.0  0.0   4480  1016 ?        RN   11&#58;50   0&#58;00 ps auxwwr
+----------------------------------------------------------------
+
+When I run it from ouhep1 on grid1, it doesn&#39;t produce any output, either,
+so I think this is a different jobmanager-lsf oddity that doesn&#39;t have
+anything to do with our current problem, since when I run a simple command
+like this from osgitb1, it produces output, too&#58;
+
+globus-job-run grid1.oscer.ou.edu/jobmanager-lsf -s /bin/hostname
+
+I just created another script called simple-test.sh, which only contains
+/bin/hostname, and when I run that from osgitb1 with
+
+globus-job-run grid1.oscer.ou.edu/jobmanager-lsf -s simple-test.sh
+
+it produces output, too.
+
+And then I submitted that script to Condor-g, and it ran fine, too.
+
+Then I submitted the original htpc-test.sh again, and it failed again!
+
+...
+012 (343517.000.000) 05/09 12&#58;05&#58;04 Job was held.
+Job failed, no reason given by GRAM server
+Code 2 Subcode 0
+...
+
+Then I added a &#39;sleep 60&#39; to simple-test.sh -- and then that one
+failed as well!
+
+So why would a simple script run as a direct Condor-g submission against
+grid1/jobmanager-lsf, but as soon as you add a sleep command to it,
+it fails?
+
+This does not happen when I run that same script against another
+site/jobmanager -- but it does also fail when I run it from ouhep1!
+
+So maybe there&#39;s still a problem in the jobmanager-lsf after all,
+which breaks running scripts which contain sleep commands --
+or some other condition which is triggered by this sleep command?
+
+What do we do now?
+
+Thanks a lot,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_1228039621').click(function() {
+            $('#detail_1228039621').slideDown("normal");
+            $('#show_1228039621').hide();
+            $('#hide_1228039621').show();
+        });
+        $('#hide_1228039621').click(function() {
+            $('#detail_1228039621').slideUp();
+            $('#hide_1228039621').hide();
+            $('#show_1228039621').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='14603#1368117672'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-09T16:41:12+00:00">May 9, 2013 04:41 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1368117672">&nbsp;</a></div><pre>Now that HTCondorWeek and its aftermath are done, I&#39;m able to get back to this ticket.
+So both routed and direct Condor-G jobs fail consistently when using directory /home/hs/condor/route and executable /home/hs/condor/route/htpc-test.sh. That makes me suspicious of that executable.
+Here are two things to try&#58;
+
+Run that executable using globus-job-run&#58;
+% cd /home/hs/condor/route
+% globus-job-run grid1.oscer.ou.edu/jobmanager-lsf -s htpc-test.sh
+
+Create a new shell script in that directory that just echoes some text to the screen, and submit a direct Condor-G job that runs that script.
+
+-- Jaime Frey
+
+On May 1, 2013, at 4&#58;22 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='14603#1367440628'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-01T20:37:08+00:00">May 1, 2013 08:37 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1367440628">&nbsp;</a></div><pre>Oh right&#58;
+
+<font color='#7F7E6F'>&#62; Sorry that was a typo, I meant &#34;job router&#34; instead of &#34;job manager&#34;.</font>
+
+Yes, I never got the job router to work with an OSG-1.2 CE and Condor-7.6,
+presumably because these versions are too old for job routing.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1367440089'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-01T20:28:09+00:00">May 1, 2013 08:28 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1367440089">&nbsp;</a></div><pre>Oh, and one more thing&#58;
+
+<font color='#7F7E6F'>&#62; &#62; Jobs submitted from OUHEP_ITB (osg 3/condor 7.8.7) via&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; condor_g -&#62; LSF job manager - FAIL</font>
+<font color='#7F7E6F'>&#62; &#62; job router - FAIL</font>
+<font color='#7F7E6F'>&#62; &#62; condor_g -&#62; other job managers - SUCCEED</font>
+<font color='#7F7E6F'>&#62; &#62; globus-job-run -&#62; LSF job manager - SUCCEED</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; OUHEP_OSG (osg 1.2/condor 7.6)&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; condor_g -&#62; LSF job manager - SUCCEED</font>
+<font color='#7F7E6F'>&#62; &#62; globus-job-run -&#62; LSF job manager - SUCCEED</font>
+<font color='#7F7E6F'>&#62; &#62; job manager - FAIL</font>
+
+The job router to osgitb1/jobmanager-condor, and to ouhep0/jobmanager-condor --
+so, to both OSG 1.2 and OSG 3 CEs -- works fine, too.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1367439821'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-01T20:23:41+00:00">May 1, 2013 08:23 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1367439821">&nbsp;</a></div><pre>Sorry that was a typo, I meant &#34;job router&#34; instead of &#34;job manager&#34;.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='14603#1367438468'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-01T20:01:08+00:00">May 1, 2013 08:01 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1367438468">&nbsp;</a></div><pre>Hi Brian,
+
+<font color='#7F7E6F'>&#62; Here&#39;s a summary of the current state of things as I understand it, I just want to make sure I&#39;ve got everything right since things have been all over the place&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Jobs submitted from OUHEP_ITB (osg 3/condor 7.8.7) via&#58;</font>
+<font color='#7F7E6F'>&#62; condor_g -&#62; LSF job manager - FAIL</font>
+<font color='#7F7E6F'>&#62; job router - FAIL</font>
+<font color='#7F7E6F'>&#62; condor_g -&#62; other job managers - SUCCEED</font>
+<font color='#7F7E6F'>&#62; globus-job-run -&#62; LSF job manager - SUCCEED</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; OUHEP_OSG (osg 1.2/condor 7.6)&#58;</font>
+<font color='#7F7E6F'>&#62; condor_g -&#62; LSF job manager - SUCCEED</font>
+<font color='#7F7E6F'>&#62; globus-job-run -&#62; LSF job manager - SUCCEED</font>
+<font color='#7F7E6F'>&#62; job manager - FAIL</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Does that sound right?</font>
+
+All except for the last line, where I&#39;m not sure what you mean by that.
+
+As far as I know, from OUHEP_OSG, everything works to everywhere,
+there are no failures I can think of right now.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1367437799'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-01T19:49:59+00:00">May 1, 2013 07:49 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1367437799">&nbsp;</a></div><pre>Horst,
+
+Here&#39;s a summary of the current state of things as I understand it, I just want to make sure I&#39;ve got everything right since things have been all over the place&#58;
+
+Jobs submitted from OUHEP_ITB (osg 3/condor 7.8.7) via&#58;
+condor_g -&#62; LSF job manager - FAIL
+job router - FAIL
+condor_g -&#62; other job managers - SUCCEED
+globus-job-run -&#62; LSF job manager - SUCCEED
+
+OUHEP_OSG (osg 1.2/condor 7.6)&#58;
+condor_g -&#62; LSF job manager - SUCCEED
+globus-job-run -&#62; LSF job manager - SUCCEED
+job manager - FAIL
+
+Does that sound right?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='14603#1367436853'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-01T19:34:13+00:00">May 1, 2013 07:34 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1367436853">&nbsp;</a></div><pre>Hi again,
+
+okay, the OSCER admins removed that bad node from the queues, and I was able
+to run a routed job as well, which failed the same way, and I just put
+the latest Gridmanager log here&#58;
+
+<a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a>~hs/tmp/condor-route/
+
+Now you have a .direct and a .routed log, but I think the .routed
+most likely still contains all the info from the direct failure as well.
+
+Thanks,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1367434692'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-01T18:58:12+00:00">May 1, 2013 06:58 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1367434692">&nbsp;</a></div><pre>Hi Brian,
+
+yes, all direct submissions via condor-g now consistently fail.
+And I haven&#39;t made any changes to Condor since the last try.
+
+I&#39;m having problems running the routed test right now, since they all
+end up on an OSCER node which is having problems, but I did run another
+direct test, which I know ran on a node which is okay, so the Gridmanager
+log of that one should help. You can find it here again&#58;
+
+<a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a>~hs/tmp/condor-route/
+
+Please let me know what else I can do to help.
+
+Thanks a lot
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1367424535'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-05-01T16:08:55+00:00">May 1, 2013 04:08 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1367424535">&nbsp;</a></div><pre>So the direct jobs submitted via condor-g sometimes fail? Do they fail consistently since you haven&#39;t touched the job-routing daemon? Can you submit a direct job and a job-routed job and attach the GridmanagerLog file?</pre></div><div class='update_description'><i onclick="document.location='14603#1366836008'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-24T20:40:08+00:00">Apr 24, 2013 08:40 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1366836008">&nbsp;</a></div><pre>Hi all,
+
+okay, here we go. We already had &#34;GRIDMANAGER_DEBUG=D_FULLDEBUG&#34;&#58;
+
+[root@osgitb1 ~]# condor_config_val -v GRIDMANAGER_DEBUG
+GRIDMANAGER_DEBUG&#58; D_FULLDEBUG
+Defined in &#39;/myhome1/condor/condor_config.local&#39;, line 289.
+
+So I ran the direct and job-routed jobs in the same directory and
+with the same executable -- and now both are failing again with
+
+...
+012 (343463.000.000) 04/24 15&#58;22&#58;11 Job was held.
+Job failed, no reason given by GRAM server
+Code 2 Subcode 0
+...
+
+Arrgh! I mentioned before that the direct jobs sometimes work and sometimes
+don&#39;t, and I&#39;ve never been able to figure out when and why or why not.
+
+Whenver they didn&#39;t work, I have in the past removed the job routing daemon --
+which should have nothing to do with it -- and reconfigured condor,
+and then put it back in and reconfigured it, and at some point
+the direct job submission was working again, but I didn&#39;t do it this time,
+since I think an unsuccessful submission may actually help us more
+in tracking down what&#39;s going on ...
+
+I did reboot the ITB cluster into the newest kernel yesterday,
+but that shouldn&#39;t have changed anything in any of the condor or osg
+configurations ...
+
+When I changed the direct submission to submit to osgitb1/jobmanager-condor
+instead of grid1/jobmanager-lsf, then it still works, so there&#39;s clearly
+nothing obviously wrong with osg or condor on osgitb1!
+
+<div id='show_840228819' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_840228819'>I have put the GridmanagerLog.hs in
+
+<a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a>~hs/tmp/condor-route/
+
+again, since Footprints would only strip off the attachment again.
+
+As a point of reference/time line, here are three jobs I submitted&#58;
+
+-rw-r--r-- 1 hs   841 Apr 24 15&#58;13 condor_test_direct.343459.0.log
+-rw-r--r-- 1 hs  1085 Apr 24 15&#58;15 condor_test_direct.343460.0.log
+-rw-r--r-- 1 hs   841 Apr 24 15&#58;23 condor_test_routed.343462.10.log
+
+Or rather, these were the times when they were done (or failed),
+but you should still be able to match them up with the logs.
+
+The first one was the (now unsuccessful) direct submission to grid1/lsf,
+then the successful direct submission to osgitb1/condor, and then the
+(always unsuccessful) re-routed submission to grid1/lsf again.
+
+Please let me know if I can provide you with additional logs or whatever.
+
+Thanks a lot,
+
+Horst
+</div><script type='text/javascript'>
+        $('#show_840228819').click(function() {
+            $('#detail_840228819').slideDown("normal");
+            $('#show_840228819').hide();
+            $('#hide_840228819').show();
+        });
+        $('#hide_840228819').click(function() {
+            $('#detail_840228819').slideUp();
+            $('#hide_840228819').hide();
+            $('#show_840228819').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='14603#1366814952'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-24T14:49:12+00:00">Apr 24, 2013 02:49 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1366814952">&nbsp;</a></div><pre>I&#39;ll be out for the next few days so I&#39;m adding Jaime Frey and Tim Cartwright to this ticket. Jaime, you can reply directly to the e-mail you get to comment on this ticket.</pre></div><div class='update_description'><i onclick="document.location='14603#1366811909'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-24T13:58:29+00:00">Apr 24, 2013 01:58 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1366811909">&nbsp;</a></div><pre>Horst,
+
+The condor team was wondering if you could set &#34;GRIDMANAGER_DEBUG=D_FULLDEBUG&#34; in your condor config and submit a pair of direct and job-routed jobs with the same Iwd and executable. When you&#39;ve done that, attach your GridmanagerLog file.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='14603#1366405750'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-19T21:09:10+00:00">Apr 19, 2013 09:09 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1366405750">&nbsp;</a></div><pre>Well,
+
+looks like Footprints stripped off the attachments. Good thing I also
+put them up here&#58;
+
+<a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a>~hs/tmp/condor-route/
+
+Cheers,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1366403947'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-19T20:39:07+00:00">Apr 19, 2013 08:39 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1366403947">&nbsp;</a></div><pre>Hi Brian and all,
+
+okay, here&#39;s what I got. As expected, the direct submission worked fine.
+See the attached &#39;direct&#39; condor_q -l output.
+
+Then I submitted via the condor-router, and it was held again.
+The attached &#39;initial&#39; file is the condor_q output of 343438.10;
+the &#39;rerouted&#39; file is the condor_q output of the rerouted job
+343439.0; and so is the &#39;held&#39; file, just later.
+
+I also put all the files, and the condor-logs here&#58;
+
+<a href='http&#58;//www.nhn.ou.edu/' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu/</a>~hs/tmp/condor-route/
+
+The test-htpc files are related to the direct submission, and the
+condor_test log is for the routing submission.
+
+Please let me know if there&#39;s anything else I can do to help,
+or if you need more information.
+
+Thanks a lot,
+
+Horst
+
+-----
+[hs@osgitb1 route]$ condor_q ; condor_router_q ; condor_router_q -S
+
+-- Submitter&#58; osgitb1.nhn.ou.edu &#58; &#60;129.15.31.41&#58;64622&#62; &#58; osgitb1.nhn.ou.edu
+ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD
+
+343438.10  hs              4/19 15&#58;17   0+00&#58;00&#58;00 I  0   0.0
+htpc-test.sh
+343438.11  hs              4/19 15&#58;17   0+00&#58;00&#58;43 R  0   0.0
+htpc-test.sh
+343438.12  hs              4/19 15&#58;17   0+00&#58;00&#58;43 R  0   0.0
+<div id='show_1148222726' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1148222726'>htpc-test.sh
+343438.13  hs              4/19 15&#58;17   0+00&#58;00&#58;42 R  0   0.0
+htpc-test.sh
+343438.14  hs              4/19 15&#58;17   0+00&#58;00&#58;42 R  0   0.0
+htpc-test.sh
+343439.0   hs              4/19 15&#58;17   0+00&#58;00&#58;00 I  0   0.0
+htpc-test.sh
+
+6 jobs; 0 completed, 0 removed, 2 idle, 4 running, 0 held, 0 suspended
+
+-- Submitter&#58; osgitb1.nhn.ou.edu &#58; &#60;129.15.31.41&#58;64622&#62; &#58; osgitb1.nhn.ou.edu
+ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD
+
+343439.0   hs              4/19 15&#58;17   0+00&#58;00&#58;00 I  0   0.0
+htpc-test.sh
+JOBS ST Route                GridResource
+1  I grid1.oscer.ou.edu   gt2 grid1.oscer.ou.edu/jobmanager-lsf
+</div><script type='text/javascript'>
+        $('#show_1148222726').click(function() {
+            $('#detail_1148222726').slideDown("normal");
+            $('#show_1148222726').hide();
+            $('#hide_1148222726').show();
+        });
+        $('#hide_1148222726').click(function() {
+            $('#detail_1148222726').slideUp();
+            $('#hide_1148222726').hide();
+            $('#show_1148222726').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='14603#1366392616'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-19T17:30:16+00:00">Apr 19, 2013 05:30 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1366392616">&nbsp;</a></div><pre>Horst,
+
+I spoke with some HTCondor folks and they want you to submit the job manually (which, as I understand it, this works) and run a condor-q -l on that job. If you then submit the job such that the job-manager picks it up (which is the broken case), we&#39;ll want to run condor-q -l on that job. We&#39;ll see if there are any differences between the JobAds and go from there (depending on the outcome, we may close the GOC ticket and pass this off to the HTCondor team).
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='14603#1366299188'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-18T15:33:08+00:00">Apr 18, 2013 03:33 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1366299188">&nbsp;</a></div><pre>Thanks Brian!
+
+Let me know what we can do to help.
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1366298924'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-18T15:28:44+00:00">Apr 18, 2013 03:28 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1366298924">&nbsp;</a></div><pre>I&#39;ve assigned the ticket to myself and will be pulling in HTCondor folks as necessary.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='14603#1366116128'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-16T12:42:08+00:00">Apr 16, 2013 12:42 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1366116128">&nbsp;</a></div><pre>Thanks Kyle!
+
+I&#39;m open for discussion, since I have no other bright ideas at the moment. &#58;)
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1366115923'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-16T12:38:43+00:00">Apr 16, 2013 12:38 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1366115923">&nbsp;</a></div><pre>I&#39;ve set the next action date out until next Monday to allow for discussion in this ticket.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='14603#1365705727'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-11T18:42:07+00:00">Apr 11, 2013 06:42 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1365705727">&nbsp;</a></div><pre>Thanks Chris!
+
+I think this is fine for now. We can add more people later, if necessary.
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='14603#1365705437'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-11T18:37:17+00:00">Apr 11, 2013 06:37 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1365705437">&nbsp;</a></div><pre>Horst,
+
+I have created this ticket and assigned Software Support to review, if you would like anyone else added to this ticket please let us know.
+
+Thanks,
+
+Chris</pre></div><div class='update_description'><i onclick="document.location='14603#1365705116'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-04-11T18:31:56+00:00">Apr 11, 2013 06:31 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1365705116">&nbsp;</a></div><pre>From&#58; Horst Severini &#60;hs@....&#62;
+To&#58; goc@....
+cc&#58; hs@...., sthapa@...., snow@...., dan@....,
+cat@....
+Subject&#58; Condor job routing problem from Condor-7.8.7/OSG-3 CE to OSG-3 LSF jobmanager
+Date-Sent&#58; Thursday, April 11, 2013 11&#58;49 AM -0500
+
+Hi all,
+
+okay, let&#39;s get a ticket started with this.
+
+GOC, please have a look at the thread below, and let me know if that&#39;s
+enough information to start a ticket and route it, or if you&#39;d like
+more information.
+
+So in a nutshell, condor job submissions which are routed by the condor
+routing daemon to grid1/jobmanager-lsf get held, while direct condor-g
+submissions to grid1/jobmanager-lsf are fine, and routed jobs to
+other jobmanager-condor CEs are fine, too. So this seems to be rather
+tricky to figure out ...
+
+Thanks a lot,
+
+Horst
+
+Tim Cartwright &#60;cat@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; Horst&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Go ahead and submit a GOC ticket with your best summary of the available evidence. We can always pull in the HTCondor folks if needed.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ? Tim</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On 11 Apr 2013, at 11&#58;15, Horst Severini &#60;hs@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<div id='show_1689469988' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1689469988'><font color='#7F7E6F'>&#62; &#62; Hi again,</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; okay, now I&#39;m VERY confused!</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; I played around with this some more, and backed out of condor-7.8.7</font>
+<font color='#7F7E6F'>&#62; &#62; down to condor-7.6 again, and after I ran &#39;ldconfig&#39; to get rid</font>
+<font color='#7F7E6F'>&#62; &#62; of the condor-7.8.7 shlibs, then a condor-g job from osgitb1</font>
+<font color='#7F7E6F'>&#62; &#62; to grid1/jobmanager-lsf worked, and it did no longer get held</font>
+<font color='#7F7E6F'>&#62; &#62; without reason; it finished fine and I got the output back.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; So then I put back condor-7.8.7 and the shlibs and re-ran &#39;ldconfig&#39; again,</font>
+<font color='#7F7E6F'>&#62; &#62; and logged out and back in and submitted another condor-g jobs to</font>
+<font color='#7F7E6F'>&#62; &#62; grid1/jobmanager-lsf -- and now that works, too! Both gt2 and gt5.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; I have no idea what could&#39;ve changed, since as far as I know,</font>
+<font color='#7F7E6F'>&#62; &#62; I&#39;m back to exactly where I was before, with condor-7.8.7 and osg-3!</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; So that&#39;s the good news; the bad news is that when I put</font>
+<font color='#7F7E6F'>&#62; &#62; grid1/jobmanager-lsf back into osgitb1&#39;s Condor routing configuration&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; ----</font>
+<font color='#7F7E6F'>&#62; &#62; JOB_ROUTER_ENTRIES = &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;   [ GridResource = &#34;gt2 grid1.oscer.ou.edu/jobmanager-lsf&#34;; &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;     name = &#34;grid1.oscer.ou.edu&#34;; &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;   ]</font>
+<font color='#7F7E6F'>&#62; &#62; ----</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; and reconfigured condor for that, then the jobs get routed to grid1</font>
+<font color='#7F7E6F'>&#62; &#62; and run there -- but they still get held!</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; ----</font>
+<font color='#7F7E6F'>&#62; &#62; 012 (343412.000.000) 04/11 11&#58;13&#58;03 Job was held.</font>
+<font color='#7F7E6F'>&#62; &#62;        Job failed, no reason given by GRAM server</font>
+<font color='#7F7E6F'>&#62; &#62;        Code 2 Subcode 0</font>
+<font color='#7F7E6F'>&#62; &#62; ----</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; When I route jobs to OUHEP_OSG or OUHEP_ITB instead&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; ----</font>
+<font color='#7F7E6F'>&#62; &#62; JOB_ROUTER_ENTRIES = &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;   [ GridResource = &#34;gt2 ouhep0.nhn.ou.edu/jobmanager-condor&#34;; &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;     name = &#34;ouhep0.nhn.ou.edu&#34;; &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;   ]</font>
+<font color='#7F7E6F'>&#62; &#62; &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;   [ GridResource = &#34;gt2 osgitb1.nhn.ou.edu/jobmanager-condor&#34;; &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;     name = &#34;osgitb1.nhn.ou.edu&#34;; &#92;</font>
+<font color='#7F7E6F'>&#62; &#62;   ]</font>
+<font color='#7F7E6F'>&#62; &#62; ----</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; then that works fine and the jobs complete without problems.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; So apparently there&#39;s still some problem somewhere, but the question is,</font>
+<font color='#7F7E6F'>&#62; &#62; where? Somewhere in the routing? But routing works to other osg-1.2</font>
+<font color='#7F7E6F'>&#62; &#62; and osg-3 sites, so it&#39;s nothing obvious. How can we trace this properly,</font>
+<font color='#7F7E6F'>&#62; &#62; to figure out where things are going wrong?</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; I tried backing out of condor-7.8.7 to condor-7.6 and try job routing there,</font>
+<font color='#7F7E6F'>&#62; &#62; but I can&#39;t get that to work -- possibly because 7.6 is too old to do</font>
+<font color='#7F7E6F'>&#62; &#62; job routing properly, not sure.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Should I go ahead and submit a GOC ticket for this? Just saw your email, Tim.</font>
+<font color='#7F7E6F'>&#62; &#62; Or would it be better suited for a Condor ticket?</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Thanks a lot,</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; 	Horst</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Horst Severini &#60;hs@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; Amen to that! &#58;)</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; Do you want to get it started, or should I email the GOC about it?</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; Oh, one other piece of information is that condor-gjobs submitted from</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; OUHEP_ITB to other jobmanager-condor CEs, both osg-1.2 and osg-3, run fine,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; too, so it may be something related with the parsing of the jobmanager-lsf</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; output, which spits out extra LSF system information in addition to</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; the &#39;expected&#39; job output -- but that&#39;s just a guess right now.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; 	Horst</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; Tim Cartwright &#60;cat@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62; Yeah, let?s start a new GOC ticket for this one...... and hope that it does not last for 6+ months!!!</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62; On 10 Apr 2013, at 16&#58;21, Horst Severini &#60;hs@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; Hi Tim,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; it&#39;s been our pleasure! &#58;)</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; We haven&#39;t run out of things to do related to the LSF jobmanager, though. ;)</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; This is most likely not a problem with the LSF jobmanager itself, but</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; instead with either osg-3 or condor-7.8.7, but we still need to resolve it.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; The problem is that whenever I submit a condor-g job from OUHEP_ITB,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; which is an osg-3 site with condor-7.8.7, to grid1/jobmanager-lsf,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; the job gets held with no hold reason&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; 012 (343375.000.000) 04/10 16&#58;17&#58;45 Job was held.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;       Job failed, no reason given by GRAM server</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;       Code 2 Subcode 0</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; The same job works fine when I submit it from OUHEP_OSG, which is running</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; osg-1.2 with condor-7.6. So the question is, is this a problem in osg-3,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; or in condor-7.8.7?</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; A globus-job-run job to grid1/jobmanager-lsf works fine from OUHEP_ITB</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; as well, so this might point towards a problem with condor-7.8.7,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; but I don&#39;t know enough about how condor submits its jobs to gt2/gt5</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; sites -- i.e., whether it uses the osg-3 CE infrastructure at all --</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; to know where the issue could be.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; Should we open a GOC ticket on this? I had some discussions about this</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; with Dan Bradley, because I initially thought this was a condor routing</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; daemon problem, but upon further investigation it turned out that routing</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; had nothing to do with it, since it seems to be a condor-g submission</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; problem, so the routing &#39;wrapper&#39; has nothing to do with it.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; But I can certainly add the details of my discussions with Dan</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; in the ticket, once it&#39;s open.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; 	Horst</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62; Tim Cartwright &#60;cat@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62; Yay!!!</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62; Thanks again, everyone who has worked on this effort, especially Horst, Patrick, and Suchandra. Once we release this last bug fix at the end of the month, I think we will have fixed all outstanding problems with the LSF integration. And OU folks&#58; We literally could not have done it without your extensive help!</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62; ? Tim</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62; On 10 Apr 2013, at 15&#58;43, Horst Severini &#60;hs@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; Thanks Patrick!</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; Looks good&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; ----</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; [hs@grid1 pbs-lsf]$ grep -i lsf ProbeConfig</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;  ProbeName=&#34;lsf&#58;grid1.oscer.ou.edu&#34;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; [hs@grid1 pbs-lsf]$ grep -i lsf urCollector.conf</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; # &#34;pbs&#34;, &#34;lsf&#34;.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; lrmsType = &#34;lsf&#34;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; ----</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; Thanks a lot,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; 	Horst</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62; Patrick Calhoun &#60;phineas@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; Updated&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; osg-configure.noarch 0&#58;1.0.29-1.osg.el6</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; Complete!</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; [root@grid1 ~]# osg-configure -v</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; Configuration verified successfully</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; [root@grid1 ~]# osg-configure -c</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; CRLs exist, skipping fetch-crl invocation</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; /usr/sbin/osg-configure completed</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; On Wed, Apr 10, 2013 at 11&#58;38 AM, Horst Severini &#60;hs@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Hi Suchandra, and Patrick,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; sure, we should do that. Patrick, whenever you get a chance,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; could you sync the oscer-osg repos and then get this new version --</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; I assume it&#39;s in osg-testing? -- and then run</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; osg-configure -v</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; osg-configure -c</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; and then we&#39;ll make sure that /etc/gratia/pbs-lsf/ProbeConfig</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; is correct.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Thanks a lot,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;      Horst</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Suchandra Thapa &#60;sthapa@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Hi Horst,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; I just promoted a new version of osg-configure (1.0.29) that should fix</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; the last issue where your site was labeled as a pbs site in the ProbeConfig</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; file.  Could you try installing it and using it to configure your system</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; and verify that it fixes this?</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Suchandra</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; On Apr 2, 2013, at 2&#58;43 PM, Horst Severini wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Hi Suchandra,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; I looked at /etc/gratia/pbs-lsf/, and one thing that I noticed was</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; that the new ProbeConfig has now reverted back to</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ProbeName=&#34;pbs&#58;grid1.oscer.ou.edu&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Hmm, that&#39;s odd.  I&#39;ll look into this, but for now can you change the</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; pbs to lsf.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Okay, I put the old saved one back.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Also, I still don&#39;t understand the difference between the files in</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; /var/lib/gratia/tmp/urCollector/ and /var/lib/gratia/data/ .</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Can someone please enlighten me about that?</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Tanya can correct me if I&#39;m wrong but I think the</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; /var/lib/gratia/data directory has the individual job records and the</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; urCollector directory is used to hold the record bundles before they get</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; sent to the collector.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Ahh, so it goes from /data/ to /tmp/urCollector/ and then off to FNAL?</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; I see. The reason I asked was that after the RPM update last week,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; which broke our Gratia again, /data/ was empty, so I assumed these</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; records</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; were processed, but they never made it out of /tmp/urCollector/, and</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; that</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; directory kept filling up, until we fixed it by hand again.</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Thanks a lot,</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;  Horst</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; ---</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Suchandra Thapa</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; sthapa@....</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Computation Institute</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Searle Chemistry Laboratory #201A</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; 5735 South Ellis Avenue</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62; Chicago, IL 60637</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; --</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; Patrick Calhoun</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; Petascale Storage Administrator</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; OU Supercomputing Center for Education and Research</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; Department of Information Technology</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; University of Oklahoma</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;&#62;&#62; (405) 325-4210</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+</div><script type='text/javascript'>
+        $('#show_1689469988').click(function() {
+            $('#detail_1689469988').slideDown("normal");
+            $('#show_1689469988').hide();
+            $('#hide_1689469988').show();
+        });
+        $('#hide_1689469988').click(function() {
+            $('#detail_1689469988').slideUp();
+            $('#hide_1689469988').hide();
+            $('#show_1689469988').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F14603">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 14603});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

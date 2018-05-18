@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[12486] Condor-G/GT5 Job State Update Problems</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=12486" method="post">
+<div class="page-header">
+    <h3><span class="muted">12486</span> / Condor-G/GT5 Job State Update Problems</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Hover</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">John Hover</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">look for mat&#39;s response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2012-09-27</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Tim Cartwright <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=12486", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/12486?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/12486?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Condor-G%2FGT5%20Job%20State%20Update%20Problems%20ISSUE%3D12486%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='12486#1348677898'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-26T16:44:58+00:00">Sep 26, 2012 04:44 PM UTC</time><a class="anchor" name="1348677898">&nbsp;</a></div><pre>Thanks Tim.
+
+I&#39;ll close this.
+
+Elizabeth
+
+by /DC=org/DC=doegrids/OU=People/CN=Elizabeth Chism 100912</pre></div><div class='update_description'><i onclick="document.location='12486#1348674563'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-26T15:49:23+00:00">Sep 26, 2012 03:49 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1348674563">&nbsp;</a></div><pre>The new packages are shipped. Can we close this ticket now?
+
+-- Tim
+
+by /DC=org/DC=doegrids/OU=People/CN=Timothy A. Cartwright 150792</pre></div><div class='update_description'><i onclick="document.location='12486#1348244265'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-21T16:17:45+00:00">Sep 21, 2012 04:17 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1348244265">&nbsp;</a></div><pre>We are two business days away from release to production (scheduled for Tuesday, 25 September), so at this time, let&#39;s just wait.
+
+-- Tim</pre></div><div class='update_description'><i onclick="document.location='12486#1348159370'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-20T16:42:50+00:00">Sep 20, 2012 04:42 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1348159370">&nbsp;</a></div><pre>To ask again for Tim...Is it safe to close this ticket yet, or do people want to wait until the updated package is in production?</pre></div><div class='update_description'><i onclick="document.location='12486#1347545454'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-13T14:10:54+00:00">Sep 13, 2012 02:10 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1347545454">&nbsp;</a></div><pre>Is it safe to close this ticket yet, or do people want to wait until the updated package is in production?</pre></div><div class='update_description'><i onclick="document.location='12486#1347490516'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-12T22:55:16+00:00">Sep 12, 2012 10:55 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1347490516">&nbsp;</a></div><pre>Hi Patrick,
+
+The new jobmanager is set to be included in the next release on 9/25.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='12486#1347467139'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-12T16:25:39+00:00">Sep 12, 2012 04:25 PM UTC</time><a class="anchor" name="1347467139">&nbsp;</a></div><pre>-- by Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='12486#1347312070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-10T21:21:10+00:00">Sep 10, 2012 09:21 PM UTC</time> by <b>Patrick McGuigan</b><a class="anchor" name="1347312070">&nbsp;</a></div><pre>Hi Mat,
+
+The new jobmanager has been installed since 8/24..  We have not seen problems with it.
+Notably the number of gram state files for the usatlas1 account agrees well with the
+number of jobs in the batch system.  Also of note, we did not have a meltdown on Sept. 1st
+similar to the problem on Aug. 1st.
+
+Right now things look pretty good.  When will the jobmanager move from the testing to
+stable release.  I will upgrade our other cluster to OSG v3.X when the new job-manager
+package is available in the default configuration.
+
+Patrick
+
+On 09/10/2012 03&#58;29 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1347308986'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-10T20:29:46+00:00">Sep 10, 2012 08:29 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1347308986">&nbsp;</a></div><pre>Hi Patrick,
+
+Have you had a chance to try out the new version of globus-gram-job-manager (with the patch for #GT-268)? Does it help?
+What issues remain that prevent adoption of OSG 3.0?
+
+Thanks,
+-Mat</pre></div><div class='update_description'><i onclick="document.location='12486#1346864709'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-05T17:05:09+00:00">Sep 5, 2012 05:05 PM UTC</time> by <b>bester@....</b><a class="anchor" name="1346864709">&nbsp;</a></div><pre>I&#39;ve been looking into it. It appears to be an issue with the PBS SEG module in globus, as the job state changes are present in the pbs logs but not the globus SEG logs (different from the other issue I fixed). If I run the SEG myself it will replay those missing events itself, so I suspect some issue when its parser hits a transient error or end-of-file condition. I&#39;m working on making the parser more resilient in those cases.
+
+Joe
+
+On Sep 5, 2012, at 12&#58;22 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1346862132'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-09-05T16:22:12+00:00">Sep 5, 2012 04:22 PM UTC</time><a class="anchor" name="1346862132">&nbsp;</a></div><pre>Hi Joe,
+
+Did you have a response to Brian&#39;s update? I know sometimes dialog takes place outside the ticket, so please send any relevant updates my way.
+
+To review, Brian asked&#58;
+&#34;Can you take a look at Globus job.16217989948315654291.4042084127602642604 / PBS job 13278732?  It appears to have a state synchronization issue.
+
+From the PBS log (/opt/torque/server_logs/20120825)&#58;
+
+08/25/2012 13&#58;46&#58;59;0008;PBS_Server;Job;13278732.admin.atlas-swt2.org;Job Run at request of maui@....
+08/25/2012 13&#58;46&#58;59;0002;PBS_Server;Job;13278732.admin.atlas-swt2.org;child reported success for job after 0 seconds (dest=compute-14-30), rc=0
+
+Maybe some issue with jobs that start / stop immediately?&#34;
+
+Thank you,
+Elizabeth
+
+-- by Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='12486#1346260541'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-29T17:15:41+00:00">Aug 29, 2012 05:15 PM UTC</time><a class="anchor" name="1346260541">&nbsp;</a></div><pre>-- by Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='12486#1346201242'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-29T00:47:22+00:00">Aug 29, 2012 12:47 AM UTC</time><a class="anchor" name="1346201242">&nbsp;</a></div><pre>Joe,
+
+Can you take a look at Globus job.16217989948315654291.4042084127602642604 / PBS job 13278732?  It appears to have a state synchronization issue.
+
+From the PBS log (/opt/torque/server_logs/20120825)&#58;
+
+08/25/2012 13&#58;46&#58;59;0008;PBS_Server;Job;13278732.admin.atlas-swt2.org;Job Run at request of maui@....
+08/25/2012 13&#58;46&#58;59;0002;PBS_Server;Job;13278732.admin.atlas-swt2.org;child reported success for job after 0 seconds (dest=compute-14-30), rc=0
+
+Maybe some issue with jobs that start / stop immediately?
+
+Brian
+
+-- by Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='12486#1346197808'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-28T23:50:08+00:00">Aug 28, 2012 11:50 PM UTC</time> by <b>bester@....</b><a class="anchor" name="1346197808">&nbsp;</a></div><pre>I&#39;ve not been able to see any more instances of jobs that are stuck in the account I have access to, so I&#39;ve not made any more progress on this.
+
+Joe
+
+On Aug 28, 2012, at 3&#58;59 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1346183991'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-28T19:59:51+00:00">Aug 28, 2012 07:59 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1346183991">&nbsp;</a></div><pre>Hi Joe,
+
+Do you have any news from your investigations?
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='12486#1345853925'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-25T00:18:45+00:00">Aug 25, 2012 12:18 AM UTC</time><a class="anchor" name="1345853925">&nbsp;</a></div><pre>Hi,
+
+I have put the new globus-job-manager in place in anticipation of the monthly changeover.  I will be on vacation until after Labor Day, so I am adding Mark Sosebee to the ticket to handle issues at our end.
+
+Patrick
+
+-- by Patrick McGuigan</pre></div><div class='update_description'><i onclick="document.location='12486#1345646418'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-22T14:40:18+00:00">Aug 22, 2012 02:40 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1345646418">&nbsp;</a></div><pre>That patch is still in testing. Patrick--have you had a chance to try it out?
+
+Joe, any new news for us?
+
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='12486#1345642902'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-22T13:41:42+00:00">Aug 22, 2012 01:41 PM UTC</time><a class="anchor" name="1345642902">&nbsp;</a></div><pre>Hello all,
+
+Did this make it into the last release, or is it still being tested? Where are we on this.
+
+Thank you,
+Elizabeth
+
+-- by Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='12486#1345142700'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-16T18:45:00+00:00">Aug 16, 2012 06:45 PM UTC</time><a class="anchor" name="1345142700">&nbsp;</a></div><pre>I&#39;ll watch for updates on this.
+
+Thank you,
+Elizabeth
+
+-- by Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='12486#1345059548'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-15T19:39:08+00:00">Aug 15, 2012 07:39 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1345059548">&nbsp;</a></div><pre>Hi all,
+I&#39;ve built a new globus-gram-job-manager package with the patch; it is now in the osg-testing repositories as globus-gram-job-manager-13.45-1.2.osg.el[56].
+&#34;yum upgrade globus-gram-job-manager --enablerepo=osg-testing&#34;
+should pick up the new version.
+Let us know how it goes.
+Thanks,
+-mat</pre></div><div class='update_description'><i onclick="document.location='12486#1345051021'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-15T17:17:01+00:00">Aug 15, 2012 05:17 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1345051021">&nbsp;</a></div><pre>Thanks Joe!
+
+I&#39;ve asked Mat Selmeci to patch GRAM and share it when it&#39;s ready. Moreover, I&#39;m adding him to this ticket and he&#39;ll watch for other patches coming along and will share them for testing when they are ready.
+
+Thanks,
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='12486#1345045274'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-15T15:41:14+00:00">Aug 15, 2012 03:41 PM UTC</time> by <b>bester@....</b><a class="anchor" name="1345045274">&nbsp;</a></div><pre>I&#39;ve identified one issue (related to the older jobs staying in GRAM when the job manager is restarted). This issue is in the globus jira <a href='http&#58;//jira.globus.org/browse/GT-268' target='_blank' rel='nofollow'>http&#58;//jira.globus.org/browse/GT-268</a> with a patch.
+
+I&#39;ve analyzed the jobs in mismatched states for the usatlas1 account. It looks to me all of those are covered by the case fixed by the patch because they reached a terminal state in the SEG log file that would be skipped.
+
+There were some jobs in usatlas1&#39;s account that were confused from Aug 10 when the SEG was stopped and restarted; however, when I accidentally crashed the job manager during debugging those were resolved on restart. I&#39;m still unsure about the cause of those remaining in the PENDING state and continue to investigate.
+
+Joe
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344917828'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-14T04:17:08+00:00">Aug 14, 2012 04:17 AM UTC</time> by <b>Patrick McGuigan</b><a class="anchor" name="1344917828">&nbsp;</a></div><pre>HI Jaime,
+
+I went through the most recent jobs that show a disagreeing state between PBS and the job
+state reported in the gram state files and most of the jobs appear to be due to the SEG
+missing events.   But your observation makes me curious about some things.
+
+Last Friday I had restarted the SEG daemon several times in an attempt to turn on more
+debugging.  Ultimately I was not able to do so, but I noticed that a couple of jobs
+finished during the period I was busy with restarts.  Looking through the SEG logs
+indicates that on restarts the events were properly seen, but the gram_state still show
+the job as active even though the seg saw the completion event.
+
+Should a restart of the SEG module that picks up an extra event cause the jm to update the
+gram state file?
+
+Additionaly,
+
+Is it posible to run two independent SEG modules at the same time.  One that uses the
+existing configuration to allow jobs to run, and one that is configured for debugging
+purposes?  What is correct way to turn on trace level information in the SEG?
+
+Regards,
+
+Patrick
+
+On 08/13/2012 11&#58;11 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344916388'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-14T03:53:08+00:00">Aug 14, 2012 03:53 AM UTC</time> by <b>Patrick McGuigan</b><a class="anchor" name="1344916388">&nbsp;</a></div><pre>Your key has been installed for usatlas1@....
+
+On 08/13/2012 07&#58;41 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344912788'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-14T02:53:08+00:00">Aug 14, 2012 02:53 AM UTC</time> by <b>Patrick McGuigan</b><a class="anchor" name="1344912788">&nbsp;</a></div><pre>Hi Brian,
+
+My apologies, I should have more explicit that the number of mismatches in state also
+included the old gram state files.  I went back through and discounted any job submitted
+on or before Aug 1.  There are ~18 jobs with a mismatch in gram state and PBS state.  This
+is working out to be about 1 lost job per day.
+
+I have not enabled the osg-cleanup cron&#39;s yet on the system.  I am not enamored of
+cleaning up the gass caches over NFS mounts.  I need to work out some additional
+information since 14 days might be enough time for the other VO&#39;s whose jobs can languish
+waiting for slot to open.
+
+We are using Torque v2.3.6.
+
+I will follow up privately on a patch set for adding PBS states to gram-state.
+
+Patrick
+
+On 08/12/2012 07&#58;02 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344874271'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-13T16:11:11+00:00">Aug 13, 2012 04:11 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1344874271">&nbsp;</a></div><pre>The SEG missing an event is not the only issue. In a previous round of stuck jobs a week and a half ago, I saw jobs where the SEG log reported the job as complete, but the globus-job-manager still reported the job as ACTIVE.
+
+-- Jaime Frey
+
+On Aug 12, 2012, at 7&#58;02 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344861668'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-13T12:41:08+00:00">Aug 13, 2012 12:41 PM UTC</time> by <b>bester@....</b><a class="anchor" name="1344861668">&nbsp;</a></div><pre>My key is
+
+ssh-dss AAAAB3NzaC1kc3MAAACBAMRA0XWH9uMHu2P6uA0sGEGqLZDQtXiSUN27ufXDXHxv1BzJTooznwWZNyaqe1JTB23NTRiMZeKpjZ9VasMFGraS29uOJVJFcabvpsGci0EVke8iNq2+2ij6viJZLXUrIW92un4lHtNCFa33iGPRU9R6b2yHDqwNuDa3OY04hq+pAAAAFQDt4gzSd4oxaKj7KHTIsROSNaohFQAAAIALooU1+rdXc01JmcZi41e5T69n7Kun8remd3tdu/okmDjENgiWzgKIqcAggGxQyuUsXQ2IP8QVWarqsDRe3T5B90qlAfRzFlxcJhIVOO+Kmc1r8M9It1SZ5Mkg8q2PMpvZtrlWISQxlzpyb+5Kf+F99g/dx13aoXTaSOpXf4CJ9QAAAIBRj2v/VcdM6CK/6f+t3fmz6ClXVzxAUizheaLJOJILJkHm4fey4Fzzvpyyo87fAZpn2VVempPL0JWKO0oLi9pADx1Cz7CzYoC9HVg/h5pYl+1vml5YlYMwfWGhfyhGBqPsdTGrvh5NYEqYVkD6h17GYy5N9uln01F33NfA46TdWw== bester@....l
+
+On Aug 10, 2012, at 6&#58;14 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344816134'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-13T00:02:14+00:00">Aug 13, 2012 12:02 AM UTC</time><a class="anchor" name="1344816134">&nbsp;</a></div><pre>Hi Patrick,
+
+I haven&#39;t had the time to do more than skim your newest findings, but I wanted to point out that you need to be careful to filter out the very old state files (those had been manually removed from Condor-G at BNL, and can safely be ignored).  There were about ~2500 of those things, IIRC.  I just filtered them from the gram_state output using a simple grep.  Eventually, the GRAM cleanup cronjob will handle those.
+
+I think knowing the SEG missed an event is very important.  It&#39;s easier to fix those bugs than if the g-j-m lost it.
+
+What version of torque?  I&#39;ve heard several reports of issues with various grid software and PBS/torque 4.0.
+
+Brian
+
+PS - can you give a patch for gram_state.py?  It only has Condor support, and I&#39;d love to include PBS support in the standard RPM...
+
+-- by Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='12486#1344646030'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-11T00:47:10+00:00">Aug 11, 2012 12:47 AM UTC</time> by <b>Patrick McGuigan</b><a class="anchor" name="1344646030">&nbsp;</a></div><pre>Hi,
+
+This will get into some detail, but I have specific example of job whose status is seemingly lost because the SEG did not track events.
+
+Some quick background&#58;
+I wrote my own version of the gram_state.py which also parses the output of qstat so that I can compare the differences in state as seen in the gram state file and Torque. A mismatch is defined when a job has a gram state of ACTIVE but the torque job is not running OR a job has a gram state of PENDING and the torque job is not in a queued state.
+
+At the time of running, there were 3,343 jobs in our Torque system from the usatlas1 account.  There were 6,111 gram state files in the pbs area for the user.  My script reports state mismatches for 2,814 jobs.  All but one of the mismatches can be attributed to the fact that the PBS job finished some time ago and is no longer in the system.
+
+I took the output of mismatches and found the most recent job.  The local ID is 13001090.admin.atlas-swt2.org and the job left the Torque system about 30 minutes ago.  The torque server log shows&#58;
+
+[root@gk01 server_logs]# grep 13001090.admin.atlas-swt2.org 20120810
+08/10/2012 10&#58;55&#58;49;0100;PBS_Server;Job;13001090.admin.atlas-swt2.org;enqueuing into atlas_analy_q, state 1 hop 1
+08/10/2012 10&#58;55&#58;49;0008;PBS_Server;Job;13001090.admin.atlas-swt2.org;Job Queued at request of usatlas1@....l, owner = usatlas1@....l, job name = STDIN, queue = atlas_analy_q
+08/10/2012 11&#58;07&#58;59;0008;PBS_Server;Job;13001090.admin.atlas-swt2.org;Job Modified at request of maui@....
+08/10/2012 11&#58;07&#58;59;0008;PBS_Server;Job;13001090.admin.atlas-swt2.org;Job Run at request of maui@....
+08/10/2012 11&#58;07&#58;59;0002;PBS_Server;Job;13001090.admin.atlas-swt2.org;child reported success for job after 0 seconds (dest=compute-12-22), rc=0
+08/10/2012 11&#58;07&#58;59;0008;PBS_Server;Job;13001090.admin.atlas-swt2.org;Job Modified at request of maui@....
+08/10/2012 18&#58;33&#58;11;0010;PBS_Server;Job;13001090.admin.atlas-swt2.org;Exit_status=0 resources_used.cput=07&#58;16&#58;48 resources_used.mem=1000096kb resources_used.vmem=1474744kb resources_used.walltime=07&#58;25&#58;12
+08/10/2012 18&#58;38&#58;11;0100;PBS_Server;Job;13001090.admin.atlas-swt2.org;dequeuing from atlas_analy_q, state COMPLETE
+
+The SEG log shows&#58;
+[root@gk01 server_logs]# grep 13001090.admin.atlas-swt2.org /var/lib/globus/globus-seg-pbs/20120810
+001;1344614149;13001090.admin.atlas-swt2.org;1;0
+001;1344614879;13001090.admin.atlas-swt2.org;2;0
+
+I have not looked at the SEG code but I am assuming the lines represent the initial queue event and the activation event.
+The gram state file for the job shows that the field for seg_last_timestamp is 1344614879.
+I am not sure why but the last update to the gram state file occurred at 15&#58;55 today.
+[root@gk01 pbs]# pwd
+/var/lib/globus/gram_job_state/usatlas1/873ff05/pbs
+[root@gk01 pbs]# ls -l job.16217748007483155161.4042084127602693783
+-rw-r--r-- 1 usatlas1 usatlas 2652 Aug 10 15&#58;55 job.16217748007483155161.4042084127602693783
+
+The jobmanager logging shows&#58;
+<div id='show_1863832752' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1863832752'>
+[root@gk01 pbs]# grep 16217748007483155161/4042084127602693783 /var/log/globus/gram_usatlas1.log
+ts=2012-08-10T15&#58;56&#58;07.387375Z id=5116 event=gram.job_ref_swap_out.info level=WARN gramid=/16217748007483155161/4042084127602693783/ msg=&#34;No new references to job, writing state and freeing data&#34;
+ts=2012-08-10T16&#58;08&#58;14.566602Z id=5116 event=gram.job_ref_swap_out.info level=WARN gramid=/16217748007483155161/4042084127602693783/ msg=&#34;No new references to job, writing state and freeing data&#34;
+ts=2012-08-10T20&#58;55&#58;53.510448Z id=5116 event=gram.job_ref_swap_out.info level=WARN gramid=/16217748007483155161/4042084127602693783/ msg=&#34;No new references to job, writing state and freeing data&#34;
+
+I don&#39;t know of any additional sources of information, but if someone can suggest a file to look at, I will be happy to parse through it.
+
+Patrick
+
+On 08/10/2012 05&#58;14 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1863832752').click(function() {
+            $('#detail_1863832752').slideDown("normal");
+            $('#show_1863832752').hide();
+            $('#hide_1863832752').show();
+        });
+        $('#hide_1863832752').click(function() {
+            $('#detail_1863832752').slideUp();
+            $('#hide_1863832752').hide();
+            $('#show_1863832752').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='12486#1344636850'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-10T22:14:10+00:00">Aug 10, 2012 10:14 PM UTC</time> by <b>Patrick McGuigan</b><a class="anchor" name="1344636850">&nbsp;</a></div><pre>Hi,
+
+If Joe can provide me an SSH key, I will be happy to add him to the usatlas1 account on
+our gatekeeper.
+
+Patrick
+
+On 08/10/2012 04&#58;21 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344633696'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-10T21:21:36+00:00">Aug 10, 2012 09:21 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1344633696">&nbsp;</a></div><pre>Hi everyone,
+
+I&#39;ve added Joe Bester to the ticket. Joe&#39;s the primary GRAM developer from the Globus Project.
+
+Joe asked me&#58;
+
+<font color='#7F7E6F'>&#62; Can you provide access to one of the gram systems so I can poke at the logs and job state files to see what&#39;s going on?</font>
+
+Is this possible?
+
+Thanks,
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='12486#1344539750'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-09T19:15:50+00:00">Aug 9, 2012 07:15 PM UTC</time><a class="anchor" name="1344539750">&nbsp;</a></div><pre>I just tweaked the gram-state script to match the latest Globus version (Alain - we need to fix it in the RPM too).
+
+The on disk state currently looks largely correct&#58;
+
+[usatlas1@gk01 ~]$ qstat | grep &#39; R &#39; | grep usatlas1 | wc -l
+2567
+[usatlas1@gk01 ~]$ ./gram-state -g /var/lib/globus/gram_job_state/usatlas1/873ff05/pbs/ | grep ACTIVE | grep 2012-08-09 | wc -l
+2562
+[usatlas1@gk01 ~]$ date
+Thu Aug  9 14&#58;14&#58;58 CDT 2012
+
+(I expect the small amount of difference between Globus and PBS as it takes a few seconds to synchronize)
+
+-- by Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='12486#1344536948'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-09T18:29:08+00:00">Aug 9, 2012 06:29 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1344536948">&nbsp;</a></div><pre>Scratch my report about the glideinWMS CE. That&#39;s a bug that&#39;s already been fixed.
+
+-- Jaime
+
+On Aug 9, 2012, at 11&#58;40 AM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344530427'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-09T16:40:27+00:00">Aug 9, 2012 04:40 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1344530427">&nbsp;</a></div><pre>Some extra information from Jaime this morning&#58;
+
+<font color='#7F7E6F'>&#62; From&#58; Jaime Frey &#60;jfrey@....&#62;</font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; Serious GRAM 5 problem affecting OSG-ATLAS site</font>
+<font color='#7F7E6F'>&#62; Date&#58; August 9, 2012 9&#58;31&#58;29 AM PDT</font>
+<font color='#7F7E6F'>&#62; To&#58; Alain Roy &#60;roy@....&#62;</font>
+<font color='#7F7E6F'>&#62; Cc&#58; Joseph Bester &#60;bester@....&#62;, Stuart Martin &#60;smartin@....&#62;,</font>
+<font color='#7F7E6F'>&#62;     Steve Tuecke &#60;tuecke@....&#62;, Brian Bockelman &#60;bbockelm@....&#62;,</font>
+<font color='#7F7E6F'>&#62;     John Hover &#60;jhover@....&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Some additional information I sent out this morning&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I looked at a glideinWMS CE yesterday that was having the same problem</font>
+<font color='#7F7E6F'>&#62; as SWT2_CPB. Many jobs had completed in the local batch system (Condor</font>
+<font color='#7F7E6F'>&#62; in this case), but the globus-job-manager reported them as still</font>
+<font color='#7F7E6F'>&#62; running. I strace&#39;d the globus-job-manager and saw it repeatedly</font>
+<font color='#7F7E6F'>&#62; opening, fstat&#39;ing, and closing the Condor job logs. The logs</font>
+<font color='#7F7E6F'>&#62; indicated the jobs had completed, but the globus-job-manager didn&#39;t</font>
+<font color='#7F7E6F'>&#62; read anything from them. I added a couple newlines to the end of some</font>
+<font color='#7F7E6F'>&#62; of the log files. The next time the globus-job-manager opened those</font>
+<font color='#7F7E6F'>&#62; files, it read them and noticed that the associated jobs had</font>
+<font color='#7F7E6F'>&#62; completed.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; It appears there&#39;s some codepath in the globus-job-manager where it</font>
+<font color='#7F7E6F'>&#62; doesn&#39;t see or doesn&#39;t react to the completion event in a job log, but</font>
+<font color='#7F7E6F'>&#62; remembers the file size with that event. Then, on subsequent checks of</font>
+<font color='#7F7E6F'>&#62; the file, it sees that the size is unchanged and assumes there&#39;s</font>
+<font color='#7F7E6F'>&#62; nothing new to read.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; One possibility is that it reads the file, then checks the file&#39;s</font>
+<font color='#7F7E6F'>&#62; size, possibly with a delay in between during which the completion</font>
+<font color='#7F7E6F'>&#62; event is written.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; -- Jaime Frey</font></pre></div><div class='update_description'><i onclick="document.location='12486#1344529547'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-09T16:25:47+00:00">Aug 9, 2012 04:25 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1344529547">&nbsp;</a></div><pre>I&#39;ve asked the Globus team to help up with debugging the underlying cause of this problem. My email to them was outside of this ticket, so I&#39;m copying it below.
+
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....
+
+<font color='#7F7E6F'>&#62; From&#58; Alain Roy &#60;roy@....&#62;</font>
+<font color='#7F7E6F'>&#62; Subject&#58; Serious GRAM 5 problem affecting OSG-ATLAS site</font>
+<font color='#7F7E6F'>&#62; Date&#58; August 9, 2012 9&#58;23&#58;45 AM PDT</font>
+<font color='#7F7E6F'>&#62; To&#58; Joseph Bester &#60;bester@....&#62;, Stuart Martin &#60;smartin@....&#62;,</font>
+<font color='#7F7E6F'>&#62;     Steve Tuecke &#60;tuecke@....&#62;</font>
+<font color='#7F7E6F'>&#62; Cc&#58; Brian Bockelman &#60;bbockelm@....&#62;, Jaime Frey &#60;jfrey@....&#62;,</font>
+<font color='#7F7E6F'>&#62;     John Hover &#60;jhover@....&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Hi Joe, Stu, Steve,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We&#39;ve had a GRAM 5 problem recently with an OSG site, and it concerns</font>
+<font color='#7F7E6F'>&#62; the ATLAS collaboration enough that they are recommending that sites</font>
+<font color='#7F7E6F'>&#62; do not upgrade until it has been addressed.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We&#39;ve had a ticket out of it, and it can be found at&#58;</font>
+<font color='#7F7E6F'>&#62; <a href='https&#58;//ticket.grid.iu.edu/goc/12486' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/12486</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; The gist of the problem is that GRAM appears not be getting updates</font>
+<font color='#7F7E6F'>&#62; for some jobs at the site. That is, the jobs start and run to</font>
+<font color='#7F7E6F'>&#62; completion, but GRAM believes the jobs are PENDING. (See one note from</font>
+<font color='#7F7E6F'>&#62; Jaime about this below). Although we are seeing the effects in</font>
+<font color='#7F7E6F'>&#62; Condor-G, we believe that it&#39;s a GRAM problem and not a Condor-G</font>
+<font color='#7F7E6F'>&#62; problem.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ATLAS submits lots of jobs to sites, but it more or less keeps a</font>
+<font color='#7F7E6F'>&#62; certain pressure on. So if it believes jobs are still idle, new jobs</font>
+<font color='#7F7E6F'>&#62; aren&#39;t submitted and progress grinds to a halt.</font>
+<div id='show_1910802505' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1910802505'><font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Brian&#39;s suspicion is that a solution to GT-89 would help address the</font>
+<font color='#7F7E6F'>&#62; symptom here, though it may not address the underlying cause.</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//jira.globus.org/browse/GT-89' target='_blank' rel='nofollow'>http&#58;//jira.globus.org/browse/GT-89</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; At this point, we&#39;d like your help in debugging this. It&#39;s a high</font>
+<font color='#7F7E6F'>&#62; priority problem for us. What can we do to help you out and expedite</font>
+<font color='#7F7E6F'>&#62; the debugging? Should I add one or more of you to the OSG ticket?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks so much!</font>
+<font color='#7F7E6F'>&#62; -alain</font>
+</div><script type='text/javascript'>
+        $('#show_1910802505').click(function() {
+            $('#detail_1910802505').slideDown("normal");
+            $('#show_1910802505').hide();
+            $('#hide_1910802505').show();
+        });
+        $('#hide_1910802505').click(function() {
+            $('#detail_1910802505').slideUp();
+            $('#hide_1910802505').hide();
+            $('#show_1910802505').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='12486#1344528863'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-09T16:14:23+00:00">Aug 9, 2012 04:14 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1344528863">&nbsp;</a></div><pre>I&#39;m adding Jaime Frey to this ticket. Jaime, this ticket is for the discussion we&#39;ve been having about the Condor-G/GRAM problems that have been having at the ATLAS SWT2 site.
+
+-alain</pre></div><div class='update_description'><i onclick="document.location='12486#1344528708'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-09T16:11:48+00:00">Aug 9, 2012 04:11 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1344528708">&nbsp;</a></div><pre>Elizabeth, I believe we need to keep this open until we solve the underlying problem--this was just a temporary workaround.
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='12486#1344519952'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-09T13:45:52+00:00">Aug 9, 2012 01:45 PM UTC</time><a class="anchor" name="1344519952">&nbsp;</a></div><pre>I&#39;ll leave this open for a little longer for tracking, so please do tell us if the symptoms reappear.
+
+Thank you,
+Elizabeth
+
+-- by Elizabeth Prout</pre></div><div class='update_description'><i onclick="document.location='12486#1344469436'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-08T23:43:56+00:00">Aug 8, 2012 11:43 PM UTC</time><a class="anchor" name="1344469436">&nbsp;</a></div><pre>To update the ticket&#58;
+
+A restart of the globus-job-manager on the SWT2 CE appears to have cleared up the issue for now.  BNL is slowly returning the site to &#34;normal submission&#34; to see if the symptoms reappear.
+
+I suspect this issue may have been avoidable if GT-89 (<a href='http&#58;//jira.globus.org/browse/GT-89' target='_blank' rel='nofollow'>http&#58;//jira.globus.org/browse/GT-89</a>) were implemented; I&#39;ve pinged the Globus team as to its status.
+
+(PS - Doug, your message did not come through to the ticket system.)
+
+-- by Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='12486#1344447871'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-08T17:44:31+00:00">Aug 8, 2012 05:44 PM UTC</time><a class="anchor" name="1344447871">&nbsp;</a></div><pre>-- by Douglas Strain</pre></div><div class='update_description'><i onclick="document.location='12486#1344443557'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-08T16:32:37+00:00">Aug 8, 2012 04:32 PM UTC</time><a class="anchor" name="1344443557">&nbsp;</a></div><pre>Here are the aforementioned threads&#58;
+
+Hi Brian, Jaime,
+
+It looks like we&#39;re definitely seeing behavior at SWT2 after an OSG 3.0
+upgrade (similar to what we saw at MWT2). I&#39;ve restarted Condor,
+rebooted the system, and removed all pending jobs several times. And we
+have adjusted Condor-G/APF to submit as gt5 now (but the problem
+appeared even when we were submitting as gt2).
+
+Jobs get accepted by the gatekeeper, enter pending state
+(GlobusStatus=1) and never go away. The number running appears static as
+well. I believe they are using PBS rather than Condor, so I wonder
+whether that is an issue.
+
+When I purge pending jobs and resubmit, the site reports that those jobs
+go ahead and run.
+
+I emailed with Sarah and David at MWT2 and they report that they no
+longer need to run Brian&#39;s script fix, nor kill jobmanagers
+periodically. They haven&#39;t seen any globus-url-copy hangs since we fixed
+the GLOBUS_PORT_RANGE issue on the two submit hosts.
+
+Please let us know what you might need to sort this out (login, logs,
+etc). I&#39;ve sent out a message suggesting that Tier 2s not upgrade until
+we can trust batch&#60;-&#62;GT5&#60;-&#62;Condor-G communication and updates.
+
+Should they try reboots on their end? Or would you like to try to see it
+while it is happening?
+
+Their site is essentially down until we can solve this.
+
+Cheers,
+
+--john
+<div id='show_301063636' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_301063636'>
+On 08/01/2012 02&#58;11 PM, John Hover wrote&#58;
+Hi Mark,
+
+This is important info.
+
+First, the Condor G configuration is different for GT2 versus GT5. We&#39;ll
+update the definitions for *SWT2_CPB.
+
+Secondly, we&#39;ve seen similar glitches with another GT5 site (MWT2).
+There are definitely problems with GT5.
+
+The OSG software team is aware of the problem, though. (CCing Brian )
+
+Brian, does Mark need that script that Sarah is running at MWT2? Can you
+let us know the status on the GT5 issues? Should be send out a notice
+warning our sites not to upgrade?
+
+--john
+
+On 08/01/2012 01&#58;55 PM, Mark Sosebee wrote&#58;
+Hi John,
+Hi John,
+
+We upgraded to OSG 3.x week before last.  I think the gatekeeper
+has been working o.k. since then.
+
+I tried the simple/standard tests against the gatekeeper
+(authentication, globus-job-run to the batch system) and these worked.
+
+-- Mark
+
+On 08/01/2012 12&#58;42 PM, John Hover wrote&#58;
+Hi Mark,
+
+I see 100 and 80 pending jobs from our end. 30 minutes ago I removed
+all pending and let Condor-G resubmit. Those resubmissions went
+through, and I now see them pending.
+
+Can you remind us what OSG version/gatekeeper version you&#39;re running?
+
+--john
+
+On 08/01/2012 01&#58;36 PM, Mark Sosebee wrote&#58;
+Hi Jose, John,
+
+From what we can see we haven&#39;t been receiving pilots at the two
+SWT2_CPB sites (analy & prod) recently.  There was a short burst that
+came through ~30 minutes ago, and they picked up some activated jobs,
+but since then the rate has gone back to zero.
+
+We&#39;ll keep checking for problems our this end.  Can you tell if
+there&#39;s an issue on the submission end?
+
+Thanks.
+
+Cheers,
+-- Mark
+
+-- by Elizabeth Prout
+
+</div><script type='text/javascript'>
+        $('#show_301063636').click(function() {
+            $('#detail_301063636').slideDown("normal");
+            $('#show_301063636').hide();
+            $('#hide_301063636').show();
+        });
+        $('#hide_301063636').click(function() {
+            $('#detail_301063636').slideUp();
+            $('#hide_301063636').hide();
+            $('#show_301063636').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='12486#1344442413'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-08-08T16:13:33+00:00">Aug 8, 2012 04:13 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1344442413">&nbsp;</a></div><pre>[by John Hover]
+
+Hi GOC folks,
+
+Alain and Brian asked me to submit an OSG ticket to help track our troubleshooting on a OSG CE 3.X/ GT5 problem. Please create this as a ticket for the software team.
+
+The copied threads below capture some of the info. Perhaps software team members should re-post some key info on this ticket?
+
+Basic problem is that after a GT5/OSG CE 3.x upgrade, our SWT2_CPB site ran OK for a week or so. Then, Condor-G job submissions begain failing to update from PENDING to RUNNING state, even though the jobs were being picked up and run.
+
+Current status is that (according to Jaime Frey) killing the globus-jobmanager on the gatekeeper has restored functionality. But the original problem that caused it to begin failing to report when jobs left Pending and became Running is still unknown.
+
+The wider picture is that ATLAS has upgraded to OSG CE 3.x/GT5 at three sites. At two of the sites, temporary network instabilities resulted in persistent glitches and communication failures between GT5 and Condor-G. In the process, we learned that job state update handling was part of the problem there as well.
+
+Although in each case there were distinct issues, the fact that 3 sites upgraded and 3 sites experienced major problems is disturbing. It is looking like the GT5/Condor-G interactions are far less fault-tolerant than they were with GT2, and I have site admins asking about downgrading to pacman-version GT2. I&#39;m worried that GT5 needs more real-world distributed testing before wider usage. We (ATLAS) have asked our Tier 2 and 3s to hold off upgrading.
+
+Cheers,
+
+--john</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F12486">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 12486});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

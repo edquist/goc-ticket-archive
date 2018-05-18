@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[21482] Problems with Hadoop FUSE mount OSG 3.2 client to OSG 3.1 namenode</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=21482" method="post">
+<div class="page-header">
+    <h3><span class="muted">21482</span> / Problems with Hadoop FUSE mount OSG 3.2 client to OSG 3.1 namenode</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Doug Johnson</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Doug Johnson</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-07-08</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Carl Edquist <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=21482", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/21482?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/21482?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Problems%20with%20Hadoop%20FUSE%20mount%20OSG%203.2%20client%20to%20OSG%203.1%20namenode%20ISSUE%3D21482%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='21482#1404405214'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-03T16:33:34+00:00">Jul 3, 2014 04:33 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1404405214">&nbsp;</a></div><pre>Hi Doug,
+
+Under&#58; <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHadoop200SE#Install_OSG_Repositories' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHadoop200SE#Install_OSG_Repositories</a>
+
+I&#39;ve added a note to both the InstallHadoop200SE page specifically and also to the embedded YumRepositories section (that appears in many documents) attempting to state the issue more generally ... Hopefully that will help somewhat to avoid this surprise issue...
+
+Thanks!
+Carl</pre></div><div class='update_description'><i onclick="document.location='21482#1404252306'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-01T22:05:06+00:00">Jul 1, 2014 10:05 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1404252306">&nbsp;</a></div><pre>I see, yes, that &#34;Install OSG Repositories&#34; section with the table is embedded in a lot of documents.  I can add a note there also warning that some software may not inter-operate across different OSG series (ie 3.1 &#60;-&#62; 3.2) ... Definitely upgrading to a new OSG series is more than just a simple update.
+
+But it also sounds like an issue specific to Hadoop, or, only some specific packages have compatibility issues between series...  Probably each one that is known to have issues could use a note mentioning the problem.  Off hand I don&#39;t know what packages other than hadoop have issues between 3.1 & 3.2 ...
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='21482#1404250811'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-01T21:40:11+00:00">Jul 1, 2014 09:40 PM UTC</time> by <b>doug johnson</b><a class="anchor" name="1404250811">&nbsp;</a></div><pre>Hi Carl,
+
+I was using&#58;
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHadoop200SE' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHadoop200SE</a>
+
+But I think the problem is much worse. In almost every piece of
+documentation there is the matrix (table) of choices for the OSG repo
+rpm. SL5 versus SL6 and OSG 3.1 versus OSG 3.2. I personally think the
+warning should be in all of these documents. Someone could be updating
+or installing a gridftp server and not understand that if they use OSG
+3.2 on an OSG 3.1 system, it will not work.
+
+Right now we are just warning all the USCMS Tier 3 admins to be careful
+about moving to OSG 3.2 and to think of it as a major upgrade and not a
+simple update.
+
+Thank you,
+doug
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21482#1404246546'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-01T20:29:06+00:00">Jul 1, 2014 08:29 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1404246546">&nbsp;</a></div><pre>Doug, thanks for the update, glad to hear you got it working!
+
+Which Hadoop document were you following for the installation?  Let me know and I&#39;ll add a note that you can&#39;t mix Hadoop 0.2 with Hadoop 2.0.
+
+Thanks!
+Carl</pre></div><div class='update_description'><i onclick="document.location='21482#1404142792'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-30T15:39:52+00:00">Jun 30, 2014 03:39 PM UTC</time> by <b>echism</b><a class="anchor" name="1404142792">&nbsp;</a></div><pre>Hello,
+
+Is the documentation bit done?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='21482#1403717531'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-25T17:32:11+00:00">Jun 25, 2014 05:32 PM UTC</time> by <b>doug johnson</b><a class="anchor" name="1403717531">&nbsp;</a></div><pre>Greetings,
+
+Sorry for not replying sooner. The problem was mounting an OSG 3.2
+client from an OSG 3.1 namenode. Brian Bockelman answered the questions.
+
+OSG 3.1 ships with Hadoop 0.20 and OSG 3.2 ships with Hadoop 2.0. They
+are not compatible. In order to move to OSG 3.2 a site must update their
+entire Hadoop system; namenode, secondary namenode, datanodes,
+srm/gridftp nodes and all client nodes; every node the accesses
+Hadoop. In short, you can not mix Hadoop 0.2 with Hadoop 2.0.
+
+In my opinion, this should be mode clear in the documentation.
+
+Thank you,
+doug
+
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21482#1403716726'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-25T17:18:46+00:00">Jun 25, 2014 05:18 PM UTC</time><a class="anchor" name="1403716726">&nbsp;</a></div><pre>Hi Doug,
+
+Have you find time to test Carl&#39;s solution?
+
+Thanks,
+
+Edgar
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='21482#1403716630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-25T17:17:10+00:00">Jun 25, 2014 05:17 PM UTC</time><a class="anchor" name="1403716630">&nbsp;</a></div><pre>Hi Doug,
+
+Have you find time to test Carl&#39;s solution?
+
+Thanks,
+
+Edgar
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='21482#1403210767'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-19T20:46:07+00:00">Jun 19, 2014 08:46 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1403210767">&nbsp;</a></div><pre>Hi Doug,
+
+The version that osg-version returns is actually based on the &#34;osg-version&#34; rpm that&#39;s currently installed ... In general that number will only be accurate up to the last time you did a &#34;yum update&#34; on the system, or at least a yum update for all the osg packages that have changed, including osg-version (recently we started providing a list of updated packages with the release notes; eg, <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/Release3211#RPMs' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/Release3211#RPMs</a>)
+
+So, osg-version 3.1.35 is still around from when it was first installed (or last updated), and doing a &#34;yum update&#34; now that you are using the OSG 3.2 repos should in theory bring all your osg packages up-to-date, including osg-version, which would then report 3.2.11 (or whatever is current).
+
+As for the errors, I see that the versions of hadoop you have installed are up to date with OSG 3.2.11.  This version actually requires java7 (eg, java-1.7.0-openjdk), but it looks like it is using the installed java-1.6.0-sun-1.6.0.45 ... That may be causing the problems.
+
+The fix for this is usually to &#34;yum remove jdk&#34; if the jdk package is installed, and then change the defaults to use the java 1.7.0-openjdk versions with
+
+alternatives --config java
+alternatives --config javac
+
+Let me know if this addresses the problem for you...
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='21482#1403107854'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-06-18T16:10:54+00:00">Jun 18, 2014 04:10 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1403107854">&nbsp;</a></div><pre>Greetings,
+
+I am have having problems mounting Hadoop/FUSE on an SL5.10 machine
+using OSG 3.2. The Hadoop namenode is SL5 using OSG 3.1.
+
+Everything installs, but when I try to mount Hadoop I get
+errors. After installing the Hadoop client code, I ran Hadoop mount in
+debug mode. The output is at the bottom of this post.
+
+/usr/bin/hadoop-fuse-dfs /mnt/hadoop -o rw,server=hadoopnn,port=9000,rdbuffer=131072,allow_other -d
+
+While Hadoop mount is runnng&#58;
+
+{root}&#62; ls -al /mnt/
+total 2336
+?---------  ? ?    ?           ?            ? hadoop
+
+And /mnt/hadoop does not show up using df.
+
+QUESTIONS&#58;
+
+Why does osg-version return 3.1.35 when I installed
+osg-release 3.2?
+
+root}&#62; rpm -qa | grep epel-release
+epel-release-5-4.noarch
+
+{root}&#62; rpm -qa | grep osg-release
+osg-release-3.2-5.osg32.el5.noarch
+
+{root}&#62; osg-version
+OSG 3.1.35
+
+Yet, when I install hadoop, I get 3.2 versions&#58;
+
+<div id='show_409867491' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_409867491'>{root}&#62; rpm -qa | grep hadoop
+hadoop-2.0.0+545-1.cdh4.1.1.p0.20.osg32.el5.x86_64
+hadoop-client-2.0.0+545-1.cdh4.1.1.p0.20.osg32.el5.x86_64
+hadoop-libhdfs-2.0.0+545-1.cdh4.1.1.p0.20.osg32.el5.x86_64
+hadoop-hdfs-2.0.0+545-1.cdh4.1.1.p0.20.osg32.el5.x86_64
+hadoop-hdfs-fuse-2.0.0+545-1.cdh4.1.1.p0.20.osg32.el5.x86_64
+
+--------------------------------------------------------------------
+Please do not respond inline or at the bottom on the post. Both of
+those methods make it very hard to read responses. Thank you.
+--------------------------------------------------------------------
+
+Thank you,
+doug
+
+---------------------------------------------------------------------------
+
+Output from Hadoop debug&#58;
+
+/usr/lib/jvm/java-1.6.0-sun-1.6.0.45/jre/
+unique&#58; 1, opcode&#58; INIT (26), nodeid&#58; 0, insize&#58; 56
+INIT&#58; 7.10
+flags=0x0000000b
+max_readahead=0x00020000
+fuseConnectInit&#58; initialized with timer period 5, expiry period 300
+INIT&#58; 7.8
+flags=0x00000001
+max_readahead=0x00020000
+max_write=0x00020000
+unique&#58; 1, error&#58; 0 (Success), outsize&#58; 40
+unique&#58; 2, opcode&#58; STATFS (17), nodeid&#58; 1, insize&#58; 40
+hdfsGetCapacity&#58; FileSystem#getStatus error&#58;
+java.io.IOException&#58; Failed on local exception&#58; java.io.IOException&#58; Broken pipe; Host Details &#58; local host is&#58; &#34;hepitb01.colorado.edu/128.138.133.57&#34;; destination host is&#58; &#34;hadoopnn&#34;&#58;9000;
+at org.apache.hadoop.net.NetUtils.wrapException(NetUtils.java&#58;759)
+at org.apache.hadoop.ipc.Client.call(Client.java&#58;1164)
+at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java&#58;202)
+at com.sun.proxy.$Proxy9.getFsStats(Unknown Source)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;57)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;43)
+at java.lang.reflect.Method.invoke(Method.java&#58;606)
+at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java&#58;164)
+at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java&#58;83)
+at com.sun.proxy.$Proxy9.getFsStats(Unknown Source)
+at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.getStats(ClientNamenodeProtocolTranslatorPB.java&#58;480)
+at org.apache.hadoop.hdfs.DFSClient.getDiskStatus(DFSClient.java&#58;1775)
+at org.apache.hadoop.hdfs.DistributedFileSystem.getStatus(DistributedFileSystem.java&#58;577)
+at org.apache.hadoop.fs.FileSystem.getStatus(FileSystem.java&#58;2123)
+Caused by&#58; java.io.IOException&#58; Broken pipe
+at sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java&#58;47)
+at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java&#58;93)
+at sun.nio.ch.IOUtil.write(IOUtil.java&#58;65)
+at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java&#58;487)
+at org.apache.hadoop.net.SocketOutputStream$Writer.performIO(SocketOutputStream.java&#58;62)
+at org.apache.hadoop.net.SocketIOWithTimeout.doIO(SocketIOWithTimeout.java&#58;143)
+at org.apache.hadoop.net.SocketOutputStream.write(SocketOutputStream.java&#58;153)
+at org.apache.hadoop.net.SocketOutputStream.write(SocketOutputStream.java&#58;114)
+at java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java&#58;82)
+at java.io.BufferedOutputStream.flush(BufferedOutputStream.java&#58;140)
+at java.io.DataOutputStream.flush(DataOutputStream.java&#58;123)
+at org.apache.hadoop.ipc.Client$Connection.sendParam(Client.java&#58;861)
+at org.apache.hadoop.ipc.Client.call(Client.java&#58;1141)
+... 13 more
+hdfsGetUsed&#58; FileSystem#getStatus error&#58;
+java.io.IOException&#58; Failed on local exception&#58; java.io.IOException&#58; Response is null.; Host Details &#58; local host is&#58; &#34;hepitb01.colorado.edu/128.138.133.57&#34;; destination host is&#58; &#34;hadoopnn&#34;&#58;9000;
+at org.apache.hadoop.net.NetUtils.wrapException(NetUtils.java&#58;759)
+at org.apache.hadoop.ipc.Client.call(Client.java&#58;1164)
+at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java&#58;202)
+at com.sun.proxy.$Proxy9.getFsStats(Unknown Source)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;57)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;43)
+at java.lang.reflect.Method.invoke(Method.java&#58;606)
+at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java&#58;164)
+at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java&#58;83)
+at com.sun.proxy.$Proxy9.getFsStats(Unknown Source)
+at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.getStats(ClientNamenodeProtocolTranslatorPB.java&#58;480)
+at org.apache.hadoop.hdfs.DFSClient.getDiskStatus(DFSClient.java&#58;1775)
+at org.apache.hadoop.hdfs.DistributedFileSystem.getStatus(DistributedFileSystem.java&#58;577)
+at org.apache.hadoop.fs.FileSystem.getStatus(FileSystem.java&#58;2123)
+Caused by&#58; java.io.IOException&#58; Response is null.
+at org.apache.hadoop.ipc.Client$Connection.receiveResponse(Client.java&#58;885)
+at org.apache.hadoop.ipc.Client$Connection.run(Client.java&#58;813)
+unique&#58; 2, error&#58; 0 (Success), outsize&#58; 96
+unique&#58; 3, opcode&#58; GETATTR (3), nodeid&#58; 1, insize&#58; 56
+hdfsGetPathInfo(/)&#58; getFileInfo error&#58;
+java.io.IOException&#58; Failed on local exception&#58; java.io.IOException&#58; Broken pipe; Host Details &#58; local host is&#58; &#34;hepitb01.colorado.edu/128.138.133.57&#34;; destination host is&#58; &#34;hadoopnn&#34;&#58;9000;
+at org.apache.hadoop.net.NetUtils.wrapException(NetUtils.java&#58;759)
+at org.apache.hadoop.ipc.Client.call(Client.java&#58;1164)
+at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java&#58;202)
+at com.sun.proxy.$Proxy9.getFileInfo(Unknown Source)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;57)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;43)
+at java.lang.reflect.Method.invoke(Method.java&#58;606)
+at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java&#58;164)
+at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java&#58;83)
+at com.sun.proxy.$Proxy9.getFileInfo(Unknown Source)
+at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.getFileInfo(ClientNamenodeProtocolTranslatorPB.java&#58;628)
+at org.apache.hadoop.hdfs.DFSClient.getFileInfo(DFSClient.java&#58;1507)
+at org.apache.hadoop.hdfs.DistributedFileSystem.getFileStatus(DistributedFileSystem.java&#58;783)
+at org.apache.hadoop.fs.FileSystem.exists(FileSystem.java&#58;1257)
+Caused by&#58; java.io.IOException&#58; Broken pipe
+at sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java&#58;47)
+at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java&#58;93)
+at sun.nio.ch.IOUtil.write(IOUtil.java&#58;65)
+at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java&#58;487)
+at org.apache.hadoop.net.SocketOutputStream$Writer.performIO(SocketOutputStream.java&#58;62)
+at org.apache.hadoop.net.SocketIOWithTimeout.doIO(SocketIOWithTimeout.java&#58;143)
+at org.apache.hadoop.net.SocketOutputStream.write(SocketOutputStream.java&#58;153)
+at org.apache.hadoop.net.SocketOutputStream.write(SocketOutputStream.java&#58;114)
+at java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java&#58;82)
+at java.io.BufferedOutputStream.flush(BufferedOutputStream.java&#58;140)
+at java.io.DataOutputStream.flush(DataOutputStream.java&#58;123)
+at org.apache.hadoop.ipc.Client$Connection.sendParam(Client.java&#58;861)
+at org.apache.hadoop.ipc.Client.call(Client.java&#58;1141)
+... 13 more
+unique&#58; 3, error&#58; -2 (No such file or directory), outsize&#58; 16
+unique&#58; 4, opcode&#58; FORGET (2), nodeid&#58; 1, insize&#58; 48
+FORGET 1/1
+INFO /builddir/build/BUILD/hadoop-2.0.0-cdh4.1.1/src/hadoop-hdfs-project/hadoop-hdfs/src/main/native/fuse-dfs/fuse_options.c&#58;164 Adding FUSE arg /mnt/hadoop
+INFO /builddir/build/BUILD/hadoop-2.0.0-cdh4.1.1/src/hadoop-hdfs-project/hadoop-hdfs/src/main/native/fuse-dfs/fuse_options.c&#58;115 Ignoring option allow_other
+INFO /builddir/build/BUILD/hadoop-2.0.0-cdh4.1.1/src/hadoop-hdfs-project/hadoop-hdfs/src/main/native/fuse-dfs/fuse_options.c&#58;115 Ignoring option -d
+INFO /builddir/build/BUILD/hadoop-2.0.0-cdh4.1.1/src/hadoop-hdfs-project/hadoop-hdfs/src/main/native/fuse-dfs/fuse_init.c&#58;98 Mounting with options&#58; [ protected=(NULL), nn_uri=hadoopnn, nn_port=9000, debug=0, read_only=0, initchecks=0, no_permissions=0, usetrash=0, entry_timeout=60, attribute_timeout=60, rdbuffer_size=131072, direct_io=0 ]
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=johnsond/CN=655679/CN=Douglas Johnson
+
+</div><script type='text/javascript'>
+        $('#show_409867491').click(function() {
+            $('#detail_409867491').slideDown("normal");
+            $('#show_409867491').hide();
+            $('#hide_409867491').show();
+        });
+        $('#hide_409867491').click(function() {
+            $('#detail_409867491').slideUp();
+            $('#hide_409867491').hide();
+            $('#show_409867491').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F21482">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 21482});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

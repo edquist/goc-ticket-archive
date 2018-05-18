@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[36220] SAM dataset to selected Tier-3s</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=36220" method="post">
+<div class="page-header">
+    <h3><span class="muted">36220</span> / SAM dataset to selected Tier-3s</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Stephan Lammel</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Stephan Lammel</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier3</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">TX Incoming</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2018-03-28</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">USCMS_Tier3 <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Carl Edquist <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=36220", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/36220?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/36220?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20SAM%20dataset%20to%20selected%20Tier-3s%20ISSUE%3D36220%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='36220#1522264569'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-28T19:16:09+00:00">Mar 28, 2018 07:16 PM UTC</time> by <b>echism</b><a class="anchor" name="1522264569">&nbsp;</a></div><pre>I made that mistake also, I saw it confusingly listed as T3_US_MIB downthread. Sorry for that. Well, that concludes the business with the US sites, so I&#39;m unlinking OSG from this ticket and closing ours.</pre></div><div class='update_description'><i onclick="document.location='36220#1522153513'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-27T12:25:13+00:00">Mar 27, 2018 12:25 PM UTC</time><a class="anchor" name="1522153513">&nbsp;</a></div><pre>Ah, OK.  I should have read more carefully.  T3_IT_MIB is not *MIT*!  That would be an Italian T3 site and I don&#39;t see anyone from that institution included on this ticket.  Are they even an OSG site?
+
+by klannon@....</pre></div><div class='update_description'><i onclick="document.location='36220#1522152949'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-27T12:15:49+00:00">Mar 27, 2018 12:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1522152949">&nbsp;</a></div><pre>Hi, I just noticed the dataset has been copied to Brown.
+There is only one site missing the dataset&#58; T3_IT_MIB [*]
+
+Best,
+
+[*] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Data&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Data&#58</a>;&#58;Subscriptions#node=1401;node=741;node=681;node=1481;node=901;node=1501;node=1341;node=1721;node=821;node=421;reqfilter=1202591&#13;
+
+[GOC-TX Warning]
+Source GGUS Ticket ID&#58; 133055 specifies affected site name of  INFN-MIB which does not exist in OIM(resource/name) and it is ignored.
+-- by Sebastian Pulido at Tue Mar 27 12&#58;15&#58;58 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1522152052'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-27T12:00:52+00:00">Mar 27, 2018 12:00 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1522152052">&nbsp;</a></div><pre>&#13;
+
+-- by Sebastian Pulido at Tue Mar 27 11&#58;49&#58;23 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1522152005'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-27T12:00:05+00:00">Mar 27, 2018 12:00 PM UTC</time><a class="anchor" name="1522152005">&nbsp;</a></div><pre>I&#39;ve added some additional names to the ticket.  Stefan Piperov is no long associated with Brown.  I&#39;ve added the names I have from a meeting T3 support is planning to have with Brown site admins this afternoon.  (Emanuele, Sam, and John&#58; You should update Brown&#39;s contact information with the OSG.)  I would have thought that Max would be the right person to contact from MIT.  I&#39;ve added Yutaro who is listed as the site admin for the MIT T3 in CMS&#39;s Site DB.  Perhaps Yutaro will reply.
+
+by klannon@....</pre></div><div class='update_description'><i onclick="document.location='36220#1522151087'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-27T11:44:47+00:00">Mar 27, 2018 11:44 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1522151087">&nbsp;</a></div><pre>Hi MIB and Brown admins,
+Can the data management team help you out with this request?
+
+Let us know,&#13;
+
+-- by Sebastian Pulido at Tue Mar 27 11&#58;44&#58;02 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1522089070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-26T18:31:10+00:00">Mar 26, 2018 06:31 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1522089070">&nbsp;</a></div><pre>&#13;
+
+-- by Sebastian Pulido at Thu Mar 22 12&#58;06&#58;16 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1522089028'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-26T18:30:28+00:00">Mar 26, 2018 06:30 PM UTC</time> by <b>echism</b><a class="anchor" name="1522089028">&nbsp;</a></div><pre>USCMS Tier 3,
+
+Can you help us follow up with these sites?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='36220#1521660760'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-21T19:32:40+00:00">Mar 21, 2018 07:32 PM UTC</time> by <b>echism</b><a class="anchor" name="1521660760">&nbsp;</a></div><pre>MIT and Brown,
+
+Any news?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='36220#1521472577'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-19T15:16:17+00:00">Mar 19, 2018 03:16 PM UTC</time> by <b>echism</b><a class="anchor" name="1521472577">&nbsp;</a></div><pre>MIT and Brown,
+
+Do you have this dataset?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='36220#1521140250'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-15T18:57:30+00:00">Mar 15, 2018 06:57 PM UTC</time> by <b>echism</b><a class="anchor" name="1521140250">&nbsp;</a></div><pre>I&#39;ve CC&#39;d MIT and Brown</pre></div><div class='update_description'><i onclick="document.location='36220#1520942682'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-13T12:04:42+00:00">Mar 13, 2018 12:04 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1520942682">&nbsp;</a></div><pre>Hi all,
+Just to confirm the SAM dataset has been successfully transferred to T3_US_UMD.
+Can site admins at T3_US_Brown and T3_US_MIB take a look at update#20 in order to debug transfers?
+
+Thanks,&#13;
+
+-- by Sebastian Pulido at Tue Mar 13 12&#58;04&#58;28 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1520356021'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-06T17:07:01+00:00">Mar 6, 2018 05:07 PM UTC</time> by <b>echism</b><a class="anchor" name="1520356021">&nbsp;</a></div><pre>Is there any news on this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='36220#1520006264'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-02T15:57:44+00:00">Mar 2, 2018 03:57 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1520006264">&nbsp;</a></div><pre>Thanks Sebastian!   - Stephan&#13;
+
+-- by Stephan Lammel at Fri Mar 02 15&#58;57&#58;09 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1520003741'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-02T15:15:41+00:00">Mar 2, 2018 03:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1520003741">&nbsp;</a></div><pre>Hi all,
+Just to confirm that 6 out of 9 T3 sites have already the SAM dataset.
+
+@T3_IT_MIB admins&#58;
+Phedex agents are still down <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Components&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Components&#58</a>;&#58;Status
+Can you please restart them?
+
+@T3_US_UMD admins&#58;
+Thanks for upgrading the FTS client, now I see the error messages logged [*]&#58;
+TRANSFER [13] TRANSFER globus_ftp_client&#58; the server responded with an error 550 550-GlobusError&#58; v=1 c=PERMISSION_DENIED 550-GridFTP-Errno&#58; 13 550-GridFTP-Reason&#58; System error in mkdir (host=hepcms-gridftp.umd.edu, user=uscms0512, path=/cms/store/mc/SAM/GenericTTbar/AODSIM/CMSSW_9_2_6_91X_mcRun1_realistic_v2-v1/00000) 550-GridFTP-Error-String&#58; Permission denied 550 End.
+
+can you please check if permissions are correctly set?
+[*] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;ErrorInfo?tofilter=T3_US_UMD&fromfilter=&report_code=.*&xfer_code=.*&to_pfn=.*&from_pfn=.*%2Fstore%2Fmc%2FSAM%2FGenericTTbar%2FAODSIM%2FCMSSW_9_2_6_91X_mcRun1_realistic_v2-v1%2F00000%2FAE237916-5D76-E711-A48C-FA163EEEBFED.root.*&log_detail=.*&log_validate=.*&.submit=Update#
+
+@T3_US_Brown admins&#58;
+The same error message is being logged as reported before, did you have the chance to look at Carl&#39;s suggestion in update#13?
+<a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;ErrorInfo?tofilter=T3_US_Brown&fromfilter=&report_code=.*&xfer_code=.*&to_pfn=.*&from_pfn=.*%2Fstore%2Fmc%2FSAM%2FGenericTTbar%2FAODSIM%2FCMSSW_9_2_6_91X_mcRun1_realistic_v2-v1%2F00000%2FAE237916-5D76-E711-A48C-FA163EEEBFED.root.*&log_detail=.*&log_validate=.*&.submit=Update#
+
+Thanks,&#13;
+
+-- by Sebastian Pulido at Fri Mar 02 15&#58;14&#58;45 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1519765490'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-27T21:04:50+00:00">Feb 27, 2018 09:04 PM UTC</time> by <b>echism</b><a class="anchor" name="1519765490">&nbsp;</a></div><pre>Hey Carl,
+
+I understand you&#39;re working on this one. What&#39;s the latest?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='36220#1519448240'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-24T04:57:20+00:00">Feb 24, 2018 04:57 AM UTC</time><a class="anchor" name="1519448240">&nbsp;</a></div><pre>Hi Stephan,
+
+I use the fetch-crl-cron service and when I check the status it says that it&#39;s enabled, but sometimes if I don&#39;t run the job manually I get a report that the CRLs have expired. I&#39;m trying to figure out what&#39;s causing this.
+
+Thanks,
+
+Jamal
+
+by jrorie@....</pre></div><div class='update_description'><i onclick="document.location='36220#1519436049'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-24T01:34:09+00:00">Feb 24, 2018 01:34 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1519436049">&nbsp;</a></div><pre>Hallo Jamal,
+CRLs are normally updated by a cron job running in the root
+account.
+cheers,  Stephan&#13;
+
+-- by Stephan Lammel at Sat Feb 24 01&#58;33&#58;07 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1519419313'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-23T20:55:13+00:00">Feb 23, 2018 08:55 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1519419313">&nbsp;</a></div><pre>Hello Sebastian,
+
+Over the past few days I&#39;ve replaced all of the certificates and reset their ownership/permissions. I&#39;ve also manually forced the update of the CRLs on all nodes. This might be taking a sledgehammer to the problem, but there does seem to be improvement. The SE has come back, but the CE is still down. Trying to figure out exactly why that is and also see if the CRLs start expiring again. That was an issue a few months ago.
+
+Thanks,
+
+Jamal&#13;
+
+-- by Jamal Rorie at Fri Feb 23 20&#58;54&#58;55 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1519243032'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T19:57:12+00:00">Feb 21, 2018 07:57 PM UTC</time> by <b>douglas.johnson@....</b><a class="anchor" name="1519243032">&nbsp;</a></div><pre>Hi Carl,
+
+This is just a duplicate I what I sent to simply done so that it appears on
+the OSG ticket.
+
+My recollection is that  the Brown site needs fairly substantial upgrades.
+I will look further, but the last time I looked they were running OSG 3.2
+and not upgrading CRLs. I kludged the site last fall and made the
+recommendation that the site be updated. It is now supposed to be
+maintained by someone from the campus IT staff, but after repeated emails
+of offering to help upgrade and not getting any responses, I allowed the
+effort to stop.
+
+Thank you,
+doug
+
+On Wed, Feb 21, 2018 at 5&#58;54 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='36220#1519239793'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T19:03:13+00:00">Feb 21, 2018 07:03 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1519239793">&nbsp;</a></div><pre>Dear all,
+
+Carl is helping us and is working on the US_T3 transfers.
+
+Best,
+Shabnam
+
+<font color='#7F7E6F'>&#62; On Feb 21, 2018, at 10&#58;55 AM, &#60;helpdesk@....&#62; &#60;helpdesk@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Hello,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; GGUS Ticket #133055 was updated.</font>
+<font color='#7F7E6F'>&#62; You are asked for contributing to this ticket if possible.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; REFERENCE LINK&#58; <a href='https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/index.php?mode=ticket_info&ticket_id=133055</a></font>
+<font color='#7F7E6F'>&#62; SUBJECT&#58; SAM dataset to selected Tier-3s</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; =====================</font>
+<font color='#7F7E6F'>&#62; LATEST MODIFICATIONS&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; LAST MODIFIER -&#62; clundstedt@.... (via Footprints)</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; PUBLIC DIARY -&#62;</font>
+<font color='#7F7E6F'>&#62; Can Brown check the hadoop mount on their srm server?  Is the new Phedex transfer certificate mapped correctly there?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=ust3phedex/CN=657477/CN=Robot&#58; US T3 Central Phedex Service</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; When doing some zeroth order debugging I can&#39;t get the srm server to respond correctly to lcg-ls or gfal-ls.  lcg-ls returns with no output.  gfal-ls gives&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [cmsphedex@phedex ~]$ gfal-ls <a href='srm&#58;//srm.hep.brown.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/store/' target='_blank' rel='nofollow'>srm&#58;//srm.hep.brown.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/store/</a></font>
+<font color='#7F7E6F'>&#62; gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//srm.hep.brown.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on phedex.unl.edu reports Error reading token data header&#58; Connection reset by peer</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Has Brown started to migrate to no srm?  First we&#39;ll need a functioning SE to start to fix transfers.</font>
+<font color='#7F7E6F'>&#62;</font>
+<div id='show_513517541' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_513517541'><font color='#7F7E6F'>&#62; Carl</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; *********************************************************************************</font>
+<font color='#7F7E6F'>&#62; This is an automated mail. When replying don&#39;t change the subject line!</font>
+<font color='#7F7E6F'>&#62; S T R I P  P R E V I O U S  M A I L S please!!</font>
+<font color='#7F7E6F'>&#62; *********************************************************************************</font>
+
+---
+Shabnam Jabeen
+Asst. Res. Professor
+Department of Physics
+University of Maryland, College Park
+Office&#58; 3107 Physical Sciences Complex (PSC)
+Phone&#58; 301-405-2365
+<a href='http&#58;//hepcms-hn.umd.edu/' target='_blank' rel='nofollow'>http&#58;//hepcms-hn.umd.edu/</a>~jabeen/ &#60;<a href='http&#58;//hepcms-hn.umd.edu/' target='_blank' rel='nofollow'>http&#58;//hepcms-hn.umd.edu/</a>~jabeen/&#62;&#13;
+
+-- by Shabnam Jabeen at Wed Feb 21 19&#58;02&#58;21 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a>
+</div><script type='text/javascript'>
+        $('#show_513517541').click(function() {
+            $('#detail_513517541').slideDown("normal");
+            $('#show_513517541').hide();
+            $('#hide_513517541').show();
+        });
+        $('#hide_513517541').click(function() {
+            $('#detail_513517541').slideUp();
+            $('#hide_513517541').hide();
+            $('#show_513517541').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='36220#1519228453'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T15:54:13+00:00">Feb 21, 2018 03:54 PM UTC</time> by <b>clundstedt@....</b><a class="anchor" name="1519228453">&nbsp;</a></div><pre>Can Brown check the hadoop mount on their srm server?  Is the new Phedex transfer certificate mapped correctly there?
+
+subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=ust3phedex/CN=657477/CN=Robot&#58; US T3 Central Phedex Service
+
+When doing some zeroth order debugging I can&#39;t get the srm server to respond correctly to lcg-ls or gfal-ls.  lcg-ls returns with no output.  gfal-ls gives&#58;
+
+[cmsphedex@phedex ~]$ gfal-ls <a href='srm&#58;//srm.hep.brown.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/store/' target='_blank' rel='nofollow'>srm&#58;//srm.hep.brown.edu&#58;8443/srm/v2/server?SFN=/mnt/hadoop/store/</a>
+gfal-ls error&#58; 70 (Communication error on send) - srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//srm.hep.brown.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on phedex.unl.edu reports Error reading token data header&#58; Connection reset by peer
+
+Has Brown started to migrate to no srm?  First we&#39;ll need a functioning SE to start to fix transfers.
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='36220#1519224895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T14:54:55+00:00">Feb 21, 2018 02:54 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1519224895">&nbsp;</a></div><pre>Involve person(s) has been changed to stefan.piperov@....; nathan_wood@....;meenakshi.narain@....; jabeen@....;paolo.dini@....;pietro.govoni@....;sandra.malvezzi@.....
+@T3_IT_MIB admins,
+Phedex agents have been down for a while.
+<a href='https&#58;//cmsweb.cern.ch/phedex/prod/Components&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Components&#58</a>;&#58;Status
+Can you please restart them? in that way the download agent will download the SAM dataset at the site.
+
+Thanks,&#13;
+
+-- by Sebastian Pulido at Wed Feb 21 14&#58;54&#58;09 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1519224715'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T14:51:55+00:00">Feb 21, 2018 02:51 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1519224715">&nbsp;</a></div><pre>Involve person(s) has been changed to stefan.piperov@....; nathan_wood@....;meenakshi.narain@....; jabeen@.....
+@T3_US_UMD admins,
+I can see that Phedex agents are up and running, but no transfer errors are being logged, nor the transfer has started (see detail log in [1])
+That might be due to an old version of the fts-client at the site, can you please follow the instructions in [2] in order to upgrade?
+
+Thanks,
+
+[1] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;ErrorInfo?tofilter=T3_US_UMD&fromfilter=&report_code=.*&xfer_code=.*&to_pfn=.*&from_pfn=.*&log_detail=.*&log_validate=.*&.submit=Update#
+[2] <a href='https&#58;//twiki.cern.ch/twiki/bin/view/CMS/PhEDExFTS3CLIInstallation&#13' target='_blank' rel='nofollow'>https&#58;//twiki.cern.ch/twiki/bin/view/CMS/PhEDExFTS3CLIInstallation&#13</a>;
+
+-- by Sebastian Pulido at Wed Feb 21 14&#58;51&#58;18 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1519224475'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T14:47:55+00:00">Feb 21, 2018 02:47 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1519224475">&nbsp;</a></div><pre>Transfer errors logged&#58;
+
+[*] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;ErrorInfo?tofilter=T3_US_Brown&fromfilter=&report_code=.*&xfer_code=.*&to_pfn=.*&from_pfn=.*&log_detail=.*&log_validate=.*&.submit=Update#&#13;
+
+-- by Sebastian Pulido at Wed Feb 21 14&#58;47&#58;35 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1519224415'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T14:46:55+00:00">Feb 21, 2018 02:46 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1519224415">&nbsp;</a></div><pre>@T3_US_Brown admins,
+Phedex is logging the error message [*] when trying to transfers the missing files belonging the SAM dataset&#58;
+
+DESTINATION [70] srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//srm.hep.brown.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on cmsftssrv2.fnal.gov reports Error reading token data header&#58; Connection reset by peer
+
+Can you please take a look?&#13;
+
+-- by Sebastian Pulido at Wed Feb 21 14&#58;46&#58;09 UTC 2018
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a></pre></div><div class='update_description'><i onclick="document.location='36220#1519222671'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T14:17:51+00:00">Feb 21, 2018 02:17 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1519222671">&nbsp;</a></div><pre>Dear Transfer Team,
+we are commissioning a new xrootd SE-style SAM probe.
+For the Tier-3 sites that participate in the AAA federation, we
+need the SAM test dataset at the sites. Could you please
+transfer/subscribe to FacOps the 9_2_6 SAM dataset, i.e.
+/GenericTTbar/SAM-CMSSW_9_2_6_91X_mcRun1_realistic_v2-v1/AODSIM
+to T3_CH_PSI, T3_FR_IPNL, T3_IT_MIB, T3_IT_Trieste,
+T3_TW_NTU_HEP, T3_US_Baylor, T3_US_Brown,
+T3_US_Colorado, T3_US_Rice, and T3_US_UMD.
+Many Thanks,
+- Stephan
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=133055</a>
+
+[Ticket History]
+Subject&#58; SAM dataset to selected Tier-3s
+Ticket Type&#58; USER
+CC&#58; ;cms-comp-ops-site-support-team@....;cms-comp-ops-transfer-team@....
+-- by Stephan Lammel at Thu Jan 25 22&#58;06&#58;35 UTC 2018
+
+&#13;
+
+-- by Sebastian Pulido at Fri Jan 26 11&#58;57&#58;07 UTC 2018
+
+The transfer request have been created and approved&#58;
+<a href='https&#58;//cmsweb.cern.ch/phedex/prod/Request&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Request&#58</a>;&#58;View?request=1202591
+
+Best,&#13;
+
+-- by Sebastian Pulido at Fri Jan 26 12&#58;03&#58;03 UTC 2018
+
+Thanks Sebastian!
+T3_US_Baylor just notified me that their SE is
+unavailable. They had a disk/array failure and
+<div id='show_941195214' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_941195214'>in the recovery process for probably another
+week. So the transfer to them will get into hold.
+Just to let you know. Thanks,
+- Stephan&#13;
+
+-- by Stephan Lammel at Fri Jan 26 14&#58;11&#58;01 UTC 2018
+
+Hi Stephan, hi Sebastian,
+
+do we still need this ticket or can we close it?
+
+Thanks, Christoph&#13;
+
+-- by Christoph Wissing at Mon Feb 12 14&#58;13&#58;17 UTC 2018
+
+Hi Christoph, all,
+The dataset is still pending to transfer to 5 more sites.
+We are currently debugging. I believe we can leave it open a bit more.
+
+Best,&#13;
+
+-- by Sebastian Pulido at Mon Feb 12 14&#58;30&#58;12 UTC 2018
+
+Sent 1st reminder to ticket submitter (lammel@....) requesting input.&#13;
+
+-- by GGUS SYSTEM at Mon Feb 19 15&#58;30&#58;13 UTC 2018
+
+&#13;
+
+-- by Stephan Lammel at Mon Feb 19 16&#58;25&#58;54 UTC 2018
+
+Dear T3_US_Rice admins,
+Looking at why the transfer of the SAM dataset has not finished, we noticed the error messages logged [*] which suggest that certificates have expired at the site&#58;
+
+DESTINATION [70] srm-ifce err&#58; Communication error on send, err&#58; [SE][Ls][] httpg&#58;//bonner04.rice.edu&#58;8443/srm/v2/server&#58; CGSI-gSOAP running on cmsftssrv2.fnal.gov reports Error initializing context GSS Major Status&#58; Authentication Failed GSS Minor Status Error Chain&#58; globus_gsi_gssapi&#58; SSL handshake problems OpenSSL Error&#58; s3_clnt.c&#58;1178&#58; in library&#58; SSL routines, function SSL3_GET_SERVER_CERTIFICATE&#58; certificate verify failed globus_gsi_callback_module&#58; Could not verify credential globus_gsi_callback_module&#58; The certifi
+
+Can you please take a look?
+
+[*] <a href='https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58' target='_blank' rel='nofollow'>https&#58;//cmsweb.cern.ch/phedex/prod/Activity&#58</a>;&#58;ErrorInfo?tofilter=T3_US_Rice&fromfilter=T1&report_code=.*&xfer_code=.*&to_pfn=.*&from_pfn=.*&log_detail=.*&log_validate=.*&.submit=Update#
+
+<a href='srm&#58;//cmsdcadisk01.fnal.gov&#58;8443/srm/managerv2?SFN=/dcache/uscmsdisk/store/mc/SAM/GenericTTbar/AODSIM/CMSSW_9_2_6_91X_mcRun1_realistic_v2-v1/00000/A64CCCF2-5C76-E711-B359-0CC47A78A3F8.root&#13' target='_blank' rel='nofollow'>srm&#58;//cmsdcadisk01.fnal.gov&#58;8443/srm/managerv2?SFN=/dcache/uscmsdisk/store/mc/SAM/GenericTTbar/AODSIM/CMSSW_9_2_6_91X_mcRun1_realistic_v2-v1/00000/A64CCCF2-5C76-E711-B359-0CC47A78A3F8.root&#13</a>;
+
+-- by Sebastian Pulido at Wed Feb 21 14&#58;17&#58;06 UTC 2018
+</div><script type='text/javascript'>
+        $('#show_941195214').click(function() {
+            $('#detail_941195214').slideDown("normal");
+            $('#show_941195214').hide();
+            $('#hide_941195214').show();
+        });
+        $('#hide_941195214').click(function() {
+            $('#detail_941195214').slideUp();
+            $('#hide_941195214').hide();
+            $('#show_941195214').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F36220">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 36220});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

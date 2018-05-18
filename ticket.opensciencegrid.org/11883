@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[11883] globus-job-manager segfaul</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=11883" method="post">
+<div class="page-header">
+    <h3><span class="muted">11883</span> / globus-job-manager segfaul</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Marco Mambelli</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Marco Mambelli</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2012-04-04</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=11883", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/11883?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/11883?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20globus-job-manager%20segfaul%20ISSUE%3D11883%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='11883#1333997694'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-09T18:54:54+00:00">Apr 9, 2012 06:54 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1333997694">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.
+
+Please submit problems, requests, and questions at&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a>
+
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Operations Page&#58;
+<a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='11883#1333993979'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-09T17:52:59+00:00">Apr 9, 2012 05:52 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1333993979">&nbsp;</a></div><pre>Well, I&#39;m glad you resolved the issue. I feel bad that you had to do the upgrade in order to resolve it though!
+
+Thanks, and let us know if you need anything else.
+
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='11883#1333466407'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-03T15:20:07+00:00">Apr 3, 2012 03:20 PM UTC</time> by <b>donmoore@....</b><a class="anchor" name="1333466407">&nbsp;</a></div><pre>Hi...
+I didn&#39;t see a way to update the bug -on the ref page of - so
+I hope you recieve this .
+
+After -discussing with Marco- I went a head and updated the CE
+to OSG 3.0.8 . This works around the problem of the segfault.
+I know longer in a position to provide the debug info  you request.
+
+best regards,
+-/Don</pre></div><div class='update_description'><i onclick="document.location='11883#1333380706'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-02T15:31:46+00:00">Apr 2, 2012 03:31 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1333380706">&nbsp;</a></div><pre>I&#39;m sorry to be slow to respond. Last week became hectic.
+
+I&#39;ll be honest--this is a new problem for us, and I haven&#39;t seen it before. It might be hard to fix. &#58;(
+
+I tried to submit a job to your site, just to see if I could. I got errors&#58;
+
+% globus-job-run gomez.utdallas.edu /bin/hostname
+GRAM Job submission failed because the gatekeeper failed to run the job manager (error code 47)
+
+That might be the same segmentation fault you&#39;re seeing.
+
+We have a couple of ways that we could proceed, depending on your time and security policies. I can ask you a bunch of questions and have you send me files and try things out. Or you can give me a login to try things out directly. I understand that latter option may not be desirable, so don&#39;t feel any pressure to do it. But if it&#39;s an option, we can do that.
+
+A few things we can try right now&#58;
+
+1) Can you send me your globus-gatekeeper.log? Actually, I probably just need the last little bit of the file, enough to see a few errors in starting the job manager.
+
+2) Are you getting any gram job manager log files in user directories? I&#39;m wondering if the job manager is starting up and logging *something* before it dies. If so, it might give us a clue.
+
+3) Can you run the job manager by hand? It won&#39;t do much (for me it prints an error) but I wonder if it crashes immediately and we could use it to get a core file&#58;
+$VDT_LOCATION/globus/libexec/globus-job-manager
+
+4) Can you run ldd on the job manager, in case there are problems with dynamic linking that we can see?
+ldd $VDT_LOCATION/globus/libexec/globus-job-manager
+
+Thanks, and I&#39;m really sorry that this is happening to you!
+
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='11883#1332903671'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-28T03:01:11+00:00">Mar 28, 2012 03:01 AM UTC</time><a class="anchor" name="1332903671">&nbsp;</a></div><pre>Let me know what- else you need from me-
+because the I&#39;m planning to move on to OSG 3.0.8 on the CE and SE,
+
+-/Don
+
+-- by Don Moore</pre></div><div class='update_description'><i onclick="document.location='11883#1332898247'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-28T01:30:47+00:00">Mar 28, 2012 01:30 AM UTC</time><a class="anchor" name="1332898247">&nbsp;</a></div><pre>here&#39;s a count of the segfaults.
+cd /var/log/;grep globus-job-mana messages.*|grep segfault|wc
+262535 3938025 37584446
+
+the setfaults began 19mar12  -and this is the day that the yum update&#58;
+Mar 19 09&#58;58&#58;33 gomez gridinfo[11510]&#58; JMA 2012/03/19 09&#58;58&#58;33 GATEKEEPER_JM_ID 2012-03-19.09&#58;58&#58;29.0000008723.0000000000 JM exiting
+
+--Mar 19 09&#58;09&#58;42 Updated&#58; libgcc-4.1.2-52.el5.x86_64
+Mar 19 09&#58;09&#58;42 Updated&#58; hwdata-0.213.26-1.el5.noarch
+Mar 19 09&#58;09&#58;42 Updated&#58; setup-2.5.58-9.el5.noarch
+Mar 19 09&#58;09&#58;42 Updated&#58; selinux-policy-2.4.6-327.el5.noarch
+Mar 19 09&#58;09&#58;42 Updated&#58; nash-5.1.19.6-75.el5.x86_64
+Mar 19 09&#58;09&#58;42 Updated&#58; rmt-0.4b41-6.el5.x86_64
+Mar 19 09&#58;09&#58;43 Updated&#58; tzdata-2011n-2.el5.x86_64
+Mar 19 09&#58;09&#58;50 Updated&#58; glibc-common-2.5-81.x86_64
+Mar 19 09&#58;09&#58;55 Updated&#58; glibc-2.5-81.x86_64
+Mar 19 09&#58;09&#58;55 Updated&#58; libstdc++-4.1.2-52.el5.x86_64
+Mar 19 09&#58;09&#58;55 Updated&#58; krb5-libs-1.6.1-70.el5.x86_64
+Mar 19 09&#58;09&#58;56 Updated&#58; root-cint-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;09&#58;56 Updated&#58; nspr-4.8.9-1.el5_8.x86_64
+Mar 19 09&#58;09&#58;57 Updated&#58; nss-3.13.1-5.el5_8.x86_64
+Mar 19 09&#58;09&#58;57 Updated&#58; 3&#58;mktemp-1.5-24.el5.x86_64
+Mar 19 09&#58;09&#58;57 Updated&#58; openssl-0.9.8e-22.el5.x86_64
+Mar 19 09&#58;09&#58;57 Updated&#58; libxml2-2.6.26-2.1.15.el5_8.2.x86_64
+Mar 19 09&#58;10&#58;01 Updated&#58; 4&#58;perl-5.8.8-38.el5.x86_64
+Mar 19 09&#58;10&#58;01 Installed&#58; globus-common-14.5-4.el5.x86_64
+Mar 19 09&#58;10&#58;01 Updated&#58; audit-libs-1.8-2.el5.x86_64
+Mar 19 09&#58;10&#58;01 Updated&#58; openldap-2.3.43-25.el5.x86_64
+Mar 19 09&#58;10&#58;01 Updated&#58; popt-1.10.2.3-27.el5.x86_64
+Mar 19 09&#58;10&#58;02 Updated&#58; globus-gsi-openssl-error-2.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;02 Updated&#58; device-mapper-1.02.67-2.el5.x86_64
+Mar 19 09&#58;10&#58;03 Updated&#58; util-linux-2.13-0.59.el5.x86_64
+Mar 19 09&#58;10&#58;03 Updated&#58; globus-gsi-proxy-ssl-4.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;03 Updated&#58; gawk-3.1.5-15.el5.x86_64
+Mar 19 09&#58;10&#58;03 Updated&#58; libacl-2.2.39-8.el5.x86_64
+<div id='show_1546173252' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1546173252'>Mar 19 09&#58;10&#58;04 Updated&#58; 2&#58;shadow-utils-4.0.17-20.el5.x86_64
+Mar 19 09&#58;10&#58;04 Updated&#58; globus-gsi-sysconfig-5.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;04 Updated&#58; curl-7.15.5-15.el5.x86_64
+Mar 19 09&#58;10&#58;04 Updated&#58; globus-openssl-module-3.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;04 Updated&#58; globus-gsi-cert-utils-8.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;04 Updated&#58; file-4.17-21.x86_64
+Mar 19 09&#58;10&#58;05 Updated&#58; binutils-2.17.50.0.6-20.el5.x86_64
+Mar 19 09&#58;10&#58;05 Updated&#58; globus-gsi-callback-4.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;05 Updated&#58; globus-gsi-credential-5.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;05 Updated&#58; procps-3.2.7-18.el5.x86_64
+Mar 19 09&#58;10&#58;05 Updated&#58; 2&#58;tar-1.15.1-31.el5.x86_64
+Mar 19 09&#58;10&#58;05 Updated&#58; globus-gsi-proxy-core-6.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;06 Updated&#58; globus-gssapi-gsi-10.2-2.el5.x86_64
+Mar 19 09&#58;10&#58;06 Updated&#58; kpartx-0.4.7-48.el5.x86_64
+Mar 19 09&#58;10&#58;06 Updated&#58; globus-callout-2.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;06 Updated&#58; 12&#58;aspell-0.60.3-12.x86_64
+Mar 19 09&#58;10&#58;07 Updated&#58; ruby-libs-1.8.5-24.el5.x86_64
+Mar 19 09&#58;10&#58;07 Updated&#58; ruby-1.8.5-24.el5.x86_64
+Mar 19 09&#58;10&#58;07 Updated&#58; 1&#58;cups-libs-1.3.7-30.el5.x86_64
+Mar 19 09&#58;10&#58;09 Updated&#58; ghostscript-8.70-14.el5.x86_64
+Mar 19 09&#58;10&#58;11 Updated&#58; poppler-0.5.4-19.el5.x86_64
+Mar 19 09&#58;10&#58;11 Updated&#58; libgomp-4.4.6-3.el5.1.x86_64
+Mar 19 09&#58;10&#58;11 Updated&#58; mesa-libGL-6.5.1-7.10.el5.x86_64
+Mar 19 09&#58;10&#58;13 Updated&#58; device-mapper-multipath-0.4.7-48.el5.x86_64
+Mar 19 09&#58;10&#58;14 Updated&#58; nscd-2.5-81.x86_64
+Mar 19 09&#58;10&#58;14 Updated&#58; hmaccalc-0.9.6-4.el5.x86_64
+Mar 19 09&#58;10&#58;14 Updated&#58; krb5-devel-1.6.1-70.el5.x86_64
+Mar 19 09&#58;10&#58;14 Updated&#58; pciutils-3.1.7-5.el5.x86_64
+Mar 19 09&#58;10&#58;15 Updated&#58; net-tools-1.60-82.el5.x86_64
+Mar 19 09&#58;10&#58;15 Updated&#58; iptables-1.3.5-9.1.el5.x86_64
+Mar 19 09&#58;10&#58;15 Updated&#58; mesa-libGLU-6.5.1-7.10.el5.x86_64
+Mar 19 09&#58;10&#58;15 Updated&#58; globus-gss-assist-8.1-2.el5.x86_64
+Mar 19 09&#58;10&#58;15 Updated&#58; parted-1.8.1-29.el5.x86_64
+Mar 19 09&#58;10&#58;15 Updated&#58; 30&#58;bind-libs-9.3.6-20.P1.el5.x86_64
+Mar 19 09&#58;10&#58;15 Updated&#58; xmlrpc-c-1.16.24-1206.1840.4.el5.x86_64
+Mar 19 09&#58;10&#58;17 Updated&#58; libgcj-4.1.2-52.el5.x86_64
+Mar 19 09&#58;10&#58;18 Updated&#58; 1&#58;esound-0.2.36-4.x86_64
+Mar 19 09&#58;10&#58;19 Updated&#58; netpbm-10.35.58-10.el5.x86_64
+Mar 19 09&#58;10&#58;19 Installed&#58; unixODBC-libs-2.2.11-10.el5.x86_64
+Mar 19 09&#58;10&#58;19 Updated&#58; cdparanoia-libs-alpha9.8-28.x86_64
+Mar 19 09&#58;10&#58;19 Updated&#58; libXcursor-1.1.7-1.2.x86_64
+Mar 19 09&#58;10&#58;19 Updated&#58; gamin-0.1.7-10.el5.x86_64
+Mar 19 09&#58;10&#58;20 Updated&#58; php-common-5.1.6-32.el5.x86_64
+Mar 19 09&#58;10&#58;20 Updated&#58; libgfortran44-4.4.6-3.el5.1.x86_64
+Mar 19 09&#58;10&#58;20 Updated&#58; xen-libs-3.0.3-135.el5_8.2.x86_64
+Mar 19 09&#58;10&#58;20 Updated&#58; iptables-ipv6-1.3.5-9.1.el5.x86_64
+Mar 19 09&#58;10&#58;20 Updated&#58; poppler-utils-0.5.4-19.el5.x86_64
+Mar 19 09&#58;10&#58;20 Updated&#58; device-mapper-event-1.02.67-2.el5.x86_64
+Mar 19 09&#58;10&#58;21 Updated&#58; lvm2-2.02.88-7.el5.x86_64
+Mar 19 09&#58;10&#58;21 Updated&#58; iproute-2.6.18-13.el5.x86_64
+Mar 19 09&#58;10&#58;21 Updated&#58; xorg-x11-server-Xnest-1.1.1-48.90.el5.x86_64
+Mar 19 09&#58;10&#58;22 Updated&#58; xulrunner-10.0.3-1.el5_8.x86_64
+Mar 19 09&#58;10&#58;22 Updated&#58; nspr-devel-4.8.9-1.el5_8.x86_64
+Mar 19 09&#58;10&#58;27 Updated&#58; yelp-2.16.0-29.el5_8.x86_64
+Mar 19 09&#58;10&#58;29 Updated&#58; nss-devel-3.13.1-5.el5_8.i386
+Mar 19 09&#58;10&#58;29 Updated&#58; mesa-libGL-devel-6.5.1-7.10.el5.x86_64
+Mar 19 09&#58;10&#58;29 Updated&#58; 1&#58;busybox-1.2.0-13.el5.centos.x86_64
+Mar 19 09&#58;10&#58;30 Updated&#58; xkeyboard-config-0.8-10.el5.noarch
+Mar 19 09&#58;10&#58;30 Updated&#58; xorg-x11-server-Xorg-1.1.1-48.90.el5.x86_64
+Mar 19 09&#58;10&#58;31 Updated&#58; tzdata-java-2011n-2.el5.x86_64
+Mar 19 09&#58;10&#58;36 Updated&#58; 1&#58;java-1.6.0-openjdk-1.6.0.0-1.25.1.10.6.el5_8.x86_64
+Mar 19 09&#58;10&#58;37 Updated&#58; kernel-headers-2.6.18-308.1.1.el5.x86_64
+Mar 19 09&#58;10&#58;37 Updated&#58; glibc-headers-2.5-81.x86_64
+Mar 19 09&#58;10&#58;38 Updated&#58; glibc-devel-2.5-81.x86_64
+Mar 19 09&#58;10&#58;38 Updated&#58; centos-release-notes-5.8-0.x86_64
+Mar 19 09&#58;10&#58;38 Updated&#58; xorg-x11-drv-i810-1.6.5-9.40.el5.x86_64
+Mar 19 09&#58;10&#58;38 Updated&#58; php-cli-5.1.6-32.el5.x86_64
+Mar 19 09&#58;10&#58;39 Updated&#58; 1&#58;qt-3.3.6-25.el5.x86_64
+Mar 19 09&#58;10&#58;39 Updated&#58; SDL-1.2.10-9.el5.x86_64
+Mar 19 09&#58;10&#58;39 Updated&#58; xmlrpc-c-client-1.16.24-1206.1840.4.el5.x86_64
+Mar 19 09&#58;10&#58;40 Updated&#58; nss_ldap-253-49.el5.x86_64
+Mar 19 09&#58;10&#58;41 Updated&#58; ImageMagick-6.2.8.0-12.el5.x86_64
+Mar 19 09&#58;10&#58;41 Updated&#58; openldap-servers-2.3.43-25.el5.x86_64
+Mar 19 09&#58;10&#58;41 Updated&#58; compat-openldap-2.3.43_2.2.29-25.el5.x86_64
+Mar 19 09&#58;10&#58;42 Updated&#58; lftp-3.7.11-7.el5.x86_64
+Mar 19 09&#58;10&#58;42 Updated&#58; 1&#58;net-snmp-libs-5.3.2.2-17.el5.x86_64
+Mar 19 09&#58;10&#58;42 Updated&#58; pam_krb5-2.2.14-22.el5.x86_64
+Mar 19 09&#58;10&#58;43 Updated&#58; libusb-0.1.12-6.el5.x86_64
+Mar 19 09&#58;10&#58;43 Updated&#58; freeipmi-0.5.1-7.el5.x86_64
+Mar 19 09&#58;10&#58;43 Updated&#58; expect-5.43.0-8.el5.x86_64
+Mar 19 09&#58;10&#58;43 Updated&#58; openmotif22-2.2.3-20.x86_64
+Mar 19 09&#58;10&#58;44 Updated&#58; cpp-4.1.2-52.el5.x86_64
+Mar 19 09&#58;10&#58;44 Updated&#58; libgfortran-4.1.2-52.el5.x86_64
+Mar 19 09&#58;10&#58;44 Installed&#58; binutils220-2.20.51.0.2-5.29.el5.x86_64
+Mar 19 09&#58;10&#58;46 Updated&#58; gcc44-4.4.6-3.el5.1.x86_64
+Mar 19 09&#58;10&#58;46 Updated&#58; gcc44-gfortran-4.4.6-3.el5.1.x86_64
+Mar 19 09&#58;10&#58;48 Updated&#58; 1&#58;java-1.6.0-openjdk-devel-1.6.0.0-1.25.1.10.6.el5_8.x86_64
+Mar 19 09&#58;10&#58;48 Updated&#58; xorg-x11-drv-mga-1.4.13-5.el5.x86_64
+Mar 19 09&#58;10&#58;48 Updated&#58; kexec-tools-1.102pre-154.el5.x86_64
+Mar 19 09&#58;10&#58;48 Updated&#58; php-ldap-5.1.6-32.el5.x86_64
+Mar 19 09&#58;10&#58;48 Updated&#58; cdparanoia-alpha9.8-28.x86_64
+Mar 19 09&#58;10&#58;48 Updated&#58; unixODBC-2.2.11-10.el5.x86_64
+Mar 19 09&#58;10&#58;49 Updated&#58; netpbm-progs-10.35.58-10.el5.x86_64
+Mar 19 09&#58;10&#58;49 Updated&#58; 30&#58;bind-utils-9.3.6-20.P1.el5.x86_64
+Mar 19 09&#58;10&#58;54 Updated&#58; evince-0.6.0-17.el5.x86_64
+Mar 19 09&#58;10&#58;55 Updated&#58; 1&#58;autofs-5.0.1-0.rc2.163.el5.x86_64
+Mar 19 09&#58;10&#58;55 Updated&#58; crash-5.1.8-1.el5.centos.x86_64
+Mar 19 09&#58;11&#58;02 Updated&#58; 1&#58;gdm-2.16.0-59.el5.centos.x86_64
+Mar 19 09&#58;11&#58;02 Updated&#58; acl-2.2.39-8.el5.x86_64
+Mar 19 09&#58;11&#58;02 Updated&#58; krb5-workstation-1.6.1-70.el5.x86_64
+Mar 19 09&#58;11&#58;05 Updated&#58; gnome-system-monitor-2.16.0-4.el5.x86_64
+Mar 19 09&#58;11&#58;05 Updated&#58; openldap-clients-2.3.43-25.el5.x86_64
+Mar 19 09&#58;11&#58;06 Updated&#58; sudo-1.7.2p1-13.el5.x86_64
+Mar 19 09&#58;11&#58;06 Updated&#58; audit-1.8-2.el5.x86_64
+Mar 19 09&#58;11&#58;06 Updated&#58; cvs-1.11.22-11.el5.x86_64
+Mar 19 09&#58;11&#58;06 Updated&#58; glibc-utils-2.5-81.x86_64
+Mar 19 09&#58;11&#58;07 Updated&#58; fetchmail-6.3.6-4.el5.x86_64
+Mar 19 09&#58;11&#58;07 Updated&#58; 2&#58;nmap-4.11-2.x86_64
+Mar 19 09&#58;11&#58;07 Updated&#58; groff-1.18.1.1-13.el5.x86_64
+Mar 19 09&#58;11&#58;08 Updated&#58; pam_pkcs11-0.5.3-26.el5.x86_64
+Mar 19 09&#58;11&#58;08 Updated&#58; nss-tools-3.13.1-5.el5_8.x86_64
+Mar 19 09&#58;11&#58;08 Updated&#58; krb5-server-1.6.1-70.el5.x86_64
+Mar 19 09&#58;11&#58;08 Updated&#58; xorg-x11-server-Xvfb-1.1.1-48.90.el5.x86_64
+Mar 19 09&#58;11&#58;08 Updated&#58; strace-4.5.18-11.el5_8.x86_64
+Mar 19 09&#58;11&#58;09 Updated&#58; zsh-4.2.6-6.el5.x86_64
+Mar 19 09&#58;11&#58;09 Updated&#58; ftp-0.17-37.el5.x86_64
+Mar 19 09&#58;11&#58;09 Updated&#58; less-436-9.el5.x86_64
+Mar 19 09&#58;11&#58;09 Updated&#58; alsa-utils-1.0.17-6.el5.x86_64
+Mar 19 09&#58;11&#58;10 Updated&#58; ksh-20100621-5.el5.x86_64
+Mar 19 09&#58;11&#58;10 Updated&#58; lsof-4.78-6.x86_64
+Mar 19 09&#58;11&#58;10 Updated&#58; 10&#58;centos-release-5-8.el5.centos.x86_64
+Mar 19 09&#58;11&#58;10 Updated&#58; initscripts-8.45.42-1.el5.centos.x86_64
+Mar 19 09&#58;11&#58;11 Updated&#58; httpd-2.2.3-63.el5.centos.1.x86_64
+Mar 19 09&#58;11&#58;11 Updated&#58; openssh-4.3p2-82.el5.x86_64
+Mar 19 09&#58;11&#58;11 Updated&#58; ruby-irb-1.8.5-24.el5.x86_64
+Mar 19 09&#58;11&#58;13 Updated&#58; libstdc++44-devel-4.4.6-3.el5.1.x86_64
+Mar 19 09&#58;11&#58;14 Updated&#58; gcc44-c++-4.4.6-3.el5.1.x86_64
+Mar 19 09&#58;11&#58;14 Updated&#58; openssh-askpass-4.3p2-82.el5.x86_64
+Mar 19 09&#58;11&#58;14 Updated&#58; openssh-clients-4.3p2-82.el5.x86_64
+Mar 19 09&#58;11&#58;14 Updated&#58; openssh-server-4.3p2-82.el5.x86_64
+Mar 19 09&#58;11&#58;14 Updated&#58; 1&#58;mod_ssl-2.2.3-63.el5.centos.1.x86_64
+Mar 19 09&#58;11&#58;14 Updated&#58; php-5.1.6-32.el5.x86_64
+Mar 19 09&#58;11&#58;14 Updated&#58; 4&#58;vixie-cron-4.1-81.el5.x86_64
+Mar 19 09&#58;11&#58;14 Updated&#58; 12&#58;dhclient-3.0.5-31.el5.x86_64
+Mar 19 09&#58;11&#58;16 Updated&#58; 1&#58;cups-1.3.7-30.el5.x86_64
+Mar 19 09&#58;11&#58;16 Updated&#58; 2&#58;microcode_ctl-1.17-1.56.el5.x86_64
+Mar 19 09&#58;11&#58;16 Updated&#58; 1&#58;smartmontools-5.38-3.el5.x86_64
+Mar 19 09&#58;11&#58;16 Updated&#58; acpid-1.0.4-12.el5.x86_64
+Mar 19 09&#58;11&#58;16 Updated&#58; ruby-rdoc-1.8.5-24.el5.x86_64
+Mar 19 09&#58;11&#58;16 Updated&#58; 2&#58;xinetd-2.3.14-16.el5.x86_64
+Mar 19 09&#58;11&#58;16 Updated&#58; mesa-libGLU-devel-6.5.1-7.10.el5.x86_64
+Mar 19 09&#58;11&#58;16 Updated&#58; nss-devel-3.13.1-5.el5_8.x86_64
+Mar 19 09&#58;11&#58;18 Updated&#58; firefox-10.0.3-1.el5.centos.x86_64
+Mar 19 09&#58;11&#58;18 Updated&#58; facter-1.6.5-3.el5.x86_64
+Mar 19 09&#58;11&#58;19 Updated&#58; openssl-devel-0.9.8e-22.el5.x86_64
+Mar 19 09&#58;11&#58;19 Updated&#58; libacl-devel-2.2.39-8.el5.x86_64
+Mar 19 09&#58;11&#58;20 Updated&#58; openldap-devel-2.3.43-25.el5.x86_64
+Mar 19 09&#58;11&#58;20 Updated&#58; openssl-perl-0.9.8e-22.el5.x86_64
+Mar 19 09&#58;11&#58;21 Updated&#58; libstdc++-devel-4.1.2-52.el5.x86_64
+Mar 19 09&#58;11&#58;21 Updated&#58; syslinux-3.11-7.x86_64
+Mar 19 09&#58;11&#58;21 Updated&#58; dump-0.4b41-6.el5.x86_64
+Mar 19 09&#58;11&#58;32 Updated&#58; selinux-policy-targeted-2.4.6-327.el5.noarch
+Mar 19 09&#58;11&#58;32 Updated&#58; comps-extras-11.4-1.el5.centos.noarch
+Mar 19 09&#58;11&#58;33 Updated&#58; kernel-doc-2.6.18-308.1.1.el5.noarch
+Mar 19 09&#58;11&#58;38 Installed&#58; kernel-devel-2.6.18-308.1.1.el5.x86_64
+Mar 19 09&#58;11&#58;40 Updated&#58; man-pages-2.39-20.el5.noarch
+Mar 19 09&#58;11&#58;41 Updated&#58; glibc-2.5-81.i686
+Mar 19 09&#58;11&#58;41 Updated&#58; krb5-libs-1.6.1-70.el5.i386
+Mar 19 09&#58;11&#58;41 Updated&#58; libgcc-4.1.2-52.el5.i386
+Mar 19 09&#58;11&#58;41 Updated&#58; libstdc++-4.1.2-52.el5.i386
+Mar 19 09&#58;11&#58;41 Updated&#58; openssl-0.9.8e-22.el5.i686
+Mar 19 09&#58;11&#58;41 Updated&#58; nspr-4.8.9-1.el5_8.i386
+Mar 19 09&#58;11&#58;42 Updated&#58; nss-3.13.1-5.el5_8.i386
+Mar 19 09&#58;11&#58;42 Updated&#58; libxml2-2.6.26-2.1.15.el5_8.2.i386
+Mar 19 09&#58;11&#58;42 Updated&#58; openldap-2.3.43-25.el5.i386
+Mar 19 09&#58;11&#58;42 Updated&#58; 1&#58;cups-libs-1.3.7-30.el5.i386
+Mar 19 09&#58;11&#58;44 Updated&#58; ghostscript-8.70-14.el5.i386
+Mar 19 09&#58;11&#58;45 Updated&#58; libacl-2.2.39-8.el5.i386
+Mar 19 09&#58;11&#58;45 Updated&#58; device-mapper-1.02.67-2.el5.i386
+Mar 19 09&#58;11&#58;45 Installed&#58; unixODBC-libs-2.2.11-10.el5.i386
+Mar 19 09&#58;11&#58;45 Updated&#58; parted-1.8.1-29.el5.i386
+Mar 19 09&#58;11&#58;46 Updated&#58; ImageMagick-6.2.8.0-12.el5.i386
+Mar 19 09&#58;11&#58;47 Updated&#58; nss_ldap-253-49.el5.i386
+Mar 19 09&#58;11&#58;47 Updated&#58; compat-openldap-2.3.43_2.2.29-25.el5.i386
+Mar 19 09&#58;11&#58;47 Updated&#58; curl-7.15.5-15.el5.i386
+Mar 19 09&#58;11&#58;47 Updated&#58; 12&#58;aspell-0.60.3-12.i386
+Mar 19 09&#58;11&#58;47 Updated&#58; libusb-0.1.12-6.el5.i386
+Mar 19 09&#58;11&#58;47 Updated&#58; pam_krb5-2.2.14-22.el5.i386
+Mar 19 09&#58;11&#58;49 Updated&#58; mesa-libGL-6.5.1-7.10.el5.i386
+Mar 19 09&#58;11&#58;49 Updated&#58; openmotif-2.3.1-6.1.el5_8.i386
+Mar 19 09&#58;11&#58;49 Updated&#58; openmotif22-2.2.3-20.i386
+Mar 19 09&#58;11&#58;50 Updated&#58; gamin-0.1.7-10.el5.i386
+Mar 19 09&#58;11&#58;50 Updated&#58; libgfortran44-4.4.6-3.el5.1.i386
+Mar 19 09&#58;11&#58;50 Updated&#58; 1&#58;esound-0.2.36-4.i386
+Mar 19 09&#58;11&#58;50 Updated&#58; popt-1.10.2.3-27.el5.i386
+Mar 19 09&#58;11&#58;50 Updated&#58; freeipmi-0.5.1-7.el5.i386
+Mar 19 09&#58;11&#58;50 Updated&#58; libgfortran-4.1.2-52.el5.i386
+Mar 19 09&#58;11&#58;50 Updated&#58; libXcursor-1.1.7-1.2.i386
+Mar 19 09&#58;11&#58;50 Updated&#58; cdparanoia-libs-alpha9.8-28.i386
+Mar 19 09&#58;11&#58;51 Updated&#58; audit-libs-1.8-2.el5.i386
+Mar 19 09&#58;11&#58;51 Updated&#58; unixODBC-2.2.11-10.el5.i386
+Mar 19 09&#58;11&#58;51 Updated&#58; pam_pkcs11-0.5.3-26.el5.i386
+Mar 19 09&#58;11&#58;51 Updated&#58; krb5-devel-1.6.1-70.el5.i386
+Mar 19 09&#58;11&#58;52 Updated&#58; gcc-4.1.2-52.el5.x86_64
+Mar 19 09&#58;11&#58;53 Updated&#58; xulrunner-10.0.3-1.el5_8.i386
+Mar 19 09&#58;11&#58;54 Updated&#58; openssl-devel-0.9.8e-22.el5.i386
+Mar 19 09&#58;11&#58;55 Updated&#58; libstdc++-devel-4.1.2-52.el5.i386
+Mar 19 09&#58;11&#58;55 Updated&#58; gcc-c++-4.1.2-52.el5.x86_64
+Mar 19 09&#58;11&#58;55 Updated&#58; curl-devel-7.15.5-15.el5.x86_64
+Mar 19 09&#58;11&#58;56 Updated&#58; firefox-10.0.3-1.el5.centos.i386
+Mar 19 09&#58;11&#58;56 Updated&#58; libacl-devel-2.2.39-8.el5.i386
+Mar 19 09&#58;11&#58;56 Updated&#58; python-2.4.3-46.el5.x86_64
+Mar 19 09&#58;11&#58;57 Updated&#58; rhpl-0.194.1-2.x86_64
+Mar 19 09&#58;11&#58;57 Updated&#58; rpm-libs-4.4.2.3-27.el5.x86_64
+Mar 19 09&#58;11&#58;58 Updated&#58; iscsi-initiator-utils-6.2.0.872-13.el5.x86_64
+Mar 19 09&#58;12&#58;01 Updated&#58; python-libs-2.4.3-46.el5.x86_64
+Mar 19 09&#58;12&#58;01 Updated&#58; kudzu-1.2.57.1.26-3.el5.centos.x86_64
+Mar 19 09&#58;12&#58;01 Updated&#58; rpm-4.4.2.3-27.el5.x86_64
+Mar 19 09&#58;12&#58;01 Updated&#58; rpm-python-4.4.2.3-27.el5.x86_64
+Mar 19 09&#58;12&#58;02 Updated&#58; 1&#58;nfs-utils-1.0.9-60.el5.x86_64
+Mar 19 09&#58;12&#58;02 Updated&#58; pyxf86config-0.3.31-3.el5.x86_64
+Mar 19 09&#58;12&#58;02 Updated&#58; nfs-utils-lib-1.0.8-7.9.el5.x86_64
+Mar 19 09&#58;12&#58;02 Updated&#58; rhpxl-0.41.1-12.el5.x86_64
+Mar 19 09&#58;12&#58;02 Updated&#58; gamin-python-0.1.7-10.el5.x86_64
+Mar 19 09&#58;12&#58;02 Updated&#58; libxml2-python-2.6.26-2.1.15.el5_8.2.x86_64
+Mar 19 09&#58;12&#58;03 Updated&#58; python-ctypes-1.0.2-3.el5.x86_64
+Mar 19 09&#58;12&#58;04 Updated&#58; libvirt-0.8.2-25.el5.x86_64
+Mar 19 09&#58;12&#58;04 Updated&#58; mkinitrd-5.1.19.6-75.el5.x86_64
+Mar 19 09&#58;12&#58;04 Updated&#58; rpm-devel-4.4.2.3-27.el5.x86_64
+Mar 19 09&#58;12&#58;04 Updated&#58; rpm-build-4.4.2.3-27.el5.x86_64
+Mar 19 09&#58;12&#58;05 Updated&#58; python-devel-2.4.3-46.el5.x86_64
+Mar 19 09&#58;12&#58;06 Updated&#58; audit-libs-python-1.8-2.el5.x86_64
+Mar 19 09&#58;12&#58;06 Updated&#58; PyXML-0.8.4-6.el5.x86_64
+Mar 19 09&#58;12&#58;36 Installed&#58; kernel-2.6.18-308.1.1.el5.x86_64
+Mar 19 09&#58;12&#58;36 Updated&#58; system-config-network-tui-1.3.99.21-1.el5.noarch
+Mar 19 09&#58;12&#58;36 Updated&#58; system-config-network-1.3.99.21-1.el5.noarch
+Mar 19 09&#58;12&#58;36 Updated&#58; iotop-0.4.3-4.el5.noarch
+Mar 19 09&#58;12&#58;36 Updated&#58; sos-1.7-9.62.el5.noarch
+Mar 19 09&#58;12&#58;37 Updated&#58; sabayon-apply-2.12.4-9.el5.x86_64
+Mar 19 09&#58;12&#58;37 Updated&#58; system-config-display-1.0.48-4.el5.noarch
+Mar 19 09&#58;12&#58;37 Updated&#58; system-config-nfs-1.3.23-2.el5.noarch
+Mar 19 09&#58;12&#58;37 Updated&#58; system-config-users-1.2.51-7.el5.noarch
+Mar 19 09&#58;12&#58;37 Updated&#58; system-config-date-1.8.12-5.el5.centos.noarch
+Mar 19 09&#58;12&#58;38 Updated&#58; libxml2-devel-2.6.26-2.1.15.el5_8.2.i386
+Mar 19 09&#58;12&#58;38 Updated&#58; libxml2-devel-2.6.26-2.1.15.el5_8.2.x86_64
+Mar 19 09&#58;12&#58;38 Updated&#58; mkinitrd-5.1.19.6-75.el5.i386
+Mar 19 09&#58;12&#58;39 Updated&#58; python-devel-2.4.3-46.el5.i386
+Mar 19 09&#58;12&#58;39 Updated&#58; root-core-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;40 Updated&#58; root-io-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;40 Updated&#58; root-matrix-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;40 Updated&#58; oddjob-libs-0.27-12.el5.x86_64
+Mar 19 09&#58;12&#58;40 Updated&#58; oddjob-0.27-12.el5.x86_64
+Mar 19 09&#58;12&#58;40 Updated&#58; yum-3.2.22-39.el5.centos.noarch
+Mar 19 09&#58;12&#58;40 Updated&#58; yum-fastestmirror-1.1.16-21.el5.centos.noarch
+Mar 19 09&#58;12&#58;41 Updated&#58; root-icons-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;41 Updated&#58; yum-utils-1.1.16-21.el5.centos.noarch
+Mar 19 09&#58;12&#58;41 Updated&#58; yum-changelog-1.1.16-21.el5.centos.noarch
+Mar 19 09&#58;12&#58;41 Updated&#58; root-mathcore-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;41 Updated&#58; root-graf-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;41 Updated&#58; root-hist-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;41 Updated&#58; root-net-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;42 Updated&#58; root-tree-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;42 Updated&#58; root-hist-painter-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;42 Updated&#58; root-graf-asimage-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;43 Updated&#58; root-minuit-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;43 Updated&#58; root-graf-x11-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;43 Updated&#58; root-graf-postscript-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;43 Updated&#58; root-graf-gpad-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;43 Updated&#58; root-graf3d-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;44 Updated&#58; root-tree-player-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;44 Updated&#58; root-gui-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;44 Updated&#58; root-gui-ged-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;44 Updated&#58; root-proof-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;44 Updated&#58; root-net-rpdutils-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;12&#58;45 Updated&#58; root-5.28.00h-1.el5.x86_64
+Mar 19 09&#58;13&#58;18 Erased&#58; globus-libtool
+Mar 19 09&#58;13&#58;18 Erased&#58; globus-openssl
+Mar 19 09&#58;13&#58;20 Updated&#58; openldap-servers-2.3.43-25.el5.x86_64
+Mar 19 09&#58;13&#58;21 Updated&#58; httpd-2.2.3-63.el5.centos.1.x86_64
+Mar 19 09&#58;13&#58;21 Updated&#58; firefox-10.0.3-1.el5.centos.x86_64
+Mar 19 09&#58;13&#58;21 Updated&#58; firefox-10.0.3-1.el5.centos.i386
+Mar 19 09&#58;13&#58;21 Updated&#58; root-5.28.00h-1.el5.x86_64
+Mar 19 11&#58;16&#58;22 Updated&#58; cvmfs-2.0.11-1.el5.x86_64
+
+-- by Don Moore
+
+</div><script type='text/javascript'>
+        $('#show_1546173252').click(function() {
+            $('#detail_1546173252').slideDown("normal");
+            $('#show_1546173252').hide();
+            $('#hide_1546173252').show();
+        });
+        $('#hide_1546173252').click(function() {
+            $('#detail_1546173252').slideUp();
+            $('#hide_1546173252').hide();
+            $('#show_1546173252').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='11883#1332897760'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-28T01:22:40+00:00">Mar 28, 2012 01:22 AM UTC</time><a class="anchor" name="1332897760">&nbsp;</a></div><pre>Yes- I noticed the segfaults after last yum updates,  currently centos5.8 .
+FYI -  I&#39;m running condor-7.6.6-1.rhel5.x86_64.rpm via <a href='http&#58;//research.cs.wisc.edu/condor/downloads-v2/download.pl' target='_blank' rel='nofollow'>http&#58;//research.cs.wisc.edu/condor/downloads-v2/download.pl</a>
+
+-- by Don Moore</pre></div><div class='update_description'><i onclick="document.location='11883#1332892747'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-27T23:59:07+00:00">Mar 27, 2012 11:59 PM UTC</time> by <b>Marco Mambelli</b><a class="anchor" name="1332892747">&nbsp;</a></div><pre>Don can add more.
+As far as I understood the gaterkeeper was working before a RPM upgrade
+and stopped working afterwards (keeps crashing). There was no upgrade of
+the OSG software but there was an update of the system software (OS).
+Marco
+
+On Tue, 27 Mar 2012, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='11883#1332891233'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-27T23:33:53+00:00">Mar 27, 2012 11:33 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1332891233">&nbsp;</a></div><pre>Can you provide a bit more detail on the crash? Is this a common occurrence? Rare? Do you have any GRAM log files that show what GRAM was doing when it crashed? Has anything recently changed? As best I can tell, you haven&#39;t done any recent updates to your OSG version--is that correct?
+
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='11883#1332884417'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-27T21:40:17+00:00">Mar 27, 2012 09:40 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1332884417">&nbsp;</a></div><pre>[by Marco Mambelli]
+
+I&#39;m submitting this as follow-up to a campfire chat with Don Moore (in CC).
+His gatekeeper is crashing.
+
+globus-job-mana[3786]&#58; segfault at 0000000000000000 rip 00000039c8477f60 rsp 00007fffe47410f8 error 4
+
+This started after an update of his OS and condor&#58;
+lsb_release -a
+LSB Version&#58;	&#58;core-4.0-amd64&#58;core-4.0-ia32&#58;core-4.0-noarch&#58;graphics-4.0-amd64&#58;graphics-4.0-ia32&#58;graphics-4.0-noarch&#58;printing-4.0-amd64&#58;printing-4.0-ia32&#58;printing-4.0-noarch
+Distributor ID&#58;	CentOS
+Description&#58;	CentOS release 5.8 (Final)
+Release&#58;	5.8
+Codename&#58;	Final
+
+rpm -q condor
+condor-7.6.6-1
+
+I&#39;ll attach a report from vdt-system-profile.
+
+Cheers,
+Marco</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F11883">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 11883});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

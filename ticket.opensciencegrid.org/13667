@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[13667] Testing gratia-bdii-status probe and hosting it at GOC</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=13667" method="post">
+<div class="page-header">
+    <h3><span class="muted">13667</span> / Testing gratia-bdii-status probe and hosting it at GOC</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Soichi Hayashi</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Soichi Hayashi</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">GRATIA Ops</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting to be released</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-03-26</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Scott Teige <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">FNAL (Prod)&nbsp;<a target="_blank" href="https://fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947">INC000000371947</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=13667", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/13667?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/13667?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Testing%20gratia-bdii-status%20probe%20and%20hosting%20it%20at%20GOC%20ISSUE%3D13667%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='13667#1364502715'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-28T20:31:55+00:00">Mar 28, 2013 08:31 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1364502715">&nbsp;</a></div><pre>closing</pre></div><div class='update_description'><i onclick="document.location='13667#1364498938'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-28T19:28:58+00:00">Mar 28, 2013 07:28 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1364498938">&nbsp;</a></div><pre>OK to close this ticket now, things are working well.
+
+-- by timm at Thu Mar 28 19&#58;28&#58;23 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947</a></pre></div><div class='update_description'><i onclick="document.location='13667#1364324232'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-26T18:57:12+00:00">Mar 26, 2013 06:57 PM UTC</time><a class="anchor" name="1364324232">&nbsp;</a></div><pre>We are now seeing records showing up in the database and visible on gratiaweb.
+Will hold the ticket open overnight but think we are OK.
+
+Steve Timm
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='13667#1364321939'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-26T18:18:59+00:00">Mar 26, 2013 06:18 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1364321939">&nbsp;</a></div><pre>It&#39;s generating log.. so I think it&#39;s running.
+
+18&#58;16&#58;30 UTC Gratia&#58; ComputeElement&#58; &#60;gratia.services.ComputeElement.ComputeElement object at 0x3237dd0&#62;
+18&#58;16&#58;30 UTC Gratia&#58; Saved record to /var/lib/gratia/tmp/gratiafiles/subdir.bdii_compute_BNL-ATLAS-Condor-CVMFS_gratiaweb1.grid.iu.edu_gratia-osg-prod.opensciencegrid.org_80/outbox/r.22269.gratia.xml__iwPKw23486
+18&#58;16&#58;30 UTC Gratia&#58; OK - Record added to bundle (82/100)
+
+Is this correct information?
+
+[/etc/gratia/bdii-status/ProbeConfig]
+CollectorHost=&#34;gratia-osg-prod.opensciencegrid.org&#58;80&#34;
+SSLHost=&#34;gratia-osg-prod.opensciencegrid.org&#58;443&#34;
+SSLRegistrationHost=&#34;gratia-osg-prod.opensciencegrid.org&#58;80&#34;
+
+Soichi</pre></div><div class='update_description'><i onclick="document.location='13667#1364321049'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-26T18:04:09+00:00">Mar 26, 2013 06:04 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1364321049">&nbsp;</a></div><pre>We will keep a watch for the data.  Nothing has come yet.
+
+Steve Timm
+
+On Tue, 26 Mar 2013, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13667#1364320589'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-26T17:56:29+00:00">Mar 26, 2013 05:56 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1364320589">&nbsp;</a></div><pre>I have installed gratia-probes-cron this morning, but wasn&#39;t enabled until just now.
+
+It should be running now. Please let me know if it&#39;s sending data to the right place.</pre></div><div class='update_description'><i onclick="document.location='13667#1364317240'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-26T17:00:40+00:00">Mar 26, 2013 05:00 PM UTC</time><a class="anchor" name="1364317240">&nbsp;</a></div><pre>Has this change been made as yet? It was my understanding that it was supposed to go in today&#39;s maintenance but I haven&#39;t seen anything happen as yet.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='13667#1363631822'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-18T18:37:02+00:00">Mar 18, 2013 06:37 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1363631822">&nbsp;</a></div><pre>Per today&#39;s GOC meeting, this change is scheduled to go to production on the 4th tuesday from GOC side, 3/26/2013.
+No action is required on the Fermilab side.
+
+-- by timm at Mon Mar 18 18&#58;36&#58;19 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947</a></pre></div><div class='update_description'><i onclick="document.location='13667#1363375299'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-15T19:21:39+00:00">Mar 15, 2013 07:21 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1363375299">&nbsp;</a></div><pre>I have scheduled the release of gratia bdii probe (bdii_cese_record part only) on 3/26 - unless I hear any objections or find any issues.</pre></div><div class='update_description'><i onclick="document.location='13667#1363373531'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-15T18:52:11+00:00">Mar 15, 2013 06:52 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1363373531">&nbsp;</a></div><pre>I am now seeing the ComputeElement records get populated correctly in the database and there are ComputeElement data showing up on gratiaweb-itb.grid.iu.edu
+I would recommend that we plan for deployment in the next production change window which is supposed to be March 26, correct?
+
+Steve Timm
+
+-- by timm at Fri Mar 15 18&#58;50&#58;47 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947</a></pre></div><div class='update_description'><i onclick="document.location='13667#1363360569'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-15T15:16:09+00:00">Mar 15, 2013 03:16 PM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1363360569">&nbsp;</a></div><pre>I think that you have it right now.
+I will check the ITB databases and see for sure.
+
+Steve Timm
+
+On Fri, 15 Mar 2013, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13667#1363358819'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-15T14:46:59+00:00">Mar 15, 2013 02:46 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1363358819">&nbsp;</a></div><pre>I don&#39;t think I disabled the right one.. I&#39;ve switched it around.
+
+#0 1 * * * root /usr/share/gratia/common/cron_check /etc/gratia/bdii-status/ProbeConfig &&  perl -e &#39;sleep rand 9600&#39; && /usr/share/gratia/bdii-status/bdii_subcluster_record
+0,15,30,45 * * * * root /usr/share/gratia/common/cron_check /etc/gratia/bdii-status/ProbeConfig && perl -e &#39;sleep rand 900&#39; && /usr/share/gratia/bdii-status/bdii_cese_record</pre></div><div class='update_description'><i onclick="document.location='13667#1363358740'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-15T14:45:40+00:00">Mar 15, 2013 02:45 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1363358740">&nbsp;</a></div><pre>I have re-enabled bdii-probe on gratiaweb-itb, and commented out one of cron entry for /etc/cron.d/gratia-probe-bdii-status.cron
+
+0 1 * * * root /usr/share/gratia/common/cron_check /etc/gratia/bdii-status/ProbeConfig &&  perl -e &#39;sleep rand 9600&#39; && /usr/share/gratia/bdii-status/bdii_subcluster_record
+#0,15,30,45 * * * * root /usr/share/gratia/common/cron_check /etc/gratia/bdii-status/ProbeConfig && perl -e &#39;sleep rand 900&#39; && /usr/share/gratia/bdii-status/bdii_cese_record
+
+Derek, did I disable the right one?</pre></div><div class='update_description'><i onclick="document.location='13667#1363033927'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-11T20:32:07+00:00">Mar 11, 2013 08:32 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1363033927">&nbsp;</a></div><pre>I thought that the second probe updates information at <a href='http&#58;//gratiaweb.grid.iu.edu/gratia/wlcg_reporting' target='_blank' rel='nofollow'>http&#58;//gratiaweb.grid.iu.edu/gratia/wlcg_reporting</a> and some people are looking  at this page.
+I don&#39;t have any problem with  releasing just one probe.
+
+Thanks,
+Tanya
+On Mar 11, 2013, at 3&#58;24 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13667#1363033472'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-11T20:24:32+00:00">Mar 11, 2013 08:24 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1363033472">&nbsp;</a></div><pre>Our discussion today at the OSG All Hands Meeting&#58;
+1) There are two components to the probe, one that reads the BDII for running/waiting jobs and a second one
+that is querying the CPU table.
+2) Derek will make and release a version of the probe that drops the CPU table
+functionality and only gives the count of running/waiting jobs.
+3) Soichi will install that on the ITB instance and we will verify function on gratiaweb-itb.grid.iu.edu
+4) if all agree we will then enable the probe reporting to production again.
+5) We believe the cpu table maintenance is not necessary.. if others disagree we
+will revisit this.
+
+Steve Timm
+
+-- by timm at Mon Mar 11 20&#58;23&#58;58 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947</a></pre></div><div class='update_description'><i onclick="document.location='13667#1362512320'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-05T19:38:40+00:00">Mar 5, 2013 07:38 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1362512320">&nbsp;</a></div><pre>I&#39;ve updated the configuration - although the probe is no longer running.</pre></div><div class='update_description'><i onclick="document.location='13667#1362503649'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-05T17:14:09+00:00">Mar 5, 2013 05:14 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1362503649">&nbsp;</a></div><pre>Yes, i forgot. Soichi tried to modify ProbeConfig&#58;
+
+DebugLevel=&#34;0&#34;
+Comments33=&#34;Controls debug messages printed to screen.&#34;
+LogRotate=&#34;31&#34;
+
+Change it to 2 and see if this helps.
+
+Thanks,
+Tanya</pre></div><div class='update_description'><i onclick="document.location='13667#1362502893'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-05T17:01:33+00:00">Mar 5, 2013 05:01 PM UTC</time><a class="anchor" name="1362502893">&nbsp;</a></div><pre>I believe gratia handles it&#39;s own logs.  Rotating daily, keeping for X days, and removing logs when disk fills.
+
+by /DC=org/DC=doegrids/OU=People/CN=Derek Weitzel 285345</pre></div><div class='update_description'><i onclick="document.location='13667#1362502749'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-05T16:59:09+00:00">Mar 5, 2013 04:59 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1362502749">&nbsp;</a></div><pre>Hi,
+
+Gratia probes don&#39;t currently install logrotate entry. Soichi, could you please open JIRA ticket for gratia and assign it to me? This should be done for all probes and I will need Tim&#39;s input.
+
+Thanks,
+Tanya</pre></div><div class='update_description'><i onclick="document.location='13667#1362502468'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-03-05T16:54:28+00:00">Mar 5, 2013 04:54 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1362502468">&nbsp;</a></div><pre>The gratia probe on gratiaweb-itb is filling up the /var/log/gratia directory, and the probe RPM currently does not install logrotate entry for this directory.
+
+I have disabled the gratia bdii probe running on gratiaweb-itb, and I will keep it off until I hear more from Tanya / Ashu on how to proceed - it looks like we have enough issues to solve before ITB testing at GOC.
+
+I&#39;d like to close this ticket for now - unless anyone objects.</pre></div><div class='update_description'><i onclick="document.location='13667#1361918094'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-26T22:34:54+00:00">Feb 26, 2013 10:34 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1361918094">&nbsp;</a></div><pre>For today&#39;s release (2/26), I was originally requested to update following items on gratiaweb1.grid.iu.edu
+
+1) Install bdii-probe
+We decided to postpone this as discussed in this ticket.
+
+2) Update osg-measurements-metrics-* to 1.1-5
+I&#39;ve never gotten a green light from Tanya/Ashu, so I have postponed this to another release.
+
+3) Update graphtool to 0.6.6-16
+Also didn&#39;t get a green light during the ITB release. I have postponed this to another release.
+
+In short, nothing was updated on gratiaweb1.grid.iu.edu during today&#39;s production release.
+
+Ashu pointed out a configuration issue with o gratiaweb-itb (/etc/DBParams.xml) on gratiaweb-itb which was pointing to a wrong Gratia DB which was fixed this afternoon.
+
+Soichi</pre></div><div class='update_description'><i onclick="document.location='13667#1361889710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-26T14:41:50+00:00">Feb 26, 2013 02:41 PM UTC</time><a class="anchor" name="1361889710">&nbsp;</a></div><pre>One other thing which was part of Soichi&#39;s initial question--namely was everything right on gratiaweb-itb.grid.iu.edu.
+It is not. The Monitoring by VO and Monitoring By Site graphs don&#39;t come up.
+
+Steve
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='13667#1361829604'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T22:00:04+00:00">Feb 25, 2013 10:00 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1361829604">&nbsp;</a></div><pre>After this is fixed Sublcuster table is populated but not CPUInfo. Any idea what should be there?
+Tanya</pre></div><div class='update_description'><i onclick="document.location='13667#1361829451'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T21:57:31+00:00">Feb 25, 2013 09:57 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1361829451">&nbsp;</a></div><pre>Hi,
+
+This is a list of additional info that is in bdii but not in MyOSG&#58;
+* Cluster&#58;  grid1.oscer.ou.edu
+Unknown CPU model&#58; Intel(R) Xeon(R) CPU E5-2650 0 @ 2.00GHz
+
+* Cluster&#58;  cms-grid0.hep.uprm.edu
+Unknown CPU model&#58; Intel(R) Xeon(R) CPU E5-1620 0 @ 3.60GHz
+
+* Cluster&#58;  fiupg.hep.fiu.edu
+Unknown CPU model&#58; Quad-Core Xeon E5620
+
+* Cluster&#58;  osggrid01.hep.wisc.edu
+Unknown CPU model&#58; Intel(R) Xeon(R) CPU E5640 @ 2.67GHz
+
+* Cluster&#58;  gluskap.phys.uconn.edu
+Unknown CPU model&#58; Intel(R) Core(TM)2 Quad CPU    Q8300  @ 2.50GHz
+
+* Cluster&#58;  osg.pnl.gov
+Unknown CPU model&#58; AMD Opteron(TM) Processor 6272
+
+* Cluster&#58;  carter-osg.rcac.purdue.edu
+Unknown CPU model&#58; Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz
+
+* Cluster&#58;  earth.crc.nd.edu
+Unknown CPU model&#58; Six-Core AMD Opteron(tm) Processor 2431
+
+* Cluster&#58;  ndcms.crc.nd.edu
+Unknown CPU model&#58; Six-Core AMD Opteron(tm) Processor 2431
+
+* Cluster&#58;  brux3.hep.brown.edu
+Unknown CPU model&#58; Xeon E5630
+
+* Cluster&#58;  osg-ce.sprace.org.br
+Unknown CPU model&#58; Intel(R) Xeon(R) CPU E5-2630 0 @ 2.30GHz
+<div id='show_1564019685' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1564019685'>
+* Cluster&#58;  kagross.grid.iu.edu
+Unknown CPU model&#58; Quad-Core AMD Opteron(tm) Processor 2381 HE
+
+* Cluster&#58;  chaos.lunet.edu
+Unknown CPU model&#58; Intel(R) Xeon(R) CPU           E5607  @ 2.27GHz
+
+* Cluster&#58;  calclab-ce.math.tamu.edu
+Unknown CPU model&#58; Various
+
+* Cluster&#58;  echism.grid.iu.edu
+Unknown CPU model&#58; Quad-Core AMD Opteron(tm) Processor 2381 HE
+
+I would propose to modify the code the following way&#58;
+
+1. when compare cpu type  ignore white spaces
+2. when cpu type is not found  have try/except in around
+correct_sc_info(cluster, cpu, sc_info, specint)
+so, you can log the missing cpu type but other data will be sent
+</div><script type='text/javascript'>
+        $('#show_1564019685').click(function() {
+            $('#detail_1564019685').slideDown("normal");
+            $('#show_1564019685').hide();
+            $('#hide_1564019685').show();
+        });
+        $('#hide_1564019685').click(function() {
+            $('#detail_1564019685').slideUp();
+            $('#hide_1564019685').hide();
+            $('#show_1564019685').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13667#1361829078'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T21:51:18+00:00">Feb 25, 2013 09:51 PM UTC</time><a class="anchor" name="1361829078">&nbsp;</a></div><pre>I have now looked again at the tables in gratia production.  For the first week or two of the &#34;test&#34; we were getting records in the
+ComputeElement set of tables.  There has been nothing there since Feb. 19.  Is that expected?
+During the time that records were correctly getting populated in the ComputeElement table in production, there was not anything on this end
+going into the SubCluster or CPUInfo tables.  Those tables remain completely empty as they always have been.
+
+What changed on Feb. 19? Just Baylor showing up with the malformed CPU string or something else?
+As Tanya has pointed out in other emails, there are other ones to fix once we get that one fixed. If a manual intervention
+is going to be necessary every time a new malformed CPU string comes inbound then this probe will be inoperable.  It&#39;s hard enough
+to set up one site to do CPU strings right, much less the whole OSG.
+
+Steve Timm
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='13667#1361828806'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T21:46:46+00:00">Feb 25, 2013 09:46 PM UTC</time><a class="anchor" name="1361828806">&nbsp;</a></div><pre>Adding Tanya and Derek&#39;s latest emails into the goc tickets.
+This XML was generated via following MyOSG page&#58;
+<a href='http&#58;//myosg.grid.iu.edu/misccpuinfo/?datasource=cpuinfo&count_sg_1=on' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu/misccpuinfo/?datasource=cpuinfo&count_sg_1=on</a>
+[myosg.grid.iu.edu]
+bdii_subcluster_record reads this info and tries to map each 
+HostProcessorModel for each cluster from bdii info with cpu_info from myOSG.
+
+I think it is much simpler to modify  code to ignore all spaces during the
+comparison than to contact individual sites but it is up to you.
+
+Thanks,
+Tanya
+
+------------------------------------------
+
+Wait, what?
+
+I suspect that the cpu info tables  do need to be populated by this probe.
+This probe does 2 distinct things, both are related to bdii&#58;
+1) Update current running / idle / ... Per VO per Site into the XXX table.
+2) Update the CPU types whatnot information in the CPU info tables.  I
+believe this is mostly used for pledge information to the WLCG.
+
+I think there is confusion.  The GOC ticket
+(<a href='https&#58;//ticket.grid.iu.edu/goc/13667' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/13667</a>) was mostly regarding 1, but if we can
+also solve 2 (which John also has a completely separate goc ticket about&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/12335' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/12335</a>), then lets do it.
+
+I believe Tanya found the correct problem.  The reason that the tables are
+not populated now is because of the parsing error that she found.  If that
+parsing error was not there, then the tables would have been populated, and
+everyone would have been happy!
+------------------------------------------
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='13667#1361828803'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T21:46:43+00:00">Feb 25, 2013 09:46 PM UTC</time><a class="anchor" name="1361828803">&nbsp;</a></div><pre>Adding Tanya and Derek&#39;s latest emails into the goc tickets.
+This XML was generated via following MyOSG page&#58;
+<a href='http&#58;//myosg.grid.iu.edu/misccpuinfo/?datasource=cpuinfo&count_sg_1=on' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu/misccpuinfo/?datasource=cpuinfo&count_sg_1=on</a>
+[myosg.grid.iu.edu]
+bdii_subcluster_record reads this info and tries to map each 
+HostProcessorModel for each cluster from bdii info with cpu_info from myOSG.
+
+I think it is much simpler to modify  code to ignore all spaces during the
+comparison than to contact individual sites but it is up to you.
+
+Thanks,
+Tanya
+
+------------------------------------------
+
+Wait, what?
+
+I suspect that the cpu info tables  do need to be populated by this probe.
+This probe does 2 distinct things, both are related to bdii&#58;
+1) Update current running / idle / ... Per VO per Site into the XXX table.
+2) Update the CPU types whatnot information in the CPU info tables.  I
+believe this is mostly used for pledge information to the WLCG.
+
+I think there is confusion.  The GOC ticket
+(<a href='https&#58;//ticket.grid.iu.edu/goc/13667' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/13667</a>) was mostly regarding 1, but if we can
+also solve 2 (which John also has a completely separate goc ticket about&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/12335' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/12335</a>), then lets do it.
+
+I believe Tanya found the correct problem.  The reason that the tables are
+not populated now is because of the parsing error that she found.  If that
+parsing error was not there, then the tables would have been populated, and
+everyone would have been happy!
+------------------------------------------
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='13667#1361827938'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-25T21:32:18+00:00">Feb 25, 2013 09:32 PM UTC</time><a class="anchor" name="1361827938">&nbsp;</a></div><pre>There are two possible causes for the error of the cpu thing.. either there is a missing entry in the CPUInfo table or Subcluster table in
+the Gratia DB, or there is something wrong or missing in the cpuinfo tables in OIM.  Given the code it appears to be the latter.
+We need to identify (1) how to update that table and (2) who should update that table before we can go any farther.
+I can&#39;t even see the oim page <a href='https&#58;//oim.grid.iu.edu/oim/cpuinfo' target='_blank' rel='nofollow'>https&#58;//oim.grid.iu.edu/oim/cpuinfo</a>, much less modify it.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='13667#1361287578'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-19T15:26:18+00:00">Feb 19, 2013 03:26 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1361287578">&nbsp;</a></div><pre>I have installed bdii probe on gratiaweb-itb this morning (as part of ITB release for 2/26 release) using configuration that Steve provided.
+
+Can you all confirm that things are working as expected on gratiaweb-itb?</pre></div><div class='update_description'><i onclick="document.location='13667#1361194358'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-18T13:32:38+00:00">Feb 18, 2013 01:32 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1361194358">&nbsp;</a></div><pre>Steve,
+
+Thanks for the info. I&#39;ve installed the bdii probe on gratiaweb-itb and configured as specified.
+
+Meanwhile, I am receiving (daily) following GOC alert from the bdii_probe currently running on soichi6.grid.iu.edu.
+
+Does anyone know what this means?
+
+Subject&#58; Cron &#60;root@soichi6&#62; /usr/share/gratia/common/cron_check
+/etc/gratia/bdii-status/ProbeConfig && perl -e &#39;sleep rand
+9600&#39; && /usr/share/gratia/bdii-status/bdii_subcluster_record
+Content-Type&#58; text/plain; charset=UTF-8
+Auto-Submitted&#58; auto-generated
+X-Cron-Env&#58; &#60;SHELL=/bin/sh&#62;
+X-Cron-Env&#58; &#60;HOME=/root&#62;
+X-Cron-Env&#58; &#60;PATH=/usr/bin&#58;/bin&#62;
+X-Cron-Env&#58; &#60;LOGNAME=root&#62;
+X-Cron-Env&#58; &#60;USER=root&#62;
+
+* Cluster&#58;  cms-0.mps.ohio-state.edu
+- Sub-clusters&#58;
+- cms-0.mps.ohio-state.edu-UNAVAILABLE, CPU Model&#58; Intel(R) Xeon(R) CPU           E5420  @ 2.50GHz, Cores&#58; 32, KSI2K&#58; 104928
+* Cluster&#58;  kodiak-ce.baylor.edu
+Traceback (most recent call last)&#58;
+File &#34;/usr/share/gratia/bdii-status/bdii_subcluster_record&#34;, line 313, in &#60;module&#62;
+main()
+File &#34;/usr/share/gratia/bdii-status/bdii_subcluster_record&#34;, line 241, in main
+correct_sc_info(cluster, cpu, sc_info, specint)
+File &#34;/usr/share/gratia/bdii-status/bdii_subcluster_record&#34;, line 141, in correct_sc_info
+raise KeyError(&#34;Unknown CPU model&#58; %s&#34; % cpu_model)
+KeyError&#58; &#39;Unknown CPU model&#58; Intel(R) Xeon(R) CPU X5355  @ 2.66GHz&#39;
+
+Thanks!</pre></div><div class='update_description'><i onclick="document.location='13667#1360959409'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-15T20:16:49+00:00">Feb 15, 2013 08:16 PM UTC</time><a class="anchor" name="1360959409">&nbsp;</a></div><pre>The Gratiaweb and ProbeConfig files for the production probe are correct as they stand.
+
+For the gratiaweb-itb configuration you should configure gratiaweb
+&#60;attribute name=&#34;Database&#34;&#62; gratia_itb &#60;/attribute&#62;
+
+all other things are the same including the passwd.
+
+For the ProbeConfig for ITB
+in place of
+
+gratia-osg-prod.opensciencegrid.org&#58;80
+
+put
+gratia-osg-itb.opensciencegrid.org&#58;80 (and similarly for the 443 entry).
+
+Steve Timm
+
+by /DC=org/DC=doegrids/OU=People/CN=Steven Timm 74183</pre></div><div class='update_description'><i onclick="document.location='13667#1360958335'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-15T19:58:55+00:00">Feb 15, 2013 07:58 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1360958335">&nbsp;</a></div><pre>GOC will install the bdii_probe on gratiaweb-itb.grid.iu.edu during our next ITB release (2/19) and gratiaweb1.grid.iuedu on 2/26.
+
+(CC-ing Steve)
+
+Steve, I have attached my current ProbeConfig that I am using to run the bdii_probe on soichi6.grid.iu.edu (one of my development machine). Can you take a look, and modify it so that I can install it on the gratiaweb-itb?
+
+Also, on gratiaweb1, it is currently using following DB configuration.
+
+&#60;connection name=&#34;gratia-status&#34;&#62;
+&#60;attribute name=&#34;Interface&#34;&#62; MySQL &#60;/attribute&#62;
+&#60;attribute name=&#34;Database&#34;&#62; gratia &#60;/attribute&#62;
+&#60;attribute name=&#34;Host&#34;&#62; gr-osg-mysql-reports.opensciencegrid.org &#60;/attribute&#62;
+&#60;attribute name=&#34;AuthDBUsername&#34;&#62; reader &#60;/attribute&#62;
+&#60;attribute name=&#34;AuthDBPassword&#34;&#62; xxxxxxxxxxx &#60;/attribute&#62;
+&#60;attribute name=&#34;Port&#34;&#62; 3306 &#60;/attribute&#62;
+&#60;/connection&#62;
+
+I heard you mention I need to point to a different gratia DB from gratiaweb-itb. If so, can you edit this XML config and let me know which DB that gratiaweb-itb should be accessing? (This might be a question to Derek?)
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='13667#1360849705'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-14T13:48:25+00:00">Feb 14, 2013 01:48 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1360849705">&nbsp;</a></div><pre>Changing this assignment to Soichi and Scott as there will be a conversation about this.
+
+-kyle</pre></div><div class='update_description'><i onclick="document.location='13667#1360606424'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-11T18:13:44+00:00">Feb 11, 2013 06:13 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1360606424">&nbsp;</a></div><pre>Scott, Derek, Steve and maybe Soichi should have a private conversation about this later this week.
+
+Steve
+
+-- by timm at Mon Feb 11 18&#58;12&#58;59 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947</a></pre></div><div class='update_description'><i onclick="document.location='13667#1360589289'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-11T13:28:09+00:00">Feb 11, 2013 01:28 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1360589289">&nbsp;</a></div><pre>Now in the weekly reports it is complaining because we have 148 new unregistered
+sites in Gratia.  This probe is trouble and it is trying to make Gratia a monitoring system,
+something that gratia was never meant to be.  I will ask Scott to add this ticket
+to the agenda of the ops meeting today.
+
+Steve Timm
+
+-- by timm at Mon Feb 11 13&#58;26&#58;44 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947</a></pre></div><div class='update_description'><i onclick="document.location='13667#1360436489'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-09T19:01:29+00:00">Feb 9, 2013 07:01 PM UTC</time><a class="anchor" name="1360436489">&nbsp;</a></div><pre>Hi Steve,
+
+Yes, you are absolutely correct on our goal.  We do not need any back loading history.
+
+Matter of fact, we don&#39;t really care about any data more than maybe 1 week (maybe 30 days to be safe).  At some point we should think about updating the housekeeping to delete records older than this.
+
+-Derek
+
+by /DC=org/DC=doegrids/OU=People/CN=Derek Weitzel 285345</pre></div><div class='update_description'><i onclick="document.location='13667#1360378153'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-09T02:49:13+00:00">Feb 9, 2013 02:49 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1360378153">&nbsp;</a></div><pre>Is the goal of populating the gratia-osg-prod.opensciencegrid.org collector and its database so that we can then change the configuration
+of gratiaweb.grid.iu.edu to read all from the production osg DB and not have to read the DB at Nebraska for those running/waiting jobs graphs
+anymore?
+
+Do any of those tables care about back-loading history?
+
+Steve Timm
+
+-- by timm at Sat Feb 09 02&#58;47&#58;49 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000371947</a></pre></div><div class='update_description'><i onclick="document.location='13667#1360353878'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-08T20:04:38+00:00">Feb 8, 2013 08:04 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1360353878">&nbsp;</a></div><pre>Gratia Ops,
+
+I have recently installed gratia-bdii-status probe on one of my development machine (soichi6.grid.iu.edu) and started posting data to gratia-osg-prod.opensciencegrid.org
+
+Derek reports that following table is now populated,
+<font color='#7F7E6F'>&#62;  select * from ComputeElementRecord order by dbid desc limit 100</font>
+And I see following graph updated.
+<font color='#7F7E6F'>&#62; <a href='http&#58;//gratiaweb.grid.iu.edu/gratia/monbysite' target='_blank' rel='nofollow'>http&#58;//gratiaweb.grid.iu.edu/gratia/monbysite</a></font>
+
+I&#39;d like to test drive this probe, and if we don&#39;t see any issues with it, I&#39;d like host this probe somewhere in a GOC&#39;s production machine.
+
+I am opening this ticket mostly to let Gratia Ops know about this, and use this ticket to further discuss if and how this probe should be hosted at GOC.
+
+Thanks</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F13667">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 13667});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

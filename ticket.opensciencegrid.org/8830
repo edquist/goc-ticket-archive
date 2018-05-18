@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[8830] How to remove erronous RSV Entries.</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=8830" method="post">
+<div class="page-header">
+    <h3><span class="muted">8830</span> / How to remove erronous RSV Entries.</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Karthik Arunachalam</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2010-07-08</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+        <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=8830", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/8830?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/8830?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20How%20to%20remove%20erronous%20RSV%20Entries.%20ISSUE%3D8830%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='8830#1280362615'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-29T00:16:55+00:00">Jul 29, 2010 12:16 AM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1280362615">&nbsp;</a></div><pre>closing again for the test on metrics</pre></div><div class='update_description'><i onclick="document.location='8830#1278531784'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-07T19:43:04+00:00">Jul 7, 2010 07:43 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1278531784">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.
+
+Regards,
+
+Christopher P.
+GOC</pre></div><div class='update_description'><i onclick="document.location='8830#1278531127'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-07T19:32:07+00:00">Jul 7, 2010 07:32 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1278531127">&nbsp;</a></div><pre>Hi Scot,
+
+<font color='#7F7E6F'>&#62; After making the changes, the page should update within 5 minutes.</font>
+
+Yes, removing the entries in state.file worked. This ticket could be
+closed.
+
+Thanks,
+Karthik
+
+On Wed, 7 Jul 2010, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8830#1278516008'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-07T15:20:08+00:00">Jul 7, 2010 03:20 PM UTC</time> by <b>Scott Kronenfeld</b><a class="anchor" name="1278516008">&nbsp;</a></div><pre>After making the changes, the page should update within 5 minutes.
+There is no need to do a vdt-control --off.
+
+Alternatively, if you don&#39;t mind losing all the contents of that page,
+you could just delete that file.  It will repopulate as each metric
+runs.
+
+On Tue, Jul 6, 2010 at 7&#58;29 PM, Open Science Grid FootPrints
+&#60;osg@....&#62; wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8830#1278462546'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-07T00:29:06+00:00">Jul 7, 2010 12:29 AM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1278462546">&nbsp;</a></div><pre>Hi Scot,
+
+Could the changes to $VDT_LOCATION/osg-rsv/output/html/state.file be done
+and would take effect on the fly? Or Should we do a &#34;vdt-control --off&#34;
+before making the changes, followed by a &#34;vdt-control --on&#34;?
+
+Thanks,
+Karthik
+
+On Tue, 6 Jul 2010, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8830#1278453908'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-06T22:05:08+00:00">Jul 6, 2010 10:05 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1278453908">&nbsp;</a></div><pre>Hi Scot,
+
+Yes, I do find entries for condor1.oscer.ou.edu in
+VDT_LOCATION/osg-rsv/output/html/state.file. I will request the OSCER
+admin to remove those entries and see if that fixes it.
+
+Thanks,
+Karthik
+
+On Tue, 6 Jul 2010, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8830#1278453366'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-06T21:56:06+00:00">Jul 6, 2010 09:56 PM UTC</time> by <b>VDT</b><a class="anchor" name="1278453366">&nbsp;</a></div><pre>Horst,
+I&#39;d say that the fact that it leaves behind an empty section is a bug,
+but not a very serious one.  I don&#39;t have time to try to replicate
+this problem locally and find a solution, but I suspect it can be
+solved by looking in  $VDT_LOCATION/osg-rsv/output/html/state.file for
+any condor1.oscer.ou.edu and manually removing them.
+
+As for why the metrics disappeared - any metric that is not enabled
+and has not run for 24 hours will be removed at midnight.
+
+-scot
+
+--
+View ticket at &#60;<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243&#62' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243&#62</a>;
+VDT Support&#58; vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='8830#1278104706'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-02T21:05:06+00:00">Jul 2, 2010 09:05 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1278104706">&nbsp;</a></div><pre>Hi Alain,
+
+yes, by all means, let&#39;s wait for Scot to get back, since now it&#39;s looking
+pretty good, just that one empty section, but no red and black
+marks of shame! =)
+
+Thanks a lot,
+Happy Holiday,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='8830#1278102007'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-02T20:20:07+00:00">Jul 2, 2010 08:20 PM UTC</time> by <b>VDT</b><a class="anchor" name="1278102007">&nbsp;</a></div><pre>On Jul 2, 2010, at 11&#58;42 AM, osg@.... via RT wrote&#58;
+<font color='#7F7E6F'>&#62; <a href='https&#58;//grid1.oscer.ou.edu&#58;8443/rsv/' target='_blank' rel='nofollow'>https&#58;//grid1.oscer.ou.edu&#58;8443/rsv/</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Wait -- it got much better over night! There used to be all sorts of</font>
+<font color='#7F7E6F'>&#62; red and black entries in the first condor1 section, but they all</font>
+<font color='#7F7E6F'>&#62; disappeared, great! Now we only have the empty section.</font>
+
+You probably just needed some probes to re-run.
+
+<font color='#7F7E6F'>&#62; So how do we get the now empty condor1 section to disappear all together?</font>
+<font color='#7F7E6F'>&#62; We already tried restarting RSV and even reconfiguring it with</font>
+<font color='#7F7E6F'>&#62; &#39;configure-osg -c&#39;, and deleting all the condor1-related entries</font>
+<font color='#7F7E6F'>&#62; from the osg-rsv area. Where else is something hiding we need to delete?</font>
+
+I have no idea. This is a pretty minor problem, so I&#39;m going to assign the request to the person (Scot Kronenfeld) who can best answer the question but is currently out on vacation. I assume you can wait a few days for his response--is that okay?
+
+Thanks,
+-alain
+-----------------------------------------------------------------
+Alain Roy                         vdt-support@....
+VDT Support                   <a href='http&#58;//vdt.cs.wisc.edu/support.html' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/support.html</a>
+
+--
+View ticket at &#60;<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243&#62' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243&#62</a>;
+VDT Support&#58; vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='8830#1278096066'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-02T18:41:06+00:00">Jul 2, 2010 06:41 PM UTC</time> by <b>Horst Severini</b><a class="anchor" name="1278096066">&nbsp;</a></div><pre>Hi Alain,
+
+the problem is that when we first re-installed OU_OSCER_ATLAS  --
+grid1.oscer.ou.edu -- with osg-1.2, the admin accidentally left
+
+localhost=condor1.oscer.ou.edu
+
+in the config.ini, since he had copied it from OU_OSCER_CONDOR --
+condor1.oscer.ou.edu -- and so the RSV pages picked that up,
+and now look like this&#58;
+
+<a href='https&#58;//grid1.oscer.ou.edu&#58;8443/rsv/' target='_blank' rel='nofollow'>https&#58;//grid1.oscer.ou.edu&#58;8443/rsv/</a>
+
+Wait -- it got much better over night! There used to be all sorts of
+red and black entries in the first condor1 section, but they all
+disappeared, great! Now we only have the empty section.
+
+So how do we get the now empty condor1 section to disappear all together?
+We already tried restarting RSV and even reconfiguring it with
+&#39;configure-osg -c&#39;, and deleting all the condor1-related entries
+from the osg-rsv area. Where else is something hiding we need to delete?
+
+Thanks a lot,
+
+Horst</pre></div><div class='update_description'><i onclick="document.location='8830#1278095527'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-02T18:32:07+00:00">Jul 2, 2010 06:32 PM UTC</time> by <b>VDT</b><a class="anchor" name="1278095527">&nbsp;</a></div><pre>On Jul 2, 2010, at 9&#58;22 AM, osg@.... via RT wrote&#58;
+<font color='#7F7E6F'>&#62; Yes...BNL and GGUS can auto-close our tickets...other support centers cannot currently.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; REgardless, I have reopened the GOC Ticket for you.</font>
+
+OK, now that we&#39;ve sorted it out... I don&#39;t really understand what the RSV problem is. Can you describe it to me?
+
+Thanks,
+-alain
+
+--
+View ticket at &#60;<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243&#62' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243&#62</a>;
+VDT Support&#58; vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='8830#1278087720'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-02T16:22:00+00:00">Jul 2, 2010 04:22 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1278087720">&nbsp;</a></div><pre>Horst,
+
+Yes...BNL and GGUS can auto-close our tickets...other support centers cannot currently.
+
+REgardless, I have reopened the GOC Ticket for you.
+
+Kyle</pre></div><div class='update_description'><i onclick="document.location='8830#1278010821'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-01T19:00:21+00:00">Jul 1, 2010 07:00 PM UTC</time><a class="anchor" name="1278010821">&nbsp;</a></div><pre>I just replied to the BNL RT ticket, but apparently the reply
+never made it to the GOC ticket, so I&#39;m pasting it in here as well.
+
+Hi Alain,
+
+<font color='#7F7E6F'>&#62; So I&#39;m confused--it was assigned to us, but the requester is closing</font>
+<font color='#7F7E6F'>&#62; it&#58; is our help needed?</font>
+
+sorry about that. I had closed the BNL RT ticket, since this issue
+is not related to ATLAS at all, but I didn&#39;t intend to also close
+the OSG GOC ticket. In the past, the GOC ticket always had to be
+closed by hand by one of you after the BNL RT ticket was already
+closed, so I didn&#39;t think it would be a problem to close that.
+Apparently this is now done automatically? If so, my apologies,
+please open the GOC ticket again, and if that will open the
+RT ticket again, too, so be it.
+
+Thanks a lot, Horst</pre></div><div class='update_description'><i onclick="document.location='8830#1278008411'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-01T18:20:11+00:00">Jul 1, 2010 06:20 PM UTC</time> by <b>VDT</b><a class="anchor" name="1278008411">&nbsp;</a></div><pre>So I&#39;m confused--it was assigned to us, but the requester is closing it&#58; is our help needed?
+
+-alain
+
+--
+View ticket at &#60;<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243&#62' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243&#62</a>;
+VDT Support&#58; vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='8830#1278007146'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-01T17:59:06+00:00">Jul 1, 2010 05:59 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1278007146">&nbsp;</a></div><pre>Hi,
+
+Horst closed the ticket on the BNL RT system at
+<a href='https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=17344' target='_blank' rel='nofollow'>https&#58;//rt.racf.bnl.gov/rt/Ticket/Display.html?id=17344</a>
+
+but somehow it also seems to have closed the ticket on the GOC side at
+<a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=8830' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=8830</a>
+
+We thought OSG tickets can only be closed by the GOC,
+and not automatically? Any idea why that was closed and could the ticket #
+8830 be re-opened?
+
+Thanks,
+Karthik
+
+On Thu, 1 Jul 2010, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='8830#1278005116'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-01T17:25:16+00:00">Jul 1, 2010 05:25 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1278005116">&nbsp;</a></div><pre>I&#39;m closing this ticket on the BNL RT side, since it&#39;s not relevant for ATLAS,
+since all the required RSV probes
+are fine, there are just some extra outdated ones we&#39;re trying to get rid of.
+
+Please remember that the resource in question is OU_OSCER_ATLAS, not
+OU_OSCER_CONDOR;
+that was a typo.
+
+Thanks,
+
+Horst
+-- by hs@.... at Thu Jul 01 17&#58;24&#58;58 UTC 2010</pre></div><div class='update_description'><i onclick="document.location='8830#1278004628'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-01T17:17:08+00:00">Jul 1, 2010 05:17 PM UTC</time> by <b>VDT</b><a class="anchor" name="1278004628">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+[vdt-support #-1] Open Science Grid&#58; How to remove erronous RSV Entries. ISSUE=8830 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=7243</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #7243]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+vdt-support@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='8830#1278004368'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-01T17:12:48+00:00">Jul 1, 2010 05:12 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1278004368">&nbsp;</a></div><pre>Assigning to VDT and Scot K per Arvind&#39;s wishes.
+
+Kyle</pre></div><div class='update_description'><i onclick="document.location='8830#1278004330'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-07-01T17:12:10+00:00">Jul 1, 2010 05:12 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1278004330">&nbsp;</a></div><pre>We mistakenly configured the CE for our site OU_OSCER_CONDOR using a wrong hostname in the config.ini file i.e. the config.ini had
+
+localhost = condor1.oscer.ou.edu
+
+instead of
+
+localhost = grid1.oscer.ou.edu
+
+and running &#39;configure-osg -c&#39; with that, propagated the wrong host information to RSV and other areas. Now the rsv page at <a href='https&#58;//grid1.oscer.ou.edu&#58;8443/rsv/' target='_blank' rel='nofollow'>https&#58;//grid1.oscer.ou.edu&#58;8443/rsv/</a> shows remnants of condor1.oscer.ou.edu.
+
+This is in spite of our removing of all the associated directories (config/condor1*conf, output/index.html etc.) and files under the osg-rsv directory and re-running &#39;configure-osg -c&#39; and re-starting the CE services. condor1.oscer.ou.edu still shows up.
+
+Do you know why it keeps coming back? Any idea how to completely prevent condor1.oscer.ou.edu entries showing up in rsv?
+
+Thanks,
+Karthik</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F8830">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 8830});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

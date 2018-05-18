@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[5863] VDT 1.10.1k VOMS&#58; voms-proxy-init does not fail if not in group/role [vdt-support #4247]</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=5863" method="post">
+<div class="page-header">
+    <h3><span class="muted">5863</span> / VDT 1.10.1k VOMS&#58; voms-proxy-init does not fail if not in group/role [vdt-support #4247]</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Weigand</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Please review</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2008-12-02</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+        <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=5863", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/5863?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/5863?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20VDT%201.10.1k%20VOMS%26%2358%3B%20voms-proxy-init%20does%20not%20fail%20if%20not%20in%20group%2Frole%20%5Bvdt-support%20%234247%5D%20ISSUE%3D5863%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='5863#1228252105'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-12-02T21:08:25+00:00">Dec 2, 2008 09:08 PM UTC</time> by <b>echism</b><a class="anchor" name="1228252105">&nbsp;</a></div><pre>John, I believe you did that for another similar ticket.
+
+I will close this one.
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='5863#1227971350'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-29T15:09:10+00:00">Nov 29, 2008 03:09 PM UTC</time> by <b>John Weigand</b><a class="anchor" name="1227971350">&nbsp;</a></div><pre>I believe I already replied that it does solve resolve the problem.
+
+Am I doing something wrong in how I am sending these?
+
+John Weigand
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5863#1227744805'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-27T00:13:25+00:00">Nov 27, 2008 12:13 AM UTC</time> by <b>echism</b><a class="anchor" name="1227744805">&nbsp;</a></div><pre>Is this resolved by the new release?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='5863#1227040465'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-18T20:34:25+00:00">Nov 18, 2008 08:34 PM UTC</time> by <b>echism</b><a class="anchor" name="1227040465">&nbsp;</a></div><pre>Yes, please do. This is intended to be a tracking ticket.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='5863#1226595970'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-13T17:06:10+00:00">Nov 13, 2008 05:06 PM UTC</time> by <b>cat@....</b><a class="anchor" name="1226595970">&nbsp;</a></div><pre>We expect to update to VOMS 1.8.8-2 (or later) in the very near future
+-- perhaps as early as next week.  This VOMS update appears to fix the
+problem cited below.  Also, we are working on getting a fix for
+another VOMS bug that John submitted.
+
+Nothing is available for testing just yet.  We will let you know when
+there is, if you like.
+
+-- Tim
+
+On 12 Nov 2008, at 13&#58;21, John Weigand wrote&#58;
+
+<font color='#7F7E6F'>&#62; Elizabeth,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; sorry about that.  i had assumed you were linked into the VDT ticket</font>
+<font color='#7F7E6F'>&#62; system for 4247..</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=4247' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=4247</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I thought you all had that capability.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Here&#39;s the relevant entries in VDT&#39;s ticket system...</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Fri Oct 31 10&#58;29&#58;48 2008 vincenzo.ciaschini@....</font>
+<font color='#7F7E6F'>&#62; Hi Alain,</font>
+<font color='#7F7E6F'>&#62; Yes, this is fixed in voms 1.8.8</font>
+<font color='#7F7E6F'>&#62; Ciao,</font>
+<font color='#7F7E6F'>&#62; Vincenzo</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Mon Nov 03 16&#58;09&#58;18 2008 cat@....</font>
+<font color='#7F7E6F'>&#62; Commit comment&#58;</font>
+<font color='#7F7E6F'>&#62; Updated VOMS to 1.8.8-2 for testing.</font>
+<font color='#7F7E6F'>&#62; Changed files&#58;</font>
+<font color='#7F7E6F'>&#62; U vdt/branches/vdt-1.10.1-voms-1.8.8/VOMS/nmi/nmi-remote-task.pl</font>
+<font color='#7F7E6F'>&#62; U vdt/branches/vdt-1.10.1-voms-1.8.8/VOMS/nmi/voms-mysql.in</font>
+<font color='#7F7E6F'>&#62; U vdt/branches/vdt-1.10.1-voms-1.8.8/VOMS/nmi/voms.in</font>
+<div id='show_1143915892' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1143915892'><font color='#7F7E6F'>&#62; U vdt/branches/vdt-1.10.1-voms-1.8.8/defs</font>
+<font color='#7F7E6F'>&#62; To generate a diff&#58;</font>
+<font color='#7F7E6F'>&#62; svn diff -c 8274 file&#58;///p/condor/workspaces/vdt/svn</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; beyond that I have not heard anything or that it is available for</font>
+<font color='#7F7E6F'>&#62; testing.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; It could very well be that VDT is waiting for feedback on the 4246</font>
+<font color='#7F7E6F'>&#62; ticket before making it available for testing..</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=4246' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=4246</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I have cc&#39;d Tim Cartwright (VDT) for him to confirm.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; John Weigand</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1143915892').click(function() {
+            $('#detail_1143915892').slideDown("normal");
+            $('#show_1143915892').hide();
+            $('#hide_1143915892').show();
+        });
+        $('#hide_1143915892').click(function() {
+            $('#detail_1143915892').slideUp();
+            $('#hide_1143915892').hide();
+            $('#show_1143915892').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5863#1226518210'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T19:30:10+00:00">Nov 12, 2008 07:30 PM UTC</time> by <b>John Weigand</b><a class="anchor" name="1226518210">&nbsp;</a></div><pre>Elizabeth,
+
+sorry about that.  i had assumed you were linked into the VDT ticket
+system for 4247..
+<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=4247' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=4247</a>
+
+I thought you all had that capability.
+
+Here&#39;s the relevant entries in VDT&#39;s ticket system...
+
+Fri Oct 31 10&#58;29&#58;48 2008 vincenzo.ciaschini@....
+Hi Alain,
+Yes, this is fixed in voms 1.8.8
+Ciao,
+Vincenzo
+
+Mon Nov 03 16&#58;09&#58;18 2008 cat@....
+Commit comment&#58;
+Updated VOMS to 1.8.8-2 for testing.
+Changed files&#58;
+U vdt/branches/vdt-1.10.1-voms-1.8.8/VOMS/nmi/nmi-remote-task.pl
+U vdt/branches/vdt-1.10.1-voms-1.8.8/VOMS/nmi/voms-mysql.in
+U vdt/branches/vdt-1.10.1-voms-1.8.8/VOMS/nmi/voms.in
+U vdt/branches/vdt-1.10.1-voms-1.8.8/defs
+To generate a diff&#58;
+svn diff -c 8274 file&#58;///p/condor/workspaces/vdt/svn
+
+beyond that I have not heard anything or that it is available for testing.
+
+It could very well be that VDT is waiting for feedback on the 4246
+ticket before making it available for testing..
+<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=4246' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&pass=guest&id=4246</a>
+
+I have cc&#39;d Tim Cartwright (VDT) for him to confirm.
+
+<div id='show_2063724869' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2063724869'>John Weigand
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2063724869').click(function() {
+            $('#detail_2063724869').slideDown("normal");
+            $('#show_2063724869').hide();
+            $('#hide_2063724869').show();
+        });
+        $('#hide_2063724869').click(function() {
+            $('#detail_2063724869').slideUp();
+            $('#hide_2063724869').hide();
+            $('#show_2063724869').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5863#1226516934'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T19:08:54+00:00">Nov 12, 2008 07:08 PM UTC</time> by <b>echism</b><a class="anchor" name="1226516934">&nbsp;</a></div><pre>Hello,
+
+I am still waiting for a response on this issue. Please update us.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='5863#1226019331'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-07T00:55:31+00:00">Nov 7, 2008 12:55 AM UTC</time> by <b>echism</b><a class="anchor" name="1226019331">&nbsp;</a></div><pre>I have done this</pre></div><div class='update_description'><i onclick="document.location='5863#1225394890'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-30T19:28:10+00:00">Oct 30, 2008 07:28 PM UTC</time> by <b>cat@....</b><a class="anchor" name="1225394890">&nbsp;</a></div><pre>Would someone please add the string &#34;[vdt-support #4247]&#34; to the name
+of this ticket, so that the GOC Footprint and VDT RT tickets are
+properly linked?  Thanks.
+
+-- Tim
+
+On 30 Oct 2008, at 13&#58;40, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5863#1225392009'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-30T18:40:09+00:00">Oct 30, 2008 06:40 PM UTC</time> by <b>cat@....</b><a class="anchor" name="1225392009">&nbsp;</a></div><pre>Not in our system.....
+
+On 30 Oct 2008, at 13&#58;21, John Weigand wrote&#58;
+
+<font color='#7F7E6F'>&#62; I take it this ticket is not linked at all to VDT 4247</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?id=4247' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?id=4247</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; They passed it along to the VOMS folks.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; John Weigand</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5863#1225391470'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-30T18:31:10+00:00">Oct 30, 2008 06:31 PM UTC</time> by <b>John Weigand</b><a class="anchor" name="1225391470">&nbsp;</a></div><pre>I take it this ticket is not linked at all to VDT 4247
+<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?id=4247' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?id=4247</a>
+
+They passed it along to the VOMS folks.
+
+John Weigand
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5863#1225390629'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-30T18:17:09+00:00">Oct 30, 2008 06:17 PM UTC</time> by <b>echism</b><a class="anchor" name="1225390629">&nbsp;</a></div><pre>I am tracking this as requested. Are there any updates?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='5863#1225217189'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-28T18:06:29+00:00">Oct 28, 2008 06:06 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1225217189">&nbsp;</a></div><pre>I talked to Alain on IM. Tim Cartwright will be checking into this sometime this
+week. Send this back to the operations support team for tracking.</pre></div><div class='update_description'><i onclick="document.location='5863#1224788480'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-23T19:01:20+00:00">Oct 23, 2008 07:01 PM UTC</time> by <b>echism</b><a class="anchor" name="1224788480">&nbsp;</a></div><pre>This has been reported to VDT as ticker 4247
+<a href='http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&amp' target='_blank' rel='nofollow'>http&#58;//crt.cs.wisc.edu/Ticket/Display.html?user=guest&amp</a>;pass=guest&amp;id=4247
+
+From OSG&#58;voms cache
+VDT 1.10.1k
+VOMS 1.8.3p1             VOMS Admin 2.0.14-1
+My daily installs test to verify that voms-proxy-init are working after an
+installation.  However, what I never tested for is for the voms-proxy-init to fail if
+I am not authorized for a given FQAN.  It does not fail so long as I exist in the VO.
+
+These are the commands followed by the VDT_LOCATION/glite/log/voms.oiv_test1 file
+output of the command.
+
+John Weigand
+
+Good one
+---------
+[weigand@cms-xen3 bin]$ voms-proxy-init -voms oiv_test1&#58;/oiv_test1
+Enter GRID pass phrase&#58;
+Your identity&#58; /DC=org/DC=doegrids/OU=People/CN=John Weigand 458491
+Creating temporary proxy ................................................. Done
+Contacting  cms-xen3.fnal.gov&#58;15000
+[/DC=org/DC=doegrids/OU=Services/CN=http/cms-xen3.fnal.gov] &#34;oiv_test1&#34; Done
+Creating proxy ........................................................... Done
+Your proxy is valid until Wed Oct 22 00&#58;23&#58;30 2008
+
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13337]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Listen
+(Server.cpp&#58;361)&#58;Received connection from&#58; 131.225.204.129&#58;19352.&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13337]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;598)&#58;Starting Executor with pid = 13511&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;610)&#58;Self    &#58; /DC=org/DC=doegrids/OU=Services/CN=http/cms-xen3.fnal.gov&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;611)&#58;Self CA &#58; /DC=org/DC=DOEGrids/OU=Certificate Authorities/CN=DOEGrids CA 1&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+<div id='show_1791372145' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1791372145'>(vomsd.cc&#58;618)&#58;At&#58; Tue Oct 21 12&#58;23&#58;30 2008. Received Contact &#58;&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;619)&#58; user&#58; /DC=org/DC=doegrids/OU=People/CN=John Weigand 458491&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;620)&#58; ca  &#58; /DC=org/DC=DOEGrids/OU=Certificate Authorities/CN=DOEGrids CA 1&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;621)&#58; serial&#58; 63C3&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58;
+msg=&#34;LOG_ERROR&#58;STARTUP&#58;my_recv (globuswrap.c&#58;112)&#58;trueres = 1.&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58;
+msg=&#34;LOG_ERROR&#58;STARTUP&#58;my_recv (globuswrap.c&#58;112)&#58;trueres = 1.&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58;
+msg=&#34;LOG_INFO&#58;REQUEST&#58;Execute (vomsd.cc&#58;740)&#58;Userid = &#34;1&#34;&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58;
+msg=&#34;LOG_INFO&#58;REQUEST&#58;Execute (vomsd.cc&#58;749)&#58;Next command &#58; G/oiv_test1&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;RESULT&#58;Execute
+(vomsd.cc&#58;970)&#58;Request Result&#58; /oiv_test1&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;RESULT&#58;Execute
+(vomsd.cc&#58;970)&#58;Request Result&#58; /oiv_test1/group-1&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;RESULT&#58;Execute
+(vomsd.cc&#58;970)&#58;Request Result&#58; /oiv_test1/group-1/group-1-1&#34;
+Tue Oct 21 12&#58;23&#58;30 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13511]&#58; msg=&#34;LOG_INFO&#58;RESULT&#58;Execute
+(vomsd.cc&#58;970)&#58;Request Result&#58; /oiv_test1/group-2&#34;
+
+Invalid Group
+-------------
+[weigand@cms-xen3 bin]$ voms-proxy-init -voms oiv_test1&#58;/oiv_test1/xxxxxxx
+Enter GRID pass phrase&#58;
+Your identity&#58; /DC=org/DC=doegrids/OU=People/CN=John Weigand 458491
+Creating temporary proxy .............................. Done
+Contacting  cms-xen3.fnal.gov&#58;15000
+[/DC=org/DC=doegrids/OU=Services/CN=http/cms-xen3.fnal.gov] &#34;oiv_test1&#34; Done
+Creating proxy ........................................ Done
+Your proxy is valid until Wed Oct 22 00&#58;36&#58;24 2008
+[weigand@cms-xen3 bin]$ echo $?
+0
+
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13337]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Listen
+(Server.cpp&#58;361)&#58;Received connection from&#58; 131.225.204.129&#58;44184.&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13337]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;598)&#58;Starting Executor with pid = 13618&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;610)&#58;Self    &#58; /DC=org/DC=doegrids/OU=Services/CN=http/cms-xen3.fnal.gov&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;611)&#58;Self CA &#58; /DC=org/DC=DOEGrids/OU=Certificate Authorities/CN=DOEGrids CA 1&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;618)&#58;At&#58; Tue Oct 21 12&#58;36&#58;23 2008. Received Contact &#58;&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;619)&#58; user&#58; /DC=org/DC=doegrids/OU=People/CN=John Weigand 458491&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;620)&#58; ca  &#58; /DC=org/DC=DOEGrids/OU=Certificate Authorities/CN=DOEGrids CA 1&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run
+(vomsd.cc&#58;621)&#58; serial&#58; 63C3&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58;
+msg=&#34;LOG_ERROR&#58;STARTUP&#58;my_recv (globuswrap.c&#58;112)&#58;trueres = 1.&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58;
+msg=&#34;LOG_ERROR&#58;STARTUP&#58;my_recv (globuswrap.c&#58;112)&#58;trueres = 1.&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58;
+msg=&#34;LOG_INFO&#58;REQUEST&#58;Execute (vomsd.cc&#58;740)&#58;Userid = &#34;1&#34;&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58;
+msg=&#34;LOG_INFO&#58;REQUEST&#58;Execute (vomsd.cc&#58;749)&#58;Next command &#58; G/oiv_test1/xxxxxxx&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;RESULT&#58;Execute
+(vomsd.cc&#58;970)&#58;Request Result&#58; /oiv_test1&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;RESULT&#58;Execute
+(vomsd.cc&#58;970)&#58;Request Result&#58; /oiv_test1/group-1&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;RESULT&#58;Execute
+(vomsd.cc&#58;970)&#58;Request Result&#58; /oiv_test1/group-1/group-1-1&#34;
+Tue Oct 21 12&#58;36&#58;23 2008&#58;cms-xen3.fnal.gov&#58;vomsd[13618]&#58; msg=&#34;LOG_INFO&#58;RESULT&#58;Execute
+(vomsd.cc&#58;970)&#58;Request Result&#58; /oiv_test1/group-2&#34;
+</div><script type='text/javascript'>
+        $('#show_1791372145').click(function() {
+            $('#detail_1791372145').slideDown("normal");
+            $('#show_1791372145').hide();
+            $('#hide_1791372145').show();
+        });
+        $('#hide_1791372145').click(function() {
+            $('#detail_1791372145').slideUp();
+            $('#hide_1791372145').hide();
+            $('#show_1791372145').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F5863">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 5863});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

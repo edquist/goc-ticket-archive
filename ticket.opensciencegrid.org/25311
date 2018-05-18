@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[25311] RSV metrics get stuck and jobs held in condor-cron</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=25311" method="post">
+<div class="page-header">
+    <h3><span class="muted">25311</span> / RSV metrics get stuck and jobs held in condor-cron</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Dockendorf</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">John Dockendorf</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"><p><a target='_blank' href='https://ticket.opensciencegrid.org/25590'><b>25590</b> condor 8.2.8-1.3 (osg-testing) issues</a></p></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Brian/Customer to Respond</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-06-24</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=25311", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/25311?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/25311?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20RSV%20metrics%20get%20stuck%20and%20jobs%20held%20in%20condor-cron%20ISSUE%3D25311%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='25311#1435098334'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-23T22:25:34+00:00">Jun 23, 2015 10:25 PM UTC</time><a class="anchor" name="1435098334">&nbsp;</a></div><pre>That&#39;s fine with me.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1435097452'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-23T22:10:52+00:00">Jun 23, 2015 10:10 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1435097452">&nbsp;</a></div><pre>Trey,
+
+I went ahead and made a ticket&#58; <a href='https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=5119' target='_blank' rel='nofollow'>https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=5119</a>
+
+Do you mind if we close this ticket and track the issue through there?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='25311#1434992601'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-22T17:03:21+00:00">Jun 22, 2015 05:03 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434992601">&nbsp;</a></div><pre>Ticket still hasn&#39;t been made yet, I&#39;ll update the ticket when it has.</pre></div><div class='update_description'><i onclick="document.location='25311#1434985914'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-22T15:11:54+00:00">Jun 22, 2015 03:11 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1434985914">&nbsp;</a></div><pre>Hi Brian,
+
+Anything new to report on this issue? If I can assist please let me know.
+
+Thank you,</pre></div><div class='update_description'><i onclick="document.location='25311#1434398054'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-15T19:54:14+00:00">Jun 15, 2015 07:54 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1434398054">&nbsp;</a></div><pre>Trey, thanks for the access, it should be helpful in grabbing more recent logs with RSV failures in them. I&#39;ve brought up the error message with the HTCondor team and they&#39;ll be looking into it and making a gittrac ticket for it soon. Thanks for your patience.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25311#1433953573'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-10T16:26:13+00:00">Jun 10, 2015 04:26 PM UTC</time><a class="anchor" name="1433953573">&nbsp;</a></div><pre>If the temp directory is under the root filesystem (not in SPOOL) then there should be plenty of free space, currently 38GB available.  I&#39;d doubt this is a file descriptor issue unless some bug is causing an excessive number of files to be opened.  The sysctl fs.file-max is at 186210.  The soft ulimit for the RSV account is EL6 default of 1024 and hard limit is 4096 (to protect from fork bombs).
+
+If the &#34;new dir&#34; is in HTCondor-CE SPOOL then that&#39;s located on our cluster&#39;s parallel filesystem where there are no space or inode limits enforced, and space is at around 70TB free.
+
+Is there some kind of timeout of expected completion time of issuing file/folder commands?  Since SPOOL is on a parallel filesystem it could be that during heavy usage by users the filesystem is slower than normal (ie mkdir takes many seconds instead of being instant).
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1433951996'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-10T15:59:56+00:00">Jun 10, 2015 03:59 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1433951996">&nbsp;</a></div><pre>Sorry, I was thinking of a different service, but I can&#39;t remember for the life of me which one it was...
+
+That ClassAd expression looks good and should work. The HTCondor team will be taking a look at the error but perhaps there&#39;s something we can look at in the meantime. It looks like the failure is happening when moving the proxy from a temp dir to a new dir. Errno 2 indicates that one of the files/folders doesn&#39;t exist, is there any reason that there would be issues creating any dirs like hitting a max for file descriptors or running out of space on the volume?</pre></div><div class='update_description'><i onclick="document.location='25311#1433892513'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-09T23:28:33+00:00">Jun 9, 2015 11:28 PM UTC</time><a class="anchor" name="1433892513">&nbsp;</a></div><pre>I don&#39;t regenerate the proxy...at least I wasn&#39;t aware that was something that had to be done.  The only proxy / cert aspect of RSV I&#39;ve configured is getting a host cert for /CN=rsv/ce01.brazos.tamu.edu. The cert is at /etc/grid-security/rsv/rsvcert.pem and the key is at /etc/grid-security/rsv/rsvkey.pem.  My rsv.conf is below, which is generated by osg-configure.
+
+Your DN is now mapped at our site and I&#39;ve commented out START_LOCAL_UNIVERSE and START_SCHEDULER_UNIVERSE and have executed &#39;condor_ce_reconfig&#39;.  Is there a way to set START_LOCAL_UNIVERSE to allow just &#34;rsv&#34; and your account ?  Would &#39;START_LOCAL_UNIVERSE = target.Owner =?= &#34;rsv&#34; || target.Owner =?= &#34;ext-blin&#34;&#39; work?
+
+/etc/rsv/rsv.conf&#58;
+[rsv]
+service-cert = /etc/grid-security/rsv/rsvcert.pem
+service-key = /etc/grid-security/rsv/rsvkey.pem
+job-timeout = 1200
+ce-type = htcondor-ce
+service-proxy = /tmp/rsvproxy
+user = rsv
+use-condor-g = True
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1433881489'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-09T20:24:49+00:00">Jun 9, 2015 08:24 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1433881489">&nbsp;</a></div><pre>Though, I think I may have found something interesting in an old log of yours&#58;
+
+05/21/15 16&#58;48&#58;09 rename(/fdata/spool/2055/0/cluster22055.proc0.subproc0.tmp/rsvproxy, /fdata/spool/2055/0/cluster22055.proc0.subproc0/rsvproxy) failed with errno 2
+05/21/15 16&#58;48&#58;09 ERROR &#34;FileTransfer CommitFiles Failed -- What Now?!?!&#34; at line 2564 in file /builddir/build/BUILD/condor-8.2.8/src/condor_utils/file_transfer.cpp
+05/21/15 16&#58;48&#58;10 Transaction&#58;&#58;Commit()&#58; fflush_with_status() took 595 seconds to run
+
+How are you regenerating the RSV proxy? How often are you doing it?</pre></div><div class='update_description'><i onclick="document.location='25311#1433879473'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-09T19:51:13+00:00">Jun 9, 2015 07:51 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1433879473">&nbsp;</a></div><pre>Would you be able to add my DN to your auth (/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brian Lin 1047) and temporarily turn on local jobs? It would allow for faster turnaround on this troubleshooting.</pre></div><div class='update_description'><i onclick="document.location='25311#1433874791'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-09T18:33:11+00:00">Jun 9, 2015 06:33 PM UTC</time><a class="anchor" name="1433874791">&nbsp;</a></div><pre>Attached are files from each dump command.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1433873425'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-09T18:10:25+00:00">Jun 9, 2015 06:10 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1433873425">&nbsp;</a></div><pre>Could you attach the output of &#39;condor_ce_config_val -dump | sort&#39; and &#39;condor_cron_config_val -dump | sort&#39;?</pre></div><div class='update_description'><i onclick="document.location='25311#1433824233'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-09T04:30:33+00:00">Jun 9, 2015 04:30 AM UTC</time><a class="anchor" name="1433824233">&nbsp;</a></div><pre>Once a metric is held they never complete.  So right now org.osg.gratia.metric, org.osg.general.osg-directories-CE-permissions and org.osg.general.osg-version are held.  All 3 have been expired in MyOSG since the hold date (6/4 and 6/5) and the metrics have never made it into Zabbix either.  The rsv process for each is also still in a sleep state.
+
+# ps u --user rsv
+USER        PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+rsv       16422  0.0  0.0  94524  1084 ?        Ss   Jun05   0&#58;03 /usr/bin/python /usr/bin/rsv-control -v 3 -r -u ce01.brazos.tamu.edu org.osg.general.osg-directories-CE-permissions
+rsv       19482  0.0  0.0  94524  1084 ?        Ss   Jun05   0&#58;03 /usr/bin/python /usr/bin/rsv-control -v 3 -r -u ce01.brazos.tamu.edu org.osg.general.osg-version
+rsv       96649  0.0  0.0  94524  1076 ?        Ss   Jun04   0&#58;04 /usr/bin/python /usr/bin/rsv-control -v 3 -r -u ce01.brazos.tamu.edu org.osg.gratia.metric
+
+So far it seems the simplest way to get things going again is to restart the rsv service.  I&#39;ve let things remain held incase it was of value for debugging.  I suppose a &#34;condor_cron_release&#34; may also work at selectively restarting individual held metrics.
+
+Some time ago when we switched to HTCondor-CE I had set START_LOCAL_UNIVERSE=False and START_SCHEDULER_UNIVERSE = $(START_LOCAL_UNIVERSE) to prevent condor jobs from running on the CE which is a VM with 1 vCPU.  I quickly found I had to adjust it to START_LOCAL_UNIVERSE = target.Owner =?= &#34;rsv&#34; so that RSV would run.  That&#39;s the only rsv specific change to HTCondor-CE that I&#39;ve made.  Since this issue is intermitent I figure that isn&#39;t the cause, but figured worth mentioning.
+
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1433799630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-08T21:40:30+00:00">Jun 8, 2015 09:40 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1433799630">&nbsp;</a></div><pre>After those metrics get held, do subsequent metrics of the same type get held or do they complete? I&#39;m guessing they don&#39;t complete but I just want to make sure.</pre></div><div class='update_description'><i onclick="document.location='25311#1433534858'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-05T20:07:38+00:00">Jun 5, 2015 08:07 PM UTC</time><a class="anchor" name="1433534858">&nbsp;</a></div><pre>I have noticed the same jobs do get held.
+
+/usr/libexec/rsv/metrics/org.osg.gratia.metric
+/usr/libexec/rsv/metrics/org.osg.general.osg-directories-CE-permissions
+/usr/libexec/rsv/metrics/org.osg.general.osg-version
+
+Those are the commands of the 3 most recently held metrics.
+
+That condor_cron_history command returns nothing.  If I execute &#34;condor_cron_q -const &#39;JobStatus == 5&#39; -af clusterid holdreason&#34; I get these messages.
+
+28900 Error sending files to schedd ce01.brazos.tamu.edu&#58; SECMAN&#58;2007&#58;Failed to end classad message.
+30501 ERROR&#58; Failed to submit job
+30502 Network error talking to schedd, probably an authorization failure
+30505 Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 25169.0&#58; Failed to receive GoAhead message from 165.91.55.25.
+31091 Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 28466.0&#58;
+
+There were 46 items printed in total but the above appear to be the unique types of messages.  The last two are the most recent and appear to be what I see most frequently when RSV metrics get held.  Other errors could be due to other bugs I&#39;ve experienced in last few weeks/months with htcondor-ce.
+
+Those two IPs resolve to cern.ch addresses with &#34;samnag-ai&#34; in the beginning of the name.  My guess is Nagios SAM hosts.
+
+What could cause the PERMISSION DENIED?  The intermittent nature of the failures is odd.  In most cases if I restart the rsv service things start back up again, but in a matter of days to a week or two at most metrics will begin getting held.
+
+Thanks,
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1433533359'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-05T19:42:39+00:00">Jun 5, 2015 07:42 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1433533359">&nbsp;</a></div><pre>Ah, you&#39;re right, I forgot how intermittent the issue was (go ahead and remove that line from your condor_mapfile I had you add, sorry). Do the same metrics hang each time? We can see if the held jobs always have the same holdreason&#58;
+
+condor_cron_history -const &#39;JobStatus == 5&#39; -af clusterid holdreason
+
+Looking at the SchedLog from 05/26/2015, I see a few errors sending a response classad (which I believe corresponds to the failure to receive GoAhead HoldReasons from earlier in this ticket). Do any of the IP&#39;s look familiar to you?
+
+05/25/15 19&#58;16&#58;47 SECMAN&#58; Error sending response classad to &#60;188.184.66.99&#58;32097&#62;!
+05/25/15 19&#58;16&#58;47 SECMAN&#58; Error sending response classad to &#60;128.142.152.152&#58;41045&#62;!
+
+I also see some auth errors involving your public address&#58;
+
+05/26/15 10&#58;45&#58;42 DC_AUTHENTICATE&#58; attempt to open invalid session ce01&#58;27615&#58;1432654535&#58;372, failing; this session was requested by  with return address &#60;165.91.55.25&#58;9620?sock=27615_03fc_87&#62;
+
+And this one denying rsv!
+
+05/26/15 04&#58;34&#58;53 PERMISSION DENIED to rsv@.... from host 165.91.55.25 for command 60026 (DC_NOP_DAEMON), access level DAEMON&#58; reason&#58; DAEMON authorization policy contains no matching ALLOW entry for this request; identifiers used for this host&#58; 165.91.55.25,ce01.brazos.tamu.edu, hostname size = 1, original ip address = 165.91.55.25</pre></div><div class='update_description'><i onclick="document.location='25311#1433529407'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-05T18:36:47+00:00">Jun 5, 2015 06:36 PM UTC</time><a class="anchor" name="1433529407">&nbsp;</a></div><pre>RSV is running from our CE.
+
+I&#39;ve added that line and ran condor_ce_reconfig.  The problem I&#39;m seeing is intermittent, the RSV metrics begin to hang after a period of time and only some metrics hang when the job in condor-cron gets held.  Wouldn&#39;t that line missing from condor_mapfile cause persistent failures?
+
+Thanks,
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1433527271'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-05T18:01:11+00:00">Jun 5, 2015 06:01 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1433527271">&nbsp;</a></div><pre>Trey,
+
+Is RSV being run from your CE? I think you&#39;ll want to add your RSV cert&#39;s DN to the condor_mapfile. Before the line that contains GSS_ASSIST_GRIDMAP, try adding this&#58;
+
+GSI &#34;^&#92;/DC&#92;=com&#92;/DC&#92;=DigiCert-Grid&#92;/O&#92;=Open Science Grid&#92;/OU&#92;=Services&#92;/CN&#92;=rsv&#92;/ce01&#92;.brazos&#92;.tamu&#92;.edu$&#34; rsv@....
+
+Here&#39;s a relevant ticket I found&#58; <a href='https&#58;//ticket.grid.iu.edu/22418' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/22418</a>
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='25311#1433270834'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-02T18:47:14+00:00">Jun 2, 2015 06:47 PM UTC</time><a class="anchor" name="1433270834">&nbsp;</a></div><pre>Correction, the logs are uploaded as condor-ce-logs-20150602-1.tar.gz and condor-ce-logs-20150602-2.tar.gz.  The file size limit prevented the 2.4MB file from being uploaded.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1433270590'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-02T18:43:10+00:00">Jun 2, 2015 06:43 PM UTC</time><a class="anchor" name="1433270590">&nbsp;</a></div><pre>The file condor-ce-logs-20150526.tar.gz.txt was attached the last time RSV metrics got stuck.  I reran the commands mentioned by Brian and have attached the logs from /var/log/condor-ce/*Log as condor-ce-logs-20150602.tar.gz.txt.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1433268431'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-02T18:07:11+00:00">Jun 2, 2015 06:07 PM UTC</time><a class="anchor" name="1433268431">&nbsp;</a></div><pre>Hi John,
+
+Could you include the logs of the CE?
+
+Cheers,
+
+Edgar
+
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='25311#1432842443'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-28T19:47:23+00:00">May 28, 2015 07:47 PM UTC</time><a class="anchor" name="1432842443">&nbsp;</a></div><pre>So right now my RSV host is also my CE which runs htcondor-ce.  Below [1] is the output of those commands.  Since the condor_run failed I tried with condor_ce_run, which worked.
+
+Right now my Zabbix instance shows numerous RSV metrics have failed to produce data in a long period of time, and in MyOSG many metrics are expired.  The only way I&#39;ve found to fix this is to restart the rsv service.  The condor_ce_run command produced a batch job in SLURM.  If the RSV metrics eventually get run in SLURM, could high cluster utilization produce these hangs?  The job that ran from condor_ce_run was run in our &#34;background&#34; partition which only gets to run jobs on idle CPUs, and is preemptable (via suspend).
+
+[1]&#58;
+
+[rsv@ce01 ~]$ voms-proxy-init -cert /etc/grid-security/rsv/rsvcert.pem -key /etc/grid-security/rsv/rsvkey.pem
+Your identity&#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/ce01.brazos.tamu.edu
+Creating proxy ............................. Done
+
+Your proxy is valid until Fri May 29 02&#58;37&#58;46 2015
+[rsv@ce01 ~]$ condor_ping -name ce01.brazos.tamu.edu -pool ce01.brazos.tamu.edu&#58;9619 WRITE -verbose
+Remote Version&#58;              $CondorVersion&#58; 8.2.8 Apr 28 2015 $
+Local  Version&#58;              $CondorVersion&#58; 8.2.8 Apr 28 2015 $
+Session ID&#58;                  ce01&#58;42468&#58;1432841888&#58;3844
+Instruction&#58;                 WRITE
+Command&#58;                     60021
+Encryption&#58;                  none
+Integrity&#58;                   MD5
+Authenticated using&#58;         FS
+All authentication methods&#58;  FS,GSI
+Remote Mapping&#58;              rsv@....
+Authorized&#58;                  TRUE
+
+[rsv@ce01 ~]$ condor_run -r ce01.brazos.tamu.edu /bin/env
+
+ERROR&#58; Can&#39;t find address of local schedd
+Failed to submit Condor job.
+[rsv@ce01 ~]$ condor_ce_run -r ce01.brazos.tamu.edu /bin/env
+&#60;environment variables printed&#62;
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1432841669'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-28T19:34:29+00:00">May 28, 2015 07:34 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1432841669">&nbsp;</a></div><pre>So we can test auth/job submission manually as the RSV user from your RSV host&#58;
+
+# su rsv
+$ voms-proxy-init -cert /etc/grid-security/rsv/rsvcert.pem -key /etc/grid-security/rsv/rsvkey.pem
+$ condor_ping -name &#60;CE hostname&#62; -pool &#60;CE hostname&#62;&#58;9619 WRITE -verbose
+$ condor_run -r &#60;CE hostname&#62; /bin/env
+
+If any of those steps fail, I&#39;d like to see the CE logs.</pre></div><div class='update_description'><i onclick="document.location='25311#1432834643'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-28T17:37:23+00:00">May 28, 2015 05:37 PM UTC</time><a class="anchor" name="1432834643">&nbsp;</a></div><pre>Attached is my /etc/condor-ce/condor_mapfile.  The condor_mapfile contents are unmodified on our CE, so they are the same contents that I&#39;d assume are installed by one of the htcondor-ce packages.
+
+I also updated condor and htcondor-ce.
+
+# yum list installed | grep condor
+condor.x86_64                          8.2.8-1.3.osg32.el6       @osg
+condor-classads.x86_64                 8.2.8-1.3.osg32.el6       @osg
+condor-cron.noarch                     1.0.9-3.osg32.el6         @osg
+condor-procd.x86_64                    8.2.8-1.3.osg32.el6       @osg
+condor-python.x86_64                   8.2.8-1.3.osg32.el6       @osg
+htcondor-ce.x86_64                     1.13-1.osg32.el6          @osg
+htcondor-ce-client.x86_64              1.13-1.osg32.el6          @osg
+htcondor-ce-pbs.x86_64                 1.13-1.osg32.el6          @osg
+osg-htcondor-ce.x86_64                 3.2-7.osg32.el6           @osg
+osg-htcondor-ce-pbs.x86_64             3.2-7.osg32.el6           @osg
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1432677394'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T21:56:34+00:00">May 26, 2015 09:56 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1432677394">&nbsp;</a></div><pre>What are the contents of your /etc/condor-ce/condor_mapfile on your CE?</pre></div><div class='update_description'><i onclick="document.location='25311#1432668330'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T19:25:30+00:00">May 26, 2015 07:25 PM UTC</time><a class="anchor" name="1432668330">&nbsp;</a></div><pre>I will try that and see.  When I did the update of condor I did not update htcondor-ce.  Given the issues I experienced with the updated condor I&#39;m a little hesitant to put things into a potentially broken state again, but if there&#39;s a potential fix in updating both condor and htcondor-ce then I&#39;ll give it a try.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1432666561'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T18:56:01+00:00">May 26, 2015 06:56 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1432666561">&nbsp;</a></div><pre>Do you see the same problems if you update your htcondor-ce packages as well?</pre></div><div class='update_description'><i onclick="document.location='25311#1432656798'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T16:13:18+00:00">May 26, 2015 04:13 PM UTC</time><a class="anchor" name="1432656798">&nbsp;</a></div><pre>I opened a new ticket specific to the issues I mentioned about condor_ce_q hanging since I was on a version from osg-testing repo.  <a href='https&#58;//ticket.opensciencegrid.org/25590' target='_blank' rel='nofollow'>https&#58;//ticket.opensciencegrid.org/25590</a>
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1432655811'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-26T15:56:51+00:00">May 26, 2015 03:56 PM UTC</time><a class="anchor" name="1432655811">&nbsp;</a></div><pre>This issue has now become a bit worse and unsure if this requires a new ticket.  The &#34;condor_ce_q&#34; command on my CE just hangs and produces nothing.  All jobs submitted to htcondor-ce become held but I can no longer check what&#39;s in the queue.
+
+I&#39;ve attached all the logs.  Having trouble attaching much more as keep getting messages the file size is too large (3.3MB).
+
+# yum list installed | grep condor
+condor.x86_64                          8.2.8-1.3.osg32.el6       @osg-testing
+condor-classads.x86_64                 8.2.8-1.3.osg32.el6       @osg-testing
+condor-cron.noarch                     1.0.9-3.osg32.el6         @osg
+condor-procd.x86_64                    8.2.8-1.3.osg32.el6       @osg-testing
+condor-python.x86_64                   8.2.8-1.3.osg32.el6       @osg-testing
+htcondor-ce.x86_64                     1.10-1.osg32.el6          @osg
+htcondor-ce-client.x86_64              1.10-1.osg32.el6          @osg
+htcondor-ce-pbs.x86_64                 1.10-1.osg32.el6          @osg
+osg-htcondor-ce.x86_64                 3.2-7.osg32.el6           @osg
+osg-htcondor-ce-pbs.x86_64             3.2-7.osg32.el6           @osg
+
+I&#39;m on osg-testing version of condor to resolve issue from another ticket where condor_schedd daemon kept segfaulting and crashing.  <a href='https&#58;//ticket.opensciencegrid.org/25151' target='_blank' rel='nofollow'>https&#58;//ticket.opensciencegrid.org/25151</a>
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1432337070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-22T23:24:30+00:00">May 22, 2015 11:24 PM UTC</time><a class="anchor" name="1432337070">&nbsp;</a></div><pre>This has happened again.  Attached are SchedLog and SchedLog.old from /var/log/condor-ce.  They are attached in condor-ce-logs-20150522.tar.gz.txt.
+
+The output of condor_cron_q&#58;
+
+30375.0   rsv             5/21 15&#58;47   0+00&#58;00&#58;00 H  0   0.0  org.osg.general.os
+30376.0   rsv             5/21 16&#58;23   0+00&#58;00&#58;00 H  0   0.0  org.osg.gratia.met
+30377.0   rsv             5/21 16&#58;37   0+00&#58;00&#58;00 H  0   0.0  org.osg.general.os
+
+# condor_cron_q -long 30375.0 30376.0 30377.0 | grep -i reason
+ReleaseReason = undefined
+HoldReasonSubCode = 0
+HoldReasonCode = 0
+HoldReason = &#34;Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 22052.0&#58; Failed to receive GoAhead message from 165.91.55.25.&#34;
+ReleaseReason = undefined
+HoldReasonSubCode = 0
+HoldReasonCode = 0
+HoldReason = &#34;Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 22056.0&#58; Failed to receive GoAhead message from 165.91.55.25.&#34;
+ReleaseReason = undefined
+HoldReasonSubCode = 0
+HoldReasonCode = 0
+HoldReason = &#34;Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 22055.0&#58; Failed to receive GoAhead message from 165.91.55.25.&#34;
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1431967351'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-18T16:42:31+00:00">May 18, 2015 04:42 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1431967351">&nbsp;</a></div><pre>Hello John and Brian,
+
+Are we unable to continue troubleshooting without those logs? Is this resolved until it happens again?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='25311#1431545690'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-13T19:34:50+00:00">May 13, 2015 07:34 PM UTC</time><a class="anchor" name="1431545690">&nbsp;</a></div><pre>Brian,
+
+The next time it happens I&#39;ll attach those logs too.  Right now the SchedLog.old no longer contains entries from when this occurred.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='25311#1431465339'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-12T21:15:39+00:00">May 12, 2015 09:15 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1431465339">&nbsp;</a></div><pre>Could you also attach /var/log/condor-ce/SchedLog from ce01.brazos.tamu.edu?</pre></div><div class='update_description'><i onclick="document.location='25311#1431116313'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-08T20:18:33+00:00">May 8, 2015 08:18 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1431116313">&nbsp;</a></div><pre>Assigning to Mat and Brian</pre></div><div class='update_description'><i onclick="document.location='25311#1431033176'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-07T21:12:56+00:00">May 7, 2015 09:12 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1431033176">&nbsp;</a></div><pre>I&#39;ve noticed that since switching from GRAM to HTCondor-CE that about once a week some RSV metrics will get &#34;stuck&#34; and report no data to MyOSG or Zabbix (via zabbix consumer).  When I look at the job list for condor-cron I noticed those metrics are in Held state.
+
+When I inspect the hold reason of the last 5 jobs to be held (May 3-5th) I see these reasons&#58;
+
+# condor_cron_q -long 29118.0 29119.0 29120.0 29122.0 29129.0 | grep &#39;HoldReason = &#39;
+HoldReason = &#34;Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 14520.0&#58; &#34;
+HoldReason = &#34;Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 14526.0&#58; &#34;
+HoldReason = &#34;Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 14536.0&#58; &#34;
+HoldReason = &#34;Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 14745.0&#58; &#34;
+HoldReason = &#34;Error sending files to schedd ce01.brazos.tamu.edu&#58; DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for target job 14521.0&#58; Failed to receive GoAhead message from 165.91.55.25.&#34;
+
+I&#39;ll attach osg-system-profiler output and the files in /var/log/condor-cron.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F25311">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 25311});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

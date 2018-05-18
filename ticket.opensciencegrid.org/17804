@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[17804] Large and slow fetches from osg-xsede</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=17804" method="post">
+<div class="page-header">
+    <h3><span class="muted">17804</span> / Large and slow fetches from osg-xsede</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Steve Timm</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">OSG_XSEDE</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Engage</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Steve Timm</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">OSG-GOC</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-11-15</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">OSG-GOC <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=17804", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/17804?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/17804?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Large%20and%20slow%20fetches%20from%20osg-xsede%20ISSUE%3D17804%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='17804#1384177021'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-11T13:37:01+00:00">Nov 11, 2013 01:37 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1384177021">&nbsp;</a></div><pre>Thanks Steve. I will work on my workflow this week to lessen squid load for my workflow.
+
+Closing this ticket.</pre></div><div class='update_description'><i onclick="document.location='17804#1384142708'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-11T04:05:08+00:00">Nov 11, 2013 04:05 AM UTC</time> by <b>Steven Timm</b><a class="anchor" name="1384142708">&nbsp;</a></div><pre>Soichi,
+Part of what happened around 00&#58;00 UTC is that our squid servers around that point were so busy they went into swapping.  We have made some tunes in the squid servers in the network buffers so they should go better over the WAN.  We have also changed the tunes in the LVS server that fronts them.  We then tested fetching 2000 simultaneous tarballs from osg-xsede and our squid servers survived it this time.  So it should not be a problem if you run this workload again.  I believe this ticket can be closed at this point.
+
+Steve Timm</pre></div><div class='update_description'><i onclick="document.location='17804#1383940506'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T19:55:06+00:00">Nov 8, 2013 07:55 PM UTC</time><a class="anchor" name="1383940506">&nbsp;</a></div><pre>00&#58;00 UTC would have been around the time when the squid servers were in the worst state and we actually rebooted them to get more memory because they were swapping very badly.  It could have come then.  We&#39;ve also done some network tunes on the squid servers which should aid the transfer of files over the WAN in future.
+The difference between the peak of the crisis which was between about 18&#58;00 and 00&#58;00 UTC, and the other times, was that during
+the peak we were actually getting TCP_MISS every time you went for one of the big tarballs and so we had to handle both inbound and outbound
+network traffic on those.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='17804#1383939578'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T19:39:38+00:00">Nov 8, 2013 07:39 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1383939578">&nbsp;</a></div><pre>Dave,
+
+Thanks! I am planning to overhaul the workflow next week (see the detail below). Meanwhile, I&#39;d like point out that.. my workflow was running quite smoothly - even during the time period where more of my jobs are running (2700 cores or so). At around 00&#58;00 UTC today, the jobs started having trouble downloading files via local cluster&#39;s squid servers, and then the issue disappeared after about 1.5 hours. If my workflow was solely to blame, I would think that I would be seeing the issue the entire time.. but maybe it&#39;s just that the problem exhibited itself when osg-xsede was doing something else during that time? Please see the attached condor graph.
+
+Again, I am planning to fix my workflow in order to lessen the squid load by grouping submission of jobs that uses same DB parts.
+
+Soichi</pre></div><div class='update_description'><i onclick="document.location='17804#1383938851'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T19:27:31+00:00">Nov 8, 2013 07:27 PM UTC</time><a class="anchor" name="1383938851">&nbsp;</a></div><pre>Soichi,
+
+Further analysis here has shown more clearly that these files were the cause of the overload of the Fermilab squid servers (or more precisely our LVS frontend), but it isn&#39;t clear to me that the problem was in the osg-xsede server at all.  I think the behavior we saw can be entirely explained by simply trying to load data faster out of the squids than the LVS server was capable of handling
+
+Dave
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Dave Dykstra 508</pre></div><div class='update_description'><i onclick="document.location='17804#1383924708'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T15:31:48+00:00">Nov 8, 2013 03:31 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1383924708">&nbsp;</a></div><pre>Steve,
+
+I will have to re-submit small portion of the workflow that has failed from yesterday&#39;s run.. so you might still see a bit of spike, but I will definitely address the squid issue with my workflow one way or another..
+
+Speaking of the &#34;ClusterGroupingHint&#34; idea I mentioned earlier.. Can I accomplish the same thing simply by submitting jobs that should be grouped together first? Assuming condor will execute jobs with submission-FIFO,  then I can just re-org my workflow such that the same database part will be submitted together and reduce the squid load?</pre></div><div class='update_description'><i onclick="document.location='17804#1383922646'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T14:57:26+00:00">Nov 8, 2013 02:57 PM UTC</time><a class="anchor" name="1383922646">&nbsp;</a></div><pre>Hi.. thanks for the response.
+First of all, the heavy load on our squid servers and the LVS servers in front of them dropped off starting about 22&#58;56 local time
+last night and we are back to normal.. this is despite a large number of OSG VO jobs still running and continuing to do
+wgets of these large tarballs, although not quite at the same rate we saw yesterday.  So we cannot be sure that osg-xsede was the
+only culprit in high data load or the only bottleneck.  It was, however, the newest biggest tarball we could find when we skimmed our logs.
+As you see below, we were getting a lot of TCP_MISS on these big tarballs at the height of our load crisis and that is a quick way to death
+for a squid server.  We will continue to investigate more, and are also investigating whether we will have to resize our squid servers to handle
+the higher load coming from this and from cvmfs.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167</pre></div><div class='update_description'><i onclick="document.location='17804#1383921373'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T14:36:13+00:00">Nov 8, 2013 02:36 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1383921373">&nbsp;</a></div><pre>Perhaps arranging the workflow so that the jobs are longer running will help too.  If a larger number of tasks using &#60;db part 12&#62; could be assembled
+into one job, that db would not be loaded as often. For the case at hand, the jobs ran for ~45 minutes. If 3 hours in possible it may cut the bandwidth
+by a factor of 4.
+S</pre></div><div class='update_description'><i onclick="document.location='17804#1383920070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T14:14:30+00:00">Nov 8, 2013 02:14 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1383920070">&nbsp;</a></div><pre>I&#39;ve seen issues where a single squid server is asked to download many different NR db parts and ends up swapping (cache-missing) inside squid. This is the first time I&#39;ve heard that osg-xsede was the bottleneck - although I am not surprised..
+
+I&#39;ve pinged Brian B. on possible solution for this in the past, but I have not heard back..
+
+If osg-xsede could allow workflows to *suggest* which groups of jobs should go to the same cluster (cluster that shares the same squid), then I could instruct my workflow such that most jobs that requires NR db part, say 12, will be submitted to SITE_A, and db part 13 to be submitted on SITE_B, etc.. I know it&#39;s not always possible to submit the entire group to be submitted on a single cluster, so this will simply be a &#34;hint&#34; to the osg-xsede so that it will choose certain clusters if possible. I believe such cluster hinting will dramatically reduce the squid cache-miss, and reduce the overall network bandwidth.
+
+Example of how I could set this &#34;hint&#34; is to add something like following in the condor submit file.
+<font color='#7F7E6F'>&#62; +ClusterGroupingHint = &#34;nr.12&#34;</font>
+
+Is this technically possible to do?
+
+If not, I could also do one of following..
+1) Mirror osg-xsede scratch public_html directory accross multiple sites - and RR for each jobs.
+2) Use something like btsync (<a href='http&#58;//www.bittorrent.com/sync' target='_blank' rel='nofollow'>http&#58;//www.bittorrent.com/sync</a>) instead of local squid to download DB parts.
+3) Break up my workflow so that same DB parts will be processed all together - before moving to the next (this could turn HTC into sequential computing.. So I&#39;d rather not do..)
+
+Thanks!
+Soichi</pre></div><div class='update_description'><i onclick="document.location='17804#1383876777'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T02:12:57+00:00">Nov 8, 2013 02:12 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1383876777">&nbsp;</a></div><pre>We are seeing a lot of very big and very long wgets from osg-xsede.grid.iu.edu frontend.
+
+They are for files of the following form&#58;
+
+1383875436.938 119996 131.225.204.105 TCP_MISS/200 6532552 GET http&#58;//osg-xsede.
+grid.iu.edu/scratch/iugalaxy/blastapp/ncbi-blast-2.2.28+/bin/blastp.gz - DIRECT/
+129.79.53.21 application/x-gzip
+1383875438.150 120059 131.225.190.185 TCP_MISS/200 6675910 GET http&#58;//osg-xsede.
+grid.iu.edu/scratch/iugalaxy/blastapp/ncbi-blast-2.2.28+/bin/blastp.gz - DIRECT/
+129.79.53.21 application/x-gzip
+1383875439.325 405750 131.225.167.145 TCP_MISS/200 24641138 GET http&#58;//osg-xsede
+.grid.iu.edu/scratch/iugalaxy/blastdb/nr.latest/nr.12.tar.gz - DIRECT/129.79.53.
+21 application/x-gzip
+1383875439.403 214845 131.225.205.186 TCP_MISS/200 24641146 GET http&#58;//osg-xsede
+.grid.iu.edu/scratch/iugalaxy/blastdb/nr.latest/nr.12.tar.gz - DIRECT/129.79.53.
+21 application/x-gzip
+1383875442.302 120125 131.225.166.177 TCP_MISS/200 7163327 GET http&#58;//osg-xsede.
+grid.iu.edu/scratch/iugalaxy/blastapp/ncbi-blast-2.2.28+/bin/blastp.gz - DIRECT/
+129.79.53.21 application/x-gzip
+1383875448.875 120011 131.225.166.147 TCP_MISS/200 7888345 GET http&#58;//osg-xsede.
+grid.iu.edu/scratch/iugalaxy/blastapp/ncbi-blast-2.2.28+/bin/blastp.gz - DIRECT/
+129.79.53.21 application/x-gzip
+1383875456.206 3542999 131.225.190.249 TCP_MISS/200 93447617 GET http&#58;//osg-xsed
+e.grid.iu.edu/scratch/iugalaxy/blastdb/nr.latest/nr.32.tar.gz - DIRECT/129.79.53
+.21 application/x-gzip
+1383875463.711 638846 131.225.204.37 TCP_MISS/200 42252817 GET http&#58;//osg-xsede.
+grid.iu.edu/scratch/iugalaxy/blastdb/nr.latest/nr.24.tar.gz - DIRECT/129.79.53.2
+1 application/x-gzip
+1383875463.711 730706 131.225.191.243 TCP_MISS/200 42252809 GET http&#58;//osg-xsede
+.grid.iu.edu/scratch/iugalaxy/blastdb/nr.latest/nr.24.tar.gz - DIRECT/129.79.53.
+21 application/x-gzip
+1383875463.754 340788 131.225.191.76 TCP_MISS/200 42252818 GET http&#58;//osg-xsede.
+grid.iu.edu/scratch/iugalaxy/blastdb/nr.latest/nr.24.tar.gz - DIRECT/129.79.53.2
+1 application/x-gzip
+1383875496.546 120048 131.225.190.186 TCP_MISS/200 3164514 GET http&#58;//osg-xsede.
+<div id='show_1075131149' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1075131149'>grid.iu.edu/scratch/iugalaxy/blastapp/ncbi-blast-2.2.28+/bin/blastp.gz - DIRECT/
+129.79.53.21 application/x-gzip
+1383875496.673 122516 131.225.191.74 TCP_MISS/200 3213665 GET http&#58;//osg-xsede.g
+rid.iu.edu/scratch/iugalaxy/blastapp/ncbi-blast-2.2.28+/bin/blastp.gz - DIRECT/1
+29.79.53.21 application/x-gzip
+1383875139.978 361349 131.225.166.223 TCP_MISS/200 53504408 GET http&#58;//osg-xsede
+.grid.iu.edu/scratch/donkri/152_201_EOC3.tar - DIRECT/129.79.53.21 application/x
+-tar
+1383875143.117 344121 131.225.167.79 TCP_SWAPFAIL_MISS/200 48159127 GET http&#58;//o
+sg-xsede.grid.iu.edu/scratch/donkri/147_203_EOC5.tar - DIRECT/129.79.53.21 appli
+cation/x-tar
+
+Those which are of form nr.nn.tar.gz are averaging about 300MB per file and taking almost 3000 seconds
+sometime to get here.  The second number in the logs (which come from our squid) is the number of milliseconds it took the fetch to complete.
+All of them shown here are taking more than 100s, some as much as 3000s
+Please investigate the web server on osg-xsede.grid.iu.edu and make sure it is not overloaded.
+
+An overloaded web service on the back end is one thing that can make a site squid server get very overloaded, which ours is currently.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Steve Timm 167
+
+</div><script type='text/javascript'>
+        $('#show_1075131149').click(function() {
+            $('#detail_1075131149').slideDown("normal");
+            $('#show_1075131149').hide();
+            $('#hide_1075131149').show();
+        });
+        $('#hide_1075131149').click(function() {
+            $('#detail_1075131149').slideUp();
+            $('#hide_1075131149').hide();
+            $('#show_1075131149').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F17804">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 17804});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

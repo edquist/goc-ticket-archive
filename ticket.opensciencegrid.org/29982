@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[29982] OSG host certificate requests and x509 proxy support</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=29982" method="post">
+<div class="page-header">
+    <h3><span class="muted">29982</span> / OSG host certificate requests and x509 proxy support</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John S. De Stefano Jr.</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">John S. De Stefano Jr.</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Provide Update</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-06-06</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">OSG RA <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Sarah Schmiechen <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Thomas Lee <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">Sarah Schmiechen <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">Scott Teige <span class="muted"> / OSG Operations Infrastructure</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=29982", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/29982?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/29982?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20OSG%20host%20certificate%20requests%20and%20x509%20proxy%20support%20ISSUE%3D29982%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='29982#1465343573'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-07T23:52:53+00:00">Jun 7, 2016 11:52 PM UTC</time> by <b>Mine Altunay</b><a class="anchor" name="1465343573">&nbsp;</a></div><pre>Hello John,
+I did not get an email from JIRA. But, I am reviewing your lira update right now.
+Mine</pre></div><div class='update_description'><i onclick="document.location='29982#1465247551'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-06T21:12:31+00:00">Jun 6, 2016 09:12 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1465247551">&nbsp;</a></div><pre>No that&#39;s not expected.  I didn&#39;t get email either.  I suggest a separate GOC ticket reporting a problem with jira.</pre></div><div class='update_description'><i onclick="document.location='29982#1465236191'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-06T18:03:11+00:00">Jun 6, 2016 06:03 PM UTC</time> by <b>Mariachi</b><a class="anchor" name="1465236191">&nbsp;</a></div><pre>Hi,
+
+I commented on the new ticket, but no one at BNL is getting email
+updates. Is this expected?
+
+Cheers,
+
+--john
+
+On 06/02/2016 11&#58;57 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='29982#1464883020'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-02T15:57:00+00:00">Jun 2, 2016 03:57 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1464883020">&nbsp;</a></div><pre>I will close this now. If there is anyone on this ticket without access to jira please email the GOC and we will assist.
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='29982#1464882649'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-02T15:50:49+00:00">Jun 2, 2016 03:50 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464882649">&nbsp;</a></div><pre>Followup moved to <a href='https&#58;//jira.opensciencegrid.org/browse/SECURITY-13' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SECURITY-13</a>
+
+As discussed in this morning&#39;s phone call, this ticket can be closed.</pre></div><div class='update_description'><i onclick="document.location='29982#1464881217'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-02T15:26:57+00:00">Jun 2, 2016 03:26 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1464881217">&nbsp;</a></div><pre>Adding Susan to this ticket.</pre></div><div class='update_description'><i onclick="document.location='29982#1464819310'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T22:15:10+00:00">Jun 1, 2016 10:15 PM UTC</time> by <b>Mariachi</b><a class="anchor" name="1464819310">&nbsp;</a></div><pre>Hi Dave,
+
+OK, a small group quickly sounds better than a task force.
+
+I&#39;d like to hear the concrete rationale for the host cert private keys
+location requirement in this context (OIM contacts from trusted host, as
+opposed to cert requests coming from a end/target host). If the private
+key is generated on a bastion host, and transferred via SSH to the
+target, that is equivalent to them having only been on the target host.
+If the bastion is compromised, all is lost anyway.
+
+Not moving private keys *from* the host they are for makes sense, but
+that is a different scenario.
+
+Cheers,
+
+--john
+
+On 06/01/2016 04&#58;42 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='29982#1464813761'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T20:42:41+00:00">Jun 1, 2016 08:42 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464813761">&nbsp;</a></div><pre>John,
+
+Thanks much for the details.
+
+Using a proxy to run osg-cert-request on the host that needs the cert is an improvement over sending the gridadmin&#39;s key, cert, & passphrase, but it is still vulnerable to interception on a compromised host.  It will still enable requesting a certificate for any host at BNL, which is bad.  I think the cert request either has to be done on the Certify host or OIM has to verify that the request is coming from a host that matches the name.
+
+Although the Digicert-Grid CA never did support Subject Alternative Names (except via a completely manual process done only by the security team), the CILogon OSG CA does support them.
+
+I think it is still important that host cert private keys never leave the target host.   Requirement #2 is the one I think can be relaxed if DNS names map to the host making the request.  If a site like BNL does not expose the host names in the DNS yet wants to automate things, maybe there could be a service certificate registered for the Certify host at BNL that can make the requests on behalf of the other machines, with the understanding that the host has to meet certain security requirements in order to be allowed to do that.  The machines can notify the Certify host somehow that they have a CSR (maybe it will poll them) and it can verify the DNS mappings.  Meanwhile for the sites that do have all public names and don&#39;t use a NAT we can do the verification at the OIM.  Once a host has a certificate, it should be able to renew using the old certificate for verification direct to OIM with or without an external DNS name & NAT.
+
+I think we should get a small team together soon to come up with a design and a plan.  Ideally we&#39;ll come up with a toolset with two options for automated host cert creation/renewal, one verified by OIM and one verified by a trusted host at a site.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='29982#1464805617'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T18:26:57+00:00">Jun 1, 2016 06:26 PM UTC</time><a class="anchor" name="1464805617">&nbsp;</a></div><pre>Hi Dave, Jason, John, all
+
+I just read over the whole thread.
+
+One thing is to clarify the current official method of host certificate request/renewal at BNL. The current tool is run outside of Puppet and is independent of it (it&#39;s called Certify). It resides on a limited-access bastion host, and the gridadmin has a non-root account. Root login via SSH (keys) from that host is allowed to all the hosts at our site.
+
+Certify is run manually by a gridadmin, who enters his user cert passphrase at the command line. This is done once a week or so. Certify runs over the list of all configured hosts (from a config file) and via SSH checks to confirm the presence/expiration date of host certs. If a cert is needed, it creates a CSR on the target host, and copies the CSR back to the Certify host, then locally runs osg-gridadmin-cert-request appropriately. It then copies the signed cert to the target host. Only a Certify admin can add/remove hosts from the utility config file.
+
+This tool&#39;s flow was the result of weeks of discussion  by myself and Jay Packard with Mine and other OSG security folks--all in an effort to comply with the CA&#39;s (Digicert, I believe) requirements that&#58;
+1) Host cert private keys never leave the target host.
+2) A gridadmin must manually enter a passphrase.
+3) A gridadmin must have some control/review over what host certs are requested.
+
+The automated process Jason has been describing is Puppet-based, and runs on/from the target hosts. In that flow, a gridadmin cert, key, and passphrase are transferred to the target host by Puppet and osg-gridadmin-cert-request is run from there, after which the user cert and key are deleted. The transfers are encrypted, but the passphrase exists briefly in memory on the target host.
+
+When I learned about the Puppet-based process, I objected to ever sending a gridadmin cert, key, and passphrase to a target host. This is because any one of the several hundred target hosts are compromised, an attacker can grab those three tokens from memory and files, and use them to request arbitrary host certificates.  In discussions we knocked around various ideas to mitigate that, and using a short-lived proxy seemed an improvement.
+
+We also discussed a model where Puppet would perform a (non-gridadmin) osg-cert-request command, after which a gridadmin would approve the request via the OIM web interface. On the next Puppet run on the target host, it would do a osg-cert-retrieve and move files appropriately. This involves only having an unprivileged user cert on the host temporarily (good), but makes the overall process less automated (bad and good?). It slows the process down, but forces a human to sanity-check the host names involved.
+
+My current thought is that if restriction #1 above is no longer so critical (i.e. with CILogon), then we can consider a model where valid certs and keys are maintained on a single, central Puppet host, and then sent to the target hosts when updated. Essentially this means making the Puppet master host the Certify bastion host, and using Puppet to do the transfer rather than SSH. This is certainly not much less secure than the current Certify system, since if the Puppet master is ever compromised, our entire facility is. The only variation here is that any RACF staff sysadmin can arrange for a cert on their hosts, whereas now a gridadmin has to manually add it to a config file. But all our staff have root everywhere anyway, so this is not particularly concerning.
+
+So, what&#39;s next?
+
+-- I think Mine needs to investigate the current CA restrictions/agreements. BTW, where are those agreements kept? Are they in the OSG doc system? It would be good if we have someplace to look for an explicit list of security requirements. These can then guide the design process.
+
+-- I think the OSG security team needs to decide how automated they are willing to allow the host cert process to be. As a large facility, we would like it to be completely automated, but we don&#39;t want to violate CA policy or OSG security guidelines in the process.
+
+Regarding efforts to enforce any hostname validation--I think that will be hard/impossible.
+
+Some host cert Subjects will *not* match the hostname of the host. The OSG cert system does not support the SubjectAltNames cert property (and many clients don&#39;t know how to use it correctly anyway), so for all load-balanced services we regularly get certs in the alias name and use it on multiple back-end servers.
+
+Also, not all hosts (e.g. service back-end hosts) will necessarily be in external DNS at BNL (by design), so again there is no independent way to verify hostnames.
+
+Also, any check on the source address for any interaction with OIM will always show the same IP&#58; the BNL reverse proxy/NAT which all traffic exits out of. Requests will not appear to come from the hosts they are for.
+
+<div id='show_1955701991' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1955701991'>Cheers,
+
+--john
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jhover/CN=653174/CN=John Raymond Hover
+</div><script type='text/javascript'>
+        $('#show_1955701991').click(function() {
+            $('#detail_1955701991').slideDown("normal");
+            $('#show_1955701991').hide();
+            $('#hide_1955701991').show();
+        });
+        $('#hide_1955701991').click(function() {
+            $('#detail_1955701991').slideUp();
+            $('#hide_1955701991').hide();
+            $('#show_1955701991').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='29982#1464799084'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T16:38:04+00:00">Jun 1, 2016 04:38 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464799084">&nbsp;</a></div><pre>Yes it&#39;s good to create the CSR and private key on the original host, but then the CSRs are collected on the central secure server and submitted/signed from there.  It&#39;s no problem copying CSRs and the resultant public certificates through another machine as long as the private keys stay on the original hosts.
+
+Allowing proxies on OIM encourages people to request a certificate directly from the original host with no checking for whether or not the host name in the CSR matches the name of the host.  There is no way to verify that on the original host, because there are so many hosts and one of them may be compromised.  It has to be verified either by a secure host at the site or by OIM itself.  I think we should change OIM to do it, and in order to not break the old methods there needs to be a corresponding change to the requesting tools to use a different method to request host certs.</pre></div><div class='update_description'><i onclick="document.location='29982#1464797172'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T16:06:12+00:00">Jun 1, 2016 04:06 PM UTC</time> by <b>smithj4@....</b><a class="anchor" name="1464797172">&nbsp;</a></div><pre>As I said before, I was told years ago that the private key and cert
+request should be generated on the host where the cert/key will finally
+reside, not from a central server, and that host private keys should not
+be copied around from host to host. If this recommendation has changed
+then we can easily update our methods to do this centrally and copy the
+certs & keys.
+
+You never really explained why you believe allowing proxies would
+encourage insecure systems. I explained why it is more secure by
+allowing the CLI to be used without the admin&#39;s private key and
+prompting for their pass-phrase.
+
+I would also like to hear from someone else on this issue or is everyone
+else just going to silently enjoy the show?
+
+~Jason
+
+On 06/01/2016 11&#58;40 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='29982#1464795655'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T15:40:55+00:00">Jun 1, 2016 03:40 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464795655">&nbsp;</a></div><pre>I haven&#39;t heard about what sites other than BNL and FNAL do, but the manual process that FNAL does and the manual process that BNL used to do before automating are more secure, as I understand them.  The grid administrator would determine which hosts needed renewal from a single secure machine, issue a bulk request to OIM from there manually, then distribute the certs to all the machines from there.  There was no place for an attacker to request a certificate.  As far as I can tell, the OSG host cert request tools are designed to only work securely this way.  They need an update to handle distributed automated requests securely.  I believe that enabling proxy support on OIM will encourage system administrators to set up insecure systems and I am sorry, but I recommend against it.  Let&#39;s wait for Mine&#39;s input.</pre></div><div class='update_description'><i onclick="document.location='29982#1464792853'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T14:54:13+00:00">Jun 1, 2016 02:54 PM UTC</time> by <b>smithj4@....</b><a class="anchor" name="1464792853">&nbsp;</a></div><pre>Is there anything that prevents any compromised host, anywhere in OSG
+from requesting a certificate for a different OSG host? You can&#39;t bring
+up objections to our methods which all of OSG is vulnerable to. Lets
+stick to just the differences here please.
+
+A compromised host, say a gatekeeper anywhere in OSG, where the grid
+admin logs in because the host cert is about to expire and manually runs
+the CLI commands to request the replacement cert, is a much more
+dangerous situation, because the hacker can obtain access to the grid
+admin&#39;s cert, private key and pass-phrase. This is the current
+situation, whether manual or automated, with or without Puppet.
+
+This ticket just asked for one change, to allow a delegated proxy to be
+accepted by the IOM server, instead of just the cert & key with
+pass-phrase entered by the CLI client. As I have already explained,
+allowing proxies would only help to make the CLI request more secure
+since an attacker on a compromised host could only steal that short
+lived proxy, not the admin&#39;s cert, key and pass-phrase.
+
+Remove Puppet from this process. Allowing proxies would allow the grid
+admin to generate a short-lived proxy on a secure host, transfer that
+proxy to the OSG host that needs to replace its soon to expire host
+cert, and run the CLI using that proxy. With or without Puppet, this
+process of authenticating the grid admin using a temporary proxy is much
+more secure that the current situation that requires them to copy their
+cert & key to the server needing the replacement cert and manually
+entering their pass-phrase.
+
+~Jason
+
+On 06/01/2016 10&#58;29 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='29982#1464791366'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T14:29:26+00:00">Jun 1, 2016 02:29 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464791366">&nbsp;</a></div><pre>Jason,
+
+Is there anything that prevents a compromised BNL host (which had been authorized by the puppet master) from requesting a certificate for a different BNL host?  That&#39;s my primary concern.
+
+I understand that accepting proxies on OIM will improve the security of the BNL servers & clients compared to the current process, but it increases the risk to OIM.  It may be an acceptably low risk, but that&#39;s Mine&#39;s call, not my call anymore.  My advice is to instead change the process so a grid administrator&#39;s certificate (or proxy) is not required to make a host certificate request.  I believe the current process is designed for manual requests only.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='29982#1464735621'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-31T23:00:21+00:00">May 31, 2016 11:00 PM UTC</time> by <b>smithj4@....</b><a class="anchor" name="1464735621">&nbsp;</a></div><pre>It is not true that any host can generate any certificate. In the
+context of our automated host cert Puppet system, any host that is
+authorized to access our puppet master, which means it has had its
+Puppet client cert manually signed by one of the sysadmins in our group,
+could use this module to automatically get a host cert from OSG. I also
+believe that the grid admin&#39;s user cert that is used for this purpose is
+only allowed to request host certs for certain domains, and this
+restriction is controlled by the IOM server, correct? So we can only
+request host certificates for a few *.bnl.gov domains, where * is racf,
+usatlas, and maybe a few other sub-domains, I don&#39;t remember exactly
+what is allowed.
+
+I would also like to point out that the server side change to allow user
+proxies in addition to certs would make things more secure for the
+client, not less secure. This is the exact reason why we would like to
+test this out and why we initially made this ticket request in the first
+place.
+
+Currently, whether done manually or automatically, the
+osg-gridadmin-cert-request command is executed, passing the grid admin&#39;s
+user key & certificate and prompts for the pass-phrase to unlock the
+key. If this was done on a compromised host then that grid admin&#39;s user
+certificate, key and pass-phrase could all be stolen.
+
+The request that we made to open this ticket is to allow a delegated
+proxy to be used instead of the original cert & key. This would allow us
+to generate the proxy on a more secure host and only send that
+short-lived proxy to the host making the request, over a secure
+encrypted ssl connection. So the most an attacker could steal on that
+same compromised host making the request is a short lived proxy, which
+is much better than getting the grid admin&#39;s full user cert, key and
+pass-phrase.
+
+I am also assuming that the host cert request should be made from the
+host that the certificate will be used on because I remember being told
+<div id='show_2059465311' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2059465311'>a long time ago that the private host key that is generated during this
+process should never leave the host. Is this still true?
+
+I don&#39;t understand why a task force needs to be created to simply enable
+a feature that could make this requesting process even more secure than
+the current manual process that might expose the grid admin&#39;s private
+key and pass-phrase to an attacker on a compromised host.
+
+As John said, if you want to create a task force to explore better
+procedures whether done manually or automated, that is fine, but
+allowing proxies to be used will only help clients be more secure when
+making these requests.
+
+~Jason
+
+On 05/31/2016 06&#58;10 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2059465311').click(function() {
+            $('#detail_2059465311').slideDown("normal");
+            $('#show_2059465311').hide();
+            $('#hide_2059465311').show();
+        });
+        $('#hide_2059465311').click(function() {
+            $('#detail_2059465311').slideUp();
+            $('#hide_2059465311').hide();
+            $('#show_2059465311').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='29982#1464732609'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-31T22:10:09+00:00">May 31, 2016 10:10 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464732609">&nbsp;</a></div><pre>Jason,
+
+I haven&#39;t heard all the details, but my main concern is that it sounds like any machine can request any certificate.  I am particularly concerned about the possibility of a compromised machine requesting a certificate for an as-of-yet uncompromised machine, and through that breaking into other machines.  The CERN CA system is automated, but they make sure that requests come from IP addresses matching all names in the certificate.
+
+Yes it&#39;s trivial to enable OPENSSL_ALLOW_PROXY_CERTS, and a couple of years ago I successfully persuaded CMS to enable it on one of their services at CERN, but the security implications on this very sensitive OIM service have to be considered.  For instance if one of the grid administrators also submits grid jobs and his or her proxy certificate is sent to jobs where it is much more exposed, it could be stolen and used to get more certificates out of OIM.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='29982#1464728230'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-31T20:57:10+00:00">May 31, 2016 08:57 PM UTC</time> by <b>smithj4@....</b><a class="anchor" name="1464728230">&nbsp;</a></div><pre>I am unsure why you think what we are doing is insecure? What do you
+think we are doing exactly that is so insecure? Can you explain exactly
+what is insecure about our process or are you just making assumptions?
+
+Are you simply under the impression that automated processes are
+inherently more insecure than a manual process? Care to elaborate?
+
+The entire grid world is made up of automated and secure processes, this
+is why delegated proxies exist and are used everywhere instead of
+requiring every action and communication step to be a manual one with
+human pass-phrase intervention. Should every batch job run and every
+file transfer be manually authenticated by a human with a pass-phrase?
+
+We have already spent more time discussing this topic in this ticket,
+than the 5 minutes it would take to add the environment variable to the
+startup script on the ITB IOM server and restart the web service&#58;
+
+RHEL, CentOS, Scientific Linux, etc.&#58;
+- add export OPENSSL_ALLOW_PROXY_CERTS=1 to /etc/sysconfig/httpd
+- In RHEL 7 don&#39;t use the export shell command, just set the
+env var because of systemd.
+
+Ubuntu, Debian, etc.&#58;
+- add export OPENSSL_ALLOW_PROXY_CERTS=1 to /etc/apache2/envvars
+
+Then restart apache. Probably similar instructions for Nginx, etc.
+
+~Jason
+
+On 05/31/2016 04&#58;17 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='29982#1464725823'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-31T20:17:03+00:00">May 31, 2016 08:17 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464725823">&nbsp;</a></div><pre>Well Mine is back so it&#39;s up to her to decide what to do, but if I were still in charge I would convene the task force urgently because it appears to me that what BNL is doing to renew host certificates is unacceptably insecure (unless perhaps there&#39;s more verification being done that hasn&#39;t yet been explained) and should get fixed soon.  Switching to using proxies is not going to fix the underlying problem so it&#39;s not clear to me that it&#39;s worth spending effort on it.  It seems likely that other sites have similar issues.  Fermilab is still using a manual-intervention process which is more secure but it is a pain and they&#39;d like to automate better too.</pre></div><div class='update_description'><i onclick="document.location='29982#1464722114'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-31T19:15:14+00:00">May 31, 2016 07:15 PM UTC</time> by <b>smithj4@....</b><a class="anchor" name="1464722114">&nbsp;</a></div><pre>Maybe you are not aware but we at BNL have already been using automated
+procedures to request and renew host certificates for quite a while now.
+Allowing a proxy certificate to be used would just make this automated
+process much more secure since the proxy could be created on a central
+secure management server (the Puppet master), and securely transferred
+to the hosts needing to make these requests.
+
+All we are asking is to enable the x509 proxy cert feature that is
+already present in the openssl libraries on the OIM web server, so we
+can test it&#58;
+
+<a href='https&#58;//github.com/openssl/openssl/blob/master/crypto/x509/x509_vfy.c#L468' target='_blank' rel='nofollow'>https&#58;//github.com/openssl/openssl/blob/master/crypto/x509/x509_vfy.c#L468</a>
+
+This could be done on the ITB server (oim-itb.grid.iu.edu) first and
+then after testing, enabled in the production server&#58; oim.grid.iu.edu
+
+Respectfully, as John said, the formation of a task force for more
+in-depth investigations is outside the scope of this request and should
+be considered separately.
+
+~Jason
+
+On 05/31/2016 02&#58;59 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='29982#1464721159'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-31T18:59:19+00:00">May 31, 2016 06:59 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464721159">&nbsp;</a></div><pre>John,
+
+The problem is that the whole process of automating may be insecure, and we don&#39;t know until we have the task force look at it closely.  Until then the fully manual process probably should remain in place.  If this is a big burden, please help push the issue to make the task force be a high priority.
+
+I agree that hardcoding a passphrase for the administrator&#39;s cert is a very bad idea, and that short-lived proxies that the administrator manually creates would be slightly better, but it&#39;s not obviously enough to make the whole process sufficiently secure.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='29982#1464720363'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-31T18:46:03+00:00">May 31, 2016 06:46 PM UTC</time><a class="anchor" name="1464720363">&nbsp;</a></div><pre>Hi Dave,
+
+I don&#39;t disagree with the idea of revisiting the host certificate renewal process, and I think in the long run it would be beneficial to do so, if not necessary. But that goes far beyond the scope of this request to consider the addition of just one variable that already exists in OpenSSL (&#39;OPENSSL_ALLOW_PROXY_CERTS&#39;), which I hope can be considered, analyzed, and implemented more quickly in the short term, and added to the comprehensive process later.
+
+Thanks,
+~John
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=destefan/CN=665120/CN=John Steven De Stefano Jr</pre></div><div class='update_description'><i onclick="document.location='29982#1464716664'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-31T17:44:24+00:00">May 31, 2016 05:44 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1464716664">&nbsp;</a></div><pre>I think we&#39;re going to need a task force to look at the whole process and come up with a comprehensive, secure plan for automating host certificate renewal and initial allocation.  The two processes might not be the same; for instance I think it makes a lot of sense to have an existing host certificate be used to authenticate renewals.  I also think that for initial allocation we should be verifying that a DNS lookup on the DN requested and also all SANs map to the IP address of the host that does the initial allocation request, in order to ensure that a compromised host is not able to obtain a certificate for an uncompromised host.   An initial request might not need to come from a grid administrator at all, but instead be later approved by the administrator if it is a new host and not a renewal.   It will likely require more extensive changes to the tools than what Jason & John are requesting, and may not require the use of delegated proxies.</pre></div><div class='update_description'><i onclick="document.location='29982#1464361842'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-27T15:10:42+00:00">May 27, 2016 03:10 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1464361842">&nbsp;</a></div><pre>Ok So I have added Alain, Scott, Tom, and the Security Team to this for review. Sarah and Tom have talked about this but I think that they would need more information and testing. Hopefully those that I have added can help provide.
+
+If anyone reviewing this can add some insight to this inquiry, it would be appreciated.
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='29982#1464197267'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-25T17:27:47+00:00">May 25, 2016 05:27 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1464197267">&nbsp;</a></div><pre>Spoke with Sarah, she is conferring with Tom. I&#39;ll update when I have more information.
+
+~Chris</pre></div><div class='update_description'><i onclick="document.location='29982#1464118611'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-24T19:36:51+00:00">May 24, 2016 07:36 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1464118611">&nbsp;</a></div><pre>Hi,
+
+We are trying to improve our automated host certificate renewal process which uses Puppet and would like to make it more secure. Instead of piping the Admin&#39;s private key passphrase into the osg-gridadmin-cert-request script, we would like to use a delegated proxy credential passed on the command-line. We would generate this delegated proxy credential with a very short lifetime on a secure host using grid-proxy-init, and send it to the client host that needs to generate or renew its host certificate.
+
+To try testing this, we modified osgpkitools/OSGPKIUtils.py to pass only the proxy cert into the M2Crypto.SSL.Context.load_cert_chain function, but when it contacts the OIM server, it returns this error message&#58;
+
+Got an exception SSLError
+sslv3 alert certificate unknown
+
+We think this might be because the OIM server does not accept delegated proxy credentials. Is there a way to fix the OIM server to accept proxies? When searching for possible solutions, we found this blog article that describes a very similar problem&#58;
+
+<a href='http&#58;//philipkershaw.blogspot.com/2010/05/proxy-certificates-and-delegation-with.html' target='_blank' rel='nofollow'>http&#58;//philipkershaw.blogspot.com/2010/05/proxy-certificates-and-delegation-with.html</a>
+
+It might be as simple as setting an environment variable in the Apache startup script&#58;
+
+export OPENSSL_ALLOW_PROXY_CERTS=1
+
+And make sure the Apache config has something like this&#58;
+
+SSLOptions +ExportCertData
+SSLVerifyClient optional
+SSLVerifyDepth  10
+SSLCACertificatePath    /etc/grid-security/certificates/
+
+Thank you,
+Jason & John
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=destefan/CN=665120/CN=John Steven De Stefano Jr</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F29982">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 29982});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

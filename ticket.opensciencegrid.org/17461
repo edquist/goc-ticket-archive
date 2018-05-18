@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[17461] CE stop publishing and jobs are not running after upgrade to osg version 3.1.25</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=17461" method="post">
+<div class="page-header">
+    <h3><span class="muted">17461</span> / CE stop publishing and jobs are not running after upgrade to osg version 3.1.25</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Manoj Kumar Jha</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">Purdue-RCAC</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Manoj Kumar Jha</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-11-07</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Scott Teige <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Tim Cartwright <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=17461", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/17461?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/17461?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20CE%20stop%20publishing%20and%20jobs%20are%20not%20running%20after%20upgrade%20to%20osg%20version%203.1.25%20ISSUE%3D17461%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='17461#1383587949'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-04T17:59:09+00:00">Nov 4, 2013 05:59 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1383587949">&nbsp;</a></div><pre>Thanks. I have already relayed your input to OSG software team. Let&#39;s hope they will be able to work on the API someday.
+
+I am closing this ticket as resolved.</pre></div><div class='update_description'><i onclick="document.location='17461#1383585897'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-04T17:24:57+00:00">Nov 4, 2013 05:24 PM UTC</time><a class="anchor" name="1383585897">&nbsp;</a></div><pre>For the time being, we created the patched version of &#39;condor.pm&#39;.  It would be really helpful if there exists API which allow site people to add/modify condor attributes  in &#39;condor.pm&#39; file.
+
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='17461#1383585559'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-04T17:19:19+00:00">Nov 4, 2013 05:19 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1383585559">&nbsp;</a></div><pre>Manoj,
+
+Is what Tim suggested an acceptable workaround for now? I personally believe that condor.pm needs to provide some kind of API that allows admin to add features without directly modifying the condor.pm.. which seems to be a common practice.</pre></div><div class='update_description'><i onclick="document.location='17461#1383237078'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-31T16:31:18+00:00">Oct 31, 2013 04:31 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1383237078">&nbsp;</a></div><pre>Manoj&#58;
+
+I reviewed the condor.pm differences today. There are significant additions to
+your condor.pm file that appear to be specific to Purdue and/or CMS. It seems
+likely that your local patches are required to allow grid jobs to work in your
+environment.
+
+In general, maintaining your own patches to condor.pm (or any RPM-shipped file)
+is a tricky business. Essentially, as you have seen, any time you yum update,
+you may need to reapply your patches.
+
+I do not recommend simply copying over your old file, though. In doing so, you
+are missing out on updates and changes to the underlying file. In the specific
+case of condor.pm, we have a relatively new patch, not in your condor.pm, for
+properly handling max wall time settings. While this particular patch may not
+affect you (now), future patches and updates might.
+
+So I guess the recommendation going forward would be to keep your changes to
+condor.pm as one or more patch files that can be applied to the RPM version of
+the file after each relevant update. You will likely need to update your patches
+over time, so that they still apply to newer RPM files, but that should be a
+solvable problem.
+
+In particular, be sure to merge in the current changes from condor.pm.back into
+your current condor.pm file.
+
+-- Tim</pre></div><div class='update_description'><i onclick="document.location='17461#1383225884'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-31T13:24:44+00:00">Oct 31, 2013 01:24 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1383225884">&nbsp;</a></div><pre>Soichi and Manoj&#58; Sorry, but I have been very busy lately. I will try to compare
+the job managers soon. Until I do, I think that the GOC ticket system is the
+best place to track this issue, and so there is no reason to create a JIRA
+ticket yet.</pre></div><div class='update_description'><i onclick="document.location='17461#1383222898'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-31T12:34:58+00:00">Oct 31, 2013 12:34 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1383222898">&nbsp;</a></div><pre>Tim, did you find any issue with the condor.pm? Should I move this to Jira?</pre></div><div class='update_description'><i onclick="document.location='17461#1382125708'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T19:48:28+00:00">Oct 18, 2013 07:48 PM UTC</time><a class="anchor" name="1382125708">&nbsp;</a></div><pre>Both these files are attched as &#34;condor.pm&#34; (modified), and &#34;condor.pm.back&#34; (original).  Followin are the contents of &#34;../JobManager&#34; folder
+
+&#34;&#34;&#34;
+[jha2@osg glite-ce-monitor]$ ls -lF /usr/lib/perl5/vendor_perl/5.8.8/Globus/GRAM/JobManager
+total 228
+-rw-r--r-- 1 root root 37069 Oct 14 11&#58;06 condor.pm
+-rw-r--r-- 1 root root 32846 Oct  8 13&#58;14 condor.pm.back
+-rw-r--r-- 1 root root 26902 Oct  8 14&#58;47 condor.pm.back1
+-rw-r--r-- 1 root root 26902 Oct 14 11&#58;06 condor.pm.bbb
+-rw-r--r-- 1 root root 35381 Aug  2  2012 condor.pm.bfhammercloud
+-rw-r--r-- 1 root root 32305 Jul 19  2012 condor.pm.orig
+-rw-r--r-- 1 root root  2827 Nov 20  2012 condor_accounting_groups.pm
+-rw-r--r-- 1 root root 24423 Dec 19  2011 fork.pm
+[jha2@osg glite-ce-monitor]$
+
+&#34;&#34;&#34;
+Following GOC ticket mentions about the problem fixed in CEMon
+<a href='http&#58;//ticket.grid.iu.edu/goc/13123?expandall=true&sort=up&' target='_blank' rel='nofollow'>http&#58;//ticket.grid.iu.edu/goc/13123?expandall=true&sort=up&</a>
+
+Search for the string &#34;After cutting off some old atlas releases information, CEMon now can
+publish to BDII&#34;.
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='17461#1382124675'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T19:31:15+00:00">Oct 18, 2013 07:31 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1382124675">&nbsp;</a></div><pre>Manoj&#58;
+
+Can you please attach your condor.pm file(s) to this ticket?  Ideally, I
+would like to see the one that resulted from the update, and the one that
+you have in place now.  Also, could you please run the command below and
+share the output?
+
+ls -lF /usr/lib/perl5/vendor_perl/5.8.8/Globus/GRAM/JobManager
+
+As for the documentation, I would be happy to help update it; can you tell
+me which GOC ticket has the information about grid3-locations.txt?
+
+— Tim</pre></div><div class='update_description'><i onclick="document.location='17461#1381933856'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-16T14:30:56+00:00">Oct 16, 2013 02:30 PM UTC</time><a class="anchor" name="1381933856">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62;Well, we can close the ticket if you really want, but I would prefer to get to the bottom of this issue. Most sites in the OSG that use HTCondor are using the latest jobmanager without problem, so it seems that something about upgrading from some older version of globus-gram-job-manager-&#62;condor to the latest has caused problems. I would suggest that reverting to random job manager files of unknown age and origin is only likely to cause more problems down the road.</font>
+
+The site was using older version of &#34;globus-gram-job-manager&#34;.  This time we decided to upgarde all the packages of osg using &#34;yum update&#34;, and it leads to modification of several files.
+
+<font color='#7F7E6F'>&#62;I am adding Mat Selmeci (also on the Software team) to this ticket, as he may have further ideas about figuring out the origin of your old job manager.</font>
+Thanks !  We fix some of other problem by browsing several tickets related to  OSG packages.  But, it took us several days to fix these problems.  It would be really helpful to the site people if the list of problem fixed in OSG GOC tickets are being summarised in the OSG twiki page
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallComputeElement' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallComputeElement</a>
+
+For example, the present CEMon in RHEL5 CE doesn&#39;t scales with number of  experiment software  releases.  The fix for this is to delete some of the release tags from $APPS_OSG/etc/grid3-locations.txt.  We found this information in one of the OSG GOC ticket.  If these information are being summarised in  above twiki page, then it would be lot of help to site people, and save their time.
+
+<font color='#7F7E6F'>&#62;In the profiler output, it appears that RPM thinks that you have modified key files such as /etc/globus/globus-gram-job-manager.conf, /etc/globus/globus-condor.conf, and /usr/lib/perl5/vendor_perl/5.8.8/Globus/GRAM/JobManager/condor.pm. It is possible that these files (at least the /etc ones) &#62;are modified by osg-configure, I will have to check on that. But when was the profile snapshot taken, relative to your putting back in place an old copy of condor.pm?</font>
+The snapshot was taken before placing the old copy of &#34;condor.pm&#34;.    After creating the ticket, we browse through several files and our backup.  Found that &#34;condor.pm&#34;  file needs to be replaced.
+
+<font color='#7F7E6F'>&#62; In the /usr/lib/perl5/vendor_perl/5.8.8/Globus/GRAM/JobManager directory, are there any files that end in .rpmnew or .rpmsave?</font>
+There is no file which ends with  .rpmnew or .rpmsave  in the above folder.
+
+<font color='#7F7E6F'>&#62; This is likely a minor point, but.... The profiler output shows continued warnings from osg-configure about your LCMAPS configuration; have you followed the instructions in the warnings?</font>
+We followed the warning.  It helped us in solving problem related to authorization.    Let us know if we can help in understanding the problem better.
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='17461#1381931485'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-16T13:51:25+00:00">Oct 16, 2013 01:51 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1381931485">&nbsp;</a></div><pre>Well, we can close the ticket if you really want, but I would prefer to get to the bottom of this issue. Most sites in the OSG that use HTCondor are using the latest jobmanager without problem, so it seems that something about upgrading from some older version of globus-gram-job-manager-condor to the latest has caused problems. I would suggest that reverting to random job manager files of unknown age and origin is only likely to cause more problems down the road.
+
+I am adding Mat Selmeci (also on the Software team) to this ticket, as he may have further ideas about figuring out the origin of your old job manager.
+
+In the profiler output, it appears that RPM thinks that you have modified key files such as /etc/globus/globus-gram-job-manager.conf, /etc/globus/globus-condor.conf, and /usr/lib/perl5/vendor_perl/5.8.8/Globus/GRAM/JobManager/condor.pm. It is possible that these files (at least the /etc ones) are modified by osg-configure, I will have to check on that. But when was the profile snapshot taken, relative to your putting back in place an old copy of condor.pm? In the /usr/lib/perl5/vendor_perl/5.8.8/Globus/GRAM/JobManager directory, are there any files that end in .rpmnew or .rpmsave?
+
+This is likely a minor point, but.... The profiler output shows continued warnings from osg-configure about your LCMAPS configuration; have you followed the instructions in the warnings?</pre></div><div class='update_description'><i onclick="document.location='17461#1381872555'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-15T21:29:15+00:00">Oct 15, 2013 09:29 PM UTC</time><a class="anchor" name="1381872555">&nbsp;</a></div><pre>Unfortunately,   the &#34;history&#39;  option is not enabled in yum.  The output of the  following command says that &#34;globus-gram-job-manager-condor&#34;  was recently updated.
+
+&#34;&#34;&#34;
+[jha2@osg gram]$ rpm -qa --last | grep  globus-gram-job-manager-condor
+globus-gram-job-manager-condor-1.0-13.4.osg.el5 Wed Oct  2 11&#58;07&#58;24 2013
+[jha2@osg gram]$
+
+&#34;&#34;&#34;
+
+The above updated rpm also changed the file &#34;/etc/globus/gram/condor.rvf&#34;.  After replacing it with our backup file &#34;condor.rvf&#34;,  now site is recieving job  from  outside.    The ticket can be closed now.
+
+Thanks for your help.
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='17461#1381867548'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-15T20:05:48+00:00">Oct 15, 2013 08:05 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1381867548">&nbsp;</a></div><pre>Manoj&#58;
+
+Do you have any idea what version of the OSG Software stack and/or the
+globus-gram-job-manager-condor RPM you had prior to your update?  We have
+not updated that package, which contains the condor.pm file, in about a
+year.  Or did you have local modifications to the file?
+
+-- Tim</pre></div><div class='update_description'><i onclick="document.location='17461#1381852418'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-15T15:53:38+00:00">Oct 15, 2013 03:53 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1381852418">&nbsp;</a></div><pre>Software Team,
+
+Manoj says that he had to revert one of the globus script manually after the recent OSG upgrade. Do you have any comment?</pre></div><div class='update_description'><i onclick="document.location='17461#1381850120'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-15T15:15:20+00:00">Oct 15, 2013 03:15 PM UTC</time><a class="anchor" name="1381850120">&nbsp;</a></div><pre>After upgrade the file &#34;/usr/lib/perl5/vendor_perl/5.8.8/Globus/GRAM/JobManager/condor.pm&#34;  was modified.  We updated this file with its backup file.
+
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='17461#1381839418'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-15T12:16:58+00:00">Oct 15, 2013 12:16 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1381839418">&nbsp;</a></div><pre>I just run the globus-job-run and this time I am seeing the correct output
+
+2013-10-15 12&#58;00&#58;31 UTC [hayashis@soichi6&#58;~]$ globus-job-run osg.rcac.purdue.edu/jobmanager-condor /bin/hostname
+hansen-a006.rcac.purdue.edu
+
+Have anything changed?</pre></div><div class='update_description'><i onclick="document.location='17461#1381526230'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-11T21:17:10+00:00">Oct 11, 2013 09:17 PM UTC</time><a class="anchor" name="1381526230">&nbsp;</a></div><pre>I am able to submit condor job locally.  When I tried to run &#34;globus-job-run osg.rcac.purdue.edu/jobmanager-condor /bin/hostname&#34;, it is running from several minutes.  The log file &#34;/var/log/globus-gatekeeper.log&#34; , &#34;/var/log/messages&#34;  do not contain useful messages. In the log file &#34;/var/log/globus/gram_cms1169.log&#34; , I am finding
+
+&#34;&#34;&#34;
+ts=2013-10-11T21&#58;06&#58;22.763808Z id=18689 event=gram.script.start level=DEBUG
+ts=2013-10-11T21&#58;06&#58;22.763923Z id=18689 event=gram.startup_lock.start level=DEBUG path=&#34;/var/lib/globus/gram_job_state/cms1169/osg/condor.179218f7.lock&#34;
+ts=2013-10-11T21&#58;06&#58;22.763959Z id=18689 event=gram.startup_lock.end level=DEBUG status=-124 path=&#34;/var/lib/globus/gram_job_state/cms1169/osg/condor.179218f7.lock&#34; msg=&#34;Unable to lock file, perhaps another job manager is running&#34; errno=11 reason=&#34;Resource temporarily unavailable&#34;
+
+&#34;&#34;&#34;
+
+The log file  &#34;/var/log/globus/gram_cms1169.log&#34; is also attached for your convenience.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha</pre></div><div class='update_description'><i onclick="document.location='17461#1381525705'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-11T21:08:25+00:00">Oct 11, 2013 09:08 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1381525705">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; The cluster assosciated with this CE is totally empty.</font>
+Can you run submit condor job locally? I would start troubleshoot with making sure that the cluster itself is operational..</pre></div><div class='update_description'><i onclick="document.location='17461#1381440958'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-10T21:35:58+00:00">Oct 10, 2013 09:35 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1381440958">&nbsp;</a></div><pre>We upgraded the CE to osg version 3.1.25.  Now this CE &#34;osg.rcac.purdue.edu&#34; is no longer publishing in BDII and command  &#39;globus-job-run $CE/jobmanager-condor /bin/hostname&#39; is returning no output. It is running from several hours.  The cluster assosciated with this CE is totally empty.   Following is the output of the command &#34;gip_print_config&#34;
+
+&#34;&#34;[root@osg ~]# gip_print_config
+GIP.common&#58;INFO gip_common&#58;206&#58;  Using config file&#58; gip.conf
+GIP.common&#58;INFO gip_common&#58;206&#58;  Using config file&#58; /etc/gip/gip.conf
+GIP&#58;INFO gip_osg&#58;154&#58;  Using OSG config.ini /etc/osg/config.d.
+GIP&#58;DEBUG gip_osg&#58;659&#58;  Starting to configure information service endpoints
+GIP&#58;INFO gip_osg&#58;724&#58;  Configured BDII endpoints&#58; <a href='http&#58;//is1.grid.iu.edu&#58;14001' target='_blank' rel='nofollow'>http&#58;//is1.grid.iu.edu&#58;14001</a>, <a href='http&#58;//is2.grid.iu.edu&#58;14001.' target='_blank' rel='nofollow'>http&#58;//is2.grid.iu.edu&#58;14001.</a>
+GIP&#58;INFO gip_osg&#58;732&#58;  Configured ReSS endpoints&#58; <a href='https&#58;//osg-ress-1.fnal.gov&#58;8443/ig/services/CEInfoCollector.' target='_blank' rel='nofollow'>https&#58;//osg-ress-1.fnal.gov&#58;8443/ig/services/CEInfoCollector.</a>
+[bdii]
+endpoint                  &#58; ldap&#58;//is.grid.iu.edu&#58;2170
+
+[subcluster osg.rcac.purdue.edu-opteron6172]
+unique_name               &#58; osg.rcac.purdue.edu-opteron6172-Purdue-RCAC
+cores_per_node            &#58; 24
+total_cores               &#58; 984
+cpu_model                 &#58; AMD Opteron(tm) Processor 6172
+inbound_network           &#58; TRUE
+cpu_vendor                &#58; AMD
+cores_per_cpu             &#58; 12
+cpu_speed_mhz             &#58; 2100
+name                      &#58; osg.rcac.purdue.edu-opteron6172
+ram_size                  &#58; 48297
+hepspec                   &#58; 8
+cpus_per_node             &#58; 2
+total_cpus                &#58; 82
+platform                  &#58; x86_64
+node_count                &#58; 41
+outbound_network          &#58; TRUE
+
+[subcluster osg.rcac.purdue.edu-xeons]
+unique_name               &#58; osg.rcac.purdue.edu-xeons-Purdue-RCAC
+cores_per_node            &#58; 8
+total_cores               &#58; 888
+cpu_model                 &#58; Intel(R) Xeon(TM) CPU E5410 @ 2.33GHz
+<div id='show_40851030' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_40851030'>inbound_network           &#58; TRUE
+cpu_vendor                &#58; Intel
+cores_per_cpu             &#58; 4
+cpu_speed_mhz             &#58; 2328
+name                      &#58; osg.rcac.purdue.edu-xeons
+ram_size                  &#58; 16046
+hepspec                   &#58; 8
+cpus_per_node             &#58; 2
+total_cpus                &#58; 222
+platform                  &#58; x86_64
+node_count                &#58; 111
+outbound_network          &#58; TRUE
+
+[condor]
+condor_location           &#58; DEFAULT
+util_contact              &#58; osg.rcac.purdue.edu/jobmanager
+job_contact               &#58; osg.rcac.purdue.edu/jobmanager-condor
+enabled                   &#58; True
+condor_config             &#58; DEFAULT
+
+[gip]
+ress_endpoints            &#58; <a href='https&#58;//osg-ress-1.fnal.gov&#58;8443/ig/services/CEInfoCollector' target='_blank' rel='nofollow'>https&#58;//osg-ress-1.fnal.gov&#58;8443/ig/services/CEInfoCollector</a>
+bdii_endpoints            &#58; <a href='http&#58;//is1.grid.iu.edu&#58;14001' target='_blank' rel='nofollow'>http&#58;//is1.grid.iu.edu&#58;14001</a>, <a href='http&#58;//is2.grid.iu.edu&#58;14001' target='_blank' rel='nofollow'>http&#58;//is2.grid.iu.edu&#58;14001</a>
+se_only                   &#58; False
+
+[site]
+city                      &#58; West Lafayette, IN
+unique_name               &#58; Purdue-RCAC
+group                     &#58; OSG
+sitepolicy                &#58; <a href='http&#58;//www.physics.purdue.edu/tier2/policy' target='_blank' rel='nofollow'>http&#58;//www.physics.purdue.edu/tier2/policy</a>
+glexec_enabled            &#58; True
+country                   &#58; USA
+longitude                 &#58; -86.911
+contact                   &#58; Fengping Hu
+sponsor                   &#58; uscms
+latitude                  &#58; 40.444
+advertise_gums            &#58; FALSE
+email                     &#58; fhu@....
+name                      &#58; Purdue-RCAC
+
+[ce]
+job_manager               &#58; condor
+unique_name               &#58; osg.rcac.purdue.edu
+name                      &#58; osg.rcac.purdue.edu
+
+[vo]
+default                   &#58; /$VO
+
+[cluster]
+simple                    &#58; True
+
+[subcluster osg.rcac.purdue.edu-opteron2376]
+unique_name               &#58; osg.rcac.purdue.edu-opteron2376-Purdue-RCAC
+cores_per_node            &#58; 8
+total_cores               &#58; 560
+cpu_model                 &#58; Quad-Core AMD Opteron(tm) Processor 2376
+inbound_network           &#58; TRUE
+cpu_vendor                &#58; AMD
+cores_per_cpu             &#58; 4
+cpu_speed_mhz             &#58; 2311
+name                      &#58; osg.rcac.purdue.edu-opteron2376
+ram_size                  &#58; 7990
+hepspec                   &#58; 8
+cpus_per_node             &#58; 2
+total_cpus                &#58; 140
+platform                  &#58; x86_64
+node_count                &#58; 70
+outbound_network          &#58; TRUE
+
+[osg_dirs]
+data                      &#58; /scratch/osg
+app                       &#58; /apps/osg
+wn_tmp                    &#58; /tmp
+grid_dir                  &#58; /etc/osg/wn-client/
+
+[se_Purdue-CMS-SE]
+srm_host                  &#58; srm-dcache.rcac.purdue.edu
+unique_name               &#58; srm-dcache.rcac.purdue.edu
+default_path              &#58; /user/VONAME
+srm_endpoint              &#58; httpg&#58;//srm-dcache.rcac.purdue.edu&#58;8443/srm/v2/server
+name                      &#58; Purdue-CMS-SE
+implementation            &#58; bestman
+srm_version               &#58; 2
+provider_implementation   &#58; bestman
+infoproviderendpoint      &#58; file&#58;///dev/null
+version                   &#58; 2.2.0-14
+srm_port                  &#58; 8443
+
+[cesebind]
+simple                    &#58; True
+
+[se]
+default_se                &#58; srm-dcache.rcac.purdue.edu
+
+[classic_se]
+advertise_se              &#58; TRUE
+host                      &#58; DEFAULT
+
+[root@osg ~]#&#34;
+
+&#34;&#34;&#34;
+Let us know if you need more information from our side.
+
+Thanks,
+Manoj
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jha/CN=618566/CN=Manoj Jha
+
+</div><script type='text/javascript'>
+        $('#show_40851030').click(function() {
+            $('#detail_40851030').slideDown("normal");
+            $('#show_40851030').hide();
+            $('#hide_40851030').show();
+        });
+        $('#hide_40851030').click(function() {
+            $('#detail_40851030').slideUp();
+            $('#hide_40851030').hide();
+            $('#show_40851030').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F17461">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 17461});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

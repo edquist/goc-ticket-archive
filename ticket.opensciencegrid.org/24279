@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[24279] CGSI_gSOAP error in FTS 3.2.32</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=24279" method="post">
+<div class="page-header">
+    <h3><span class="muted">24279</span> / CGSI_gSOAP error in FTS 3.2.32</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Vikas Bansal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GGUS</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Vikas Bansal 2413</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Malachi review/reply</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-04-17</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=111962">111962</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=24279", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/24279?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/24279?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20CGSI_gSOAP%20error%20in%20FTS%203.2.32%20ISSUE%3D24279%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='24279#1430784028'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-05T00:00:28+00:00">May 5, 2015 12:00 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1430784028">&nbsp;</a></div><pre>This ticket was closed automatically. If this issue has not been resolved according your expectations or if you need further information, please submit a new ticket referencing this one.
+
+-- by GGUS SYSTEM at Mon May 04 23&#58;59&#58;12 UTC 2015
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=111962' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=111962</a></pre></div><div class='update_description'><i onclick="document.location='24279#1429290582'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-17T17:09:42+00:00">Apr 17, 2015 05:09 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1429290582">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.  Please submit problems, requests, and questions at&#58; <a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a> OSG Grid Operations Center goc@...., 317-278-9699 Visit the OSG Operations Page&#58; <a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='24279#1429043194'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-14T20:26:34+00:00">Apr 14, 2015 08:26 PM UTC</time><a class="anchor" name="1429043194">&nbsp;</a></div><pre>Transfers appear to be working fine now.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Malachi Schram 1012</pre></div><div class='update_description'><i onclick="document.location='24279#1428346796'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-06T18:59:56+00:00">Apr 6, 2015 06:59 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1428346796">&nbsp;</a></div><pre>Hello Malachi,
+
+Could you please give us an update when you have a moment?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='24279#1427744505'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T19:41:45+00:00">Mar 30, 2015 07:41 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1427744505">&nbsp;</a></div><pre>Hello Malachi,
+
+Could you please give us an update when you have a moment?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='24279#1426866915'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-20T15:55:15+00:00">Mar 20, 2015 03:55 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1426866915">&nbsp;</a></div><pre>I called Malachi and left a voice mail asking for feedback. Alternatively Malachi should be at the AHM next week and we will reach out to him there if need be.
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='24279#1426519753'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-16T15:29:13+00:00">Mar 16, 2015 03:29 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1426519753">&nbsp;</a></div><pre>Hello Malachi,
+
+Could you please review and update this ticket?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='24279#1426186838'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-12T19:00:38+00:00">Mar 12, 2015 07:00 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1426186838">&nbsp;</a></div><pre>Hello Malachi Schram,
+
+Have you had time to review this ticket?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='24279#1425673894'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-06T20:31:34+00:00">Mar 6, 2015 08:31 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1425673894">&nbsp;</a></div><pre>Hello Malachi Schram,
+
+I just wanted to make sure you saw that I added you to this ticket for review. Could you please take a look at this and provide feedback?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='24279#1425402457'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-03T17:07:37+00:00">Mar 3, 2015 05:07 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1425402457">&nbsp;</a></div><pre>I have added Malachi Schram to this ticket. He is the only contact that I can find with pnnl. I also see that he must have been added at some point or another to the ggus ticket because I saw mention of him in pervious updates.
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='24279#1425052190'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-02-27T15:49:50+00:00">Feb 27, 2015 03:49 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1425052190">&nbsp;</a></div><pre>Hello,
+
+In fts3server.log, I notice these lines
+
+INFO    Mon Feb 23 03&#58;31&#58;35 2015 ;accepted connection from
+host=192.101.102.221, socket=30
+ERR     Mon Feb 23 03&#58;31&#58;35 2015
+;/builddir/build/BUILD/fts-3.2.32/src/server/gsoap_request_handler.cpp;hand
+le;107;Error -1 fault&#58; SOAP-ENV&#58;Server [no subcode]
+&#34;CGSI-gSOAP running on fts.hep.pnnl.gov reports Error retrieveing the
+userca/VOMS credentials&#34;
+Detail&#58; [no detail]
+
+I am using these CGSI-gSOAP rpm.
+
+[root@fts fts3]# yum list installed | grep -i gsoap
+CGSI-gSOAP.x86_64             1.3.7-1.el6        @fts3
+gsoap.x86_64                  2.7.16-4.el6       @SL6-osg-epel-prod
+
+My transfer jobs are running fine. The error seems harmless. I am not sure where and why it checks for a voms proxy besides the fts server where only it should be relevant, in my opinion.
+
+I would like to avoid the error in the log file. Any suggestion is helpful.
+
+[Ticket Origin]
+<a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=111962' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=111962</a>
+
+[Ticket History]
+Subject&#58; CGSI_gSOAP error in FTS 3.2.32
+Ticket Type&#58; USER
+CC&#58; ;Malachi.Schram@....
+-- by Vikas Bansal 2413 at Tue Feb 24 15&#58;22&#58;34 UTC 2015
+
+-- by Rostislav Konupka at Wed Feb 25 07&#58;41&#58;39 UTC 2015
+
+Hello,
+<div id='show_465004796' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_465004796'>the error says some client presented a certificate with invalid or unsupported
+VOMS extension (possibly using VO your server does not support),
+try to find and contact him if you really want to avoid the error.
+
+-- by Zdenek Salvet at Wed Feb 25 11&#58;52&#58;04 UTC 2015
+
+Hello,
+
+OK. I will investigate.
+But if it is helpful, I did not get this error with FTS version 3.1.76.
+Also, could it be related to nagios plugin not finding the proper certificate. Any easy way to check this?
+
+Thanks.
+
+-- by Vikas Bansal 2413 at Thu Feb 26 08&#58;55&#58;54 UTC 2015
+
+FTS version 3.1.76 simply did not report  errors caught in  CGSI_gSOAP  (bug in my opinion),
+the client in question certainly could be a Nagios plugin, especially if errors appear
+periodically or 192.101.102.221 is Nagios server...
+
+-- by Zdenek Salvet at Thu Feb 26 09&#58;13&#58;41 UTC 2015
+
+-- by Zdenek Salvet at Thu Feb 26 09&#58;14&#58;07 UTC 2015
+
+Thank you for the clarification. I checked with my sysadmin. The IP address does point to the server having nagios plugin installed. I assume this error in fts3server.log is harmless then. I was wondering if there is a standard recipe to fix VOMS certificate problem on that server.
+
+-- by Vikas Bansal 2413 at Thu Feb 26 16&#58;34&#58;19 UTC 2015
+
+I think Nagios should probe the service using VOMS proxy for ops VO,
+reassigning to SAM support unit for checking details...
+
+-- by Zdenek Salvet at Fri Feb 27 13&#58;57&#58;47 UTC 2015
+
+The IP 192.101.102.221 points to here&#58; <a href='https&#58;//osgimager.pnl.gov/' target='_blank' rel='nofollow'>https&#58;//osgimager.pnl.gov/</a> . I cannot tell what this is (/ is the Ubuntu test page and /nagios is &#39;not found on this server&#39;), but judging by the name I am reassigning to OSG(Prod) SU. Hope someone from there can help. If not maybe I suggest WLCG as the next hop for this ticket &#58;) .
+
+Best,
+Paschalis
+
+-- by Paschalis Korosoglou at Fri Feb 27 15&#58;49&#58;03 UTC 2015
+</div><script type='text/javascript'>
+        $('#show_465004796').click(function() {
+            $('#detail_465004796').slideDown("normal");
+            $('#show_465004796').hide();
+            $('#hide_465004796').show();
+        });
+        $('#hide_465004796').click(function() {
+            $('#detail_465004796').slideUp();
+            $('#hide_465004796').hide();
+            $('#show_465004796').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F24279">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 24279});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

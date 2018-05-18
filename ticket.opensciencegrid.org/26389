@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[26389] HTCondor-ce JOB_ROUTER seg fault</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=26389" method="post">
+<div class="page-header">
+    <h3><span class="muted">26389</span> / HTCondor-ce JOB_ROUTER seg fault</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Doug Benjamin</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Doug Benjamin</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-08-17</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Edgar Fajardo <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=26389", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/26389?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/26389?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20HTCondor-ce%20JOB_ROUTER%20seg%20fault%20ISSUE%3D26389%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='26389#1439565240'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-14T15:14:00+00:00">Aug 14, 2015 03:14 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1439565240">&nbsp;</a></div><pre>Doug,
+
+Yes, you will need to be running a second schedd on your CE (one will correspond to your pool HTCondor and the other for HTCondor CE). If users are already able to submit from your central manager, this should suffice. If you have a small cluster, then having the CE on your central manager may be ok but once it gets to a sizeable number of jobs/cores, then it&#39;s pretty standard to separate out the schedd and collector/negotiator onto separate hosts. I&#39;ll close this ticket for now but don&#39;t hesitate to open another ticket if you&#39;re having more issues.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='26389#1439560751'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-14T13:59:11+00:00">Aug 14, 2015 01:59 PM UTC</time> by <b>benjamin@....</b><a class="anchor" name="1439560751">&nbsp;</a></div><pre>Hi,
+
+I upgraded to central manager machine to Condor 8.29.
+
+Last night -
+The condor-ce-trace seems to work but. but  I was getting this error
+
+[dbenjamin@atlas28 condor_ce]$ condor_ce_run --debug -rl atlt3gm.physics.arizona.edu&#58;9619 /bin/env
+********************************************************************************
+2015-08-13 23&#58;37&#58;08 Could not parse job cluster from condor_submit output
+********************************************************************************
+[dbenjamin@atlas28 condor_ce]$ condor_ce_run --debug -rl atlt3gm.physics.arizona.edu&#58;9620 /bin/env
+********************************************************************************
+2015-08-13 23&#58;37&#58;14 Could not parse job cluster from condor_submit output
+********************************************************************************
+
+Now
+
+condor_ce_run --debug -r atlt3gm.physics.arizona.edu&#58;9619 /bin/env
+
+condor_ce_run --debug -rl atlt3gm.physics.arizona.edu&#58;9619 /bin/env
+
+Both seem to work.
+
+I would guess this ticket can be closed.
+
+thanks for your help.
+
+Doug
+
+On 08/13/2015 10&#58;53 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='26389#1439524389'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-14T03:53:09+00:00">Aug 14, 2015 03:53 AM UTC</time> by <b>benjamin@....</b><a class="anchor" name="1439524389">&nbsp;</a></div><pre>Hi Brian,
+
+Do you mean that I need a 2nd sched beyond what is automatically installed with HTcondor-ce?
+
+Actually, I am a bit surprised that you said that we should not have condor-ce on the central manager machine. In
+a small cluster with limited resources, there are only a few machines that users do not connect to. If I want to keep
+things secure should I put the ce on a machine that interactive users do not use?
+
+Cheers,
+
+Doug B
+
+On 08/13/2015 03&#58;56 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='26389#1439499366'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-13T20:56:06+00:00">Aug 13, 2015 08:56 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1439499366">&nbsp;</a></div><pre>Doug,
+
+You said that the CE software is living on your batch system&#39;s collector/negotiator. Unless you also have a schedd running there, HTCondor CE won&#39;t work. The CE probably shouldn&#39;t live on your central manager but instead a submit host in your pool.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='26389#1439488121'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-13T17:48:41+00:00">Aug 13, 2015 05:48 PM UTC</time><a class="anchor" name="1439488121">&nbsp;</a></div><pre>Hi Doug,
+
+I was showing this as an example, I think if you are getting condor and condor-ce from rpm installations this should not be needed. So please revert that step and lets go step by step&#58;
+
+1. Do you guys have GLOBUS_THREAD_MODEL set anywhere? Can you check the environments of your schedd&#39;s? The following should give you the proc ID&#39;s of your running schedd&#39;s (you should have two)&#58;
+
+ps aux | grep condor_schedd
+
+Then you can inspect the environment of the processes with&#58;
+
+strings -a /proc/&#60;process id&#62;/environ
+
+2. Can you do an lsof on a condor_schedd process that has shown this error and look for an entry for a libglobus_thread_pthread library file? That’s the sign that Globus has been initialized in pthread mode?
+
+3. You could try getting HTCondor 8.2.9 from the HTCodnor repo directly. And see if that makes it better.
+
+Brian,
+
+Do you have any other suggestions?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26389#1439487339'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-13T17:35:39+00:00">Aug 13, 2015 05:35 PM UTC</time> by <b>benjamin@....</b><a class="anchor" name="1439487339">&nbsp;</a></div><pre>Hi,
+I have made the changes and still can not transfer the files. What Globus libraries
+need to be installed on the condor-ce machine and I will try to add them.
+
+Still see this error in the sched log -
+
+8/13/15 10&#58;30&#58;56 Received GoAhead from peer to receive
+/var/lib/condor-ce/spool/15/0/cluster15.proc0.subproc0.tmp/x509up_u30001 and all further files.
+08/13/15 10&#58;30&#58;56 ReliSock&#58;&#58;get_x509_delegation()&#58; delegation failed&#58; couldn&#39;t set globus thread model
+08/13/15 10&#58;30&#58;56 DoDownload&#58; get_x509_delegation() returned -1
+08/13/15 10&#58;30&#58;56 DoDownload&#58; SCHEDD at 128.196.188.102 failed to receive file
+/var/lib/condor-ce/spool/15/0/cluster15.proc0.subproc0.tmp/x509up_u30001
+08/13/15 10&#58;30&#58;56 DoDownload&#58; exiting at 2236
+
+Thanks,
+
+Doug
+
+On 08/13/2015 11&#58;00 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='26389#1439484091'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-13T16:41:31+00:00">Aug 13, 2015 04:41 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1439484091">&nbsp;</a></div><pre>Unfortunately, 8.2.9 won&#39;t make it into the OSG repos until the September release.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='26389#1439481655'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-13T16:00:55+00:00">Aug 13, 2015 04:00 PM UTC</time><a class="anchor" name="1439481655">&nbsp;</a></div><pre>Hi Doug,
+
+This is interesting. It looks like the interesting line is this one&#58;
+
+08/12/15 22&#58;07&#58;38 ReliSock&#58;&#58;get_x509_delegation()&#58; delegation failed&#58; couldn&#39;t set globus thread model
+
+This should be fixed in Condor 8.2.9&#58;
+
+<a href='https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=5061' target='_blank' rel='nofollow'>https&#58;//htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=5061</a>
+
+And there is a related ticket to that&#58;
+
+<a href='http&#58;//ticket.grid.iu.edu/24806' target='_blank' rel='nofollow'>http&#58;//ticket.grid.iu.edu/24806</a>
+
+I guess by adding&#58;
+
+added to /etc/sysconfig/condor-ce&#58;
+
+# Try forcing alternate Globus libraries.
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH&#58;/osg/condor/lib/condor
+-------------------------------------------------------------------------------------------------
+
+Brian,
+
+Do you know if this should have already been fixed?
+
+Cheers,
+EDgar OG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26389#1439442849'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-13T05:14:09+00:00">Aug 13, 2015 05:14 AM UTC</time> by <b>benjamin@....</b><a class="anchor" name="1439442849">&nbsp;</a></div><pre>Hi,
+
+The job router is not seg faulting. I am seeing an error transferring files -
+
+on a remote machine - (atlas28.hep.anl.gov)
+
+[dbenjamin@atlas28 condor_ce]$ condor_ce_trace atlt3gm.physics.arizona.edu&#58;9619
+Testing HTCondor-CE collector connectivity.
+- Successful ping of collector on &#60;128.196.188.102&#58;9619&#62;.
+
+Testing HTCondor-CE schedd connectivity.
+- Successful ping of schedd on &#60;128.196.188.102&#58;9620?sock=20632_3a73_4&#62;.
+
+Submitting job to schedd &#60;128.196.188.102&#58;9620?sock=20632_3a73_4&#62;
+- Successful submission; cluster ID 12
+Resulting job ad&#58;
+[
+BufferSize = 524288;
+NiceUser = false;
+CoreSize = -1;
+CumulativeSlotTime = 0;
+OnExitHold = false;
+RequestCpus = 1;
+Err = &#34;_condor_stderr&#34;;
+BufferBlockSize = 32768;
+x509userproxy = &#34;/tmp/x509up_u30001&#34;;
+TransferOutputRemaps = &#34;_condor_stdout=/users/dbenjamin/condor_ce/.stdout_26440_mpMvZd;_condor_stderr=/users/dbenjamin/condor_ce/.stderr_26440_x0IGFg&#34;;
+ImageSize = 100;
+CurrentTime = time();
+WantCheckpoint = false;
+CommittedTime = 0;
+TargetType = &#34;Machine&#34;;
+WhenToTransferOutput = &#34;ON_EXIT&#34;;
+Cmd = &#34;/bin/env&#34;;
+JobUniverse = 5;
+<div id='show_1409013251' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1409013251'>ExitBySignal = false;
+HoldReasonCode = 16;
+Iwd = &#34;/users/dbenjamin/condor_ce&#34;;
+NumRestarts = 0;
+CommittedSuspensionTime = 0;
+Owner = undefined;
+NumSystemHolds = 0;
+CumulativeSuspensionTime = 0;
+RequestDisk = DiskUsage;
+Requirements = true && TARGET.OPSYS == &#34;LINUX&#34; && TARGET.ARCH == &#34;X86_64&#34; && TARGET.HasFileTransfer && TARGET.Disk &#62;= RequestDisk && TARGET.Memory &#62;= RequestMemory;
+MinHosts = 1;
+JobNotification = 0;
+NumCkpts = 0;
+LastSuspensionTime = 0;
+NumJobStarts = 0;
+WantRemoteSyscalls = false;
+JobPrio = 0;
+RootDir = &#34;/&#34;;
+CurrentHosts = 0;
+x509UserProxyExpiration = 1440434085;
+StreamOut = false;
+WantRemoteIO = true;
+OnExitRemove = true;
+DiskUsage = 1;
+In = &#34;/dev/null&#34;;
+PeriodicRemove = false;
+RemoteUserCpu = 0.0;
+LocalUserCpu = 0.0;
+LocalSysCpu = 0.0;
+RemoteSysCpu = 0.0;
+ClusterId = 12;
+Log = &#34;/users/dbenjamin/condor_ce/.log_26440_huceU1&#34;;
+CompletionDate = 0;
+RemoteWallClockTime = 0.0;
+x509UserProxyFQAN = &#34;/atlas/Role=production/Capability=NULL,/atlas/Role=NULL/Capability=NULL,/atlas/alarm/Role=NULL/Capability=NULL,/atlas/lcg1/Role=NULL/Capability=NULL,/atlas/phys-top/Role=NULL/Capability=NULL,/atlas/team/Role=NULL/Capability=NULL,/atlas/usatlas/Role=NULL/Capability=NULL&#34;;
+LeaveJobInQueue = JobStatus == 4 && ( CompletionDate is UNDDEFINED || CompletionDate == 0 || ( ( time() - CompletionDate ) &#60; 864000 ) );
+CondorVersion = &#34;$CondorVersion&#58; 8.2.8 Apr 08 2015 BuildID&#58; 313322 $&#34;;
+MyType = &#34;Job&#34;;
+StreamErr = false;
+HoldReason = &#34;Spooling input data files&#34;;
+PeriodicHold = false;
+ProcId = 0;
+x509UserProxyFirstFQAN = &#34;/atlas/Role=production/Capability=NULL&#34;;
+Out = &#34;_condor_stdout&#34;;
+JobStatus = 5;
+PeriodicRelease = false;
+RequestMemory = ifthenelse(MemoryUsage isnt undefined,MemoryUsage,( ImageSize + 1023 ) / 1024);
+Args = &#34;&#34;;
+MaxHosts = 1;
+TotalSuspensions = 0;
+CommittedSlotTime = 0;
+x509userproxysubject = &#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Doug Benjamin 427/CN=proxy&#34;;
+x509UserProxyVOName = &#34;atlas&#34;;
+CondorPlatform = &#34;$CondorPlatform&#58; x86_64_RedHat6 $&#34;;
+ShouldTransferFiles = &#34;YES&#34;;
+ExitStatus = 0;
+QDate = 1439442392;
+EnteredCurrentStatus = 1439442392
+]
+Spooling cluster 12 files to schedd &#60;128.196.188.102&#58;9620?sock=20632_3a73_4&#62;
+********************************************************************************
+2015-08-13 00&#58;06&#58;33 - Failed to spool files to atlt3gm.physics.arizona.edu due
+to the following error&#58;
+DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for
+target job 12.0&#58; TOOL at 130.202.173.21 failed to send file(s) to
+&#60;128.196.188.102&#58;9620&#62;&#58; error sending /tmp/x509up_u30001
+********************************************************************************
+
+same command but with debug flag
+
+&#60;snip&#62;
+
+pooling cluster 13 files to schedd &#60;128.196.188.102&#58;9620?sock=20632_3a73_4&#62;
+08/13/15 00&#58;07&#58;38 SharedPortClient&#58; sent connection request to &#60;128.196.188.102&#58;9620&#62; for shared port id 20632_3a73_4
+08/13/15 00&#58;07&#58;38 entering FileTransfer&#58;&#58;SimpleInit
+08/13/15 00&#58;07&#58;38 Input files&#58;
+08/13/15 00&#58;07&#58;38 FILETRANSFER&#58; protocol &#34;http&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+08/13/15 00&#58;07&#58;38 FILETRANSFER&#58; protocol &#34;ftp&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+08/13/15 00&#58;07&#58;38 FILETRANSFER&#58; protocol &#34;file&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+08/13/15 00&#58;07&#58;38 FILETRANSFER&#58; protocol &#34;data&#34; handled by &#34;/usr/libexec/condor/data_plugin&#34;
+08/13/15 00&#58;07&#58;38 entering FileTransfer&#58;&#58;UploadFiles (final_transfer=0)
+08/13/15 00&#58;07&#58;38 entering FileTransfer&#58;&#58;Upload
+08/13/15 00&#58;07&#58;38 entering FileTransfer&#58;&#58;DoUpload
+08/13/15 00&#58;07&#58;38 DoUpload&#58; sending file /tmp/x509up_u30001
+08/13/15 00&#58;07&#58;38 FILETRANSFER&#58; outgoing file_command is 4 for /tmp/x509up_u30001
+08/13/15 00&#58;07&#58;38 Received GoAhead from peer to send /tmp/x509up_u30001 and all further files.
+08/13/15 00&#58;07&#58;38 Sending GoAhead for 128.196.188.102 to receive /tmp/x509up_u30001 and all further files.
+08/13/15 00&#58;07&#58;38 Failed to read end of message from &#60;128.196.188.102&#58;9620&#62;; 211 untouched bytes.
+08/13/15 00&#58;07&#58;38 ReliSock&#58;&#58;put_x509_delegation()&#58; delegation failed&#58; x509_send_delegation failed at line 1121
+08/13/15 00&#58;07&#58;38 DoUpload&#58; put_x509_delegation() returned -1
+08/13/15 00&#58;07&#58;38 DoUpload&#58; exiting at 3290
+08/13/15 00&#58;07&#58;38 FAILED to get(inputLine)
+08/13/15 00&#58;07&#58;38 Failed to receive download acknowledgment from &#60;128.196.188.102&#58;9620&#62;.
+08/13/15 00&#58;07&#58;38 DoUpload&#58; TOOL at 130.202.173.21 failed to send file(s) to &#60;128.196.188.102&#58;9620&#62;&#58; error sending /tmp/x509up_u30001
+********************************************************************************
+2015-08-13 00&#58;07&#58;38 - Failed to spool files to atlt3gm.physics.arizona.edu due
+to the following error&#58;
+DCSchedd&#58;&#58;spoolJobFiles&#58;7002&#58;File transfer failed for
+target job 13.0&#58; TOOL at 130.202.173.21 failed to send file(s) to
+&#60;128.196.188.102&#58;9620&#62;&#58; error sending /tmp/x509up_u30001
+********************************************************************************
+
+here is the Sched log on the machine with condor-ce
+
+08/12/15 22&#58;07&#58;38 Job 13.0 held for spooling. Checking how long...
+08/12/15 22&#58;07&#58;38 Attribute StageInStart not set in 13.0. Set it.
+08/12/15 22&#58;07&#58;38 Sending RESCHEDULE command to negotiator(s)
+08/12/15 22&#58;07&#58;38 Will use TCP to update collector atlt3gm.physics.arizona.edu &#60;128.196.188.102&#58;9619&#62;
+08/12/15 22&#58;07&#58;38 Trying to query collector &#60;128.196.188.102&#58;9619&#62;
+08/12/15 22&#58;07&#58;38 Can&#39;t find address for negotiator
+08/12/15 22&#58;07&#58;38 Failed to send RESCHEDULE to unknown daemon&#58;
+08/12/15 22&#58;07&#58;38 spoolJobFiles()&#58; read JobAdsArrayLen - 1
+08/12/15 22&#58;07&#58;38 Looking at spooling&#58; mode is 488
+08/12/15 22&#58;07&#58;38 job_status is 5
+08/12/15 22&#58;07&#58;38 generalJobFilesWorkerThread()&#58; transfer files for job 13.0
+08/12/15 22&#58;07&#58;38 The submitting job ad as the FileTransferObject sees it
+MyType = &#34;Job&#34;
+TargetType = &#34;Machine&#34;
+CurrentTime = time()
+NumCkpts_RAW = 0
+BufferSize = 524288
+NiceUser = false
+CoreSize = -1
+CumulativeSlotTime = 0
+OnExitHold = false
+GlobalJobId = &#34;atlt3gm.physics.arizona.edu#13.0#1439442458&#34;
+RequestCpus = 1
+Err = &#34;_condor_stderr&#34;
+BufferBlockSize = 32768
+x509userproxy = &#34;x509up_u30001&#34;
+TransferOutputRemaps = undefined
+ImageSize = 100
+WantCheckpoint = false
+CommittedTime = 0
+WhenToTransferOutput = &#34;ON_EXIT&#34;
+Cmd = &#34;env&#34;
+JobUniverse = 5
+ExitBySignal = false
+SUBMIT_x509userproxy = &#34;/tmp/x509up_u30001&#34;
+SUBMIT_Cmd = &#34;/bin/env&#34;
+HoldReasonCode = 16
+Iwd = &#34;/var/lib/condor-ce/spool/13/0/cluster13.proc0.subproc0&#34;
+NumRestarts = 0
+SUBMIT_Iwd = &#34;/users/dbenjamin/condor_ce&#34;
+CumulativeSuspensionTime = 0
+RequestDisk = DiskUsage
+Requirements = true && TARGET.OPSYS == &#34;LINUX&#34; && TARGET.ARCH == &#34;X86_64&#34; && TARGET.HasFileTransfer && TARGET.Disk &#62;= RequestDisk && TARGET.Memory &#62;= RequestMemory
+MinHosts = 1
+JobNotification = 0
+NumCkpts = 0
+LastSuspensionTime = 0
+NumJobStarts = 0
+WantRemoteSyscalls = false
+JobPrio = 0
+RootDir = &#34;/&#34;
+CurrentHosts = 0
+x509UserProxyExpiration = 1440434085
+StreamOut = false
+WantRemoteIO = true
+OnExitRemove = true
+In = &#34;/dev/null&#34;
+DiskUsage = 1
+PeriodicRemove = false
+LocalUserCpu = 0.0
+RemoteUserCpu = 0.0
+StageInStart = 1439442458
+LocalSysCpu = 0.0
+RemoteSysCpu = 0.0
+ClusterId = 13
+Log = &#34;/users/dbenjamin/condor_ce/.log_26466_DxWYHy&#34;
+CompletionDate = 0
+RemoteWallClockTime = 0.0
+x509UserProxyFQAN = &#34;/atlas/Role=production/Capability=NULL,/atlas/Role=NULL/Capability=NULL,/atlas/alarm/Role=NULL/Capability=NULL,/atlas/lcg1/Role=NULL/Capability=NULL,/atlas/phys-top/Role=NULL/Capability=NULL,/atlas/team/Role=NULL/Capability=NULL,/atlas/usatlas/Role=NULL/Capability=NULL&#34;
+LeaveJobInQueue = JobStatus == 4 && ( CompletionDate =?= UNDDEFINED || CompletionDate == 0 || ( ( time() - CompletionDate ) &#60; 864000 ) )
+ImageSize_RAW = 100
+CondorVersion = &#34;$CondorVersion&#58; 8.2.8 Apr 08 2015 BuildID&#58; 313322 $&#34;
+StreamErr = false
+HoldReason = &#34;Spooling input data files&#34;
+DiskUsage_RAW = 1
+PeriodicHold = false
+ProcId = 0
+User = &#34;usatlas1@....&#34;
+x509UserProxyFirstFQAN = &#34;/atlas/Role=production/Capability=NULL&#34;
+Out = &#34;_condor_stdout&#34;
+JobStatus = 5
+PeriodicRelease = false
+RequestMemory = ifthenelse(MemoryUsage =!= undefined,MemoryUsage,( ImageSize + 1023 ) / 1024)
+Args = &#34;&#34;
+MaxHosts = 1
+SUBMIT_TransferOutputRemaps = &#34;_condor_stdout=/users/dbenjamin/condor_ce/.stdout_26466_Jw18bE;_condor_stderr=/users/dbenjamin/condor_ce/.stderr_26466_qiv79B&#34;
+TotalSuspensions = 0
+CommittedSlotTime = 0
+x509userproxysubject = &#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Doug Benjamin 427/CN=proxy&#34;
+x509UserProxyVOName = &#34;atlas&#34;
+CondorPlatform = &#34;$CondorPlatform&#58; x86_64_RedHat6 $&#34;
+ShouldTransferFiles = &#34;YES&#34;
+ExitStatus = 0
+QDate = 1439442458
+EnteredCurrentStatus = 1439442458
+08/12/15 22&#58;07&#58;38 entering FileTransfer&#58;&#58;SimpleInit
+08/12/15 22&#58;07&#58;38 FILETRANSFER&#58; protocol &#34;http&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+08/12/15 22&#58;07&#58;38 FILETRANSFER&#58; protocol &#34;ftp&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+08/12/15 22&#58;07&#58;38 FILETRANSFER&#58; protocol &#34;file&#34; handled by &#34;/usr/libexec/condor/curl_plugin&#34;
+08/12/15 22&#58;07&#58;38 FILETRANSFER&#58; protocol &#34;data&#34; handled by &#34;/usr/libexec/condor/data_plugin&#34;
+08/12/15 22&#58;07&#58;38 entering FileTransfer&#58;&#58;DownloadFiles
+08/12/15 22&#58;07&#58;38 entering FileTransfer&#58;&#58;Download
+08/12/15 22&#58;07&#58;38 entering FileTransfer&#58;&#58;DoDownload sync=1
+08/12/15 22&#58;07&#58;38 Sending GoAhead for 130.202.173.21 to send /var/lib/condor-ce/spool/13/0/cluster13.proc0.subproc0.tmp/x509up_u30001 and all further files.
+08/12/15 22&#58;07&#58;38 Received GoAhead from peer to receive /var/lib/condor-ce/spool/13/0/cluster13.proc0.subproc0.tmp/x509up_u30001 and all further files.
+08/12/15 22&#58;07&#58;38 ReliSock&#58;&#58;get_x509_delegation()&#58; delegation failed&#58; couldn&#39;t set globus thread model
+08/12/15 22&#58;07&#58;38 DoDownload&#58; get_x509_delegation() returned -1
+08/12/15 22&#58;07&#58;38 DoDownload&#58; SCHEDD at 128.196.188.102 failed to receive file /var/lib/condor-ce/spool/13/0/cluster13.proc0.subproc0.tmp/x509up_u30001
+08/12/15 22&#58;07&#58;38 DoDownload&#58; exiting at 2236
+08/12/15 22&#58;07&#58;38 generalJobFilesWorkerThread()&#58; failed to transfer files for job 13.0
+08/12/15 22&#58;07&#58;38 Scheduler&#58;&#58;spoolJobFilesWorkerThread(void *arg, Stream* s) NAP TIME
+08/12/15 22&#58;07&#58;39 DaemonCore&#58; No more children processes to reap.
+08/12/15 22&#58;07&#58;39 spoolJobFilesReaper tid=389 status=0
+08/12/15 22&#58;07&#58;39 ERROR - Staging of job files failed!
+08/12/15 22&#58;07&#58;39 abort_job_myself&#58; 13.0 action&#58;Remove log_hold&#58;true notify&#58;true
+08/12/15 22&#58;07&#58;39 Cleared dirty attributes for job 13.0
+08/12/15 22&#58;07&#58;39 Added data to SelfDrainingQueue job_is_finished_queue, now has 1 element(s)
+08/12/15 22&#58;07&#58;39 Registered timer for SelfDrainingQueue job_is_finished_queue, period&#58; 0 (id&#58; 73)
+08/12/15 22&#58;07&#58;39 Job 13.0 is finished
+08/12/15 22&#58;07&#58;39 Job 13.0 aborted&#58; Staging of job files failed
+08/12/15 22&#58;07&#58;39 Inside SelfDrainingQueue&#58;&#58;timerHandler() for job_is_finished_queue
+08/12/15 22&#58;07&#58;39 Job cleanup for 13.0 will not block, calling jobIsFinished() directly
+08/12/15 22&#58;07&#58;39 Initializing Directory&#58; curr_dir = /var/lib/condor-ce/spool/13/0/cluster13.proc0.subproc0
+08/12/15 22&#58;07&#58;39 jobIsFinished() completed, calling DestroyProc(13.0)
+08/12/15 22&#58;07&#58;39 Initializing Directory&#58; curr_dir = /var/lib/condor-ce/spool/13/0/cluster13.proc0.subproc0
+08/12/15 22&#58;07&#58;39 Initializing Directory&#58; curr_dir = /var/lib/condor-ce/spool/13/0/cluster13.proc0.subproc0
+08/12/15 22&#58;07&#58;39 Initializing Directory&#58; curr_dir = /var/lib/condor-ce/spool/13/0/cluster13.proc0.subproc0.tmp
+08/12/15 22&#58;07&#58;39 Saving classad to history file
+08/12/15 22&#58;07&#58;39 SelfDrainingQueue job_is_finished_queue is empty, not resetting timer
+08/12/15 22&#58;07&#58;39 Canceling timer for SelfDrainingQueue job_is_finished_queue (timer id&#58; 73)
+08/12/15 22&#58;09&#58;12 Getting monitoring info for pid 20648
+08/12/15 22&#58;09&#58;15 Evaluated periodic expressions in 0.000s, scheduling next run in 301s
+08/12/15 22&#58;09&#58;27 -------- Begin starting jobs --------
+08/12/15 22&#58;09&#58;27 -------- Done starting jobs --------
+
+Any idea why the file transfer of the Proxy has failed?
+
+On 08/12/2015 09&#58;35 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1409013251').click(function() {
+            $('#detail_1409013251').slideDown("normal");
+            $('#show_1409013251').hide();
+            $('#hide_1409013251').show();
+        });
+        $('#hide_1409013251').click(function() {
+            $('#detail_1409013251').slideUp();
+            $('#hide_1409013251').hide();
+            $('#show_1409013251').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='26389#1439390121'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-12T14:35:21+00:00">Aug 12, 2015 02:35 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1439390121">&nbsp;</a></div><pre>I will ping again in a few days to see if a new condor release might help.</pre></div><div class='update_description'><i onclick="document.location='26389#1439231594'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-10T18:33:14+00:00">Aug 10, 2015 06:33 PM UTC</time><a class="anchor" name="1439231594">&nbsp;</a></div><pre>Hi Doug,
+
+I cannot see anything obvious about it. So this seems like a condor problem. Tomorrow theere will be another release, can you try that one and then we take it from there and involve our condor friends.
+
+Cheers,
+
+Edgar
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26389#1438979492'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-07T20:31:32+00:00">Aug 7, 2015 08:31 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1438979492">&nbsp;</a></div><pre>Attached File.</pre></div><div class='update_description'><i onclick="document.location='26389#1438950193'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-07T12:23:13+00:00">Aug 7, 2015 12:23 PM UTC</time> by <b>benjamin@....</b><a class="anchor" name="1438950193">&nbsp;</a></div><pre>Sure will do next Monday. I am on holiday till then.
+
+Sent from my iPhone
+
+<font color='#7F7E6F'>&#62; On Aug 6, 2015, at 1&#58;18 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='26389#1438885106'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-06T18:18:26+00:00">Aug 6, 2015 06:18 PM UTC</time><a class="anchor" name="1438885106">&nbsp;</a></div><pre>Hi Doug,
+
+The attachment did not make it. Can you re attach it as a .txt file. The ticket system is really picky about file extensions.
+
+Cheers,
+
+Edgar
+OSG Software
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26389#1438724892'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-04T21:48:12+00:00">Aug 4, 2015 09:48 PM UTC</time> by <b>benjamin@....</b><a class="anchor" name="1438724892">&nbsp;</a></div><pre>Hi,
+
+I am attaching the results of condor_ce_config_val -dump. Certainly if we can not solve the problem right away.
+I can wait.
+
+Cheers,
+
+Doug
+
+On 08/04/2015 04&#58;26 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='26389#1438723578'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-04T21:26:18+00:00">Aug 4, 2015 09:26 PM UTC</time><a class="anchor" name="1438723578">&nbsp;</a></div><pre>Hi Doug,
+
+Can you run this condor_ce_config_val and attach the output?
+
+Next Tuesday we will be releasing a new HTCondor CE release with some bug fixes, do you think you can wait till then and see where we are at with the new release?
+
+Cheers,
+
+Edgar
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='26389#1438635942'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-03T21:05:42+00:00">Aug 3, 2015 09:05 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1438635942">&nbsp;</a></div><pre>Edgar, can you take a look?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='26389#1438634184'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-03T20:36:24+00:00">Aug 3, 2015 08:36 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1438634184">&nbsp;</a></div><pre>Hi,
+
+I have installed the condor-ce according to the instructions on the OSG pages.  This system connects to
+an existing condor cluster.  condor-ce is running on the same machine as the collector/negotiator of the local
+condor cluster.
+
+The JOB_ROUTER seg faults shortly after starting.
+
+Here a snippet of  JOB_ROUTER log file. (with JOB_ROUTER_DEBUG = D_FULLDEBUG)
+-------------------------
+08/03/15 13&#58;27&#58;43 JobRouter&#58; Registered EvalAllSrcJobPeriodicExprs() to evaluate periodic expressions.
+08/03/15 13&#58;27&#58;43 Setting update interval to 300
+08/03/15 13&#58;27&#58;43 Routing jobs to schedd atlt3gm.physics.arizona.edu in pool atlt3gm.physics.arizona.edu&#58;9618
+08/03/15 13&#58;27&#58;43 FileLock object is updating timestamp on&#58; /var/lock/condor-ce/htcondor-ceLock
+08/03/15 13&#58;27&#58;43 FileLock&#58;&#58;obtain(1) - @1438633663.433073 lock on /var/lock/condor-ce/htcondor-ceLock now WRITE
+08/03/15 13&#58;27&#58;43 FileLock object is updating timestamp on&#58; /var/lock/condor-ce/htcondor-ceLock
+08/03/15 13&#58;27&#58;43 DaemonCore&#58; No more children processes to reap.
+08/03/15 13&#58;27&#58;43 Getting monitoring info for pid 20150
+08/03/15 13&#58;27&#58;43 DaemonCore&#58; in SendAliveToParent()
+08/03/15 13&#58;27&#58;43 SharedPortClient&#58; sent connection request to daemon at &#60;128.196.188.102&#58;9620&#62; for shared port id 20058_5c4e
+08/03/15 13&#58;27&#58;43 This process has a valid certificate & key
+08/03/15 13&#58;27&#58;43 IPVERIFY&#58; checking atlt3gm.physics.arizona.edu against 128.196.188.102
+08/03/15 13&#58;27&#58;43 IPVERIFY&#58; matched 128.196.188.102 to 128.196.188.102
+08/03/15 13&#58;27&#58;43 IPVERIFY&#58; ip found is 1
+08/03/15 13&#58;27&#58;43 MapFile&#58; Canonicalization File&#58; method=&#39;gsi&#39; principal=&#39;^&#92;/DC&#92;=com&#92;/DC&#92;=DigiCert-Grid&#92;/O=Open Science Grid&#92;/OU&#92;=Services&#92;/CN&#92;=(host&#92;/)?([A-Za-z0-9.&#92;-]*)$&#39; canonicalization=&#39;&#92;2@....&#39;
+08/03/15 13&#58;27&#58;43 MapFile&#58; Canonicalization File&#58; method=&#39;gsi&#39; principal=&#39;^&#92;/DC&#92;=DigiCert-Grid&#92;/DC&#92;=com&#92;/O=Open Science Grid&#92;/OU&#92;=Services&#92;/CN&#92;=(host&#92;/)?([A-Za-z0-9.&#92;-]*)$&#39; canonicalization=&#39;&#92;2@....&#39;
+08/03/15 13&#58;27&#58;43 MapFile&#58; Canonicalization File&#58; method=&#39;gsi&#39; principal=&#39;^&#92;/DC&#92;=org&#92;/DC&#92;=opensciencegrid&#92;/O=Open Science Grid&#92;/OU&#92;=Services&#92;/CN&#92;=(host&#92;/)?([A-Za-z0-9.&#92;-]*)$&#39; canonicalization=&#39;&#92;2@....&#39;
+08/03/15 13&#58;27&#58;43 MapFile&#58; Canonicalization File&#58; method=&#39;gsi&#39; principal=&#39;(.*)&#39; canonicalization=&#39;GSS_ASSIST_GRIDMAP&#39;
+08/03/15 13&#58;27&#58;43 MapFile&#58; Canonicalization File&#58; method=&#39;gsi&#39; principal=&#39;(/CN=[-.A-Za-z0-9/= ]+)&#39; canonicalization=&#39;&#92;1@....&#39;
+08/03/15 13&#58;27&#58;43 MapFile&#58; Canonicalization File&#58; method=&#39;claimtobe&#39; principal=&#39;.*&#39; canonicalization=&#39;anonymous@claimtobe&#39;
+08/03/15 13&#58;27&#58;43 MapFile&#58; Canonicalization File&#58; method=&#39;fs&#39; principal=&#39;(.*)&#39; canonicalization=&#39;&#92;1&#39;
+08/03/15 13&#58;27&#58;43 Activating Globus GSI_GSSAPI_ASSIST module.
+08/03/15 13&#58;27&#58;43 ZKM&#58; successful mapping to atlt3gm.physics.arizona.edu@....
+08/03/15 13&#58;27&#58;43 IPVERIFY&#58; checking atlt3gm.physics.arizona.edu against 128.196.188.102
+08/03/15 13&#58;27&#58;43 IPVERIFY&#58; matched 128.196.188.102 to 128.196.188.102
+<div id='show_323739548' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_323739548'>08/03/15 13&#58;27&#58;43 IPVERIFY&#58; ip found is 1
+08/03/15 13&#58;27&#58;43 Completed DC_CHILDALIVE to daemon at &#60;128.196.188.102&#58;9620&#62;
+08/03/15 13&#58;27&#58;43 DaemonCore&#58; Leaving SendAliveToParent() - success
+08/03/15 13&#58;27&#58;43 TimerHandler_JobLogPolling() called
+08/03/15 13&#58;27&#58;43 === Current Probing Information ===
+08/03/15 13&#58;27&#58;43 fsize&#58; 39658		mtime&#58; 1438630351
+08/03/15 13&#58;27&#58;43 first log entry&#58; 3 CreationTimestamp 1438316551
+08/03/15 13&#58;27&#58;43 TimerHandler_JobLogPolling() called
+08/03/15 13&#58;27&#58;43 === Current Probing Information ===
+08/03/15 13&#58;27&#58;43 fsize&#58; 0		mtime&#58; 1438580950
+Stack dump for process 20150 at timestamp 1438633663 (14 frames)
+/usr/lib64/condor/libcondor_utils_8_2_8.so(dprintf_dump_stack+0x12d)[0x7fef2d7cf93d]
+/usr/lib64/condor/libcondor_utils_8_2_8.so(_Z18linux_sig_coredumpi+0x40)[0x7fef2d929a80]
+/lib64/libpthread.so.0[0x365500f710]
+/lib64/libc.so.6[0x3654c68c25]
+/lib64/libc.so.6(fseek+0x6a)[0x3654c6eb5a]
+/usr/lib64/condor/libcondor_utils_8_2_8.so(_ZN16ClassAdLogParser12readLogEntryERi+0x42)[0x7fef2d7ec282]
+/usr/lib64/condor/libcondor_utils_8_2_8.so(_ZN16ClassAdLogReader15IncrementalLoadEv+0x24)[0x7fef2d8254d4]
+/usr/lib64/condor/libcondor_utils_8_2_8.so(_ZN16ClassAdLogReader4PollEv+0x108)[0x7fef2d8256b8]
+/usr/lib64/condor/libcondor_utils_8_2_8.so(_ZN12JobLogMirror26TimerHandler_JobLogPollingEv+0x20)[0x7fef2d81b830]
+/usr/lib64/condor/libcondor_utils_8_2_8.so(_ZN12TimerManager7TimeoutEPiPd+0x1a1)[0x7fef2d92df61]
+/usr/lib64/condor/libcondor_utils_8_2_8.so(_ZN10DaemonCore6DriverEv+0xbf7)[0x7fef2d9152d7]
+/usr/lib64/condor/libcondor_utils_8_2_8.so(_Z7dc_mainiPPc+0x1799)[0x7fef2d92bc09]
+/lib64/libc.so.6(__libc_start_main+0xfd)[0x3654c1ed5d]
+condor_job_router[0x40b829]
+-----------------------------
+
+Any ideas what might be wrong that is causing the code to crash.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Doug Benjamin 427
+
+</div><script type='text/javascript'>
+        $('#show_323739548').click(function() {
+            $('#detail_323739548').slideDown("normal");
+            $('#show_323739548').hide();
+            $('#hide_323739548').show();
+        });
+        $('#hide_323739548').click(function() {
+            $('#detail_323739548').slideUp();
+            $('#hide_323739548').hide();
+            $('#show_323739548').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F26389">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 26389});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

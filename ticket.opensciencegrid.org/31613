@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[31613] pbs_status.py in blahp-1.18.26.bosco-1.osg33.el6.x86_64 does not work on SLURM site</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=31613" method="post">
+<div class="page-header">
+    <h3><span class="muted">31613</span> / pbs_status.py in blahp-1.18.26.bosco-1.osg33.el6.x86_64 does not work on SLURM site</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Bockjoo Kim</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Bockjoo Kim</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Check for update</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-10-28</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=31613", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/31613?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/31613?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20pbs_status.py%20in%20blahp-1.18.26.bosco-1.osg33.el6.x86_64%20does%20not%20work%20on%20SLURM%20site%20ISSUE%3D31613%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='31613#1477595383'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-27T19:09:43+00:00">Oct 27, 2016 07:09 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477595383">&nbsp;</a></div><pre>Glad to hear it Bockjoo! Thanks for helping us find this. I&#39;ll continue the work about your expired proxy held jobs in the other ticket.</pre></div><div class='update_description'><i onclick="document.location='31613#1477595111'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-27T19:05:11+00:00">Oct 27, 2016 07:05 PM UTC</time> by <b>Bockjoo Kim</b><a class="anchor" name="1477595111">&nbsp;</a></div><pre>Hi Brian,
+I do not see any held job due to the pbs_status.py.
+So, I declared it works.
+Thanks,
+Bockjoo
+
+On 10/27/16 1&#58;05 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='31613#1477587911'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-27T17:05:11+00:00">Oct 27, 2016 05:05 PM UTC</time> by <b>Bockjoo Kim</b><a class="anchor" name="1477587911">&nbsp;</a></div><pre>Hi Brian,
+I switched to the patched version of 1.18.26 pbs_status.py.
+I will let you know if it works or not.
+Thanks,
+Bockjoo
+On 10/27/16 1&#58;01 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='31613#1477587692'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-27T17:01:32+00:00">Oct 27, 2016 05:01 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477587692">&nbsp;</a></div><pre>Bockjoo,
+
+I&#39;ve created a ticket here&#58; <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2516.' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2516.</a> Could you please verify the fix at your earliest convenience? We&#39;d like to get this into the November release.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='31613#1477581743'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-27T15:22:23+00:00">Oct 27, 2016 03:22 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477581743">&nbsp;</a></div><pre>I&#39;ve attached the patch and you can apply it with &#96;patch -p0 &#60; pbs_status.py.patch&#96;</pre></div><div class='update_description'><i onclick="document.location='31613#1477579513'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-27T14:45:13+00:00">Oct 27, 2016 02:45 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477579513">&nbsp;</a></div><pre>Let me whip up a patch for you real quick</pre></div><div class='update_description'><i onclick="document.location='31613#1477527250'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-27T00:14:10+00:00">Oct 27, 2016 12:14 AM UTC</time> by <b>Bockjoo Kim</b><a class="anchor" name="1477527250">&nbsp;</a></div><pre>Hi Brian,
+So, I guess it is sufficient to replace
+#-if re.search(r&#39;PBSPro&#39;, qstat_version)&#58;
+#-    command = (qstat_bin, &#39;-f&#39;, jobid) # -1 conflicts with -f in
+PBS Pro
+#-else&#58;
+#-    command = (qstat_bin, &#39;-f&#39;, &#39;-1&#39;, jobid)
+in pbs_status.py.original with
+command = (qstat_bin, &#39;-f&#39;)
+if not re.search(r&#39;PBSPro&#39;, qstat_version)&#58;
+command += (&#39;-1&#39;,) # -1 conflicts with -f in PBS Pro
+if jobid&#58;
+command += (jobid,)
+
+Thanks,
+Bockjoo
+On 10/26/16 7&#58;11 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='31613#1477523514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-26T23:11:54+00:00">Oct 26, 2016 11:11 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477523514">&nbsp;</a></div><pre>Fair enough. I believe I&#39;ve tracked the bug down to an issue in the qstat call in pbs_status.py introduced in 1.18.24 that prevents the cache from populating and so each status update was running qstat multiple times. I&#39;ve fixed the issue in this commit <a href='https&#58;//github.com/brianhlin/BLAH/commit/b09ff27b51aef8187407480cad666ae832c50277' target='_blank' rel='nofollow'>https&#58;//github.com/brianhlin/BLAH/commit/b09ff27b51aef8187407480cad666ae832c50277</a> and tested it on your CE with a separate cache. If you apply the relevant patch bits to your pbs_status.py.original and drop it back in place, this should resolve the issue raised in this ticket.</pre></div><div class='update_description'><i onclick="document.location='31613#1477514651'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-26T20:44:11+00:00">Oct 26, 2016 08:44 PM UTC</time> by <b>Bockjoo Kim</b><a class="anchor" name="1477514651">&nbsp;</a></div><pre>There are a lot of jobs that are running.
+I don&#39;t want to replace it at this moment.
+I hope you could come up with a better way of debugging it.
+Bockjoo
+
+On 10/26/16 4&#58;31 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='31613#1477513890'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-26T20:31:30+00:00">Oct 26, 2016 08:31 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477513890">&nbsp;</a></div><pre>Bockjoo,
+
+Would it be possible to replace pbs_status.py with pbs_status.py.original? Now that I&#39;m being mapped as the cmspilot user, I can do more poking around in the failure case.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='31613#1477504031'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-26T17:47:11+00:00">Oct 26, 2016 05:47 PM UTC</time> by <b>Bockjoo Kim</b><a class="anchor" name="1477504031">&nbsp;</a></div><pre>Now, all versions take the same amount of time&#58;
+-bash-4.1$ time /usr/libexec/blahp/pbs_status.py.original
+pbs/20161026/560021
+0[BatchJobId=&#34;560021&#34;; WorkerNode=&#34;c5a-s5&#34;; JobStatus=2; ]
+
+real    0m9.194s
+user    0m7.778s
+sys     0m0.465s
+-bash-4.1$ time /usr/libexec/blahp/pbs_status.py pbs/20161026/560021
+0[BatchJobId=&#34;560021&#34;; WorkerNode=&#34;c5a-s5&#34;; JobStatus=2; ]
+
+real    0m10.317s
+user    0m8.134s
+sys     0m0.560s
+
+-bash-4.1$ time /cms/t2/operations/pbs_status.py.1.18.17 pbs/20161026/560021
+0[BatchJobId=&#34;560021&#34;; WorkerNode=&#34;c5a-s5&#34;; JobStatus=2; ]
+
+real    0m10.613s
+user    0m8.193s
+sys     0m0.594s
+
+I think the issue is the lock race condition that can be reproduced only
+with the condor-ce,
+but not interactively.
+I changed the permission on
+/var/tmp/qstat_cache_cmspilot/blahp_results_cache
+and you should be able to read it using condor_ce_run command.
+Thanks,
+Bockjoo
+
+On 10/26/16 1&#58;20 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='31613#1477502427'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-26T17:20:27+00:00">Oct 26, 2016 05:20 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477502427">&nbsp;</a></div><pre>Bockjoo,
+
+I&#39;ve attached the version of pbs_status.py from 1.18.17, which is when the format of the blahp cache changed. Could you run this manually and see if it takes as long as your previous attempts? Could you also upload the /var/tmp/qstat_cache_cmspilot/blahp_results_cache?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='31613#1477438509'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-25T23:35:09+00:00">Oct 25, 2016 11:35 PM UTC</time> by <b>Bockjoo Kim</b><a class="anchor" name="1477438509">&nbsp;</a></div><pre><a href='http&#58;//oo.ihepa.ufl.edu&#58;8080/T2/ops/blahp_results_cache' target='_blank' rel='nofollow'>http&#58;//oo.ihepa.ufl.edu&#58;8080/T2/ops/blahp_results_cache</a>
+
+On 10/25/16 2&#58;35 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='31613#1477420511'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-25T18:35:11+00:00">Oct 25, 2016 06:35 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477420511">&nbsp;</a></div><pre>Bockjoo,
+
+Are you running the script as the cmspilot user? Could you attach the
+/var/tmp/qstat_cache_cmspilot/blahp_results_cache?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='31613#1477348151'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-24T22:29:11+00:00">Oct 24, 2016 10:29 PM UTC</time> by <b>Bockjoo Kim</b><a class="anchor" name="1477348151">&nbsp;</a></div><pre>It always takes 8 seconds.
+Bockjoo
+On 10/24/16 5&#58;59 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='31613#1477346392'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-24T21:59:52+00:00">Oct 24, 2016 09:59 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477346392">&nbsp;</a></div><pre>Bockjoo, if you run the &#39;original&#39; pbs_status.py command twice in a row, is the second time around any faster?</pre></div><div class='update_description'><i onclick="document.location='31613#1477342979'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-24T21:02:59+00:00">Oct 24, 2016 09:02 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1477342979">&nbsp;</a></div><pre>Bockjoo,
+
+I&#39;m setting up a CE to see if I can reproduce the issue. It&#39;s reminiscent of a problem we encountered in 1.18.24 that we fixed in 1.18.25&#58; there were issues writing to the cache so each job was querying PBS/slurm instead of consulting the cache and taking too long due to load on the batch system. I&#39;ll let you know what I find.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='31613#1477342863'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-24T21:01:03+00:00">Oct 24, 2016 09:01 PM UTC</time> by <b>Tim Theisen</b><a class="anchor" name="1477342863">&nbsp;</a></div><pre>Assigning to Brian Lin.</pre></div><div class='update_description'><i onclick="document.location='31613#1477342725'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-10-24T20:58:45+00:00">Oct 24, 2016 08:58 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1477342725">&nbsp;</a></div><pre>Hi,
+Recently, I have upgraded one of the SLURM CEs at Florida.
+I find pbs_status.py in blahp-1.18.26.bosco-1.osg33.el6.x86_64 does not work out of box
+and I had to revert to the old version of pbs_status.py blahp-1.18.16.bosco-1.osg33.el6.x86_64 to make
+it work on the SLURM batch CE.
+It does not work in the sense that the execution of pbs_status.py is taking forever because of another lock
+is blocking.
+Also if I run 1.18.26 interactively, it takes very long (8sec) while the one in 1.18.16 takes no second.
+There has been a discussion on the OSG-INT (Also see below).
+Can somebody check pbs_status.py for slurm sites?
+Thanks,
+Bockjoo
+
+Hi Horst,
+I&#39;d rather not try to understand them.
+I hope Brian B. who is the author of the script check the script, though.
+Thanks,
+Bockjoo
+On 10/24/16 4&#58;09 PM, Horst Severini wrote&#58;
+<font color='#7F7E6F'>&#62; Hi Bockjoo,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; hmm, odd. I have attached our pbs_status.py.orig from blahp-1.18.23.bosco-1.osg33.el7.x86_64, as well as our modified version. Does that help figure out what the difference is between the various versions? Or rather, what are the difference between these three versions?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;     Horst</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On 10/24/2016 11&#58;46 AM, Bockjoo Kim wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; blahp;1.18.16&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; grep sacct /usr/libexec/blahp/pbs_status.py ; echo $?</font>
+<font color='#7F7E6F'>&#62;&#62; 1</font>
+<font color='#7F7E6F'>&#62;&#62; time /usr/libexec/blahp/pbs_status.py  pbs/20161024/557398</font>
+<font color='#7F7E6F'>&#62;&#62; 0[BatchJobId=&#34;557398&#34;; WorkerNode=&#34;c10b-s9&#34;; JobStatus=2; ]</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; real    0m0.036s</font>
+<div id='show_697377069' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_697377069'><font color='#7F7E6F'>&#62;&#62; user    0m0.030s</font>
+<font color='#7F7E6F'>&#62;&#62; sys     0m0.004s</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; On the other hand,</font>
+<font color='#7F7E6F'>&#62;&#62; blahp-1.18.26&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; grep -q sacct /usr/libexec/blahp/pbs_status.py.original ; echo $?</font>
+<font color='#7F7E6F'>&#62;&#62; 0</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; time /usr/libexec/blahp/pbs_status.py.original pbs/20161024/557398</font>
+<font color='#7F7E6F'>&#62;&#62; 0[BatchJobId=&#34;557398&#34;; WorkerNode=&#34;c10b-s9&#34;; JobStatus=2; ]</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; real    0m8.941s</font>
+<font color='#7F7E6F'>&#62;&#62; user    0m7.556s</font>
+<font color='#7F7E6F'>&#62;&#62; sys     0m0.444s</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; it takes 8-sec forever.</font>
+<font color='#7F7E6F'>&#62;&#62; Bockjoo</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; On 10/24/16 12&#58;34 PM, Bockjoo Kim wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Jus for the developer and other SLURM sites.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; So, eventually, I had to replace pbs_status.py that came with</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; blahp-1.18.26.bosco-1.osg33.el6.x86_64</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; with blahp-1.18.16.bosco-1.osg33.el6.x86_64 pbs_status.py.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; blahp-1.18.26.bosco-1.osg33.el6.x86_64 had the lock</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; and it caused the pbs_status.py to be stuck, though 1.18.16 had also a</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; lock</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I don&#39;t know the difference of the lock.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Also which() method in 1.1826 did not seem to work.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Eventually, I might have had to get rid of the sacct quaery as you did.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I am wondering if there is any site that is running 1.28.26 fine out</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; of box.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Bockjoo</font>
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bockjoo/CN=556538/CN=Bockjoo Kim
+
+</div><script type='text/javascript'>
+        $('#show_697377069').click(function() {
+            $('#detail_697377069').slideDown("normal");
+            $('#show_697377069').hide();
+            $('#hide_697377069').show();
+        });
+        $('#hide_697377069').click(function() {
+            $('#detail_697377069').slideUp();
+            $('#hide_697377069').hide();
+            $('#show_697377069').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F31613">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 31613});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[24707] GUMS client behavior broken after update</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=24707" method="post">
+<div class="page-header">
+    <h3><span class="muted">24707</span> / GUMS client behavior broken after update</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Dockendorf</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">John Dockendorf</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for software team response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-09-15</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Carl Edquist <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=24707", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/24707?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/24707?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20GUMS%20client%20behavior%20broken%20after%20update%20ISSUE%3D24707%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='24707#1441987307'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T16:01:47+00:00">Sep 11, 2015 04:01 PM UTC</time><a class="anchor" name="1441987307">&nbsp;</a></div><pre>This ticket can be marked resolved.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='24707#1441930747'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-11T00:19:07+00:00">Sep 11, 2015 12:19 AM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1441930747">&nbsp;</a></div><pre>Thanks all.
+It looks like this issue has been resolved and a fix is in JIRA for October.  May I consider this ticket resolved?
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1441920844'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-10T21:34:04+00:00">Sep 10, 2015 09:34 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1441920844">&nbsp;</a></div><pre>I&#39;ve created <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2028' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2028</a> to track this.
+
+Since Trey has also confirmed the fix worked for him from the scratch build below, I don&#39;t anticipate any obstacles getting this in with the October release.
+
+Thanks!
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1441920375'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-10T21:26:15+00:00">Sep 10, 2015 09:26 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1441920375">&nbsp;</a></div><pre>That&#39;s great news, thanks Trey!
+
+I will create a JIRA ticket for this; we should be able to get the fix into the October release.
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1441920035'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-10T21:20:35+00:00">Sep 10, 2015 09:20 PM UTC</time><a class="anchor" name="1441920035">&nbsp;</a></div><pre>I&#39;ve installed those 3 RPMs on my GUMS host and both the command line and web interface now work as expected when querying the account mappings.
+
+Thanks,
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='24707#1441919150'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-10T21:05:50+00:00">Sep 10, 2015 09:05 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1441919150">&nbsp;</a></div><pre>Awesome, thanks Brian!
+
+Trey, I&#39;ve made a scratch build with Brian&#39;s fix; you can download the RPMs here&#58;
+
+<a href='https&#58;//koji-hub.batlab.org/koji/getfile?taskID=184214&name=gums-1.5.0-2.osg32.el6.noarch.rpm' target='_blank' rel='nofollow'>https&#58;//koji-hub.batlab.org/koji/getfile?taskID=184214&name=gums-1.5.0-2.osg32.el6.noarch.rpm</a>
+<a href='https&#58;//koji-hub.batlab.org/koji/getfile?taskID=184214&name=gums-client-1.5.0-2.osg32.el6.noarch.rpm' target='_blank' rel='nofollow'>https&#58;//koji-hub.batlab.org/koji/getfile?taskID=184214&name=gums-client-1.5.0-2.osg32.el6.noarch.rpm</a>
+<a href='https&#58;//koji-hub.batlab.org/koji/getfile?taskID=184214&name=gums-service-1.5.0-2.osg32.el6.noarch.rpm' target='_blank' rel='nofollow'>https&#58;//koji-hub.batlab.org/koji/getfile?taskID=184214&name=gums-service-1.5.0-2.osg32.el6.noarch.rpm</a>
+
+Can you try downloading and updating and see if it fixes the problem for you?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1441916789'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-10T20:26:29+00:00">Sep 10, 2015 08:26 PM UTC</time><a class="anchor" name="1441916789">&nbsp;</a></div><pre>Hi Carl,
+
+I fixed this in the following commit&#58;
+
+<a href='https&#58;//github.com/opensciencegrid/gums/commit/1a90cdcde52befdb4b1e4b11b613810bd0a36d79' target='_blank' rel='nofollow'>https&#58;//github.com/opensciencegrid/gums/commit/1a90cdcde52befdb4b1e4b11b613810bd0a36d79</a>
+
+Can you get a scratch build out to Trey?
+
+I was able to reproduce locally and am fairly certain this should fix things for him.
+
+Brian
+
+PS - mapAccount is sloooooooow!  I hope this lookup isn&#39;t necessary on a regular basis?
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='24707#1441739919'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-08T19:18:39+00:00">Sep 8, 2015 07:18 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1441739919">&nbsp;</a></div><pre>Carl,
+
+Have you had the chance to look at this recently?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='24707#1441381354'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-04T15:42:34+00:00">Sep 4, 2015 03:42 PM UTC</time><a class="anchor" name="1441381354">&nbsp;</a></div><pre>The issue still exists, so not resolved.  I have no updates to report.
+
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='24707#1441372969'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-09-04T13:22:49+00:00">Sep 4, 2015 01:22 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1441372969">&nbsp;</a></div><pre>Greetings all,
+
+Has this issue been abandoned or resolved?  It&#39;s been quite some time since updates were provided unless they have been offline.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1440423845'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-24T13:44:05+00:00">Aug 24, 2015 01:44 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1440423845">&nbsp;</a></div><pre>Greetings all,
+
+Any offline updates available for this request?  Please let me know if I can assist.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1439836736'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-17T18:38:56+00:00">Aug 17, 2015 06:38 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1439836736">&nbsp;</a></div><pre>Greetings all,
+
+Any offline updates available for this request?  Please let me know if I can assist.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1438786183'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-08-05T14:49:43+00:00">Aug 5, 2015 02:49 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1438786183">&nbsp;</a></div><pre>Hi Carl,
+
+Checking in on the status of this request. If I can assist please let me know.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1438199697'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-29T19:54:57+00:00">Jul 29, 2015 07:54 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1438199697">&nbsp;</a></div><pre>Hi Carl,
+
+Can you report of there has been any offline communication regarding this ticket? Please let me know if I can assist.
+
+Thank you,
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1436396723'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-08T23:05:23+00:00">Jul 8, 2015 11:05 PM UTC</time><a class="anchor" name="1436396723">&nbsp;</a></div><pre>Carl,
+
+So I ran &#34;gums mapAccount treydock&#34; and saw numerous &#34;User &#60;GridID&#62; is in banned group banned&#34; log messages.  All the lines that printed said &#34;is in banned group banned&#34;.  Since I only have one banned group, that makes sense.  The &#34;&#60;GridID&#62;&#34; values also made sense since they contained strings that match the regex values in our banned group.  None of the &#34;&#60;GridID&#62;&#34; values matched my DN.
+
+What ends up printing after all the WARN messages is this&#58;
+
+08 Jul 2015 17&#58;50&#58;03,661 [WARN ]&#58; Cannot map account &#39;treydock&#39; to any DN.
+08 Jul 2015 17&#58;50&#58;03,661 [INFO ]&#58; Mapped the account &#39;treydock&#39; to &#39;&#39;
+08 Jul 2015 17&#58;50&#58;03,661 [INFO ]&#58; GridID[/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf] - Mapped the account &#39;treydock&#39; to &#39;&#39;
+
+The output of the command &#34;gums mapAccount treydock&#34; is a blank line, just like what I get in the web interface for the same account query.  I&#39;ve attached gums-server-admin.log.txt which contains the lines from /var/log/tomcat6/gums-service-admin.log that printed around the time I executed &#34;gums mapAccount treydock&#34;.
+
+This is what the database contains for my account mapping.
+
+mysql&#62; SELECT * FROM USERS WHERE DN=&#39;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf&#39;;
++-------+--------------+---------------------------------------------------------------------------------------------+-------------------------+-------+
+| ID    | GROUP_NAME   | DN                                                                                          | FQAN                    | EMAIL |
++-------+--------------+---------------------------------------------------------------------------------------------+-------------------------+-------+
+| 24013 | admins       | /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf | NULL                    | NULL  |
+| 24028 | local        | /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf | NULL                    |       |
+| 26388 | cmsuser-null | /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf | /cms                    | NULL  |
+| 27162 | cmsuser      | /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf | /cms/Role=cmsuser       | NULL  |
+| 29527 | uscmsuser    | /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf | /cms/uscms/Role=cmsuser | NULL  |
++-------+--------------+---------------------------------------------------------------------------------------------+-------------------------+-------+
+
+mysql&#62; SELECT * FROM MAPPING WHERE ACCOUNT=&#39;treydock&#39; OR DN=&#39;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf&#39;;
++------+-------------+---------------------------------------------------------------------------------------------+----------+
+| ID   | MAP         | DN                                                                                          | ACCOUNT  |
++------+-------------+---------------------------------------------------------------------------------------------+----------+
+| 5192 | localMapper | /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf | treydock |
++------+-------------+---------------------------------------------------------------------------------------------+----------+
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='24707#1436395197'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-08T22:39:57+00:00">Jul 8, 2015 10:39 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1436395197">&nbsp;</a></div><pre>Hi Trey,
+
+Sorry for the very slow response time on this.
+
+In your original error message, the first line looked like this&#58;
+
+30 Mar 2015 11&#58;03&#58;30,924 [WARN ]&#58; User is in group
+
+This (unhelpful message) indicated that banning was happening, but left out some of the details.  In gums 1.4.3-1 (that you updated to), that message should be updated to
+
+&#34;User &#60;username&#62; is in banned group &#60;groupname&#62;&#34;
+
+... Did any lines like that show up in your gums-service-admin.log?  In the updated log output you gave, I would have expected it right before this line&#58;
+
+27 May 2015 19&#58;19&#58;13,707 [WARN ]&#58; Cannot map account &#39;treydock&#39; to any DN.
+
+If we can get the &#60;groupname&#62; that&#39;s triggering the ban, maybe that&#39;ll help narrow it down.
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1435774027'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-07-01T18:07:07+00:00">Jul 1, 2015 06:07 PM UTC</time> by <b>echism</b><a class="anchor" name="1435774027">&nbsp;</a></div><pre>Carl,
+
+Please update this.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='24707#1435611639'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-29T21:00:39+00:00">Jun 29, 2015 09:00 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1435611639">&nbsp;</a></div><pre>Carl,
+
+Do you have any updates?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='24707#1435248129'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-25T16:02:09+00:00">Jun 25, 2015 04:02 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1435248129">&nbsp;</a></div><pre>Hi Carl,
+
+Checking to see if there have been any offline developments or updates.  Please let me know if I can assist.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1434643222'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-18T16:00:22+00:00">Jun 18, 2015 04:00 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1434643222">&nbsp;</a></div><pre>Trey, thanks for the update --
+
+I&#39;m sorry for the long delay getting back to you on this.  I&#39;m working on trying to reproduce the issue in a VM this week, I&#39;ll try to get back soon with more comments.
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1434392415'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-15T18:20:15+00:00">Jun 15, 2015 06:20 PM UTC</time><a class="anchor" name="1434392415">&nbsp;</a></div><pre>I can only add that the issues I&#39;ve seen persist and that the ability to query a mapping is also broken in web interface.
+
+If I go to /gums/map_grid_identity_form.jsp web page and enter in the &#34;/CN=gums.brazos.tamu.edu&#34; for first field and my DN for second field it correctly prints &#34;treydock&#34; as the account mapped.
+
+If I go to /gums/map_account_form.jsp web page and enter my account &#34;treydock&#34; the page where result is displayed shows nothing in the yellow area where the result should be.  So both the CLI and the web page&#39;s ability to take an account name and query the mapping is not working.
+
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='24707#1434381954'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-15T15:25:54+00:00">Jun 15, 2015 03:25 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1434381954">&nbsp;</a></div><pre>Good morning all,
+
+Checking in to see if there has been anything happening outside of this ticket?
+Please let me know if I can assist.
+
+Thanks,
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1433793501'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-08T19:58:21+00:00">Jun 8, 2015 07:58 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1433793501">&nbsp;</a></div><pre>Hi Carl,
+
+Checking into see if I can assist with this ticket. If I can help please let me know.
+
+Thank you,
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1433179016'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-06-01T17:16:56+00:00">Jun 1, 2015 05:16 PM UTC</time><a class="anchor" name="1433179016">&nbsp;</a></div><pre>HI Carl,
+
+Do u want to give this another look, with the extra logging? I don&#39;t see anything in particular do you?
+
+Cheers,
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='24707#1432773029'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-28T00:30:29+00:00">May 28, 2015 12:30 AM UTC</time><a class="anchor" name="1432773029">&nbsp;</a></div><pre>I just updated gums to osg-version 3.2.23.  So gums is now at 1.4.3-1.
+
+the command &#34;gums mapAccount treydock&#34; still returns nothing.  At about the time I executed that command I saw these in /var/log/tomcat6/gums-service-admin.log
+
+27 May 2015 19&#58;19&#58;13,707 [WARN ]&#58; Cannot map account &#39;treydock&#39; to any DN.
+27 May 2015 19&#58;19&#58;13,708 [INFO ]&#58; Mapped the account &#39;treydock&#39; to &#39;&#39;
+27 May 2015 19&#58;19&#58;13,708 [INFO ]&#58; GridID[/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf] - Mapped the account &#39;treydock&#39; to &#39;&#39;
+
+Under &#34;Manual Account Mappings&#34; I see my entry&#58;
+
+DN&#58; /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf
+Account Mapper&#58; localMapper
+Account&#58; treydock
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='24707#1432752691'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-27T18:51:31+00:00">May 27, 2015 06:51 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1432752691">&nbsp;</a></div><pre>Checking in on the status of this request.  If I can assist please let me know.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1431965265'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-18T16:07:45+00:00">May 18, 2015 04:07 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1431965265">&nbsp;</a></div><pre>Trey,
+
+Have you had the time to update to the latest release of GUMS so we can get more debugging information?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='24707#1431699260'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-15T14:14:20+00:00">May 15, 2015 02:14 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1431699260">&nbsp;</a></div><pre>Good morning,
+
+Checking in on the status of this request.  If I can assist please let me know.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1430330862'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-29T18:07:42+00:00">Apr 29, 2015 06:07 PM UTC</time><a class="anchor" name="1430330862">&nbsp;</a></div><pre>I think we should check this back after May&#39;s release.
+
+Cheers,
+
+Edgar
+
+OSG Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='24707#1429911705'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-24T21:41:45+00:00">Apr 24, 2015 09:41 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1429911705">&nbsp;</a></div><pre>I&#39;ve added more details to the logging message where the &#34;User is in group&#34; warning currently gets displayed.  That&#39;ll be going into the May OSG release.
+
+Sorry I don&#39;t have any other news yet; I still need to reproduce the issue.
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1429627585'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-21T14:46:25+00:00">Apr 21, 2015 02:46 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1429627585">&nbsp;</a></div><pre>Greetings all,
+
+Checking in to see if I can assist with this ticket.  Please advise.
+
+Thank you,
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1429044175'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-14T20:42:55+00:00">Apr 14, 2015 08:42 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1429044175">&nbsp;</a></div><pre>Trey, thanks for the info.
+
+It might be interesting to see if removing the 30046 entry makes any difference... Anyway, I can set up a test instance this week and see if I can reproduce the issue.  I&#39;d like to add a bit more detailed logging to see what&#39;s triggering the banning.
+
+<font color='#7F7E6F'>&#62; Wouldn&#39;t matching a banned group also prevent my DN from being used</font>
+<font color='#7F7E6F'>&#62; at my site, rather than just effecting the ability to use mapAccount?</font>
+
+I would think so, so there might be something else going on...
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1428886057'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-13T00:47:37+00:00">Apr 13, 2015 12:47 AM UTC</time><a class="anchor" name="1428886057">&nbsp;</a></div><pre>Hi Carl,
+
+Can u gave a look at Trey&#39;s answer?
+
+Edgar
+OSG  Software Support
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='24707#1428346488'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-06T18:54:48+00:00">Apr 6, 2015 06:54 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1428346488">&nbsp;</a></div><pre>Greetings all,
+
+Any updates on this issue?  If I can assist please let me know.
+
+Thank you,
+Vince</pre></div><div class='update_description'><i onclick="document.location='24707#1427846827'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-01T00:07:07+00:00">Apr 1, 2015 12:07 AM UTC</time><a class="anchor" name="1427846827">&nbsp;</a></div><pre>Carl,
+
+The page at &#39;/gums/globalConfiguration.jsp&#39; has &#34;Allow grid mapfile generation&#34; checked and &#34;Banned User Groups&#58; + gums-banned + banned &#60;BLANK&#62;&#34;   The third dropdown (&#60;BLANK&#62;) has nothing selected.
+
+/gums/userGroups.jsp?command=edit&name=banned has the following
+
+Name&#58; banned
+Description&#58; Banned Users
+Type&#58; manual
+persistence Factory&#58; mysql
+Members URI&#58; &#60;empty&#62;
+Non-members URI&#58; &#60;empty&#62;
+GUMS Access&#58; read self
+
+I expected my treydock user to print the DN &#39;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf&#39;.  Part of my script that checks if a DN &#60;-&#62; Account mapping exists was the following
+
+gums mapAccount ${USERNAME} | grep -q &#34;${DN}&#34;
+ret=$?
+
+Where ${USERNAME} and ${DN} came from command line arguments.
+
+The page &#34;/gums/banning.jsp&#34; lists all the DNs in my previous output from MySQL but the web interface prefixes the DN value with &#34;User&#58; &#34;.  I removed two DNs from my MySQL output as they contained full DNs for individual people and since I didn&#39;t add those entries myself I wasn&#39;t sure be appropriate to disclose their DNs as being &#39;banned&#39;.  No other entries are listed on the web interface besides those previously mentioned and the two omitted records.
+
+I think the ban entry with ID=30046 was an attempt to say &#34;ban everyone not listed in GUMs&#34;, but that&#39;s just my guess.  I&#39;m CC&#39;ing Steve Johnson who may better know the purpose behind that particular ban entry.
+
+Thanks,
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='24707#1427841582'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-31T22:39:42+00:00">Mar 31, 2015 10:39 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1427841582">&nbsp;</a></div><pre>I may have the details wrong about the banned group needing to be a voms user group...
+
+But the BAN USERS page should give a good picture of the situation with banned users / the different kinds of banned user groups&#58;
+
+https&#58;//gumshost&#58;8443/gums/banning.jsp
+
+Is there anything there other than the list you gave for the &#39;banned&#39; group?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1427840093'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-31T22:14:53+00:00">Mar 31, 2015 10:14 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1427840093">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; Is ID=30046 the issue?</font>
+
+That&#39;s what I was wondering at first glance too, but it&#39;s not really obvious...  It looks like the idea was to only match that one with that FQAN (with Role=pilot), but I think that only applies if it&#39;s a voms user group, and the &#34;Accept non-VOMS certificates&#34; and &#34;VOMS certificate&#39;s FQAN is matched as&#34; matter too...
+
+On the web interface for your gums host you should be able to find the list of banned groups (maybe you have more than one?) here&#58;
+https&#58;//gumshost&#58;8443/gums/globalConfiguration.jsp
+
+and for the one you mentioned the config for the &#39;banned&#39; group would be here&#58;
+https&#58;//gumshost&#58;8443/gums/userGroups.jsp?command=edit&name=banned
+
+By the way, what was the DN you expected for your treydock user?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1427746385'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T20:13:05+00:00">Mar 30, 2015 08:13 PM UTC</time><a class="anchor" name="1427746385">&nbsp;</a></div><pre>Carl,
+
+Thanks.  That leads to another issue we experienced during this upgrade, which relates to SAM tests.  Previously the DN used for SAM tests was never mapped in GUMS but would map to the account cms1014.  After the upgrade that DN was printed in logs as banned and I had to manually map the DN to an account to permit SAM tests to continue running.
+
+These are the banned group entries, which haven&#39;t changed in a very long time.
+
+# mysql GUMS_1_3 -e &#39;SELECT * FROM USERS WHERE GROUP_NAME=&#34;banned&#34;&#39;
++-------+------------+------------------------------------------------------------------------------------+-----------------+-------+
+| ID    | GROUP_NAME | DN                                                                                 | FQAN            | EMAIL |
++-------+------------+------------------------------------------------------------------------------------+-----------------+-------+
+| 21461 | banned     |  .*/CN=.*(pilot|agent).*                                                           | .*              |       |
+| 21467 | banned     | .*/CN=.*cmssrv.*                                                                   | .*              |       |
+| 21466 | banned     | .*/CN=.*pilot.*ucsd&#92;.edu                                                           | .*              |       |
+| 21465 | banned     | .*/O=IRAN-GRID/.*                                                                  | .*              |       |
+| 21462 | banned     | .*/OU=computers/.*                                                                 | .*              |       |
+| 30046 | banned     | /.*                                                                                | .*/Role=pilot.* |       |
+| 16207 | banned     | /C=BE/O=BEGRID/OU=PHYS/OU=UCL/CN=PIN                                               | NULL            |       |
+| 22905 | banned     | /C=DE/O=GermanGrid/OU=KIT/CN=dcmspilotjob.*                                        | /cms            |       |
+| 20950 | banned     | /CN=Matthias Kasemann/OU=DESY/                                                     | NULL            |       |
+| 20949 | banned     | /CN=Mojtaba MOHAMMADI NAJAFABADI/OU=HEP/O=IPM/O=IRAN-GRID/C=IR                     | NULL            |       |
+| 20951 | banned     | /DC=ch/DC=cern/OU=computers/.*                                                     | NULL            |       |
+| 16805 | banned     | /DC=ch/DC=cern/OUs                                                                 | NULL            |       |
+| 20954 | banned     | /DC=org/DC=doegrids/OU=Services/CN=cmssrv94.fnal.gov                               | NULL            |       |
+| 16206 | banned     | /DC=org/DC=doegrids/OU=Services/CN=osg-hep.phys.virginia.edu                       | NULL            |       |
+| 20365 | banned     | /DC=org/DC=doegrids/OU=Services/CN=testpilot.*                                     | NULL            |       |
+| 20367 | banned     | /DC=org/DC=doegrids/OU=Services/CN=testpilot.*                                     | .*              |       |
+| 16225 | banned     | /DC=org/DC=doegrids/OU=Services/CN=uscmspilot.*                                    | NULL            |       |
+| 20368 | banned     | /DC=org/DC=doegrids/OU=Services/CN=uscmspilot.*                                    | .*              |       |
+| 21468 | banned     | /O=GRID-FR/C=FR/O=CNRS/OU=IPHC/CN=phedex/sbgvoboxcms&#92;.in2p3&#92;.fr                    | .*              |       |
++-------+------------+------------------------------------------------------------------------------------+-----------------+-------+
+
+I removed a few entries specific to individuals.  Is ID=30046 the issue?  Like I said, we haven&#39;t modified our banned list in a very long time.  Some of those entries may seem strange but I think it was our attempt to disallow GlideIns.  We don&#39;t allow the use of GlideIns at our site.  Others are likely to ban use of &#34;anonymous&#34; type DNs which we don&#39;t like.  All of these predate me.
+
+Wouldn&#39;t matching a banned group also prevent my DN from being used at my site, rather than just effecting the ability to use mapAccount?
+
+<div id='show_426086307' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_426086307'>The scripts I used were simply to check if an account to DN mapping existed and also to query an account&#39;s DN mapping.  I don&#39;t know if there&#39;s a better way to do this with GUMS that doesn&#39;t require using the web interface.
+
+Thanks,
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf
+</div><script type='text/javascript'>
+        $('#show_426086307').click(function() {
+            $('#detail_426086307').slideDown("normal");
+            $('#show_426086307').hide();
+            $('#hide_426086307').show();
+        });
+        $('#hide_426086307').click(function() {
+            $('#detail_426086307').slideUp();
+            $('#hide_426086307').hide();
+            $('#show_426086307').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='24707#1427743863'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T19:31:03+00:00">Mar 30, 2015 07:31 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1427743863">&nbsp;</a></div><pre>So OSG release 3.2.11 had gums-1.3.18.009-21, which was from last March... It looks like there haven&#39;t been any changes to the mapAccount function since then...
+
+But it looks like that (obscure) warning string &#34;User is in group&#34; happens when the user is in a banned users group (that is, a user group of type &#39;banned&#39;).  Can you verify whether that&#39;s the case for &#34;treydock&#34; ?  (some of the logic for determining banned users has been updated since gums 1.3.x)
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='24707#1427739935'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T18:25:35+00:00">Mar 30, 2015 06:25 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1427739935">&nbsp;</a></div><pre>Carl, could you take a look at this and see if any recent changes broke the mapAccount functionality?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='24707#1427739813'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T18:23:33+00:00">Mar 30, 2015 06:23 PM UTC</time><a class="anchor" name="1427739813">&nbsp;</a></div><pre>I just verified the mapUser works if I don&#39;t use the &#34;-b&#34; flag, which used to be required / work.  So that&#39;s not an issue, but as noted the mapAccount still is an issue.
+
+Thanks,
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='24707#1427739524'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T18:18:44+00:00">Mar 30, 2015 06:18 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1427739524">&nbsp;</a></div><pre>I can get the mapUser to work (e.g. gums mapUser -s &#34;/CN=itbv-ce-pbs.mwt2.org&#34; &#39;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot/glidein2.chtc.wisc.edu&#39; ) but the mapAccount doesn&#39;t seem to work anywhere.  I&#39;ll contact the GUMS developers and see if I can get an explanation.
+
+Suchandra Thapa
+OSG Software Team</pre></div><div class='update_description'><i onclick="document.location='24707#1427732138'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T16:15:38+00:00">Mar 30, 2015 04:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1427732138">&nbsp;</a></div><pre>We recently updated our GUMS system to OSG 3.2.21.  Before the upgrade our GUMS server was on OSG 3.2.11.  Since the upgrade the scripts I used to query an account and a DN within GUMS now do not work.
+
+One command I used to check if an account was mapped was this&#58;
+
+gums mapAccount treydock
+
+That command now returns nothing.  Previously the DN was printed.  This is printed in /var/log/tomcat6/gums-service-admin.log
+
+30 Mar 2015 11&#58;03&#58;30,924 [WARN ]&#58; User is in group
+30 Mar 2015 11&#58;03&#58;30,929 [WARN ]&#58; Cannot map account &#39;treydock&#39; to any DN.
+30 Mar 2015 11&#58;03&#58;30,929 [INFO ]&#58; Mapped the account &#39;treydock&#39; to &#39;&#39;
+30 Mar 2015 11&#58;03&#58;30,930 [INFO ]&#58; GridID[/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf] - Mapped the account &#39;treydock&#39; to &#39;&#39;
+
+The first WARN line, &#34;User is in group&#34; is printed about 50 times in a row before the lines pasted above.
+
+The other command I use is the following&#58;
+
+gums mapUser -s &#34;/CN=gums.brazos.tamu.edu&#34; -b &#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf&#34;
+
+That now returns no output.  The command used to print the account mapped to the DN.  This is printed in /var/log/tomcat6/gums-service-admin.log&#58;
+
+30 Mar 2015 11&#58;11&#58;11,515 [INFO ]&#58; GridID[/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf] - Mapped on host &#39;/CN=gums.brazos.tamu.edu&#39; the user &#39;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf&#39; / &#39;null&#39; to &#39;Account[user=treydock]&#39;
+
+These commands are being run from our CE&#58;
+
+$ gums clientVersion
+1.4.2
+
+From the GUMS server&#58;
+
+# yum list installed | grep gums
+gums.noarch                        1.4.2-1.osg32.el6        @osg
+gums-client.noarch                 1.4.2-1.osg32.el6        @osg
+gums-service.noarch                1.4.2-1.osg32.el6        @osg
+osg-gums.noarch                    1.0.0-2.osg.el6          @osg
+<div id='show_1164328099' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1164328099'>osg-gums-config.noarch             58-3.osg32.el6           @osg
+
+Thanks,
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf
+
+</div><script type='text/javascript'>
+        $('#show_1164328099').click(function() {
+            $('#detail_1164328099').slideDown("normal");
+            $('#show_1164328099').hide();
+            $('#hide_1164328099').show();
+        });
+        $('#hide_1164328099').click(function() {
+            $('#detail_1164328099').slideUp();
+            $('#hide_1164328099').hide();
+            $('#show_1164328099').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F24707">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 24707});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

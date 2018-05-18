@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[2194] Fermi/Remedy - 81143 - [vdt-support #1901] OSG 0.4.1 / VDT 1.3.10 GUMS grid-mapfile generation - VO member retrieval</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=2194" method="post">
+<div class="page-header">
+    <h3><span class="muted">2194</span> / Fermi/Remedy - 81143 - [vdt-support #1901] OSG 0.4.1 / VDT 1.3.10 GUMS grid-mapfile generation - VO member retrieval</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">JOHN WEIGAND</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">1970-01-01</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+        <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=2194", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/2194?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/2194?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Fermi%2FRemedy%20-%2081143%20-%20%5Bvdt-support%20%231901%5D%20OSG%200.4.1%20%2F%20VDT%201.3.10%20GUMS%20grid-mapfile%20generation%20-%20VO%20member%20retrieval%20ISSUE%3D2194%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='2194#1165954541'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-12T20:15:41+00:00">Dec 12, 2006 08:15 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1165954541">&nbsp;</a></div><pre>According to John the Fermilab ticket should be closed. He&#39;s going to open a VTB ticket to track the
+issue. --Tim</pre></div><div class='update_description'><i onclick="document.location='2194#1165949357'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-12T18:49:17+00:00">Dec 12, 2006 06:49 PM UTC</time> by <b>VDT</b><a class="anchor" name="1165949357">&nbsp;</a></div><pre>I tested this in VDT 1.5.1 on 12/12/06 and the fixes that were
+expected to be in the Globus 4.0.3 release were either not there or
+did not work.  The behavior is unchanged.
+
+This ticket should be re-opened.
+
+I have asked for the Fermi/Remedy ticket 81143 be closed as I don&#39;t
+think the probability of this occurring is high enough for this be a
+major problem.  I will be taking out a ticket in the VTB ticket system
+to keep track of it.
+
+Thanks
+John Weigand
+
+--
+View ticket at &#60;<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1901&#62' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1901&#62</a>;
+VDT Support, vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='2194#1165948282'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-12T18:31:22+00:00">Dec 12, 2006 06:31 PM UTC</time> by <b>John Weigand</b><a class="anchor" name="1165948282">&nbsp;</a></div><pre>I changed my mind.... go ahead and close the ticket.  This is really
+not a line-stopping item as the probability of having a corrupt
+grid-mapfile is relatively low.
+
+I am going to open a ticket the VTB ticket register on it to keep
+track of its resolution and re-open the VDT 1901 VDT ticket.
+
+So, close this ticket.
+
+John Weigand</pre></div><div class='update_description'><i onclick="document.location='2194#1165948276'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-12T18:31:16+00:00">Dec 12, 2006 06:31 PM UTC</time> by <b>John Weigand</b><a class="anchor" name="1165948276">&nbsp;</a></div><pre>I&#39;ve tested this using a VTB 1.5.1 installation.
+
+None of the problems appear to be resolved.
+
+This ticket should remain open.
+
+John Weigand</pre></div><div class='update_description'><i onclick="document.location='2194#1165433955'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-06T19:39:15+00:00">Dec 6, 2006 07:39 PM UTC</time> by <b>John Weigand</b><a class="anchor" name="1165433955">&nbsp;</a></div><pre>Am trying to get there.... am first validating a 1.5.2 installation
+which came before I could get to validating in 1.5.1 as it had fixes
+that were prohibiting me from doing anything in 1.5.1... make sense?
+me either.
+
+john
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='2194#1164914913'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-11-30T19:28:33+00:00">Nov 30, 2006 07:28 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1164914913">&nbsp;</a></div><pre>John,
+
+According to <a href='http&#58;//vdt.cs.wisc.edu/whats_new.html' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/whats_new.html</a> VDT 1.5.1 was release November
+8th. Could you verify if the update has resolved the ticket please?
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+web&#58; <a href='http&#58;//www.opensciencegrid.org' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org</a>
+rss&#58; <a href='http&#58;//www.grid.iu.edu/news/' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news/</a></pre></div><div class='update_description'><i onclick="document.location='2194#1162409563'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-11-01T19:32:43+00:00">Nov 1, 2006 07:32 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1162409563">&nbsp;</a></div><pre>We&#39;re going to leave this ticket open until the software updates are released and the customer has
+time to verify the fix resolves the issue.
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Web&#58; <a href='http&#58;//www.grid.iu.edu/' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='2194#1162238840'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-10-30T20:07:20+00:00">Oct 30, 2006 08:07 PM UTC</time> by <b>VDT</b><a class="anchor" name="1162238840">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; 1. In globus-ws&#58;</font>
+<font color='#7F7E6F'>&#62; - It should ignore the individual grid-mapfile entries (as the</font>
+<font color='#7F7E6F'>&#62; pre-ws services does). This minimizes the number of users</font>
+<font color='#7F7E6F'>&#62; affected. It would also allow the individual submitter who</font>
+<font color='#7F7E6F'>&#62; got unlucky enough to have been the 1st one submitting a job</font>
+<font color='#7F7E6F'>&#62; at the time a refresh was necessary from having their job</font>
+<font color='#7F7E6F'>&#62; rejected.</font>
+<font color='#7F7E6F'>&#62; - The log4j should be setup so these type messages generate</font>
+<font color='#7F7E6F'>&#62; a mail message to an administrator.</font>
+
+<font color='#7F7E6F'>&#62; I have opened a Globus bugzilla</font>
+<font color='#7F7E6F'>&#62; ticket 4558</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//bugzilla.globus.org/globus/show_bug.cgi?id=4558' target='_blank' rel='nofollow'>http&#58;//bugzilla.globus.org/globus/show_bug.cgi?id=4558</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ... addressing the behavior of the web services container when it</font>
+<font color='#7F7E6F'>&#62; attempts to load a new grid-mapfile. The ticket suggests that the</font>
+<font color='#7F7E6F'>&#62; behavior mimics the pre-ws use of the grid-mapfile and that it</font>
+<font color='#7F7E6F'>&#62; ignores the offending lines and uses all valid lines in subsequenct</font>
+<font color='#7F7E6F'>&#62; authorizations.</font>
+
+John--
+
+That bugzilla ticket resulted in a new version of a piece of Condor
+called cog-jglobus.jar. It was updated before Globus 4.0.3 was released.
+VDT 1.5.1 will have Globus 4.0.3 in it, so you&#39;ll have that bug fix from
+now one.
+
+I&#39;m going to close this ticket.
+
+Thanks,
+-alain
+
+--
+View ticket at &#60;<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1901&#62' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1901&#62</a>;
+VDT Support, vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='2194#1158775095'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-20T17:58:15+00:00">Sep 20, 2006 05:58 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1158775095">&nbsp;</a></div><pre>John,
+
+I believe GRASE was mistakenly assigned, so Leigh just removed it. There is an open ticket at the
+VDT and we&#39;re waiting for further updates from them. The last update to their ticket indicates that
+their hoping for this to be addressed in the 1.3.12 globus patch.
+
+Tim
+OSG Grid Operations Center</pre></div><div class='update_description'><i onclick="document.location='2194#1158762866'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-20T14:34:26+00:00">Sep 20, 2006 02:34 PM UTC</time> by <b>Footprints Remedy</b><a class="anchor" name="1158762866">&nbsp;</a></div><pre>The Fermi/Remedy ticket has been updated.
+
+New Work Log Entry &#58; -------- Original Message --------
+Subject&#58; Re&#58; HOLZMAN, BURT  AR ticket 81143 Has Been Updated.
+Date&#58; Wed, 20 Sep 2006 09&#58;11&#58;01 -0500
+From&#58; John Weigand &#60;weigand@....&#62;
+To&#58; HelpDesk &#60;helpdesk@....&#62;
+CC&#58; uscms-ops@....
+References&#58; &#60;24209382.1158757874513.JavaMail.SYSTEM@csdserver&#62;
+
+Why am I getting this and what does this mean... is this actually new
+information... it seems very outdated.  The short term fix was done back
+in July in VOMS.  The problem is not specific to Grase.
+
+The real problem is in GUMS... and actually goes back to VOMS.
+
+John Weigand</pre></div><div class='update_description'><i onclick="document.location='2194#1158757710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-20T13:08:30+00:00">Sep 20, 2006 01:08 PM UTC</time> by <b>leighg</b><a class="anchor" name="1158757710">&nbsp;</a></div><pre>remove Grase support from the assignees</pre></div><div class='update_description'><i onclick="document.location='2194#1152247329'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-07-07T04:42:09+00:00">Jul 7, 2006 04:42 AM UTC</time> by <b>VDT</b><a class="anchor" name="1152247329">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; Possible resolutions&#58;</font>
+<font color='#7F7E6F'>&#62; 1. In globus-ws&#58;</font>
+<font color='#7F7E6F'>&#62; - It should ignore the individual grid-mapfile entries (as the</font>
+<font color='#7F7E6F'>&#62; pre-ws services does). This minimizes the number of users</font>
+<font color='#7F7E6F'>&#62; affected. It would also allow the individual submitter who</font>
+<font color='#7F7E6F'>&#62; got unlucky enough to have been the 1st one submitting a job</font>
+<font color='#7F7E6F'>&#62; at the time a refresh was necessary from having their job</font>
+<font color='#7F7E6F'>&#62; rejected.</font>
+<font color='#7F7E6F'>&#62; - The log4j should be setup so these type messages generate</font>
+<font color='#7F7E6F'>&#62; a mail message to an administrator.</font>
+
+<font color='#7F7E6F'>&#62; John Weigand added this information&#58; I have opened a Globus bugzilla</font>
+<font color='#7F7E6F'>&#62; ticket 4558</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//bugzilla.globus.org/globus/show_bug.cgi?id=4558' target='_blank' rel='nofollow'>http&#58;//bugzilla.globus.org/globus/show_bug.cgi?id=4558</a></font>
+
+Hi,
+
+I&#39;ve been following this Globus ticket. With luck, the Globus folks will
+provide us with a patch, and we can apply it to VDT 1.3.12. That&#39;s what
+we&#39;re aiming for anyway.
+
+Alain Roy
+VDT Support</pre></div><div class='update_description'><i onclick="document.location='2194#1152211728'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-07-06T18:48:48+00:00">Jul 6, 2006 06:48 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1152211728">&nbsp;</a></div><pre>VDT ticket number added to the Title and VDT added as an Assignee. VDT Support, please assign
+osg@.... to the RT ticket if it isn&#39;t already. Thanks!</pre></div><div class='update_description'><i onclick="document.location='2194#1152129323'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-07-05T19:55:23+00:00">Jul 5, 2006 07:55 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1152129323">&nbsp;</a></div><pre>Begin forwarded message&#58;
+
+<font color='#7F7E6F'>&#62; From&#58; Grid Operations Center &#60;goc@....&#62;</font>
+<font color='#7F7E6F'>&#62; Date&#58; July 5, 2006 3&#58;52&#58;46 PM EDT</font>
+<font color='#7F7E6F'>&#62; To&#58; vdt-support@....</font>
+<font color='#7F7E6F'>&#62; Subject&#58; Fermi/Remedy - 81143 - OSG 0.4.1 / VDT 1.3.10 GUMS grid-</font>
+<font color='#7F7E6F'>&#62; mapfile generation - VO member retrieval -ISSUE=2194</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; VDT Support,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Hi. Please create a ticket for the following issue reported by John</font>
+<font color='#7F7E6F'>&#62; Weigand at FNAL. Once I receive the auto-reply from RT I&#39;ll add the</font>
+<font color='#7F7E6F'>&#62; VDT ticket number to the title of the ticket in Footprints here at</font>
+<font color='#7F7E6F'>&#62; the GOC, preventing any looping.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thank You,</font>
+<font color='#7F7E6F'>&#62; OSG Grid Operations Center</font>
+<font color='#7F7E6F'>&#62; goc@...., 317-278-9699</font>
+<font color='#7F7E6F'>&#62; Visit the OSG Support Page&#58;</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a></font>
+<font color='#7F7E6F'>&#62; RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; =============================</font>
+<font color='#7F7E6F'>&#62; This is in OSG 0.4.1 / VDT 1.3.10.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I&#39;m not sure there is a definitive solution to this, but wanted to</font>
+<font color='#7F7E6F'>&#62; document</font>
+<font color='#7F7E6F'>&#62; it so everyone was aware and for discussion purposes. I would hope</font>
+<font color='#7F7E6F'>&#62; that we</font>
+<font color='#7F7E6F'>&#62; can find some resolution however.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; This is little complex to describe... so here goes.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On 6/26/06, I traced a problem with a corrupt GUMS generated grid-</font>
+<font color='#7F7E6F'>&#62; mapfile</font>
+<div id='show_105957812' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_105957812'><font color='#7F7E6F'>&#62; back to the VOMS server.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; The grid-mapfile looked like this&#58;</font>
+<font color='#7F7E6F'>&#62; &#34;/DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Mark . Green /UID=mlgreen&#34;</font>
+<font color='#7F7E6F'>&#62; cdf</font>
+<font color='#7F7E6F'>&#62; &#34;/DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Mark Green</font>
+<font color='#7F7E6F'>&#62; /USERID=mlgreen&#34; cdf</font>
+<font color='#7F7E6F'>&#62; &#34;/DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Mark Green /UID=mlgreen&#34; cdf</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Hopefully the above did not get line wrapped.... the 2nd entry is</font>
+<font color='#7F7E6F'>&#62; actually</font>
+<font color='#7F7E6F'>&#62; split across 2 lines. There is apaprently a newline character that is</font>
+<font color='#7F7E6F'>&#62; causing it. I found this on <a href='https&#58;//voms.cnaf.infn.it&#58;8443/voms/cdf' target='_blank' rel='nofollow'>https&#58;//voms.cnaf.infn.it&#58;8443/voms/cdf</a> .</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; To verify I ran&#58;</font>
+<font color='#7F7E6F'>&#62; voms-admin -url <a href='https&#58;//voms.cnaf.infn.it&#58;8443/voms/cdf' target='_blank' rel='nofollow'>https&#58;//voms.cnaf.infn.it&#58;8443/voms/cdf</a> list-</font>
+<font color='#7F7E6F'>&#62; members /cdf</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; and could see the newline split of the output.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Now, this is likely an anomoly in the CDF VOMS as these are Kerberos</font>
+<font color='#7F7E6F'>&#62; certificates and my guess is they were doing a mass update</font>
+<font color='#7F7E6F'>&#62; (probably just a</font>
+<font color='#7F7E6F'>&#62; SQL update of the database) to add &#34;USERID&#34; DN entries for each</font>
+<font color='#7F7E6F'>&#62; &#34;UID&#34; entry</font>
+<font color='#7F7E6F'>&#62; they had. This was done to get around a problem we have had with KCA</font>
+<font color='#7F7E6F'>&#62; certificates and the versions of openssl that have evolved over</font>
+<font color='#7F7E6F'>&#62; time....enough on this.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; When you do a retrieval using mysql from the GUMS database</font>
+<font color='#7F7E6F'>&#62; (containing this</font>
+<font color='#7F7E6F'>&#62; entry from the CDF VOMS), you can see that the entry is split across 2</font>
+<font color='#7F7E6F'>&#62; lines in the SQL output.</font>
+<font color='#7F7E6F'>&#62; select * from USER where DN like &#39;%Mark Green%&#39;;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; As for the affect on authorization services on a CE node&#58;</font>
+<font color='#7F7E6F'>&#62; 1. pre-ws using grid-mapfile</font>
+<font color='#7F7E6F'>&#62; - No affect as the gatekeeper and gsiftp services read the</font>
+<font color='#7F7E6F'>&#62; file with each invocation and just skip over the bad line(s).</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 2. web services using grid-mapfile</font>
+<font color='#7F7E6F'>&#62; - On startup of the container (globus-ws start), the container</font>
+<font color='#7F7E6F'>&#62; will fail to start if it detects a corrupt grid-mapfile.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; - On startup with a good grid-mapfile, the container</font>
+<font color='#7F7E6F'>&#62; apparently caches the grid-mapfile. Then when an authorization</font>
+<font color='#7F7E6F'>&#62; is required, it checks the timestamp on the grid-mapfile</font>
+<font color='#7F7E6F'>&#62; to see if it has been updated.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; If it has been updated, it will attempt to cache the new file.</font>
+<font color='#7F7E6F'>&#62; Upon detecting the invalid line(s), it throws an exception</font>
+<font color='#7F7E6F'>&#62; in the container.log and back to the submitting user. It aborts</font>
+<font color='#7F7E6F'>&#62; the re-caching attempt and continues running with the old</font>
+<font color='#7F7E6F'>&#62; cached grid-mapfile.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; The submitting user who got this error will be authorized on</font>
+<font color='#7F7E6F'>&#62; their next submittal (assuming they were in the grid-mapfile</font>
+<font color='#7F7E6F'>&#62; to begin with).</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 3. pre-ws and web services with PRIMA/GUMS authorization services</font>
+<font color='#7F7E6F'>&#62; - I have not as yet been able to test this, but hope to be able to.</font>
+<font color='#7F7E6F'>&#62; My expectation is that the only certificate affected might be</font>
+<font color='#7F7E6F'>&#62; the bad one with the newline (or whatever character it is).</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Possible resolutions&#58;</font>
+<font color='#7F7E6F'>&#62; 1. In globus-ws&#58;</font>
+<font color='#7F7E6F'>&#62; - It should ignore the individual grid-mapfile entries (as the</font>
+<font color='#7F7E6F'>&#62; pre-ws services does). This minimizes the number of users</font>
+<font color='#7F7E6F'>&#62; affected. It would also allow the individual submitter who</font>
+<font color='#7F7E6F'>&#62; got unlucky enough to have been the 1st one submitting a job</font>
+<font color='#7F7E6F'>&#62; at the time a refresh was necessary from having their job</font>
+<font color='#7F7E6F'>&#62; rejected.</font>
+<font color='#7F7E6F'>&#62; - The log4j should be setup so these type messages generate</font>
+<font color='#7F7E6F'>&#62; a mail message to an administrator.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 2. In GUMS&#58;</font>
+<font color='#7F7E6F'>&#62; - I&#39;m not sure if GUMS can detect if this type of data is passed</font>
+<font color='#7F7E6F'>&#62; it from GUMS (or any other source), but if possible, it should</font>
+<font color='#7F7E6F'>&#62; generate a warning when the refreshes are done from the VOMS</font>
+<font color='#7F7E6F'>&#62; servers (or other source). It should refresh all entries but the</font>
+<font color='#7F7E6F'>&#62; ones in error.</font>
+<font color='#7F7E6F'>&#62; - It may be more possible to detect the condition when it is</font>
+<font color='#7F7E6F'>&#62; generating the grid-mapfile than on the refresh of it&#39;s USER table.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I should note here that the edg-mkgridmap process apparently</font>
+<font color='#7F7E6F'>&#62; detects the condition and does not create an invalid grid-mapfile</font>
+<font color='#7F7E6F'>&#62; entry.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Although, this may be an anomoly, I think it would mkae sense that</font>
+<font color='#7F7E6F'>&#62; GUMS</font>
+<font color='#7F7E6F'>&#62; does not generate</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 6/29/2006 11&#58;30&#58;49 AM Guest</font>
+<font color='#7F7E6F'>&#62; John Weigand added this information&#58; I have opened a Globus</font>
+<font color='#7F7E6F'>&#62; bugzilla ticket 4558</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//bugzilla.globus.org/globus/show_bug.cgi?id=4558' target='_blank' rel='nofollow'>http&#58;//bugzilla.globus.org/globus/show_bug.cgi?id=4558</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ... addressing the behavior of the web services container when it</font>
+<font color='#7F7E6F'>&#62; attempts to load a new grid-mapfile. The ticket suggests that the</font>
+<font color='#7F7E6F'>&#62; behavior mimics the pre-ws use of the grid-mapfile and that it</font>
+<font color='#7F7E6F'>&#62; ignores the offending lines and uses all valid lines in subsequenct</font>
+<font color='#7F7E6F'>&#62; authorizations.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; The ticket does NOT addess the log4j configuration for email</font>
+<font color='#7F7E6F'>&#62; notification NOR does it address the changes to GUMS that I have</font>
+<font color='#7F7E6F'>&#62; suggested.</font>
+</div><script type='text/javascript'>
+        $('#show_105957812').click(function() {
+            $('#detail_105957812').slideDown("normal");
+            $('#show_105957812').hide();
+            $('#hide_105957812').show();
+        });
+        $('#hide_105957812').click(function() {
+            $('#detail_105957812').slideUp();
+            $('#hide_105957812').hide();
+            $('#show_105957812').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='2194#1152129213'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-07-05T19:53:33+00:00">Jul 5, 2006 07:53 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1152129213">&nbsp;</a></div><pre>Mail sent to the VDT. Awaiting email with the ticket number. When it is received we need to update the
+GOC ticket title with the VDT ticket number.</pre></div><div class='update_description'><i onclick="document.location='2194#1151599632'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-29T16:47:12+00:00">Jun 29, 2006 04:47 PM UTC</time> by <b>Footprints Remedy</b><a class="anchor" name="1151599632">&nbsp;</a></div><pre>Short Description=OSG 0.4.1 / VDT 1.3.10 GUMS grid-mapfile generation - VO member retrieval
+
+Status=Service Desk
+
+This is in OSG 0.4.1 / VDT 1.3.10.
+
+I&#39;m not sure there is a definitive solution to this, but wanted to document
+it so everyone was aware and for discussion purposes.  I would hope that we
+can find some resolution however.
+
+This is little complex to describe... so here goes.
+
+On 6/26/06, I traced a problem with a corrupt GUMS generated grid-mapfile
+back to the VOMS server.
+
+The grid-mapfile looked like this&#58;
+&#34;/DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Mark . Green /UID=mlgreen&#34; cdf
+&#34;/DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Mark Green
+/USERID=mlgreen&#34; cdf
+&#34;/DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Mark Green /UID=mlgreen&#34; cdf
+
+Hopefully the above did not get line wrapped.... the 2nd entry is actually
+split across 2 lines.  There is apaprently a newline character that is
+causing it.  I found this on <a href='https&#58;//voms.cnaf.infn.it&#58;8443/voms/cdf' target='_blank' rel='nofollow'>https&#58;//voms.cnaf.infn.it&#58;8443/voms/cdf</a> .
+
+To verify I ran&#58;
+voms-admin -url <a href='https&#58;//voms.cnaf.infn.it&#58;8443/voms/cdf' target='_blank' rel='nofollow'>https&#58;//voms.cnaf.infn.it&#58;8443/voms/cdf</a> list-members /cdf
+
+and could see the newline split of the output.
+
+Now, this is likely an anomoly in the CDF VOMS as these are Kerberos
+certificates and my guess is they were doing a mass update (probably just a
+SQL update of the database) to add &#34;USERID&#34; DN entries for each &#34;UID&#34; entry
+they had.  This was done to get around a problem we have had with KCA
+certificates and the versions of openssl that have evolved over
+<div id='show_1979725436' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1979725436'>time....enough on this.
+
+When you do a retrieval using mysql from the GUMS database (containing this
+entry from the CDF VOMS), you can see that the entry is split across 2
+lines in the SQL output.
+select * from USER where DN like &#39;%Mark Green%&#39;;
+
+As for the affect on authorization services on a CE node&#58;
+1. pre-ws using grid-mapfile
+- No affect as the gatekeeper and gsiftp services read the
+file with each invocation and just skip over the bad line(s).
+
+2. web services using grid-mapfile
+- On startup of the container (globus-ws start), the container
+will fail to start if it detects a corrupt grid-mapfile.
+
+- On startup with a good grid-mapfile, the container
+apparently caches the grid-mapfile. Then when an authorization
+is required, it checks the timestamp on the grid-mapfile
+to see if it has been updated.
+
+If it has been updated, it will attempt to cache the new file.
+Upon detecting the invalid line(s), it throws an exception
+in the container.log and back to the submitting user.  It aborts
+the re-caching attempt and continues running with the old
+cached grid-mapfile.
+
+The submitting user who got this error will be authorized on
+their next submittal (assuming they were in the grid-mapfile
+to begin with).
+
+3. pre-ws and web services with PRIMA/GUMS authorization services
+- I have not as yet been able to test this, but hope to be able to.
+My expectation is that the only certificate affected might be
+the bad one with the newline (or whatever character it is).
+
+Possible resolutions&#58;
+1. In globus-ws&#58;
+- It should ignore the individual grid-mapfile entries (as the
+pre-ws services does).  This minimizes the number of users
+affected.  It would also allow the individual submitter who
+got unlucky enough to have been the 1st one submitting a job
+at the time a refresh was necessary from having their job
+rejected.
+-  The log4j should be setup so these type messages generate
+a mail message to an administrator.
+
+2. In GUMS&#58;
+- I&#39;m not sure if GUMS can detect if this type of data is passed
+it from GUMS (or any other source), but if possible, it should
+generate a warning when the refreshes are done from the VOMS
+servers (or other source).  It should refresh all entries but the
+ones in error.
+- It may be more possible to detect the condition when it is
+generating the grid-mapfile than on the refresh of it&#39;s USER table.
+
+I should note here that the edg-mkgridmap process apparently
+detects the condition and does not create an invalid grid-mapfile
+entry.
+
+Although, this may be an anomoly, I think it would mkae sense that GUMS
+does not generate
+
+6/29/2006 11&#58;30&#58;49 AM  Guest
+John  Weigand added this information&#58;   I have opened a Globus bugzilla ticket 4558
+<a href='http&#58;//bugzilla.globus.org/globus/show_bug.cgi?id=4558' target='_blank' rel='nofollow'>http&#58;//bugzilla.globus.org/globus/show_bug.cgi?id=4558</a>
+
+... addressing the behavior of the web services container when it attempts to load a new grid-mapfile.  The ticket suggests that the behavior mimics the pre-ws use of the grid-mapfile and that it ignores the offending lines and uses all valid lines in subsequenct authorizations.
+
+The ticket does NOT addess the log4j configuration for email notification NOR does it address the changes to GUMS that I have suggested.
+</div><script type='text/javascript'>
+        $('#show_1979725436').click(function() {
+            $('#detail_1979725436').slideDown("normal");
+            $('#show_1979725436').hide();
+            $('#hide_1979725436').show();
+        });
+        $('#hide_1979725436').click(function() {
+            $('#detail_1979725436').slideUp();
+            $('#hide_1979725436').hide();
+            $('#show_1979725436').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F2194">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 2194});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

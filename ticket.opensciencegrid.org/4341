@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[4341] Learning how to add information to the OSG IS without breaking interoperability</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=4341" method="post">
+<div class="page-header">
+    <h3><span class="muted">4341</span> / Learning how to add information to the OSG IS without breaking interoperability</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Gabriele Garzoglio</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2008-02-07</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+        <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=4341", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/4341?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/4341?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Learning%20how%20to%20add%20information%20to%20the%20OSG%20IS%20without%20breaking%20interoperability%20ISSUE%3D4341%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='4341#1202855168'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-02-12T22:26:08+00:00">Feb 12, 2008 10:26 PM UTC</time> by <b>garzogli@....</b><a class="anchor" name="1202855168">&nbsp;</a></div><pre>Hi,
+for the record, we might want to add my email to the user group,
+reporting on this issue.
+
+I agree it should be closed, now.
+
+Thanks to all that helped
+Gabriele
+
+From&#58; Gabriele Garzoglio &#60;garzoglio@....&#62;
+To&#58; OSG User Group Coordination List
+Date&#58; 02/07/2008 04&#58;35 PM
+Subject&#58; Information on GIP custom attributes and MPI
+
+Hello,
+this is a summary of the discussion from today&#39;s meeting and the
+pointers to the documentation.
+
+- How to add custom attributes to GIP
+the GIP developers provide new documentation on how on the OSG twiki&#58;
+
+<a href='https&#58;//twiki.grid.iu.edu/twiki/bin/view/ReleaseDocumentation/GenericInformationProviders#How_do_I_get_my_GIP_to_publish_n' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/twiki/bin/view/ReleaseDocumentation/GenericInformationProviders#How_do_I_get_my_GIP_to_publish_n</a>
+
+- FermiGrid custom attributes
+I have talked to Neha Sharma, of FermiGrid.
+FermiGrid is the Fermilab campus grid. Its clusters publish custom
+attributes to the FermiGrid ReSS server. All their custom attributes are
+statically defined.
+
+They have 2 use cases&#58;
+
+1) Advertise a WS-GRAM interface. They use a custom attribute, in the
+context of a CE, to advertise the type of interface (gt4) and the gram url.
+(This can be great input for the information interoperability
+discussion, where people want to accomplish  the same thing for the OSG)
+<div id='show_2028909574' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2028909574'>
+2) a GlobusRSL string that specifies the appropriate constraints to the
+local scheduler, in order to send the job to the subcluster selected via
+ReSS.
+
+Neha mentioned 2 caveat&#58;
+
+1) a VDT upgrade will erase your modified GIP configuration. Maintain a
+back up of your files.
+
+2) if you have a condor cluster, the default GIP configuration published
+1 CE per VO. If you want your custom attribute to be available for all
+VOs, you have to list the attribute in the context of about 50 CE.
+
+- When can we start using custom attributes?
+Until very recently, custom attributes site would jeopardize the
+information sent by that site to the EGEE information bridge. DBII
+checks for compliance of the information with the Glue Schema.
+
+Indiana University has now developed a information aggregator, which
+filters out any attribute not compliant with the glue schema, before
+sending the information to DBII. Effectively, this allows custom
+information in ReSS, without breaking DBII interoperability with EGEE.
+
+Tim Silver has deployed the system on the ITB. Before deploying it to
+the OSG, Tim is waiting to discuss related features of the system
+(information expiration time) at the info interoperability meeting, next
+Wed.
+
+- What attributes did we decide to use for MPI ?
+There were 2 proposals (see appended email).
+
+1) Use Custom (non Glue Schema compliant) attributes. This can be tried
+immediately after the new Aggregator is deployed at Indiana for OSG
+production.
+
+2) Use the Software entity of the Glue Schema. The current CEMon does
+not publish Software information. With OSG v1.0.0 (May 1), the new CEMon
+will. For your planning, consider that sites often do not promptly
+upgrade to the latest software stack.
+
+<font color='#7F7E6F'>&#62; From&#58; Gabriele Garzoglio</font>
+<font color='#7F7E6F'>&#62; Date&#58; 10/18/2007 12&#58;18 PM</font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; OSG MPI advertising</font>
+<font color='#7F7E6F'>&#62; Hi,</font>
+<font color='#7F7E6F'>&#62; today, CEMon does not include the software entity in the ReSS</font>
+<font color='#7F7E6F'>&#62; classads. Clearly, this can be a requirement for the next version of</font>
+<font color='#7F7E6F'>&#62; the release, which will probably be timed with OSG v1.0 (in production</font>
+<font color='#7F7E6F'>&#62; around Feb 08). If you are interested to follow this path, we&#39;ll try</font>
+<font color='#7F7E6F'>&#62; to help.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; If you believe that other organizations of the information (e.g.</font>
+<font color='#7F7E6F'>&#62; adding attributes in the host entitity) can also be appropriate, the</font>
+<font color='#7F7E6F'>&#62; current version of CEMon / ReSS can be used already.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I&#39;ve talked about this project with Anand, who was the GIP developer.</font>
+<font color='#7F7E6F'>&#62; He warned me that before changing the dbii schema (e.g. adding new</font>
+<font color='#7F7E6F'>&#62; attributes) we should make sure that this does not break compatibility</font>
+<font color='#7F7E6F'>&#62; with the egee dbii. He was mentioning that we should, for example,</font>
+<font color='#7F7E6F'>&#62; make sure that information is propagated correctly (e.g. not filtered</font>
+<font color='#7F7E6F'>&#62; according to a pre-installed schema) to all dbii.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; If we decide to proceed using the software entity of glue v.1.3, this</font>
+<font color='#7F7E6F'>&#62; is a lesser concern. Otherwise, we&#39;ll have to schedule some tests,</font>
+<font color='#7F7E6F'>&#62; involving, for example, Burt Holzman.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Cheers</font>
+<font color='#7F7E6F'>&#62; Gabriele</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Mats Rynge wrote&#58;</font>
+<font color='#7F7E6F'>&#62; Preston Smith wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; This seems reasonable.</font>
+<font color='#7F7E6F'>&#62;&#62; Though would having &#34;generic software&#34; attributes  be good to solve</font>
+<font color='#7F7E6F'>&#62;&#62; the general problem beyond just MPI?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; This looks great to me. I think Gabriele said that the Software part</font>
+<font color='#7F7E6F'>&#62; of the schema can not be handled in the current GIP/CEMon, but the</font>
+<font color='#7F7E6F'>&#62; example I sent was just made up, so it would probably not work any</font>
+<font color='#7F7E6F'>&#62; better.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Gabriele, can you comment?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; such as&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareLocalID&#58; Gaussian_D.01</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareName&#58; Gaussian</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareVersion&#58; D.01</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareInstalledRoot&#58; /opt/g03-D.01</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareEnvironmentSetup&#58; module load gaussian</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareModuleName&#58; gaussian</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareLocalID&#58; IntelCompilers_9</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareName&#58; IntelCompilers</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareVersion&#58; 9</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareInstalledRoot&#58; /opt/intel</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareEnvironmentSetup&#58; module load intel/9.1.049</font>
+<font color='#7F7E6F'>&#62;&#62; GlueSoftwareModuleName&#58; intel/9.1.049</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; On Oct 15, 2007, at 2&#58;53 PM, Mats Rynge wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; As you probably already know, we have been talking about getting</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; some MPI information into GIP/CEMon. If possible, we want a basic</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; information provider in OSG 1.0.0. The current holdup is to define</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; what information we would need. This email is to open up the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; discussion on requirements.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; To me, it seems like it will be too hard to do a good job</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; advertising all supported MPI variations on a resources (many</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; usually exists). I think it makes sense to only advertise the</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; default/recommended version. Here is an example on what I would like</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; the information to look like&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; MPIVendor={MPICH, MPICH2, LAM, ...}</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; MPIVersion=x.yy.zz</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; MPIInterconnect={P4,Infiniband,Myrinet,...}</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; MPICompilerVendor={GCC,Intel,...}</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; MPICompilerLocation=/opt/...</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Miron has expressed a preference towards a automatic probe to pick</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; up as much as possible from the environment, with the ability for</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; the sysadmin to override the information. Because of this, it would</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; be good if the information we decide on can be found out by looking</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; at the environment and do some simple probing of the MPI system.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Thoughts?</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; --Mats Rynge</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Renaissance Computing Institute &#60;<a href='http&#58;//www.renci.org&#62' target='_blank' rel='nofollow'>http&#58;//www.renci.org&#62</a>;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; --</font>
+<font color='#7F7E6F'>&#62;&#62; Preston Smith  &#60;psmith@....&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Systems Research Engineer</font>
+<font color='#7F7E6F'>&#62;&#62; Rosen Center for Advanced Computing, Purdue University</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2028909574').click(function() {
+            $('#detail_2028909574').slideDown("normal");
+            $('#show_2028909574').hide();
+            $('#hide_2028909574').show();
+        });
+        $('#hide_2028909574').click(function() {
+            $('#detail_2028909574').slideUp();
+            $('#hide_2028909574').hide();
+            $('#show_2028909574').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='4341#1202852915'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-02-12T21:48:35+00:00">Feb 12, 2008 09:48 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1202852915">&nbsp;</a></div><pre>I&#39;ve decided to close this ticket. The lingering issues are development issues which can be dealt with
+as such rather than linger in a ticket for weeks or months further. Those issues are&#58;
+
+1. Implementation of GIP filter to the production aggregator.
+2. Removing stale data, which requires input on how old that data should be before its demise.</pre></div><div class='update_description'><i onclick="document.location='4341#1201536287'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-28T16:04:47+00:00">Jan 28, 2008 04:04 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1201536287">&nbsp;</a></div><pre>I&#39;ve asked Burt to notify me prior to the next Interop meeting.</pre></div><div class='update_description'><i onclick="document.location='4341#1201124185'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-23T21:36:25+00:00">Jan 23, 2008 09:36 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1201124185">&nbsp;</a></div><pre>Ask Rob when the next interop meeting is scheduled.</pre></div><div class='update_description'><i onclick="document.location='4341#1199917328'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-09T22:22:08+00:00">Jan 9, 2008 10:22 PM UTC</time> by <b>garzogli@....</b><a class="anchor" name="1199917328">&nbsp;</a></div><pre>Hi Tim,
+yes, I suggest that if a resource has not refreshed his information in,
+say, 1 hour, that information should not be made available to DBII. This
+is the expectation for an ldap-based system, which soft-registers
+information.
+
+Do you feel comfortable with the 1 hour limit or you prefer to discuss
+the issue in a larger crowd?
+
+As far as the filter goes, I think that it is a great improvement. That
+is immediately useful for FermiGrid and gives us a way of addressing
+DZero and MPI custom-information needs.
+Thanks!
+
+Gabriele
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='4341#1199916035'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-09T22:00:35+00:00">Jan 9, 2008 10:00 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1199916035">&nbsp;</a></div><pre>Hi Gabriele,
+
+I don&#39;t think clearing out old data is an issue. We just need to hash that out and talk about what
+the criteria would be. If I understand correctly, you&#39;re suggesting we stop serving any data for
+Resources like OSG_ITB_PSU and IUPUI-ITB (see <a href='http&#58;//is-itb2.grid.iu.edu/cgi-bin/status.cgi' target='_blank' rel='nofollow'>http&#58;//is-itb2.grid.iu.edu/cgi-bin/status.cgi</a>) that
+have very, very old data still being served by the system, correct?
+
+And as for testing, I can give you some help there. If you look at FNAL_FERMIGRID_ITB they have
+attributes&#58;
+
+FermiGridCEInfoWSGridType&#58; gt4
+FermiGridCEInfoWSGridResource&#58; gt4 fgitb-gk.fnal.gov 9443
+
+But since those don&#39;t meet the requirements specified by our filter, they&#39;re taken out (see Served
+column). So you could put some entries in your Glue data that don&#39;t begin with dn&#58;,objectClass, or
+Glue and they should be stripped out by the filter.
+
+Thanks,
+Tim</pre></div><div class='update_description'><i onclick="document.location='4341#1199909411'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-09T20:10:11+00:00">Jan 9, 2008 08:10 PM UTC</time> by <b>garzogli@....</b><a class="anchor" name="1199909411">&nbsp;</a></div><pre>Hi Tim,
+great! I&#39;ll talk to Neha to understand her tests better, then.
+
+Did you have a chance to implement cache expiration, in the end?
+Thanks
+Gabriele
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='4341#1199895183'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-09T16:13:03+00:00">Jan 9, 2008 04:13 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1199895183">&nbsp;</a></div><pre>Hi Gabriele,
+
+Happy new year to you as well. I&#39;m available at my desk (812-855-4643) all day today with the
+exception of a lunch hour and I have a meeting at 4PM EST. As you may have seen from the ticket
+updates, the filtering is in place and working correctly according to Neha&#39;s tests. You can look at it by
+visiting the ITB instance of the service, <a href='http&#58;//is-itb2.grid.iu.edu/' target='_blank' rel='nofollow'>http&#58;//is-itb2.grid.iu.edu/</a> The filtered data is under the Served
+column while the raw data in it&#39;s received form sent to the GOC is under the CEMon column under
+Data Feed. Neha is testing with FNAL_FERMIGRID_ITB.
+
+Tim</pre></div><div class='update_description'><i onclick="document.location='4341#1199828409'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-08T21:40:09+00:00">Jan 8, 2008 09:40 PM UTC</time> by <b>garzogli@....</b><a class="anchor" name="1199828409">&nbsp;</a></div><pre>Hi Tim,
+Happy new year! I&#39;ve just come back from my Christmas vacation. If you
+want to talk about this issue, I&#39;m available.
+Cheers
+Gabriele
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='4341#1199801349'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-08T14:09:09+00:00">Jan 8, 2008 02:09 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1199801349">&nbsp;</a></div><pre>On Jan 7, 2008, at 2&#58;48 PM, Anand Padmanabhan wrote&#58;
+
+Thanks Neha.
+
+I looked through the output of of few GlueCEUniqueID and GlueSubCluster entries and the filter
+seems to be doing its job. The CEUniqueID and Subcluster entries are making it correctly to the
+BDII server with the extra attribute filtered.
+
+You can find the outputs as follows&#58;
+1. unfiltered source&#58; <a href='http&#58;//is-itb2.grid.iu.edu/cgi-bin/show_source_data?which=FNAL_FERMIGRID_ITB&amp' target='_blank' rel='nofollow'>http&#58;//is-itb2.grid.iu.edu/cgi-bin/show_source_data?which=FNAL_FERMIGRID_ITB&amp</a>;source=cemon
+
+I double checked that the attributes are showing up here
+
+2. filtered BDII entry&#58;  %ldapsearch -x -LLL -p 2170 -h is-itb2.grid.iu.edu -b mds-vo-
+name=FNAL_FERMIGRID_ITB,mds-vo-name=local,o=grid
+
+and not here.
+
+-Neha
+
+I think we should be able to release it for a wider ITB test soon. I will do a closer inspection in the
+next few days. In the mean time, an extra pair of eyes will be helpful, so if anyone else also look
+through the output it would be great.
+
+Anand
+
+Neha Sharma wrote&#58;
+Hi Anand
+
+FNAL_FERMIGRID_ITB is now sending custom classad attributes to the ITB BDII. Please proceed
+with your testing.
+
+These custom attributes are&#58;
+
+FermiGridCEInfoWSGridType
+<div id='show_1396244508' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1396244508'>FermiGridCEInfoWSGridResource
+FermiGridSubClusterRSL
+
+Let me know if you have any questions.
+- Neha
+
+--
+Anand Padmanabhan, PhD
+Research Scientist
+CyberInfrastructure and Geospatial Information Laboratory (CIGI)
+and
+National Center for Supercomputing Applications (NCSA)
+University of Illinois at Urbana-Champaign
+Telephone&#58; (217) 244-9315
+<a href='http&#58;//cigi.uiuc.edu' target='_blank' rel='nofollow'>http&#58;//cigi.uiuc.edu</a>
+
+- Neha
+</div><script type='text/javascript'>
+        $('#show_1396244508').click(function() {
+            $('#detail_1396244508').slideDown("normal");
+            $('#show_1396244508').hide();
+            $('#hide_1396244508').show();
+        });
+        $('#hide_1396244508').click(function() {
+            $('#detail_1396244508').slideUp();
+            $('#hide_1396244508').hide();
+            $('#show_1396244508').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='4341#1199305749'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-01-02T20:29:09+00:00">Jan 2, 2008 08:29 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1199305749">&nbsp;</a></div><pre>From&#58; 	  tsilver@....
+Subject&#58; 	Re&#58; Learning how to add information to the OSG IS without breaking
+interoperability
+Date&#58; 	January 2, 2008 3&#58;27&#58;25 PM EST
+To&#58; 	  apadmana@....
+Cc&#58; 	  rquick@....
+
+Hi Gentlemen,
+
+I know the holidays have pushed back some things, but I&#39;d like to see if we can get people looking
+at this soon. Let me know if there is anything I can do to help.
+
+Thanks,
+
+Tim
+
+From&#58; tsilver@....
+Subject&#58; Re&#58; Learning how to add information to the OSG IS without breaking
+interoperability
+Date&#58; December 20, 2007 2&#58;04&#58;51 PM EST
+To&#58; rquick@...., anand-padmanabhan-1@....
+
+Rob and Anand,
+
+Today I&#39;ve implemented the glue filter script on the ITB CEMon/BDII service to weed out the
+unwanted GIP data (i.e. any lines not beginning with &#39;dn&#58;&#39;, &#39;objectClass&#39; or &#39;Glue&#39;. If you look at
+the Served Data column you can view the filtered results. I&#39;d like to see if we can conduct some
+form of testing. This may just be as simple as having someone look over the data, I don&#39;t know.
+The original feeds sent to the aggregator at the GOC are still intact, so I can diff the original files
+and the filtered files, but I want to be sure that we&#39;re meeting the needs of those who originally
+requested the filter. Once we feel confident this is what is wanted, I can implement the script into
+the production service.
+
+Thanks,
+
+<div id='show_1629949663' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1629949663'>Tim
+</div><script type='text/javascript'>
+        $('#show_1629949663').click(function() {
+            $('#detail_1629949663').slideDown("normal");
+            $('#show_1629949663').hide();
+            $('#hide_1629949663').show();
+        });
+        $('#hide_1629949663').click(function() {
+            $('#detail_1629949663').slideUp();
+            $('#hide_1629949663').hide();
+            $('#show_1629949663').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='4341#1198273848'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-12-21T21:50:48+00:00">Dec 21, 2007 09:50 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1198273848">&nbsp;</a></div><pre>From&#58; 	  tsilver@....
+Subject&#58; 	Re&#58; Learning how to add information to the OSG IS without breaking
+interoperability
+Date&#58; 	December 20, 2007 2&#58;04&#58;51 PM EST
+To&#58; 	  rquick@...., anand-padmanabhan-1@....
+
+Rob and Anand,
+
+Today I&#39;ve implemented the glue filter script on the ITB CEMon/BDII service to weed out the
+unwanted GIP data (i.e. any lines not beginning with &#39;dn&#58;&#39;,  &#39;objectClass&#39;  or &#39;Glue&#39;. If you look at
+the Served Data column you can view the filtered results. I&#39;d like to see if we can conduct some
+form of testing. This may just be as simple as having someone look over the data, I don&#39;t know.
+The original feeds sent to the aggregator at the GOC are still intact, so I can diff the original files
+and the filtered files, but I want to be sure that we&#39;re meeting the needs of those who originally
+requested the filter. Once we feel confident this is what is wanted, I can implement the script into
+the production service.
+
+Thanks,
+
+Tim</pre></div><div class='update_description'><i onclick="document.location='4341#1197658754'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-12-14T18:59:14+00:00">Dec 14, 2007 06:59 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1197658754">&nbsp;</a></div><pre>Hi Gabriele,
+
+As we discussed at the administrator&#39;s meeting I will be looking into removing old data. We&#39;ll have to
+decide how old it should be before it get nixed, but I don&#39;t anticipate it being difficult to do. First I
+want to implement this GIP filter. I&#39;ll be looking into this more in-depth soon.
+
+Tim</pre></div><div class='update_description'><i onclick="document.location='4341#1197049928'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-12-07T17:52:08+00:00">Dec 7, 2007 05:52 PM UTC</time> by <b>garzogli@....</b><a class="anchor" name="1197049928">&nbsp;</a></div><pre>Hi Tim,
+this is great news. What is your schedule to deploy the new service in
+production?
+
+On a separate note, are you also planning to make old information expire
+after some time? I understand that the aggregator write information to
+local files, that are never erased. Sometimes we have seen very old
+information appear in BDII, even if CEMon had been down for days at the
+resource. Adding a process that periodically cleans up old files seems a
+simple solution to this problem.
+
+Thanks!
+Gabriele
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='4341#1197047712'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-12-07T17:15:12+00:00">Dec 7, 2007 05:15 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1197047712">&nbsp;</a></div><pre>The filter for the incoming GIP data has been written and it works, but it needs to be implemented
+with the current set of scripts. Early attempts to implement it caused errors. I&#39;ll be digging into why
+this happened, but I&#39;m not making any changes until after the weekend. I&#39;m also awaiting word from
+Anand on where he suggests the script should go because the original suggestion resulted in errors.
+
+Tim</pre></div><div class='update_description'><i onclick="document.location='4341#1196414278'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-11-30T09:17:58+00:00">Nov 30, 2007 09:17 AM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1196414278">&nbsp;</a></div><pre>Tim is working with Anand and Steve Timm on this. Adding him to assignees.</pre></div><div class='update_description'><i onclick="document.location='4341#1196179799'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-11-27T16:09:59+00:00">Nov 27, 2007 04:09 PM UTC</time> by <b>Thomas Wang</b><a class="anchor" name="1196179799">&nbsp;</a></div><pre>From&#58;   garzogli@....
+Subject&#58; Re&#58; Learning how to add information to the OSG IS without breaking interoperability
+Date&#58; November 27, 2007 10&#58;59&#58;11 AM EST
+To&#58;   apadmana@....
+Cc&#58;   ruth@...., rquick@...., berman@...., timm@...., burt@...., weigand@....,
+tiradani@...., greenc@...., rynge@...., shaowen@...., neha@...., garzoglio@....,
+roy@...., tlevshin@...., goc@....
+
+Hi,
+I think the discussion is mature enough to open a GOC ticket.
+
+I propose we proceed in phases, so that we can have minimal functionality since the beginning.
+
+I think that the best way to address the first phase is modifying the aggregator to filter out site-local custom
+information. There are 2 drawbacks to this phase I&#58;
+
+- any change to custom information must be communicated centrally to enable the filter
+- custom info is available only via the classad channel
+
+Future phases can be planned around Anand&#39;s ideas of having multiple BDIIs.
+
+The implementation of a simple filter seems a well scoped small-size development activity. Do we have efforts to
+address it?
+
+This will help
+- the OSG groups working on MPI
+- FermiGrid forwarding of grid-to-fabric requirements
+- DZero, which wants to use the above feature of FermiGrid
+
+Since we are talking about the aggregator, another very confusing &#34;feature&#34; is the fact that stale information
+lingers forever. It would be nice eventually to periodically clean up old files from the aggregator cache.
+
+Thank you
+Gabriele
+
+<div id='show_2099925237' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2099925237'>Anand Padmanabhan wrote&#58;
+Hi Ruth/Gabriele,
+Gabriele Garzoglio wrote&#58;
+Hi Ruth,
+
+Ruth wrote&#58;
+Gabriele, Anand, Rob
+
+can you tell me more about the LDIF aggregator possible solution ? Is it preferred in your mind given the goals ?
+
+It is NOT the ideal solution, since it requires that new custom site information be added centrally (at the
+aggregator), before being able to use it. At any rate, the advantage of this approach is that possible global
+conflicts could be caught centrally.
+
+All in all, it seems that only possible solution for OSG 0.8.0.
+If the goal is to only get this information to CEMon and not to the BDII, we could add a generic filtering before
+the aggregator. Currently the BDII&#39;s LDIF aggregator uses the information directly from the CEMon (the ldif it
+gets out of the raw dialect). It should be possible to add an intermediary step that will do post processing on the
+information from RAW dialect at GOC before it gets to the LDIF aggregator and BDII. I believe this should not be
+too difficult to implement. But the drawback would be the additional information will only be available through the
+CEMon/ReSS interface.
+
+Writing a new dialect for CEMon, that filters the additional attributes, should also give us the same result.
+
+do you have an estimate of the work that would be needed to add the filtering? is there a different amount of
+work (I am CC&#39;ing Alain now) if the information is sent through CEMON with ClassAds and is never collected and
+transmitted as LDIF at all?
+
+Others should also answer this question, but here&#39;s some more info from my side.
+If we need to get the information from both BDII and CEMon, we will have to run multiple instances of BDII, one
+for OSG and one for interoperability. On the OSG instance we will have to have a extended version of the Glue
+schema. We will have to implement the filter anyway before we publish information to the interoperability bdii so
+as not to break interoperability with EGEE. The drawback of this solution would be that adding new attributes
+would require a schema update at GOC.
+
+Thanks
+Anand
+
+Today, CEMon uses the same GIP to send info in classad AND ldif format. Adding custom info at the level of GIP
+results in the info being propagated to both channels, breaking interoperability because of ldif.
+
+At the level of CEMon we could do two things, both requiring development and deployment on OSG v1.0.0&#58;
+1) enable CEMon to add classad-only information
+2) enable CEMon to filter out custom parameters from the LDIF channel.
+
+The work in (1) is not much (say 1 FTE-day of development on our OSG plugin for CEMon); however, instead of
+keeping site info in one place (GIP), info starts spreading throughout different files for different products. It
+would do the work, but architecturally it&#39;s a poor design decision.
+
+The work in (2) is more effort (say 2 weeks FTE for devel and test). Today, CEMon simply publishes the LDIF
+output of GIP AS-IS (raw dialect)&#58; no special code for this channel is in place. If we decide to filter LDIF info from
+CEMon, we&#39;d need to write some completely new plugin for the LDIF channel.
+
+Cheers
+Gabriele
+is there a CVS link to the existing module?
+
+Ruth
+
+Gabriele Garzoglio wrote&#58;
+Hi,
+I did some more investigation. I can&#39;t find a way of filtering attributes from the RAW dialect (LDIF) at CEMon. So,
+the remaining short-term options (including the ones suggested) are
+
+1) filter out the custom attributes at the LDIF aggregator, before sending the info to DBII.
+
+2) instanciate 2 GIP and 2 CEMon; one CEMon registers with ReSS, one with BDII
+
+Once (1) or (2) is done, we can possibly implement Anand idea of having 2 BDII, one for LCG interoperability,
+one internal for OSG w/ extended attributes and schema.
+
+Do we have any effort to work on the aggregator?
+Asking sites to install 2 GIP and CEMon (i.e. (2) ) is pretty onerous and error prone.
+
+Any other ideas?
+Gabriele
+
+Gabriele Garzoglio wrote&#58;
+Hi,
+I don&#39;t have any bandwidth to interact with the glue 2 group... a pity, really.
+
+The point here is NOT adding new attributes, it is learning how to be flexible. That is technology-dependent,
+rather than schema-dependent.
+
+Anand had warned me that DBII might behave this way&#58; I guess I had to convince myself of the rumors that
+LDAP does not easily allow for attribute extension. Now that I understand the problem more deeply, I think we
+can investigate at least two ways of extending the classads, without breaking LDAP-compatibility with EGEE.
+
+One way involves work with CEMon, the other with the LDIF aggregator from IU&#58; do we have any effort for the
+latter?
+
+Cheers
+Gabriele
+
+Isabeau&#39;s mom wrote&#58;
+hi, has there been any communication with the glue 2 people to add
+the attributes you suggest?  also should we communicate to them our
+needs with regards to the ability to add attributes?  should ldif/bdii be
+behaving this way?
+eileen
+
+Gabriele Garzoglio wrote&#58;
+
+Hi Anand,
+on the other hand, I think that we want to make the process of adding new attributes at sites more agile&#58; it
+would be slow and cumbersome if every change needed to be vetted centrally by updating the schema of the
+OSG BDII.
+
+For a start, I&#39;d like for this to work for ReSS without breaking interoperability.
+Anyway, these are just my 2 cents.
+Cheers
+Gabriele
+
+Anand Padmanabhan wrote&#58;
+
+Another way may be to maintain two BDIIs, one that will be OSG internal and the other would be our external
+partners. The OSG internal one can have OSG specific additions and the external interop BDII will conform to the
+Glue schema. This way even applications running on OSG that use BDII can also take advantage of the new
+attributes the GIP will be publishing.
+
+Also we could take our requests for new attributes to the Glue Schema working group, though this would mean
+a slower process.
+
+Thanks,
+Anand
+Steven Timm wrote&#58;
+
+There&#39;s a third option, onerous as it may be, which would be
+to have two different GIP installations and two different CEMon installations on every CE.  Hopefully it doesn&#39;t
+come to that.
+
+Steve
+
+------------------------------------------------------------------
+Steven C. Timm, Ph.D  (630) 840-8525
+timm@....  <a href='http&#58;//home.fnal.gov/' target='_blank' rel='nofollow'>http&#58;//home.fnal.gov/</a>~timm/
+Fermilab Computing Division, Scientific Computing Facilities,
+Grid Facilities Department, FermiGrid Services Group, Assistant Group Leader.
+
+On Wed, 7 Nov 2007, Gabriele Garzoglio wrote&#58;
+
+Hi all,
+So, it seems that information publishing via LDIF/BDII does not allow sites to add custom attributes. On the
+other hand, the groups that want to add these custom attributes would use classad/ReSS, NOT LDIF/DBII. The
+problem is that the same GIP feeds both LDIF and classad channels. How do we address this problem?
+
+I&#39;ve had some internal discussion with my group and we propose two possible paths
+
+1) investigate if the &#34;raw&#34; (LDIF) dialect of CEMon can be filtered before information is published. We can do that
+for the classad dialect, we never investigated for raw.
+
+2) filter out the custom attributes at the aggregator, before sending the info to DBII.
+
+These approaches will avoid collisions with LCG interoperability.
+
+We will investigate (1). If that fail, do we have effort for (2) ?
+
+Cheers
+Gabriele
+
+Anand Padmanabhan wrote&#58;
+
+Hi Gabriele,
+
+This is exactly what I was concerned about. BDII/Ldapserver has a habit of dropping the entire dn when the
+incoming ldif has attributes that are not recognized by the schema.
+
+So there is no easy answer to this problem. Based on our recent experiences moving from Glue 1.2 to 1.3, it
+appears to be possible to add new attributes into the schema files of the OSG wide BDII, This will allow sites that
+want to publish the extra attribute to publish it while not affecting other sites.
+
+But the same cannot be said for interoperability with LCG. LCG sites will continue to drop these dns. It may be
+possible we have some sort of pre processing script that cleans up and removes these extra entries before they
+get published to the interoperability BDII. These are just quick thoughts and we would need to investigate any
+approach throughly, before we can recommend using it.
+
+Thanks,
+Anand
+
+Gabriele Garzoglio wrote&#58;
+
+Hi,
+I have worked more on how to advertise custom MPI parameters via GIP. Thanks to Anand&#39;s suggestions, Now
+GIP publishes my custom MPI parameters via the subcluster info&#58; I see the parameters in the output of osg-
+info-wrapper and in ReSS. However, when I add MPI pars, the OSG DBII removes my test subcluster info
+completely.
+
+I remember that you, Anand, mentioned that something like this might have happened&#58; can you remind me
+what you think it is?
+
+I&#39;m attaching the output of osg-info-wrapper and appending the output of one ReSS classad.
+
+Thanks for any insight
+Gabriele
+
+MyType = &#34;Machine&#34;
+TargetType = &#34;Job&#34;
+Name = &#34;cms-xen1.fnal.gov&#58;2119/jobmanager-condor-star.-387286676&#34;
+GlueCEInfoContactString = &#34;cms-xen1.fnal.gov&#58;2119/jobmanager-condor&#34;
+CurMatches = 0
+Requirements = (CurMatches &#60; 10)
+WantAdRevaluate = TRUE
+ReSSVersion = &#34;1.0.6&#34;
+isClassadValidAreCrtiticalAttributesPresent = (GlueSiteName =!= UNDEFINED &amp;&amp;
+GlueHostApplicationSoftwareRunTimeEnvironment =!= UNDEFINED &amp;&amp; GlueHostNetworkAdapterInboundIP =!=
+UNDEFINED &amp;&amp; GlueHostNetworkAdapterOutboundIP =!= UNDEFINED &amp;&amp; GlueSubClusterTmpDir =!=
+UNDEFINED &amp;&amp; GlueSubClusterWNTmpDir =!= UNDEFINED)
+isClassadValidAreImportantAttributesPresent = (GlueSubClusterPhysicalCPUs =!= UNDEFINED &amp;&amp;
+GlueSubClusterLogicalCPUs =!= UNDEFINED &amp;&amp; GlueCEStateStatus =!= UNDEFINED &amp;&amp;
+GlueCEInfoContactString =!= UNDEFINED)
+isClassadValidAreTotalSlotsAndCPUPositive = (GlueCEInfoTotalCPUs =!= UNDEFINED &amp;&amp; GlueCEInfoTotalCPUs &#62;
+0 &amp;&amp; GlueCEPolicyAssignedJobSlots =!= UNDEFINED &amp;&amp; GlueCEPolicyAssignedJobSlots &#62; 0)
+isClassadValidAreStateSlotsAndCPUNonNegative = (GlueCEStateFreeCPUs =!= UNDEFINED &amp;&amp;
+GlueCEStateFreeCPUs &#62;= 0 &amp;&amp; GlueCEStateFreeJobSlots =!= UNDEFINED &amp;&amp; GlueCEStateFreeJobSlots &#62;= 0
+&amp;&amp; GlueCEStateTotalJobs =!= UNDEFINED &amp;&amp; GlueCEStateTotalJobs &#62;= 0 &amp;&amp; GlueCEStateWaitingJobs =!=
+UNDEFINED &amp;&amp; GlueCEStateWaitingJobs &#62;= 0 &amp;&amp; GlueCEStateRunningJobs =!= UNDEFINED &amp;&amp;
+GlueCEStateRunningJobs &#62;= 0)
+isClassadValidIsCEHostNetAvailable = (GlueCEInfoHostName =!= UNDEFINED &amp;&amp; regexp(&#34;&#92;.lan$&#34;;
+GlueCEInfoHostName) != 1 &amp;&amp; regexp(&#34;&#92;.localhost$&#34;; GlueCEInfoHostName) != 1 &amp;&amp; regexp(&#34;&#92;.localdomain$&#34;;
+GlueCEInfoHostName) != 1 &amp;&amp; regexp(&#34;&#92;.local$&#34;; GlueCEInfoHostName) != 1 &amp;&amp; regexp(&#34;&#92;.internal$&#34;;
+GlueCEInfoHostName) != 1)
+isClassadValid = (isClassadValidAreCrtiticalAttributesPresent &amp;&amp; isClassadValidAreImportantAttributesPresent
+&amp;&amp; isClassadValidAreTotalSlotsAndCPUPositive &amp;&amp; isClassadValidAreStateSlotsAndCPUNonNegative &amp;&amp;
+isClassadValidIsCEHostNetAvailable)GlueCEStateFreeCPUs = 2
+GlueCESEBindWeight = 0
+GlueCEPolicyAssignedJobSlots = 2
+GlueSiteLongitude = &#34;-88.18&#34;
+GlueCECapability = UNDEFINED
+OSGMPIVendor = &#34;MPICH&#34;
+GlueClusterName = &#34;cms-xen1.fnal.gov&#34;
+GlueCEStateStatus = &#34;Production&#34;
+GlueHostProcessorVendor = &#34;Intel&#34;
+GlueClusterWNTmpDir = &#34;/usr/local/osg-ce/OSG.DIRS/wn_tmp&#34;
+GlueCEInfoLRMSVersion = &#34;6.8.6&#34;
+GlueHostOperatingSystemVersion = &#34;n/a&#34;
+GlueSchemaVersionMajor = 1
+GlueCEInfoApplicationDir = &#34;/usr/local/osg-ce/OSG.DIRS/app&#34;
+GlueCEImplementationName = UNDEFINED
+GlueCEInfoHostName = &#34;cms-xen1.fnal.gov&#34;
+GlueSiteUniqueID = &#34;cms-xen1.fnal.gov&#34;
+GlueCEInfoJobManager = &#34;condor&#34;
+GlueSchemaVersionMinor = 3
+GlueCEPolicyPreemption = 0
+GlueClusterTmpDir = &#34;/usr/local/osg-ce/OSG.DIRS/data&#34;
+GlueInformationServiceURL = &#34;ldap&#58;//&#58;2170/mds-vo-name=ITB_INSTALL_TEST_2,mds-vo-
+name=local,o=grid,ldap&#58;//&#58;2170/mds-vo-name=ITB_INSTALL_TEST_2,mds-vo-
+name=local,o=grid,ldap&#58;//&#58;2170/mds-vo-name=ITB_INSTALL_TEST_2,mds-vo-name=local,o=grid&#34;
+GlueHostMainMemoryRAMSize = 524
+GlueSubClusterUniqueID = &#34;cms-xen1.fnal.gov&#34;
+GlueCEPolicyPriority = 0
+GlueHostOperatingSystemRelease = &#34;n/a&#34;
+GlueHostProcessorClockSpeed = 3065
+GlueCEPolicyMaxObtainableCPUTime = 0
+GlueHostArchitectureSMPSize = 1
+OSGMPIInterconnect = &#34;Infiniband&#34;
+GlueHostProcessorModel = &#34;Intel(R) Xeon(TM) CPU 3.06GHz&#34;
+GlueCEAccessControlBaseRule = &#34;VO&#58;star&#34;
+GlueCEHostingCluster = &#34;cms-xen1.fnal.gov&#34;
+OSGMPICompilerVendor = &#34;Intel&#34;
+GlueSiteLatitude = &#34;41.50&#34;
+GlueCEInfoLRMSType = &#34;condor&#34;
+GlueCEPolicyMaxWaitingJobs = 0
+GlueSubClusterTmpDir = &#34;/usr/local/osg-ce/OSG.DIRS/data&#34;
+GlueCEStateWorstResponseTime = 0
+GlueCEStateTotalJobs = 0
+GlueCEUniqueID = &#34;cms-xen1.fnal.gov&#58;2119/jobmanager-condor-star&#34;
+GlueClusterUniqueID = &#34;cms-xen1.fnal.gov&#34;
+GlueCEInfoDataDir = &#34;/usr/local/osg-ce/OSG.DIRS/data&#34;
+GlueCEInfoTotalCPUs = 2
+GlueHostApplicationSoftwareRunTimeEnvironment = &#34;MountPoints,SAMPLE_LOCATION,SAMPLE_SCRATCH&#34;
+GlueCEStateWaitingJobs = 0
+GlueHostNetworkAdapterInboundIP = FALSE
+GlueSiteName = &#34;ITB_INSTALL_TEST_2&#34;
+GlueSubClusterLogicalCPUs = 1
+GlueCEPolicyMaxTotalJobs = 0
+GlueSubClusterName = &#34;cms-xen1.fnal.gov&#34;
+GlueCEPolicyMaxSlotsPerJob = 0
+GlueCEPolicyMaxObtainableWallClockTime = 0
+GlueCEPolicyMaxRunningJobs = 0
+GlueCEStateFreeJobSlots = 2
+GlueHostMainMemoryVirtualSize = 524
+GlueHostNetworkAdapterOutboundIP = FALSE
+GlueHostBenchmarkSI00 = 400
+GlueClusterService = &#34;cms-xen1.fnal.gov&#34;
+GlueCEStateRunningJobs = 0
+GlueCEPolicyMaxWallClockTime = 6000
+GlueCEInfoDefaultSE = &#34;UNAVAILABLE&#34;
+GlueCEPolicyMaxCPUTime = 6000
+GlueHostBenchmarkSF00 = 380
+OSGMPICompilerLocation = &#34;/usr/local/mpi/mpi-compiler&#34;
+GlueHostOperatingSystemName = &#34;n/a&#34;
+OSGMPIVersion = 9
+GlueCEImplementationVersion = UNDEFINED
+GlueCESEBindMountInfo = &#34;none&#34;
+GlueSubClusterPhysicalCPUs = 1
+GlueSubClusterWNTmpDir = &#34;/usr/local/osg-ce/OSG.DIRS/wn_tmp&#34;
+GlueCEName = &#34;star&#34;
+GlueCEInfoGatekeeperPort = 2119
+GlueCEStateEstimatedResponseTime = 0
+TTLCEinfo = 300
+StartdIpAddr = &#34;&#60;131.225.110.150&#58;0&#62;&#34;
+MyAddress = &#34;&#60;131.225.110.150&#58;0&#62;&#34;
+LastHeardFrom = 1194374909
+UpdatesTotal = 5170
+UpdatesSequenced = 0
+UpdatesLost = 0
+UpdatesHistory = &#34;0x00000000000000000000000000000000&#34;
+
+[snip]
+Gabriele Garzoglio wrote&#58;
+
+Hi,
+the problem of adding custom information to our sites keeps coming back under different circumstances. This is
+one of Miron&#39;s fortes and, most recently, this issue came up in the scope of two activities
+
+1) grid to fabric requirement forwarding&#58; how to set batch system constraints to submit jobs to a subcluster
+specified via grid requirements (Steve is working on this)
+
+2) MPI parameters&#58; how to give applications information about MPI library location, version, etc.
+
+All of these require custom modifications of the Glue Schema. We need to learn
+
+A) how to do these modifications
+
+B) how to avoid breaking compatibility with EGEE
+
+I&#39;m in the process of understanding (A) for (2). John and Tony are working with me to verify (B).
+
+The plan is for Tony to run a set of interoperability validation tests on one of John&#39;s ITB sites&#58; the details of these
+must be defined, yet. The sites are daily fresh installs, so all should result fine. At that point, I&#39;ll work on John&#39;s
+site to do (2). When I&#39;m satisfied that the information is propagated properly to the OSG DBII, I&#39;ll ask Tony to
+run his tests again.
+
+Let me know if you have any comments. We&#39;ll keep you posted on how things go.
+Cheers
+Gabriele
+</div><script type='text/javascript'>
+        $('#show_2099925237').click(function() {
+            $('#detail_2099925237').slideDown("normal");
+            $('#show_2099925237').hide();
+            $('#hide_2099925237').show();
+        });
+        $('#hide_2099925237').click(function() {
+            $('#detail_2099925237').slideUp();
+            $('#hide_2099925237').hide();
+            $('#show_2099925237').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F4341">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 4341});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

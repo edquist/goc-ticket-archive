@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[33917] voms-proxy-init returns &#34;SSL handshake error&#34; on specific host</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=33917" method="post">
+<div class="page-header">
+    <h3><span class="muted">33917</span> / voms-proxy-init returns &#34;SSL handshake error&#34; on specific host</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Richard T. Jones</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Richard T. Jones</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-06-01</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Carl Edquist <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Derek Weitzel <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=33917", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/33917?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/33917?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20voms-proxy-init%20returns%20%26%2334%3BSSL%20handshake%20error%26%2334%3B%20on%20specific%20host%20ISSUE%3D33917%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='33917#1496320689'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-01T12:38:09+00:00">Jun 1, 2017 12:38 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1496320689">&nbsp;</a></div><pre>Ok, thank you. This ticket can be closed.
+-Richard Jones
+
+On Thu, Jun 1, 2017 at 7&#58;20 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='33917#1496316010'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-01T11:20:10+00:00">Jun 1, 2017 11:20 AM UTC</time> by <b>strosahl@....</b><a class="anchor" name="1496316010">&nbsp;</a></div><pre>Good Morning,
+
+Right now it looks like this is internal to us.  We are working on setting up the libraries that the user needs.
+
+w/r,
+Kurt</pre></div><div class='update_description'><i onclick="document.location='33917#1496152515'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-30T13:55:15+00:00">May 30, 2017 01:55 PM UTC</time> by <b>echism</b><a class="anchor" name="1496152515">&nbsp;</a></div><pre>Sherman,
+
+Where do you want to go with this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='33917#1495744870'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T20:41:10+00:00">May 25, 2017 08:41 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1495744870">&nbsp;</a></div><pre>Hello Sherman,
+
+I already went through the approval process for this, and it was already
+granted to me on the Centos systems. If you want to initiate a new request
+cycle for this exception, you may demand it of course, but this exception
+was already approved in the past. You can see on the Centos 6 systems that
+/apps/osg is owned by me (jonesrt).
+
+-Richard
+
+On Thu, May 25, 2017 at 4&#58;35 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='33917#1495744510'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T20:35:10+00:00">May 25, 2017 08:35 PM UTC</time> by <b>srwhite@....</b><a class="anchor" name="1495744510">&nbsp;</a></div><pre>Hi,
+
+While I appreciate your efforts to make the installation of your software package easier for us, in
+general, CNI is not in the habit of allowing non-JLab system administators the access to install
+applications onto our global resources.  The file systems in question are exported from restricted
+file servers which non-JLab system administrators do not even have login access to.  Even the JLab
+system administrators who do have access are required to use crypto-tokens to do so.  Simply giving
+you write access to an area on the shared file server defeats all of those security measures.
+
+As mentioned earlier, the approved way for users to have applications globally installed across the
+CUE (Common Unix Environment) is for them to submit CCPRs requesting their installation.  CNI allows
+individuals requiring more &#34;freedom&#34; to have CUE level 2 boxes, where as their own system administrators
+they may enjoy more (as in less restricted) autonomy.
+
+That said, I am not insensitive to your need, but if an exception to our policy needs to be made, it
+cannot be made at either my or Kurt&#39;s level.  I have copied this message to the individuals capable
+of granting an exception.  If any of them directs me to comply with your request, I will.  Otherwise,
+I think a CCPR will be your best bet.
+
+Sherman</pre></div><div class='update_description'><i onclick="document.location='33917#1495742096'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T19:54:56+00:00">May 25, 2017 07:54 PM UTC</time><a class="anchor" name="1495742096">&nbsp;</a></div><pre>ps. I also have some scripts on there that I can use to regen the wg-client install from scratch. I can also copy them over from a Centos6 machine if you prefer.
+-richard
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='33917#1495741617'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T19:46:57+00:00">May 25, 2017 07:46 PM UTC</time><a class="anchor" name="1495741617">&nbsp;</a></div><pre>Yes, of course. I was trying make the request crisp and simple.
+If you clone it, I will have write permission in the correct area of /apps, and I will know that it is on a fs, with enough space to hold this stuff without overflowing the fs or whatever quotas you assign to me.
+Once it is cloned, I will take it from there, and rebuild what is needed.
+Does that make sense?
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='33917#1495741105'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T19:38:25+00:00">May 25, 2017 07:38 PM UTC</time><a class="anchor" name="1495741105">&nbsp;</a></div><pre>Richard,
+
+Please see below for a response from the manager of the /apps areas&#58;
+
+Hi,
+
+It is doubtful that simply copying information from an RHEL6 installation to an RHEL7 installation will work because
+there are usually different versions of the gcc and other libraries on each system. Applications in the /apps area
+are built for the Redhat releases in which they appear.  If there is an application that needs to be installed in the
+RHEL7 application area, my suggestion would be to supply the software source code along with a CCPR requesting its
+installation.
+
+Sherman
+
+w/r,
+Kurt
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kurt Johann Strosahl 4170</pre></div><div class='update_description'><i onclick="document.location='33917#1495741090'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T19:38:10+00:00">May 25, 2017 07:38 PM UTC</time> by <b>srwhite@....</b><a class="anchor" name="1495741090">&nbsp;</a></div><pre>Hi,
+
+It is doubtful that simply copying information from an RHEL6 installation to an RHEL7 installation will work because
+there are usually different versions of the gcc and other libraries on each system. Applications in the /apps area
+are built for the Redhat releases in which they appear.  If there is an application that needs to be installed in the
+RHEL7 application area, my suggestion would be to supply the software source code along with a CCPR requesting its
+installation.
+
+Sherman
+
+----- Original Message -----
+From&#58; &#34;Kurt Strosahl&#34; &#60;strosahl@....&#62;
+To&#58; &#34;Sherman White&#34; &#60;srwhite@....&#62;
+Sent&#58; Thursday, May 25, 2017 3&#58;03&#58;42 PM
+Subject&#58; Fwd&#58; Open Science Grid&#58; voms-proxy-init returns &#34;SSL handshake error&#34; on specific host ISSUE=33917 PROJ=71
+
+Sherman,
+
+Can you do this please?  I&#39;ve explained to Richard that there are different libraries at work.
+
+w/r,
+Kurt
+
+----- Forwarded Message -----
+From&#58; &#34;Open Science Grid FootPrints&#34; &#60;osg@....&#62;
+To&#58; &#34;Kurt Strosahl&#34; &#60;strosahl@....&#62;
+Sent&#58; Thursday, May 25, 2017 2&#58;56&#58;00 PM
+Subject&#58; Open Science Grid&#58; voms-proxy-init returns &#34;SSL handshake error&#34; on specific host ISSUE=33917 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='33917#1495738572'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T18:56:12+00:00">May 25, 2017 06:56 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1495738572">&nbsp;</a></div><pre>Kurt,
+
+I cannot at this point, because the osg client stack that I set up on the
+CentOS6 apps fs (/apps/osg) has not been cloned for me onto the RHEL7 /apps
+fs. I sent a request to you a couple of days ago for this. If you can do
+that for me then I will do this test.
+
+-Richard J.
+
+On Thu, May 25, 2017 at 2&#58;47 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='33917#1495738043'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T18:47:23+00:00">May 25, 2017 06:47 PM UTC</time><a class="anchor" name="1495738043">&nbsp;</a></div><pre>Richard,
+
+Can you try it from ifarm1402?  That is a CentOS 7.2 system.
+
+The ifarm systems are on a different network from scosg16, and it is possible that there are network rules blocking traffic that the different OSs are hiding.
+
+w/r,
+Kurt
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kurt Johann Strosahl 4170</pre></div><div class='update_description'><i onclick="document.location='33917#1495735548'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T18:05:48+00:00">May 25, 2017 06:05 PM UTC</time><a class="anchor" name="1495735548">&nbsp;</a></div><pre>On ifarm1101 (the one that works, has CentOS 6.5)
+ifarm1101&#62; rpm -q openssl
+openssl-1.0.1e-15.el6.x86_64
+openssl-1.0.1e-15.el6.i686
+ifarm1101&#62; openssl version
+OpenSSL 1.0.1e-fips 11 Feb 2013
+ifarm1101&#62; java -version
+java version &#34;1.8.0_60&#34;
+Java(TM) SE Runtime Environment (build 1.8.0_60-b27)
+Java HotSpot(TM) 64-Bit Server VM (build 25.60-b23, mixed mode)
+ifarm1101&#62;
+
+On scosg16 (the one the fails, has RHEL7,3)
+scosg16.jlab.org&#62; rpm -q openssl
+openssl-1.0.1e-60.el7_3.1.x86_64
+scosg16.jlab.org&#62; openssl version
+OpenSSL 1.0.1e-fips 11 Feb 2013
+scosg16.jlab.org&#62; java -version
+openjdk version &#34;1.8.0_121&#34;
+OpenJDK Runtime Environment (build 1.8.0_121-b13)
+OpenJDK 64-Bit Server VM (build 25.121-b13, mixed mode)
+scosg16.jlab.org&#62;
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='33917#1495732542'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-25T17:15:42+00:00">May 25, 2017 05:15 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1495732542">&nbsp;</a></div><pre>What versions of openssl and java do you have installed on both hosts?</pre></div><div class='update_description'><i onclick="document.location='33917#1495642536'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-24T16:15:36+00:00">May 24, 2017 04:15 PM UTC</time><a class="anchor" name="1495642536">&nbsp;</a></div><pre>On the Jlab client side I see
+scosg16.jlab.org&#62; osg-version
+OSG 3.3.21
+
+On the voms server side, I have
+[root@gryphn scripts]# osg-version
+OSG 3.3.23
+
+Both seem to be reasonably up to date. There seems to be no difference when using the -old option.
+scosg16.jlab.org&#62; voms-proxy-init -voms Gluex&#58;/Gluex -valid 80&#58;0 -old
+Enter GRID pass phrase&#58;
+Your identity&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594
+Creating temporary proxy ...................................................... Done
+Contacting  gryphn.phys.uconn.edu&#58;15014 [/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms/gryphn.phys.uconn.edu] &#34;Gluex&#34; Failed
+
+Error&#58; Error during SSL handshake&#58;
+
+None of the contacted servers for Gluex were capable
+of returning a valid AC for the user.
+scosg16.jlab.org&#62;
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='33917#1495640201'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-24T15:36:41+00:00">May 24, 2017 03:36 PM UTC</time> by <b>Derek Weitzel</b><a class="anchor" name="1495640201">&nbsp;</a></div><pre>Hi Richard,
+
+Are both the EL6 and EL7 hosts up to date with OSG packages?  I see the EL7 host has these special lines&#58;
+
+<font color='#7F7E6F'>&#62; Detected Globus version&#58; 2.2</font>
+<font color='#7F7E6F'>&#62; Unspecified proxy version, settling on version 4 (RFC)</font>
+<font color='#7F7E6F'>&#62; PCI extension info&#58;</font>
+<font color='#7F7E6F'>&#62; Path length&#58; -1</font>
+<font color='#7F7E6F'>&#62; Policy language not specified.</font>
+<font color='#7F7E6F'>&#62; Policy file not specified.</font>
+
+I wonder if the new version of proxy is causing issues.  Try adding the option &#34;-old &#34; to the voms-proxy-init command.</pre></div><div class='update_description'><i onclick="document.location='33917#1495563862'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-23T18:24:22+00:00">May 23, 2017 06:24 PM UTC</time><a class="anchor" name="1495563862">&nbsp;</a></div><pre>Hello Kurt,
+
+This might be a clue&#58; the failing host is running RHEL 7, whereas the succeeding host is running RHEL-6. Might the problem be somehow connected to this?
+
+scosg16.jlab.org&#62; uname -a
+Linux scosg16.jlab.org 3.10.0-514.10.2.el7.x86_64 #1 SMP Mon Feb 20 02&#58;37&#58;52 EST 2017 x86_64 x86_64 x86_64 GNU/Linux
+
+ifarm1101.jlab.org&#62; uname -a
+Linux ifarm1101 2.6.32-431.el6.x86_64 #1 SMP Fri Nov 22 03&#58;15&#58;09 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
+
+-Richard Jones
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='33917#1495563420'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-23T18:17:00+00:00">May 23, 2017 06:17 PM UTC</time><a class="anchor" name="1495563420">&nbsp;</a></div><pre>Hi Carl,
+
+Can you please look at this? I really do not understand what is going on?
+
+Thanks,
+
+Edgar
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='33917#1495562962'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-23T18:09:22+00:00">May 23, 2017 06:09 PM UTC</time><a class="anchor" name="1495562962">&nbsp;</a></div><pre>Trying again with the cc&#39;s, I seem to not understand the correct format for email addresses??
+-Richard J.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='33917#1495562880'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-23T18:08:00+00:00">May 23, 2017 06:08 PM UTC</time><a class="anchor" name="1495562880">&nbsp;</a></div><pre>On the server side, the log message is essentially useless. It just says, &#34;handshake error&#34;. See the log snippet below.
+
+Tue May 23 12&#58;26&#58;06 2017&#58;gryphn.phys.uconn.edu&#58;vomsd[7958]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;logconnection (ipv6sock.cc&#58;64)&#58;Received connection from&#58; 129.57.199.132&#58;52802.&#34;
+Tue May 23 12&#58;26&#58;06 2017&#58;gryphn.phys.uconn.edu&#58;vomsd[7958]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run (vomsd.cc&#58;773)&#58;Started child executor with pid = 2124636. Active requests = 1&#34;
+Tue May 23 12&#58;26&#58;06 2017&#58;gryphn.phys.uconn.edu&#58;vomsd[2124635]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;AcceptGSIAuthentication (Server.cpp&#58;433)&#58;Error enstabilishing SSL context.&#34;
+Tue May 23 12&#58;26&#58;06 2017&#58;gryphn.phys.uconn.edu&#58;vomsd[2124635]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run (vomsd.cc&#58;788)&#58;SSL Handshake error&#34;
+
+Here is what it looks like when it works (from ifarm1101.jlab.org)
+
+Tue May 23 12&#58;41&#58;20 2017&#58;gryphn.phys.uconn.edu&#58;vomsd[7958]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;logconnection (ipv6sock.cc&#58;64)&#58;Received connection from&#58; 129.57.70.17&#58;36105.&#34;
+Tue May 23 12&#58;41&#58;20 2017&#58;gryphn.phys.uconn.edu&#58;vomsd[7958]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run (vomsd.cc&#58;773)&#58;Started child executor with pid = 2126173. Active requests = 1&#34;
+Tue May 23 12&#58;41&#58;20 2017&#58;gryphn.phys.uconn.edu&#58;vomsd[2126173]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run (vomsd.cc&#58;804)&#58;SSL handshake completed succesfully.&#34;
+Tue May 23 12&#58;41&#58;20 2017&#58;gryphn.phys.uconn.edu&#58;vomsd[2126173]&#58; msg=&#34;LOG_INFO&#58;REQUEST&#58;Run (vomsd.cc&#58;811)&#58;Received request from&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594, /DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1 (serial&#58; 0100006941)&#34;
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='33917#1495562765'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-05-23T18:06:05+00:00">May 23, 2017 06:06 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1495562765">&nbsp;</a></div><pre>Dear Edgar, Kurt,
+
+I am unable to create a voms proxy on the new gwms submit host (scosg16.jlab.org) that you recently set up for us at Jefferson Lab. Here is a printout of the error. The exact same command from the same CUE account works fine on ifarm1101 (where I installed the osg client suite myself) so I know there is no problem with the voms server, or my client certs stored in the .globus folder of that account. If you like, I can open a GOC ticket on this, but I thought it might be a local support issue since we are just getting started with this server. The problematic command on scosg16 follows next, and after that the successful identical command on ifarm1101.
+
+=======================================================problematic log
+scosg16.jlab.org&#62; voms-proxy-init -debug -voms Gluex -valid 120&#58;0
+Detected Globus version&#58; 2.2
+Unspecified proxy version, settling on version 4 (RFC)
+PCI extension info&#58;
+Path length&#58; -1
+Policy language not specified.
+Policy file not specified.
+Number of bits in key &#58;1024
+Files being used&#58;
+CA certificate file&#58; none
+Trusted certificates directory &#58; /etc/grid-security/certificates
+Proxy certificate file &#58; /tmp/x509up_u2671
+User certificate file&#58; /home/jonesrt/.globus/usercert.pem
+User key file&#58; /home/jonesrt/.globus/userkey.pem
+Output to /tmp/x509up_u2671
+Enter GRID pass phrase&#58;
+Your identity&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594
+Using configuration file /home/jonesrt/.glite/vomses
+Using configuration file /etc/vomses
+Creating temporary proxy to /tmp/tmp_x509up_u2671_3912961 ............................++++++
+.....................................................................................++++++
+
+No policy language specified, Gsi impersonation proxy assumed. Done
+Contacting  gryphn.phys.uconn.edu&#58;15014 [/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms/gryphn.phys.uconn.edu] &#34;Gluex&#34; Failed
+
+Error&#58; Error during SSL handshake&#58;
+
+None of the contacted servers for Gluex were capable
+of returning a valid AC for the user.
+scosg16.jlab.org&#62;
+<div id='show_1007149811' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1007149811'>===============================================================================
+
+=======================================successful log, run at the same time on a different host
+ifarm1101&#62; voms-proxy-init -voms Gluex&#58;/Gluex -valid 80&#58;0 -debug
+Detected Globus version&#58; 2.2
+Unspecified proxy version, settling on Globus version&#58; 2
+Number of bits in key &#58;1024
+Files being used&#58;
+CA certificate file&#58; none
+Trusted certificates directory &#58; /u/apps/osg/osg-client/etc/grid-security/certificates
+Proxy certificate file &#58; /tmp/x509up_u2671
+User certificate file&#58; /home/jonesrt/.globus/usercert.pem
+User key file&#58; /home/jonesrt/.globus/userkey.pem
+Output to /tmp/x509up_u2671
+Enter GRID pass phrase&#58;
+Your identity&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594
+Using configuration file /u/apps/osg/osg-client/etc/vomses
+Creating temporary proxy to /tmp/tmp_x509up_u2671_7768 .......................................................++++++
+.++++++
+Done
+Contacting  gryphn.phys.uconn.edu&#58;15014 [/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=voms/gryphn.phys.uconn.edu] &#34;Gluex&#34; Done
+Creating proxy to /tmp/x509up_u2671 .................++++++
+............++++++
+Done
+
+Your proxy is valid until Fri May 26 20&#58;41&#58;20 2017
+ifarm1101&#62;
+===============================================================================
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594
+</div><script type='text/javascript'>
+        $('#show_1007149811').click(function() {
+            $('#detail_1007149811').slideDown("normal");
+            $('#show_1007149811').hide();
+            $('#hide_1007149811').show();
+        });
+        $('#hide_1007149811').click(function() {
+            $('#detail_1007149811').slideUp();
+            $('#hide_1007149811').hide();
+            $('#show_1007149811').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F33917">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 33917});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

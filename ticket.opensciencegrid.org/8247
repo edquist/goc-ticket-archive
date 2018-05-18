@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[8247] OSG Storage&#58; dCache&#58; Problem with suspended transfers</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=8247" method="post">
+<div class="page-header">
+    <h3><span class="muted">8247</span> / OSG Storage&#58; dCache&#58; Problem with suspended transfers</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">neha sharma</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">1970-01-01</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Neha Sharma <span class="muted"> / OSG Storage Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=8247", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/8247?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/8247?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20OSG%20Storage%26%2358%3B%20dCache%26%2358%3B%20Problem%20with%20suspended%20transfers%20ISSUE%3D8247%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='8247#1268677118'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-15T18:18:38+00:00">Mar 15, 2010 06:18 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1268677118">&nbsp;</a></div><pre>No tape here!   We just have disk.
+
+Good question about what happened with this pool...I don&#39;t know the answer.
+
+Shawn
+
+-----Original Message-----
+From&#58; Gerd Behrmann via RT [mailto&#58;support@....]
+Sent&#58; Wednesday, March 03, 2010 10&#58;01 AM
+To&#58; bbockelm@....
+Cc&#58; aglt2-admin@....; osg-storage@....; McKee, Shawn
+Subject&#58; Re&#58; RESOLVED&#58; [www.dcache.org #5526] Re&#58; Problem with suspended transfers
+
+The unanswered question is why the pools didn&#39;t know about all files in
+the first place. Does this pool happen to be connected to tape? Is it
+used for staging data from tape?
+
+Cheers,
+
+/gerd
+
+On 2010-02-26 17&#58;33, Shawn &#34; via RT wrote&#58;
+
+*********************************************************************************
+This is an automated mail to inform you about a ticket update.
+When replying do not change the squared brackets part in the subject line.
+Type your text above this box and S T R I P  P R E V I O U S  M A I L S please!!
+*********************************************************************************
+
+&#60;URL&#58; <a href='http&#58;//rt.dcache.org/Ticket/Display.html?id=5526&#62' target='_blank' rel='nofollow'>http&#58;//rt.dcache.org/Ticket/Display.html?id=5526&#62</a>;
+
+Thanks Brian,
+
+It is resolved now.  For everyone&#39;s info here is what I found out about the problem.
+
+<div id='show_755929800' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_755929800'>Our UMFS08 node had this in is umfs08Domain.log&#58;
+
+25 Feb 2010 11&#58;05&#58;34 (umfs08_3) [] The file system containing the data files appears to have less free space (16,396,762,816,512 bytes) than
+expected (16,399,591,626,864 bytes); reducing the pool size to 20,015,713,999,057 bytes to compensate. Notice that this does not leave any
+space for the meta data. If such data is stored on the same file system, then it is paramount that the pool size is reconfigured to leave enough space
+for the meta data.
+
+Try to run &#39;pnfs register&#39; showed (from the pinboard)&#58;
+
+10.46.33  [HybridInventory] [] Replica registration finished. 17409 replicas processed in 84584 msec
+10.46.46  [HybridInventory] [] Registering all replicas in PNFS
+10.48.02  [HybridInventory] [] Replica registration finished. 17272 replicas processed in 76298 msec
+
+Looking directly in the pool itself I saw&#58;
+
+[10&#58;52&#58;49 AM] Shawn McKee&#58; [smckee@umfs08 ~]$ ls -1 /dcache2/pool/data/ | wc
+54839   54839 2022743
+
+So there was a definite mis-match (17272 vs 54839).
+
+The disks seemed OK. To be sure,  I stopped dCache on the node, ran &#39;xfs_repair&#39; on all the pools (didn&#39;t find a problem).   Remounting and
+restarting dCache things looked OK.
+
+/dev/sdc             25388515328 9345859156 16042656172  37% /dcache
+/dev/sdb             25388515328 14580425628 10808089700  58% /dcache1
+/dev/sde             25388515328 9314556492 16073958836  37% /dcache2
+/dev/sdd             25388515328 1004009108 24384506220   4% /dcache3
+
+[root@umfs08 ~]# service dcache pool ls
+Pool     Domain       LFS          Size   Free Path
+umfs08_1 umfs08Domain precious    24160  15299 /dcache/pool
+umfs08_2 umfs08Domain precious    24160  10307 /dcache1/pool
+umfs08_3 umfs08Domain precious    24160  15329 /dcache2/pool
+umfs08_4 umfs08Domain precious    24160  23254 /dcache3/pool
+
+Then from the &#39;admin&#39; interface for this pool (umfs08_3) I re-ran &#39;pnfs register&#39;.  Better result this time&#58;
+
+11.22.56  [HybridInventory] [] remove entry for&#58; 000050C4AB6A57264D7AA346CBF9EA54B20F
+11.22.56  [HybridInventory] [] File not found in PNFS; removed 000050C4AB6A57264D7AA346CBF9EA54B20F
+11.22.56  [HybridInventory] [] Replica registration finished. 54837 replicas processed in 284210 msec
+
+Now, checking in the Chimera DB I find the &#34;missing&#34; info in t_locationinfo is back&#58;
+
+chimera=&#62;  select * from t_locationinfo where ipnfsid=&#39;00002DC9F89A366F429BBD49EDB8735B3310&#39;;
+ipnfsid                | itype | ilocation | ipriority |           ictime           |           iatime           | istate
+--------------------------------------+-------+-----------+-----------+----------------------------+----------------------------+--------
+00002DC9F89A366F429BBD49EDB8735B3310 |     1 | umfs08_3  |        10 | 2010-02-26 11&#58;21&#58;59.976-05 | 2010-02-26 11&#58;21&#58;59.976-05 |
+1
+(1 row)
+
+So I think the root problem is fixed now.   Thanks for the help,
+
+Shawn
+
+-----Original Message-----
+From&#58; Brian Bockelman via RT [mailto&#58;support@....]
+Sent&#58; Friday, February 26, 2010 10&#58;41 AM
+To&#58; bbockelm@....
+Cc&#58; aglt2-admin@....; osg-storage@....; McKee, Shawn
+Subject&#58; Re&#58; [www.dcache.org #5526] Re&#58; Problem with suspended transfers
+
+You used to be able to do&#58;
+
+&#34;pnfs register&#34;
+
+from the pool in the admin interface.
+
+Not sure how (if?) this interacts with Chimera.
+
+Brian
+
+On Feb 26, 2010, at 9&#58;38 AM, McKee, Shawn wrote&#58;
+
+One more question&#58;
+
+I found the &#34;missing&#34; PNFSIDs...they are both on one of our pools&#58;
+
+[root@head02 ~]# ssh umfs08 &#34;ls -al /dcache*/pool/data/00002DC9F89A366F429BBD49EDB8735B3310&#34;
+Scientific Linux SL release 5.4 (Boron)
+-rw-r--r-- 1 root root 1486025053 Feb 15 14&#58;28
+/dcache2/pool/data/00002DC9F89A366F429BBD49EDB8735B3310
+[root@head02 ~]# ssh umfs08 &#34;ls -al /dcache*/pool/data/000092F368A56C004E92BE932A3C134B0B49&#34;
+Scientific Linux SL release 5.4 (Boron)
+-rw-r--r-- 1 root root 1805203473 Feb 15 14&#58;25
+/dcache2/pool/data/000092F368A56C004E92BE932A3C134B0B49
+
+There is information about these files in the Chimera DB...what is missing is any entry in the t_locationinfo table.
+
+Can I just force some kind of &#39;re-registration&#39; via the Pool admin interface to recreate the missing t_locationinfo entries?
+
+Thanks,
+
+Shawn
+
+-----Original Message-----
+From&#58; Brian Bockelman via RT [mailto&#58;support@....]
+Sent&#58; Friday, February 26, 2010 10&#58;02 AM
+To&#58; bbockelm@....
+Cc&#58; aglt2-admin@....; osg-storage@....; McKee,
+Shawn
+Subject&#58; [www.dcache.org #5526] Re&#58; Problem with suspended transfers
+
+**********************************************************************
+*********** This is an automated mail to inform you about a ticket
+update.
+When replying do not change the squared brackets part in the subject line.
+Type your text above this box and S T R I P  P R E V I O U S  M A I L S please!!
+**********************************************************************
+***********
+
+Hey Shawn,
+
+These transfers are from client attempts to open the file, but the PoolManager could not find an appropriate source pool.  Things to check&#58;
+
+1) Is there an appropriate source pool?  Have one of your pools
+crashed or gone offline
+2) Is the source pool having issues?  The PoolManager (at some log level) records when it thinks pools go online/offline.  Make sure this corresponds to
+the pools actually going down, and not being overloaded.  If they&#39;re overloaded, adjust the settings so they are more responsive.
+3) When this happens, is it always for files on the same pool, or scattered randomly throughout the cluster?
+
+The IP address of 0.0.0.0/0.0.0.0 just means that it came through the world unit group (or whatever it&#39;s called, I forget).
+
+Typically, we would&#58;
+0) Try and determine if there&#39;s a real source pool for this file.  If so, &#34;rc retry&#34; the transfer.
+2) &#34;rc failed&#34; the transfer.
+3) &#34;rc destroy&#34; if none of the above work.
+
+Often times, it got to (3).  Usually, the appropriate message gets back to the dCap/GridFTP/SRM server that the file will never be found, and the
+transfer will get killed.  Usually.
+
+There&#39;s no way to prevent these, other than hacking the code and remove the suspended state so a transfer always fails if the file is not physically
+located on a pool.  This is not as advantageous as it seems, because then you fail transfers each time a pool blips in and out of the cluster.
+
+Brian
+
+On Feb 26, 2010, at 8&#58;47 AM, McKee, Shawn wrote&#58;
+
+Hi,
+
+We are seeing frequent suspended transfers like this&#58;
+
+[head01.aglt2.org] (local) admin&#62;  cd PoolManager [head01.aglt2.org]
+(PoolManager) admin&#62;  rc ls
+000092F368A56C004E92BE932A3C134B0B49@0.0.0.0/0.0.0.0-*/* m=1 r=0
+[&#60;unknown&#62;] [Suspended (pool unavailable) 02.26 09&#58;38&#58;13] {0,}
+00002DC9F89A366F429BBD49EDB8735B3310@0.0.0.0/0.0.0.0-*/* m=1 r=0
+[&#60;unknown&#62;] [Suspended (pool unavailable) 02.26 09&#58;35&#58;10] {0,}
+
+Notice the &#34;IP&#34; addresses are 0.0.0.0 in these cases.   We have a &#34;routine maintenance&#34; script which runs via cron which finds and destroys these
+suspended; log file result from the script is here&#58;
+
+2010/02/26 09&#58;40&#58;02 &#58;&#58; start checking and recovering the suspended rc request from PoolManager...
+2010/02/26 09&#58;40&#58;02 &#58;&#58; 366F429BBD49EDB8735B3310 is stuck ,its available pools status &#58;&#58;
+2010/02/26 09&#58;40&#58;02 &#58;&#58; pool     status ==&#62;&#62;  all disabled, cannot be enabled
+2010/02/26 09&#58;40&#58;02 &#58;&#58; 6C004E92BE932A3C134B0B49 is stuck ,its available pools status &#58;&#58;
+2010/02/26 09&#58;40&#58;02 &#58;&#58; pool     status ==&#62;&#62;  all disabled, cannot be enabled
+2010/02/26 09&#58;40&#58;02 &#58;&#58; rc destroy
+00002DC9F89A366F429BBD49EDB8735B3310@0.0.0.0/0.0.0.0-*/*
+2010/02/26 09&#58;40&#58;02 &#58;&#58; rc destroy
+000092F368A56C004E92BE932A3C134B0B49@0.0.0.0/0.0.0.0-*/*
+Starting report_deadpool...
+
+2010/02/26 09&#58;40&#58;02 &#58;&#58; check and recover disabled pools...
+2010/02/26 09&#58;40&#58;02 &#58;&#58; No disabled pool are found
+
+So now my questions&#58;  1) What causes these type of stuck transfers?  Is this a mis-configuration somewhere?  2) Is it OK to routinely &#39;rc destroy&#39;
+these entries?
+
+Thanks for any suggestions.
+
+Shawn
+</div><script type='text/javascript'>
+        $('#show_755929800').click(function() {
+            $('#detail_755929800').slideDown("normal");
+            $('#show_755929800').hide();
+            $('#hide_755929800').show();
+        });
+        $('#hide_755929800').click(function() {
+            $('#detail_755929800').slideUp();
+            $('#hide_755929800').hide();
+            $('#show_755929800').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F8247">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 8247});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

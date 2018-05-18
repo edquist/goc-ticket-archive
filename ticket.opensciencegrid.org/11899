@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[11899] VOMS connection to MySQL causes</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=11899" method="post">
+<div class="page-header">
+    <h3><span class="muted">11899</span> / VOMS connection to MySQL causes</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Dan Yocum</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Dan Yocum</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Check for updates</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2012-04-23</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">GGUS (Prod)&nbsp;<a target="_blank" href="https://ggus.eu/ws/ticket_info.php?ticket=80744">80744</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=11899", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/11899?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/11899?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20VOMS%20connection%20to%20MySQL%20causes%20ISSUE%3D11899%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='11899#1335215537'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-23T21:12:17+00:00">Apr 23, 2012 09:12 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1335215537">&nbsp;</a></div><pre>Excellent! I&#39;ll close this ticket then.
+
+The new voms-mysql-plugin will be released to production tomorrow.
+
+-alain
+------------------------------------
+Alain Roy
+OSG Software Support
+vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='11899#1335213662'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-23T20:41:02+00:00">Apr 23, 2012 08:41 PM UTC</time><a class="anchor" name="1335213662">&nbsp;</a></div><pre>Joe Boyd verifies that users with apostrophes in their names are now able to voms-proxy-init successfully, too.
+
+-- by Dan Yocum</pre></div><div class='update_description'><i onclick="document.location='11899#1334984759'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-21T05:05:59+00:00">Apr 21, 2012 05:05 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1334984759">&nbsp;</a></div><pre>-- by Andrea Ceccanti at Sat Apr 21 05&#58;05&#58;17 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1334856140'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-19T17:22:20+00:00">Apr 19, 2012 05:22 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1334856140">&nbsp;</a></div><pre>BTW, the ticket will be moved to solved once the fix is released in EMI.
+
+-- by Andrea Ceccanti at Thu Apr 19 17&#58;21&#58;44 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1334856082'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-19T17:21:22+00:00">Apr 19, 2012 05:21 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1334856082">&nbsp;</a></div><pre>Good to know.
+
+-- by Andrea Ceccanti at Thu Apr 19 17&#58;21&#58;04 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1334854302'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-19T16:51:42+00:00">Apr 19, 2012 04:51 PM UTC</time><a class="anchor" name="1334854302">&nbsp;</a></div><pre>I have deployed voms-mysql-plugin-3.1.5.1-1.1.osg.el5.x86_64 on both of our VOMS servers and the &#34;Aborted Connection&#34; error has gone away.
+
+-- by Dan Yocum</pre></div><div class='update_description'><i onclick="document.location='11899#1333988783'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-09T16:26:23+00:00">Apr 9, 2012 04:26 PM UTC</time> by <b>Alain Roy</b><a class="anchor" name="1333988783">&nbsp;</a></div><pre>About the segmentation faults, in personal email Andrea said&#58;
+
+<font color='#7F7E6F'>&#62; I observed this locally after you made me notice this, looks like a</font>
+<font color='#7F7E6F'>&#62; segmentation fault on one of the worker process that happens *after*</font>
+<font color='#7F7E6F'>&#62; the request has been fulfilled. After I&#39;ve changed some stuff on the</font>
+<font color='#7F7E6F'>&#62; mysql plugin to properly handle the connection on the db I wasn&#39;t able</font>
+<font color='#7F7E6F'>&#62; to observe any segfault anymore.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Regarding patches vs rpms&#58; I&#39;ll see what I can do. The code has moved</font>
+<font color='#7F7E6F'>&#62; and has been restructured a bit.  The voms packages from the latest</font>
+<font color='#7F7E6F'>&#62; EMI release are coming to EPEL as well, so it could be easier than it</font>
+<font color='#7F7E6F'>&#62; seems. Anyway, the packaging is now pretty identical.  You can check</font>
+<font color='#7F7E6F'>&#62; by yourself looking on github (the code lives there now)&#58;</font></pre></div><div class='update_description'><i onclick="document.location='11899#1333728643'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-06T16:10:43+00:00">Apr 6, 2012 04:10 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333728643">&nbsp;</a></div><pre>The EMI support procedure says that the issue stays on-hold until the fix is released in production.
+
+-- by Andrea Ceccanti at Fri Apr 06 16&#58;09&#58;54 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333727894'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-06T15:58:14+00:00">Apr 6, 2012 03:58 PM UTC</time><a class="anchor" name="1333727894">&nbsp;</a></div><pre>I would say yes.
+
+-- by Dan Yocum</pre></div><div class='update_description'><i onclick="document.location='11899#1333663257'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-05T22:00:57+00:00">Apr 5, 2012 10:00 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1333663257">&nbsp;</a></div><pre>Thanks for the update. Are we keeping this issue open until a fix can be put in place or can we close this since it is now a known issue?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='11899#1333646772'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-05T17:26:12+00:00">Apr 5, 2012 05:26 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333646772">&nbsp;</a></div><pre>This behaviour has been reproduced by changing the MySQL startup options and adding --log-warnings.
+
+This warning messages do not affect VOMS normal behaviour, so you shouldn&#39;t consider this a blocker.
+We will fix this so that warning messages are not produced, anyway.
+
+-- by Andrea Ceccanti at Thu Apr 05 17&#58;25&#58;43 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333646592'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-05T17:23:12+00:00">Apr 5, 2012 05:23 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333646592">&nbsp;</a></div><pre>Subject has been changed to [VOMS connection to MySQL causes]
+
+-- by Andrea Ceccanti at Thu Apr 05 17&#58;23&#58;03 UTC 2012
+
+Subject has been changed to [VOMS connection to MySQL causes &#34;Aborted connection&#34; warnings]
+
+-- by Andrea Ceccanti at Thu Apr 05 17&#58;22&#58;53 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333580108'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-04-04T22:55:08+00:00">Apr 4, 2012 10:55 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1333580108">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the Open Science Grid Operations Page&#58;
+<a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333140418'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T20:46:58+00:00">Mar 30, 2012 08:46 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333140418">&nbsp;</a></div><pre>I can confirm that EVERY voms-proxy-init creates an aborted connection to the mysql database.  I haven&#39;t dug into the voms core code, but can you confirm that a mysql_close() is being properly called in the voms server?
+
+-- by Dan Yocum 346615 at Fri Mar 30 20&#58;46&#58;04 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333122879'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T15:54:39+00:00">Mar 30, 2012 03:54 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333122879">&nbsp;</a></div><pre>This is the same mysql server that we&#39;ve had in production for years - nothing new, there.  It&#39;s mysql-server-5.0.95-1.el5_7.1.x86_64.
+
+The config hasn&#39;t changed.  Here are the bits we tune in my.cnf (one half of the replication cluster)&#58;
+
+####################
+# For server tuning
+key_buffer_size=512M
+table_cache=512
+myisam_sort_buffer_size=100M
+max_connections=2000
+max_connect_errors=1000
+# log=/var/log/mysqld.log
+log-error=/var/log/mysqld.log
+log-warnings=2
+
+# If innodb is used.
+innodb_flush_log_at_trx_commit=1
+sync_binlog=1
+
+# For replication **note** server-id and auto_increment_offset values!
+server-id=1
+log-bin=mysql-bin
+auto_increment_increment=10
+auto_increment_offset=1
+master-host = fg6x4.fnal.gov
+master-user = repl
+master-password = chadwick
+relay-log = fg5x4-relay-bin
+slave-skip-errors=1062
+
+####################
+
+-- by Dan Yocum 346615 at Fri Mar 30 15&#58;53&#58;54 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333121797'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T15:36:37+00:00">Mar 30, 2012 03:36 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333121797">&nbsp;</a></div><pre>What&#39;s the mysql version?
+Did you set any custom mysql configuration?
+
+-- by Andrea Ceccanti at Fri Mar 30 15&#58;36&#58;07 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333120956'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T15:22:36+00:00">Mar 30, 2012 03:22 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333120956">&nbsp;</a></div><pre>Oh, sorry - I thought the jdk was in the list.  It&#39;s jdk-1.6.0_31-fcs.x86_64.
+
+Yes, of course I can connect to the database manually.  The issue only crops up after a period of time and then it&#39;s intermittent.  I&#39;d say 30% of the time it will fail or take many minutes to finish the query.
+
+-- by Dan Yocum 346615 at Fri Mar 30 15&#58;22&#58;10 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333120535'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T15:15:35+00:00">Mar 30, 2012 03:15 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333120535">&nbsp;</a></div><pre>Hi,
+the packages you&#39;ve pasted seems fine
+
+what is the jdk version installed?
+
+are you able to connect to VO db by hand using the voms_adm user and the password you set in the conf files?
+
+cheers,
+AlessandroChanged CC to andrea.ceccanti@....
+
+-- by Alessandro Paolini at Fri Mar 30 15&#58;15&#58;13 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333120114'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T15:08:34+00:00">Mar 30, 2012 03:08 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333120114">&nbsp;</a></div><pre>Also, we&#39;re seeing A LOT MORE Aborted connections to mysql ever since we deployed the new VOMS servers&#58;
+
+120330  7&#58;17&#58;07 [Warning] Aborted connection 2999536 to db&#58; &#39;voms26_fermilab&#39; user&#58; &#39;voms_adm&#39; host&#58; &#39;fg6x3.fnal.gov&#39; (Got an error reading communication packets)
+120330  7&#58;17&#58;07 [Warning] Aborted connection 2999537 to db&#58; &#39;voms26_fermilab&#39; user&#58; &#39;voms_adm&#39; host&#58; &#39;fg6x3.fnal.gov&#39; (Got an error reading communication packets)
+120330  7&#58;17&#58;07 [Warning] Aborted connection 2999538 to db&#58; &#39;voms26_fermilab&#39; user&#58; &#39;voms_adm&#39; host&#58; &#39;fg6x3.fnal.gov&#39; (Got an error reading communication packets)
+120330  7&#58;17&#58;07 [Warning] Aborted connection 2999539 to db&#58; &#39;voms26_fermilab&#39; user&#58; &#39;voms_adm&#39; host&#58; &#39;fg6x3.fnal.gov&#39; (Got an error reading communication packets)
+120330  7&#58;18&#58;02 [Warning] Aborted connection 2999571 to db&#58; &#39;voms26_fermilab&#39; user&#58; &#39;voms_adm&#39; host&#58; &#39;fg6x3.fnal.gov&#39; (Got an error reading communication packets)
+120330  7&#58;20&#58;02 [Warning] Aborted connection 2999664 to db&#58; &#39;voms26_fermilab&#39; user&#58; &#39;voms_adm&#39; host&#58; &#39;fg6x3.fnal.gov&#39; (Got an error reading communication packets)
+120330  7&#58;22&#58;02 [Warning] Aborted connection 2999768 to db&#58; &#39;voms26_fermilab&#39; user&#58; &#39;voms_adm&#39; host&#58; &#39;fg6x3.fnal.gov&#39; (Got an error reading communication packets)
+120330  7&#58;23&#58;01 [Warning] Aborted connection 2999825 to db&#58; &#39;voms26_fermilab&#39; user&#58; &#39;voms_adm&#39; host&#58; &#39;fg6x3.fnal.gov&#39; (Got an error reading communication packets)
+
+Dan
+
+-- by Dan Yocum 346615 at Fri Mar 30 15&#58;08&#58;00 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333118792'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T14:46:32+00:00">Mar 30, 2012 02:46 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333118792">&nbsp;</a></div><pre>I followed the OSG install guide, here&#58;
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallVoms' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallVoms</a>
+
+Here are a subset of the packages that are installed during the process&#58;
+
+tomcat5-servlet-2.4-api-5.5.23-0jpp.17.el5_6.x86_64
+tomcat5-jasper-5.5.23-0jpp.17.el5_6.x86_64
+tomcat5-jsp-2.0-api-5.5.23-0jpp.17.el5_6.x86_64
+geronimo-specs-1.0-0.M2.2jpp.12.x86_64
+jakarta-commons-fileupload-1.0-6jpp.1.x86_64
+tomcat5-server-lib-5.5.23-0jpp.17.el5_6.x86_64
+voms-2.0.6-5.osg.x86_64
+voms-server-2.0.6-5.osg.x86_64
+voms-mysql-plugin-3.1.5.1-1.el5.x86_64
+geronimo-specs-compat-1.0-0.M2.2jpp.12.x86_64
+tomcat5-common-lib-5.5.23-0jpp.17.el5_6.x86_64
+tomcat5-5.5.23-0jpp.17.el5_6.x86_64
+voms-admin-server-2.6.1-9.noarch
+osg-voms-3.0.0-2.noarch
+voms-2.0.6-5.osg.x86_64
+
+Please note there are 2 specifically different problems - one with voms-admin and one with voms core.
+
+Thanks,
+Dan
+
+-- by Dan Yocum 346615 at Fri Mar 30 14&#58;46&#58;05 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333099924'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T09:32:04+00:00">Mar 30, 2012 09:32 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333099924">&nbsp;</a></div><pre>Here a tomcat error log is attached. This log has nothing to do with voms-core and as such the voms-mysql plugin
+package.
+
+As a first sight it seems the VO has not been properly deployed on tomcat.
+
+A.
+
+-- by Andrea Ceccanti at Fri Mar 30 09&#58;31&#58;25 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333097941'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T08:59:01+00:00">Mar 30, 2012 08:59 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333097941">&nbsp;</a></div><pre>Hi,
+which repositories did you use to install your server? are VOMS packages taken from EMI/UMD or from epel?
+
+which voms and voms-admin version did you install?
+
+cheers,
+Alessandro
+
+-- by Alessandro Paolini at Fri Mar 30 08&#58;58&#58;17 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333088630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-30T06:23:50+00:00">Mar 30, 2012 06:23 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333088630">&nbsp;</a></div><pre>-- by Helmut Dres at Fri Mar 30 06&#58;23&#58;19 UTC 2012
+
+GOCTX Source&#58; <a href='https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744' target='_blank' rel='nofollow'>https&#58;//ggus.eu/ws/ticket_info.php?ticket=80744</a></pre></div><div class='update_description'><i onclick="document.location='11899#1333056287'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-29T21:24:47+00:00">Mar 29, 2012 09:24 PM UTC</time> by <b>echism</b><a class="anchor" name="1333056287">&nbsp;</a></div><pre>Additionally, please explain the difference between version 3.1.5 and 3.1.6 of voms-mysql-plugin.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='11899#1333056081'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2012-03-29T21:21:21+00:00">Mar 29, 2012 09:21 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1333056081">&nbsp;</a></div><pre>[by Dan Yocum]
+
+Hi,
+
+We are continuing to experience problems with the new VOMS servers - both with the VOMS servers themselves and the VOMS-Admin tomcat servlets.  Please open a ticket in GGUS and have it assigned to the developers as well as open a VDT ticket.
+
+We have been able to determine that VOMS is having trouble connecting to the MySQL server to obtain roles in a timely manner.  Sometimes it takes many, many minutes for the connection to be established and the query to return.  The number of database connections is set much higher than the number we&#39;re seeing and the database system has a very low load so we do not believe that it is the source of the problem.
+
+We have also experience segmentation faults which produce the following output in /var/log/messages&#58;
+
+2012-03-29T11&#58;23&#58;54-05&#58;00 s_sys@.... kernel&#58; voms[21063]&#58; segfault at 0000000000000000 rip 0000003940ca1660 rsp 00007fff0670c2e8 error 4
+2012-03-29T11&#58;23&#58;54-05&#58;00 s_sys@.... kernel&#58; voms[21149]&#58; segfault at 0000000000000000 rip 0000003940ca1660 rsp 00007fff0670c2e8 error 4
+2012-03-29T11&#58;23&#58;57-05&#58;00 s_sys@.... kernel&#58; voms[23504]&#58; segfault at 0000000000000000 rip 0000003940ca1660 rsp 00007fff0670c2e8 error 4
+2012-03-29T11&#58;23&#58;57-05&#58;00 s_sys@.... kernel&#58; voms[23567]&#58; segfault at 0000000000000000 rip 0000003940ca1660 rsp 00007fff0670c2e8 error 4
+2012-03-29T11&#58;24&#58;01-05&#58;00 s_sys@.... kernel&#58; voms[26223]&#58; segfault at 0000000000000000 rip 0000003940ca1660 rsp 00007fff0670c2e8 error 4
+2012-03-29T11&#58;24&#58;01-05&#58;00 s_sys@.... kernel&#58; voms[26270]&#58; segfault at 0000000000000000 rip 0000003940ca1660 rsp 00007fff0670c2e8 error 4
+
+&#39;service voms-admin start&#39; continues to not bring up all web UI interfaces.  Here are some of the errors we are seeing in the logs&#58;
+
+2012-03-29 20&#58;43&#58;43.358Z - INFO [VOMSService] - VOMS-Admin started succesfully.
+2012-03-29 20&#58;43&#58;52.566Z - ERROR [DatabaseTransactionTaskWrapper] - An unexpected exception was caught while executing task UpdateCATask
+2012-03-29 20&#58;43&#58;52.567Z - ERROR [DatabaseTransactionTaskWrapper] - An unexpected exception was caught while executing task TaskStatusUpdater
+2012-03-29 20&#58;43&#58;52.567Z - ERROR [DatabaseTransactionTaskWrapper] - An unexpected exception was caught while executing task ExpiredRequestsPurgerTask
+2012-03-29 20&#58;43&#58;53.362Z - ERROR [DatabaseTransactionTaskWrapper] - An unexpected exception was caught while executing task MembershipCheckerTask
+2012-03-29 21&#58;04&#58;17.775Z - INFO [InitSecurityContext] - Connection from &#34;131.225.82.228&#34; by /DC=org/DC=doegrids/OU=People/CN=Dan Yocum 346615 (issued by &#34;/DC=org/DC=DOEGrids/OU=Certificate Authorities/CN=DOEGrids CA 1&#34;, serial 63807)
+2012-03-29 21&#58;04&#58;17.812Z - ERROR [[default]] - Servlet.service() for servlet default threw exception
+java.lang.NoClassDefFoundError&#58; org/hibernate/transaction/JDBCTransaction
+at org.hibernate.transaction.JDBCTransactionFactory.createTransaction(JDBCTransactionFactory.java&#58;24) [hibernate-3.2.6.ga.jar&#58;3.2.6.ga]
+at org.hibernate.jdbc.JDBCContext.getTransaction(JDBCContext.java&#58;197) [hibernate-3.2.6.ga.jar&#58;3.2.6.ga]
+at org.hibernate.impl.SessionImpl.getTransaction(SessionImpl.java&#58;1315) [hibernate-3.2.6.ga.jar&#58;3.2.6.ga]
+at org.hibernate.impl.SessionImpl.beginTransaction(SessionImpl.java&#58;1325) [hibernate-3.2.6.ga.jar&#58;3.2.6.ga]
+at org.glite.security.voms.admin.persistence.HibernateFactory.beginTransaction(HibernateFactory.java&#58;134) [HibernateFactory.class&#58;na]
+at org.glite.security.voms.admin.persistence.dao.VOMSAdminDAO.&#60;init&#62;(VOMSAdminDAO.java&#58;51) [VOMSAdminDAO.class&#58;na]
+at org.glite.security.voms.admin.persistence.dao.VOMSAdminDAO.instance(VOMSAdminDAO.java&#58;57) [VOMSAdminDAO.class&#58;na]
+at org.glite.security.voms.admin.operations.CurrentAdmin.instance(CurrentAdmin.java&#58;61) [CurrentAdmin.class&#58;na]
+<div id='show_193683634' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_193683634'>at org.glite.security.voms.admin.view.interceptors.AuthenticatedAccessInterceptor.intercept(AuthenticatedAccessInterceptor.java&#58;75) [AuthenticatedAccessInterceptor.class&#58;na]
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java&#58;248) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.interceptor.LoggingInterceptor.intercept(LoggingInterceptor.java&#58;67) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java&#58;248) [xwork-core-2.2.1.jar&#58;2.2.1]
+at org.glite.security.voms.admin.view.interceptors.SearchAwareInterceptor.intercept(SearchAwareInterceptor.java&#58;54) [SearchAwareInterceptor.class&#58;na]
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java&#58;248) [xwork-core-2.2.1.jar&#58;2.2.1]
+at org.glite.security.voms.admin.view.interceptors.AuthzExceptionInterceptor.intercept(AuthzExceptionInterceptor.java&#58;48) [AuthzExceptionInterceptor.class&#58;na]
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java&#58;248) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.interceptor.ExceptionMappingInterceptor.intercept(ExceptionMappingInterceptor.java&#58;187) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java&#58;248) [xwork-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.interceptor.ServletConfigInterceptor.intercept(ServletConfigInterceptor.java&#58;164) [struts2-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java&#58;248) [xwork-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.interceptor.CreateSessionInterceptor.intercept(CreateSessionInterceptor.java&#58;93) [struts2-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java&#58;248) [xwork-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.impl.StrutsActionProxy.execute(StrutsActionProxy.java&#58;52) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.Dispatcher.serviceAction(Dispatcher.java&#58;485) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.ng.ExecuteOperations.executeAction(ExecuteOperations.java&#58;77) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter.doFilter(StrutsPrepareAndExecuteFilter.java&#58;91) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java&#58;215) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java&#58;188) [catalina-5.5.23.jar&#58;na]
+at org.glite.security.voms.admin.servlets.HibernateSessionFilter.doFilter(HibernateSessionFilter.java&#58;47) [HibernateSessionFilter.class&#58;na]
+at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java&#58;215) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java&#58;188) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java&#58;210) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java&#58;172) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java&#58;127) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java&#58;117) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java&#58;108) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java&#58;151) [catalina-5.5.23.jar&#58;na]
+at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java&#58;875) [tomcat-http-5.5.23.jar&#58;na]
+at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java&#58;665) [tomcat-http-5.5.23.jar&#58;na]
+at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java&#58;528) [tomcat-util-5.5.23.jar&#58;5.1]
+at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java&#58;81) [tomcat-util-5.5.23.jar&#58;5.1]
+at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java&#58;685) [tomcat-util-5.5.23.jar&#58;5.1]
+at java.lang.Thread.run(Thread.java&#58;662) [na&#58;1.6.0_31]
+
+As well as&#58;
+
+2012-03-29 20&#58;43&#58;53.475Z - INFO [VOMSService] - VOMS-Admin started succesfully.
+2012-03-29 20&#58;43&#58;55.104Z - ERROR [Dispatcher] - Dispatcher initialization failed
+com.opensymphony.xwork2.config.ConfigurationException&#58; Unable to load configuration.
+at com.opensymphony.xwork2.config.ConfigurationManager.getConfiguration(ConfigurationManager.java&#58;69) [xwork-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.Dispatcher.init_PreloadConfiguration(Dispatcher.java&#58;371) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.Dispatcher.init(Dispatcher.java&#58;415) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.ng.InitOperations.initDispatcher(InitOperations.java&#58;69) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter.init(StrutsPrepareAndExecuteFilter.java&#58;51) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.catalina.core.ApplicationFilterConfig.getFilter(ApplicationFilterConfig.java&#58;221) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ApplicationFilterConfig.setFilterDef(ApplicationFilterConfig.java&#58;302) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ApplicationFilterConfig.&#60;init&#62;(ApplicationFilterConfig.java&#58;78) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardContext.filterStart(StandardContext.java&#58;3635) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardContext.start(StandardContext.java&#58;4218) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java&#58;760) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java&#58;740) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardHost.addChild(StandardHost.java&#58;544) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.deployDescriptor(HostConfig.java&#58;634) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.deployDescriptors(HostConfig.java&#58;561) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java&#58;496) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.check(HostConfig.java&#58;1261) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java&#58;301) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java&#58;120) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java&#58;1306) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java&#58;1570) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java&#58;1579) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java&#58;1559) [catalina-5.5.23.jar&#58;na]
+at java.lang.Thread.run(Thread.java&#58;662) [na&#58;1.6.0_31]
+Caused by&#58; com.opensymphony.xwork2.config.ConfigurationException&#58; Caught exception while loading file struts.xml
+at com.opensymphony.xwork2.config.providers.XmlConfigurationProvider.loadConfigurationFiles(XmlConfigurationProvider.java&#58;913) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.providers.XmlConfigurationProvider.loadDocuments(XmlConfigurationProvider.java&#58;154) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.providers.XmlConfigurationProvider.init(XmlConfigurationProvider.java&#58;121) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.impl.DefaultConfiguration.reloadContainer(DefaultConfiguration.java&#58;179) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.ConfigurationManager.getConfiguration(ConfigurationManager.java&#58;66) [xwork-core-2.2.1.jar&#58;2.2.1]
+... 23 common frames omitted
+Caused by&#58; java.lang.IllegalArgumentException&#58; No file &#39;file&#58;/usr/share/tomcat5/work/Catalina/localhost/voms_des/WEB-INF/classes/struts.xml&#39; found as a resource
+at com.opensymphony.xwork2.util.FileManager.loadFile(FileManager.java&#58;132) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.util.FileManager.loadFile(FileManager.java&#58;105) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.providers.XmlConfigurationProvider.loadConfigurationFiles(XmlConfigurationProvider.java&#58;898) [xwork-core-2.2.1.jar&#58;2.2.1]
+... 27 common frames omitted
+2012-03-29 20&#58;43&#58;55.108Z - ERROR [[/voms/des]] - Exception starting filter struts2
+org.apache.struts2.StrutsException&#58; null
+at org.apache.struts2.dispatcher.Dispatcher.init(Dispatcher.java&#58;428) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.ng.InitOperations.initDispatcher(InitOperations.java&#58;69) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter.init(StrutsPrepareAndExecuteFilter.java&#58;51) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.catalina.core.ApplicationFilterConfig.getFilter(ApplicationFilterConfig.java&#58;221) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ApplicationFilterConfig.setFilterDef(ApplicationFilterConfig.java&#58;302) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ApplicationFilterConfig.&#60;init&#62;(ApplicationFilterConfig.java&#58;78) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardContext.filterStart(StandardContext.java&#58;3635) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardContext.start(StandardContext.java&#58;4218) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java&#58;760) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java&#58;740) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.StandardHost.addChild(StandardHost.java&#58;544) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.deployDescriptor(HostConfig.java&#58;634) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.deployDescriptors(HostConfig.java&#58;561) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java&#58;496) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.check(HostConfig.java&#58;1261) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java&#58;301) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java&#58;120) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java&#58;1306) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java&#58;1570) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java&#58;1579) [catalina-5.5.23.jar&#58;na]
+at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java&#58;1559) [catalina-5.5.23.jar&#58;na]
+at java.lang.Thread.run(Thread.java&#58;662) [na&#58;1.6.0_31]
+Caused by&#58; com.opensymphony.xwork2.config.ConfigurationException&#58; Unable to load configuration.
+at com.opensymphony.xwork2.config.ConfigurationManager.getConfiguration(ConfigurationManager.java&#58;69) [xwork-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.Dispatcher.init_PreloadConfiguration(Dispatcher.java&#58;371) [struts2-core-2.2.1.jar&#58;2.2.1]
+at org.apache.struts2.dispatcher.Dispatcher.init(Dispatcher.java&#58;415) [struts2-core-2.2.1.jar&#58;2.2.1]
+... 21 common frames omitted
+Caused by&#58; com.opensymphony.xwork2.config.ConfigurationException&#58; Caught exception while loading file struts.xml
+at com.opensymphony.xwork2.config.providers.XmlConfigurationProvider.loadConfigurationFiles(XmlConfigurationProvider.java&#58;913) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.providers.XmlConfigurationProvider.loadDocuments(XmlConfigurationProvider.java&#58;154) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.providers.XmlConfigurationProvider.init(XmlConfigurationProvider.java&#58;121) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.impl.DefaultConfiguration.reloadContainer(DefaultConfiguration.java&#58;179) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.ConfigurationManager.getConfiguration(ConfigurationManager.java&#58;66) [xwork-core-2.2.1.jar&#58;2.2.1]
+... 23 common frames omitted
+Caused by&#58; java.lang.IllegalArgumentException&#58; No file &#39;file&#58;/usr/share/tomcat5/work/Catalina/localhost/voms_des/WEB-INF/classes/struts.xml&#39; found as a resource
+at com.opensymphony.xwork2.util.FileManager.loadFile(FileManager.java&#58;132) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.util.FileManager.loadFile(FileManager.java&#58;105) [xwork-core-2.2.1.jar&#58;2.2.1]
+at com.opensymphony.xwork2.config.providers.XmlConfigurationProvider.loadConfigurationFiles(XmlConfigurationProvider.java&#58;898) [xwork-core-2.2.1.jar&#58;2.2.1]
+... 27 common frames omitted
+
+Thanks,
+Dan
+
+--
+Dan Yocum
+Fermilab  630.840.6509
+yocum@...., <a href='http&#58;//fermigrid.fnal.gov' target='_blank' rel='nofollow'>http&#58;//fermigrid.fnal.gov</a>
+&#34;I fly because it releases my mind from the tyranny of petty things.&#34;
+
+</div><script type='text/javascript'>
+        $('#show_193683634').click(function() {
+            $('#detail_193683634').slideDown("normal");
+            $('#show_193683634').hide();
+            $('#hide_193683634').show();
+        });
+        $('#hide_193683634').click(function() {
+            $('#detail_193683634').slideUp();
+            $('#hide_193683634').hide();
+            $('#show_193683634').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F11899">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 11899});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

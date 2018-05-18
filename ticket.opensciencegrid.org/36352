@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[36352] local condor fail to update job status to condor-ce</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=36352" method="post">
+<div class="page-header">
+    <h3><span class="muted">36352</span> / local condor fail to update job status to condor-ce</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Mike Yang</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Wu chi hsun</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Edward to respond</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls ">2018-05-31</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Sarah Schmiechen <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Sarah Schmiechen <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=36352", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/36352?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/36352?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20local%20condor%20fail%20to%20update%20job%20status%20to%20condor-ce%20ISSUE%3D36352%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='36352#1524747830'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-26T13:03:50+00:00">Apr 26, 2018 01:03 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1524747830">&nbsp;</a></div><pre>Closing.</pre></div><div class='update_description'><i onclick="document.location='36352#1524713073'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-26T03:24:33+00:00">Apr 26, 2018 03:24 AM UTC</time><a class="anchor" name="1524713073">&nbsp;</a></div><pre>This ticket has been moved to the new ticket system under support.opensciencegrid.org. New ticket URL&#58; <a href='https&#58;//support.opensciencegrid.org/helpdesk/tickets/6695' target='_blank' rel='nofollow'>https&#58;//support.opensciencegrid.org/helpdesk/tickets/6695</a>
+
+Please close this instance.
+
+by rynge@....</pre></div><div class='update_description'><i onclick="document.location='36352#1524576214'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-24T13:23:34+00:00">Apr 24, 2018 01:23 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1524576214">&nbsp;</a></div><pre>Hi - any updates on this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='36352#1523974881'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-17T14:21:21+00:00">Apr 17, 2018 02:21 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1523974881">&nbsp;</a></div><pre>Edward,
+
+I&#39;ve changed Mike Yang to the submitter of this ticket and added you as a CC. After I send this comment, I&#39;ll also remove you from the CC. Thanks for letting us know!
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='36352#1523974512'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-17T14:15:12+00:00">Apr 17, 2018 02:15 PM UTC</time> by <b>edwardwufast@....</b><a class="anchor" name="1523974512">&nbsp;</a></div><pre>Hi, sorry I think maybe we close this first. Because I have left ASGC and
+another person who will deal with this have not get CERN account to upload
+file on the ticket. And maybe he also can not receive this mail. He then
+open another ticket for this. Or are there any better way?
+
+Open Science Grid FootPrints &#60;osg@....&#62; 於 2018年4月17日 週二
+下午9&#58;04 寫道：
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='36352#1523970217'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-17T13:03:37+00:00">Apr 17, 2018 01:03 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1523970217">&nbsp;</a></div><pre>Hi - any updates on this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='36352#1523287233'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-09T15:20:33+00:00">Apr 9, 2018 03:20 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1523287233">&nbsp;</a></div><pre>Mike,
+
+That&#39;s good news that the ID in /var/log/condor/ShadowLog also shows up in /var/log/condor/SchedLog but we need to cross-reference the &#34;dest=...&#34; job IDs from /var/log/condor-ce/JobRouterLog to job IDs in /var/log/condor/SchedLog. If you&#39;d like, you can send me /var/log/condor-ce/JobRouterLog and /var/log/condor/SchedLog directly to me. My e-mail is blin AT cs.wisc.edu.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='36352#1523264408'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-09T09:00:08+00:00">Apr 9, 2018 09:00 AM UTC</time><a class="anchor" name="1523264408">&nbsp;</a></div><pre>Hi Brian,
+
+I am Mike Yang. A colleague of Edward. Since Edward has just left the job,
+I will answer the ticket instead of him. As mentioned before, condor job
+id 15193 revealed in /var/log/condor/ShadowLog. The id appears in
+/var/log/condor/SchedLog as well&#58;
+
+*** grep &#34;15193.0&#34; /var/log/condor/SchedLog.old
+03/29/18 13&#58;52&#58;05 (pid&#58;58060) Starting add_shadow_birthdate(15193.0)
+03/29/18 13&#58;52&#58;05 (pid&#58;58060) Started shadow for job 15193.0 on slot1@.... &#60;192.168.1.1&#58;9618?CCBID=202.140.190.250&#58;9618%3fPrivNet%3dQDR2_private_network%26addrs%3d202.140.190.250-9618%26noUDP%26sock%3dcollector#76429&addrs=192.168.1.1-9618&noUDP&sock=2660_6e6a_3&#62; for localuser, (shadow pid = 89471)
+03/29/18 13&#58;53&#58;40 (pid&#58;58060) Shadow pid 89471 for job 15193.0 reports job exit reason 100.
+03/29/18 13&#58;53&#58;40 (pid&#58;58060) Match record (slot1@.... &#60;192.168.1.1&#58;9618?CCBID=202.140.190.250&#58;9618%3fPrivNet%3dQDR2_private_network%26addrs%3d202.140.190.250-9618%26noUDP%26sock%3dcollector#76429&addrs=192.168.1.1-9618&noUDP&sock=2660_6e6a_3&#62; for localuser, 15193.0) deleted
+
+The output information of the command are attached in this ticket.
+
+Note that some of the sensitive data (such as password) was removed in the
+attachment, and we made a straight rule to map all DNs in condor_mapfile
+(for the testing).
+
+Thanks for your help.
+
+Cheers,
+Mike
+
+by mky.asgc@....</pre></div><div class='update_description'><i onclick="document.location='36352#1523083641'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-07T06:47:21+00:00">Apr 7, 2018 06:47 AM UTC</time> by <b>edwardwufast@....</b><a class="anchor" name="1523083641">&nbsp;</a></div><pre>Hi,
+In fact, I am going to handover this issue to another person. Do you know
+how to add another person(mky.asgc@....) into this ticket?
+
+Open Science Grid FootPrints &#60;osg@....&#62; 於 2018年4月6日 週五
+下午8&#58;52 寫道：
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='36352#1523019079'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-04-06T12:51:19+00:00">Apr 6, 2018 12:51 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1523019079">&nbsp;</a></div><pre>Hi,
+
+Any updates on this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='36352#1522441625'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-30T20:27:05+00:00">Mar 30, 2018 08:27 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1522441625">&nbsp;</a></div><pre>Edward,
+
+For one of these jobs, does the destination job show up in /var/log/condor/SchedLog? Could you attach the output of &#96;condor_ce_config_val -dump&#96; and &#96;condor_config_val -dump&#96; from the CE?
+
+I just ran condor_ping against your CE and it looks like there are issues with the mapping. Could you also attach /etc/condor-ce/condor_mapfile?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='36352#1522391595'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-30T06:33:15+00:00">Mar 30, 2018 06:33 AM UTC</time> by <b>edwardwufast@....</b><a class="anchor" name="1522391595">&nbsp;</a></div><pre>Hi,
+I get more info about this. I think they are same jobs because&#58;
+/var/log/condor-ce/JobRouterLog.old&#58;03/29/18 14&#58;01&#58;24 (D_ALWAYS&#58;2)
+JobRouter (src=11622.0,dest=15193.0,route=Local_Condor)&#58; submitted job has
+not yet appeared in job queue mirror or was removed (submitted 571 seconds
+ago)
+
+and
+from condor_history 15193
+RoutedFromJobId = &#34;11622.0&#34;
+
+It seems the job is finished normally.
+
+/var/log/condor/ShadowLog&#58;03/29/18 13&#58;52&#58;05 Initializing a VANILLA shadow
+for job 15193.0
+/var/log/condor/ShadowLog&#58;03/29/18 13&#58;52&#58;05 (15193.0) (89471)&#58; Request to
+run on slot1@.... &#60;192.168.1.1&#58;9618?CCBID=202.
+140.190.250&#58;9618%3fPrivNet%3dQDR2_private_network%26addrs%3d202.140.190.250-
+9618%26noUDP%26sock%3dcollector#76429&addrs=192.
+168.1.1-9618&noUDP&sock=2660_6e6a_3&#62; was ACCEPTED
+/var/log/condor/ShadowLog&#58;03/29/18 13&#58;52&#58;06 (15193.0) (89471)&#58; File
+transfer completed successfully.
+/var/log/condor/ShadowLog&#58;03/29/18 13&#58;53&#58;40 (15193.0) (89471)&#58; File
+transfer completed successfully.
+/var/log/condor/ShadowLog&#58;03/29/18 13&#58;53&#58;40 (15193.0) (89471)&#58; Job 15193.0
+terminated&#58; exited with status 0
+/var/log/condor/ShadowLog&#58;03/29/18 13&#58;53&#58;40 (15193.0) (89471)&#58; Reporting
+job exit reason 100 and attempting to fetch new job.
+/var/log/condor/ShadowLog&#58;03/29/18 13&#58;53&#58;40 (15193.0) (89471)&#58; ****
+condor_shadow (condor_SHADOW) pid 89471 EXITING WITH STATUS 100
+
+But in condor-ce, it just hold.
+
+/var/log/condor-ce/SchedLog&#58;03/29/18 13&#58;30&#58;57 (D_AUDIT) Transferring files
+for jobs 11622.0
+<div id='show_306033908' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_306033908'>/var/log/condor-ce/SchedLog&#58;03/29/18 13&#58;30&#58;57 (D_ALWAYS&#58;2)
+generalJobFilesWorkerThread()&#58; transfer files for job 11622.0
+/var/log/condor-ce/SchedLog&#58;GlobalJobId = &#34;htcondor-ce.twgrid.org#11622.
+0#1522329974 &#60;<a href='http&#58;//htcondor-ce.twgrid.org#11622.0%231522329974&#62' target='_blank' rel='nofollow'>http&#58;//htcondor-ce.twgrid.org#11622.0%231522329974&#62</a>;&#34;
+/var/log/condor-ce/SchedLog&#58;03/29/18 13&#58;30&#58;58 (D_ALWAYS&#58;2) Job 11622.0 held
+for spooling. Checking how long...
+/var/log/condor-ce/SchedLog&#58;03/29/18 13&#58;30&#58;58 (D_ALWAYS&#58;2) Job 11622.0 on
+hold for 1 seconds.
+/var/log/condor-ce/SchedLog&#58;03/29/18 13&#58;30&#58;58 (D_AUDIT) Received proxy for
+job 11622.0
+/var/log/condor-ce/SchedLog&#58;03/29/18 13&#58;30&#58;59 (D_ALWAYS&#58;2) No
+HoldReasonSubCode found for job 11622.0
+/var/log/condor-ce/SchedLog&#58;03/29/18 13&#58;30&#58;59 (D_ALWAYS) Job 11622.0
+released from hold&#58; Data files spooled
+/var/log/condor-ce/SchedLog&#58;03/29/18 14&#58;01&#58;58 (D_ALWAYS) Job 11622.0 put on
+hold&#58; HTCondor-CE held job due to no matching routes, route job limit, or
+route failure threshold; see &#39;HTCondor-CE Troubleshooting Guide&#39;
+
+It also reach job router timeout.
+
+/var/log/condor-ce/JobRouterLog.old&#58;03/29/18 14&#58;01&#58;24 (D_ALWAYS&#58;2)
+JobRouter (src=11622.0,dest=15193.0,route=Local_Condor)&#58; submitted job has
+not yet appeared in job queue mirror or was removed (submitted 571 seconds
+ago)
+/var/log/condor-ce/JobRouterLog.old&#58;03/29/18 14&#58;01&#58;34 (D_ALWAYS&#58;2)
+JobRouter (src=11622.0,dest=15193.0,route=Local_Condor)&#58; submitted job has
+not yet appeared in job queue mirror or was removed (submitted 581 seconds
+ago)
+/var/log/condor-ce/JobRouterLog.old&#58;03/29/18 14&#58;01&#58;44 (D_ALWAYS&#58;2)
+JobRouter (src=11622.0,dest=15193.0,route=Local_Condor)&#58; submitted job has
+not yet appeared in job queue mirror or was removed (submitted 591 seconds
+ago)
+/var/log/condor-ce/JobRouterLog.old&#58;03/29/18 14&#58;01&#58;54 (D_ALWAYS) JobRouter
+failure (src=11622.0,dest=15193.0,route=Local_Condor)&#58; giving up, because
+submitted job is still not in job queue mirror (submitted 601 seconds
+ago).  Perhaps it has been removed?
+/var/log/condor-ce/JobRouterLog.old&#58;03/29/18 14&#58;01&#58;54 (D_ALWAYS&#58;2)
+JobRouter (src=11622.0,dest=15193.0,route=Local_Condor)&#58; yielded job
+(done=0)
+/var/log/condor-ce/JobRouterLog.old&#58;03/29/18 14&#58;01&#58;54 (D_ALWAYS&#58;2)
+JobRouter (src=11622.0,dest=15193.0,route=Local_Condor)&#58; Cleaned up and
+removed routed job.
+/var/log/condor-ce/JobRouterLog.old&#58;03/29/18 14&#58;02&#58;04 (D_ALWAYS&#58;2)
+JobRouter (src=11622.0,dest=15193.0)&#58; job mirror synchronized; removing job
+from internal &#39;retirement&#39; status
+
+It seems matched&#58;
+[root@htcondor-ce ~]# condor_ce_q -l 11622 | condor_ce_job_router_info
+-match-jobs -ignore-prior-routing -jobads -
+
+Matching jobs against routes to find candidate jobs.
+
+Checking for candidate jobs. routing table is&#58;
+Route Name             Submitted/Max        Idle/Max     Throttle
+Local_Condor                   0/  10000       0/   2000     none
+
+Umbrella constraint&#58; ((target.x509userproxysubject =!= UNDEFINED) &&
+(target.x509UserProxyExpiration =!= UNDEFINED) && (time() &#60;
+target.x509UserProxyExpiration) && (target.JobUniverse =?= 5 ||
+target.JobUniverse =?= 1)) && ( (true) ) && (target.ProcId &#62;= 0 &&
+target.JobStatus == 1 && (target.StageInStart is undefined ||
+target.StageInFinish isnt undefined) && target.Managed isnt &#34;ScheddDone&#34; &&
+target.Managed isnt &#34;External&#34; && target.Owner isnt Undefined &&
+target.RoutedBy isnt &#34;htcondor-ce&#34;)
+Checking Job src=11622,0 against all routes
+Route Matches&#58; Local_Condor
+Found candidate job src=11622,0,route=Local_Condor
+1 candidate jobs found
+
+Any suggestions about how to debug further?
+
+Best Regard
+Edward Wu
+ASGC
+
+2018-03-26 12&#58;32 GMT+08&#58;00 Open Science Grid FootPrints &#60;
+osg@....&#62;&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_306033908').click(function() {
+            $('#detail_306033908').slideDown("normal");
+            $('#show_306033908').hide();
+            $('#hide_306033908').show();
+        });
+        $('#hide_306033908').click(function() {
+            $('#detail_306033908').slideUp();
+            $('#hide_306033908').hide();
+            $('#show_306033908').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='36352#1522038735'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-26T04:32:15+00:00">Mar 26, 2018 04:32 AM UTC</time> by <b>edwardwufast@....</b><a class="anchor" name="1522038735">&nbsp;</a></div><pre>Thank you. In fact, our data center got some power issues recently. I need
+some time to recover the service and back to this.
+
+Best Regard
+Edward Wu
+ASGC
+
+2018-03-07 14&#58;07 GMT+08&#58;00 Open Science Grid FootPrints &#60;
+osg@....&#62;&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='36352#1521808098'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-23T12:28:18+00:00">Mar 23, 2018 12:28 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1521808098">&nbsp;</a></div><pre>Hi,
+
+I am out of the office until March 29, 2018. For OSG software related matters, you can contact the software team at osg-software@..... If your matter is urgent, please contact help@.....
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='36352#1521808038'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-23T12:27:18+00:00">Mar 23, 2018 12:27 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1521808038">&nbsp;</a></div><pre>Edward,
+
+Do you have any updates on this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='36352#1521234910'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-16T21:15:10+00:00">Mar 16, 2018 09:15 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1521234910">&nbsp;</a></div><pre>Edward,
+
+Are you sure that they&#39;re actually the same job? CE jobs and condor backend jobs will generally have different job ID&#39;s. /var/log/condor-ce/JobRouterLog should have lines that say &#34;(src=&#60;CE job ID&#62;,dest=&#60;condor job ID&#62;...)&#34;. From the snippet of your JobRouterLog, my guess is that the incoming jobs may not be matching any of your routes&#58; <a href='https&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#held-jobs-no-matching-routes-route-job-limit-or-route-failure-threshold' target='_blank' rel='nofollow'>https&#58;//opensciencegrid.github.io/docs/compute-element/troubleshoot-htcondor-ce/#held-jobs-no-matching-routes-route-job-limit-or-route-failure-threshold</a>
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='36352#1521217417'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-16T16:23:37+00:00">Mar 16, 2018 04:23 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1521217417">&nbsp;</a></div><pre>Brian, would you be able to look at this?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='36352#1521063395'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-14T21:36:35+00:00">Mar 14, 2018 09:36 PM UTC</time> by <b>echism</b><a class="anchor" name="1521063395">&nbsp;</a></div><pre>Hey Software,
+
+This ticket has been untouched and unassigned for a week.
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='36352#1520616411'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-09T17:26:51+00:00">Mar 9, 2018 05:26 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1520616411">&nbsp;</a></div><pre>Assigning to Elizabeth while I am out</pre></div><div class='update_description'><i onclick="document.location='36352#1520616404'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-09T17:26:44+00:00">Mar 9, 2018 05:26 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1520616404">&nbsp;</a></div><pre>Assigning to Elizabeth while I am out</pre></div><div class='update_description'><i onclick="document.location='36352#1520402856'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-03-07T06:07:36+00:00">Mar 7, 2018 06:07 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1520402856">&nbsp;</a></div><pre>After I install condor-ce it seems work in the beginning, but recently, I found my job can be RUN in local condor cluster but is hold on condor-ce&#58;
+
+root@htcondor-ce ~]# condor_q
+
+-- Schedd&#58; test_queue@.... &#58; &#60;202.169.169.82&#58;29073&#62; @ 03/07/18 05&#58;55&#58;01
+OWNER     BATCH_NAME                                       SUBMITTED   DONE   RUN    IDLE  TOTAL JOB_IDS
+localuser CMD&#58; nagrun.sh                                  3/7  05&#58;24      _      _      _      3 12442.0 ... 12455.0
+localuser CMD&#58; runpilot3-wrapper-JEDIAMSTaiwanPicard.sh   3/7  05&#58;24      _      _      _      4 12443.0 ... 12454.0
+
+7 jobs; 7 completed, 0 removed, 0 idle, 0 running, 0 held, 0 suspended
+[root@htcondor-ce ~]# condor_ce_q
+
+-- Schedd&#58; htcondor-ce.twgrid.org &#58; &#60;202.169.169.82&#58;4205&#62; @ 03/07/18 05&#58;55&#58;07
+OWNER     BATCH_NAME                                       SUBMITTED   DONE   RUN    IDLE   HOLD  TOTAL JOB_IDS
+localuser CMD&#58; test.sh                                    3/6  08&#58;48      _      _      _     10     10 10226.0 ... 10235.0
+localuser CMD&#58; runpilot3-wrapper.sh                       3/6  09&#58;27      _      _      _     10     10 10238.0 ... 10247.0
+localuser CMD&#58; runpilot3-wrapper-JEDIAMSTaiwanPicard.sh   3/7  00&#58;01      _      _      2     13     15 10313.0 ... 10342.0
+localuser CMD&#58; nagrun.sh                                  3/7  05&#58;02      _      _      2      _      2 10340.0 ... 10343.0
+
+37 jobs; 0 completed, 0 removed, 4 idle, 0 running, 33 held, 0 suspended
+
+From logs, take a job 10226.0 for example&#58;
+
+From localcondor, it seems job is complete.
+[root@htcondor-ce ~]# grep 10226.0 /var/log/condor/*
+/var/log/condor/SchedLog.old&#58;02/25/18 22&#58;16&#58;27 (pid&#58;1724054) Starting add_shadow_birthdate(10226.0)
+/var/log/condor/SchedLog.old&#58;02/25/18 22&#58;16&#58;27 (pid&#58;1724054) Started shadow for job 10226.0 on slot1@.... &#60;192.168.1.90&#58;9618?CCBID=202.140.190.250&#58;9618%3fPrivNet%3dQDR2_private_network%26addrs%3d202.140.190.250-9618%26noUDP%26sock%3dcollector#76281&addrs=192.168.1.90-9618&noUDP&sock=935728_7854_3&#62; for localuser, (shadow pid = 3983405)
+/var/log/condor/SchedLog.old&#58;02/25/18 22&#58;16&#58;57 (pid&#58;1724054) Shadow pid 3983405 for job 10226.0 reports job exit reason 100.
+/var/log/condor/SchedLog.old&#58;02/25/18 22&#58;16&#58;57 (pid&#58;1724054) Match record (slot1@.... &#60;192.168.1.90&#58;9618?CCBID=202.140.190.250&#58;9618%3fPrivNet%3dQDR2_private_network%26addrs%3d202.140.190.250-9618%26noUDP%26sock%3dcollector#76281&addrs=192.168.1.90-9618&noUDP&sock=935728_7854_3&#62; for localuser, 10226.0) deleted
+/var/log/condor/ShadowLog&#58;02/25/18 22&#58;16&#58;27 Initializing a VANILLA shadow for job 10226.0
+/var/log/condor/ShadowLog&#58;02/25/18 22&#58;16&#58;27 (10226.0) (3983405)&#58; Request to run on slot1@.... &#60;192.168.1.90&#58;9618?CCBID=202.140.190.250&#58;9618%3fPrivNet%3dQDR2_private_network%26addrs%3d202.140.190.250-9618%26noUDP%26sock%3dcollector#76281&addrs=192.168.1.90-9618&noUDP&sock=935728_7854_3&#62; was ACCEPTED
+/var/log/condor/ShadowLog&#58;02/25/18 22&#58;16&#58;27 (10226.0) (3983405)&#58; File transfer completed successfully.
+/var/log/condor/ShadowLog&#58;02/25/18 22&#58;16&#58;57 (10226.0) (3983405)&#58; File transfer completed successfully.
+/var/log/condor/ShadowLog&#58;02/25/18 22&#58;16&#58;57 (10226.0) (3983405)&#58; Job 10226.0 terminated&#58; exited with status 0
+/var/log/condor/ShadowLog&#58;02/25/18 22&#58;16&#58;57 (10226.0) (3983405)&#58; Reporting job exit reason 100 and attempting to fetch new job.
+<div id='show_1689039299' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1689039299'>/var/log/condor/ShadowLog&#58;02/25/18 22&#58;16&#58;57 (10226.0) (3983405)&#58; **** condor_shadow (condor_SHADOW) pid 3983405 EXITING WITH STATUS 100
+/var/log/condor/XferStatsLog.old&#58;02/25/18 22&#58;16&#58;27 (10226.0) (3983405)&#58; File Transfer Upload&#58; JobId&#58; 10226.0 files&#58; 4 bytes&#58; 1178915 seconds&#58; 0.00 dest&#58; 202.140.190.250 rto&#58; 201000 ato&#58; 40000 snd_mss&#58; 1460 rcv_mss&#58; 783 unacked&#58; 0 sacked&#58; 0 lost&#58; 0 retrans&#58; 0 fackets&#58; 0 pmtu&#58; 1500 rcv_ssthresh&#58; 33404 rtt&#58; 364 snd_ssthresh&#58; 19 snd_cwnd&#58; 34 advmss&#58; 1460 reordering&#58; 3 rcv_rtt&#58; 0 rcv_space&#58; 29200 total_retrans&#58; 0
+/var/log/condor/XferStatsLog.old&#58;02/25/18 22&#58;16&#58;57 (10226.0) (3983405)&#58; File Transfer Download&#58; JobId&#58; 10226.0 files&#58; 3 bytes&#58; 13007 seconds&#58; 0.01 dest&#58; 202.140.190.250 rto&#58; 201000 ato&#58; 40000 snd_mss&#58; 1460 rcv_mss&#58; 1460 unacked&#58; 1 sacked&#58; 0 lost&#58; 0 retrans&#58; 0 fackets&#58; 0 pmtu&#58; 1500 rcv_ssthresh&#58; 60262 rtt&#58; 255 snd_ssthresh&#58; 19 snd_cwnd&#58; 10 advmss&#58; 1460 reordering&#58; 3 rcv_rtt&#58; 0 rcv_space&#58; 29200 total_retrans&#58; 0
+
+From condor-ce log&#58;
+
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 08&#58;49&#58;21 Submitting new job 10226.0
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 08&#58;49&#58;22 New job&#58; 10226.0
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 08&#58;49&#58;22 New job&#58; 10226.0, Duplicate Keys&#58; 2, Total Keys&#58; 94
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 08&#58;49&#58;40 Transferring files for jobs 10226.0
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 08&#58;49&#58;40 generalJobFilesWorkerThread()&#58; transfer files for job 10226.0
+/var/log/condor-ce/SchedLog.old&#58;GlobalJobId = &#34;htcondor-ce.twgrid.org#10226.0#1520326161&#34;
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 08&#58;49&#58;41 Received proxy for job 10226.0
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 08&#58;49&#58;42 No HoldReasonSubCode found for job 10226.0
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 08&#58;49&#58;42 Job 10226.0 released from hold&#58; Data files spooled
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 09&#58;41&#58;33 Job 10226.0 put on hold&#58; HTCondor-CE held job due to no matching routes, route job limit, or route failure threshold; see &#39;HTCondor-CE Troubleshooting Guide&#39;
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 09&#58;41&#58;33 abort_job_myself&#58; 10226.0 action&#58;Hold log_hold&#58;true
+/var/log/condor-ce/SchedLog.old&#58;03/06/18 09&#58;41&#58;33 Cleared dirty attributes for job 10226.0
+
+There are some strong messages in SchedLog&#58;
+3/06/18 08&#58;49&#58;42 Job 10229.0 held for spooling. Checking how long...
+03/06/18 08&#58;49&#58;42 Attribute StageInStart not set in 10229.0. Set it.
+03/06/18 08&#58;49&#58;42 Job 10230.0 held for spooling. Checking how long...
+03/06/18 08&#58;49&#58;42 Attribute StageInStart not set in 10230.0. Set it.
+03/06/18 08&#58;49&#58;42 Job 10231.0 held for spooling. Checking how long...
+03/06/18 08&#58;49&#58;42 Attribute StageInStart not set in 10231.0. Set it.
+03/06/18 08&#58;49&#58;42 Will use TCP to update collector htcondor-ce.twgrid.org &#60;202.169.169.82&#58;9619&#62;
+03/06/18 08&#58;49&#58;42 Trying to query collector &#60;202.169.169.82&#58;9619&#62;
+03/06/18 08&#58;49&#58;42 Can&#39;t find address for startd htcondor-ce.twgrid.org
+03/06/18 08&#58;49&#58;42 Sending RESCHEDULE command to negotiator(s)
+03/06/18 08&#58;49&#58;42 Will use TCP to update collector htcondor-ce.twgrid.org &#60;202.169.169.82&#58;9619&#62;
+03/06/18 08&#58;49&#58;42 Trying to query collector &#60;202.169.169.82&#58;9619&#62;
+03/06/18 08&#58;49&#58;42 Can&#39;t find address for negotiator
+03/06/18 08&#58;49&#58;42 Failed to send RESCHEDULE to unknown daemon&#58;
+03/06/18 08&#58;49&#58;42 -------- Begin starting jobs --------
+03/06/18 08&#58;49&#58;42 -------- Done starting jobs --------
+03/06/18 08&#58;49&#58;42 Setting delay until next queue scan to 6 seconds
+03/06/18 08&#58;49&#58;43 DoDownload&#58; get_x509_delegation() returned 0
+03/06/18 08&#58;49&#58;43 get_file()&#58; going to write to filename /var/lib/condor-ce/spool/227/0/cluster10227.proc0.subproc0.tmp/fakeinput
+03/06/18 08&#58;49&#58;43 get_file&#58; Receiving 72 bytes
+03/06/18 08&#58;49&#58;43 get_file&#58; wrote 72 bytes to file
+03/06/18 08&#58;49&#58;43 ReliSock&#58;&#58;get_file_with_permissions()&#58; going to set permissions 644
+
+I do not know why it query startd and can not find collector.
+
+Do you have any clue on the holding?
+
+by Wu chi hsun (guest)
+
+</div><script type='text/javascript'>
+        $('#show_1689039299').click(function() {
+            $('#detail_1689039299').slideDown("normal");
+            $('#show_1689039299').hide();
+            $('#hide_1689039299').show();
+        });
+        $('#hide_1689039299').click(function() {
+            $('#detail_1689039299').slideUp();
+            $('#hide_1689039299').hide();
+            $('#show_1689039299').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F36352">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 36352});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

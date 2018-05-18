@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[34726] CRLs expired and pilots in held status</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=34726" method="post">
+<div class="page-header">
+    <h3><span class="muted">34726</span> / CRLs expired and pilots in held status</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Marian Zvada</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">Clemson-Palmetto</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">OSG</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Marian Zvada</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">Community Support Center</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-09-15</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">CSC <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=34726", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/34726?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/34726?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20CRLs%20expired%20and%20pilots%20in%20held%20status%20ISSUE%3D34726%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='34726#1505494451'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-15T16:54:11+00:00">Sep 15, 2017 04:54 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1505494451">&nbsp;</a></div><pre>Please close this ticket. We saw another problem that is unrelated to this issue. Brian and I will work on that.
+
+Thanks,
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='34726#1505469462'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-15T09:57:42+00:00">Sep 15, 2017 09:57 AM UTC</time><a class="anchor" name="1505469462">&nbsp;</a></div><pre>Hi,
+
+This appears to be resolved from the factory side since we made condor 8.6.5 available in the pilots.
+
+I suggest we can close this unless Xizhou has any other questions or comments.
+
+Thanks,
+Jeff Dost
+OSG Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='34726#1505309233'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-13T13:27:13+00:00">Sep 13, 2017 01:27 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1505309233">&nbsp;</a></div><pre>Brian is currently helping to pinpoint the problem.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='34726#1505306069'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-13T12:34:29+00:00">Sep 13, 2017 12:34 PM UTC</time> by <b>echism</b><a class="anchor" name="1505306069">&nbsp;</a></div><pre>Is there anything new on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='34726#1504902397'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-08T20:26:37+00:00">Sep 8, 2017 08:26 PM UTC</time><a class="anchor" name="1504902397">&nbsp;</a></div><pre>Hi,
+
+I put in new tarball and set on the ITB Factory that Clemson&#39;s osg-ce.clemson.edu CE single and mcore entries should explicitelly use CONDOR_VERSION=8.6.5.
+
+-Marian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=zvada/CN=684832/CN=Marian Zvada</pre></div><div class='update_description'><i onclick="document.location='34726#1504891930'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-08T17:32:10+00:00">Sep 8, 2017 05:32 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1504891930">&nbsp;</a></div><pre>I can test at anytime.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='34726#1504891225'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-08T17:20:25+00:00">Sep 8, 2017 05:20 PM UTC</time><a class="anchor" name="1504891225">&nbsp;</a></div><pre>We&#39;ll deploy HTCondor 8.6.5 tarball on the ITB Factory which suppose to fix Clemons issues. I&#39;ll let you know when ready for the testing.
+
+Thanks,
+Marian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=zvada/CN=684832/CN=Marian Zvada</pre></div><div class='update_description'><i onclick="document.location='34726#1504812720'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-07T19:32:00+00:00">Sep 7, 2017 07:32 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1504812720">&nbsp;</a></div><pre>Sorry for the radio silence, I was out on vacation. This may be a condor bug so we&#39;re seeing if an updated pilot condor version fixes the issue, which is an internal factory issue and doesn&#39;t require any action from Xizhou.</pre></div><div class='update_description'><i onclick="document.location='34726#1504717326'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-06T17:02:06+00:00">Sep 6, 2017 05:02 PM UTC</time> by <b>echism</b><a class="anchor" name="1504717326">&nbsp;</a></div><pre>Hey Brian,
+
+Could you revisit this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34726#1504206239'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-31T19:03:59+00:00">Aug 31, 2017 07:03 PM UTC</time> by <b>echism</b><a class="anchor" name="1504206239">&nbsp;</a></div><pre>Brian,
+
+I assume the answer is yes, but I don&#39;t know how it&#39;s done.
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34726#1503691756'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-25T20:09:16+00:00">Aug 25, 2017 08:09 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1503691756">&nbsp;</a></div><pre>Here are the outputs.
+[root@node1021 ~]# host 2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e
+Host e.6.e.7.2.0.e.f.f.f.5.1.2.2.2.0.1.0.0.0.6.0.0.a.3.0.1.0.0.2.6.2.ip6.arpa not found&#58; 3(NXDOMAIN)
+
+By the way, we don’t use IPv6 on our cluster. Is there some way to let condor-ce use IPv$ insteadof Ipv6?
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='34726#1503687905'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-25T19:05:05+00:00">Aug 25, 2017 07:05 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1503687905">&nbsp;</a></div><pre>That looks problematic. Condor believes that node1021 has the IPv6 address of 2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e but it doesn&#39;t seem to be associated with node1021 in your DNS. What&#39;s the output from the following?
+
+$ host 2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e</pre></div><div class='update_description'><i onclick="document.location='34726#1503686711'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-25T18:45:11+00:00">Aug 25, 2017 06:45 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1503686711">&nbsp;</a></div><pre>The results are as below&#58;
+
+[root@node1021 ~]# host node1021.palmetto.clemson.edu
+node1021.palmetto.clemson.edu has address 10.125.5.10
+[root@node1021 ~]# host 10.125.5.10
+10.5.125.10.in-addr.arpa domain name pointer node1021.palmetto.clemson.edu.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='34726#1503686570'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-25T18:42:50+00:00">Aug 25, 2017 06:42 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1503686570">&nbsp;</a></div><pre>Xizhou,
+
+Could you run the two host commands on node1021?
+
+$ host node1021.palmetto.clemson.edu
+$ host 10.125.5.10
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34726#1503684461'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-25T18:07:41+00:00">Aug 25, 2017 06:07 PM UTC</time> by <b>echism</b><a class="anchor" name="1503684461">&nbsp;</a></div><pre>Is there anything new on this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34726#1503505452'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T16:24:12+00:00">Aug 23, 2017 04:24 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1503505452">&nbsp;</a></div><pre>Hi Marian,
+
+node1021.palmetto.clemson.edu (10.125.5.10) is on our internal network and is not accessible from outside. This may explain why the “host” command returned error on your end.
+
+We don’t use IPV6 on both osg-ce and the Palmetto nodes. Is there a way to tell condor-ce not using IPV6?
+
+We saw the same error “File Transfer failed for target job” after the installation of the condor-ce stack on osg-ce. Brian sent me a new rpm and the problem went away.
+
+I also saw the command “condor_ce_q –hold” returned the following error messages&#58;
+168060.0   uscms           8/23 12&#58;12 submission command failed (exit code = 1) (stdout&#58;Error-) (stderr&#58;/usr/libexec/blahp/blah_common_submit_functions.sh&#58; line 746&#58; cd&#58; /usr/local/osg/8059/0/cluster168059.proc0.subproc0&#58; No such file or directory-Failed to CD to Initial Working D
+
+Could this be a permission issue or timing sequence issue?
+
+Thanks,
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='34726#1503502571'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T15:36:11+00:00">Aug 23, 2017 03:36 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1503502571">&nbsp;</a></div><pre>I will take a look and see what could be the problem.
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='34726#1503501318'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T15:15:18+00:00">Aug 23, 2017 03:15 PM UTC</time> by <b>marian.zvada@....</b><a class="anchor" name="1503501318">&nbsp;</a></div><pre>Hi,
+
+I don&#39;t see any CRLs validation errors anymore but something different
+happened as I see glideins getting held with reason&#58;
+
+012 (4577881.000.000) 08/23 07&#58;26&#58;00 Job was held.
+Error receiving files from schedd osg-ce.clemson.edu&#58;
+DCSchedd&#58;&#58;receiveJobSandbox&#58;7003&#58;File transfer failed for target job
+173152.0&#58; SCHEDD at 130.127.160.109 failed to send file(s) to
+&#60;169.228.38.36&#58;8758&#62;&#58; error reading from
+/usr/local/osg/3152/0/cluster173152.proc0.subproc0/_condor_stdout&#58;
+(errno 2) No such file or directory; C_GAHP_WORKER_THREAD failed to
+receive file(s) from &#60;130.127.160.109&#58;9619&#62;
+Code 0 Subcode 0
+...
+
+I looked at glideins logs received received yesterday and I also see
+some IPv6 issues it seems (DNS lookup issues?). Here is the error from
+condor StartdLog&#58;
+
+08/22/17 18&#58;23&#58;31 (pid&#58;29589) ChildAliveMsg&#58; failed to send
+DC_CHILDALIVE to parent daemon at &#60;10.125.5.10&#58;58377&#62; (try 1 of 3)&#58;
+SECMAN&#58;2009&#58;DENIED authorization of server
+&#39;condor@node1021/2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e&#39; (I am acting as the
+client)&#58; reason&#58; CLIENT authorization policy contains no matching ALLOW
+entry for this request; identifiers used for this host&#58;
+2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e, hostname size = 0, original ip
+address = 2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e.
+08/22/17 18&#58;23&#58;31 (pid&#58;29589) ChildAliveMsg&#58; failed to send
+DC_CHILDALIVE to parent daemon at &#60;10.125.5.10&#58;58377&#62; (try 2 of 3)&#58;
+SECMAN&#58;2009&#58;DENIED authorization of server
+&#39;condor@node1021/2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e&#39; (I am acting as the
+client)&#58; reason&#58; cached result for CLIENT; see first case for the full
+reason.|SECMAN&#58;2009&#58;DENIED authorization of server
+&#39;condor@node1021/2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e&#39; (I am acting as the
+<div id='show_2020237615' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2020237615'>client)&#58; reason&#58; CLIENT authorization policy contains no matching ALLOW
+entry for this request; identifiers used for this host&#58;
+2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e, hostname size = 0, original ip
+address = 2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e.
+08/22/17 18&#58;23&#58;31 (pid&#58;29589) ChildAliveMsg&#58; failed to send
+DC_CHILDALIVE to parent daemon at &#60;10.125.5.10&#58;58377&#62; (try 3 of 3)&#58;
+SECMAN&#58;2009&#58;DENIED authorization of server
+&#39;condor@node1021/2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e&#39; (I am acting as the
+client)&#58; reason&#58; cached result for CLIENT; see first case for the full
+reason.|SECMAN&#58;2009&#58;DENIED authorization of server
+&#39;condor@node1021/2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e&#39; (I am acting as the
+client)&#58; reason&#58; cached result for CLIENT; see first case for the full
+reason.|SECMAN&#58;2009&#58;DENIED authorization of server
+&#39;condor@node1021/2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e&#39; (I am acting as the
+client)&#58; reason&#58; CLIENT authorization policy contains no matching ALLOW
+entry for this request; identifiers used for this host&#58;
+2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e, hostname size = 0, original ip
+address = 2620&#58;103&#58;a006&#58;1&#58;222&#58;15ff&#58;fe02&#58;7e6e.
+08/22/17 18&#58;23&#58;31 (pid&#58;29589) ERROR &#34;FAILED TO SEND INITIAL KEEP ALIVE
+TO OUR PARENT
+&#60;10.125.5.10&#58;58377?addrs=10.125.5.10-58377+[2620-103-a006-1-222-15ff-fe02-7e6e]-58377&#62;&#34;
+at line 10081 in file
+/slots/02/dir_3420274/sources/src/condor_daemon_core.V6/daemon_core.cpp
+08/22/17 18&#58;23&#58;31 (pid&#58;29589) startd exiting because of fatal exception.
+
+This one may be unrelated to above one, though. Here what may lead to
+cause of the problem with that node&#58;
+$ host node1021.palmetto.clemson.edu
+node1021.palmetto.clemson.edu has address 10.125.5.10
+$ host 10.125.5.10
+Host 10.5.125.10.in-addr.arpa. not found&#58; 3(NXDOMAIN)
+=&#62; this suggest some network configuration ... is this dual-stack node?
+
+Could please you check what&#39;s going on your end, Xizhou?
+
+Thanks,
+Marian
+
+On 8/23/17 8&#58;21 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2020237615').click(function() {
+            $('#detail_2020237615').slideDown("normal");
+            $('#show_2020237615').hide();
+            $('#hide_2020237615').show();
+        });
+        $('#hide_2020237615').click(function() {
+            $('#detail_2020237615').slideUp();
+            $('#hide_2020237615').hide();
+            $('#show_2020237615').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34726#1503494507'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-23T13:21:47+00:00">Aug 23, 2017 01:21 PM UTC</time> by <b>echism</b><a class="anchor" name="1503494507">&nbsp;</a></div><pre>Marian,
+
+May I close this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34726#1503424603'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T17:56:43+00:00">Aug 22, 2017 05:56 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1503424603">&nbsp;</a></div><pre>That looks good to me!</pre></div><div class='update_description'><i onclick="document.location='34726#1503424542'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T17:55:42+00:00">Aug 22, 2017 05:55 PM UTC</time><a class="anchor" name="1503424542">&nbsp;</a></div><pre>The output oon both util01 and a work node are as follows.
+
+[root@util01 cron.d]# openssl crl -in /software/osg-wn-client/etc/grid-security/certificates/70d35895.r0 -noout -nextupdate
+nextUpdate=Sep 21 16&#58;19&#58;02 2017 GMT
+
+[root@node0101 ~]# openssl crl -in /software/osg-wn-client/etc/grid-security/certificates/70d35895.r0 -noout -nextupdate
+nextUpdate=Sep 21 16&#58;19&#58;02 2017 GMT
+
+Are they the expected results?
+
+Thanks,
+
+Xizhou
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Xizhou Feng 3402</pre></div><div class='update_description'><i onclick="document.location='34726#1503424352'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T17:52:32+00:00">Aug 22, 2017 05:52 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1503424352">&nbsp;</a></div><pre>Seems reasonable to me. You can check the CRL that had issues on Util01 with the following&#58;
+
+openssl crl -in /software/osg-wn-client/etc/grid-security/certificates/70d35895.r0 -noout -nextupdate</pre></div><div class='update_description'><i onclick="document.location='34726#1503424096'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T17:48:16+00:00">Aug 22, 2017 05:48 PM UTC</time> by <b>xizhouf@....</b><a class="anchor" name="1503424096">&nbsp;</a></div><pre>This is something I am somewhat confused about the documents. Can you check is the following setting is correct? If not, what changes should I make?
+
+(1)  osg-ce&#58; run fetch-crl-boot and fetch-crl-cron, certificates are located under /etc/grid-security/certificates.
+
+(2)  Util01 (nfs server)&#58; run a cron job as follows, certificates are located under /software/osg-wn-client/etc/grid-security/certificates
+
+$ cat /etc/cron.d/osg-update-certs
+# Cron job to update certs.
+# Runs every hour by default, though does not update certs until they&#39;re at
+# least 24 hours old.  There is a random sleep time for up to 45 minutes (2700
+# seconds) to avoid overloading cert servers.
+10 * * * *   ( . /software/osg-wn-client/setup.sh && osg-update-certs --random-sleep 2700 --called-from-cron )
+
+# Cron job to update CRLs
+# Runs every 6 hours at, 45 minutes +/- 3 minutes.
+42 */6 * * *   ( . /software/osg-wn-client/setup.sh && fetch-crl -q -r 360 )
+
+(3)  worker node clients&#58; run nothing. Certificates are located under /software/osg-wn-client/etc/grid-security/certificates
+
+Thanks,
+
+Xizhou</pre></div><div class='update_description'><i onclick="document.location='34726#1503423388'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T17:36:28+00:00">Aug 22, 2017 05:36 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1503423388">&nbsp;</a></div><pre>You shouldn&#39;t need a cron job to update the CRLs, that&#39;s what fetch-crl-cron is for. As for the warnings, I think we can ignore them (it looks like osg-ca-certs-status is hardcoded to look in /usr/sbin).</pre></div><div class='update_description'><i onclick="document.location='34726#1503422937'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T17:28:57+00:00">Aug 22, 2017 05:28 PM UTC</time><a class="anchor" name="1503422937">&nbsp;</a></div><pre>There are some warnings when I tried the following command. Do these warnings indicate any problem?
+
+[root@node0101 ~]# . /software/osg-wn-client/setup.sh && /software/osg-wn-client/usr/bin/osg-ca-certs-status
+Warning&#58; could not open log file for appending&#58; Read-only file system
+All log info will be written to STDOUT instead.
+slurping /software/osg-wn-client/var/lib/osg-ca-certs/ca-certs-version
+read 8 characters
+
+CA-Certificates Info&#58;
+Version&#58; 1.65NEW
+
+osg-update-certs info&#58;
+slurping /software/osg-wn-client/var/lib/osg-ca-certs/certs-updater-status
+read 213 characters
+Last run&#58; 2017-08-22T13-11-03
+Last updated&#58; 2017-08-22T13-04-31
+WARNING&#58; osg-update-certs does not exist at /usr/sbin/osg-update-certs
+
+Fetch-CRL info&#58;
+Last run&#58; unknown (/var/lib/osg/fetch-crl.lastrun does not exist or cannot be read).
+WARNING&#58; Could not find any installed Fetch CRL packages (fetch-crl3 or fetch-crl).
+
+Thanks,
+
+Xizhou
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Xizhou Feng 3402</pre></div><div class='update_description'><i onclick="document.location='34726#1503422442'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T17:20:42+00:00">Aug 22, 2017 05:20 PM UTC</time><a class="anchor" name="1503422442">&nbsp;</a></div><pre>The previous run was on August 10 on osg-ce. I restarted both fetch-crl-cron and fetch-crl-boot this morning.
+
+The work node client wasn&#39;t updated recently. We moved a new server that provided the NFS folder for the client. I now reinstalled the osg service and created a cron job to updated the CAs and CRL on that server. Hope this will resolve the CRL update problem.
+
+Can you check if the CRLs have been updated?
+
+Thanks,
+
+Xizhou
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Xizhou Feng 3402</pre></div><div class='update_description'><i onclick="document.location='34726#1503421550'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T17:05:50+00:00">Aug 22, 2017 05:05 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1503421550">&nbsp;</a></div><pre>Xizhou,
+
+That setup should be fine. Can you check to ensure that the &#39;fetch-crl-cron&#39; service is enabled? Can you check to see when it was last run?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34726#1503420992'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-22T16:56:32+00:00">Aug 22, 2017 04:56 PM UTC</time><a class="anchor" name="1503420992">&nbsp;</a></div><pre>I saw there is a new set of instructions on installing OSG Work Node Client from a tarball at <a href='http&#58;//opensciencegrid.github.io/docs/client/wn-tarball/.' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/client/wn-tarball/.</a> The instruction is specific to a single client. In our situation, we share the same folder through a NFS exported folder. Is it ok if we install the software and run the osg-update-certs and fetch-crl services on a single node?
+
+Thanks,
+
+Xizhou
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Xizhou Feng 3402</pre></div><div class='update_description'><i onclick="document.location='34726#1503351571'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-21T21:39:31+00:00">Aug 21, 2017 09:39 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1503351571">&nbsp;</a></div><pre>Dear Site Admins,
+
+our validation scripts suggest issues with running jobs at your site normally due outdated CRLs&#58;
+
+&#60;result&#62;
+&#60;status&#62;ERROR&#60;/status&#62;
+&#60;metric name=&#34;TestID&#34; ts=&#34;2017-08-21T16&#58;19&#58;53-04&#58;00&#34; uri=&#34;local&#34;&#62;client/crl-check&#60;/metric&#62;
+&#60;/result&#62;
+&#60;detail&#62;
+Validation failed in client/crl-check.
+
+The test script did not produce an XML file. No further information available.
+&#60;/detail&#62;
+
+From the Frontend side there is also evidence of the failure&#58;
+
+<font color='#7F7E6F'>&#62; Executing /local_scratch/glide_FGmLjW/client/crl-check</font>
+<font color='#7F7E6F'>&#62; Next update for CRL 70d35895.r0 is Jul 22 08&#58;37&#58;08 2017 GMT (full path&#58;</font>
+<font color='#7F7E6F'>&#62; /software/osg-wn-client/etc/grid-security/certificates/70d35895.r0)</font>
+<font color='#7F7E6F'>&#62; ERROR&#58; CRL is expired, or about to expire!</font>
+
+Could you please take a look at your earliest convenience?
+
+Thanks,
+Marian
+(gWMS Factory Operations)
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=zvada/CN=684832/CN=Marian Zvada</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F34726">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 34726});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

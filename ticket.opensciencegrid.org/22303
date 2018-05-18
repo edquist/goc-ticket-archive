@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[22303] VT_OSG - Glideins submit but never leave Idle state</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=22303" method="post">
+<div class="page-header">
+    <h3><span class="muted">22303</span> / VT_OSG - Glideins submit but never leave Idle state</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Brendan Dennis</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">VT_OSG</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Belle</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Brendan Dennis</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">CSC</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ping</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-10-31</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">CSC <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=22303", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/22303?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/22303?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20VT_OSG%20-%20Glideins%20submit%20but%20never%20leave%20Idle%20state%20ISSUE%3D22303%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='22303#1414615226'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-29T20:40:26+00:00">Oct 29, 2014 08:40 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1414615226">&nbsp;</a></div><pre>Roger, the sooner you can run in dual stack, the better but as long as everything&#39;s running for now, that&#39;s good enough. If you run into any other problems when installing HTCondor CE let us know!</pre></div><div class='update_description'><i onclick="document.location='22303#1414612780'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-29T19:59:40+00:00">Oct 29, 2014 07:59 PM UTC</time><a class="anchor" name="1414612780">&nbsp;</a></div><pre>From my point of view this ticket can be closed. Jobs are running using Globus (belle & OSG). Time permitting in the future I will look at the dual stack option.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1414612264'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-29T19:51:04+00:00">Oct 29, 2014 07:51 PM UTC</time> by <b>echism</b><a class="anchor" name="1414612264">&nbsp;</a></div><pre>Hey everyone, may I close this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1414437496'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-27T19:18:16+00:00">Oct 27, 2014 07:18 PM UTC</time> by <b>echism</b><a class="anchor" name="1414437496">&nbsp;</a></div><pre>Is everyone happy at this point?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1414075952'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-23T14:52:32+00:00">Oct 23, 2014 02:52 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1414075952">&nbsp;</a></div><pre>Roger,
+
+You will need to consult this section of the install doc (<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallHTCondorCE#5_1_Setup_osg_configure' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallHTCondorCE#5_1_Setup_osg_configure</a>) to run both pieces of job gateway software in parallel.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='22303#1413917254'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-21T18:47:34+00:00">Oct 21, 2014 06:47 PM UTC</time> by <b>echism</b><a class="anchor" name="1413917254">&nbsp;</a></div><pre>Roger,
+
+Yes, it&#39;s supported. My OSG job is still idle.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1413912432'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-21T17:27:12+00:00">Oct 21, 2014 05:27 PM UTC</time><a class="anchor" name="1413912432">&nbsp;</a></div><pre>Is GRAM & HTCondor-CE supported dual-stack on the CE headnode? I can do that if there are instructions. OSG & belle jobs are now running (see both in pbs queue).
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1413837893'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-20T20:44:53+00:00">Oct 20, 2014 08:44 PM UTC</time><a class="anchor" name="1413837893">&nbsp;</a></div><pre>Hi all,
+
+Brendan has reconfigured the factory entries to use the old gram configuration, and glideins are running again at VT.
+
+However we urge you to also work with the belle VO to see if they can switch submission to HTCondor-CE, since that will become the standard OSG supported gatekeeper.
+
+Is there any chance you can run both GRAM and HTCondor-CE instances in parallel on the same node?
+
+Thanks,
+Jeff Dost
+OSG Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='22303#1413836011'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-20T20:13:31+00:00">Oct 20, 2014 08:13 PM UTC</time> by <b>echism</b><a class="anchor" name="1413836011">&nbsp;</a></div><pre>I just submitted an OSG job. I will let you know the outcome.</pre></div><div class='update_description'><i onclick="document.location='22303#1413569184'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-17T18:06:24+00:00">Oct 17, 2014 06:06 PM UTC</time><a class="anchor" name="1413569184">&nbsp;</a></div><pre>VT_OSG switched back to globus as belle production is configured for it (outside of my control). The CE is online and running. We are having problems authenticating some belle users (may have to open a ticket on that. They are looking at it on their end).  Online chatted with Derek Weitzel and GRAM operation appears to be working. There are currently no jobs running. Can someone test VO osg jobs?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1413567689'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-17T17:41:29+00:00">Oct 17, 2014 05:41 PM UTC</time> by <b>echism</b><a class="anchor" name="1413567689">&nbsp;</a></div><pre>Hi Roger,
+
+Do you have an update for this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1413390108'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-15T16:21:48+00:00">Oct 15, 2014 04:21 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1413390108">&nbsp;</a></div><pre>Roger&#58; I&#39;m not sure I understand the setup. Are they submitting jobs with globus-job-run? Are they running their own gatekeeper that submitted jobs into your gatekeeper? I&#39;d like to know details so we can see if the method they&#39;re using is truly incompatible. If it is, I&#39;m sorry we put you through the trouble of setting up an HTCondor CE to try and solve your original problem.</pre></div><div class='update_description'><i onclick="document.location='22303#1413389718'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-15T16:15:18+00:00">Oct 15, 2014 04:15 PM UTC</time><a class="anchor" name="1413389718">&nbsp;</a></div><pre>No. The current plan to switch from HTcondor-ce to globus as that appears to be what belle is using for their jobs. Hoping to work on it this afternoon. As I understand it globus & HTcondor-ce are not compatible (in some cases at least). As the belle jobs are already in production from others, VT_OSG needs to match their needs. So I will disable HTcondor-ce and configure for GRAM.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1413386831'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-15T15:27:11+00:00">Oct 15, 2014 03:27 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1413386831">&nbsp;</a></div><pre>Roger&#58; Has the belle group been able to submit jobs to your CE yet?</pre></div><div class='update_description'><i onclick="document.location='22303#1413228377'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-13T19:26:17+00:00">Oct 13, 2014 07:26 PM UTC</time> by <b>echism</b><a class="anchor" name="1413228377">&nbsp;</a></div><pre>JIRA ticket ongoing, advancing action date.</pre></div><div class='update_description'><i onclick="document.location='22303#1412958485'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-10T16:28:05+00:00">Oct 10, 2014 04:28 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1412958485">&nbsp;</a></div><pre>The RSV gratia-probe issue is a bug in RSV which we&#39;re tracking in SOFTWARE-1631 (<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1631' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1631</a>).
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22303#1412872510'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-09T16:35:10+00:00">Oct 9, 2014 04:35 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412872510">&nbsp;</a></div><pre>Roger, how exactly are the belle people submitting jobs? If they have a condor submit node, they can submit to your CE by including the lines&#58;
+
+Universe = grid
+grid_resource = condor valiant.phys.vt.edu valiant.phys.vt.edu&#58;9619
+usex509userproxy = true
+
+Examples are documented here&#58; <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand</a>
+
+Concerning the RSV problem. Is that directoy accessible by the RSV user?</pre></div><div class='update_description'><i onclick="document.location='22303#1412697044'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-07T15:50:44+00:00">Oct 7, 2014 03:50 PM UTC</time><a class="anchor" name="1412697044">&nbsp;</a></div><pre>We haven&#39;t seen any belle jobs since the reload / switch to HTcondor-ce (belle is the primary user / funding source for VT_OSG). Checked with belle people and their jobs are showing &#34;Got a job held event, reason&#58; Globus error 12&#58; the connection to the server failed (check host and port)&#34;. The belle jobs indicate &#34;GlobusScheduler = valiant.phys.vt.edu&#58;2119/jobmanager-pbs&#34;.  Should the HTcondor-ce gatekeeper process these jobs or do I need a dual stack HTcondor-ce / GRAM gatekeeper?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412603718'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-06T13:55:18+00:00">Oct 6, 2014 01:55 PM UTC</time><a class="anchor" name="1412603718">&nbsp;</a></div><pre>There is still the issue of the RSV / gratia problem for PBS. The directory is there and is readable (at least by root). PBS is running.
+
+metricName&#58; org.osg.gratia.pbs
+metricType&#58; status
+timestamp&#58; 2014-10-06 09&#58;49&#58;40 EDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-CE
+serviceURI&#58; valiant.phys.vt.edu
+gatheredAt&#58; valiant.phys.vt.edu
+summaryData&#58; CRITICAL
+detailsData&#58; 2
+ERROR&#58; Configured PBS log directory /home/lasalle_var/spool/torque/server_priv/accounting/ does not exist.
+Check pbsAcctLogDir in urCollector.conf.
+
+EOT
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412389580'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-04T02:26:20+00:00">Oct 4, 2014 02:26 AM UTC</time><a class="anchor" name="1412389580">&nbsp;</a></div><pre>After Roger added MIS to the mapfile everything appears working normally from the glidein side.
+
+I just updated the entry points in the production factory to submit to the HTCondor-CE. Unless there is still work to be done with the software team regarding the RSV issues, on behalf of Factory Ops this ticket can be closed.
+
+Thanks,
+Jeff
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='22303#1412369091'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-03T20:44:51+00:00">Oct 3, 2014 08:44 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412369091">&nbsp;</a></div><pre>Elizabeth&#58; Try the &#39;submitting a job remotely&#39; section as a template for your submit file (<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand</a>).
+Jeff&#58; I spoke to a Condor dev about the vague error message and that&#39;s something that&#39;s being worked on. In the meantime, I&#39;ll be adding it to our troubleshooting doc so you guys have ways of diagnosing it.</pre></div><div class='update_description'><i onclick="document.location='22303#1412363718'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-03T19:15:18+00:00">Oct 3, 2014 07:15 PM UTC</time> by <b>echism</b><a class="anchor" name="1412363718">&nbsp;</a></div><pre>Submitting from OSG VO, I got &#34;missing pool name&#34; but I&#39;m not sure if that&#39;s something I need to specify in my submit file now or what. With globus, I just needed the hostname generally.</pre></div><div class='update_description'><i onclick="document.location='22303#1412363222'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-03T19:07:02+00:00">Oct 3, 2014 07:07 PM UTC</time><a class="anchor" name="1412363222">&nbsp;</a></div><pre>Some good news&#58; it looks like glideins are running to completion on the test factory, so the hold issues have been fixed. I&#39;ve started some test user jobs but they haven&#39;t started running yet, I&#39;ll check back on them later and update this.
+
+Brendan Dennis
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brendan Dennis 2659</pre></div><div class='update_description'><i onclick="document.location='22303#1412361058'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-03T18:30:58+00:00">Oct 3, 2014 06:30 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412361058">&nbsp;</a></div><pre>Jeff&#58; I&#39;ll have a talk with one of the Condor developers about this. I agree, that the hold reason should be more explicit on why it&#39;s failing. In the meantime, could you submit some test jobs to see if adding the MIS VO fixes the issue?
+
+Roger&#58; There were bugs in the documentation in that part, which I&#39;ve fixed. To set a default max walltime, this doc should be helpful&#58; <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/JobRouterRecipes#3_5_4_Maximum_Walltime' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/JobRouterRecipes#3_5_4_Maximum_Walltime</a></pre></div><div class='update_description'><i onclick="document.location='22303#1412344769'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-03T13:59:29+00:00">Oct 3, 2014 01:59 PM UTC</time><a class="anchor" name="1412344769">&nbsp;</a></div><pre>Brian,
+In <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#5_2_Setup_Authorization' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#5_2_Setup_Authorization</a>, section 6.2.0.3, there appears to be a typo on PBS walltime. I attempted to set the max WallTime but wasn&#39;t sure of the syntax. I guessed &#39;set_maxWallTime = &#34;96&#58;00&#58;00&#34;&#39;, but it didn&#39;t work.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412341890'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-03T13:11:30+00:00">Oct 3, 2014 01:11 PM UTC</time><a class="anchor" name="1412341890">&nbsp;</a></div><pre>The MIS VO wasn&#39;t enabled on our CE (we use gridmap for auth). I have enabled MIS and made a new gridmap file. A condor_ce_q shows a bunch of MIS &#34;cluster35337.ickpt&#34; jobs queued.
+
+[root@valiant ~]# grep -v &#34;#&#34; /etc/edg-mkgridmap.conf
+group vomss&#58;//voms.fnal.gov&#58;8443/voms/fermilab fermilab
+group vomss&#58;//voms.grid.iu.edu&#58;8443/voms/mis mis
+group vomss&#58;//voms.opensciencegrid.org&#58;8443/voms/osg osg
+group vomss&#58;//voms.grid.iu.edu&#58;8443/voms/osg osg
+group vomss&#58;//gryphn.phys.uconn.edu&#58;8443/voms/Gluex gluex
+group vomss&#58;//voms.cc.kek.jp&#58;8443/voms/belle belle
+group vomss&#58;//voms.lbl.gov&#58;8443/voms/dayabay dayabay
+gmf_local /etc/grid-security/grid-mapfile-local
+[root@valiant ~]#
+[root@valiant ~]# grep &#34;Jeffrey Michael&#34; /etc/grid-security/grid-mapfile
+&#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost&#34; mis
+[root@valiant ~]#
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412287475'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T22:04:35+00:00">Oct 2, 2014 10:04 PM UTC</time><a class="anchor" name="1412287475">&nbsp;</a></div><pre>I&#39;m using our MIS pilot proxy we use in factory ops for testing sites.. could it be VT doesn&#39;t allow MIS?  Brian, if it&#39;s just a simple authentication issue, I&#39;m disappointed HTCondorCE doesn&#39;t report this in a cleaner way.  Is this expected?
+
+For example for GRAM CEs it would have gone held with an obvious hold message&#58;
+GRAM Job submission failed because an authentication operation failed (error code 7)
+
+Jeff
+
+subject   &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=testpilot03/test-frontend-1.t2.ucsd.edu/CN=proxy
+issuer    &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=testpilot03/test-frontend-1.t2.ucsd.edu
+identity  &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=testpilot03/test-frontend-1.t2.ucsd.edu
+type      &#58; proxy
+strength  &#58; 1024 bits
+path      &#58; /usr/local/share/gfactory/clientproxies/user_feucsditb/glidein_v3_2/credential_UCSDOSG-itb-v3_1.main_94460
+timeleft  &#58; 69&#58;37&#58;30
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO mis extension information ===
+VO        &#58; mis
+subject   &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=testpilot03/test-frontend-1.t2.ucsd.edu
+issuer    &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=http/voms.grid.iu.edu
+attribute &#58; /mis/Role=NULL/Capability=NULL
+timeleft  &#58; 21&#58;37&#58;30
+uri       &#58; voms.grid.iu.edu&#58;15001
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='22303#1412287188'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T21:59:48+00:00">Oct 2, 2014 09:59 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412287188">&nbsp;</a></div><pre>Jeff&#58; It looks like you&#39;re not getting authorized. What VO does your proxy belong to?
+
+Roger&#58; what kind of authorization methods are you using? Have you followed the instructions here? <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#5_2_Setup_Authorization' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#5_2_Setup_Authorization</a></pre></div><div class='update_description'><i onclick="document.location='22303#1412286755'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T21:52:35+00:00">Oct 2, 2014 09:52 PM UTC</time><a class="anchor" name="1412286755">&nbsp;</a></div><pre>Attached.
+
+Jeff
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='22303#1412286536'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T21:48:56+00:00">Oct 2, 2014 09:48 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412286536">&nbsp;</a></div><pre>Jeff,
+
+There should be a file /tmp/CGAHPWorkerLog.&#60;user&#62;. Could you attach it for the user you&#39;re submitting test jobs with?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='22303#1412286105'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T21:41:45+00:00">Oct 2, 2014 09:41 PM UTC</time><a class="anchor" name="1412286105">&nbsp;</a></div><pre>Just an update from factory ops, my test jobs still aren&#39;t able to run at VT, we still get the resource is down messages&#58;
+
+000 (35344.000.000) 10/02 21&#58;29&#58;48 Job submitted from host&#58; &#60;129.79.53.24&#58;22765?alias=glidein-itb.grid.iu.edu&#62;
+...
+020 (35344.000.000) 10/02 21&#58;29&#58;51 Detected Down Globus Resource
+RM-Contact&#58; valiant.phys.vt.edu
+...
+026 (35344.000.000) 10/02 21&#58;29&#58;51 Detected Down Grid Resource
+GridResource&#58; condor valiant.phys.vt.edu valiant.phys.vt.edu&#58;9619
+
+Jeff
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='22303#1412281587'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T20:26:27+00:00">Oct 2, 2014 08:26 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412281587">&nbsp;</a></div><pre>Adding the RSV maintainer. Mat, it looks like Roger&#39;s PBS directory does in fact exist but the RSV probe fails saying otherwise.</pre></div><div class='update_description'><i onclick="document.location='22303#1412280993'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T20:16:33+00:00">Oct 2, 2014 08:16 PM UTC</time><a class="anchor" name="1412280993">&nbsp;</a></div><pre>Yes, VT_OSG is slowly coming back online!! Thanks for your help!
+
+gratia appears to be installed and is enabled. I do see the gratia probes on the RSV status page. I do need to get my SE / bestman back online.
+
+I do have one RSV error. On the old 3.1 CE I started getting this error as well. I suspected a OSG change to the gratia.pbs probe. New 3.2 system shows the same error. The probe complains the pbs log directory doesn&#39;t exist. Its mounted by NFS / automounter. The directory appears to be working fine in testing.
+
+The gratia.pbs probe returns&#58;
+[root@valiant logs]# rsv-control --run  --host valiant.phys.vt.edu org.osg.gratia.pbs
+
+Running metric org.osg.gratia.pbs&#58;
+
+metricName&#58; org.osg.gratia.pbs
+metricType&#58; status
+timestamp&#58; 2014-10-02 16&#58;06&#58;51 EDT
+metricStatus&#58; CRITICAL
+serviceType&#58; OSG-CE
+serviceURI&#58; valiant.phys.vt.edu
+gatheredAt&#58; valiant.phys.vt.edu
+summaryData&#58; CRITICAL
+detailsData&#58; 2
+ERROR&#58; Configured PBS log directory /home/lasalle_var/spool/torque/server_priv/accounting/ does not exist.
+Check pbsAcctLogDir in urCollector.conf.
+
+EOT
+
+[root@valiant logs]#
+
+[root@valiant logs]# ls /home/lasalle_var/spool/torque/server_priv/accounting/
+20140101  20140114  20140127  20140209  20140222  20140307  20140320  20140402  20140415  20140506  20140522  20140608  20140623  20140708  20140722  20140806  20140819  20140901  20140914  20140929
+20140102  20140115  20140128  20140210  20140223  20140308  20140321  20140403  20140416  20140507  20140523  20140609  20140624  20140710  20140723  20140807  20140820  20140902  20140915  20141002
+20140103  20140116  20140129  20140211  20140224  20140309  20140322  20140404  20140417  20140508  20140524  20140610  20140625  20140711  20140724  20140808  20140821  20140903  20140916
+20140104  20140117  20140130  20140212  20140225  20140310  20140323  20140405  20140424  20140509  20140525  20140611  20140626  20140712  20140725  20140809  20140822  20140904  20140917
+20140105  20140118  20140131  20140213  20140226  20140311  20140324  20140406  20140425  20140510  20140526  20140612  20140627  20140713  20140726  20140810  20140823  20140905  20140918
+20140106  20140119  20140201  20140214  20140227  20140312  20140325  20140407  20140426  20140511  20140527  20140613  20140628  20140714  20140727  20140811  20140824  20140906  20140919
+20140107  20140120  20140202  20140215  20140228  20140313  20140326  20140408  20140427  20140515  20140530  20140614  20140629  20140715  20140728  20140812  20140825  20140907  20140920
+<div id='show_541814244' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_541814244'>20140108  20140121  20140203  20140216  20140301  20140314  20140327  20140409  20140428  20140516  20140531  20140615  20140630  20140716  20140729  20140813  20140826  20140908  20140921
+20140109  20140122  20140204  20140217  20140302  20140315  20140328  20140410  20140501  20140517  20140601  20140616  20140701  20140717  20140730  20140814  20140827  20140909  20140922
+20140110  20140123  20140205  20140218  20140303  20140316  20140329  20140411  20140502  20140518  20140602  20140617  20140703  20140718  20140731  20140815  20140828  20140910  20140923
+20140111  20140124  20140206  20140219  20140304  20140317  20140330  20140412  20140503  20140519  20140603  20140618  20140704  20140719  20140801  20140816  20140829  20140911  20140924
+20140112  20140125  20140207  20140220  20140305  20140318  20140331  20140413  20140504  20140520  20140606  20140619  20140705  20140720  20140802  20140817  20140830  20140912  20140925
+20140113  20140126  20140208  20140221  20140306  20140319  20140401  20140414  20140505  20140521  20140607  20140620  20140707  20140721  20140805  20140818  20140831  20140913  20140926
+[root@valiant logs]#
+
+[root@valiant logs]# ls -l /home/lasalle_var/spool/torque/server_priv/accounting/20141002
+-rw-r--r-- 1 root root 6192 Oct  2 15&#58;16 /home/lasalle_var/spool/torque/server_priv/accounting/20141002
+[root@valiant logs]#
+
+[root@valiant /]# grep pbsAcctLogDir /etc/gratia/pbs-lsf/urCollector.conf
+#pbsAcctLogDir = &#34;/var/spool/pbs/server_priv/accounting/&#34;
+pbsAcctLogDir=&#34;/home/lasalle_var/spool/torque/server_priv/accounting/&#34;
+[root@valiant /]#
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730
+</div><script type='text/javascript'>
+        $('#show_541814244').click(function() {
+            $('#detail_541814244').slideDown("normal");
+            $('#show_541814244').hide();
+            $('#hide_541814244').show();
+        });
+        $('#hide_541814244').click(function() {
+            $('#detail_541814244').slideUp();
+            $('#hide_541814244').hide();
+            $('#show_541814244').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22303#1412279344'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T19:49:04+00:00">Oct 2, 2014 07:49 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412279344">&nbsp;</a></div><pre>Yup, it sounds like things have come together! Have you installed Gratia? Also, if you edited your pbs.pm file for your Globus gatekeeper, you may want to set up job routes (<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/JobRouterRecipes' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/JobRouterRecipes</a>).</pre></div><div class='update_description'><i onclick="document.location='22303#1412278828'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T19:40:28+00:00">Oct 2, 2014 07:40 PM UTC</time><a class="anchor" name="1412278828">&nbsp;</a></div><pre>[linkr@valiant test.local.10.4.1]$ condor_ce_q -l 172 | grep HoldReason
+HoldReasonSubCode = 0
+HoldReason = &#34;Error parsing classad or job not found&#34;
+HoldReasonCode = 0
+[linkr@valiant test.local.10.4.1]$
+
+Here is pbs_status.py output&#58;
+[root@valiant ~]# /usr/libexec/blahp/pbs_status.py pbs/20141002/77891
+1ERROR&#58; qstat failed with exit code 47360
+[root@valiant ~]#
+
+I went ahead an installed the osg-testing repo blahp package. I was able to successfully submit a job, return the output and it was removed from queues properly.
+
+[root@valiant test.local.10.4.1]# /usr/libexec/blahp/pbs_status.py pbs/20141002/77893
+0[BatchJobId=&#34;77893&#34;; JobStatus=4; ExitCode= 0; ]
+[root@valiant test.local.10.4.1]#
+
+I was able to successful submit both local & remote jobs to valiant. I *think* the basic OSG functions are now working?
+
+Elizabeth please submit a test job.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412270278'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T17:17:58+00:00">Oct 2, 2014 05:17 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412270278">&nbsp;</a></div><pre>If you do &#96;condor_ce_q -l 172 | grep HoldReason&#96;, what does that give you?
+
+What happens if you run &#96;/usr/libexec/blahp/pbs_status.py pbs/20141002/77891&#96; (I&#39;m getting the argument from the GridJobID in the log, pbs/&#60;date&#62;/&#60;pbs job id&#62;)? My guess is that you&#39;ve actually run into a bug in the blahp (HTCondor CE uses the blahp to submit jobs into your batch system using your PBS binaries) where it can&#39;t find your &#39;qstat&#39; executable. This is fixed in a new build of the blahp available in osg-testing and you can grab it with &#96;yum install blahp --enablerepo=osg-testing&#96;.</pre></div><div class='update_description'><i onclick="document.location='22303#1412263946'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-02T15:32:26+00:00">Oct 2, 2014 03:32 PM UTC</time><a class="anchor" name="1412263946">&nbsp;</a></div><pre>Ok. Found one problem. I had spaces in the declaration for pbs_binpath in /etc/blah.config.
+
+Testing using &#34;10.4.1 Submitting a job locally&#34; from HTcondor-ce page. I&#39;m able to submit and execute the job. The runs to completion on the PBS node and returns the output. However it goes into hold in the condor-ce queue. There are also two jobs for a single condor_se_submit. For some reason condor-ce doesn&#39;t realize the pbs job has completed.
+
+[linkr@valiant test.local.10.4.1]$ condor_ce_q
+
+-- Submitter&#58; valiant.phys.vt.edu &#58; &#60;198.82.152.147&#58;9620?sock=1677_fe20_4&#62; &#58; valiant.phys.vt.edu
+ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD
+171.0   linkr          10/2  11&#58;14   0+00&#58;00&#58;00 H  0   0.0  doit.sh
+172.0   linkr          10/2  11&#58;14   0+00&#58;00&#58;00 H  0   0.0  doit.sh
+
+2 jobs; 0 completed, 0 removed, 0 idle, 0 running, 2 held, 0 suspended
+[linkr@valiant test.local.10.4.1]$ cat myjob.submit.jcl
+universe = vanilla
+
+executable = doit.sh
+output = test_g.out
+error = test_g.err
+log = test_g.log
+
+ShouldTransferFiles = YES
+WhenToTransferOutput = ON_EXIT
+
+use_x509userproxy = true
+
+queue
+[linkr@valiant test.local.10.4.1]$ cat doit.sh
+#!/bin/sh
+hostname
+uptime
+pwd
+[linkr@valiant test.local.10.4.1]$
+[linkr@valiant test.local.10.4.1]$ cat test_g.log
+000 (171.000.000) 10/02 11&#58;14&#58;21 Job submitted from host&#58; &#60;198.82.152.147&#58;9620?sock=1677_fe20_4&#62;
+...
+<div id='show_115197670' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_115197670'>027 (172.000.000) 10/02 11&#58;19&#58;34 Job submitted to grid resource
+GridResource&#58; batch pbs
+GridJobId&#58; batch pbs valiant.phys.vt.edu_9619_valiant.phys.vt.edu#172.0#1412262868 pbs/20141002/77891
+...
+012 (172.000.000) 10/02 11&#58;24&#58;38 Job was held.
+Error parsing classad or job not found
+Code 0 Subcode 0
+...
+[linkr@valiant test.local.10.4.1]$ cat test_g.out
+compute-97-12.local
+11&#58;19&#58;34 up 6 days,  3&#58;28,  0 users,  load average&#58; 0.08, 0.02, 0.01
+/home/se/users/linkr/home_bl_valiant.phys.vt.edu_9619_valiant.phys.vt.edu#172.0#1412262868
+[linkr@valiant test.local.10.4.1]$
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730
+</div><script type='text/javascript'>
+        $('#show_115197670').click(function() {
+            $('#detail_115197670').slideDown("normal");
+            $('#show_115197670').hide();
+            $('#hide_115197670').show();
+        });
+        $('#hide_115197670').click(function() {
+            $('#detail_115197670').slideUp();
+            $('#hide_115197670').hide();
+            $('#show_115197670').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22303#1412204157'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-01T22:55:57+00:00">Oct 1, 2014 10:55 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412204157">&nbsp;</a></div><pre>Roger,
+
+I noticed that a lot of the RSV tests are passing now so I don&#39;t think we need to troubleshoot the RSV jobs. If you could submit a manual job again and attach its ClassAd (with condor_ce_q or condor_ce_history as before). The PBS RSV probe looks like it may be helpful in troubleshooting why your manual jobs are getting stuck though, they&#39;re showing this error&#58;
+
+ERROR&#58; Configured PBS log directory /home/lasalle_var/spool/torque/server_priv/accounting/ does not exist.
+
+As for the failing fetch-crl probes, it looks like the DZeScience CA is having issues because my crl&#39;s haven&#39;t been updated since September 10th...</pre></div><div class='update_description'><i onclick="document.location='22303#1412198585'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-01T21:23:05+00:00">Oct 1, 2014 09:23 PM UTC</time><a class="anchor" name="1412198585">&nbsp;</a></div><pre>Ok. JOB_ROUTER_DEBUG turned on.
+
+[root@valiant condor-ce]# grep umbrella /var/log/condor-ce/JobRouterLog | tail -n 1
+10/01/14 17&#58;22&#58;47 JobRouter&#58; umbrella constraint&#58; ((target.x509userproxysubject =!= UNDEFINED) && (target.x509UserProxyExpiration =!= UNDEFINED) && (time() &#60; target.x509UserProxyExpiration) && (target.JobUniverse =?= 5 || target.JobUniverse =?= 1)) && ( (true) ) && (target.ProcId &#62;= 0 && target.JobStatus == 1 && (target.StageInStart is undefined || target.StageInFinish isnt undefined) && target.Managed isnt &#34;ScheddDone&#34; && target.Managed isnt &#34;External&#34; && target.Owner isnt Undefined && target.RoutedBy isnt &#34;htcondor-ce&#34;)
+[root@valiant condor-ce]#
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412197697'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-01T21:08:17+00:00">Oct 1, 2014 09:08 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412197697">&nbsp;</a></div><pre>I believe you&#39;ll need JOB_ROUTER_DEBUG = D_FULLDEBUG in your /etc/condor-ce/config.d/99-local.conf for that to show up. Missed that earlier.</pre></div><div class='update_description'><i onclick="document.location='22303#1412197388'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-01T21:03:08+00:00">Oct 1, 2014 09:03 PM UTC</time><a class="anchor" name="1412197388">&nbsp;</a></div><pre>Job 65 --long output attached.
+
+Apparently I don&#39;t have a umbrella constraint configured.
+[root@valiant condor-ce]# pwd
+/var/log/condor-ce
+[root@valiant condor-ce]# grep -i Umbrella *
+[root@valiant condor-ce]#
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412196892'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-01T20:54:52+00:00">Oct 1, 2014 08:54 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412196892">&nbsp;</a></div><pre>If the job is still in the queue, could you attach the output of &#96;condor_ce_q -l 65.0&#96;? If it&#39;s not in the queue, you can replace condor_ce_q with condor_ce_history. Also, I need to know what your JobRouter&#39;s umbrella constraint is so if you do &#96;grep Umbrella /var/log/condor-ce/JobRouter | tail -n 1&#96;, it should give those to you.
+
+Also, if you want to clean up your queue, do &#96;condor_ce_rm &#60;job id|owner name&#62;&#96;.</pre></div><div class='update_description'><i onclick="document.location='22303#1412195890'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-01T20:38:10+00:00">Oct 1, 2014 08:38 PM UTC</time><a class="anchor" name="1412195890">&nbsp;</a></div><pre>I didn&#39;t create the two accounts, and let the RSV install do it. Appears it did it Ok.
+
+[root@valiant config.d]# grep rsv /etc/passwd
+rsv&#58;x&#58;494&#58;494&#58;RSV monitoring&#58;/var/rsv&#58;/bin/sh
+[root@valiant config.d]# grep cndrcron /etc/passwd
+cndrcron&#58;x&#58;493&#58;493&#58;Condor-cron service&#58;/var/lib/condor-cron&#58;/sbin/nologin
+[root@valiant config.d]#
+[root@valiant config.d]# cat /etc/condor-cron/config.d/condor_ids
+# This file is automatically generated.  Do not edit.
+CONDOR_IDS = 493.493
+[root@valiant config.d]#
+
+I have tried manual job submission, but jobs just go into hold.
+
+condor_ce_q does show a bunch of jobs in hold. My two test jobs show to be state X. As we are getting jobs in queue it appears auth is working? Looks like a transfer problem to PBS?
+
+[root@valiant ~]# condor_ce_q
+
+-- Submitter&#58; valiant.phys.vt.edu &#58; &#60;198.82.152.147&#58;9620?sock=2442_e74e_4&#62; &#58; valiant.phys.vt.edu
+ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD
+5.0   belle           9/26 16&#58;51   0+00&#58;00&#58;00 H  0   0.0  uptime
+15.0   belle           9/29 10&#58;56   0+00&#58;00&#58;00 H  0   0.0  uptime
+17.0   belle           9/29 10&#58;57   0+00&#58;00&#58;00 H  0   0.0  uptime
+24.0   belle           9/29 14&#58;01   0+00&#58;00&#58;00 H  0   0.0  uptime
+26.0   belle           9/29 14&#58;01   0+00&#58;00&#58;00 H  0   0.0  uptime
+28.0   belle           9/29 14&#58;04   0+00&#58;00&#58;00 H  0   0.0  uptime
+47.0   belle           9/30 11&#58;35   0+00&#58;00&#58;00 X  0   0.1  env
+56.0   rsv             9/30 16&#58;02   0+00&#58;00&#58;00 H  0   0.0  org.osg.general.os
+57.0   rsv             9/30 16&#58;03   0+00&#58;00&#58;00 H  0   0.0  org.osg.general.os
+58.0   rsv             9/30 16&#58;06   0+00&#58;00&#58;00 H  0   0.0  org.osg.general.os
+59.0   belle           9/30 16&#58;57   0+00&#58;00&#58;00 H  0   0.1  env
+60.0   belle           9/30 16&#58;57   0+00&#58;00&#58;00 H  0   0.1  env
+61.0   belle           9/30 16&#58;57   0+00&#58;00&#58;00 H  0   0.1  env
+62.0   belle           9/30 16&#58;57   0+00&#58;00&#58;00 H  0   0.1  env
+63.0   belle           9/30 16&#58;57   0+00&#58;00&#58;00 H  0   0.1  env
+<div id='show_1634535529' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1634535529'>64.0   belle           9/30 16&#58;58   0+00&#58;00&#58;00 H  0   0.1  env
+65.0   rsv             9/30 18&#58;54   0+00&#58;00&#58;00 H  0   0.0  org.osg.general.vo
+67.0   belle          10/1  11&#58;43   0+00&#58;00&#58;00 X  0   0.0  test.sh
+69.0   belle          10/1  11&#58;56   0+00&#58;00&#58;00 X  0   0.0  test.sh
+
+19 jobs; 0 completed, 3 removed, 0 idle, 0 running, 16 held, 0 suspended
+[root@valiant ~]#
+
+I could find no &#34;claimed job&#34; lines in *any* of the condor-ce log files.
+[root@valiant condor-ce]# grep -i claim *
+SchedLog.old&#58;10/01/14 14&#58;19&#58;30 MapFile&#58; Canonicalization File&#58; method=&#39;claimtobe&#39; principal=&#39;.*&#39; canonicalization=&#39;anonymous@claimtobe&#39;
+SchedLog.old&#58;10/01/14 14&#58;29&#58;57 MapFile&#58; Canonicalization File&#58; method=&#39;claimtobe&#39; principal=&#39;.*&#39; canonicalization=&#39;anonymous@claimtobe&#39;
+[root@valiant condor-ce]#
+
+However checking by job id for the rsv job id 65.0 I do find&#58;
+[root@valiant condor-ce]# grep 65.0 *
+AuditLog.20140925T200000&#58;09/26/14 16&#58;37&#58;15 (cid&#58;68) proxy subject&#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/valiant.phys.vt.edu/CN=1140651553/CN=1383316530
+AuditLog.20140928T200000&#58;09/29/14 19&#58;47&#58;14 (cid&#58;69) proxy subject&#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/valiant.phys.vt.edu/CN=1836882003/CN=421655076
+AuditLog.20140929T200000&#58;09/30/14 18&#58;54&#58;19 (cid&#58;1779) Submitting new job 65.0
+AuditLog.20140929T200000&#58;09/30/14 18&#58;54&#58;24 (cid&#58;1781) Transferring files for jobs 65.0
+AuditLog.20140929T200000&#58;09/30/14 18&#58;54&#58;24 (cid&#58;1781) Received proxy for job 65.0
+AuditLog.20140929T200000&#58;09/30/14 18&#58;54&#58;24 (cid&#58;1781) proxy path&#58; /home/se/condor-ce/65/0/cluster65.proc0.subproc0/rsvproxy
+SchedLog.old&#58;09/29/14 19&#58;47&#58;14 proxy subject&#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/valiant.phys.vt.edu/CN=1836882003/CN=421655076
+SchedLog.old&#58;09/30/14 18&#58;54&#58;19 Submitting new job 65.0
+SchedLog.old&#58;09/30/14 18&#58;54&#58;24 Transferring files for jobs 65.0
+SchedLog.old&#58;GlobalJobId = &#34;valiant.phys.vt.edu#65.0#1412117659&#34;
+SchedLog.old&#58;Iwd = &#34;/home/se/condor-ce/65/0/cluster65.proc0.subproc0&#34;
+SchedLog.old&#58;09/30/14 18&#58;54&#58;24 Received proxy for job 65.0
+SchedLog.old&#58;09/30/14 18&#58;54&#58;24 proxy path&#58; /home/se/condor-ce/65/0/cluster65.proc0.subproc0/rsvproxy
+SchedLog.old&#58;09/30/14 18&#58;54&#58;25 Job 65.0 released from hold&#58; Data files spooled
+SchedLog.old&#58;09/30/14 19&#58;25&#58;54 Job 65.0 put on hold&#58; CE job in status 1 put on hold by SYSTEM_PERIODIC_HOLD due to non-existent route or entry in JOB_ROUTER_ENTRIES.
+[root@valiant condor-ce]#
+
+The error &#34;non-existent route&#34; looks to be a problem. I&#39;m using the default CE/pbs job routing configuration. No mod&#39;s made to any condor-ce/config.d files except for 99-local.conf. Have not been able to find any debugging info from the condor-ce to pbs job routing.
+
+[root@valiant config.d]# pwd
+/etc/condor-ce/config.d
+[root@valiant config.d]# ls -l
+total 28
+-rw-r--r-- 1 root root 1742 Sep  4 11&#58;49 01-ce-auth.conf
+-rw-r--r-- 1 root root 4002 Sep  4 13&#58;51 01-ce-router.conf
+-rw-r--r-- 1 root root 1029 Sep  4 11&#58;49 01-common-auth.conf
+-rw-r--r-- 1 root root  918 Sep  4 11&#58;49 02-ce-pbs.conf
+-rw-r--r-- 1 root root  350 Sep  4 11&#58;49 03-ce-shared-port.conf
+-rw-r--r-- 1 root root  215 Sep  4 11&#58;49 03-managed-fork.conf
+-rw-r--r-- 1 root root  636 Oct  1 14&#58;29 99-local.conf
+[root@valiant config.d]# cat 99-local.conf
+#
+# RAL 20140926
+#  <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE</a>
+#
+#--START_LOCAL_UNIVERSE = False
+#--START_SCHEDULER_UNIVERSE = $(START_LOCAL_UNIVERSE)
+#
+START_LOCAL_UNIVERSE = TotalLocalJobsRunning + TotalSchedulerJobsRunning &#60; 5
+START_SCHEDULER_UNIVERSE = $(START_LOCAL_UNIVERSE)
+#
+#
+GRIDMAP = /etc/grid-security/grid-mapfile
+#
+#
+SPOOL = /home/se/condor-ce
+#
+# DEBUGING INFO SETUP
+MAX_GRIDMANAGER_LOG = 6h
+MAX_NUM_GRIDMANAGER_LOG = 8
+GRIDMANAGER_LOG = D_FULLDEBUG
+#
+#
+# 20141001 full debug
+#    <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/TroubleshootingGuide' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/TroubleshootingGuide</a>
+SCHEDD_DEBUG=D_FULLDEBUG
+#
+[root@valiant config.d]#
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730
+</div><script type='text/javascript'>
+        $('#show_1634535529').click(function() {
+            $('#detail_1634535529').slideDown("normal");
+            $('#show_1634535529').hide();
+            $('#hide_1634535529').show();
+        });
+        $('#hide_1634535529').click(function() {
+            $('#detail_1634535529').slideUp();
+            $('#hide_1634535529').hide();
+            $('#show_1634535529').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22303#1412194292'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-01T20:11:32+00:00">Oct 1, 2014 08:11 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412194292">&nbsp;</a></div><pre>Have you matched UID/GID of condor_cron like in the documentation here? <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallRSV#Users' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallRSV#Users</a>
+
+Have you tried manual job submission from the CE using condor_ce_submit? <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand.' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand.</a> You should be able to monitor the job in the queue with &#96;condor_ce_q&#96;. You can also check to see if the JobRouter sees the job by looking at /var/log/condor-ce/JobRouter and look for a line like the following&#58;
+
+09/17/14 15&#58;00&#58;57 JobRouter (src=86.0,route=Local_LSF)&#58; claimed job
+
+With the JobID of your submitted job in place of &#39;86.0&#39;.</pre></div><div class='update_description'><i onclick="document.location='22303#1412110804'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-30T21:00:04+00:00">Sep 30, 2014 09:00 PM UTC</time><a class="anchor" name="1412110804">&nbsp;</a></div><pre>condor-ce is reported as running (a condor_master process with multiple children).
+
+In GRIDMANAGERLog I do see some file problems. Not sure who creates the &#34;random&#34; file names.
+09/30/14 16&#58;35&#58;58 [10592] WriteUserLog&#58;&#58;initialize&#58; safe_open_wrapper(&#34;/var/tmp/rsv/condor_g-ht7qjy/org.osg.general.osg-version.log&#34;) failed - errno 2 (No such file or directory)
+09/30/14 16&#58;35&#58;58 [10592] WriteUserLog&#58;&#58;initialize&#58; failed to open file /var/tmp/rsv/condor_g-ht7qjy/org.osg.general.osg-version.log
+
+/var/tmp/rsv does exist however.
+[root@valiant condor-cron]# ls  /var/tmp/rsv/
+condor_g-1YCl3T  condor_g-_Ae8mz  condor_g-GUfadb  condor_g-k_0WJ9  condor_g-Oseehi  condor_g-QgQW8E  condor_g-TJRAuQ  condor_g-Wh0dcQ  condor_g-ZE_erg
+condor_g-35okDg  condor_g-C465tz  condor_g-h39UiF  condor_g-M76miL  condor_g-PbWdFI  condor_g-qhi_Dp  condor_g-USREaW  condor_g-xawp77  condor_g-zJCT1a
+condor_g-48TBI3  condor_g-d8r7Hb  condor_g-hHUwnw  condor_g-MDH2PT  condor_g-_PMzXX  condor_g-riNBuQ  condor_g-VjkU4B  condor_g-xWKsQz
+condor_g-7_kwZG  condor_g-Gp_Afd  condor_g-IhiC1s  condor_g-mpXm9F  condor_g-PvPKhy  condor_g-sMTUQH  condor_g-VW6JQI  condor_g-XYjglJ
+[root@valiant condor-cron]#
+
+A condor_ce_trace fails&#58;
+[linkr@valiant ~]$ condor_ce_trace valiant.phys.vt.edu
+Testing HTCondor-CE collector connectivity.
+- Successful ping of collector on &#60;198.82.152.147&#58;9619&#62;.
+
+Testing HTCondor-CE schedd connectivity.
+- Successful ping of schedd on &#60;198.82.152.147&#58;9620?sock=1681_f24b_4&#62;.
+
+Submitting job to schedd &#60;198.82.152.147&#58;9620?sock=1681_f24b_4&#62;
+- Successful submission; cluster ID 63
+Resulting job ad&#58;
+[
+BufferSize = 524288;
+NiceUser = false;
+CoreSize = -1;
+CumulativeSlotTime = 0;
+OnExitHold = false;
+RequestCpus = 1;
+Err = &#34;_condor_stderr&#34;;
+BufferBlockSize = 32768;
+x509userproxy = &#34;/tmp/x509up_u2004&#34;;
+<div id='show_1917552410' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1917552410'>TransferOutputRemaps = &#34;_condor_stdout=/home/se/users/linkr/.stdout_13682_f9OfaX;_condor_stderr=/home/se/users/linkr/.stderr_13682_OauKRQ&#34;;
+ImageSize = 100;
+CurrentTime = time();
+WantCheckpoint = false;
+CommittedTime = 0;
+TargetType = &#34;Machine&#34;;
+WhenToTransferOutput = &#34;ON_EXIT&#34;;
+Cmd = &#34;/bin/env&#34;;
+JobUniverse = 5;
+ExitBySignal = false;
+HoldReasonCode = 16;
+Iwd = &#34;/home/se/users/linkr&#34;;
+NumRestarts = 0;
+CommittedSuspensionTime = 0;
+Owner = undefined;
+NumSystemHolds = 0;
+CumulativeSuspensionTime = 0;
+RequestDisk = DiskUsage;
+Requirements = true && TARGET.OPSYS == &#34;LINUX&#34; && TARGET.ARCH == &#34;X86_64&#34; && TARGET.HasFileTransfer && TARGET.Disk &#62;= RequestDisk && TARGET.Memory &#62;= RequestMemory;
+MinHosts = 1;
+JobNotification = 0;
+NumCkpts = 0;
+LastSuspensionTime = 0;
+NumJobStarts = 0;
+WantRemoteSyscalls = false;
+JobPrio = 0;
+RootDir = &#34;/&#34;;
+CurrentHosts = 0;
+x509UserProxyExpiration = 1412153820;
+StreamOut = false;
+WantRemoteIO = true;
+OnExitRemove = true;
+DiskUsage = 1;
+In = &#34;/dev/null&#34;;
+PeriodicRemove = false;
+RemoteUserCpu = 0.0;
+LocalUserCpu = 0.0;
+LocalSysCpu = 0.0;
+RemoteSysCpu = 0.0;
+ClusterId = 63;
+Log = &#34;/home/se/users/linkr/.log_13682_tx7wJP&#34;;
+CompletionDate = 0;
+RemoteWallClockTime = 0.0;
+LeaveJobInQueue = JobStatus == 4 && ( CompletionDate is UNDDEFINED || CompletionDate == 0 || ( ( time() - CompletionDate ) &#60; 864000 ) );
+CondorVersion = &#34;$CondorVersion&#58; 8.0.7 Aug 26 2014 $&#34;;
+MyType = &#34;Job&#34;;
+StreamErr = false;
+HoldReason = &#34;Spooling input data files&#34;;
+PeriodicHold = false;
+ProcId = 0;
+Out = &#34;_condor_stdout&#34;;
+JobStatus = 5;
+PeriodicRelease = false;
+RequestMemory = ifthenelse(MemoryUsage isnt undefined,MemoryUsage,( ImageSize + 1023 ) / 1024);
+Args = &#34;&#34;;
+MaxHosts = 1;
+TotalSuspensions = 0;
+CommittedSlotTime = 0;
+x509userproxysubject = &#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730/CN=872361789&#34;;
+CondorPlatform = &#34;$CondorPlatform&#58; X86_64-CentOS_6.5 $&#34;;
+ShouldTransferFiles = &#34;YES&#34;;
+ExitStatus = 0;
+QDate = 1412110678;
+EnteredCurrentStatus = 1412110678
+]
+Spooling cluster 63 files to schedd &#60;198.82.152.147&#58;9620?sock=1681_f24b_4&#62;
+- Successful spooling
+Job status&#58; Held
+Job transitioned from Held to Idle
+^CTraceback (most recent call last)&#58;
+File &#34;/usr/bin/condor_ce_trace&#34;, line 306, in &#60;module&#62;
+main()
+File &#34;/usr/bin/condor_ce_trace&#34;, line 300, in main
+checkJobSubmit(job_info)
+File &#34;/usr/bin/condor_ce_trace&#34;, line 255, in checkJobSubmit
+time.sleep(1)
+KeyboardInterrupt
+[linkr@valiant ~]$
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730
+</div><script type='text/javascript'>
+        $('#show_1917552410').click(function() {
+            $('#detail_1917552410').slideDown("normal");
+            $('#show_1917552410').hide();
+            $('#hide_1917552410').show();
+        });
+        $('#hide_1917552410').click(function() {
+            $('#detail_1917552410').slideUp();
+            $('#hide_1917552410').hide();
+            $('#show_1917552410').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22303#1412109783'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-30T20:43:03+00:00">Sep 30, 2014 08:43 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412109783">&nbsp;</a></div><pre>Is condor-ce running (service condor-ce status)? Is there anything interesting your /var/log/condor-cron/GridManagerLog.* files? Can you run condor_ce_trace? Does manual job submission work with condor_ce_submit (the &#39;submitting a job locally&#39; section here&#58; <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand</a>)?</pre></div><div class='update_description'><i onclick="document.location='22303#1412107808'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-30T20:10:08+00:00">Sep 30, 2014 08:10 PM UTC</time><a class="anchor" name="1412107808">&nbsp;</a></div><pre>I&#39;m using gridmap file. A grep shows our rsv account.
+
+[root@valiant /]# tail -3 /etc/edg-mkgridmap.conf
+#
+gmf_local /etc/grid-security/grid-mapfile-local
+#
+[root@valiant /]# cat /etc/grid-security/grid-mapfile-local
+&#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730&#34; belle
+&#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/valiant.phys.vt.edu&#34; rsv
+[root@valiant /]#
+
+[root@valiant /]# grep rsv /etc/grid-security/grid-mapfile
+&#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/gluskap.phys.uconn.edu&#34; gluex
+&#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/valiant.phys.vt.edu&#34; rsv
+&#34;/DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Robert Svoboda/CN=UID&#58;rsvoboda&#34; fermilab
+&#34;/DC=gov/DC=fnal/O=Fermilab/OU=Robots/CN=rsv1.fnal.gov/CN=cron/CN=Steven C. Timm/CN=UID&#58;timm&#34; fermilab
+&#34;/DC=gov/DC=fnal/O=Fermilab/OU=Robots/CN=rsv2.fnal.gov/CN=cron/CN=Steven C. Timm/CN=UID&#58;timm&#34; fermilab
+[root@valiant /]#
+
+The certs are in place as copied over from the 3.1 install.
+
+[root@valiant /]# ls -l /etc/grid-security/rsv/
+total 8
+-r--r--r-- 1 rsv root 1874 Sep 26 10&#58;06 rsvcert.pem
+-r-------- 1 rsv root 1675 Sep 26 10&#58;06 rsvkey.pem
+[root@valiant /]#
+
+The rsv account exists&#58;
+[root@valiant /]# grep rsv /etc/passwd
+rsv&#58;x&#58;494&#58;494&#58;RSV monitoring&#58;/var/rsv&#58;/bin/sh
+[root@valiant /]#
+
+rsv rpm appears to be installed.
+[root@valiant /]# rpm --verify rsv
+[root@valiant /]#
+<div id='show_1024150088' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1024150088'>
+Checking the SchedLog it appears valiant &#34;knows&#34; about local rsv?? I think rsv is working, but the tests its runs are failing?
+
+09/30/14 15&#58;39&#58;19 Received proxy for job 55.0
+09/30/14 15&#58;39&#58;19 proxy path&#58; /home/se/condor-ce/55/0/cluster55.proc0.subproc0/rsvproxy
+09/30/14 15&#58;39&#58;19 proxy expiration&#58; 1412143980
+09/30/14 15&#58;39&#58;19 proxy identity&#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/valiant.phys.vt.edu
+09/30/14 15&#58;39&#58;19 proxy subject&#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=rsv/valiant.phys.vt.edu/CN=2005347273/CN=584057404
+09/30/14 15&#58;39&#58;19 Transfer completed
+09/30/14 15&#58;39&#58;19 Scheduler&#58;&#58;spoolJobFilesWorkerThread(void *arg, Stream* s) NAP TIME
+09/30/14 15&#58;39&#58;19 Command=QMGMT_WRITE_CMD, peer=&#60;198.82.152.147&#58;60472&#62;
+09/30/14 15&#58;39&#58;19 AuthMethod=FS, AuthId=rsv, CondorId=rsv@....
+09/30/14 15&#58;39&#58;20 Job 55.0 released from hold&#58; Data files spooled
+09/30/14 15&#58;39&#58;20 TransferQueueManager stats&#58; active up=0/10 down=0/10; waiting up=0 down=0; wait time up=0s down=0s
+09/30/14 15&#58;39&#58;20 TransferQueueManager upload 1m I/O load&#58; 0 bytes/s  0.000 disk load  0.000 net load
+09/30/14 15&#58;39&#58;20 TransferQueueManager download 1m I/O load&#58; 0 bytes/s  0.000 disk load  0.000 net load
+09/30/14 15&#58;39&#58;20 Sent ad to central manager for belle@....
+09/30/14 15&#58;39&#58;20 Sent ad to 1 collectors for belle@....
+09/30/14 15&#58;39&#58;20 Sent ad to central manager for rsv@....
+09/30/14 15&#58;39&#58;20 Sent ad to 1 collectors for rsv@....
+09/30/14 15&#58;39&#58;20 Can&#39;t find address for negotiator
+09/30/14 15&#58;39&#58;20 Failed to send RESCHEDULE to unknown daemon&#58;
+09/30/14 15&#58;39&#58;24 Command=QMGMT_WRITE_CMD, peer=&#60;198.82.152.147&#58;44156&#62;
+09/30/14 15&#58;39&#58;24 AuthMethod=FS, AuthId=rsv, CondorId=rsv@....
+09/30/14 15&#58;39&#58;25 TransferQueueManager stats&#58; active up=0/10 down=0/10; waiting up=0 down=0; wait time up=0s down=0s
+09/30/14 15&#58;39&#58;25 TransferQueueManager upload 1m I/O load&#58; 0 bytes/s  0.000 disk load  0.000 net load
+09/30/14 15&#58;39&#58;25 TransferQueueManager download 1m I/O load&#58; 0 bytes/s  0.000 disk load  0.000 net load
+09/30/14 15&#58;39&#58;25 Sent ad to central manager for belle@....
+09/30/14 15&#58;39&#58;25 Sent ad to 1 collectors for belle@....
+09/30/14 15&#58;39&#58;25 Sent ad to central manager for rsv@....
+09/30/14 15&#58;39&#58;25 Sent ad to 1 collectors for rsv@....
+09/30/14 15&#58;39&#58;25 Can&#39;t find address for negotiator
+
+[root@valiant condor-ce]# rsv-control --list
+
+Metrics enabled for host&#58; valiant.phys.vt.edu&#58;8443        | Service
+----------------------------------------------------------+--------------------
+org.osg.srm.srmcp-readwrite                               | OSG-SRM
+org.osg.srm.srmping                                       | OSG-SRM
+
+Metrics enabled for host&#58; valiant.phys.vt.edu             | Service
+----------------------------------------------------------+--------------------
+org.osg.certificates.cacert-expiry                        | OSG-CE
+org.osg.certificates.crl-expiry                           | OSG-CE
+org.osg.general.java-version                              | OSG-CE
+org.osg.general.osg-directories-CE-permissions            | OSG-CE
+org.osg.general.osg-version                               | OSG-CE
+org.osg.general.ping-host                                 | OSG-CE
+org.osg.general.vo-supported                              | OSG-CE
+org.osg.globus.gridftp-simple                             | GridFTP
+org.osg.gratia.metric                                     | OSG-CE
+org.osg.gratia.pbs                                        | OSG-CE
+org.osg.local.hostcert-expiry                             | OSG-Local-Monitor
+org.osg.local.httpcert-expiry                             | OSG-Local-Monitor
+
+There are 41 metrics not enabled on any host.  Use --all to display them.
+
+[root@valiant condor-ce]#
+
+[root@valiant /]# time rsv-control --run  --host valiant.phys.vt.edu org.osg.general.osg-version
+
+Running metric org.osg.general.osg-version&#58;
+
+^CReceived SIGINT.  Exiting.
+
+real	1m0.640s
+user	0m0.069s
+sys	0m0.010s
+[root@valiant /]#
+
+Have attached rsv-prifler.tar.gz
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730
+</div><script type='text/javascript'>
+        $('#show_1024150088').click(function() {
+            $('#detail_1024150088').slideDown("normal");
+            $('#show_1024150088').hide();
+            $('#hide_1024150088').show();
+        });
+        $('#hide_1024150088').click(function() {
+            $('#detail_1024150088').slideUp();
+            $('#hide_1024150088').hide();
+            $('#show_1024150088').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22303#1412100470'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-30T18:07:50+00:00">Sep 30, 2014 06:07 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412100470">&nbsp;</a></div><pre>Have you done what was instructed in this section? <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallRSV#Remote_server_configuration' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallRSV#Remote_server_configuration</a>
+
+I&#39;ll have to talk to the RSV maintainer but the error you&#39;re getting in the SchedLog sounds to me like you need to set up the rsv service DN to map to your &#39;rsv&#39; user.</pre></div><div class='update_description'><i onclick="document.location='22303#1412095482'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-30T16:44:42+00:00">Sep 30, 2014 04:44 PM UTC</time><a class="anchor" name="1412095482">&nbsp;</a></div><pre>Hi Brendan, Jeff,
+
+Can you submit another glidein from your ITB and see if something changed?
+
+Edgar
+OSG Software
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='22303#1412091497'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-30T15:38:17+00:00">Sep 30, 2014 03:38 PM UTC</time><a class="anchor" name="1412091497">&nbsp;</a></div><pre>Ok. Have configured pbs_binpath in /etc/blah.config. Didn&#39;t know I was supposed to configure that file.
+Seeing a variety of other problems. I don&#39;t know where to start debugging (which are the root errors). RSV is reporting critical errors. If I try to run a &#34;rsv-control --run --all-enabled&#34; to force a recheck, it appears to hang (or take a very long time on the org.osg.certificates.cacert-expiry check).
+
+I have opened up the RSV page to the whole world. <a href='http&#58;//valiant.phys.vt.edu/rsv/.' target='_blank' rel='nofollow'>http&#58;//valiant.phys.vt.edu/rsv/.</a>
+
+I&#39;m seeing in SchedLog&#58;
+09/30/14 11&#58;35&#58;36 AuthMethod=FS, AuthId=rsv, CondorId=rsv@....
+09/30/14 11&#58;36&#58;22 DC_AUTHENTICATE&#58; authentication of &#60;129.79.53.24&#58;34481&#62; did not result in a valid mapped user name, which is required for this command (1112 QMGMT_WRITE_CMD), so aborting.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412046746'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-30T03:12:26+00:00">Sep 30, 2014 03:12 AM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412046746">&nbsp;</a></div><pre>Ah, actually you will need to edit the pbs_binpath line in &#39;/etc/blah.config&#39; to read&#58;
+
+pbs_binpath = /opt/torque/bin</pre></div><div class='update_description'><i onclick="document.location='22303#1412034208'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-29T23:43:28+00:00">Sep 29, 2014 11:43 PM UTC</time><a class="anchor" name="1412034208">&nbsp;</a></div><pre>I have run osg-configure -v & -c (multiple times). Took a few trys to get error configuration (at least for syntax). 20-pbs.ini attached. Also included osg-profile.txt.
+
+[root@valiant config.d]#
+[root@valiant config.d]# ls -l /usr/bin/qstat
+lrwxrwxrwx 1 root root 23 Sep 26 08&#58;55 /usr/bin/qstat -&#62; /etc/alternatives/qstat
+[root@valiant config.d]# rpm -qf /etc/alternatives/qstat
+file /etc/alternatives/qstat is not owned by any package
+[root@valiant config.d]# ls -l /etc/alternatives/qstat
+lrwxrwxrwx 1 root root 21 Sep 26 08&#58;55 /etc/alternatives/qstat -&#62; /usr/bin/qstat-torque
+[root@valiant config.d]# rpm -qf /usr/bin/qstat-torque
+torque-client-2.5.7-9.el6.x86_64
+[root@valiant config.d]#
+
+[root@valiant config.d]# rpm -q --whatprovides /usr/bin/qstat-torque
+torque-client-2.5.7-9.el6.x86_64
+[root@valiant config.d]#
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412033342'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-29T23:29:02+00:00">Sep 29, 2014 11:29 PM UTC</time><a class="anchor" name="1412033342">&nbsp;</a></div><pre>To help debug, I submitted some test glideins today from our itb factory, glidein-itb.grid.iu.edu.  Unfortunately they didn&#39;t get very far&#58;
+026 (35335.005.000) 09/29 23&#58;24&#58;52 Detected Down Grid Resource
+GridResource&#58; condor valiant.phys.vt.edu valiant.phys.vt.edu&#58;9619
+
+The CE does at least appear to be listening on port 9619&#58;
+telnet valiant.phys.vt.edu 9619
+Trying 198.82.152.147...
+Connected to valiant.phys.vt.edu (198.82.152.147).
+Escape character is &#39;^]&#39;.
+Connection closed by foreign host.
+
+Jeff
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='22303#1412027396'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-29T21:49:56+00:00">Sep 29, 2014 09:49 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412027396">&nbsp;</a></div><pre>Could you attach /etc/osg/config.d/20-pbs.ini? Have you run &#96;osg-configure -c&#96; after editing your pbs ini file?
+
+Do you know what rpm you installed that pulled in the torque rpm? If you do &#96;rpm -q --whatprovides /usr/bin/qstat&#96; and then &#96;rpm -q --whatrequires &#60;the package you get from the previous command&#39;s output&#62;&#96; what do you get?</pre></div><div class='update_description'><i onclick="document.location='22303#1412022403'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-29T20:26:43+00:00">Sep 29, 2014 08:26 PM UTC</time><a class="anchor" name="1412022403">&nbsp;</a></div><pre>I do see in the JobRouterLog following. It appears that are jobs on the CE node that are trying to get to the PBS queue?
+
+09/29/14 16&#58;25&#58;38 JobRouter (route=Local_PBS)&#58; 6 submitted (max 10000), 6 idle (max 2000), throttle&#58; none, recent stats&#58; 0 started, 0 succeeded, 0 failed.
+09/29/14 16&#58;25&#58;48 JobRouter (route=Local_PBS)&#58; 6 submitted (max 10000), 6 idle (max 2000), throttle&#58; none, recent stats&#58; 0 started, 0 succeeded, 0 failed.
+09/29/14 16&#58;25&#58;59 JobRouter (route=Local_PBS)&#58; 6 submitted (max 10000), 6 idle (max 2000), throttle&#58; none, recent stats&#58; 0 started, 0 succeeded, 0 failed.
+09/29/14 16&#58;26&#58;09 JobRouter (route=Local_PBS)&#58; 6 submitted (max 10000), 6 idle (max 2000), throttle&#58; none, recent stats&#58; 0 started, 0 succeeded, 0 failed.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412021146'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-29T20:05:46+00:00">Sep 29, 2014 08:05 PM UTC</time><a class="anchor" name="1412021146">&nbsp;</a></div><pre>I have turned debugging up with the D_FULLDEBUG flag. Currently there is only a GridmanagerLog.belle, and its dated 9/27. I don&#39;t know how to find Ids of any idle jobs to attempt to use the pbs_status.py code. I do see at tail of GridmanagerLog.belle&#58;
+
+09/27/14 16&#58;58&#58;59 [3100] (6.0) blah_job_submit() failed&#58; submission command failed (exit code = 1) (stdout&#58;) (stderr&#58;qsub&#58; End of File-)
+
+I have two torque stacks on CE headnode. The rpm versions doesn&#39;t work, and my local /opt/torque version that does. The rpm version was installed by OSG software (I didn&#39;t ask for it). I have configured OSG to use the /opt/torque version, but I can&#39;t prove that its obeying my request. I have set pbs_location in /etc/osg/config.d/20-pbs.ini as &#34;pbs_location = /opt/torque&#34;. If I execute any of the RPM torque commands I get the following. Notice the &#34;End of File&#34; which matches the stderr message above. Maybe I&#39;m being mislead. There is no pbs server running on CE headnode. pbs is running remoted on headnode of cluster.
+
+[root@valiant ~]# which qstat
+/usr/bin/qstat
+[root@valiant ~]# qstat
+qstat&#58; End of File
+[root@valiant ~]#
+
+[root@valiant ~]# /opt/torque/bin/qstat
+[root@valiant ~]#
+[root@valiant ~]# /opt/torque/bin/pbsnodes | head -5
+compute-97-11
+state = free
+np = 32
+ntype = cluster
+status = rectime=1412020950,varattr=,jobs=,state=free,netload=300237063,gres=,loadave=0.00,ncpus=32,physmem=65961556kb,availmem=78390260kb,totmem=78548472kb,idletime=288668,nusers=0,nsessions=0,uname=Linux compute-97-11.local 2.6.18-308.4.1.el5 #1 SMP Tue Apr 17 17&#58;08&#58;00 EDT 2012 x86_64,opsys=linux
+[root@valiant ~]#
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412019795'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-29T19:43:15+00:00">Sep 29, 2014 07:43 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1412019795">&nbsp;</a></div><pre>Oh, so you switched over to HTCondor CE? We&#39;re working on a more thorough troubleshooting doc for HTCondor CE issues but you&#39;ll want to look in /var/log/condor-ce/GridManagerLog.&#60;username&#62; and see if there are any issues? You can also turn up the debugging by editing a file in /etc/condor-ce/config.d/ (I use 99-local.conf for local changes when debugging) and adding &#39;GRIDMANAGER_DEBUG = D_FULLDEBUG&#39;. Additionally, run /usr/libexec/blahp/pbs_status.py by hand on idle jobs and see what it returns (it requires an argument like the following, &#39;pbs/&#60;date in YYYYMMDD&#62;/&#60;pbs job id&#62;&#39;.
+
+Elizabeth, could you try and submit a job to their new CE? Here are sample submit files that you can use as an example&#58; <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE#10_4_Testing_by_hand</a></pre></div><div class='update_description'><i onclick="document.location='22303#1412015803'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-29T18:36:43+00:00">Sep 29, 2014 06:36 PM UTC</time><a class="anchor" name="1412015803">&nbsp;</a></div><pre>CE appears to be basically online. The probably appears to be the interface between HTcondor-ce and the remote PBS queue. Can submit jobs manually to pbs so that works Ok (as it did on osg 3.1 system). Can provide osg-profile.txt. Can&#39;t find much info on how to debug problems with HTcondor-ce routing to pbs.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1412003115'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-29T15:05:15+00:00">Sep 29, 2014 03:05 PM UTC</time><a class="anchor" name="1412003115">&nbsp;</a></div><pre>Hi Brian
+
+Do you think you can contact Roger over a phone  call, to give him more support?
+
+Edgar
+OSG Software
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='22303#1411763895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-26T20:38:15+00:00">Sep 26, 2014 08:38 PM UTC</time><a class="anchor" name="1411763895">&nbsp;</a></div><pre>CE has been reloaded but has multiple problems. Would like to schedule a phone call / shared terminal session with someone to get system online.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1411677955'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-25T20:45:55+00:00">Sep 25, 2014 08:45 PM UTC</time><a class="anchor" name="1411677955">&nbsp;</a></div><pre>I&#39;m reloading headnode valiant with Centos 6 & OSG 3.2 with HTCondor-CE. Hope to have online tomorrow.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1411677650'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-25T20:40:50+00:00">Sep 25, 2014 08:40 PM UTC</time> by <b>echism</b><a class="anchor" name="1411677650">&nbsp;</a></div><pre>My job suddenly won&#39;t run. I&#39;m not sure what&#39;s wrong.
+
+026 (1466.000.000) 09/25 20&#58;32&#58;56 Detected Down Grid Resource
+GridResource&#58; gt5 valiant.phys.vt.edu&#58;2119/jobmanager-pbs
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1411596781'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-24T22:13:01+00:00">Sep 24, 2014 10:13 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1411596781">&nbsp;</a></div><pre>Roger&#58; You mentioned that you were looking for more information on the switch between GRAM and HTCondor CE. What kind of information are you looking for?
+Elizabeth&#58; Yea, go ahead and submit another job and provide the GridJobId attribute. The enormous string of numbers (16434037734906241746/6516000576698065026 for your last job) is the ID of the job on the gatekeeper.</pre></div><div class='update_description'><i onclick="document.location='22303#1411572797'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-24T15:33:17+00:00">Sep 24, 2014 03:33 PM UTC</time> by <b>echism</b><a class="anchor" name="1411572797">&nbsp;</a></div><pre>Do you want me to submit a new job?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1411496880'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-23T18:28:00+00:00">Sep 23, 2014 06:28 PM UTC</time> by <b>echism</b><a class="anchor" name="1411496880">&nbsp;</a></div><pre>I&#39;m sorry! I missed the last update. It&#39;s probably too late, but the answer is&#58;
+GridJobId = &#34;gt5 valiant.phys.vt.edu&#58;2119/jobmanager-pbs <a href='https&#58;//valiant.phys.vt.edu&#58;49821/16434037734906241746/6516000576698065026/&#34' target='_blank' rel='nofollow'>https&#58;//valiant.phys.vt.edu&#58;49821/16434037734906241746/6516000576698065026/&#34</a>;
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1411139128'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-19T15:05:28+00:00">Sep 19, 2014 03:05 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1411139128">&nbsp;</a></div><pre>Elizabeth, I assume the job&#39;s ID is 1465.0 and that it&#39;s still idle? If you do a &#96;condor_q -l 1465.0 | grep GridJobId&#96; , what do you get? I&#39;m hoping that we get the job ID on the gatekeeper end so that we can track where the job is getting lost.</pre></div><div class='update_description'><i onclick="document.location='22303#1411074942'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-18T21:15:42+00:00">Sep 18, 2014 09:15 PM UTC</time> by <b>echism</b><a class="anchor" name="1411074942">&nbsp;</a></div><pre>Hi Brian,
+
+I&#39;ve attached the log. I&#39;ve trimmed it down to the last two days.
+
+Thank you.</pre></div><div class='update_description'><i onclick="document.location='22303#1411069034'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-18T19:37:14+00:00">Sep 18, 2014 07:37 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1411069034">&nbsp;</a></div><pre>Turn up the debugging, run &#39;condor_reconfig&#39; and try submitting another job. After that&#39;s been idle for a while, could you attach your GridmanagerLog?</pre></div><div class='update_description'><i onclick="document.location='22303#1411067727'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-18T19:15:27+00:00">Sep 18, 2014 07:15 PM UTC</time> by <b>echism</b><a class="anchor" name="1411067727">&nbsp;</a></div><pre>Hey Brian,
+
+I&#39;m not sure what it&#39;s worth, but what I see is &#34;doEvaluateState called&#58; gmState GM_SUBMITTED, globusState 1&#34; many, many times. Do I need to turn the log level up?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1411057937'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-18T16:32:17+00:00">Sep 18, 2014 04:32 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1411057937">&nbsp;</a></div><pre>Elizabeth/Brendan&#58; If you&#39;re submitting jobs via Condor, is there anything pertaining to that job in your GridmanagerLog.&#60;username&#62; about the job? You may have to turn debugging up with &#39;GRIDMANAGER_DEBUG=D_FULLDEBUG D_SECURITY&#39; in a file in /etc/condor/config.d/.</pre></div><div class='update_description'><i onclick="document.location='22303#1410982027'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-17T19:27:07+00:00">Sep 17, 2014 07:27 PM UTC</time> by <b>echism</b><a class="anchor" name="1410982027">&nbsp;</a></div><pre>I&#39;m adding the software team to this, because I&#39;m truly stumped. The BDII says that there are more than 100 slots open right now for OSG, but the job I just submitted is staying idle. Gratia shows other VO OSG work running.
+
+Thank you.</pre></div><div class='update_description'><i onclick="document.location='22303#1410807338'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-15T18:55:38+00:00">Sep 15, 2014 06:55 PM UTC</time><a class="anchor" name="1410807338">&nbsp;</a></div><pre>Some jobs are apparently running correctly. I know little about OSG job submission, but it appears that some types of jobs are running Ok. See following OSG metric weekly report.
+
+Hope to look at switching from GRAM to HTCondor when I get time. Unfortunately very busy at the moment on other projects (and the Belle jobs appear to be working).
+
+------------------------------------------------------------------------
+Comparing current data for week 2014-09-08 - 2014-09-14 (inclusive)
+to previous week 2014-09-01 - 2014-09-07 (inclusive).
+
+Days start and end at midnight UTC.
+
+Report includes data for VT_OSG.
+
+Current week&#39;s total usage&#58; 4 users
+1124 jobs total (1124 / 0 = 100.0% success);
+4037.8 wall clock hours total (4037.8 / 0 = 100.0% success);
+Previous week&#39;s total usage&#58; 4 users
+2778 jobs total (2778 / 0 = 100.0% success);
+3576.5 wall clock hours total (3576.5 / 0 = 100.0% success);
+
+Summary of active reporting names for VO Belle ()&#58;
+______________________________________________________________________________________________________________________
+|  VO   | Field(s) of Science | Reporting Name |    Job   | # Sites | # Jobs |   Wall   | Delta | Delta | Delta Wall |
+|       |                     |                | Success? |         |        | Time (h) | Sites | Jobs  |  Time (h)  |
+|_______|_____________________|________________|__________|_________|________|__________|_______|_______|____________|
+| Belle |                     |      belle     |    Yes   |    1    |   924  |  1103.9  |   0   | -1753 |   -1137.1  |
+| OSG   |                     |      osg       |    Yes   |    1    |   200  |  2933.9  |   0   |   +99 |   +1598.4  |
+======================================================================================================================
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1410806035'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-15T18:33:55+00:00">Sep 15, 2014 06:33 PM UTC</time> by <b>echism</b><a class="anchor" name="1410806035">&nbsp;</a></div><pre>It&#39;s not just the the job appeared to stay idle, I also didn&#39;t get any output. Did you, Brendan? I mean it&#39;s not just that my jobs never terminated, but I got nothing out of them, so I would say it is not working at all. Possibly it is working locally, but for grid stuff, it seems completely non-functional, as far as I can tell.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1410556549'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T21:15:49+00:00">Sep 12, 2014 09:15 PM UTC</time><a class="anchor" name="1410556549">&nbsp;</a></div><pre>Hi Roger,
+
+Here is the latest link the software team provided me&#58;
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallHTCondorCE</a>
+
+Do you think this document provides enough? If not I can add the software team to this ticket.
+
+Thanks,
+Jeff Dost
+OSG Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='22303#1410553691'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T20:28:11+00:00">Sep 12, 2014 08:28 PM UTC</time><a class="anchor" name="1410553691">&nbsp;</a></div><pre>I would like to have accurate reporting but am reluctant to attempt the switch from GRAM to HTCondor-CE as the system seems to be working for the end users. Are there instructions on switching from GRAM to HTCondor-CE?? I found info on the initial installs, but not switching from one to the other.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1410540009'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T16:40:09+00:00">Sep 12, 2014 04:40 PM UTC</time><a class="anchor" name="1410540009">&nbsp;</a></div><pre>I think part of the issue maybe that jobs are actually running on the site (which is what you&#39;re seeing Roger), but the status of the jobs is just never being returned from the site. In other words, the site itself isn&#39;t broken, as the jobs are likely running fine and to completion, but the reporting of jobs is.
+
+Another factory operator suggested to me that this is likely just issues with GRAM acting funky, and may not have any obvious cause. If so, the best path to &#34;resolve&#34; the issue would be to migrate the gatekeeper to HTCondor-CE instead, or otherwise to just ignore it if there&#39;s nothing blatant that stands out as to why this is happening.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brendan Dennis 2659</pre></div><div class='update_description'><i onclick="document.location='22303#1410538300'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T16:11:40+00:00">Sep 12, 2014 04:11 PM UTC</time> by <b>echism</b><a class="anchor" name="1410538300">&nbsp;</a></div><pre>Hi Roger,
+
+Is there nothing in your mom logs? I had the same thing happen with my job. It stayed idle until the proxy expired.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1410525923'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T12:45:23+00:00">Sep 12, 2014 12:45 PM UTC</time><a class="anchor" name="1410525923">&nbsp;</a></div><pre>Ok. I&#39;m open for suggestions on how to diagnose / fix this.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1410525918'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-12T12:45:18+00:00">Sep 12, 2014 12:45 PM UTC</time><a class="anchor" name="1410525918">&nbsp;</a></div><pre>Ok. I&#39;m open for suggestions on how to diagnose / fix this.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1410458090'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-11T17:54:50+00:00">Sep 11, 2014 05:54 PM UTC</time><a class="anchor" name="1410458090">&nbsp;</a></div><pre>I cleared out the old glideins to let new ones in about three hours ago, and the new glideins are still showing as Idle with no logs returned to the factory.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brendan Dennis 2659</pre></div><div class='update_description'><i onclick="document.location='22303#1410450676'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-11T15:51:16+00:00">Sep 11, 2014 03:51 PM UTC</time> by <b>roger.link@....</b><a class="anchor" name="1410450676">&nbsp;</a></div><pre>Elizabeth,
+I see jobs running for VO OSG at the moment. Try submitting a job now.
+
+- Roger
+
+On Tue, Sep 9, 2014 at 4&#58;20 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22303#1410294034'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-09T20:20:34+00:00">Sep 9, 2014 08:20 PM UTC</time> by <b>echism</b><a class="anchor" name="1410294034">&nbsp;</a></div><pre>Hey Roger,
+
+When you&#39;re back, you should probably just look at the queue and see what&#39;s jamming everything up. I can run a test job at your request.</pre></div><div class='update_description'><i onclick="document.location='22303#1410268102'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-09T13:08:22+00:00">Sep 9, 2014 01:08 PM UTC</time><a class="anchor" name="1410268102">&nbsp;</a></div><pre>Have been out of office unexpectedly for a few days. To save time, how do I debug glidin reports???
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1409941816'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-05T18:30:16+00:00">Sep 5, 2014 06:30 PM UTC</time> by <b>echism</b><a class="anchor" name="1409941816">&nbsp;</a></div><pre>Mine indeed remained idle until the proxy expired.
+
+Globus error 131&#58; the user proxy expired (job is still running)
+Code 2 Subcode 131
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='22303#1409864922'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-04T21:08:42+00:00">Sep 4, 2014 09:08 PM UTC</time> by <b>echism</b><a class="anchor" name="1409864922">&nbsp;</a></div><pre>I&#39;m going to let my job sit overnight and see what happens.</pre></div><div class='update_description'><i onclick="document.location='22303#1409759349'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T15:49:09+00:00">Sep 3, 2014 03:49 PM UTC</time><a class="anchor" name="1409759349">&nbsp;</a></div><pre>Hi Roger,
+
+Currently, VT_OSG is setup on the factory side to only have OSGVO in its list of Supported VOs, so it should only be getting OSGVO jobs. It very well may be that the glideins are successfully running on the site, but for some reason, they&#39;re not communicating their status back properly.
+
+For an example of what I mean, here&#39;s VT_OSG on our factory monitoring page&#58;
+<a href='http&#58;//gfactory-1.t2.ucsd.edu/osg_gfactory/factoryStatus.html?entry=Engage_US_VT_valiant' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/osg_gfactory/factoryStatus.html?entry=Engage_US_VT_valiant</a>
+
+Compare that to the site right above it on the drop down list (UTA_SWT2)&#58;
+<a href='http&#58;//gfactory-1.t2.ucsd.edu/osg_gfactory/factoryStatus.html?entry=Engage_US_SWT2_gk04' target='_blank' rel='nofollow'>http&#58;//gfactory-1.t2.ucsd.edu/osg_gfactory/factoryStatus.html?entry=Engage_US_SWT2_gk04</a>
+
+The green &#34;Running&#34; amount from UTA_SWT2 is specifically what I&#39;m seeing as missing from VT_OSG&#39;s monitoring page. Additionally, all of the log files for jobs being submitted to VT_OSG are returning empty, so we aren&#39;t getting any debug information from them, either.
+
+Brendan Dennis
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brendan Dennis 2659</pre></div><div class='update_description'><i onclick="document.location='22303#1409755181'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-03T14:39:41+00:00">Sep 3, 2014 02:39 PM UTC</time><a class="anchor" name="1409755181">&nbsp;</a></div><pre>Are these jobs from a particular VO? VT_OSG only runs jobs from a subset of the OSG VOs. The system is currently running jobs for VO OSG at the moment. RSV stats shows everything Ok on this end except for PBS. The PBS gratia test broke with a recent OSG update and I haven&#39;t had time to debug.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Roger Link 730</pre></div><div class='update_description'><i onclick="document.location='22303#1409691891'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-02T21:04:51+00:00">Sep 2, 2014 09:04 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1409691891">&nbsp;</a></div><pre>Hi,
+
+I&#39;ve noticed that pilot glideins submitted to VT_OSG end up in an Idle state and never run, let alone run user jobs. This seems to have been the case for at least a year, as our factory monitoring tools show no signs of glideins ever running successfully on this site. Is VT_OSG still an active site and open to opportunistic usage?
+
+Here are the details on the gatekeeper being submitted to&#58;
+gatekeeper=&#34;valiant.phys.vt.edu&#58;2119/jobmanager-pbs&#34;
+gridtype=&#34;gt5&#34;
+rsl=&#34;(queue=default)(jobtype=single)&#34;
+
+Here&#39;s the only lines I see from the condor activity log&#58;
+000 (2303355.000.000) 09/02 11&#58;29&#58;06 Job submitted from host&#58; &#60;169.228.38.36&#58;45300&#62;
+...
+017 (2303355.000.000) 09/02 11&#58;29&#58;18 Job submitted to Globus
+RM-Contact&#58; valiant.phys.vt.edu&#58;2119/jobmanager-pbs
+JM-Contact&#58; valiant.phys.vt.edu&#58;2119/jobmanager-pbs
+Can-Restart-JM&#58; 1
+...
+027 (2303355.000.000) 09/02 11&#58;29&#58;18 Job submitted to grid resource
+GridResource&#58; gt5 valiant.phys.vt.edu&#58;2119/jobmanager-pbs
+GridJobId&#58; gt5 valiant.phys.vt.edu&#58;2119/jobmanager-pbs <a href='https&#58;//valiant.phys.vt.edu&#58;46309/16434144331573943561/6516000576698101644/' target='_blank' rel='nofollow'>https&#58;//valiant.phys.vt.edu&#58;46309/16434144331573943561/6516000576698101644/</a>
+
+After that, nothing further happens, and the job remains in a perpetual Idle state.
+
+Here&#39;s info on a pilot proxy being used&#58;
+subject   &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu/CN=proxy
+issuer    &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu
+identity  &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu
+type      &#58; proxy
+strength  &#58; 1024 bits
+path      &#58; /var/gfactory/clientproxies/user_feosgflock/glidein_v3_0/credential_osg-flock-grid-iu-edu_OSG_gWMSFrontend.main_907675
+timeleft  &#58; 93&#58;48&#58;35
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO osg extension information ===
+VO        &#58; osg
+subject   &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu
+<div id='show_212476703' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_212476703'>issuer    &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=voms2.opensciencegrid.org
+attribute &#58; /osg/Role=NULL/Capability=NULL
+timeleft  &#58; 21&#58;48&#58;35
+uri       &#58; voms2.opensciencegrid.org&#58;15027
+
+Could someone take a look? Thanks!
+Brendan Dennis
+UCSD Glidein Factory Operations
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brendan Dennis 2659
+
+</div><script type='text/javascript'>
+        $('#show_212476703').click(function() {
+            $('#detail_212476703').slideDown("normal");
+            $('#show_212476703').hide();
+            $('#hide_212476703').show();
+        });
+        $('#hide_212476703').click(function() {
+            $('#detail_212476703').slideUp();
+            $('#hide_212476703').hide();
+            $('#show_212476703').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F22303">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 22303});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

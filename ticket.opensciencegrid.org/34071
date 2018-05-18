@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[34071] Planning CVMFS installation</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=34071" method="post">
+<div class="page-header">
+    <h3><span class="muted">34071</span> / Planning CVMFS installation</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Dockendorf</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">OSC_OSG_CE_old</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Nova</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">John Dockendorf</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">SUPERB-SC</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-07-04</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">SUPERB-SC <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Dave Dykstra <span class="muted"> / OSG Security Coordinators</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Suchandra Thapa <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=34071", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/34071?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/34071?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Planning%20CVMFS%20installation%20ISSUE%3D34071%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='34071#1499272197'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-05T16:29:57+00:00">Jul 5, 2017 04:29 PM UTC</time> by <b>echism</b><a class="anchor" name="1499272197">&nbsp;</a></div><pre>Closing as advised.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='34071#1499094007'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-03T15:00:07+00:00">Jul 3, 2017 03:00 PM UTC</time><a class="anchor" name="1499094007">&nbsp;</a></div><pre>This ticket can be closed.
+
+Thanks,
+- Trey
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498964409'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-02T03:00:09+00:00">Jul 2, 2017 03:00 AM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498964409">&nbsp;</a></div><pre>I think that sounds fine as long as other applications don&#39;t fill up /tmp more than the CVMFS_QUOTA_LIMIT.
+
+Can we close this ticket?</pre></div><div class='update_description'><i onclick="document.location='34071#1498828166'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-30T13:09:26+00:00">Jun 30, 2017 01:09 PM UTC</time><a class="anchor" name="1498828166">&nbsp;</a></div><pre>I&#39;ll update the CVMFS Jira issue with similar information as below.
+
+Growing the volume for caches to 2TB was eventually filled up with nova preload still not completing.  We&#39;ve decided that preloading all the required repos is just too costly in terms of space that would be required.  The portion of grid jobs we run is very small compared to non-grid jobs, so taking away many dozens of TBs was just not worth it.  We are going to use /tmp and instruct systemd to exclude the directory holding cvmfs cache data.  The change should be straight forward given that systemd replaces tmpwatch in RHEL7.
+
+Example of what we&#39;ll implement.
+
+cat &#62; /etc/tmpfiles.d/tmp-cvmfs.conf &#60;&#60;EOF
+x /tmp/cvmfs
+EOF
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498749120'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-29T15:12:00+00:00">Jun 29, 2017 03:12 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498749120">&nbsp;</a></div><pre>John,
+
+FYI hcc-cvmfs.unl.edu is about to be taken down for a short time to expand its disk.  Its 20TB volume is almost full.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='34071#1498675476'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-28T18:44:36+00:00">Jun 28, 2017 06:44 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498675476">&nbsp;</a></div><pre>I did a du on those repositories on hcc-cvmfs&#58;
+
+1182584604	atlas.cern.ch
+4069522188	lhcb.cern.ch
+614135320	alice.cern.ch
+45805564	        grid.cern.ch
+653282036	oasis.opensciencegrid.org
+11921056 	darkside.opensciencegrid.org
+493383840	fermilab.opensciencegrid.org
+95895656 	icecube.opensciencegrid.org
+8577544	        lsst.opensciencegrid.org
+123836444	mu2e.opensciencegrid.org
+du&#58; cannot access ‘usatlas3.opensciencegrid.org’&#58; No such file or directory
+1107352744	nova.opensciencegrid.org
+
+That adds up to 8.5 TB, but that&#39;s compressed.  You probably need to at least double it for uncompressed.</pre></div><div class='update_description'><i onclick="document.location='34071#1498654113'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-28T12:48:33+00:00">Jun 28, 2017 12:48 PM UTC</time><a class="anchor" name="1498654113">&nbsp;</a></div><pre>How big should my alien cache be?  I have only synced nova.opensciencegrid.org and so far I&#39;ve filled up the 1TB volume I created for the caches of all our volumes.  Right now we NFS export the following repos.  Some may no longer be used but I&#39;m not entirely sure.  Any way to know how big the cache needs to be to support all this?
+
+* atlas.cern.ch
+* lhcb.cern.ch
+* alice.cern.ch
+* grid.cern.ch
+* oasis.opensciencegrid.org
+* darkside.opensciencegrid.org
+* fermilab.opensciencegrid.org
+* icecube.opensciencegrid.org
+* lsst.opensciencegrid.org
+* mu2e.opensciencegrid.org
+* usatlas3.opensciencegrid.org
+* nova.opensciencegrid.org
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498588780'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T18:39:40+00:00">Jun 27, 2017 06:39 PM UTC</time><a class="anchor" name="1498588780">&nbsp;</a></div><pre>I&#39;ve created <a href='https&#58;//sft.its.cern.ch/jira/browse/CVM-1328.' target='_blank' rel='nofollow'>https&#58;//sft.its.cern.ch/jira/browse/CVM-1328.</a>
+
+I plan to put the cvmfs_preload commands into cron so there are periodic updates.  What&#39;s a reasonable time period to between updates?  I have no idea how often CVMFS repo contents change.
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498588035'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T18:27:15+00:00">Jun 27, 2017 06:27 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498588035">&nbsp;</a></div><pre>Oh I forgot one significant difference.  The cvmfs_server snapshot command keeps the files compressed, where cvmfs_preload uncompresses them.   So that makes much of what I just posted incorrect.  The snapshot command does not have an option to uncompress so it can&#39;t precisely replace cvmfs_preload.  So the only option is to request a new feature.  Also cvmfs_preload assumes the input is compressed so you won&#39;t be able to take a snapshot from your own copy, you&#39;d have to redownload the whole thing from hcc-cvmfs.</pre></div><div class='update_description'><i onclick="document.location='34071#1498587592'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T18:19:52+00:00">Jun 27, 2017 06:19 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498587592">&nbsp;</a></div><pre>The short answer is no, there&#39;s not.
+
+The cvmfs-server rpm however has a cvmfs_server command that among other things can do snapshot and gc.  The cvmfs_preload command is similar to snapshot but with much simpler configuration and runnable as a non-root user.  The gc command assumes the same configuration and root access.
+
+So you could probably use the cvmfs-server rpm if you have root access on your machine.  That preloads the data into /srv/cvmfs/&#60;repo&#62; but you could symlink that to wherever you want it.  Then you could use gc as well.
+
+Note, however, that the snapshot command only allows gc when the stratum 0 of the repository has also enabled gc.  That is not yet the case in any opensciencegrid.org repositories that I am aware of, although I think it will be one day.
+
+Having said that, you can also in effect do a garbage collection from time to time by taking a new snapshot.  That does not copy the garbage.  If you made your snapshot available on a web server, you could even read from your own copy into a new directory, then move the new snapshot into the place of the old one.</pre></div><div class='update_description'><i onclick="document.location='34071#1498585910'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T17:51:50+00:00">Jun 27, 2017 05:51 PM UTC</time><a class="anchor" name="1498585910">&nbsp;</a></div><pre>Do any CVMFS command line tools expose the garbage collection in a way that would work with caches built with cvmfs_preload?  If not, then I&#39;ll open a ticket requesting the feature.
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498584999'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T17:36:39+00:00">Jun 27, 2017 05:36 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498584999">&nbsp;</a></div><pre>The underlying cvmfs software does include a garbage collection feature that would do that, yes, but it isn&#39;t exposed in the cvmfs_preload command.  Do you have a CERN account?  If so you could make a ticket requesting the feature at <a href='https&#58;//sft.its.cern.ch/jira/projects/CVM' target='_blank' rel='nofollow'>https&#58;//sft.its.cern.ch/jira/projects/CVM</a></pre></div><div class='update_description'><i onclick="document.location='34071#1498584030'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T17:20:30+00:00">Jun 27, 2017 05:20 PM UTC</time><a class="anchor" name="1498584030">&nbsp;</a></div><pre>May have been some intermittent interruption in network connectivity.  The download is now progressing.
+
+I had a question about this alien cache usage.  The docs for CVMFS do mention that alien cache is ever growing.  Since I&#39;m doing a preload , is there a way to purge the cache of old entries?  I would imagine some cache items become no longer used or invalid, like if an application is removed.  Is there some way to remove invalid or unneeded cached items?
+
+Thanks,
+- Trey
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498583691'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T17:14:51+00:00">Jun 27, 2017 05:14 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498583691">&nbsp;</a></div><pre>Yes, that&#39;s expected because you haven&#39;t given a complete URL.  The correct command would be
+
+$ curl -s <a href='http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org/data/1f/b84745a2742240e52095768b9611dccfef1e4d|wc' target='_blank' rel='nofollow'>http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org/data/1f/b84745a2742240e52095768b9611dccfef1e4d|wc</a> -c
+275
+
+and for me that works.  I see in the hcc-cvmfs log that 192.148.247.162 is trying to fetch that URL with a &#39;P&#39; appended, which I am pretty sure means &#34;partial&#34;.  That URL however also works for me&#58;
+
+$ curl -s <a href='http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org/data/1f/b84745a2742240e52095768b9611dccfef1e4dP|wc' target='_blank' rel='nofollow'>http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org/data/1f/b84745a2742240e52095768b9611dccfef1e4dP|wc</a> -c
+4812409
+
+Yes in fact the last log entry from you shows that you also read it successfully, but there are a few others that TCP_MISS_ABORTED indicating that the client aborted.  Perhaps the network connection is unreliable?</pre></div><div class='update_description'><i onclick="document.location='34071#1498582507'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T16:55:07+00:00">Jun 27, 2017 04:55 PM UTC</time><a class="anchor" name="1498582507">&nbsp;</a></div><pre>Installing the cvmfs-config-osg package and setting -k to /etc/cvmfs/keys/opensciencegrid.org/opensciencegrid.org.pub fixed the error.
+
+Next error is below [1].  I noticed if I curl the URL I&#39;m using for -u, I get a redirect to a localhost address [2].  Don&#39;t know if this is expected or something broken.
+
+[1]&#58;
+[root@osg-ce tmp]# sudo -u cvmfs /tmp/cvmfs_preload -u <a href='http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org' target='_blank' rel='nofollow'>http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org</a> -r /mnt/osg_data/cvmfs/cache -k /etc/cvmfs/keys/opensciencegrid.org/opensciencegrid.org.pub
+CernVM-FS&#58; guessing fqrn from URL&#58; nova.opensciencegrid.org
+CernVM-FS&#58; new dirtab, forced run
+CernVM-FS&#58; replicating from <a href='http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org' target='_blank' rel='nofollow'>http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org</a>
+CernVM-FS&#58; using public key(s) /etc/cvmfs/keys/opensciencegrid.org/opensciencegrid.org.pub
+Starting 4 workers
+Replicating from trunk catalog at /
+Processing chunks [2 registered chunks]&#58; . fetched 2 new chunks out of 2 unique chunks
+Replicating from catalog at /nusoft
+Processing chunks [1578 registered chunks]&#58; failed to download 1fb84745a2742240e52095768b9611dccfef1e4d (7 - host connection problem)
+couldn&#39;t reach Stratum 0 - perhaps check the network path?
+/tmp/cvmfs_preload&#58; line 14&#58; 74314 Aborted                 LD_LIBRARY_PATH=&#34;$TMPDIR&#34; $TMPDIR/cvmfs_preload_bin $@
+
+[2]&#58;
+[root@osg-ce tmp]# curl <a href='http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org' target='_blank' rel='nofollow'>http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org</a>
+&#60;!DOCTYPE HTML PUBLIC &#34;-//IETF//DTD HTML 2.0//EN&#34;&#62;
+&#60;html&#62;&#60;head&#62;
+&#60;title&#62;301 Moved Permanently&#60;/title&#62;
+&#60;/head&#62;&#60;body&#62;
+&#60;h1&#62;Moved Permanently&#60;/h1&#62;
+&#60;p&#62;The document has moved &#60;a href=&#34;http&#58;//localhost&#58;8080/cvmfs/nova.opensciencegrid.org/&#34;&#62;here&#60;/a&#62;.&#60;/p&#62;
+&#60;/body&#62;&#60;/html&#62;
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498580936'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T16:28:56+00:00">Jun 27, 2017 04:28 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498580936">&nbsp;</a></div><pre>I haven&#39;t tested it myself, but I believe you need a -k option pointing to opensciencegrid.org.pub.  It must default to the cern.ch public keys.</pre></div><div class='update_description'><i onclick="document.location='34071#1498570577'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T13:36:17+00:00">Jun 27, 2017 01:36 PM UTC</time><a class="anchor" name="1498570577">&nbsp;</a></div><pre>FYI - I do NOT get the error when I preload atlas.cern.ch.  I also get the error trying to preload fermilab.opensciencegrid.org or oasis.opensciencegrid.org.
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498568751'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-27T13:05:51+00:00">Jun 27, 2017 01:05 PM UTC</time><a class="anchor" name="1498568751">&nbsp;</a></div><pre>So far preload is not working, maybe I&#39;m missing something?
+
+[root@osg-ce ~]# ./cvmfs_preload -u <a href='http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org' target='_blank' rel='nofollow'>http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org</a> -r /mnt/osg_data/cvmfs/cache
+CernVM-FS&#58; guessing fqrn from URL&#58; nova.opensciencegrid.org
+CernVM-FS&#58; new dirtab, forced run
+CernVM-FS&#58; replicating from <a href='http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org' target='_blank' rel='nofollow'>http&#58;//hcc-cvmfs.unl.edu&#58;8000/cvmfs/nova.opensciencegrid.org</a>
+CernVM-FS&#58; using public key(s) /mnt/osg_data/cvmfs/cache/txn/cern.ch.pub, /mnt/osg_data/cvmfs/cache/txn/cern-it1.cern.ch.pub, /mnt/osg_data/cvmfs/cache/txn/cern-it2.cern.ch.pub, /mnt/osg_data/cvmfs/cache/txn/cern-it3.cern.ch.pub
+failed to fetch manifest (8 - bad whitelist)
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498510476'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-26T20:54:36+00:00">Jun 26, 2017 08:54 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498510476">&nbsp;</a></div><pre>Trey,
+
+Yes, that&#39;s the only way cvmfs_preload is distributed.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='34071#1498508841'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-26T20:27:21+00:00">Jun 26, 2017 08:27 PM UTC</time><a class="anchor" name="1498508841">&nbsp;</a></div><pre>I am unable to find cvmfs_preload utility in RPMs from OSG repos or from the cvmfs-release repo.  I found <a href='https&#58;//cernvm.cern.ch/portal/filesystem/downloads' target='_blank' rel='nofollow'>https&#58;//cernvm.cern.ch/portal/filesystem/downloads</a> which has a link to <a href='https&#58;//ecsft.cern.ch/dist/cvmfs/preload/' target='_blank' rel='nofollow'>https&#58;//ecsft.cern.ch/dist/cvmfs/preload/</a> where it appears I can download a shell script that contains the binary.  Is this the correct way to get cvmfs_preload?
+
+Thanks,
+- Trey
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498244022'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-23T18:53:42+00:00">Jun 23, 2017 06:53 PM UTC</time> by <b>echism</b><a class="anchor" name="1498244022">&nbsp;</a></div><pre>Trey,
+
+How&#39;s it going?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34071#1498082539'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-21T22:02:19+00:00">Jun 21, 2017 10:02 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1498082539">&nbsp;</a></div><pre>I believe you would need to modify CVMFS_SERVER_URL to point to your local web server.</pre></div><div class='update_description'><i onclick="document.location='34071#1498072696'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-21T19:18:16+00:00">Jun 21, 2017 07:18 PM UTC</time><a class="anchor" name="1498072696">&nbsp;</a></div><pre>I think we&#39;re going to try the alien cache approach with pre-populated cache.  Using loopback files would be more work than just resizing our local disks.  We&#39;re trying to go with approach that requires fewest changes to our existing cluster.  We currently use NFS re-export but I&#39;d like to do something a bit more scalable.
+
+For .cvmfspublished and .cvmfswhitelist, how would I instruct my clients to use those files from a local web server?  Would I have to modify CVMFS_SERVER_URL to point to my local system or would I just wget the files and drop them in the preloaded cache or some other method?
+
+Thanks,
+- Trey
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1498072015'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-21T19:06:55+00:00">Jun 21, 2017 07:06 PM UTC</time> by <b>echism</b><a class="anchor" name="1498072015">&nbsp;</a></div><pre>Trey,
+
+What are you thinking at this point?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34071#1497901936'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-19T19:52:16+00:00">Jun 19, 2017 07:52 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1497901936">&nbsp;</a></div><pre>I just learned about another option if you don&#39;t have local disk, one that has been being used for several months on a Cray computer at the Swiss National Supercomputing Centre.  They said their most performant and stable solution was to keep a per-node cache, but to put each cache in a separate large file mounted onto each node with a loopback device.   Here is a description of the technique&#58; <a href='http&#58;//cvmfs.readthedocs.io/en/stable/cpt-hpc.html#loopback-file-systems-for-nodes-caches' target='_blank' rel='nofollow'>http&#58;//cvmfs.readthedocs.io/en/stable/cpt-hpc.html#loopback-file-systems-for-nodes-caches</a></pre></div><div class='update_description'><i onclick="document.location='34071#1497889801'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-19T16:30:01+00:00">Jun 19, 2017 04:30 PM UTC</time> by <b>Dave Dykstra</b><a class="anchor" name="1497889801">&nbsp;</a></div><pre>Hi Trey,
+
+That should work, although you&#39;ll be doing something that is not very widely exercised so be prepared to watch it closely and be willing to work around any issues you find.  Let me know how it works out or if you have any problems.  I think you&#39;ll want to mirror the .cvmfspublished/.cvmfswhitelist files on your own web server because otherwise the clients might try to read something from a new version that you haven&#39;t yet populated to your alien cache with cvmfs_preload.  I&#39;m not sure if cvmfs_preload already mirrors those files or not, I haven&#39;t tried it myself, and I don&#39;t know of a way that you can do without having a way for clients to read them.  You shouldn&#39;t need a squid in your configuration at all if everything is preloaded.
+
+The OSG has a separate stratum 1 for use by sites that want to make full copies of repositories&#58; <a href='http&#58;//hcc-cvmfs.unl.edu&#58;8000.' target='_blank' rel='nofollow'>http&#58;//hcc-cvmfs.unl.edu&#58;8000.</a>  Please use that as your &#34;stratum 0&#34; source of repositories.
+
+How large is your /tmp?  If at all possible for you to repartition to give a piece of that to a separate filesystem for a cvmfs cache, that would be ideal and you could use a standard cvmfs installation.  I don&#39;t know of anybody that puts the cvmfs cache in /tmp directly.  Besides having to make sure nothing gets cleaned out, you&#39;d have the risk of other applications filling up the filesystem leaving the cvmfs cache with too little space.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='34071#1497886344'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-19T15:32:24+00:00">Jun 19, 2017 03:32 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1497886344">&nbsp;</a></div><pre>I&#39;m not sure about how well this would work.  I&#39;ve added Dave Dykstra who would be able to say for sure and can help with contacting the stratum 0 admins.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='34071#1497880009'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-19T13:46:49+00:00">Jun 19, 2017 01:46 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1497880009">&nbsp;</a></div><pre>Suchandra,
+
+Does Trey&#39;s solution sound reasonable?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34071#1497632673'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-16T17:04:33+00:00">Jun 16, 2017 05:04 PM UTC</time><a class="anchor" name="1497632673">&nbsp;</a></div><pre>We decided not to use /tmp.  I could use some input if our proposed solution for caching is valid.
+
+We plan to use Alien cache on a dedicated &#34;osg&#34; netapp volume where the alien cache will live in a directory on that volume.  We will pre-populate the cache for the repos we need to support.  All nodes will mount cvmfs via autofs and point to our squid proxy running on our CE.  The CE proxy should get minimal hits since the cache will be pre-populated.
+
+Does this approach sound like something that would work?  Based on CVMFS docs, we&#39;d need to notify stratum 0 admins before we run the cache population script for the first time.  Any advice on who to contact would be appreciated, if that&#39;s still a requirement.
+
+Thanks,
+- Trey
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><div class='update_description'><i onclick="document.location='34071#1497618047'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-16T13:00:47+00:00">Jun 16, 2017 01:00 PM UTC</time> by <b>echism</b><a class="anchor" name="1497618047">&nbsp;</a></div><pre>Trey,
+
+Is there anything further you want to discuss?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34071#1497307129'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-12T22:38:49+00:00">Jun 12, 2017 10:38 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1497307129">&nbsp;</a></div><pre>Hi Trey,
+
+I&#39;d try to give CVMFS about 20GB of space to use for it&#39;s cache.  It&#39;s possible to get it working with less space but you may run into problems.
+
+In regards to using /tmp , there aren&#39;t any problems with using that per se.  However, you need to make sure that tmpwatch and similar programs don&#39;t delete any of the CVMFS files.  I believe you can do this  using the -x option or the -U option (the files should all be owned by the cvmfs user).
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='34071#1497296686'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-12T19:44:46+00:00">Jun 12, 2017 07:44 PM UTC</time> by <b>echism</b><a class="anchor" name="1497296686">&nbsp;</a></div><pre>Trey,
+
+The documentation I have seems to recommend a lot more space than that, but I&#39;d prefer to let software remark directly.
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34071#1496935960'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-06-08T15:32:40+00:00">Jun 8, 2017 03:32 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1496935960">&nbsp;</a></div><pre>We are planning a new CE and adding OSG support to our new cluster.  Our current CE acts as a NFS server and exports numerous /cvmfs repos.  For our new environment we&#39;d like to have CVMFS running natively on each compute node.  Our compute nodes have their root filesystem on NFS share that is read-only.  We give each compute node a partition for /etc/rwtab and /etc/statetab and these are only 8GB each.  We do give a very large amount of disk space to each compute node for /tmp.  I wanted to know if there would be any issues pointing the CVMFS cache at /tmp.  My main concern is tmpwatch and what would happen if tmpwatch removed files under the CVMFS cache.
+
+Thanks,
+- Trey
+
+by /DC=org/DC=cilogon/C=US/O=Ohio State University/CN=John Dockendorf A59696</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F34071">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 34071});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[16139] How do I see if my resource is visible in BDII</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=16139" method="post">
+<div class="page-header">
+    <h3><span class="muted">16139</span> / How do I see if my resource is visible in BDII</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">David Joffe</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">Kennesaw Dell Nodes</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Belle</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">David Joffe</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">PNNL</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-11-06</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+        <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=16139", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/16139?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/16139?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20How%20do%20I%20see%20if%20my%20resource%20is%20visible%20in%20BDII%20ISSUE%3D16139%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='16139#1383946408'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-11-08T21:33:28+00:00">Nov 8, 2013 09:33 PM UTC</time> by <b>echism</b><a class="anchor" name="1383946408">&nbsp;</a></div><pre>At some point since the last time I checked, David completed this. I see this data appearing to both BDIIs now at <a href='http&#58;//is.grid.iu.edu/cgi-bin/status.cgi' target='_blank' rel='nofollow'>http&#58;//is.grid.iu.edu/cgi-bin/status.cgi</a>
+
+Well done, David! I&#39;m closing this ticket.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1383164368'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-30T20:19:28+00:00">Oct 30, 2013 08:19 PM UTC</time> by <b>echism</b><a class="anchor" name="1383164368">&nbsp;</a></div><pre>Just to update this, David&#39;s information is now visible to the OSG BDII. Once his OIM registration is complete with benchmark information, we&#39;ll publish to the WLCG BDII.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1382728690'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-25T19:18:10+00:00">Oct 25, 2013 07:18 PM UTC</time> by <b>echism</b><a class="anchor" name="1382728690">&nbsp;</a></div><pre>Hey David,
+
+I was booked for that time. I&#39;m going to send you my coordinates
+privately and you can just use them capriciously.
+
+Thanks,
+Elizabeth
+
+On 10/24/2013 07&#58;36 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1382657769'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-24T23:36:09+00:00">Oct 24, 2013 11:36 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1382657769">&nbsp;</a></div><pre>Can we do a phone call at noon tomorrow Eastern Time?</pre></div><div class='update_description'><i onclick="document.location='16139#1382649290'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-24T21:14:50+00:00">Oct 24, 2013 09:14 PM UTC</time> by <b>echism</b><a class="anchor" name="1382649290">&nbsp;</a></div><pre>David,
+
+Do you use instant messenger or can I set up a phone call with you? It may go a bit quicker. I am going to revisit your profile and look for more specific information.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1382128724'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T20:38:44+00:00">Oct 18, 2013 08:38 PM UTC</time><a class="anchor" name="1382128724">&nbsp;</a></div><pre>Hi Elizabeth,
+
+Here&#39;s the output&#58; /sbin/service --status-all | grep globus&#58;
+
+globus-gatekeeper is running (pid=26444)
+Stale PID file /var/run/globus-gridftp-server.pid
+sshftp access to globus-gridftp-server is disabled.
+globus-scheduler-event-generator (lsf) is not running
+globus-scheduler-event-generator (pbs) is not running
+globus-scheduler-event-generator (sge) is not running
+/etc/init.d/ip6tables&#58; line 45&#58; /etc/sysconfig/ip6tables-config&#58; Permission denied
+/etc/rc.d/init.d/functions&#58; line 141&#58; /var/run/sendmail.pid&#58; Permission denied
+sed&#58; can&#39;t read /etc/squid/squid.conf&#58; Permission denied
+FATAL&#58; Unable to open configuration file&#58; /etc/squid/squid.conf&#58; (13) Permission denied
+Squid Cache (Version 2.6.STABLE21)&#58; Terminated abnormally.
+CPU Usage&#58; 0.002 seconds = 0.000 user + 0.002 sys
+Maximum Resident Size&#58; 5984 KB
+Page faults with physical i/o&#58; 0
+/etc/init.d/squid&#58; line 143&#58;  8507 Aborted                 $SQUID -k check
+/etc/init.d/functions&#58; line 141&#58; /var/run/syslogd.pid&#58; Permission denied
+/etc/init.d/functions&#58; line 141&#58; /var/run/klogd.pid&#58; Permission denied
+grep&#58; /etc/webmin/miniserv.conf&#58; Permission denied
+
+If I try running it as root I get&#58;
+
+globus-gatekeeper is running (pid=26444)
+sshftp access to globus-gridftp-server is disabled.
+globus-scheduler-event-generator (lsf) is not running
+globus-scheduler-event-generator (pbs) is not running
+globus-scheduler-event-generator (sge) is not running
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1382128151'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T20:29:11+00:00">Oct 18, 2013 08:29 PM UTC</time> by <b>echism</b><a class="anchor" name="1382128151">&nbsp;</a></div><pre>David,
+
+Can you send me the output of /sbin/service --status-all | grep globus ?
+
+Thank you,
+Elizabeth
+
+On 10/18/2013 03&#58;49 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1382125748'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T19:49:08+00:00">Oct 18, 2013 07:49 PM UTC</time><a class="anchor" name="1382125748">&nbsp;</a></div><pre>Hi Elizabeth,
+
+There&#39;s a file in /var/log called globus-gatekeeper.log, but it&#39;s empty and has zero size. Am I looking in the right place?
+
+David
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1382125270'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T19:41:10+00:00">Oct 18, 2013 07:41 PM UTC</time> by <b>echism</b><a class="anchor" name="1382125270">&nbsp;</a></div><pre>David,
+
+Can you pull the most recent entries for me from globus-gatekeeper.log?
+
+Thank you,
+Elizabeth
+
+On 10/18/2013 03&#58;09 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1382123340'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T19:09:00+00:00">Oct 18, 2013 07:09 PM UTC</time><a class="anchor" name="1382123340">&nbsp;</a></div><pre>Hi Elizabeth,
+
+When I try&#58;
+
+globus-job-run prometheus.kennesaw.edu /bin/hostname
+
+I still get the error I did before&#58;
+
+GRAM Job submission failed because authentication with the remote server failed (error code 7)
+
+David
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1382122798'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T18:59:58+00:00">Oct 18, 2013 06:59 PM UTC</time><a class="anchor" name="1382122798">&nbsp;</a></div><pre>OK, I&#39;m now trying&#58;
+
+globus-job-run prometheus.kennesaw.edu /bin/hostname
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1382122029'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T18:47:09+00:00">Oct 18, 2013 06:47 PM UTC</time> by <b>echism</b><a class="anchor" name="1382122029">&nbsp;</a></div><pre>Yes, please test.
+
+Thank you,
+Elizabeth
+
+On 10/18/2013 12&#58;58 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1382115531'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T16:58:51+00:00">Oct 18, 2013 04:58 PM UTC</time><a class="anchor" name="1382115531">&nbsp;</a></div><pre>Thanks Elizabeth,
+
+So I did two things... first I issued the command&#58;
+
+/sbin/service edg-mkgridmap start
+
+but that didn&#39;t succeed in updating /etc/grid-security/grid-mapfile
+
+Then I issued the command&#58;
+
+/usr/sbin/edg-mkgridmap
+
+and that DID succeed in updating /etc/grid-security/grid-mapfile&#58; now all the lines in that file end in bellevo instead of belle. Do you think it&#39;s now ready to test?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1382115010'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T16:50:10+00:00">Oct 18, 2013 04:50 PM UTC</time> by <b>echism</b><a class="anchor" name="1382115010">&nbsp;</a></div><pre>Yes, sorry, I should have specified that if the service is running, it
+will write a gridmap at the interval the cron specifies, but you can
+also invoke it manually to speed up the process in the manner you
+described (although &#34;start&#34; is not necessary; it works just as
+/usr/sbin/edg-mkgridmap, but it is also ok with the start appended).
+
+You can double check /etc/grid-security/grid-mapfile for bellevo and if
+it&#39;s there then you&#39;re ready to test.
+
+Thank you,
+Elizabeth
+
+On 10/18/2013 12&#58;35 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1382114146'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T16:35:46+00:00">Oct 18, 2013 04:35 PM UTC</time><a class="anchor" name="1382114146">&nbsp;</a></div><pre>Thanks Elizabeth,
+
+I updated the edg-mkgridmap.conf file to change belle to bellevo, then I issued the command&#58;
+
+/sbin/service edg-mkgridmap start
+
+Will that command work for getting edg-mkgridmap to write a new mapfile?
+
+Thanks,
+
+David
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1382112312'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T16:05:12+00:00">Oct 18, 2013 04:05 PM UTC</time> by <b>echism</b><a class="anchor" name="1382112312">&nbsp;</a></div><pre>Yes, exactly that, and then just run edg-mkgridmap so it writes a new
+mapfile.
+
+Thank you,
+Elizabeth
+
+On 10/18/2013 11&#58;26 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1382109990'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T15:26:30+00:00">Oct 18, 2013 03:26 PM UTC</time><a class="anchor" name="1382109990">&nbsp;</a></div><pre>Hi Elizabeth,
+
+My edg-mkgridmap.conf has the line&#58;
+
+group vomss&#58;//voms.cc.kek.jp&#58;8443/voms/belle belle
+
+Am I correct to assume that to change edg-mkgripmap.conf so that bellevo is specified I need to change this line to&#58;
+
+group vomss&#58;//voms.cc.kek.jp&#58;8443/voms/belle bellevo
+
+Thanks,
+
+David
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1382106010'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T14:20:10+00:00">Oct 18, 2013 02:20 PM UTC</time> by <b>echism</b><a class="anchor" name="1382106010">&nbsp;</a></div><pre>David,
+
+The way your gridmap is set up, the username called will be belle
+
+If you want to change that, change edg-mkgridmap.conf so that bellevo is
+specified and invoke edg-mkgridmap or create a user named belle.
+
+Here is the general format&#58;
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/Edg-mkgridmap#3_0_Configuration' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/Edg-mkgridmap#3_0_Configuration</a>
+
+Thank you,
+Elizabeth
+
+On 10/18/2013 10&#58;08 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1382105295'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T14:08:15+00:00">Oct 18, 2013 02:08 PM UTC</time><a class="anchor" name="1382105295">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I have a local user set up for belle; the username is bellevo
+
+David
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1382102444'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-18T13:20:44+00:00">Oct 18, 2013 01:20 PM UTC</time> by <b>echism</b><a class="anchor" name="1382102444">&nbsp;</a></div><pre>David,
+
+Do you have a local user set up for belle?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1381352200'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T20:56:40+00:00">Oct 9, 2013 08:56 PM UTC</time><a class="anchor" name="1381352200">&nbsp;</a></div><pre>when I issue that command I see&#58;
+
+error&#58; globus_ftp_client&#58; the server responded with an error
+530 530-Login incorrect. &#58; globus_gss_assist&#58; Error invoking callout
+530-globus_callout_module&#58; The callout returned an error
+530-an unknown error occurred
+530 End.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1381351286'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T20:41:26+00:00">Oct 9, 2013 08:41 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1381351286">&nbsp;</a></div><pre>David,
+
+What do you see if you execute following command?
+
+<font color='#7F7E6F'>&#62; globus-url-copy file&#58;///etc/issue <a href='gsiftp&#58;//prometheus.kennesaw.edu/tmp/issue' target='_blank' rel='nofollow'>gsiftp&#58;//prometheus.kennesaw.edu/tmp/issue</a></font></pre></div><div class='update_description'><i onclick="document.location='16139#1381350608'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T20:30:08+00:00">Oct 9, 2013 08:30 PM UTC</time><a class="anchor" name="1381350608">&nbsp;</a></div><pre>OK, thanks. The grid-mapfile contains the line&#58;
+
+&#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971&#34; belle
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1381349774'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T20:16:14+00:00">Oct 9, 2013 08:16 PM UTC</time> by <b>echism</b><a class="anchor" name="1381349774">&nbsp;</a></div><pre>Hi David,
+
+Try /etc/grid-security/grid-mapfile and if it&#39;s not in that standard
+location just type &#34;locate grid-m&#34;
+
+Thank you,
+Elizabeth
+
+On 10/09/2013 03&#58;47 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1381348068'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T19:47:48+00:00">Oct 9, 2013 07:47 PM UTC</time><a class="anchor" name="1381348068">&nbsp;</a></div><pre>OK, where is my gridmapfile again?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1381347973'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T19:46:13+00:00">Oct 9, 2013 07:46 PM UTC</time> by <b>echism</b><a class="anchor" name="1381347973">&nbsp;</a></div><pre>David,
+
+You want to look for /DC=com/DC=DigiCert-Grid/O=Open Science
+Grid/OU=People/CN=David Joffe 971 in your gridmapfile.
+
+Thank you,
+Elizabeth
+
+On 10/09/2013 03&#58;36 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1381347382'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T19:36:22+00:00">Oct 9, 2013 07:36 PM UTC</time><a class="anchor" name="1381347382">&nbsp;</a></div><pre>OK, here&#39;s the output of grid-proxy-info&#58;
+
+[djoffe@prometheus .globus]$ grid-proxy-info
+subject  &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971/CN=433116916
+issuer   &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971
+identity &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971
+type     &#58; RFC 3820 compliant impersonation proxy
+strength &#58; 512 bits
+path     &#58; /tmp/x509up_u501
+timeleft &#58; 8&#58;58&#58;58
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1381342749'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T18:19:09+00:00">Oct 9, 2013 06:19 PM UTC</time> by <b>echism</b><a class="anchor" name="1381342749">&nbsp;</a></div><pre>It&#39;s a Distinguished Name that appears on your certificate to identify
+you. You can view it by invoking grid-proxy-info, if you just want to
+paste the output of that here.
+
+Thank you,
+Elizabeth
+
+On 10/09/2013 02&#58;07 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1381342042'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T18:07:22+00:00">Oct 9, 2013 06:07 PM UTC</time><a class="anchor" name="1381342042">&nbsp;</a></div><pre>I&#39;m not sure; what&#39;s a DN?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1381340951'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T17:49:11+00:00">Oct 9, 2013 05:49 PM UTC</time> by <b>echism</b><a class="anchor" name="1381340951">&nbsp;</a></div><pre>Is that DN in your gridmapfile?
+
+Thank you,
+Elizabeth
+
+On 10/09/2013 01&#58;25 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1381339557'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T17:25:57+00:00">Oct 9, 2013 05:25 PM UTC</time><a class="anchor" name="1381339557">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I&#39;m using edg-mkgridmap
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1381339149'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T17:19:09+00:00">Oct 9, 2013 05:19 PM UTC</time> by <b>echism</b><a class="anchor" name="1381339149">&nbsp;</a></div><pre>David,
+
+Are you using GUMS or edg-mkgridmap?
+
+Elizabeth
+
+On 10/09/2013 12&#58;47 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='16139#1381337232'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T16:47:12+00:00">Oct 9, 2013 04:47 PM UTC</time><a class="anchor" name="1381337232">&nbsp;</a></div><pre>Hi Elizabeth, Soichi,
+
+My apologies for the late reply...
+I can run grid-proxy-init without any issues. When I try to run
+
+globus-job-run prometheus.kennesaw.edu /bin/hostname
+
+I get the following error&#58;
+
+GRAM Job submission failed because authentication with the remote server failed (error code 7)
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1381335710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-10-09T16:21:50+00:00">Oct 9, 2013 04:21 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1381335710">&nbsp;</a></div><pre>David,
+
+Were you able to do grid-proxy-init && globus-job-run - as Elizabeth suggested? I can not reach prometheus.kennesaw.edu via traceroute / ping, so I think that there is still some network / firewall related issues, but I am not sure. Please let us know if you have any update.</pre></div><div class='update_description'><i onclick="document.location='16139#1380556462'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-30T15:54:22+00:00">Sep 30, 2013 03:54 PM UTC</time> by <b>echism</b><a class="anchor" name="1380556462">&nbsp;</a></div><pre>Hi David,
+
+I&#39;m sending another email out of band.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1379973985'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-23T22:06:25+00:00">Sep 23, 2013 10:06 PM UTC</time> by <b>echism</b><a class="anchor" name="1379973985">&nbsp;</a></div><pre>Hi David,
+
+I haven&#39;t heard from you in a while. Here&#39;s a document I think you might find useful.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1379365056'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T20:57:36+00:00">Sep 16, 2013 08:57 PM UTC</time> by <b>echism</b><a class="anchor" name="1379365056">&nbsp;</a></div><pre>Hi David,
+
+You need to do grid-proxy-init first, sorry about that.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1378414990'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-05T21:03:10+00:00">Sep 5, 2013 09:03 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1378414990">&nbsp;</a></div><pre>If I run &#34;globus-job-run prometheus.kennesaw.edu /bin/hostname&#34; I get&#58;
+
+ERROR&#58; Couldn&#39;t find a valid proxy.
+globus_sysconfig&#58; Could not find a valid proxy certificate file location
+globus_sysconfig&#58; Error with key filename
+globus_sysconfig&#58; File does not exist&#58; /tmp/x509up_u501 is not a valid file
+
+Use -debug for further information.
+ERROR&#58; proxy does not exist
+
+But I may be doing something very stupid here; probably I needed to source something before I tried globus-job-run.</pre></div><div class='update_description'><i onclick="document.location='16139#1378406288'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-05T18:38:08+00:00">Sep 5, 2013 06:38 PM UTC</time> by <b>echism</b><a class="anchor" name="1378406288">&nbsp;</a></div><pre>Hi David,
+
+Please have an authorized user run one simple job (ie globus-job-run prometheus.kennesaw.edu /bin/hostname)
+
+After the job has completed, restart tomcat.
+
+Then please send me /var/log/glite-ce-monitor/glite-ce-monitor.log or look for relevant output there about 15 minutes later.
+
+Thanks!
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1378405064'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-05T18:17:44+00:00">Sep 5, 2013 06:17 PM UTC</time> by <b>echism</b><a class="anchor" name="1378405064">&nbsp;</a></div><pre>Hi David,
+
+Sorry, I&#39;ve been out quite a bit lately. My newest job took a while to clunk along, but ultimately returned an auth failure, which is not unexpected with my proxy. You have probably not enabled any of my VOs. Progress!
+
+The bad news is that we&#39;re still not receiving a CEMon feed from you. I&#39;m re-examining your profile.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1377891190'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-30T19:33:10+00:00">Aug 30, 2013 07:33 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1377891190">&nbsp;</a></div><pre>At this point we believe that all the firewall rules have been changed to OSG specifications both for the campus firewall as well as for the firewall rules for the cluster itself.
+
+Is it possible to run a test of some sort? Is there something else I need to be doing to make my resource visible in BDII?</pre></div><div class='update_description'><i onclick="document.location='16139#1377793090'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-29T16:18:10+00:00">Aug 29, 2013 04:18 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1377793090">&nbsp;</a></div><pre>We&#39;ve finally got the go ahead from the university to open the firewall on their end. Can you try another test from your side?</pre></div><div class='update_description'><i onclick="document.location='16139#1377792481'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-29T16:08:01+00:00">Aug 29, 2013 04:08 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1377792481">&nbsp;</a></div><pre>Dave,
+
+Have you made any progress with the firewall and port issue?
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='16139#1376681804'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-16T19:36:44+00:00">Aug 16, 2013 07:36 PM UTC</time> by <b>echism</b><a class="anchor" name="1376681804">&nbsp;</a></div><pre>Hi Dave,
+
+Globus jobs enter on port 2119 and it is TCP. There are charts for the standard ports (save those that are arbitrarily chosen) on this page.
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/FirewallInformation' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/FirewallInformation</a>
+You can skip most of the text, I more use it as a cheat sheet.
+
+Thanks!
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1376489710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-14T14:15:10+00:00">Aug 14, 2013 02:15 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1376489710">&nbsp;</a></div><pre>Hi Elizabeth,
+
+To function a CE what ports are required for my gatekeeper machine, and with what protocol?
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='16139#1376084709'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-09T21:45:09+00:00">Aug 9, 2013 09:45 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1376084709">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I&#39;m actually visiting family for a few days, but I&#39;ll be back on campus on Monday and I&#39;ve asked about the firewall problem. Hopefully we can get it fixed when I get back and I will send you a message to try a test job.
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='16139#1376080556'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-09T20:35:56+00:00">Aug 9, 2013 08:35 PM UTC</time> by <b>echism</b><a class="anchor" name="1376080556">&nbsp;</a></div><pre>Hi Dave,
+
+Did you ever figure out if your institution is blocking the ports you&#39;re using? If they don&#39;t and you are doing fw logging, it&#39;s a good idea to check that. If you want me to run a test job so you can watch the logs in real-time, let me know!
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1375717358'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-08-05T15:42:38+00:00">Aug 5, 2013 03:42 PM UTC</time> by <b>Soichi Hayashi</b><a class="anchor" name="1375717358">&nbsp;</a></div><pre>Apart from the issue Elizabeth pointed out, can you take a look at your /var/log/glite-ce-monitor/glite-ce-monitor.log file in your CE and see if you are seeing messages like
+
+<font color='#7F7E6F'>&#62; 05 Aug 2013 15&#58;39&#58;55,046 org.glite.ce.monitor.holder.NotificationHolder - [name=subscription-http___is1_grid_iu_edu_14001-OSG_CE-RAW] - sending notification (containing 1 events) to <a href='http&#58;//is1.grid.iu.edu&#58;14001' target='_blank' rel='nofollow'>http&#58;//is1.grid.iu.edu&#58;14001</a> ...</font>
+<font color='#7F7E6F'>&#62; 05 Aug 2013 15&#58;39&#58;55,051 org.glite.ce.monitor.holder.NotificationHolder - [name=subscription-http___is1_grid_iu_edu_14001-OSG_CE-RAW] - [done]</font>
+
+I am not receiving any BDII info on <a href='http&#58;//is.grid.iu.edu/data/cemon_raw_incoming/' target='_blank' rel='nofollow'>http&#58;//is.grid.iu.edu/data/cemon_raw_incoming/</a>
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='16139#1375307499'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-31T21:51:39+00:00">Jul 31, 2013 09:51 PM UTC</time> by <b>echism</b><a class="anchor" name="1375307499">&nbsp;</a></div><pre>Dave,
+
+Your gatekeeper seems to be unreachable from here.
+
+2013-07-31 20&#58;20&#58;50 UTC [echism@echism&#58;~]$ globus-job-run prometheus.kennesaw.edu /bin/hostname
+GRAM Job submission failed because the connection to the server failed (check host and port) (error code 12)
+
+2013-07-31 21&#58;46&#58;31 UTC [echism@echism&#58;~]$ telnet prometheus.kennesaw.edu 2119
+Trying 130.218.241.233...
+telnet&#58; connect to address 130.218.241.233&#58; No route to host
+telnet&#58; Unable to connect to remote host&#58; No route to host
+
+If that is the case universally, and not just now, or just for me, all jobs will fail and CEMon will not work.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1375283336'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-31T15:08:56+00:00">Jul 31, 2013 03:08 PM UTC</time><a class="anchor" name="1375283336">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I&#39;m using Condor.
+
+Dave
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1375278758'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-31T13:52:38+00:00">Jul 31, 2013 01:52 PM UTC</time> by <b>echism</b><a class="anchor" name="1375278758">&nbsp;</a></div><pre>Hi David,
+
+What batch system are you using?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1374782751'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-25T20:05:51+00:00">Jul 25, 2013 08:05 PM UTC</time><a class="anchor" name="1374782751">&nbsp;</a></div><pre>Sorry, NOW here&#39;s the attachment...
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><div class='update_description'><i onclick="document.location='16139#1374782229'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-25T19:57:09+00:00">Jul 25, 2013 07:57 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1374782229">&nbsp;</a></div><pre>I am attaching the osg-profile.txt file that the osg-sytem-profiler gave for my host machine.</pre></div><div class='update_description'><i onclick="document.location='16139#1374781520'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-25T19:45:20+00:00">Jul 25, 2013 07:45 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1374781520">&nbsp;</a></div><pre>OK, I&#39;m running osg-system-profiler right now...</pre></div><div class='update_description'><i onclick="document.location='16139#1374780370'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-25T19:26:10+00:00">Jul 25, 2013 07:26 PM UTC</time> by <b>echism</b><a class="anchor" name="1374780370">&nbsp;</a></div><pre>Hi David,
+
+We&#39;re still not seeing even bad data from you. Is there anything for 2170 or 2180 in your firewall logs? Can you run osg-system-profiler as root and give us the file that creates? It will give us a good overview of your situation.
+
+Please note that an email attachment won&#39;t work and that you&#39;ll need to go to <a href='https&#58;//ticket.grid.iu.edu/goc/16139' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/16139</a> and click the add attachments button.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1374688812'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-24T18:00:12+00:00">Jul 24, 2013 06:00 PM UTC</time> by <b>djoffe@....</b><a class="anchor" name="1374688812">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I went through the TroubleShootingCEMonGIP page and discovered that I had a failure due to lack of purge option. I went to /etc/glite-ce-monitor/cemonitor-config.xml and changed my &#34;purgeAllEventsOnStartup&#34; value from false to true.
+
+Then I stopped and restarted tomcat.
+
+But I&#39;m still seeing the following error message in my /var/log/glite-ce-monitor/glite-ce-monitor.log file&#58;
+
+- the notification doesn&#39;t contains messages to be notified! [aborted]
+
+Do I need to do something else other than stopping and starting tomcat in order for the change I made in cemonitor-config.xml to be registered in the system?
+
+Cheers,
+
+Dave</pre></div><div class='update_description'><i onclick="document.location='16139#1374686562'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-24T17:22:42+00:00">Jul 24, 2013 05:22 PM UTC</time> by <b>echism</b><a class="anchor" name="1374686562">&nbsp;</a></div><pre>Hi David,
+
+This will mean that you are not visible, because CEMon is not reporting information to the collectors.
+
+You may find this useful <a href='https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/TroubleShootingCEMonGIP' target='_blank' rel='nofollow'>https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/TroubleShootingCEMonGIP</a>
+
+Also, please ensure that the appropriate ports (2170/2180) are usable.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='16139#1374685671'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-07-24T17:07:51+00:00">Jul 24, 2013 05:07 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1374685671">&nbsp;</a></div><pre>Hi,
+
+I am trying to make a CE resource available for MC production in the Belle VO. But the users are telling me that they can&#39;t see my resource on BDII. I know that PNNL had similar problems recently and I tried doing some clean up in the /etc/osg/config.d area and restarting tomcat, as David Cowley at PNNL suggested. But I&#39;m having trouble figuring out if what I did worked. Specifically how do I &#34;see&#34; my resource in BDII? I tried looking at the OSG CEMon-BDII Server Status on&#58;
+
+<a href='http&#58;//is.grid.iu.edu/cgi-bin/status.cgi' target='_blank' rel='nofollow'>http&#58;//is.grid.iu.edu/cgi-bin/status.cgi</a>
+
+and it shows my CE resource with the correct host name, but the remaining entries are N/A. That seems to be true for many sites, so I&#39;m not sure if this means my resource IS visible in BDII or not.
+
+Am I even looking in the right place for the BDII status of my CE?
+
+Thanks,
+
+Dave Joffe
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=David Joffe 971</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F16139">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 16139});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

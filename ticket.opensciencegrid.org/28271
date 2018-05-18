@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[28271] authentication works, but globus-job-run hangs</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=28271" method="post">
+<div class="page-header">
+    <h3><span class="muted">28271</span> / authentication works, but globus-job-run hangs</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Irena Johnson</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Irena Johnson</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">WIP</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-02-03</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=28271", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/28271?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/28271?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20authentication%20works%2C%20but%20globus-job-run%20hangs%20ISSUE%3D28271%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='28271#1454363753'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T21:55:53+00:00">Feb 1, 2016 09:55 PM UTC</time><a class="anchor" name="1454363753">&nbsp;</a></div><pre>Brian,
+
+Thanks! I just wanted to make sure I am not doing anything worng with the setup. I will check globus support. Thanks again for your help!
+
+- Irena
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454363050'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T21:44:10+00:00">Feb 1, 2016 09:44 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454363050">&nbsp;</a></div><pre>Irena,
+
+You could try disabling the SEG because I&#39;ve seen an issue with it and
+job statuses recently. There&#39;s not much globus expertise here,
+unfortunately, so you may want to try the globus user&#39;s mailing list.
+
+- Brian
+
+On 02/01/2016 03&#58;28 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28271#1454362079'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T21:27:59+00:00">Feb 1, 2016 09:27 PM UTC</time><a class="anchor" name="1454362079">&nbsp;</a></div><pre>Brian,
+
+Thank you! I was able to set the default jobmanager and I can submit a job, I can see the result, but the job shows ACTIVE instead of COMPLETE.  Do you know why?  This is what I had previously, when I had installed a mix of EPEL and OSG globus packages.
+
+$  globus-job-get-output <a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16506021153454264601/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16506021153454264601/18179527716261865856/</a>
+Mon Feb  1 16&#58;23&#58;56 EST 2016
+^C^C
+
+$ globus-job-status <a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16506021153454264601/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16506021153454264601/18179527716261865856/</a>
+ACTIVE
+$
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454361429'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T21:17:09+00:00">Feb 1, 2016 09:17 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454361429">&nbsp;</a></div><pre>You may want to try specifying &#39;-r
+transpgrid2.pppl.gov/jobmanager-fork&#39;. I think the &#39;-E&#39; flag for
+globus-gatekeeper-admin also allows you to set the default jobmanager so
+you may want to look into that.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='28271#1454361190'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T21:13:10+00:00">Feb 1, 2016 09:13 PM UTC</time><a class="anchor" name="1454361190">&nbsp;</a></div><pre>It works if I run
+
+$ globus-job-get-output -r transpgrid2.pppl.gov/jobmanager-fork  <a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16506017855652724956/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16506017855652724956/18179527716261865856/</a>
+Mon Feb  1 16&#58;07&#58;54 EST 2016
+
+^C^C
+
+But it&#39;s hanging again.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454360977'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T21:09:37+00:00">Feb 1, 2016 09:09 PM UTC</time><a class="anchor" name="1454360977">&nbsp;</a></div><pre>Thank you!
+
+I installed  globus-gram-job-manager-fork-setup-seg and now I have &#58;
+# globus-gatekeeper-admin -l
+jobmanager-fork-seg [ENABLED]
+jobmanager-fork [ALIAS to jobmanager-fork-seg]
+
+I can authenticate&#58;
+$ globusrun -a -r transpgrid2.pppl.gov/jobmanager-fork
+GRAM Authentication test successful
+
+I can submit a job&#58;
+$  globus-job-submit transpgrid2.pppl.gov/jobmanager-fork /bin/date
+<a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16506017855652724956/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16506017855652724956/18179527716261865856/</a>
+
+However, I am getting an error when I try to get the output&#58;
+$ globus-job-get-output -out <a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16506017855652724956/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16506017855652724956/18179527716261865856/</a>
+GRAM Job submission failed because the gatekeeper failed to find the requested service (error code 93)
+
+Do I have to specify &#34;jobmanager-fork&#34; when I run   globus-job-get-output ?
+Thank you,
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454359708'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T20:48:28+00:00">Feb 1, 2016 08:48 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454359708">&nbsp;</a></div><pre>Irena,
+
+You don&#39;t have any jobmanagers configured. If this machine will be part of the OSG, you will want to run osg-configure (though it doesn&#39;t look like you&#39;ve got that installed) and follow the OSG docs. However, that sounds like overkill for your needs so it may be best to find a non-OSG gatekeeper setup guide.
+
+From what I can tell though, you need to install &#39;globus-gram-job-manager-fork-setup-poll&#39; and you may need to configure it as your jobmanager with
+
+# globus-gatekeeper-admin -e jobmanager-fork-pool -n jobmanager
+# globus-gatekeeper-admin -e jobmanager-fork-pool -n jobmanager-fork
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='28271#1454358988'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T20:36:28+00:00">Feb 1, 2016 08:36 PM UTC</time><a class="anchor" name="1454358988">&nbsp;</a></div><pre># ls -lR /etc/grid-services
+/etc/grid-services&#58;
+total 4
+drwxr-xr-x 2 root root 4096 Apr 30  2015 available
+
+/etc/grid-services/available&#58;
+total 0
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454358928'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T20:35:28+00:00">Feb 1, 2016 08:35 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454358928">&nbsp;</a></div><pre>What&#39;s the output of &#96;ls -lR /etc/grid-services&#96;?</pre></div><div class='update_description'><i onclick="document.location='28271#1454358574'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T20:29:34+00:00">Feb 1, 2016 08:29 PM UTC</time><a class="anchor" name="1454358574">&nbsp;</a></div><pre>The command
+# globus-gatekeeper-admin -l
+doesn&#39;t return anything.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454358357'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T20:25:57+00:00">Feb 1, 2016 08:25 PM UTC</time><a class="anchor" name="1454358357">&nbsp;</a></div><pre>Yes, I get same error.
+
+$ globusrun -a -r transpgrid2.pppl.gov/jobmanager-fork
+GRAM Authentication test failure&#58; the gatekeeper failed to find the requested service
+
+$ globus-job-submit transpgrid2.pppl.gov/jobmanager-fork /bin/date
+GRAM Job submission failed because the gatekeeper failed to find the requested service (error code 93)
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454358137'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T20:22:17+00:00">Feb 1, 2016 08:22 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454358137">&nbsp;</a></div><pre>Have you tried running your command with the jobmanager specified?
+
+$ globusrun -a -r transpgrid2.pppl.gov/jobmanager-fork</pre></div><div class='update_description'><i onclick="document.location='28271#1454357087'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T20:04:47+00:00">Feb 1, 2016 08:04 PM UTC</time><a class="anchor" name="1454357087">&nbsp;</a></div><pre>- When I run as myself&#58;
+
+$ globusrun -a -r transpgrid2.pppl.gov
+
+GRAM Authentication test failure&#58; the gatekeeper failed to find the requested service
+
+- What I need is to replace our current server that runs an old version of globus -- with the latest stable version of globus toolkit. We are only using globus for file transfer and basic job submission (script),.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454355376'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T19:36:16+00:00">Feb 1, 2016 07:36 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454355376">&nbsp;</a></div><pre>Are you using a grid-mapfile or GUMS for your auth? What is the exact error that you&#39;re seeing when you &#39;globusrun&#39; as a regular user?
+
+I&#39;m a little confused here. Are you installing a machine for OSG use?</pre></div><div class='update_description'><i onclick="document.location='28271#1454355346'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T19:35:46+00:00">Feb 1, 2016 07:35 PM UTC</time><a class="anchor" name="1454355346">&nbsp;</a></div><pre>I am running &#34;globusrun -a -r transpgrid2.pppl.gov&#34; on locally transpgrid2.
+
+If I run this command on my desktop, I get&#58;
+GRAM Authentication test failure&#58; the gatekeeper failed to find the requested service
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454355008'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T19:30:08+00:00">Feb 1, 2016 07:30 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454355008">&nbsp;</a></div><pre>Just for my own understanding, are you running these commands from a separate host against transpgrid2.pppl.gov or are you running these commands locally from transpgrid2.pppl.gov?</pre></div><div class='update_description'><i onclick="document.location='28271#1454354962'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T19:29:22+00:00">Feb 1, 2016 07:29 PM UTC</time><a class="anchor" name="1454354962">&nbsp;</a></div><pre>I think I solved the problem with port 2811. I installed  globus-gridftp-server-progs, started the service globus-gridftp-server and now the port 2811 is open. This is different than Red Hat&#39;s globus configuration.
+
+But I still have the problem with the authentication (it worked before with the mix of RHEL/OSG packages). How can I get this working?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454354082'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T19:14:42+00:00">Feb 1, 2016 07:14 PM UTC</time><a class="anchor" name="1454354082">&nbsp;</a></div><pre>For some reason, as myself, I am also getting error&#58;
+
+$ globusrun -a -r transpgrid2.pppl.gov
+
+GRAM Authentication test failure&#58; the gatekeeper failed to find the requested service
+
+I noticed that port 2811 is not allowing connections -- I don&#39;t have a service listening on this port.
+gsiftp          2811/tcp                # GSI FTP
+gsiftp          2811/udp                # GSI FTP
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454353661'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T19:07:41+00:00">Feb 1, 2016 07:07 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454353661">&nbsp;</a></div><pre>That error makes me think that you&#39;re running the command as root. Have you tried running it as a regular user with a proxy?</pre></div><div class='update_description'><i onclick="document.location='28271#1454353323'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T19:02:03+00:00">Feb 1, 2016 07:02 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454353323">&nbsp;</a></div><pre>I&#39;m not sure about the exact packages you need installed since the list should be handled by yum if you have your yum repositories setup properly (<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/YumRepositories' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/YumRepositories</a>), which it looks like you do at a glance. Comparing your packages to my development machine, here&#39;s a list of OSG packages that should replace your non-OSG packages&#58;
+
+globus-callout-3.13-1.osg33.el6.x86_64
+globus-common-15.27-1.osg33.el6.x86_64
+globus-common-progs-15.27-1.osg33.el6.x86_64
+globus-ftp-client-8.19-1.2.osg33.el6.x86_64
+globus-ftp-control-6.6-1.1.osg33.el6.x86_64
+globus-gass-copy-9.13-1.osg33.el6.x86_64
+globus-gass-copy-progs-9.13-1.osg33.el6.x86_64
+globus-gass-server-ez-5.7-1.osg33.el6.x86_64
+globus-gass-transfer-8.8-1.osg33.el6.x86_64
+globus-gatekeeper-10.9-1.2.osg33.el6.x86_64
+globus-gram-client-13.12-1.osg33.el6.x86_64
+globus-gram-client-tools-11.7-1.osg33.el6.x86_64
+globus-gram-protocol-12.12-2.osg33.el6.x86_64
+globus-gsi-callback-5.7-1.osg33.el6.x86_64
+globus-gsi-cert-utils-9.10-1.osg33.el6.x86_64
+globus-gsi-cert-utils-progs-9.10-1.osg33.el6.noarch
+globus-gsi-credential-7.7-1.osg33.el6.x86_64
+globus-gsi-openssl-error-3.5-1.osg33.el6.x86_64
+globus-gsi-proxy-core-7.7-1.osg33.el6.x86_64
+globus-gsi-proxy-ssl-5.7-1.osg33.el6.x86_64
+globus-gsi-sysconfig-6.8-1.osg33.el6.x86_64
+globus-gss-assist-10.13-1.osg33.el6.x86_64
+globus-gssapi-error-5.4-1.osg33.el6.x86_64
+globus-gssapi-gsi-11.18-1.osg33.el6.x86_64
+globus-io-11.4-1.osg33.el6.x86_64
+globus-openssl-module-4.6-1.osg33.el6.x86_64
+globus-proxy-utils-6.9-1.osg33.el6.x86_64
+globus-rsl-10.9-1.osg33.el6.x86_64
+globus-xio-5.7-1.1.osg33.el6.x86_64
+globus-xio-popen-driver-3.5-1.osg33.el6.x86_64
+
+My only thought is that perhaps the GOC repos are serving you non-OSG versions of those packages since they share the same priority. You can check which repos you got your packages from with &#96;yum info &#60;packagename&#62;&#96;.</pre></div><div class='update_description'><i onclick="document.location='28271#1454353200'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T19:00:00+00:00">Feb 1, 2016 07:00 PM UTC</time><a class="anchor" name="1454353200">&nbsp;</a></div><pre>The error I am getting in /var/log/globus-gatekeeper.log &#58;
+
+TIME&#58; Mon Feb  1 13&#58;58&#58;54 2016
+PID&#58; 30167 -- Failure&#58; globus_gss_assist_gridmap() failed authorization. globus_gss_assist&#58; Gridmap lookup failure&#58; Could not map /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=transpgrid2.pppl.gov
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454352950'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T18:55:50+00:00">Feb 1, 2016 06:55 PM UTC</time><a class="anchor" name="1454352950">&nbsp;</a></div><pre>So, I removed all EPEL packages now and installed the OSG globus packages.  I restarted glbous-gatekeeper and xinetd.
+
+I am still getting authentication error&#58;
+
+# globusrun -a -r transpgrid2.pppl.gov
+
+GRAM Authentication test failure&#58; authentication with the remote server failed
+
+Any ideas what could be wrong ? Thank you,
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454351941'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T18:39:01+00:00">Feb 1, 2016 06:39 PM UTC</time><a class="anchor" name="1454351941">&nbsp;</a></div><pre>Do you have a list of OSG packages that I should install -- we need to have globus for file transfer (globus ftp server) and basic job submission.
+Thank you!
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454351663'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T18:34:23+00:00">Feb 1, 2016 06:34 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454351663">&nbsp;</a></div><pre>If there are OSG hostcerts involved it&#39;s probably safer to use all OSG packages. Let me know how that works out for you.</pre></div><div class='update_description'><i onclick="document.location='28271#1454350918'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T18:21:58+00:00">Feb 1, 2016 06:21 PM UTC</time><a class="anchor" name="1454350918">&nbsp;</a></div><pre>Thank you for the suggestion.
+
+I have removed all osg globus packages and installed the ones from EPEL.  However, now I am not even able to authenticate&#58;
+
+transpgrid2 grid-security]# globusrun -a -r transpgrid2.pppl.gov
+
+GRAM Authentication test failure&#58; authentication with the remote server failed
+
+Should I use the OSG packages instead? Thank you
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454343064'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T16:11:04+00:00">Feb 1, 2016 04:11 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454343064">&nbsp;</a></div><pre>Irena, you have a mix of RHEL/OSG globus packages unless you changed your installed RPM&#39;s from when you attached your osg-profile.txt. Here&#39;s a list of the OSG globus packages you have installed.
+
+globus-authz-3.10-1.osg33.el6.x86_64
+globus-authz-callout-error-3.5-1.osg33.el6.x86_64
+globus-gass-cache-9.5-1.osg33.el6.x86_64
+globus-gass-cache-program-6.5-1.osg33.el6.x86_64
+globus-gfork-4.7-1.osg33.el6.x86_64
+globus-gram-job-manager-14.25-1.2.osg33.el6.x86_64
+globus-gram-job-manager-callout-error-3.5-1.osg33.el6.x86_64
+globus-gram-job-manager-fork-2.4-1.1.osg33.el6.x86_64
+globus-gram-job-manager-fork-setup-seg-2.4-1.1.osg33.el6.x86_64
+globus-gram-job-manager-scripts-6.7-1.osg33.el6.noarch
+globus-gridftp-server-7.20-1.1.osg33.el6.x86_64
+globus-gridftp-server-control-3.6-1.osg33.el6.x86_64
+globus-gridftp-server-progs-7.20-1.1.osg33.el6.x86_64
+globus-scheduler-event-generator-5.10-2.1.osg33.el6.x86_64
+globus-scheduler-event-generator-progs-5.10-2.1.osg33.el6.x86_64
+globus-xio-pipe-driver-3.7-1.osg33.el6.x86_64
+
+You should make sure you either have all OSG or all RHEL globus packages.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='28271#1454342596'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-01T16:03:16+00:00">Feb 1, 2016 04:03 PM UTC</time><a class="anchor" name="1454342596">&nbsp;</a></div><pre>I am using Red Hat&#39;s packages for globus toolkit. I did install  osg-ca-certs  for the certificates.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1454019959'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-28T22:25:59+00:00">Jan 28, 2016 10:25 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1454019959">&nbsp;</a></div><pre>It looks like you&#39;ve got a mix of OSG and non-OSG globus packages. Have you installed and enabled yum priorities to make sure that you get all OSG globus packages?</pre></div><div class='update_description'><i onclick="document.location='28271#1454017437'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-28T21:43:57+00:00">Jan 28, 2016 09:43 PM UTC</time><a class="anchor" name="1454017437">&nbsp;</a></div><pre>Could you advise why globus-job-status shows &#34;ACTIVE&#34; and globus-job-get-output hangs ?
+
+$ globus-job-submit transpgrid2.pppl.gov /bin/date
+<a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16505982656718770846/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16505982656718770846/18179527716261865856/</a>
+$
+$ globus-job-get-output -out <a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16505982656718770846/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16505982656718770846/18179527716261865856/</a>
+Thu Jan 28 16&#58;39&#58;32 EST 2016
+
+^C^C
+$ globus-job-status <a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16505982656718770846/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16505982656718770846/18179527716261865856/</a>
+ACTIVE
+$
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1453738362'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-25T16:12:42+00:00">Jan 25, 2016 04:12 PM UTC</time><a class="anchor" name="1453738362">&nbsp;</a></div><pre>Although I did not make any changes, it seems now I get the output of the command I run, but I have to press &#60;CTRL+C&#62; twice in order to get back the prompt. Thanks,
+
+[ijohnson@transpgrid2]&#62;$ globus-job-submit transpgrid2.pppl.gov /bin/date
+<a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16506111287369318071/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16506111287369318071/18179527716261865856/</a>
+[ijohnson@transpgrid2]&#62;$ globus-job-get-output <a href='https&#58;//transpgrid2.pppl.gov&#58;52352/16506111287369318071/18179527716261865856/' target='_blank' rel='nofollow'>https&#58;//transpgrid2.pppl.gov&#58;52352/16506111287369318071/18179527716261865856/</a>
+Mon Jan 25 11&#58;00&#58;13 EST 2016
+
+^C^C
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1453501782'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-22T22:29:42+00:00">Jan 22, 2016 10:29 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1453501782">&nbsp;</a></div><pre>Could you attach &#39;/var/log/globus/globus-fork.log&#39;?</pre></div><div class='update_description'><i onclick="document.location='28271#1453491228'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-22T19:33:48+00:00">Jan 22, 2016 07:33 PM UTC</time><a class="anchor" name="1453491228">&nbsp;</a></div><pre>Please see attached file.
+
+We are only using globus for file transfer and basic job submission (script) using fork. I was able to do globus-url-copy.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><div class='update_description'><i onclick="document.location='28271#1453490448'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-22T19:20:48+00:00">Jan 22, 2016 07:20 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1453490448">&nbsp;</a></div><pre>Could you attach the output of osg-system-profiler? What batch system do you guys use?</pre></div><div class='update_description'><i onclick="document.location='28271#1453481288'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-01-22T16:48:08+00:00">Jan 22, 2016 04:48 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1453481288">&nbsp;</a></div><pre>Hello,
+
+I have deployed our new globus toolkit (version 6) server - running RHEL 6. I have installed the osg-ca-certs package and generated a new host certificate.
+
+I can authenticate&#58;
+$ globusrun -a -r transpgrid2.pppl.gov
+
+GRAM Authentication test successful
+
+However, running the following command just hangs&#58;
+$ globus-job-run transpgrid2.pppl.gov /bin/date
+
+Could you help me troubleshoot the problem? Thank you.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Irena Johnson 1116</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F28271">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 28271});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

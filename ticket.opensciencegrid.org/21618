@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[21618] NUMEP - multiple glidein failure modes</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=21618" method="post">
+<div class="page-header">
+    <h3><span class="muted">21618</span> / NUMEP - multiple glidein failure modes</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Daniel Klein</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">NUMEP_CE</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Gluex</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Daniel Klein</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">GLUEX</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-07-21</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">GLUEX <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=21618", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/21618?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/21618?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20NUMEP%20-%20multiple%20glidein%20failure%20modes%20ISSUE%3D21618%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='21618#1405540452'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T19:54:12+00:00">Jul 16, 2014 07:54 PM UTC</time> by <b>rynge@....</b><a class="anchor" name="1405540452">&nbsp;</a></div><pre>Of course, this is is easy to test.
+
+Thanks for your help,
+Mats
+
+On 07/16/2014 02&#58;20 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21618#1405534809'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T18:20:09+00:00">Jul 16, 2014 06:20 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1405534809">&nbsp;</a></div><pre>I&#39;m ok with closing it, the deeper issue of jobs not having environmental variables can be followed in the JIRA ticket (<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1538' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1538</a>).
+
+Mats&#58; Once the problem is solved, I think you could make the validation script strict again.</pre></div><div class='update_description'><i onclick="document.location='21618#1405534531'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T18:15:31+00:00">Jul 16, 2014 06:15 PM UTC</time><a class="anchor" name="1405534531">&nbsp;</a></div><pre>I can concur from the factory side that this problem looks resolved.
+
+We think this ticket can be closed unless anyone else has anything to add.
+
+Jeff Dost
+OSG Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='21618#1405515985'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T13:06:25+00:00">Jul 16, 2014 01:06 PM UTC</time><a class="anchor" name="1405515985">&nbsp;</a></div><pre>Hi all,  For what it&#39;s worth, I&#39;m seeing OSG jobs in my queues that have been running for &#62; 6 hours.
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1405471511'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T00:45:11+00:00">Jul 16, 2014 12:45 AM UTC</time> by <b>rynge@....</b><a class="anchor" name="1405471511">&nbsp;</a></div><pre>As it seems like &#34;which&#34; still is a problem, but globus-url-copy can be
+found, I have relaxed the validation script a little bit. Dan, can you
+check for glideins starting in an hour or so, and see if they pass the
+validation?
+
+Thanks,
+Mats
+
+On 07/15/2014 03&#58;29 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21618#1405452553'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-15T19:29:13+00:00">Jul 15, 2014 07:29 PM UTC</time><a class="anchor" name="1405452553">&nbsp;</a></div><pre>Hi Sean, all,
+
+Yep, we&#39;re still seeing 100% validation failure with the OSG glideins. Here&#39;s the latest output from Mats&#39; validation script&#58;
+
+Executing /var/lib/condor/execute/dir_5868/glide_89KOHy/client/node-validation
+INFO&#58;    This is an OSG-FLOCK node validation script.
+INFO&#58;    In case of problems, contact Mats Rynge (rynge@....)
+INFO&#58;    Checking disk space - 1 GB free is required
+INFO&#58;       There is 104 GB space available
+INFO&#58;    Checking the environment...
+INFO&#58;       checking PATH (/usr/local/bin&#58;/bin&#58;/usr/bin)
+WARNING&#58; The PATH does not have /usr/bin
+INFO&#58;       checking access to /usr/bin/
+
+ERROR&#58; source and dest url strings are required
+
+Syntax&#58; globus-url-copy [-help] [-vb] [-dbg] [-r] [-rst] [-s &#60;subject&#62;]
+[-p &#60;parallelism&#62;] [-tcp-bs &#60;size&#62;] [-bs &#60;size&#62;]
+-f &#60;filename&#62; | &#60;sourceURL&#62; &#60;destURL&#62;
+
+Use -help to display full usage
+
+INFO&#58;       checking for globus-url-copy
+FATAL ERROR&#58; globus-url-copy not found - this usually means that the wn package is not installed
+=== Glidein ending Tue Jul 15 13&#58;54&#58;38 CDT 2014 (1405450478) with code 1 after 1209 ===
+
+Cheers,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21618#1405438292'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-15T15:31:32+00:00">Jul 15, 2014 03:31 PM UTC</time><a class="anchor" name="1405438292">&nbsp;</a></div><pre>Hi Dan,
+
+I see that in my queues here there are a bunch of OSG jobs, but none are living beyond ~25 minutes, so I suspect there are still validation failures.
+Could you please send the output of one of the validation scripts so that we can see where the problem is?
+
+Thanks,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1405380725'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-14T23:32:05+00:00">Jul 14, 2014 11:32 PM UTC</time><a class="anchor" name="1405380725">&nbsp;</a></div><pre>Brian,
+
+Thanks!  That patch seems to work just fine.
+
+I guess now we can see tomorrow if the OSG glideins will pass validation.
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1405379541'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-14T23:12:21+00:00">Jul 14, 2014 11:12 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1405379541">&nbsp;</a></div><pre>Sean,
+
+I&#39;ve attached a patch, &#39;ce_run.txt&#39;. Apply the patch, reconfigure your CE and try condor_ce_run again&#58;
+
+patch -p0 &#60; ce_run.txt
+condor_ce_reconfig
+condor_ce_run -r &#96;hostname&#96;&#58;9619 test_exec.sh
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='21618#1405371514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-14T20:58:34+00:00">Jul 14, 2014 08:58 PM UTC</time><a class="anchor" name="1405371514">&nbsp;</a></div><pre>Brian, Glad to hear it!  Assuming that it&#39;s okay to pick out an arbitrary job id, here is what I see for those commands&#58;
+
+[sdobbs@numep-grid1 ~]$ condor_ce_q -l 148961.0 | grep -i env
+[sdobbs@numep-grid1 ~]$ condor_q -l 148961.0 | grep -i env
+Environment = &#34;OSG_GRID=&#39;/etc/osg/wn-client/&#39; OSG_SQUID_LOCATION=&#39;master.research.northwestern.edu&#58;3128&#39; OSG_SITE_READ=&#39;None&#39; OSG_APP=&#39;/nfs/osg/APP&#39; OSG_GLEXEC_LOCATION=&#39;None&#39; OSG_DATA=&#39;/nfs/osg/DATA&#39; OSG_HOSTNAME=&#39;numep-grid1.research.northwestern.edu&#39; OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;NUMEP_CE&#39; GLOBUS_LOCATION=&#39;/usr&#39; OSG_WN_TMP=&#39;/tmp/osg-scratch&#39; OSG_SITE_WRITE=&#39;None&#39; OSG_DEFAULT_SE=&#39;numep-grid6.research.northwestern.edu&#39; OSG_JOB_CONTACT=&#39;numep-grid1.research.northwestern.edu/jobmanager-condor&#39;&#34;
+osg_environment = &#34;OSG_GRID=&#39;/etc/osg/wn-client/&#39; OSG_SQUID_LOCATION=&#39;master.research.northwestern.edu&#58;3128&#39; OSG_SITE_READ=&#39;None&#39; OSG_APP=&#39;/nfs/osg/APP&#39; OSG_GLEXEC_LOCATION=&#39;None&#39; OSG_DATA=&#39;/nfs/osg/DATA&#39; OSG_HOSTNAME=&#39;numep-grid1.research.northwestern.edu&#39; OSG_STORAGE_ELEMENT=&#39;True&#39; OSG_SITE_NAME=&#39;NUMEP_CE&#39; GLOBUS_LOCATION=&#39;/usr&#39; OSG_WN_TMP=&#39;/tmp/osg-scratch&#39; OSG_SITE_WRITE=&#39;None&#39; OSG_DEFAULT_SE=&#39;numep-grid6.research.northwestern.edu&#39; OSG_JOB_CONTACT=&#39;numep-grid1.research.northwestern.edu/jobmanager-condor&#39;&#34;
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1405370928'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-14T20:48:48+00:00">Jul 14, 2014 08:48 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1405370928">&nbsp;</a></div><pre>Sean, I think I&#39;m making some progress on finding the issue here. Firstly, it&#39;s like what you said, condor_ce_run doesn&#39;t look like it&#39;s grabbing the environment like condor_run is. Secondly, even if condor_ce_run does have that environment set, it&#39;s not properly translating it once it hits the job router. If you could running condor_ce_run again and then run&#58;
+
+condor_ce_q -l &#60;job id&#62; | grep -i env
+condor_q -l &#60;job id&#62; | grep -i env
+
+That will tell me if you&#39;re seeing the same issues that I am.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='21618#1405093778'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T15:49:38+00:00">Jul 11, 2014 03:49 PM UTC</time><a class="anchor" name="1405093778">&nbsp;</a></div><pre>Brian,
+
+As I understand the problem, the PATH variable is being set in the script, which is why it&#39;s not surprising that you can actually run something like globus-url-copy, but it&#39;s not being exported which is why the which program doesn&#39;t see the PATH.  (I hope it is clear which which is which =)
+
+I did a little more digging, and it turns out that in the default installation of CentOS 6, curiously /etc/bashrc will set the PATH, but the PATH is only exported in /etc/profile (!).  If I run the test script with bash invoked as a login shell (&#34;bash -l&#34;), then we get the correct output.  So that&#39;s one potential solution to the problem of Mats&#39; verification script.
+
+It&#39;s still a bit confusing to me why condor_run and condor_ce_run give different results.  Some speculation&#58; for the script to give the correct output, it must be inheriting some environment from its parent that has the PATH correctly set, so it can pass that on to the which program. If jobs run through the normal condor programs are inheriting this environment but those through HTCondor-CE aren&#39;t, either the environment isn&#39;t being set or is being stripped at some point, maybe at the job routing stage?
+
+I don&#39;t know what your preferred solution is, but I hope this gives some more insight into what might be going on.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1405089034'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T14:30:34+00:00">Jul 11, 2014 02:30 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1405089034">&nbsp;</a></div><pre>Sean&#58; I&#39;ve reproduced your results with condor_ce_run vs condor_run but noticed that if I add &#39;globus-url-copy -help&#39; to the end of the script, it finds globus-url-copy, even without exporting the PATH. Additionally, submitting as a job via condor_submit resulted in similar behavior. I think we may need to rethink the PATH variable as the culprit here.</pre></div><div class='update_description'><i onclick="document.location='21618#1405029676'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-10T22:01:16+00:00">Jul 10, 2014 10:01 PM UTC</time><a class="anchor" name="1405029676">&nbsp;</a></div><pre>Brian,
+
+No problem, I&#39;ve attached the file here.  Let me know if you need anything else.
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1405025417'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-10T20:50:17+00:00">Jul 10, 2014 08:50 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1405025417">&nbsp;</a></div><pre>Sean,
+
+I&#39;ve created a JIRA ticket here <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1538.' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1538.</a> Do you think you could attach the output of osg-system-profiler as well while we&#39;re at it?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='21618#1405011243'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-10T16:54:03+00:00">Jul 10, 2014 04:54 PM UTC</time><a class="anchor" name="1405011243">&nbsp;</a></div><pre>Yes, that does seem to be the case.  I&#39;ve attached a simple test script that illustrates the problem.  The output of the script differs depending on if the line exporting PATH is commented out or not, as follows&#58;
+
+no &#34;export PATH&#34;&#58;
+PATH = /usr/local/bin&#58;/bin&#58;/usr/bin
+which&#58; no which in ((null))
+which&#58; no globus-url-copy in ((null))
+
+with &#34;export PATH&#34;&#58;
+PATH = /usr/local/bin&#58;/bin&#58;/usr/bin
+/usr/bin/which
+/usr/bin/globus-url-copy
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1405008361'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-10T16:06:01+00:00">Jul 10, 2014 04:06 PM UTC</time><a class="anchor" name="1405008361">&nbsp;</a></div><pre>Brian,
+
+It looks like PATH is set, but not exported. I&#39;m not sure how that is even possible, and it is difficult to debug when it happens within GlideinWMS. Sean says he has a simple test case showing the failure, so maybe he can share that to help narrow down the problem.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Mats Rynge 45</pre></div><div class='update_description'><i onclick="document.location='21618#1405006969'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-10T15:42:49+00:00">Jul 10, 2014 03:42 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1405006969">&nbsp;</a></div><pre>So as I understand it, jobs that get submitted with HTCondor-CE don&#39;t have PATH (and potentially other environmental variables) set properly?</pre></div><div class='update_description'><i onclick="document.location='21618#1404950838'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-10T00:07:18+00:00">Jul 10, 2014 12:07 AM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1404950838">&nbsp;</a></div><pre>Yeah, Brian Lin is on point for HTCondor CE right now, so I have added him to the ticket.</pre></div><div class='update_description'><i onclick="document.location='21618#1404943131'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T21:58:51+00:00">Jul 9, 2014 09:58 PM UTC</time><a class="anchor" name="1404943131">&nbsp;</a></div><pre>Great! Well if it is a HTCondorCE issue, we should have the software team have a look. I will send them an email.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Mats Rynge 45</pre></div><div class='update_description'><i onclick="document.location='21618#1404940770'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T21:19:30+00:00">Jul 9, 2014 09:19 PM UTC</time><a class="anchor" name="1404940770">&nbsp;</a></div><pre>Hi all,
+
+It seems like we&#39;ve hit a weird edge case here, in that the PATH variable is being set, but the environment isn&#39;t being properly setup.
+
+I was able to reproduce the behavior of Mats&#39; validation script, where the which program was returning &#34;which&#58; no globus-url-copy in ((null))&#34;, and then fixed the problem by adding the line &#34;export PATH&#34; to the script before running which.  If you&#39;re interested I can provide examples.
+
+I&#39;m guessing this is a problem related to HTCondor-CE, since I only see this problem when I run the script through it (i.e. condor_ce_run), and not when I run the job through my local condor instance (i.e. condor_run).  I think Dan&#39;s suggestion is on the right track, but I upgraded this server from a classic GRAM CE, so my guess is that I have a similar situation to what you have at UCSD.
+
+Any other thoughts on where to go from here?
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1404927187'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T17:33:07+00:00">Jul 9, 2014 05:33 PM UTC</time><a class="anchor" name="1404927187">&nbsp;</a></div><pre>Hi all,
+
+I&#39;m not sure whether this is applicable or not, but I thought I&#39;d chip in, for what it&#39;s worth. Terrence, our admin here at UCSD, recently installed a new HTCondorCE, and we saw problems with glexec tests failing because some important environment variables weren&#39;t being set. Apparently the stock HTCondorCE software is pretty minimal at the moment, and is missing a few important bits. Terrence says he tried installing the OSG CE software in addition to the HTCondorCE, and that seemed to fix the problem. I wonder if we&#39;re also running into problems at NUMEP because some important pieces are missing from the current release of HTCondorCE? (Just throwing out an idea).
+
+Cheers,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21618#1404926235'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T17:17:15+00:00">Jul 9, 2014 05:17 PM UTC</time><a class="anchor" name="1404926235">&nbsp;</a></div><pre>Dan - I changed the validation script again to not output all that debugging info.
+
+Sean - Well, PATH is set (/usr/local/bin&#58;/bin&#58;/usr/bin), but it seems like some basic commands do not work. For example, &#34;which globus-url-copy&#34; is one of the tests which fails.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Mats Rynge 45</pre></div><div class='update_description'><i onclick="document.location='21618#1404925317'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T17:01:57+00:00">Jul 9, 2014 05:01 PM UTC</time><a class="anchor" name="1404925317">&nbsp;</a></div><pre>Hi Dan,
+
+Thanks for the info.  The environment variables look similar to what I&#39;ve seen in some test jobs.  I&#39;m surprised the PATH isn&#39;t set - could this be some configuration problem with HTCondor-CE?
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1404924825'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T16:53:45+00:00">Jul 9, 2014 04:53 PM UTC</time><a class="anchor" name="1404924825">&nbsp;</a></div><pre>Hi Mats,
+
+Here&#39;s what the output looks like today&#58;
+
+Executing /var/lib/condor/execute/dir_13573/glide_MzhrFu/client/node-validation
+INFO&#58;    This is an OSG-FLOCK node validation script.
+INFO&#58;    In case of problems, contact Mats Rynge (rynge@....)
+INFO&#58;    Checking disk space - 1 GB free is required
+INFO&#58;       There is 353 GB space available
+INFO&#58;    Checking the environment...
+INFO&#58;       checking PATH (/usr/local/bin&#58;/bin&#58;/usr/bin)
+WARNING&#58; The PATH does not have /usr/bin
+INFO&#58;       checking access to /usr/bin/
+INFO&#58;    Extra checks for debugging...
++ env
++ grep &#39;^PATH&#39;
++ grep /usr/bin
+which&#58; no globus-url-copy in ((null))
+
+[Some 1200 lines of output from &#39;ls -l&#39; follow. It&#39;s an awful lot to paste into a ticket, but I&#39;ll send you the entire output by email]
+
+_CONDOR_JOB_PIDS=
+_CONDOR_ANCESTOR_13573=14659&#58;1404922111&#58;572533807
+OSG_GLEXEC_LOCATION=None
+_CONDOR_ANCESTOR_2725=13573&#58;1404922110&#58;2711319099
+TMPDIR=/var/lib/condor/execute/dir_13573
+GLOBUS_LOCATION=/usr
+_CONDOR_SCRATCH_DIR=/var/lib/condor/execute/dir_13573
+OSG_WN_TMP=/tmp/osg-scratch
+OSG_JOB_CONTACT=numep-grid1.research.northwestern.edu/jobmanager-condor
+OSG_SQUID_LOCATION=master.research.northwestern.edu&#58;3128
+OSG_SITE_WRITE=None
+TEMP=/var/lib/condor/execute/dir_13573
+OSG_SITE_READ=None
+_CONDOR_ANCESTOR_2715=2725&#58;1403714567&#58;3763001272
+<div id='show_1291762023' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1291762023'>OSG_DATA=/nfs/osg/DATA
+OSG_APP=/nfs/osg/APP
+PWD=/var/lib/condor/execute/dir_13573/glide_MzhrFu
+LANG=C
+_CONDOR_SLOT=slot17
+OSG_GRID=/etc/osg/wn-client/
+OSG_HOSTNAME=numep-grid1.research.northwestern.edu
+SHLVL=2
+OSG_STORAGE_ELEMENT=True
+_CONDOR_MACHINE_AD=/var/lib/condor/execute/dir_13573/.machine.ad
+X509_USER_PROXY=/var/lib/condor/execute/dir_13573/credential_osg-flock-grid-iu-edu_OSG_gWMSFrontend.main_907675
+OSG_DEFAULT_SE=numep-grid6.research.northwestern.edu
+TMP=/var/lib/condor/execute/dir_13573
+OSG_SITE_NAME=NUMEP_CE
+_CONDOR_JOB_AD=/var/lib/condor/execute/dir_13573/.job.ad
+_CONDOR_JOB_IWD=/var/lib/condor/execute/dir_13573
+_=/bin/env
+
+INFO&#58;       checking for globus-url-copy
+FATAL ERROR&#58; globus-url-copy not found - this usually means that the wn package is not installed
+=== Glidein ending Wed Jul  9 11&#58;28&#58;42 CDT 2014 (1404923322) with code 1 after 1211 ===
+
+Cheers,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein
+</div><script type='text/javascript'>
+        $('#show_1291762023').click(function() {
+            $('#detail_1291762023').slideDown("normal");
+            $('#show_1291762023').hide();
+            $('#hide_1291762023').show();
+        });
+        $('#hide_1291762023').click(function() {
+            $('#detail_1291762023').slideUp();
+            $('#hide_1291762023').hide();
+            $('#show_1291762023').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='21618#1404920062'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T15:34:22+00:00">Jul 9, 2014 03:34 PM UTC</time><a class="anchor" name="1404920062">&nbsp;</a></div><pre>Dan,
+
+Can you tell me what the verification script outputs now?
+
+Thanks,
+Mats
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Mats Rynge 45</pre></div><div class='update_description'><i onclick="document.location='21618#1404918106'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-09T15:01:46+00:00">Jul 9, 2014 03:01 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1404918106">&nbsp;</a></div><pre>Hello All,
+
+Does anyone have any new information on this?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='21618#1404432028'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-04T00:00:28+00:00">Jul 4, 2014 12:00 AM UTC</time><a class="anchor" name="1404432028">&nbsp;</a></div><pre>Hi Mats,
+
+Here&#39;s the output from your latest version of the script&#58;
+
+INFO&#58;    This is an OSG-FLOCK node validation script.
+INFO&#58;    In case of problems, contact Mats Rynge (rynge@....)
+INFO&#58;    Checking disk space - 1 GB free is required
+INFO&#58;       There is 352 GB space available
+INFO&#58;    Checking the environment...
+INFO&#58;       checking PATH (/usr/local/bin&#58;/bin&#58;/usr/bin)
+WARNING&#58; The PATH does not have /usr/bin
+INFO&#58;       checking access to /usr/bin/
+INFO&#58;       checking for globus-url-copy
+FATAL ERROR&#58; globus-url-copy not found - this usually means that the wn package is not installed
+
+I don&#39;t see a warning after it checks the accessibility of /usr/bin - does that mean the directory is accessible after all?
+
+I also don&#39;t see any improvement in the last hour, but of course that&#39;s not very long for things to right themselves. Perhaps the picture will look different on Monday.
+
+Happy Fourth,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21618#1404428126'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-03T22:55:26+00:00">Jul 3, 2014 10:55 PM UTC</time><a class="anchor" name="1404428126">&nbsp;</a></div><pre>Hi all,
+
+The WNs run CentOS 6.5, but I think that SELinux might have been the problem - I checked and it seems to have gotten turned back on after the reboot.  I&#39;ve gone through and disabled it, so hopefully that will fix it!
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1404427449'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-03T22:44:09+00:00">Jul 3, 2014 10:44 PM UTC</time> by <b>rynge@....</b><a class="anchor" name="1404427449">&nbsp;</a></div><pre>Well, that is weird. I had a misspelling in there, but the PATH returned
+does look valid. I still suspect that access to /usr/bin does not work
+properly. What is the operating system on these nodes? Do they have
+anything like SELinux enabled?
+
+In the meantime, I have added some more checks to the validation script.
+Dan - if you have a moment later, can you take another look at the output?
+
+Thanks!
+Mats
+
+On 07/03/2014 03&#58;18 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21618#1404425884'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-03T22:18:04+00:00">Jul 3, 2014 10:18 PM UTC</time><a class="anchor" name="1404425884">&nbsp;</a></div><pre>Hi Mats,
+
+Here&#39;s the output from a recent glidein&#58;
+
+Executing /var/lib/condor/execute/dir_10600/glide_k8JD0K/client/node-validation
+INFO&#58;    This is an OSG-FLOCK node validation script.
+INFO&#58;    In case of problems, contact Mats Rynge (rynge@....)
+INFO&#58;    Checking disk space - 1 GB free is required
+INFO&#58;       There is 355 GB space available
+INFO&#58;    Checking the environment...
+INFO&#58;       checking PATH (/usr/local/bin&#58;/bin&#58;/usr/bin)
+WARNING&#58; The PATH does not have /usb/bin
+INFO&#58;       checking for globus-url-copy
+FATAL ERROR&#58; globus-url-copy not found - this usually means that the wn package is not installed
+=== Glidein ending Thu Jul  3 16&#58;51&#58;22 CDT 2014 (1404424282) with code 1 after 1231 ===
+
+Hope this helps!
+
+-Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21618#1404413415'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-03T18:50:15+00:00">Jul 3, 2014 06:50 PM UTC</time> by <b>rynge@....</b><a class="anchor" name="1404413415">&nbsp;</a></div><pre>I don&#39;t know much about the HTCondor-CE, but my guess is that the PATH
+is not being set.
+
+I have added some extra checks in the our node validation script. Dan -
+can you make sure some new glideins get submitted, and check the errors
+from those?
+
+Thanks,
+Mats
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21618#1404412074'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-03T18:27:54+00:00">Jul 3, 2014 06:27 PM UTC</time><a class="anchor" name="1404412074">&nbsp;</a></div><pre>Hi Sean,
+
+I&#39;m adding Mats from OSG into CC so that he can advise us. Based on what you&#39;ve told me, and what I see from other frontends, it seems like only his specific script is failing to find globus-url-copy, and it&#39;s not a problem for other VOs.
+
+Mats&#58; any thoughts?
+
+Thanks,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='21618#1404255431'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-01T22:57:11+00:00">Jul 1, 2014 10:57 PM UTC</time><a class="anchor" name="1404255431">&nbsp;</a></div><pre>Hi Dan,
+
+I&#39;ve checked my WNs, and they do have globus-url-copy and the usual osg-wn-client package installed (I assume that /usr/bin is in your PATH...)
+This problem seems to have shown up after the WNs were powered back up after some electrical work here, and after we transitioned to HTCondor-CE, so I don&#39;t know if it&#39;s related to either of these events.
+
+Let me know what the next step you&#39;d like to take is, or if you need any additional info.
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21618#1404244910'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-01T20:01:50+00:00">Jul 1, 2014 08:01 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1404244910">&nbsp;</a></div><pre>Hi,
+
+Beginning last Friday afternoon, and continuing over the weekend, it appears 100% of glideins sent to the CE numep-grid1.research.northwestern.edu have failed validation. Checking the glidein logs, I see a few different failure reasons. The most common problem I see is that several WNs are missing globus-url-copy, causing glideins from the OSG VO to fail validation. Since this is the most prevalent error, I&#39;d like to try and address it first. The error messages look like this&#58;
+
+Executing /var/lib/condor/execute/dir_12066/glide_wGsdGS/client/node-validation
+INFO&#58;    This is an OSG-FLOCK node validation script.
+INFO&#58;    In case of problems, contact Mats Rynge (rynge@....)
+INFO&#58;    Checking disk space - 1 GB free is required
+INFO&#58;       There is 351 GB space available
+INFO&#58;    Checking the environment...
+INFO&#58;       checking for globus-url-copy
+FATAL ERROR&#58; globus-url-copy not found - this usually means that the wn package is not installed
+
+The nodes on which I currently see this problem are&#58;
+numep-proc1
+numep-proc3
+numep-proc4
+numep-proc5
+numep-proc6
+numep-proc8
+numep-proc9
+numep-proc10
+numep-proc11
+numep-proc13
+numep-proc14
+numep-proc15
+numep-proc16
+numep-proc17
+numep-proc18
+numep-proc19
+
+Could somebody please take a look, and try to install the necessary software? Once that&#39;s taken care of, we can address any other issues.
+
+Thanks,
+Dan Klein
+<div id='show_617552932' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_617552932'>UCSD Glidein Factory Operations
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein
+
+</div><script type='text/javascript'>
+        $('#show_617552932').click(function() {
+            $('#detail_617552932').slideDown("normal");
+            $('#show_617552932').hide();
+            $('#hide_617552932').show();
+        });
+        $('#hide_617552932').click(function() {
+            $('#detail_617552932').slideUp();
+            $('#hide_617552932').hide();
+            $('#show_617552932').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F21618">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 21618});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[22976] GIP validation failing for CE after decommissioned old CE</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=22976" method="post">
+<div class="page-header">
+    <h3><span class="muted">22976</span> / GIP validation failing for CE after decommissioned old CE</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Dockendorf</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">TAMU_BRAZOS_CE</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">John Dockendorf</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier3</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Resolved</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-11-04</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">USCMS_Tier3 <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=22976", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/22976?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/22976?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20GIP%20validation%20failing%20for%20CE%20after%20decommissioned%20old%20CE%20ISSUE%3D22976%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='22976#1415129699'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-04T19:34:59+00:00">Nov 4, 2014 07:34 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1415129699">&nbsp;</a></div><pre>Thanks, Mat.  Software ticket has been created and this has been resolved.  Closing as resolved.
+
+Thank you,
+Vince</pre></div><div class='update_description'><i onclick="document.location='22976#1415045741'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-03T20:15:41+00:00">Nov 3, 2014 08:15 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1415045741">&nbsp;</a></div><pre>I&#39;ll keep track of it in SOFTWARE-1662. We should be able to put the patched gip into the December release.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22976#1415036886'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-03T17:48:06+00:00">Nov 3, 2014 05:48 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1415036886">&nbsp;</a></div><pre>Let me make a software ticket about this first.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='22976#1415033754'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-03T16:55:54+00:00">Nov 3, 2014 04:55 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1415033754">&nbsp;</a></div><pre>Great news.  I will set this ticket to monitor/resolve in 24 hours.
+
+Thanks!
+Vince</pre></div><div class='update_description'><i onclick="document.location='22976#1415032369'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-03T16:32:49+00:00">Nov 3, 2014 04:32 PM UTC</time><a class="anchor" name="1415032369">&nbsp;</a></div><pre>Sorry for delay, but late Friday I think a resolution was found with help of Steve Johnson and Burt Holzman.
+
+Change
+queue_info_cmd = &#39;sinfo -h -o &#34;%P %a %C %l&#34;&#39;
+to
+queue_info_cmd = &#39;sinfo -h -o &#34;%R %a %C %l&#34;&#39;
+
+That is in /usr/lib/python2.6/site-packages/slurm_common.py around line #21
+
+The %P option outputs a default partition as &#34;serial*&#34; which is not how the jobs in squeue are printed.  This likely caused issues when jobs from that partition were output from squeue and sinfo had no matching partition name.
+
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='22976#1415031772'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-11-03T16:22:52+00:00">Nov 3, 2014 04:22 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1415031772">&nbsp;</a></div><pre>Mat, can you take a look at this?</pre></div><div class='update_description'><i onclick="document.location='22976#1414714804'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-31T00:20:04+00:00">Oct 31, 2014 12:20 AM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414714804">&nbsp;</a></div><pre>Software Team,
+
+When running gip_info John will occasionally receive the below Python error.   Would you please review the errors and advise?
+
+Error&#58;
+GIP.SLURM&#58;INFO slurm_common&#58;246&#58;  The RVF lists the following queues&#58; grid, hepx.
+GIP.Cluster&#58;ERROR cluster&#58;75&#58;  &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cluster.py&#34;, line 73, in main
+print_clusters(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cluster.py&#34;, line 35, in print_clusters
+ces = getCEList(cp, extraCEs)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 49, in getCEList
+queue_entries = getSlurmQueueList(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 247, in getQueueList
+for queue in getQueueInfo(cp)&#58;
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+GIP.CESEBind&#58;ERROR cese_bind&#58;36&#58;  &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/libexec/gip/providers/ce_to_se_map&#34;, line 15, in &#60;module&#62;
+main()
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cese_bind.py&#34;, line 33, in main
+print_CESEBind(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cese_bind.py&#34;, line 19, in print_CESEBind
+bind_info = getCESEBindInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 149, in getCESEBindInfo
+ce_list = getCEList(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 49, in getCEList
+queue_entries = getSlurmQueueList(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 247, in getQueueList
+for queue in getQueueInfo(cp)&#58;
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+<div id='show_433615794' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_433615794'>KeyError&#58; &#39;serial&#39;
+GIP.SLURM&#58;ERROR slurm&#58;201&#58;  &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 197, in main
+queueInfo = print_CE(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 25, in print_CE
+queueInfo = getQueueInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/libexec/gip/providers/batch_system&#34;, line 42, in &#60;module&#62;
+main()
+File &#34;/usr/libexec/gip/providers/batch_system&#34;, line 36, in main
+slurm_main()
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 197, in main
+queueInfo = print_CE(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 25, in print_CE
+queueInfo = getQueueInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+
+Thank you,
+Vince
+</div><script type='text/javascript'>
+        $('#show_433615794').click(function() {
+            $('#detail_433615794').slideDown("normal");
+            $('#show_433615794').hide();
+            $('#hide_433615794').show();
+        });
+        $('#hide_433615794').click(function() {
+            $('#detail_433615794').slideUp();
+            $('#hide_433615794').hide();
+            $('#show_433615794').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22976#1414714578'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-31T00:16:18+00:00">Oct 31, 2014 12:16 AM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414714578">&nbsp;</a></div><pre>Good evening,
+
+I can&#39;t seem to duplicate the problem on my end and I&#39;m not certain about the Python errors so I am going to request assistance
+from the Software Team.
+
+Thank you,
+Vince</pre></div><div class='update_description'><i onclick="document.location='22976#1414638201'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-30T03:03:21+00:00">Oct 30, 2014 03:03 AM UTC</time><a class="anchor" name="1414638201">&nbsp;</a></div><pre>ce01 has osg-info-services enabled and set to launch on boot.  What&#39;s odd is that sometimes gip_info and osg-info-services run without error, and other times they throw Python errors.
+
+I recall having issues with how the Python code parsed output from SLURM, and I&#39;m wondering if there&#39;s some data in the queues that periodically breaks the parsing.
+
+I just ran gip_info and it failed with errors below.  Then not 2 minutes later ran it again without issue.
+
+GIP.SLURM&#58;INFO slurm_common&#58;246&#58;  The RVF lists the following queues&#58; grid, hepx.
+GIP.Cluster&#58;ERROR cluster&#58;75&#58;  &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cluster.py&#34;, line 73, in main
+print_clusters(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cluster.py&#34;, line 35, in print_clusters
+ces = getCEList(cp, extraCEs)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 49, in getCEList
+queue_entries = getSlurmQueueList(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 247, in getQueueList
+for queue in getQueueInfo(cp)&#58;
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+GIP.CESEBind&#58;ERROR cese_bind&#58;36&#58;  &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/libexec/gip/providers/ce_to_se_map&#34;, line 15, in &#60;module&#62;
+main()
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cese_bind.py&#34;, line 33, in main
+print_CESEBind(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cese_bind.py&#34;, line 19, in print_CESEBind
+bind_info = getCESEBindInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 149, in getCESEBindInfo
+ce_list = getCEList(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 49, in getCEList
+queue_entries = getSlurmQueueList(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 247, in getQueueList
+for queue in getQueueInfo(cp)&#58;
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+<div id='show_1008915061' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1008915061'>queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+GIP.SLURM&#58;ERROR slurm&#58;201&#58;  &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 197, in main
+queueInfo = print_CE(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 25, in print_CE
+queueInfo = getQueueInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/libexec/gip/providers/batch_system&#34;, line 42, in &#60;module&#62;
+main()
+File &#34;/usr/libexec/gip/providers/batch_system&#34;, line 36, in main
+slurm_main()
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 197, in main
+queueInfo = print_CE(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 25, in print_CE
+queueInfo = getQueueInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf
+</div><script type='text/javascript'>
+        $('#show_1008915061').click(function() {
+            $('#detail_1008915061').slideDown("normal");
+            $('#show_1008915061').hide();
+            $('#hide_1008915061').show();
+        });
+        $('#hide_1008915061').click(function() {
+            $('#detail_1008915061').slideUp();
+            $('#hide_1008915061').hide();
+            $('#show_1008915061').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='22976#1414629851'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-30T00:44:11+00:00">Oct 30, 2014 12:44 AM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414629851">&nbsp;</a></div><pre>Hi Trey,
+
+hurr.tamu.edu is still flagged as inactive and disabled.
+
+It looks like CE1 last reported yesterday.  A couple of things to check&#58;
+
+Is CE1 configured to run osg-info-services on boot? (See section 10.3 of this document&#58;  <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallComputeElement' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallComputeElement</a>)
+Is osg-info-services running on CE1?
+
+Thanks,
+Vince</pre></div><div class='update_description'><i onclick="document.location='22976#1414621724'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-29T22:28:44+00:00">Oct 29, 2014 10:28 PM UTC</time><a class="anchor" name="1414621724">&nbsp;</a></div><pre>Sorry to re-open this, but I&#39;m again getting errors when gip_info runs and I believe it&#39;s because hurr.tamu.edu ran osg-info-services after being temporarily powered on for archival.  When I run &#34;gip_info&#34; from ce01.brazos.tamu.edu I get the same errors I mentioned previously and GIP validation is once again failing.  Things started to work yesterday when hurr.tamu.edu was disabled in OIM.  Is it possible that hurr.tamu.edu could have uploaded information that would cause issues?  If so can hurr.tamu.edu once again be &#34;cleared&#34; or somehow disabled again?
+
+Thanks,
+- Trey
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='22976#1414534736'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T22:18:56+00:00">Oct 28, 2014 10:18 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414534736">&nbsp;</a></div><pre>Thanks, John.
+
+Setting as resolved.</pre></div><div class='update_description'><i onclick="document.location='22976#1414532670'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T21:44:30+00:00">Oct 28, 2014 09:44 PM UTC</time><a class="anchor" name="1414532670">&nbsp;</a></div><pre>Not related to this ticket, this can be closed.
+
+Thanks!
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='22976#1414532100'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T21:35:00+00:00">Oct 28, 2014 09:35 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414532100">&nbsp;</a></div><pre>Excellent news.  Are there any outstanding issues that I can assist with?
+
+Vince</pre></div><div class='update_description'><i onclick="document.location='22976#1414531290'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T21:21:30+00:00">Oct 28, 2014 09:21 PM UTC</time><a class="anchor" name="1414531290">&nbsp;</a></div><pre>I re-ran &#39;gip_info&#39; and &#39;osg-info-services&#39;, both ran without error and now GIP validation is passing and ce01.brazos.tamu.edu is visible in BDII.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='22976#1414530580'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T21:09:40+00:00">Oct 28, 2014 09:09 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414530580">&nbsp;</a></div><pre>I have disabled hurr.tamu.edu but I do not believe this is related to GIP failing.</pre></div><div class='update_description'><i onclick="document.location='22976#1414530038'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T21:00:38+00:00">Oct 28, 2014 09:00 PM UTC</time> by <b>treydock@....</b><a class="anchor" name="1414530038">&nbsp;</a></div><pre>Is the old CE the cause of GIP validation failing?
+
+Yes, please disable hurr.tamu.edu in OIM.
+
+On Oct 28, 2014 3&#58;56 PM, &#34;Open Science Grid FootPrints&#34; &#60;
+osg@....&#62; wrote&#58;
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='22976#1414529736'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T20:55:36+00:00">Oct 28, 2014 08:55 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414529736">&nbsp;</a></div><pre>It appears that the new CE is reporting correctly&#58;  <a href='http&#58;//goo.gl/fWmbHH' target='_blank' rel='nofollow'>http&#58;//goo.gl/fWmbHH</a>
+<a href='http&#58;//is.grid.iu.edu/data/cemon_processed_wlcg_interop/ce01.brazos.tamu.edu.processed' target='_blank' rel='nofollow'>http&#58;//is.grid.iu.edu/data/cemon_processed_wlcg_interop/ce01.brazos.tamu.edu.processed</a>
+
+Though it will not affect this issue would you like me to disable the previous CE in OIM? (hurr.tamu.edu)
+
+Thanks,
+Vince</pre></div><div class='update_description'><i onclick="document.location='22976#1414529241'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T20:47:21+00:00">Oct 28, 2014 08:47 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414529241">&nbsp;</a></div><pre>Was your previous GIP configuration set for multiple CE&#39;s?</pre></div><div class='update_description'><i onclick="document.location='22976#1414528733'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T20:38:53+00:00">Oct 28, 2014 08:38 PM UTC</time><a class="anchor" name="1414528733">&nbsp;</a></div><pre>We began shutting down services on hurr.tamu.edu last night (evening of October 27th).  The system is still online but most services have been stopped.  The problems were reported to me today (October 28th).
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf</pre></div><div class='update_description'><i onclick="document.location='22976#1414528275'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T20:31:15+00:00">Oct 28, 2014 08:31 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1414528275">&nbsp;</a></div><pre>Hi John,
+
+When did you decommission hurr.tamu.edu?  Did you notice that the problems began immediately after that?
+
+Vince</pre></div><div class='update_description'><i onclick="document.location='22976#1414522380'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-10-28T18:53:00+00:00">Oct 28, 2014 06:53 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1414522380">&nbsp;</a></div><pre>We have decommissioned hurr.tamu.edu (TAMU_BRAZOS resource) and have noticed that GIP validation is now failing for our active CE (ce01.brazos.tamu.edu , TAMU_BRAZOS_CE).  Our users are also unable to submit jobs via CRAB as BDII no longer has information about our CE.  I do not know if this is related to the decommissioning of our old CE, or some new issue.
+
+When I run &#34;gip_info&#34; I never get a GlueCEUniqueID and notice some errors are generated&#58;
+
+GIP.Cluster&#58;ERROR cluster&#58;75&#58;  &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cluster.py&#34;, line 73, in main
+print_clusters(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cluster.py&#34;, line 35, in print_clusters
+ces = getCEList(cp, extraCEs)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 49, in getCEList
+queue_entries = getSlurmQueueList(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 247, in getQueueList
+for queue in getQueueInfo(cp)&#58;
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+GIP.CESEBind&#58;ERROR cese_bind&#58;36&#58;  &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/libexec/gip/providers/ce_to_se_map&#34;, line 15, in &#60;module&#62;
+main()
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cese_bind.py&#34;, line 33, in main
+print_CESEBind(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/cese_bind.py&#34;, line 19, in print_CESEBind
+bind_info = getCESEBindInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 149, in getCESEBindInfo
+ce_list = getCEList(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip_cese_bind.py&#34;, line 49, in getCEList
+queue_entries = getSlurmQueueList(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 247, in getQueueList
+for queue in getQueueInfo(cp)&#58;
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+GIP.SLURM&#58;ERROR slurm&#58;201&#58;  &#39;serial&#39;
+<div id='show_1502424808' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1502424808'>Traceback (most recent call last)&#58;
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 197, in main
+queueInfo = print_CE(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 25, in print_CE
+queueInfo = getQueueInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+Traceback (most recent call last)&#58;
+File &#34;/usr/libexec/gip/providers/batch_system&#34;, line 42, in &#60;module&#62;
+main()
+File &#34;/usr/libexec/gip/providers/batch_system&#34;, line 36, in main
+slurm_main()
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 197, in main
+queueInfo = print_CE(cp)
+File &#34;/usr/lib/python2.6/site-packages/gip/providers/slurm.py&#34;, line 25, in print_CE
+queueInfo = getQueueInfo(cp)
+File &#34;/usr/lib/python2.6/site-packages/slurm_common.py&#34;, line 155, in getQueueInfo
+queue_data = queueInfo[queue_name]
+KeyError&#58; &#39;serial&#39;
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdockend/CN=750323/CN=John Lloyd Iii Dockendorf
+
+</div><script type='text/javascript'>
+        $('#show_1502424808').click(function() {
+            $('#detail_1502424808').slideDown("normal");
+            $('#show_1502424808').hide();
+            $('#hide_1502424808').show();
+        });
+        $('#hide_1502424808').click(function() {
+            $('#detail_1502424808').slideUp();
+            $('#hide_1502424808').hide();
+            $('#show_1502424808').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F22976">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 22976});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

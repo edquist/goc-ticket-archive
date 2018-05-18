@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[34366] after upgrade to version 3.4, condor_ce no longer working</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=34366" method="post">
+<div class="page-header">
+    <h3><span class="muted">34366</span> / after upgrade to version 3.4, condor_ce no longer working</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Richard T. Jones</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Richard T. Jones</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Resolved</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-08-04</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=34366", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/34366?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/34366?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20after%20upgrade%20to%20version%203.4%2C%20condor_ce%20no%20longer%20working%20ISSUE%3D34366%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='34366#1501785269'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-03T18:34:29+00:00">Aug 3, 2017 06:34 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1501785269">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.
+Please submit problems, requests, and questions at&#58; <a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a>
+
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Operations Page&#58; <a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='34366#1501783330'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-03T18:02:10+00:00">Aug 3, 2017 06:02 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1501783330">&nbsp;</a></div><pre>Brian, ok sounds good. This ticket can be closed.
+-Richard Jones
+
+On Thu, Aug 3, 2017 at 12&#58;53 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34366#1501779194'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-08-03T16:53:14+00:00">Aug 3, 2017 04:53 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1501779194">&nbsp;</a></div><pre>Richard,
+
+GlideinWMS factory ops says that your site is healthy and so at this point, we&#39;ll deal with the errors you&#39;re seeing internally. Was there anything else you needed or can we close this ticket?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1500908375'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-24T14:59:35+00:00">Jul 24, 2017 02:59 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1500908375">&nbsp;</a></div><pre>Richard,
+
+I discussed this offline with Brian and we&#39;ve opened an internal ticket to sort out the errors you&#39;re seeing in your SchedLog. As for the CollectorLog, I&#39;ve had factory ops bump the log level of the pilot startd&#39;s and I&#39;m waiting for the results.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1500572527'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T17:42:07+00:00">Jul 20, 2017 05:42 PM UTC</time><a class="anchor" name="1500572527">&nbsp;</a></div><pre>Ah - ok.  From a worker node, it&#39;s probably not the fault of the VO.
+
+Brian Lin&#58; can you open an internal ticket on this?  I suspect that something inside HTCondor isn&#39;t pushing through updated proxies all the way to the worker node.  We may have seen something a bit similar at Nebraska.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='34366#1500565842'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T15:50:42+00:00">Jul 20, 2017 03:50 PM UTC</time><a class="anchor" name="1500565842">&nbsp;</a></div><pre>Over the past half hour, I have seen proxies with expired AC inside, with the following DNs&#58;
+/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu
+/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/glidein2.chtc.wisc.edu/CN=3935027072
+
+These requests are all coming from just two worker node hosts, so it may be that there are a couple of glideins out there who have outlasted their valid lifetime. Shall we call this correct behavior, and declare success?
+-Richard
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1500565123'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T15:38:43+00:00">Jul 20, 2017 03:38 PM UTC</time><a class="anchor" name="1500565123">&nbsp;</a></div><pre>Indeed - that&#39;s a problem with the proxy certificate being used.  It has an invalid/expired VOMS extension - so the plugin is (correctly) refusing to map based on the VOMS extension.
+
+Since the VOMS extension is invalid, it&#39;ll fall through to use the DN-based mapping (as the underlying proxy is not expired).
+
+We should follow this up separately since the CE is acting appropriately.  Which VO or DN is the problematic one?
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='34366#1500563187'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T15:06:27+00:00">Jul 20, 2017 03:06 PM UTC</time><a class="anchor" name="1500563187">&nbsp;</a></div><pre>Ok, yes I agree, VOMS information in the certificates should be sufficient. So I took away the ad-hoc entries I added to my grid-mapfile and restarted condor-ce. Now the &#34;did not result in a valid mapped user name&#34; error is back in my condor-ce SchedLog. I can correlate it in time with the following error message being logged in my /tmp/lcmaps.log&#58;
+lcmaps[1312053]   LOG_DEBUG&#58; 2017-07-20.14&#58;59&#58;33Z&#58; LCMAPS credential mapping request
+lcmaps[1312053]   LOG_DEBUG&#58; 2017-07-20.14&#58;59&#58;33Z&#58; Using &#34;lcmaps_run_and_return_username&#34; interface of LCMAPS
+lcmaps[1312053]   LOG_DEBUG&#58; 2017-07-20.14&#58;59&#58;33Z&#58; lcmaps_credential_store_gss_cred_id_t_and_sub_elements&#58; found X509 chain inside gss credential
+lcmaps[1312053]   LOG_DEBUG&#58; 2017-07-20.14&#58;59&#58;33Z&#58; lcmaps_credential_store_gss_cred_id_t_and_sub_elements&#58; found X509 certificate inside gss credential
+lcmaps[1312053]   LOG_DEBUG&#58; 2017-07-20.14&#58;59&#58;33Z&#58; lcmaps_credential_store_gss_cred_id_t_and_sub_elements&#58; Pushing certificate for the final delegation into the chain...
+lcmaps[1312053]   LOG_DEBUG&#58; 2017-07-20.14&#58;59&#58;33Z&#58; lcmaps_x509_to_voms_fqans()&#58; VOMS data structure initialized
+lcmaps[1312053]     LOG_ERR&#58; 2017-07-20.14&#58;59&#58;33Z&#58; lcmaps_x509_to_voms_fqans()&#58; Warning&#58; Generic verification error for VOMS&#58; AC not valid anymore.. LCMAPS will ignore the VOMS extensions in the mapping sequence.
+lcmaps[1312053]   LOG_DEBUG&#58; 2017-07-20.14&#58;59&#58;33Z&#58; lcmaps_x509_to_voms_fqans()&#58; Failure, VOMS destroy
+
+What does this mean, AC not valid any more? Is that what you mean by FQAN being expired?
+-Richard
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1500560471'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T14:21:11+00:00">Jul 20, 2017 02:21 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1500560471">&nbsp;</a></div><pre>Richard,
+
+Glancing at those DNs, I think they should have been matched via VOMS
+attribute and Brian B&#39;s right, we should try and rely on the VOMS
+attribute where possible. Perhaps there are lines in the lcmaps.log that
+indicate that the VOMS attributes were expired and thus ignored?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1500560002'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T14:13:22+00:00">Jul 20, 2017 02:13 PM UTC</time><a class="anchor" name="1500560002">&nbsp;</a></div><pre>Hi Richard,
+
+I think it would be better to map based on VOMS attribute, rather than DN (DNs have a nasty habit of changing).
+
+Is there any indication why they weren&#39;t matching in /etc/grid-security/voms-mapfile?
+
+Brian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='34366#1500551051'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T11:44:11+00:00">Jul 20, 2017 11:44 AM UTC</time><a class="anchor" name="1500551051">&nbsp;</a></div><pre>Brian,
+
+I did this, and redirected the output from /var/log/messages (for some reason, these messages were being suppressed in there) to /tmp/lcmaps.log, and then I was able to see the &#34;No match&#34; log messages. I added explicit entries for the following DN&#39;s in my grid-mapfile.
+
+&#34;/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jcaballe/CN=620333/CN=Jose Caballero Bejar&#34; osg
+&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=glidein.unl.edu&#34; osg
+&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/glidein2.chtc.wisc.edu&#34; osg
+&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu&#34; osg
+&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/uclhc-fe-1.t2.ucsd.edu&#34; osg
+
+Now I am no longer seeing these &#34;did not result in a valid mapped user name&#34; errors in my SchedLog all the time. I will keep an eye out for more of these pilot DN&#39;s that I need to add. Is there a definitive list of them out there somewhere?
+-Richard
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1500518350'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T02:39:10+00:00">Jul 20, 2017 02:39 AM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1500518350">&nbsp;</a></div><pre>Richard,
+
+Could you try bumping the LCMAPS log level
+(<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallLcmapsVoms#Troubleshooting_the_LCMAPS_VOMS' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallLcmapsVoms#Troubleshooting_the_LCMAPS_VOMS</a>),
+restarting the CE, and checking /var/log/messages again?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1500517824'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-20T02:30:24+00:00">Jul 20, 2017 02:30 AM UTC</time><a class="anchor" name="1500517824">&nbsp;</a></div><pre>Brian,
+
+I am still seeing these errors in my condor-ce SchedLog&#58;
+07/19/17 21&#58;59&#58;22 This process has a valid certificate & key
+07/19/17 21&#58;59&#58;22 Finishing authenticate_server_gss_post with status=1
+07/19/17 21&#58;59&#58;23 Finishing authenticate_server_gss_post with status=1
+07/19/17 21&#58;59&#58;23 ZKM&#58; successful mapping to GSS_ASSIST_GRIDMAP
+07/19/17 21&#58;59&#58;23 DC_AUTHENTICATE&#58; authentication of &#60;169.228.38.36&#58;63093&#62; did not result in a valid mapped user name, which is required for this command (1112 QMGMT_WRITE_CMD), so aborting.
+
+There are no other log entries, not in AuditLog, not in /var/log/messages, nowhere I can find that correlates with these events in the SchedLog. Interestingly these messages are all coming from just two hosts over the full amount of time I have been seeing them.
+169.228.38.36
+129.79.53.27
+Could it be that there is something wrong with these two hosts?
+-Richard
+
+-Richard Jones
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1500500890'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-19T21:48:10+00:00">Jul 19, 2017 09:48 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1500500890">&nbsp;</a></div><pre>Richard,
+
+If you&#39;re still seeing &#34;not resulting in valid mapped user&#34; errors in
+your SchedLog, you can cross-reference them with lcmaps errors in
+/var/log/messages (or via journalctl if you&#39;re on EL7). If you don&#39;t see
+any of these errors, you should be fine.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1500500530'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-19T21:42:10+00:00">Jul 19, 2017 09:42 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1500500530">&nbsp;</a></div><pre>Brian,
+
+All of the accounts are there and working. That was asked about earlier, so
+I did a survey. We support a couple dozen vo&#39;s, so there were several
+accounts for vo&#39;s that no longer exist, and some new accounts needed to be
+created. AFAIK, as of a week ago, the vo group accounts and voms-mapping
+are in sync with the vo&#39;s that we claim to support. Of course there are 161
+lines in my /etc/grid-security/voms-mapfile so it is always possible that
+one of them might contain a typo. If you might provide an example of a
+failing DN, that would be a big help.
+
+-Richard Jones
+
+On Wed, Jul 19, 2017 at 5&#58;29 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34366#1500499771'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-19T21:29:31+00:00">Jul 19, 2017 09:29 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1500499771">&nbsp;</a></div><pre>Richard,
+
+Sorry for the delay, I&#39;ve been occupied with the OSG User School so I&#39;m behind on e-mail. A few thoughts&#58;
+
+1) MasterLog errors are benign, they can be ignored
+2) &#34;not resulting in valid mapped user&#34; could mean that VOs that should be running at your site are not. Verify that you have accounts made for each VO/DN (<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallLcmapsVoms#Supporting_mapped_VOs_and_users' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallLcmapsVoms#Supporting_mapped_VOs_and_users</a>)
+3) I had the factory increase the debug level for the pilot startd&#39;s so if you check out the pilot StartLogs, it may give us some insight as to why the pilots don&#39;t trust your CE.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1500494534'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-19T20:02:14+00:00">Jul 19, 2017 08:02 PM UTC</time><a class="anchor" name="1500494534">&nbsp;</a></div><pre>Edgar,
+
+If you are satisfied that this is normal behavior, we can close this ticket. Can you confirm that these errors are benign?
+
+-Richard J.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1500494224'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-19T19:57:04+00:00">Jul 19, 2017 07:57 PM UTC</time><a class="anchor" name="1500494224">&nbsp;</a></div><pre>Hi Richard,
+
+If things are working back. Should we close this ticket?
+
+Edgar Fajardo
+OSG Software Support
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='34366#1500482192'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-19T16:36:32+00:00">Jul 19, 2017 04:36 PM UTC</time><a class="anchor" name="1500482192">&nbsp;</a></div><pre>Correction&#58; My reporting scripts had missed the fact that there ARE idle jobs waiting for resources on my site. Changes in the default options in condor_q had made the idle jobs disappear from my reports, but they are there. So it looks like from the standpoint of production, that we are back in the flow.
+-Richard Jones
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1500475472'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-19T14:44:32+00:00">Jul 19, 2017 02:44 PM UTC</time><a class="anchor" name="1500475472">&nbsp;</a></div><pre>Hello all,
+
+If this is normal behavior on a site running condor-ce, I guess I can live with it. These repeated errors in the condor-ce MasterLog can just be ignored, then? I am fine with that, as long as jobs are not being refused or turned away. Right now my site is only about half full, with the queues empty.
+
+-Richard J.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1500122538'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-15T12:42:18+00:00">Jul 15, 2017 12:42 PM UTC</time><a class="anchor" name="1500122538">&nbsp;</a></div><pre>Ok, this is useful information. I proceed through each of the possible sources of failure that you listed. As you can see, the certificate/crl chain, the clock sync, and DNS lookups are all configured correctly and working in both directions.
+
+1) [on the CE, look for a worker node that recently failed connecting to the condor-ce collector&#58;
+07/15/17 08&#58;08&#58;26 DC_AUTHENTICATE&#58; required authentication of 137.99.79.170 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+
+2) [on 137.99.79.170 == stat106.phys.uconn.edu] compare time difference with a common reference host running rdate server&#58;
+[root@gluskap condor-ce]# date && rdate zeus.phys.uconn.edu
+Sat Jul 15 08&#58;10&#58;30 EDT 2017
+rdate&#58; [zeus.phys.uconn.edu]	Sat Jul 15 08&#58;10&#58;30 2017
+[root@stat106 ~]# date && rdate zeus.phys.uconn.edu
+Sat Jul 15 08&#58;10&#58;12 EDT 2017
+rdate&#58; [zeus.phys.uconn.edu]	Sat Jul 15 08&#58;10&#58;12 2017
+These two commands ran at different times, but they show that the clocks on stat106 and gluskap are both sync&#39;ed to the reference clock on zeus.phys.uconn.edu to better than one second.
+
+3) [on stat106.phys.uconn.edu do a DNS lookup on gluskap, both forward and reverse]
+[root@stat106 ~]# host gluskap.phys.uconn.edu
+gluskap.phys.uconn.edu has address 137.99.79.130
+[root@stat106 ~]# host 137.99.79.130
+130.79.99.137.in-addr.arpa domain name pointer gluskap.phys.uconn.edu.
+
+4) [on gluskap.phys.uconn.edu do a DNS lookup on stat106, both forward and reverse]
+[root@gluskap condor-ce]# host stat106.phys.uconn.edu
+stat106.phys.uconn.edu has address 137.99.79.170
+[root@gluskap condor-ce]# host 137.99.79.170
+170.79.99.137.in-addr.arpa domain name pointer stat106.phys.uconn.edu.
+
+5) [do a openssl s_client/s_server between stat106 and gluskap to check certificate/crl staleness on either host]
+[root@stat106 ~]# openssl s_client -CApath /etc/grid-security/certificates &#92;
+-cert /etc/grid-security/hostcert.pem &#92;
+-key /etc/grid-security/hostkey.pem &#92;
+-connect gluskap.phys.uconn.edu&#58;11111
+CONNECTED(00000003)
+depth=1 DC = org, DC = cilogon, C = US, O = CILogon, CN = CILogon OSG CA 1
+verify return&#58;1
+depth=0 DC = org, DC = opensciencegrid, O = Open Science Grid, OU = Services, CN = gluskap.phys.uconn.edu
+<div id='show_1063118526' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1063118526'>verify return&#58;1
+---
+Certificate chain
+0 s&#58;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gluskap.phys.uconn.edu
+i&#58;/DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1
+1 s&#58;/DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1
+i&#58;/DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+**** clipped ****
+-----END CERTIFICATE-----
+subject=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gluskap.phys.uconn.edu
+issuer=/DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1
+---
+No client certificate CA names sent
+Server Temp Key&#58; ECDH, prime256v1, 256 bits
+---
+SSL handshake has read 2749 bytes and written 373 bytes
+---
+New, TLSv1/SSLv3, Cipher is ECDHE-RSA-AES256-GCM-SHA384
+Server public key is 2048 bit
+Secure Renegotiation IS supported
+Compression&#58; NONE
+Expansion&#58; NONE
+SSL-Session&#58;
+Protocol  &#58; TLSv1.2
+Cipher    &#58; ECDHE-RSA-AES256-GCM-SHA384
+Session-ID&#58; 9660BE926281D34858035515B7B44AE6E8165A895BCE56552945FBC5ECFF64D1
+Session-ID-ctx&#58;
+Master-Key&#58; 5B1CF1506DBC225EC5082DE8263FCE9B7E3014233CE8037B70CFDB428B84FA2D0D462D5FF1D705091068EE194BD634CC
+Key-Arg   &#58; None
+Krb5 Principal&#58; None
+PSK identity&#58; None
+PSK identity hint&#58; None
+TLS session ticket lifetime hint&#58; 300 (seconds)
+TLS session ticket&#58;
+0000 - 1c 49 e1 e8 30 8a e8 ac-43 66 c9 65 50 94 5b 22   .I..0...Cf.eP.[&#34;
+0010 - f1 7b eb c0 28 91 91 6b-26 02 b2 5e f6 7b dd 7d   .{..(..k&..^.{.}
+0020 - 29 b0 e6 91 e9 c1 27 3a-1a 4f 94 a8 47 79 14 9e   ).....&#39;&#58;.O..Gy..
+0030 - 57 ac b2 92 9d f5 9a d9-40 04 0b 4c 55 52 52 30   W.......@....0
+0040 - 22 98 88 c5 f2 d0 8b e5-b6 e7 c9 75 51 5b 3d cf   &#34;..........uQ[=.
+0050 - a0 76 56 3d 80 f7 e3 9c-e5 7d 98 ff 1f 70 e1 1f   .vV=.....}...p..
+0060 - 5f ff bd 78 01 5a a0 80-d6 ff e4 08 63 b7 fd a0   _..x.Z......c...
+0070 - 39 dd 86 0f 9a 28 23 f2-b2 41 62 cc 72 2d bb 39   9....(#..Ab.r-.9
+0080 - f5 d7 10 86 1d 67 e7 41-d2 88 cc 38 22 c2 96 92   .....g.A...8&#34;...
+0090 - 1c c2 d4 9c 85 87 c4 92-f8 79 e1 3a e6 5f 5b 58   .........y.&#58;._[X
+
+Start Time&#58; 1500121474
+Timeout   &#58; 300 (sec)
+Verify return code&#58; 0 (ok)
+---
+this is a test
+everything is working, signing off
+-rtj
+DONE
+
+[and now the same session, as viewed from gluskap]
+
+[root@gluskap condor-ce]# openssl s_server -CApath /etc/grid-security/certificates &#92;
+-cert /etc/grid-security/hostcert.pem &#92;
+-key /etc/grid-security/hostkey.pem &#92;
+-accept 11111
+Using default temp DH parameters
+Using default temp ECDH parameters
+ACCEPT
+-----BEGIN SSL SESSION PARAMETERS-----
+MFUCAQECAgMDBALAMAQABDBbHPFQbbwiXsUILegmP86bfjAUIzzoA3twz9tCi4T6
+LQ1GLV/x1wUJEGjuGUvWNMyhBgIEWWoJgqIEAgIBLKQGBAQBAAAA
+-----END SSL SESSION PARAMETERS-----
+Shared ciphers&#58;ECDHE-RSA-AES256-GCM-SHA384&#58;ECDHE-ECDSA-AES256-GCM-SHA384&#58;ECDHE-RSA-AES256-SHA384&#58;ECDHE-ECDSA-AES256-SHA384&#58;ECDHE-RSA-AES256-SHA&#58;ECDHE-ECDSA-AES256-SHA&#58;DHE-DSS-AES256-GCM-SHA384&#58;DHE-RSA-AES256-GCM-SHA384&#58;DHE-RSA-AES256-SHA256&#58;DHE-DSS-AES256-SHA256&#58;DHE-RSA-AES256-SHA&#58;DHE-DSS-AES256-SHA&#58;DHE-RSA-CAMELLIA256-SHA&#58;DHE-DSS-CAMELLIA256-SHA&#58;ECDH-RSA-AES256-GCM-SHA384&#58;ECDH-ECDSA-AES256-GCM-SHA384&#58;ECDH-RSA-AES256-SHA384&#58;ECDH-ECDSA-AES256-SHA384&#58;ECDH-RSA-AES256-SHA&#58;ECDH-ECDSA-AES256-SHA&#58;AES256-GCM-SHA384&#58;AES256-SHA256&#58;AES256-SHA&#58;CAMELLIA256-SHA&#58;ECDHE-RSA-AES128-GCM-SHA256&#58;ECDHE-ECDSA-AES128-GCM-SHA256&#58;ECDHE-RSA-AES128-SHA256&#58;ECDHE-ECDSA-AES128-SHA256&#58;ECDHE-RSA-AES128-SHA&#58;ECDHE-ECDSA-AES128-SHA&#58;DHE-DSS-AES128-GCM-SHA256&#58;DHE-RSA-AES128-GCM-SHA256&#58;DHE-RSA-AES128-SHA256&#58;DHE-DSS-AES128-SHA256&#58;DHE-RSA-AES128-SHA&#58;DHE-DSS-AES128-SHA&#58;DHE-RSA-SEED-SHA&#58;DHE-DSS-SEED-SHA&#58;DHE-RSA-CAMELLIA128-SHA&#58;DHE-DSS-CAMELLIA128-SHA&#58;ECDH-RSA-AES128-GCM-SHA256&#58;ECDH-ECDSA-AES128-GCM-SHA256&#58;ECDH-RSA-AES128-SHA256&#58;ECDH-ECDSA-AES128-SHA256&#58;ECDH-RSA-AES128-SHA&#58;ECDH-ECDSA-AES128-SHA&#58;AES128-GCM-SHA256&#58;AES128-SHA256&#58;AES128-SHA&#58;SEED-SHA&#58;CAMELLIA128-SHA&#58;ECDHE-RSA-DES-CBC3-SHA&#58;ECDHE-ECDSA-DES-CBC3-SHA&#58;EDH-RSA-DES-CBC3-SHA&#58;EDH-DSS-DES-CBC3-SHA&#58;ECDH-RSA-DES-CBC3-SHA&#58;ECDH-ECDSA-DES-CBC3-SHA&#58;DES-CBC3-SHA&#58;IDEA-CBC-SHA&#58;ECDHE-RSA-RC4-SHA&#58;ECDHE-ECDSA-RC4-SHA&#58;ECDH-RSA-RC4-SHA&#58;ECDH-ECDSA-RC4-SHA&#58;RC4-SHA&#58;RC4-MD5
+CIPHER is ECDHE-RSA-AES256-GCM-SHA384
+Secure Renegotiation IS supported
+this is a test
+everything is working, signing off
+-rtj
+DONE
+shutting down SSL
+CONNECTION CLOSED
+
+6) [do a openssl s_client/s_server between stat106 and gluskap, with server/client roles reversed]
+[root@stat106 ~]# openssl s_server -CApath /etc/grid-security/certificates &#92;
+-cert /etc/grid-security/hostcert.pem &#92;
+-key /etc/grid-security/hostkey.pem &#92;
+-accept 11111
+Using default temp DH parameters
+Using default temp ECDH parameters
+ACCEPT
+-----BEGIN SSL SESSION PARAMETERS-----
+MFUCAQECAgMDBALAMAQABDBnln/P6SC+JmR44+FrtFO8pDB4+vL2XZKPTiIjqvya
+8y1xuBzYD/a6Wud0SREClc2hBgIEWWoMBaIEAgIBLKQGBAQBAAAA
+-----END SSL SESSION PARAMETERS-----
+Shared ciphers&#58;ECDHE-RSA-AES256-GCM-SHA384&#58;ECDHE-ECDSA-AES256-GCM-SHA384&#58;ECDHE-RSA-AES256-SHA384&#58;ECDHE-ECDSA-AES256-SHA384&#58;ECDHE-RSA-AES256-SHA&#58;ECDHE-ECDSA-AES256-SHA&#58;DHE-DSS-AES256-GCM-SHA384&#58;DHE-RSA-AES256-GCM-SHA384&#58;DHE-RSA-AES256-SHA256&#58;DHE-DSS-AES256-SHA256&#58;DHE-RSA-AES256-SHA&#58;DHE-DSS-AES256-SHA&#58;DHE-RSA-CAMELLIA256-SHA&#58;DHE-DSS-CAMELLIA256-SHA&#58;ECDH-RSA-AES256-GCM-SHA384&#58;ECDH-ECDSA-AES256-GCM-SHA384&#58;ECDH-RSA-AES256-SHA384&#58;ECDH-ECDSA-AES256-SHA384&#58;ECDH-RSA-AES256-SHA&#58;ECDH-ECDSA-AES256-SHA&#58;AES256-GCM-SHA384&#58;AES256-SHA256&#58;AES256-SHA&#58;CAMELLIA256-SHA&#58;ECDHE-RSA-AES128-GCM-SHA256&#58;ECDHE-ECDSA-AES128-GCM-SHA256&#58;ECDHE-RSA-AES128-SHA256&#58;ECDHE-ECDSA-AES128-SHA256&#58;ECDHE-RSA-AES128-SHA&#58;ECDHE-ECDSA-AES128-SHA&#58;DHE-DSS-AES128-GCM-SHA256&#58;DHE-RSA-AES128-GCM-SHA256&#58;DHE-RSA-AES128-SHA256&#58;DHE-DSS-AES128-SHA256&#58;DHE-RSA-AES128-SHA&#58;DHE-DSS-AES128-SHA&#58;DHE-RSA-SEED-SHA&#58;DHE-DSS-SEED-SHA&#58;DHE-RSA-CAMELLIA128-SHA&#58;DHE-DSS-CAMELLIA128-SHA&#58;ECDH-RSA-AES128-GCM-SHA256&#58;ECDH-ECDSA-AES128-GCM-SHA256&#58;ECDH-RSA-AES128-SHA256&#58;ECDH-ECDSA-AES128-SHA256&#58;ECDH-RSA-AES128-SHA&#58;ECDH-ECDSA-AES128-SHA&#58;AES128-GCM-SHA256&#58;AES128-SHA256&#58;AES128-SHA&#58;SEED-SHA&#58;CAMELLIA128-SHA&#58;ECDHE-RSA-DES-CBC3-SHA&#58;ECDHE-ECDSA-DES-CBC3-SHA&#58;EDH-RSA-DES-CBC3-SHA&#58;EDH-DSS-DES-CBC3-SHA&#58;ECDH-RSA-DES-CBC3-SHA&#58;ECDH-ECDSA-DES-CBC3-SHA&#58;DES-CBC3-SHA&#58;IDEA-CBC-SHA&#58;ECDHE-RSA-RC4-SHA&#58;ECDHE-ECDSA-RC4-SHA&#58;ECDH-RSA-RC4-SHA&#58;ECDH-ECDSA-RC4-SHA&#58;RC4-SHA&#58;RC4-MD5
+CIPHER is ECDHE-RSA-AES256-GCM-SHA384
+Secure Renegotiation IS supported
+this is a test with client and server reversing roles
+everything is working ok, signing off
+-rtj
+DONE
+shutting down SSL
+CONNECTION CLOSED
+
+[and now, the same session from the side of the client]
+
+[root@gluskap condor-ce]# bash /scratch/s_client
+CONNECTED(00000003)
+depth=1 DC = org, DC = cilogon, C = US, O = CILogon, CN = CILogon OSG CA 1
+verify return&#58;1
+depth=0 DC = org, DC = opensciencegrid, O = Open Science Grid, OU = Services, CN = stat106.phys.uconn.edu
+verify return&#58;1
+---
+Certificate chain
+0 s&#58;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=stat106.phys.uconn.edu
+i&#58;/DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1
+1 s&#58;/DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1
+i&#58;/DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+**** this part clipped ****
+-----END CERTIFICATE-----
+subject=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=stat106.phys.uconn.edu
+issuer=/DC=org/DC=cilogon/C=US/O=CILogon/CN=CILogon OSG CA 1
+---
+No client certificate CA names sent
+Server Temp Key&#58; ECDH, prime256v1, 256 bits
+---
+SSL handshake has read 2749 bytes and written 373 bytes
+---
+New, TLSv1/SSLv3, Cipher is ECDHE-RSA-AES256-GCM-SHA384
+Server public key is 2048 bit
+Secure Renegotiation IS supported
+Compression&#58; NONE
+Expansion&#58; NONE
+SSL-Session&#58;
+Protocol  &#58; TLSv1.2
+Cipher    &#58; ECDHE-RSA-AES256-GCM-SHA384
+Session-ID&#58; 92AED7A3C32B55DE62FFF38ED2CCAB41C2BB3230CD6BBED844B6BD5EA44BA308
+Session-ID-ctx&#58;
+Master-Key&#58; 67967FCFE920BE266478E3E16BB453BCA43078FAF2F65D928F4E2223AAFC9AF32D71B81CD80FF6BA5AE77449110295CD
+Key-Arg   &#58; None
+Krb5 Principal&#58; None
+PSK identity&#58; None
+PSK identity hint&#58; None
+TLS session ticket lifetime hint&#58; 300 (seconds)
+TLS session ticket&#58;
+0000 - 6e 9f cc b5 83 71 57 4a-4e 73 f1 35 f7 53 a2 0b   n....qWJNs.5.S..
+0010 - 11 dc 8d ec be d3 c8 d7-ec c0 a7 de 57 db c8 ac   ............W...
+0020 - 1f 64 e0 f3 3a 45 06 c4-8e 18 d2 13 80 53 c1 24   .d..&#58;E.......S.$
+0030 - c4 05 ab 36 f9 24 81 06-38 05 06 31 b8 52 14 fb   ...6.$..8..1.R..
+0040 - c0 f2 41 d7 5a 53 12 d2-10 39 28 ce 79 58 81 15   ..A.ZS...9(.yX..
+0050 - f3 37 14 3e a5 40 92 de-30 a7 64 18 cd 4a 24 eb   .7.&#62;.@..0.d..J$.
+0060 - ef 6a 90 55 4b a1 62 45-cd 9b ae 27 d7 27 3a 36   .j.UK.bE...&#39;.&#39;&#58;6
+0070 - 56 a6 2f 4c 09 c5 8f 9b-a5 e3 58 1c 17 2d 59 d4   V./L......X..-Y.
+0080 - 1c c5 21 01 b1 87 55 3e-aa bf 61 40 5e db 4a 9d   ..!...U&#62;..a@^.J.
+0090 - 99 32 37 e1 4d ea 52 b8-fa 9e 3f b9 41 96 b6 c5   .27.M.R...?.A...
+
+Start Time&#58; 1500122117
+Timeout   &#58; 300 (sec)
+Verify return code&#58; 0 (ok)
+---
+this is a test with client and server reversing roles
+everything is working ok, signing off
+-rtj
+DONE
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594
+</div><script type='text/javascript'>
+        $('#show_1063118526').click(function() {
+            $('#detail_1063118526').slideDown("normal");
+            $('#show_1063118526').hide();
+            $('#hide_1063118526').show();
+        });
+        $('#hide_1063118526').click(function() {
+            $('#detail_1063118526').slideUp();
+            $('#hide_1063118526').hide();
+            $('#show_1063118526').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34366#1500042980'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-14T14:36:20+00:00">Jul 14, 2017 02:36 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1500042980">&nbsp;</a></div><pre>In this case since it&#39;s the Startd that&#39;s failing the attempt to advertise to your CE collector, we&#39;re concerned with the CLIENT authz level of the pilot (<a href='http&#58;//research.cs.wisc.edu/htcondor/manual/v8.4/3_6Security.html' target='_blank' rel='nofollow'>http&#58;//research.cs.wisc.edu/htcondor/manual/v8.4/3_6Security.html</a>)&#58;
+
+&#34;CLIENT
+This access level is different from all the others. Whereas all of the other access levels refer to the security policy for accepting connections from others, the CLIENT access level applies when an HTCondor daemon or tool is connecting to some other HTCondor daemon. In other words, it specifies the policy of the client that is initiating the operation, rather than the server that is being contacted. &#34;
+
+I believe the conversation about the details of pilot/CE authorization is moot because I don&#39;t think the Startd is even mapping the CE, which can be caused by clock drift, DNS resolution, stale CAs/CRLs, bad hostcert, etc.</pre></div><div class='update_description'><i onclick="document.location='34366#1499983329'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-13T22:02:09+00:00">Jul 13, 2017 10:02 PM UTC</time><a class="anchor" name="1499983329">&nbsp;</a></div><pre>Yes, that makes sense. So the reason this is failing is that the access level being requested is DAEMON, not CLIENT. The anonymous user is allowed to come in for CLIENT actions but not DAEMON.
+
+StartdLog&#58;07/13/17 17&#58;45&#58;47 (pid&#58;1040654) ERROR&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5006&#58;Failed to authenticate because the subject &#39;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gluskap.phys.uconn.edu&#39; is not currently trusted by you.  If it should be, add it to GSI_DAEMON_NAME or undefine GSI_DAEMON_NAME.
+
+-Richard Jones
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1499982538'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-13T21:48:58+00:00">Jul 13, 2017 09:48 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499982538">&nbsp;</a></div><pre>Richard,
+
+I believe the slash separates the mapping and the host that the request comes from so your CE should be authenticating as &#34;anonymous@&#60;UID DOMAIN&#62;/gluskap.phys.uconn.edu&#34;. You can see similar config in action in your CE&#58;
+
+$ condor_ce_config_val -v ALLOW_DAEMON
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1499980537'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-13T21:15:37+00:00">Jul 13, 2017 09:15 PM UTC</time><a class="anchor" name="1499980537">&nbsp;</a></div><pre>I see STARTD.ALLOW_CLIENT = collector*/*, anonymous*/*, frontend*/*, condor*/*, submit-side@matchsession/*
+I believe this fails because my gluskap DN maps to anonymous without any trailing slash anywhere in the name. Is that the problem?
+-Richard
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1499978831'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-13T20:47:11+00:00">Jul 13, 2017 08:47 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499978831">&nbsp;</a></div><pre>Richard,
+
+The collector1/frontend mappings are used by condor authz to determine what permissions are given to the glideinwms frontend collector/submit hosts and so they should be transparent to you. I&#39;d be curious what the output of &#96;condor_config_val -dump | grep -i allow_client&#96; turns up. STARTD.ALLOW_CLIENT should be fairly permissive, i.e., allowing anonymous*, which the CE collector should be mapped to according to the condor_mapfile you posted.
+
+Also just to make sure we&#39;re on the same page, these errors don&#39;t indicate any issues with pilots actually running at your site; what&#39;s broken is your ability to inspect these specific pilots via HTCondor-CE View or condor_ce_status.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1499969351'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-13T18:09:11+00:00">Jul 13, 2017 06:09 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1499969351">&nbsp;</a></div><pre>Brian,
+
+My CE gluskap.phys.uconn.edu has only one active ip interface, no secondary
+IP addresses, and resolves to the same name from all hosts in our cluster.
+I understand that you are looking for something specific to my site that
+might explain this, but I cannot comment on this. But doesn&#39;t the complete
+absence of any mention of gluskap in the following variables tell me that
+in principle, these pilots starting up on my workers cannot ever my
+condor-ce pool? BTW, I have a local account named &#34;condor&#34; on my systems,
+but no local &#34;collector1&#34; and no local &#34;frontend&#34; account. Does that matter?
+
+[condor_config_val in the pilot condor running on my worker node]
+GSI_DAEMON_NAME=/DC=org/DC=opensciencegrid/O=Open Science
+Grid/OU=Services/CN=osg-flock.grid.iu.edu,/DC=org/DC=opensciencegrid/O=Open
+Science Grid/OU=Services/CN=glideinwms/osg-flock.grid.iu.edu,/DC=org/DC=opensciencegrid/O=Open
+Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu
+
+[condor_mapfile in the pilot condor running on my worker node]
+GSI &#34;^&#92;/DC&#92;=org&#92;/DC&#92;=opensciencegrid&#92;/O&#92;=Open&#92; Science
+Grid&#92;/OU&#92;=Services&#92;/CN&#92;=osg&#92;-flock&#92;.grid&#92;.iu&#92;.edu$&#34; collector1
+GSI &#34;^&#92;/DC&#92;=org&#92;/DC&#92;=opensciencegrid&#92;/O&#92;=Open&#92; Science
+Grid&#92;/OU&#92;=Services&#92;/CN&#92;=glideinwms&#92;/osg&#92;-flock&#92;.grid&#92;.iu&#92;.edu$&#34; frontend GSI &#34;^&#92;/DC&#92;=org&#92;/DC&#92;=opensciencegrid&#92;/O&#92;=Open&#92; Science
+Grid&#92;/OU&#92;=Services&#92;/CN&#92;=pilot&#92;/osg&#92;-flock&#92;.grid&#92;.iu&#92;.edu$&#34; condor
+FS prod31 localuser
+GSI (.*) anonymous
+FS (.*) anonymous
+
+[grid-mapfile inside the glidein directory on my worker node]
+&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=
+osg-flock.grid.iu.edu&#34; collector1
+&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=glideinwms/
+osg-flock.grid.iu.edu&#34; frontend
+&#34;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/
+osg-flock.grid.iu.edu&#34; condor
+
+<div id='show_2098769122' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2098769122'>-Richard Jones
+
+On Thu, Jul 13, 2017 at 9&#58;30 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2098769122').click(function() {
+            $('#detail_2098769122').slideDown("normal");
+            $('#show_2098769122').hide();
+            $('#hide_2098769122').show();
+        });
+        $('#hide_2098769122').click(function() {
+            $('#detail_2098769122').slideUp();
+            $('#hide_2098769122').hide();
+            $('#show_2098769122').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34366#1499952613'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-13T13:30:13+00:00">Jul 13, 2017 01:30 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499952613">&nbsp;</a></div><pre>Richard,
+
+You&#39;re right, the condor config on your worker nodes correspond to your
+local condor and you use the normal condor commands with them.
+condor_ce_q/condor_ce_status on the other hand correspond to pilot jobs
+in your CE queue and the pilot payloads running at your site, respectively.
+
+You&#39;re also right that the StarterLog you went through corresponds to
+the pilot&#39;s condor. As for what hosts the pilots trust, that&#39;s based on
+the pilot config as well as CAs/CRLs on the worker node. I don&#39;t know of
+any OSG-wide issues with authentication so I&#39;m guessing it&#39;s a local
+problem at this point. Are there clock differences between your CE and
+the worker nodes? Another potential cause as Brian Bockelman mentioned
+could be differences in DNS resolution of the CE host inside vs outside
+the cluster.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1499891188'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-12T20:26:28+00:00">Jul 12, 2017 08:26 PM UTC</time><a class="anchor" name="1499891188">&nbsp;</a></div><pre>This may be progress. I went into one of the worker nodes that was thrashing with jobs trying to start and failing. There, I drilled down into the $CONDOR_LOCAL/execute/dir_NNNNN/glide_XXX/log directory, and paged through the StarterLog. This is what I found, at the point where a new job has been received and it is trying to change state from IDLE to BUSY.
+
+07/11/17 21&#58;22&#58;16 (pid&#58;1040654) SECMAN&#58; required authentication with collector gluskap.phys.uconn.edu&#58;9619 failed, so aborting command UPDATE_STARTD_AD.
+07/11/17 21&#58;22&#58;16 (pid&#58;1040654) ERROR&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5006&#58;Failed to authenticate because the subject &#39;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gluskap.phys.uconn.edu&#39; is not currently trusted by you.  If it should be, add it to GSI_DAEMON_NAME or undefine GSI_DAEMON_NAME.
+07/11/17 21&#58;22&#58;16 (pid&#58;1040654) Failed to start non-blocking update to &#60;137.99.79.130&#58;9619&#62;.
+07/11/17 21&#58;22&#58;39 (pid&#58;1040654) State change&#58; benchmarks completed
+07/11/17 21&#58;22&#58;39 (pid&#58;1040654) Changing activity&#58; Benchmarking -&#62; Idle
+07/11/17 21&#58;22&#58;43 (pid&#58;1040654) SECMAN&#58; required authentication with collector gluskap.phys.uconn.edu&#58;9619 failed, so aborting command UPDATE_STARTD_AD.
+07/11/17 21&#58;22&#58;43 (pid&#58;1040654) ERROR&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5006&#58;Failed to authenticate because the subject &#39;/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=gluskap.phys.uconn.edu&#39; is not currently trusted by you.  If it should be, add it to GSI_DAEMON_NAME or undefine GSI_DAEMON_NAME.
+07/11/17 21&#58;22&#58;43 (pid&#58;1040654) Failed to start non-blocking update to &#60;137.99.79.130&#58;9619&#62;.
+
+Here the &#34;YOU&#34; in &#34;is not currently trusted by you&#34; is the pilot condor, I believe. I don&#39;t have any direct control over who the pilot condor trusts, right?
+-Richard Jones
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1499890539'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-12T20:15:39+00:00">Jul 12, 2017 08:15 PM UTC</time><a class="anchor" name="1499890539">&nbsp;</a></div><pre>Maybe this is a misconception on my part, but I thought that the condor config that I set up on the worker nodes configures my local condor that is hosted on my CE, the one that I probe with &#34;condor_status&#34; and &#34;condor_q&#34;. When I do &#34;condor_ce_q&#34; and &#34;condor_ce_status&#34; I am looking at another pool. Looking at &#34;condor_ce_status&#34;, I would say that this pool is completely outside my configuration control, since many of the workers I see there are located on non-UConn sites. Doesn&#39;t that mean that the client daemons are pilots, running inside a captive session on some (not necessarily UConn) site? If this is true, why would what I have written in my /etc/condor/config.d/XXX.conf config files make any difference? I thought, from reading your initial suggestions, that you were looking in the direction of something being misconfigured on my worker nodes.
+-Richard Jones
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1499890076'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-12T20:07:56+00:00">Jul 12, 2017 08:07 PM UTC</time><a class="anchor" name="1499890076">&nbsp;</a></div><pre>Hello all. Our osg-ca-certs updates and fetch-crl cron jobs all run on the CE. Then every hour they get copied on the CE from the /etc/grid-security/certificates area to a nfs directory that is shared out to all of the workers. So the workers are never more than 1 hour behind the latest update. The rsv probe that checks my certs and crl&#39;s on the CE is green, so I believe that checks out.
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1499867831'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-12T13:57:11+00:00">Jul 12, 2017 01:57 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499867831">&nbsp;</a></div><pre>Richard,
+
+Actually, I don&#39;t believe item (1) will have much bearing on the
+functioning of your site. In my experience with the bug, the CE View
+page should still be available via HTTP on whichever port you&#39;ve
+configured (condor_ce_config_val HTCONDORCE_VIEW_PORT). There&#39;s a
+corresponding JIRA ticket for the issue here
+<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2820.' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2820.</a>
+
+I think issue (3) is more concerning -- have you ensured that your CAs
+and CRLs are up to date on your CE and your worker nodes?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1499866715'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-12T13:38:35+00:00">Jul 12, 2017 01:38 PM UTC</time><a class="anchor" name="1499866715">&nbsp;</a></div><pre>To avoid confusion of following too many parallel threads, I focus first on item (1) in my list because I learned that it might be the one that is most serious in the functioning of my site.
+
+1) I scanned through the last 24 hours of messages in CEViewLog, and there are no error messages in there. However, watching the messages appear in MasterLog in sync with other log files, I see that these events are clearly associated with the CEViewLog daemon. These messages are coming in pairs, as follows.
+***from MasterLog***
+07/12/17 09&#58;29&#58;13 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;16087&#62; (access level DAEMON)
+***from CEViewLog***
+07/12/17 09&#58;29&#58;13 SharedPortClient&#58; sent connection request to daemon at &#60;137.99.79.130&#58;9619&#62; for shared port id 264664_94d2
+07/12/17 09&#58;29&#58;13 Completed DC_CHILDALIVE to daemon at &#60;137.99.79.130&#58;9619&#62;
+
+Looking in /var/log/messages, there seems to be a related crash that is being logged there. The following section is repeating every minute or two.
+Jul 12 09&#58;34&#58;29 gluskap abrt&#58; detected unhandled Python exception in &#39;/usr/share/condor-ce/condor_ce_metric&#39;
+Jul 12 09&#58;34&#58;29 gluskap abrt-server[265897]&#58; Saved Python crash dump of pid 265896 to /var/spool/abrt/pyhook-2017-07-12-09&#58;34&#58;29-265896
+Jul 12 09&#58;34&#58;29 gluskap abrtd&#58; Directory &#39;pyhook-2017-07-12-09&#58;34&#58;29-265896&#39; creation detected
+Jul 12 09&#58;34&#58;29 gluskap abrtd&#58; Package &#39;htcondor-ce-view&#39; isn&#39;t signed with proper key
+Jul 12 09&#58;34&#58;29 gluskap abrtd&#58; &#39;post-create&#39; on &#39;/var/spool/abrt/pyhook-2017-07-12-09&#58;34&#58;29-265896&#39; exited with 1
+Jul 12 09&#58;34&#58;29 gluskap abrtd&#58; Deleting problem directory &#39;/var/spool/abrt/pyhook-2017-07-12-09&#58;34&#58;29-265896&#39;
+Jul 12 09&#58;34&#58;29 gluskap abrt&#58; detected unhandled Python exception in &#39;/usr/share/condor-ce/condor_ce_metric&#39;
+Jul 12 09&#58;34&#58;29 gluskap abrt-server[265901]&#58; Not saving repeating crash in &#39;/usr/share/condor-ce/condor_ce_metric&#39;
+Jul 12 09&#58;34&#58;29 gluskap abrt&#58; detected unhandled Python exception in &#39;/usr/share/condor-ce/condor_ce_metric&#39;
+Jul 12 09&#58;34&#58;29 gluskap abrt-server[265903]&#58; Not saving repeating crash in &#39;/usr/share/condor-ce/condor_ce_metric&#39;
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1499786602'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-11T15:23:22+00:00">Jul 11, 2017 03:23 PM UTC</time><a class="anchor" name="1499786602">&nbsp;</a></div><pre>1) This one is a bit curious as it is from the child daemon to the condor_master daemon (HTCondor is supposed to automatically setup this authentication).  Can you determine which daemon is generating these?
+2) Indeed, this suggests one or more VO is not getting authenticated.  The mapping information goes to /var/log/messages (or journalctl for a SL7 host); make sure the username is defined on the CE.  If the username mapping is incorrect locally, you can override with /etc/grid-security/voms-mapfile.  If the VO should not be attempting to submit locally, then we should open a separate ticket with the factory to not send those pilots.
+3) Note the failure message (&#34;GSI&#58;5005&#58;Failed to authenticate with client.  Client does not trust our certificate&#34;) indicates that the update from the worker node was rejected because the worker node did not trust the CE.  That indicates the configuration problem might be on the worker node side.  Check the standard items like CRLs as Brian Lin suggested.  Does DNS resolution work differently inside the cluster versus outside the cluster?
+
+Of the three items, only (1) might cause serious problems with operations.  The condor_master should restart a daemon that doesn&#39;t send periodic DC_CHILDALIVE messages.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=bbockelm/CN=659869/CN=Brian Paul Bockelman</pre></div><div class='update_description'><i onclick="document.location='34366#1499785690'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-11T15:08:10+00:00">Jul 11, 2017 03:08 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499785690">&nbsp;</a></div><pre>Richard,
+
+1) Do you see corresponding errors in /var/log/condor-ce/CEViewLog?
+2) Check for corresponding LCMAPS errors in /var/log/messages. My guess
+is that you don&#39;t have the local account created for a certain VO&#39;s jobs.
+3) This one&#39;s a bit curious. Is the fetch-crl-cron service running?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1499721734'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-10T21:22:14+00:00">Jul 10, 2017 09:22 PM UTC</time><a class="anchor" name="1499721734">&nbsp;</a></div><pre>Brian,
+
+I installed this rpm update you shared with me. Now the sched crashes seem to have gone away. The remaining symptoms of problems with condor-ce on our site are below.
+
+1) regular errors being logged in /var/log/condor-ce/MasterLog
+07/10/17 17&#58;14&#58;20 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;1850&#62; (access level DAEMON)
+07/10/17 17&#58;14&#58;39 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;5139&#62; (access level DAEMON)
+07/10/17 17&#58;14&#58;59 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;11556&#62; (access level DAEMON)
+...
+
+2) regular errors being logged in /var/log/condor-ce/SchedLog
+07/10/17 17&#58;18&#58;30 This process has a valid certificate & key
+07/10/17 17&#58;18&#58;30 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;18&#58;30 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;18&#58;30 ZKM&#58; successful mapping to GSS_ASSIST_GRIDMAP
+07/10/17 17&#58;18&#58;30 DC_AUTHENTICATE&#58; authentication of &#60;129.79.53.27&#58;5868&#62; did not result in a valid mapped user name, which is required for this command (1112 QMGMT_WRITE_CMD), so aborting.
+07/10/17 17&#58;18&#58;32 This process has a valid certificate & key
+07/10/17 17&#58;18&#58;32 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;18&#58;32 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;18&#58;32 ZKM&#58; successful mapping to GSS_ASSIST_GRIDMAP
+07/10/17 17&#58;18&#58;32 DC_AUTHENTICATE&#58; authentication of &#60;169.228.38.36&#58;56999&#62; did not result in a valid mapped user name, which is required for this command (1112 QMGMT_WRITE_CMD), so aborting.
+07/10/17 17&#58;18&#58;38 This process has a valid certificate & key
+07/10/17 17&#58;18&#58;38 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;18&#58;38 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;18&#58;38 ZKM&#58; successful mapping to GSS_ASSIST_GRIDMAP
+07/10/17 17&#58;18&#58;38 DC_AUTHENTICATE&#58; authentication of &#60;169.228.38.36&#58;56402&#62; did not result in a valid mapped user name, which is required for this command (1112 QMGMT_WRITE_CMD), so aborting.
+
+3) regular errors being posted in /var/log/condor-ce/CollectorLog
+07/10/17 17&#58;21&#58;00 This process has a valid certificate & key
+07/10/17 17&#58;21&#58;00 ZKM&#58; setting FQAN&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu,/osg/Role=NULL/Capability=NULL,/osg/ams/Role=NULL/Capability=NULL
+07/10/17 17&#58;21&#58;00 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;21&#58;00 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;21&#58;00 DC_AUTHENTICATE&#58; required authentication of 137.99.79.183 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/10/17 17&#58;21&#58;00 This process has a valid certificate & key
+07/10/17 17&#58;21&#58;00 ZKM&#58; setting FQAN&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu,/osg/Role=NULL/Capability=NULL,/osg/ams/Role=NULL/Capability=NULL
+<div id='show_784340011' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_784340011'>07/10/17 17&#58;21&#58;00 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;21&#58;00 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;21&#58;00 DC_AUTHENTICATE&#58; required authentication of 137.99.79.249 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/10/17 17&#58;21&#58;01 This process has a valid certificate & key
+07/10/17 17&#58;21&#58;01 ZKM&#58; setting FQAN&#58; /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=pilot/osg-flock.grid.iu.edu,/osg/Role=NULL/Capability=NULL,/osg/ams/Role=NULL/Capability=NULL
+07/10/17 17&#58;21&#58;01 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;21&#58;01 Finishing authenticate_server_gss_post with status=1
+07/10/17 17&#58;21&#58;01 DC_AUTHENTICATE&#58; required authentication of 137.99.79.169 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+
+-Richard Jones
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594
+</div><script type='text/javascript'>
+        $('#show_784340011').click(function() {
+            $('#detail_784340011').slideDown("normal");
+            $('#show_784340011').hide();
+            $('#hide_784340011').show();
+        });
+        $('#hide_784340011').click(function() {
+            $('#detail_784340011').slideUp();
+            $('#hide_784340011').hide();
+            $('#show_784340011').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34366#1499719431'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-10T20:43:51+00:00">Jul 10, 2017 08:43 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499719431">&nbsp;</a></div><pre>Richard,
+
+We believe we may have a fix available via this RPM&#58; <a href='http&#58;//koji.chtc.wisc.edu/kojifiles/packages/lcmaps-plugins-verify-proxy/1.5.9/1.2.osg34.el7/x86_64/lcmaps-plugins-verify-proxy-1.5.9-1.2.osg34.el7.x86_64.rpm' target='_blank' rel='nofollow'>http&#58;//koji.chtc.wisc.edu/kojifiles/packages/lcmaps-plugins-verify-proxy/1.5.9/1.2.osg34.el7/x86_64/lcmaps-plugins-verify-proxy-1.5.9-1.2.osg34.el7.x86_64.rpm</a>
+
+Could you install that RPM, restart the condor-ce service, and see if that fixes the issue for you?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1499703250'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-10T16:14:10+00:00">Jul 10, 2017 04:14 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1499703250">&nbsp;</a></div><pre>Brian,
+
+I did the rpm -q command you suggested, and there are no dependencies
+listed. Maybe I needed it a few months/years back for something in the osg
+stack that has been removed? Anyway, I did &#34;yum remove openssl098e&#34; on all
+hosts on the cluster, including the CE, so now it is gone. I rebooted the
+CE to make sure, and then monitored the services. I am getting the same
+repeating segfault crashes in the schedd, so nothing seems to have changed
+with regard to the problems we are working on here.
+
+[root@gluskap condor-ce]# rpm -q openssl098e
+package openssl098e is not installed
+
+-Richard Jones
+
+On Mon, Jul 10, 2017 at 10&#58;36 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34366#1499697395'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-10T14:36:35+00:00">Jul 10, 2017 02:36 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499697395">&nbsp;</a></div><pre>It looks like you have two versions of openssl installed, 1.0.1e and 0.9.8e. What requires the openssl098e package (&#96;rpm -q --whatrequires openssl098e&#96; or &#96;yum remove openssl098e&#96; to see the list of packages, say &#34;N&#34; at the prompt)?</pre></div><div class='update_description'><i onclick="document.location='34366#1499472985'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-08T00:16:25+00:00">Jul 8, 2017 12:16 AM UTC</time><a class="anchor" name="1499472985">&nbsp;</a></div><pre>add osg-profile.txt attachment, see above.
+-Richard
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1499462773'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-07T21:26:13+00:00">Jul 7, 2017 09:26 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1499462773">&nbsp;</a></div><pre>Brian,
+
+1) How often is this happening? About 1-2 minutes each time condor_schedd
+is restarted. The Master restarts it with a decreasing frequency (10
+seconds, 20 seconds, ...) so after a while it is down all the time. The
+cycle restarts if I do a manual &#34;service condor-ce restart&#34;, and Master
+starts again with a 10 second delay on restarts.
+
+2) I am curious if a stack dump pops up in /var/log/condor-ce/SchedLog
+after bumping up the debug level. Yes, it does, now I am getting a stack
+dump on each crash. All of the crashes are similar in their stack dumps,
+see below.
+
+Stack dump for process 437684 at timestamp 1499461619 (34 frames)
+/usr/lib64/libcondor_utils_8_6_3.so(dprintf_dump_stack+0x12d)[0x7f1feb212c7d]
+/usr/lib64/libcondor_utils_8_6_3.so(+0x3ba99e01b2)[0x7f1feb1e11b2]
+/lib64/libpthread.so.0(+0x3ba140f7e0)[0x7f1fe66137e0]
+/usr/lib64/libcrypto.so.10(+0x3ba54e86f0)[0x7f1fe7e246f0]
+/usr/lib64/libcrypto.so.10(+0x3ba54e62aa)[0x7f1fe7e222aa]
+/usr/lib64/libcrypto.so.10(lh_insert+0xa6)[0x7f1fe7e225f6]
+/usr/lib64/libcrypto.so.10(+0x3ba54e8db9)[0x7f1fe7e24db9]
+/usr/lib64/libcrypto.so.10(+0x3ba54e873c)[0x7f1fe7e2473c]
+/usr/lib64/lcmaps/lcmaps_verify_proxy2.mod(verify_init_library+0x1f2)[0x7f1fe37eacf2]
+/usr/lib64/lcmaps/lcmaps_verify_proxy2.mod(verify_X509_init+0x13)[0x7f1fe37e8873]
+/usr/lib64/lcmaps/lcmaps_verify_proxy2.mod(+0x43bd)[0x7f1fe37e63bd]
+/usr/lib64/liblcmaps.so(lcmaps_runEvaluationManager+0xcf)[0x7f1fe3a0788f]
+/usr/lib64/liblcmaps.so(lcmaps_runPluginManager+0x2cb)[0x7f1fe3a0264b]
+/usr/lib64/liblcmaps.so(lcmaps_run_and_return_username+0x370)[0x7f1fe39fa9e0]
+/usr/lib64/liblcas_lcmaps_gt4_mapping.so(llgt_run_lcmaps+0x791)[0x7f1fe4429201]
+/usr/lib64/liblcas_lcmaps_gt4_mapping.so(lcmaps_callout+0x4a7)[0x7f1fe44299b7]
+/usr/lib64/libglobus_callout.so.0(globus_callout_call_type+0x249)[0x7f1fe907def9]
+/usr/lib64/libglobus_gss_assist.so.3(globus_gss_assist_map_and_authorize+0x72)[0x7f1fea6fb152]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN16Condor_Auth_X50914nameGssToLocalEPKc+0x12d)[0x7f1feb28bc0d]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN14Authentication41map_authentication_name_to_canonical_nameEiPKcS1_+0x587)[0x7f1feb2857c7]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN14Authentication19authenticate_finishEP11CondorError+0x278)[0x7f1feb285b48]
+<div id='show_675268380' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_675268380'>/usr/lib64/libcondor_utils_8_6_3.so(_ZN14Authentication21authenticate_continueEP11CondorErrorb+0x1b6)[0x7f1feb285ed6]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN8ReliSock21authenticate_continueEP11CondorErrorbPPc+0x28)[0x7f1feb2ac658]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN21DaemonCommandProtocol20AuthenticateContinueEv+0x42)[0x7f1feb3139c2]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN21DaemonCommandProtocol10doProtocolEv+0xd8)[0x7f1feb3148e8]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN21DaemonCommandProtocol14SocketCallbackEP6Stream+0x92)[0x7f1feb314a72]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN10DaemonCore24CallSocketHandler_workerEibP6Stream+0x5f1)[0x7f1feb2f3ca1]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN10DaemonCore35CallSocketHandler_worker_demarshallEPv+0x1d)[0x7f1feb2f3e2d]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN13CondorThreads8pool_addEPFvPvES0_PiPKc+0x40)[0x7f1feb10f750]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN10DaemonCore17CallSocketHandlerERib+0x147)[0x7f1feb2ed7e7]
+/usr/lib64/libcondor_utils_8_6_3.so(_ZN10DaemonCore6DriverEv+0x36e0)[0x7f1feb2f1400]
+/usr/lib64/libcondor_utils_8_6_3.so(_Z7dc_mainiPPc+0x1799)[0x7f1feb30e569]
+/lib64/libc.so.6(__libc_start_main+0xfd)[0x7f1fe628ed1d]
+condor_schedd(+0x20549)[0x7f1feba6d549]
+
+3) It would also be a good idea to add &#39;export LCMAPS_DEBUG_LEVEL=5&#39; to
+/etc/sysconfig/condor-ce and restart the condor-ce service (lcmaps logging
+should show up in journalctl or /var/log/messages). -- Done.
+
+4) Could you provide the output of osg-system-profiler?
+(I will attach it to the ticket as soon as it is done.)
+
+-Richard Jones
+
+On Fri, Jul 7, 2017 at 5&#58;11 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_675268380').click(function() {
+            $('#detail_675268380').slideDown("normal");
+            $('#show_675268380').hide();
+            $('#hide_675268380').show();
+        });
+        $('#hide_675268380').click(function() {
+            $('#detail_675268380').slideUp();
+            $('#hide_675268380').hide();
+            $('#show_675268380').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='34366#1499461871'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-07T21:11:11+00:00">Jul 7, 2017 09:11 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499461871">&nbsp;</a></div><pre>How often is this happening? I&#39;d be curious if a stack dump pops up in
+/var/log/condor-ce/SchedLog after bumping the debug level. We&#39;ve seen
+this issue at a few other sites and we&#39;re still trying to track down the
+root cause. It would also be a good idea to add &#39;export
+LCMAPS_DEBUG_LEVEL=5&#39; to /etc/sysconfig/condor-ce and restart the
+condor-ce service (lcmaps logging should show up in journalctl or
+/var/log/messages).
+
+Could you provide the output of osg-system-profiler?
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1499456729'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-07T19:45:29+00:00">Jul 7, 2017 07:45 PM UTC</time><a class="anchor" name="1499456729">&nbsp;</a></div><pre>Brian,
+I added ALL_DEBUG=D_FULLDEBUG to 99-local.conf and restarted condor-ce.
+Yes, I am using the LCMAPS_VOMS plugin now, was using GUMS before the upgrade to osg version 3.4.
+There is no stack dump in SchedLog, just the few lines of obituary that I included in the original problem description.
+-Richard
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='34366#1499453523'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-07T18:52:03+00:00">Jul 7, 2017 06:52 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1499453523">&nbsp;</a></div><pre>Richard,
+
+Could you set ALL_DEBUG = D_FULLDEBUG in /etc/condor-ce/config.d/99-local.conf and reconfigure condor? Are you using the LCMAPS VOMS plugin for authentication? Was there a stack dump in the SchedLog?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34366#1499354529'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-06T15:22:09+00:00">Jul 6, 2017 03:22 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1499354529">&nbsp;</a></div><pre>Hi Edgar, would you be able to take a look at this?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='34366#1499271612'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-07-05T16:20:12+00:00">Jul 5, 2017 04:20 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1499271612">&nbsp;</a></div><pre>I wonder if I could get help from the experts regarding what is preventing my condor-ce from starting gwms jobs up properly on my site, UConn-OSG. I went through the upgrade process last weekend from osg version 3.3 to 3.4, and after that the condor-ce was no longer stable. Whenever it stops, I can restart it with &#34;service condor-ce restart&#34; but then after some time it crashes again. It is difficult for me to diagnose because the client who is refusing my certificate (see messages below) is running inside a pilot, for which I have no power over configuration.
+
+My condor-ce MasterLog is full of messages like the following, showing that my condor-ce schedd process is segfaulting and having to be restarted all the time.
+
+07/05/17 12&#58;12&#58;26 DefaultReaper unexpectedly called on pid 222144, status 11.
+07/05/17 12&#58;12&#58;26 The SCHEDD (pid 222144) died due to signal 11 (Segmentation fault)
+07/05/17 12&#58;12&#58;26 Sending obituary for &#34;/usr/sbin/condor_schedd&#34;
+07/05/17 12&#58;12&#58;26 restarting /usr/sbin/condor_schedd in 10 seconds
+07/05/17 12&#58;12&#58;36 Started DaemonCore process &#34;/usr/sbin/condor_schedd&#34;, pid and pgroup = 223904
+07/05/17 12&#58;12&#58;43 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;2820&#62; (access level DAEMON)
+07/05/17 12&#58;13&#58;02 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;29225&#62; (access level DAEMON)
+07/05/17 12&#58;13&#58;21 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;23863&#62; (access level DAEMON)
+07/05/17 12&#58;13&#58;40 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;16385&#62; (access level DAEMON)
+07/05/17 12&#58;13&#58;59 DaemonCore&#58; PERMISSION DENIED for 60008 (DC_CHILDALIVE) via TCP from host &#60;137.99.79.130&#58;15910&#62; (access level DAEMON)
+07/05/17 12&#58;14&#58;10 DefaultReaper unexpectedly called on pid 223904, status 11.
+07/05/17 12&#58;14&#58;10 The SCHEDD (pid 223904) died due to signal 11 (Segmentation fault)
+07/05/17 12&#58;14&#58;10 Sending obituary for &#34;/usr/sbin/condor_schedd&#34;
+
+My condor-ce CollectorLog is full of messages like the following.
+
+07/05/17 12&#58;10&#58;54 DC_AUTHENTICATE&#58; required authentication of 137.99.79.179 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to
+authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/05/17 12&#58;10&#58;54 DC_AUTHENTICATE&#58; required authentication of 137.99.79.174 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to
+authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/05/17 12&#58;10&#58;54 DC_AUTHENTICATE&#58; required authentication of 137.99.79.178 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to
+authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/05/17 12&#58;10&#58;54 DC_AUTHENTICATE&#58; required authentication of 137.99.79.179 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to
+authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/05/17 12&#58;10&#58;55 DC_AUTHENTICATE&#58; required authentication of 137.99.79.179 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to
+authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/05/17 12&#58;10&#58;55 DC_AUTHENTICATE&#58; required authentication of 137.99.79.178 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to
+authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/05/17 12&#58;10&#58;55 DC_AUTHENTICATE&#58; required authentication of 137.99.79.178 failed&#58; AUTHENTICATE&#58;1003&#58;Failed to authenticate with any method|AUTHENTICATE&#58;1004&#58;Failed to authenticate using GSI|GSI&#58;5005&#58;Failed to
+authenticate with client.  Client does not trust our certificate.  You may want to check the GSI_DAEMON_NAME in the condor_config
+07/05/17 12&#58;10&#58;55 PERMISSION DENIED to gsi@unmapped from host 137.99.79.243 for command 0 (UPDATE_STARTD_AD), access level ADVERTISE_STARTD&#58; reason&#58; cached result for ADVERTISE_STARTD; see first case for the full reason
+<div id='show_718389689' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_718389689'>
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594
+</div><script type='text/javascript'>
+        $('#show_718389689').click(function() {
+            $('#detail_718389689').slideDown("normal");
+            $('#show_718389689').hide();
+            $('#hide_718389689').show();
+        });
+        $('#hide_718389689').click(function() {
+            $('#detail_718389689').slideUp();
+            $('#hide_718389689').hide();
+            $('#show_718389689').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F34366">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 34366});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

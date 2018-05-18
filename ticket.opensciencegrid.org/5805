@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[5805] GLUE schema attributes and ReSS queries</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=5805" method="post">
+<div class="page-header">
+    <h3><span class="muted">5805</span> / GLUE schema attributes and ReSS queries</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Britta Daudert</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Add to Ops Mtg Agenda</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2008-11-14</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">LIGO <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">ReSS <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=5805", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/5805?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/5805?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20GLUE%20schema%20attributes%20and%20ReSS%20queries%20ISSUE%3D5805%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='5805#1226955934'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-17T21:05:34+00:00">Nov 17, 2008 09:05 PM UTC</time> by <b>echism</b><a class="anchor" name="1226955934">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.</pre></div><div class='update_description'><i onclick="document.location='5805#1226955431'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-17T20:57:11+00:00">Nov 17, 2008 08:57 PM UTC</time> by <b>Britta Daudert</b><a class="anchor" name="1226955431">&nbsp;</a></div><pre>Thnak you for the quick responses. Please close this ticket.
+Regards Britta
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5805#1226953990'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-17T20:33:10+00:00">Nov 17, 2008 08:33 PM UTC</time> by <b>bbockelm</b><a class="anchor" name="1226953990">&nbsp;</a></div><pre>Hey Britta,
+
+I would add that various versions of the GIP have had questionable
+data quality.  I can&#39;t control the versions sites deploy, but
+generally believe the data can be more and more trusted moving forward.
+
+The GlueCEPolicyMaxRunningJobs is usually 0 because the GIP didn&#39;t
+know how to query the batch system for this data (I think this is now
+added in Condor in beta releases, for example).  Older versions have a
+value of &#34;0&#34;, but we&#39;re starting to use a string of &#34;9&#34;s to indicate
+attributes which are not known (anything more than 4 &#34;9&#34;s should
+indicate &#34;not known&#34;).
+
+I would suggest that this particular attribute is not useful at most
+sites; one thing you&#39;ll want to look at is the number of free CPUs and
+number of waiting jobs (note that free CPUs at a lot of sites will
+never go all the way down to zero due to batch system configurations,
+but waiting jobs will definitely increase).
+
+I would recommend submitting to sites with (LIGO waiting jobs &#60; 20)
+and doing a fuzzy ranking against using the # of free CPUs, or maybe
+(# of free CPUs) / (# of total CPUs + 10).
+
+Gabriele, I would also note that having folks look for &#34;VO&#58;&#60;voname&#62;&#34;
+will be dangerous in the future.  GLUE supports access rules by FQAN,
+and I&#39;d like to eventually (next 6 months) support this.  My
+suggestion is to normalize all the ACBRs into a common format to allow
+for adjustments like this in the future.
+
+Brian
+
+On Nov 17, 2008, at 1&#58;47 PM, Gabriele Garzoglio wrote&#58;
+
+<font color='#7F7E6F'>&#62; Hi Britta,</font>
+<font color='#7F7E6F'>&#62; let me cc the GIP group&#58; parts of your questions are more on the</font>
+<div id='show_180660779' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_180660779'><font color='#7F7E6F'>&#62; implementation of Glue Schema attributes, rather than on features of</font>
+<font color='#7F7E6F'>&#62; ReSS. OSG GIP will be able to give you the details, but I can</font>
+<font color='#7F7E6F'>&#62; already give you some answers.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; First, this might just be a cut and paste issue, but your query</font>
+<font color='#7F7E6F'>&#62; below lacks the final &#39;s&#39; to GlueCEPolicyMaxRunningJobs. This</font>
+<font color='#7F7E6F'>&#62; results in GlueCEPolicyMaxRunningJobs not being printed out. In</font>
+<font color='#7F7E6F'>&#62; reality, I&#39;ve noticed it by using &#39;%d&#92;n&#39; instead of &#39;%d&#92;t&#39; in the</font>
+<font color='#7F7E6F'>&#62; formatting string.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; For both GlueCEPolicyMaxTotalJobs and GlueCEPolicyMaxRunningJob, I</font>
+<font color='#7F7E6F'>&#62; believe that 0 is equivalent to a large number&#58; in these cases,</font>
+<font color='#7F7E6F'>&#62; there is effectively no policy limitation on the maximum number of</font>
+<font color='#7F7E6F'>&#62; total jobs OR on the maximum number of running jobs. On the other</font>
+<font color='#7F7E6F'>&#62; hand, for example, I see that both TTU-ANTAEUS and FNAL_DZEROOSG_1</font>
+<font color='#7F7E6F'>&#62; have meaningful limits forGlueCEPolicyMaxRunningJobs (64 and 250</font>
+<font color='#7F7E6F'>&#62; respectively), which should be the maximum slot capacity of the</font>
+<font color='#7F7E6F'>&#62; queue, for a pbs system. Brian should be able to give more details</font>
+<font color='#7F7E6F'>&#62; on the actual implementation also for other batch systems.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; As for what attributes are specific or independent of a VO</font>
+<font color='#7F7E6F'>&#62; constraint, the general answer is that the attributes in the VOView</font>
+<font color='#7F7E6F'>&#62; (for the Cluster info tree) and VOInfo (for the SE info tree)</font>
+<font color='#7F7E6F'>&#62; entities can all override attribute values common to the CE and</font>
+<font color='#7F7E6F'>&#62; Storage Area, respectively. You can see the attribute list at p7 and</font>
+<font color='#7F7E6F'>&#62; p14 of the Glue Schema specification document&#58;</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//forge.cnaf.infn.it/plugins/scmsvn/viewcvs.php/*checkout*/v_1_3/spec/pdf/GLUESchema.pdf?rev=49&root=glueschema' target='_blank' rel='nofollow'>http&#58;//forge.cnaf.infn.it/plugins/scmsvn/viewcvs.php/*checkout*/v_1_3/spec/pdf/GLUESchema.pdf?rev=49&root=glueschema</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; When general attributes are overriden by VO-specific attributes,</font>
+<font color='#7F7E6F'>&#62; they are kept in the classad with the same name with &#34;Original&#34;</font>
+<font color='#7F7E6F'>&#62; appended. For example, IF GlueCEStateRunningJobs is the VO value,</font>
+<font color='#7F7E6F'>&#62; then GlueCEStateRunningJobsOriginal is the original value. Note that</font>
+<font color='#7F7E6F'>&#62; if a value is NOT overridden, there is no &#34;Original&#34; attribute in</font>
+<font color='#7F7E6F'>&#62; the classad. You can see a discussion on this on the document &#34;Glue</font>
+<font color='#7F7E6F'>&#62; Schema mapping to old classad format&#34; (p6)&#58;</font>
+<font color='#7F7E6F'>&#62; <a href='https&#58;//twiki.grid.iu.edu/twiki/pub/ResourceSelection/GlueSchemaToOldClassadMapping/glue-v1.3-oldclassad-mapping-v1.1.pdf' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/twiki/pub/ResourceSelection/GlueSchemaToOldClassadMapping/glue-v1.3-oldclassad-mapping-v1.1.pdf</a></font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; In practice, not all VOView and VOInfo attributes are implemented to</font>
+<font color='#7F7E6F'>&#62; have different values for VOs. I know that the important ones, like</font>
+<font color='#7F7E6F'>&#62; GlueCEStateRunningJobs and similar, are different for the VOs vs.</font>
+<font color='#7F7E6F'>&#62; the general values. Brian can probably give the details of all such</font>
+<font color='#7F7E6F'>&#62; attributes.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Let us know if you have further questions.</font>
+<font color='#7F7E6F'>&#62; Cheers</font>
+<font color='#7F7E6F'>&#62; Gabriele</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_180660779').click(function() {
+            $('#detail_180660779').slideDown("normal");
+            $('#show_180660779').hide();
+            $('#hide_180660779').show();
+        });
+        $('#hide_180660779').click(function() {
+            $('#detail_180660779').slideUp();
+            $('#hide_180660779').hide();
+            $('#show_180660779').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5805#1226951472'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-17T19:51:12+00:00">Nov 17, 2008 07:51 PM UTC</time> by <b>Gabriele Garzoglio</b><a class="anchor" name="1226951472">&nbsp;</a></div><pre>Hi Britta,
+let me cc the GIP group&#58; parts of your questions are more on the
+implementation of Glue Schema attributes, rather than on features of
+ReSS. OSG GIP will be able to give you the details, but I can already
+give you some answers.
+
+First, this might just be a cut and paste issue, but your query below
+lacks the final &#39;s&#39; to GlueCEPolicyMaxRunningJobs. This results in
+GlueCEPolicyMaxRunningJobs not being printed out. In reality, I&#39;ve
+noticed it by using &#39;%d&#92;n&#39; instead of &#39;%d&#92;t&#39; in the formatting string.
+
+For both GlueCEPolicyMaxTotalJobs and GlueCEPolicyMaxRunningJob, I
+believe that 0 is equivalent to a large number&#58; in these cases, there is
+effectively no policy limitation on the maximum number of total jobs OR
+on the maximum number of running jobs. On the other hand, for example, I
+see that both TTU-ANTAEUS and FNAL_DZEROOSG_1 have meaningful limits
+forGlueCEPolicyMaxRunningJobs (64 and 250 respectively), which should be
+the maximum slot capacity of the queue, for a pbs system. Brian should
+be able to give more details on the actual implementation also for other
+batch systems.
+
+As for what attributes are specific or independent of a VO constraint,
+the general answer is that the attributes in the VOView (for the Cluster
+info tree) and VOInfo (for the SE info tree) entities can all override
+attribute values common to the CE and Storage Area, respectively. You
+can see the attribute list at p7 and p14 of the Glue Schema
+specification document&#58;
+<a href='http&#58;//forge.cnaf.infn.it/plugins/scmsvn/viewcvs.php/*checkout*/v_1_3/spec/pdf/GLUESchema.pdf?rev=49&root=glueschema' target='_blank' rel='nofollow'>http&#58;//forge.cnaf.infn.it/plugins/scmsvn/viewcvs.php/*checkout*/v_1_3/spec/pdf/GLUESchema.pdf?rev=49&root=glueschema</a>
+
+When general attributes are overriden by VO-specific attributes, they
+are kept in the classad with the same name with &#34;Original&#34; appended. For
+example, IF GlueCEStateRunningJobs is the VO value, then
+GlueCEStateRunningJobsOriginal is the original value. Note that if a
+value is NOT overridden, there is no &#34;Original&#34; attribute in the
+classad. You can see a discussion on this on the document &#34;Glue Schema
+<div id='show_794561985' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_794561985'>mapping to old classad format&#34; (p6)&#58;
+<a href='https&#58;//twiki.grid.iu.edu/twiki/pub/ResourceSelection/GlueSchemaToOldClassadMapping/glue-v1.3-oldclassad-mapping-v1.1.pdf' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/twiki/pub/ResourceSelection/GlueSchemaToOldClassadMapping/glue-v1.3-oldclassad-mapping-v1.1.pdf</a>
+
+In practice, not all VOView and VOInfo attributes are implemented to
+have different values for VOs. I know that the important ones, like
+GlueCEStateRunningJobs and similar, are different for the VOs vs. the
+general values. Brian can probably give the details of all such attributes.
+
+Let us know if you have further questions.
+Cheers
+Gabriele
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_794561985').click(function() {
+            $('#detail_794561985').slideDown("normal");
+            $('#show_794561985').hide();
+            $('#hide_794561985').show();
+        });
+        $('#hide_794561985').click(function() {
+            $('#detail_794561985').slideUp();
+            $('#hide_794561985').hide();
+            $('#show_794561985').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5805#1226704690'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-14T23:18:10+00:00">Nov 14, 2008 11:18 PM UTC</time> by <b>Britta Daudert</b><a class="anchor" name="1226704690">&nbsp;</a></div><pre>Yes, please. I&#39;ve been trying to get answer to this question for a long
+time&#58;
+The query below gives either strange numbers like 99999 or 0 for both
+attributes.
+How do I find out?
+
+condor_status -pool osg-ress-1.fnal.gov -constraints
+&#34;StringlistIMember(&#92;&#34;VO&#58;ligo&#92;&#34;;GlueCEAccessControlBaseRule)&#34; -format
+&#39;%d&#92;t&#39; GlueCEPolicyMaxTotalJobs -format &#39;%d&#92;t&#39; GlueCEPolicyMaxRunningJob
+
+Also,  is there a way of finding out which glue attributes are site
+specific and independent of this contsraint &#58; StringlistIMember(&#92;&#34;VO&#58;ligo
+and which are not?
+
+Thank you. Britta
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5805#1226704150'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-14T23:09:10+00:00">Nov 14, 2008 11:09 PM UTC</time> by <b>Gabriele Garzoglio</b><a class="anchor" name="1226704150">&nbsp;</a></div><pre>Hi,
+there has been some automatic back and forth of email on this thread&#58; I
+understand there was some problem.
+
+Is there any question that ReSS support can address at this point? It
+does not seem so, but I wanted to double check, after all the email.
+
+If you need any help, as usual, let us know through
+ress-support@....
+
+Thank you
+Gabriele
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5805#1226516589'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T19:03:09+00:00">Nov 12, 2008 07:03 PM UTC</time> by <b>echism</b><a class="anchor" name="1226516589">&nbsp;</a></div><pre>It appears that an email loop happened between our system and LIGO. I
+have taken administrative action to correct the issue and apologize
+for any inconvenience.
+
+Thank you,
+Elizabeth
+On Nov 12, 2008, at 1&#58;21 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5805#1226514250'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:24:10+00:00">Nov 12, 2008 06:24 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226514250">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #223].
+
+Please include the string&#58;
+
+[LDG #223]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226514070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:21:10+00:00">Nov 12, 2008 06:21 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226514070">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #222].
+
+Please include the string&#58;
+
+[LDG #222]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226513890'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:18:10+00:00">Nov 12, 2008 06:18 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226513890">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #221].
+
+Please include the string&#58;
+
+[LDG #221]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226513710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:15:10+00:00">Nov 12, 2008 06:15 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226513710">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #220].
+
+Please include the string&#58;
+
+[LDG #220]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226513530'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:12:10+00:00">Nov 12, 2008 06:12 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226513530">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #219].
+
+Please include the string&#58;
+
+[LDG #219]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226513350'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:09:10+00:00">Nov 12, 2008 06:09 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226513350">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #218].
+
+Please include the string&#58;
+
+[LDG #218]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226513169'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:06:09+00:00">Nov 12, 2008 06:06 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226513169">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #216].
+
+Please include the string&#58;
+
+[LDG #216]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226512990'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:03:10+00:00">Nov 12, 2008 06:03 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226512990">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #215].
+
+Please include the string&#58;
+
+[LDG #215]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226512811'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T18:00:11+00:00">Nov 12, 2008 06:00 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226512811">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #214].
+
+Please include the string&#58;
+
+[LDG #214]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226512630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T17:57:10+00:00">Nov 12, 2008 05:57 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226512630">&nbsp;</a></div><pre>Greetings,
+
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding&#58;
+&#34;Open Science Grid&#58; GLUE schema attributes and ReSS queries ISSUE=5805 PROJ=71&#34;,
+a summary of which appears below.
+
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [LDG #213].
+
+Please include the string&#58;
+
+[LDG #213]
+
+in the subject line of all future correspondence about this issue. To do so,
+you may reply to this message.
+
+Thank you,
+ldg-help@....
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='5805#1226512450'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-12T17:54:10+00:00">Nov 12, 2008 05:54 PM UTC</time> by <b>ldg-help@....</b><a class="anchor" name="1226512450">&nbsp;</a></div><pre>Hi Tim,
+
+I recently was handed the LIGO VO contact responsibility for OSG.
+As far as I can tell, this is the only remaining open ticket for the
+LIGO VO.
+
+I&#39;m not exactly sure what this ticket is about nor what, if anything,
+I&#34;m supposed to do.  Any clues?
+
+Thanks,
+Brian
+
+On Thu Nov 06 11&#58;51&#58;01 2008, rt-osg-comment@.... wrote&#58;
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; <a href='https&#58;//ligohelp.gravity.psu.edu/rt3/Ticket/Display.html?id=7229' target='_blank' rel='nofollow'>https&#58;//ligohelp.gravity.psu.edu/rt3/Ticket/Display.html?id=7229</a></font>
+<font color='#7F7E6F'>&#62; This is a comment.  It is not sent to the Requestor(s)&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Tue Oct 21 09&#58;06&#58;03 2008, osg@.... wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5805#1226430011'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-11T19:00:11+00:00">Nov 11, 2008 07:00 PM UTC</time> by <b>Britta Daudert</b><a class="anchor" name="1226430011">&nbsp;</a></div><pre>Could you please also answer this question, asked in the previous
+response? Thank you.
+Britta
+
+Can you tell me if following attributes are restricted to LIGO with the
+indicated query or if they are general site attributes independent of
+the fact that the query is restricted to LIGO.
+
+condor_status -pool osg-ress-1.fnal.gov -constraints
+&#34;StringlistIMember(&#92;&#34;VO&#58;ligo&#92;&#34;;GlueCEAccessControlBaseRule) &&
+GlueCEInfoHostName==&#92;&#34;$hostname&#92;&#34;&#34; -format &#39;%d&#92;t&#39;
+GlueCEPolicyMaxTotalJobs -format &#39;%d&#92;t&#39; GlueCEPolicyMaxRunningJob
+
+In regards to your response below&#58;
+running the command without  hostname specified looks like this&#58;
+
+condor_status -pool osg-ress-1.fnal.gov -constraints
+&#34;StringlistIMember(&#92;&#34;VO&#58;ligo&#92;&#34;;GlueCEAccessControlBaseRule)&#34; -format
+&#39;%d&#92;t&#39; GlueCEPolicyMaxTotalJobs -format &#39;%d&#92;t&#39; GlueCEPolicyMaxRunningJob
+0       0       1000063 0       0       0       0       0       0
+0       0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0       0
+0       1000249 1000249 1000249 1000249 1000249 1000249 1000249 1000249
+1000249 1000249 10002491000249 1000249 1000249 1000249 1000249 1000249
+1000249 1000249 1000249 1000249 1000249 1000249 1000249 1000249 1000249
+1000249 1000249 1000249 1000249 1000249 1000249 1000249 0       0
+0       0       0       0       0       0       0       0       0
+0       0       0       0       0       0     00       0       0
+0       0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0       0
+0       0       0       0       0       0       1000099 1000099 1000731
+1000731 1000009 1000009 1000731 1000731 0       0       0       0
+00       0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0       0
+0       0       0       0       0       1001659 1001659 1001659 0
+<div id='show_74671447' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_74671447'>0       1000119 1000119 0       0       0       0       0       0
+0       0       0     00       0       0       0       0       0
+0       0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       99999   99999
+99999   99999   99999   99999   99999   99999   99999   99999   99999
+99999   99999   99999   99999   99999   99999 99999    99999   99999
+99999   99999   99999   99999   99999   99999   99999   99999   99999
+99999   99999   99999   99999   99999   99999   99999   99999   99999
+99999   99999   99999   99999   99999   99999   99999   99999   0
+0       0       0       0       0       0       0       0       0
+
+This does not tell me what # belongs to what site.
+I am finding my hostnames at VORS. Therefore I am presuming hostames are
+correct.
+
+Can you tell me if these two attributes in the above query are valid
+glue attributes?
+They seem to return  numbers  that do not make sense.
+How can I find out about these attributes?
+Thank you. Britta
+
+They return numbers that do not make sense or no result for all sites.
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_74671447').click(function() {
+            $('#detail_74671447').slideDown("normal");
+            $('#show_74671447').hide();
+            $('#hide_74671447').show();
+        });
+        $('#hide_74671447').click(function() {
+            $('#detail_74671447').slideUp();
+            $('#hide_74671447').hide();
+            $('#show_74671447').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5805#1226420112'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-11T16:15:12+00:00">Nov 11, 2008 04:15 PM UTC</time> by <b>Parag Mhashilkar</b><a class="anchor" name="1226420112">&nbsp;</a></div><pre>Hi Britta,
+
+If some sites claim to support LIGO and are reporting to ReSS, but the
+query you does not show any results for such sites, it is quite likely
+that the sites are not well configured. Opening a GOC ticket is right
+thing to do. However, you may first want run your query below, without
+the condition GlueCEInfoHostName==&#92;&#34;$hostname&#92;&#34;. Maybe the hostname you
+have for those sites is different than that listed in GlueCEInfoHostName
+in classAd?
+
+On Tue, 2008-11-11 at 16&#58;03 +0000, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5805#1226419392'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-11T16:03:12+00:00">Nov 11, 2008 04:03 PM UTC</time> by <b>Britta Daudert</b><a class="anchor" name="1226419392">&nbsp;</a></div><pre>Hi,
+I had written two time in response but I send it to the wrong address.
+Sorry, here are both replies.
+Britta
+
+------
+Subject&#58;     [Fwd&#58; Re&#58; Open Science Grid&#58; GLUE schema attributes and
+ReSS queries ISSUE=5805 PROJ=71]
+Date&#58;     Tue, 04 Nov 2008 10&#58;14&#58;53 -0800
+From&#58;     Britta Daudert &#60;bdaudert@....&#62;
+To&#58;     OSG Operations Center &#60;goc@....&#62;
+
+I had responded to the last GOC e-mail on Oct 20 (see below)
+but I did not receive or see any response.
+Regards Britta
+-------- Original Message --------
+Subject&#58;     Re&#58; Open Science Grid&#58; GLUE schema attributes and ReSS
+queries ISSUE=5805 PROJ=71
+Date&#58;     Mon, 20 Oct 2008 14&#58;03&#58;42 -0700
+From&#58;     Britta Daudert &#60;bdaudert@....&#62;
+To&#58;     osg@....
+References&#58;     &#60;200810201642.m9KGg1Ku007754@....&#62;
+
+Thank you for the help.
+Can you tell me if following attributes are restricted to LIGO with the
+indicated query or if they are general site attributes independent of
+the fact that the query is restricted to LIGO.
+
+condor_status -pool osg-ress-1.fnal.gov -constraints
+&#34;StringlistIMember(&#92;&#34;VO&#58;ligo&#92;&#34;;GlueCEAccessControlBaseRule) &&
+GlueCEInfoHostName==&#92;&#34;$hostname&#92;&#34;&#34; -format &#39;%d&#92;t&#39;
+GlueCEPolicyMaxTotalJobs -format &#39;%d&#92;t&#39; GlueCEPolicyMaxRunningJob
+
+Some hostnames return no results whatsoever. Do I need to open GOC
+tickets for these again since they claim to support LIGO and tehy are
+<div id='show_1264233511' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1264233511'>supposed to be reporting to ReSS?
+Regards Britta
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1264233511').click(function() {
+            $('#detail_1264233511').slideDown("normal");
+            $('#show_1264233511').hide();
+            $('#hide_1264233511').show();
+        });
+        $('#hide_1264233511').click(function() {
+            $('#detail_1264233511').slideUp();
+            $('#hide_1264233511').hide();
+            $('#show_1264233511').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5805#1226419390'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-11T16:03:10+00:00">Nov 11, 2008 04:03 PM UTC</time> by <b>Britta Daudert</b><a class="anchor" name="1226419390">&nbsp;</a></div><pre>Hi,
+I had written two time in response but I send it to the wrong address.
+Sorry, here are both replies.
+Britta
+
+------
+Subject&#58; 	[Fwd&#58; Re&#58; Open Science Grid&#58; GLUE schema attributes and ReSS
+queries ISSUE=5805 PROJ=71]
+Date&#58; 	Tue, 04 Nov 2008 10&#58;14&#58;53 -0800
+From&#58; 	Britta Daudert &#60;bdaudert@....&#62;
+To&#58; 	OSG Operations Center &#60;goc@....&#62;
+
+I had responded to the last GOC e-mail on Oct 20 (see below)
+but I did not receive or see any response.
+Regards Britta
+-------- Original Message --------
+Subject&#58; 	Re&#58; Open Science Grid&#58; GLUE schema attributes and ReSS queries
+ISSUE=5805 PROJ=71
+Date&#58; 	Mon, 20 Oct 2008 14&#58;03&#58;42 -0700
+From&#58; 	Britta Daudert &#60;bdaudert@....&#62;
+To&#58; 	osg@....
+References&#58; 	&#60;200810201642.m9KGg1Ku007754@....&#62;
+
+Thank you for the help.
+Can you tell me if following attributes are restricted to LIGO with the
+indicated query or if they are general site attributes independent of
+the fact that the query is restricted to LIGO.
+
+condor_status -pool osg-ress-1.fnal.gov -constraints
+&#34;StringlistIMember(&#92;&#34;VO&#58;ligo&#92;&#34;;GlueCEAccessControlBaseRule) &&
+GlueCEInfoHostName==&#92;&#34;$hostname&#92;&#34;&#34; -format &#39;%d&#92;t&#39;
+GlueCEPolicyMaxTotalJobs -format &#39;%d&#92;t&#39; GlueCEPolicyMaxRunningJob
+
+Some hostnames return no results whatsoever. Do I need to open GOC
+tickets for these again since they claim to support LIGO and tehy are
+<div id='show_1787645495' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1787645495'>supposed to be reporting to ReSS?
+Regards Britta
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1787645495').click(function() {
+            $('#detail_1787645495').slideDown("normal");
+            $('#show_1787645495').hide();
+            $('#hide_1787645495').show();
+        });
+        $('#hide_1787645495').click(function() {
+            $('#detail_1787645495').slideUp();
+            $('#hide_1787645495').hide();
+            $('#show_1787645495').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5805#1225727850'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-11-03T15:57:30+00:00">Nov 3, 2008 03:57 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1225727850">&nbsp;</a></div><pre>LIGO,
+
+Could you please followup on this ticket?
+
+Thank you,
+
+Tim</pre></div><div class='update_description'><i onclick="document.location='5805#1224593511'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-21T12:51:51+00:00">Oct 21, 2008 12:51 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1224593511">&nbsp;</a></div><pre>Hi. I am adding LIGO to the ticket since the topic seems to concern that VO specifically. Initially I
+didn&#39;t assign them because I thought we might be able to answer the more general questions regarding
+the GIP/Glue attributes and specifications.
+
+Thank you,
+
+Tim</pre></div><div class='update_description'><i onclick="document.location='5805#1224536710'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-20T21:05:10+00:00">Oct 20, 2008 09:05 PM UTC</time> by <b>Britta Daudert</b><a class="anchor" name="1224536710">&nbsp;</a></div><pre>Thank you for the help.
+Can you tell me if following attributes are restricted to LIGO with the
+indicated query or if they are general site attributes independent of
+the fact that the query is restricted to LIGO.
+
+condor_status -pool osg-ress-1.fnal.gov -constraints
+&#34;StringlistIMember(&#92;&#34;VO&#58;ligo&#92;&#34;;GlueCEAccessControlBaseRule) &&
+GlueCEInfoHostName==&#92;&#34;$hostname&#92;&#34;&#34; -format &#39;%d&#92;t&#39;
+GlueCEPolicyMaxTotalJobs -format &#39;%d&#92;t&#39; GlueCEPolicyMaxRunningJob
+
+Some hostnames return no results whatsoever. Do I need to open GOC
+tickets for these again since they claim to support LIGO and tehy are
+supposed to be reporting to ReSS?
+Regards Britta
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5805#1224520869'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-20T16:41:09+00:00">Oct 20, 2008 04:41 PM UTC</time> by <b>Gabriele Garzoglio</b><a class="anchor" name="1224520869">&nbsp;</a></div><pre>Hi Britta,
+about a list of valid Glue Schema Attributes, we have a link that lists
+various sources of information. In particular, the link to GIP discusses
+also semantics. For a more detailed discussion on semantics, you should
+see the glue schema specification (also linked)&#58;
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/ResourceSelection/GlueSchemaToOldClassadMapping' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/ResourceSelection/GlueSchemaToOldClassadMapping</a>
+
+Cheers
+Gabriele
+
+Parag Mhashilkar wrote&#58;
+<font color='#7F7E6F'>&#62; Hi Britta,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 1) I don&#39;t seem to be able to find a complete</font>
+<font color='#7F7E6F'>&#62; list of valid GLUE schema attributes. All I can find online is</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; run following command to get list of all attributes and their values for sites supporting Ligo. To print just the required parameter, you can use the -format option.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; condor_status -pool osg-ress-1.fnal.gov -constraints &#39;StringlistIMember(&#34;VO&#58;ligo&#34;;GlueCEAccessControlBaseRule)&#39; -l</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 2) Some of the queries I perform give zero results or no result (blanks). What is the possible cause for this and</font>
+<font color='#7F7E6F'>&#62; how can I obtain the missing information?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; That means there are no sites matching your filtering criteria</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 3) One request for help&#58;</font>
+<font color='#7F7E6F'>&#62; I am particularly interested in the following attributes&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 1) Total CPU available at site</font>
+<font color='#7F7E6F'>&#62; 2) # of job slots available to me (LIGO)</font>
+<font color='#7F7E6F'>&#62; 3) # Max Number of jobs allowed in Queue for LIGO at site</font>
+<font color='#7F7E6F'>&#62; 4) # Max Number of jobs allowed running for LIGO at site</font>
+<font color='#7F7E6F'>&#62;</font>
+<div id='show_861057458' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_861057458'><font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Ideally, 3 should be configured using GlueCEPolicy attributes, but they are not reliable as off now. So what you are using is what it should be in case sites configure these parameters  correctly. You can use GlueCEStateFreeJobSlots for 1) and chase down the site admins to correctly report the values for policy atttributes for Ligo.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Please let me know if you have any other questions.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; -Parag</font>
+<font color='#7F7E6F'>&#62; ----- Original Message -----</font>
+<font color='#7F7E6F'>&#62; From&#58; Open Science Grid FootPrints &#60;osg@....&#62;</font>
+<font color='#7F7E6F'>&#62; Date&#58; Friday, October 17, 2008 5&#58;52 pm</font>
+<font color='#7F7E6F'>&#62; Subject&#58; RR - Open Science Grid - 5805 - 4 - GLUE schema attributes and ReSS queries  ISSUE=5805 PROJ=71</font>
+<font color='#7F7E6F'>&#62; To&#58; ress-support@....</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_861057458').click(function() {
+            $('#detail_861057458').slideDown("normal");
+            $('#show_861057458').hide();
+            $('#hide_861057458').show();
+        });
+        $('#hide_861057458').click(function() {
+            $('#detail_861057458').slideUp();
+            $('#hide_861057458').hide();
+            $('#show_861057458').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='5805#1224509468'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-20T13:31:08+00:00">Oct 20, 2008 01:31 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1224509468">&nbsp;</a></div><pre>Also, regarding the Glue attributes, there is some information on the OSG TWiki which may be helpful.
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Main/GIPAttributes' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Main/GIPAttributes</a>
+
+Tim</pre></div><div class='update_description'><i onclick="document.location='5805#1224306910'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-18T05:15:10+00:00">Oct 18, 2008 05:15 AM UTC</time> by <b>Parag Mhashilkar</b><a class="anchor" name="1224306910">&nbsp;</a></div><pre>Hi Britta,
+
+1) I don&#39;t seem to be able to find a complete
+list of valid GLUE schema attributes. All I can find online is
+
+run following command to get list of all attributes and their values for sites supporting Ligo. To print just the required parameter, you can use the -format option.
+
+condor_status -pool osg-ress-1.fnal.gov -constraints &#39;StringlistIMember(&#34;VO&#58;ligo&#34;;GlueCEAccessControlBaseRule)&#39; -l
+
+2) Some of the queries I perform give zero results or no result (blanks). What is the possible cause for this and
+how can I obtain the missing information?
+
+That means there are no sites matching your filtering criteria
+
+3) One request for help&#58;
+I am particularly interested in the following attributes&#58;
+
+1) Total CPU available at site
+2) # of job slots available to me (LIGO)
+3) # Max Number of jobs allowed in Queue for LIGO at site
+4) # Max Number of jobs allowed running for LIGO at site
+
+Ideally, 3 should be configured using GlueCEPolicy attributes, but they are not reliable as off now. So what you are using is what it should be in case sites configure these parameters  correctly. You can use GlueCEStateFreeJobSlots for 1) and chase down the site admins to correctly report the values for policy atttributes for Ligo.
+
+Please let me know if you have any other questions.
+
+-Parag
+----- Original Message -----
+From&#58; Open Science Grid FootPrints &#60;osg@....&#62;
+Date&#58; Friday, October 17, 2008 5&#58;52 pm
+Subject&#58; RR - Open Science Grid - 5805 - 4 - GLUE schema attributes and ReSS queries  ISSUE=5805 PROJ=71
+To&#58; ress-support@....
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='5805#1224283411'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2008-10-17T22:43:31+00:00">Oct 17, 2008 10:43 PM UTC</time> by <b>echism</b><a class="anchor" name="1224283411">&nbsp;</a></div><pre>Dear Goc,
+I am tryimg to obtain OSG site information using ReSS queries like this one&#58;
+
+condor_status -pool osg-ress-1.fnal.gov -constraints
+&#39;StringlistIMember(&#34;VO&#58;ligo&#34;;GlueCEAccessControlBaseRule)&#39; -format &#39;%s&#92;t&#39; GlueSiteName  -format &#39;%d&#92;t&#39;
+GlueCEStateFreeJobSlots
+
+I have two questions and 1 requests for help&#58;
+
+1) I don&#39;t seem to be able to find a complete
+list of valid GLUE schema attributes. All I can find online is
+
+Glue Schema attributes accepted by FermiGrid Matchmaking Service
+
+2) Some of the queries I perform give zero results or no result (blanks). What is the possible cause for this and
+how can I obtain the missing information?
+
+3) One request for help&#58;
+I am particularly interested in the following attributes&#58;
+
+1) Total CPU available at site
+2) # of job slots available to me (LIGO)
+3) # Max Number of jobs allowed in Queue for LIGO at site
+4) # Max Number of jobs allowed running for LIGO at site
+
+So far I have bee trying this query but the results seem questionable. eg&#58;  Nebraska &#58;
+a query for GlueCEStateJobSlots returns nothing and
+I see
+99999 jobs allowed in queue (GlueCEPolicyMaxTotalJobs) and 10000 jobs allowed running
+(GlueCEPolicyMaxRunningJobs)
+
+This is how I got these results&#58;
+
+condor_status -pool osg-ress-1.fnal.gov -constraints
+&#39;StringlistIMember(&#34;VO&#58;ligo&#34;;GlueCEAccessControlBaseRule) &amp;&amp;
+<div id='show_1927273577' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1927273577'>GlueCEInfoHostName==&#34;red.unl.edu&#34;&#39; -format &#39;%s&#92;t&#39;
+GlueSiteName  -format &#39;%d&#92;t&#39;  GlueCEPolicyMaxTotalJobs
+-format &#39;%d&#92;t&#39; GlueCEPolicyMaxRunningJobs
+
+Can someone please help me correct my query so that I can obtain the information 1) --$0 described above?
+
+Does
+-constraints
+&#39;StringlistIMember(&#34;VO&#58;ligo&#34;
+...
+
+mean the results are restricted to what LIGO is allowed to do on the site?
+
+Thank you. Britta
+</div><script type='text/javascript'>
+        $('#show_1927273577').click(function() {
+            $('#detail_1927273577').slideDown("normal");
+            $('#show_1927273577').hide();
+            $('#hide_1927273577').show();
+        });
+        $('#hide_1927273577').click(function() {
+            $('#detail_1927273577').slideUp();
+            $('#hide_1927273577').hide();
+            $('#show_1927273577').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F5805">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 5805});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

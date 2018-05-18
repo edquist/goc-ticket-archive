@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[7538] condor-cron errors after ip change</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=7538" method="post">
+<div class="page-header">
+    <h3><span class="muted">7538</span> / condor-cron errors after ip change</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Michael Thomas</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2009-10-06</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">USCMS <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=7538", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/7538?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/7538?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20condor-cron%20errors%20after%20ip%20change%20ISSUE%3D7538%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='7538#1254343388'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-30T20:43:08+00:00">Sep 30, 2009 08:43 PM UTC</time> by <b>USCMS</b><a class="anchor" name="1254343388">&nbsp;</a></div><pre>The Fermi/Remedy ticket has been resolved with the following solution.  Please resolve your ticket.
+
+Resolution Categorization Tier 1 &#58;
+Resolution Categorization Tier 2 &#58;
+Resolution Categorization Tier 3 &#58;
+Resolution                       &#58; Resolved by GOC
+Resolution Method                &#58;
+
+Fermi National Accelerator Laboratory Service DeskService Desk&#58; 630.840.2345</pre></div><div class='update_description'><i onclick="document.location='7538#1254343184'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-30T20:39:44+00:00">Sep 30, 2009 08:39 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1254343184">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.
+
+Please submit problems, requests, and questions at&#58;
+<a href='http&#58;//oim.grid.iu.edu/gocticket' target='_blank' rel='nofollow'>http&#58;//oim.grid.iu.edu/gocticket</a>
+
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='7538#1254329706'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-30T16:55:06+00:00">Sep 30, 2009 04:55 PM UTC</time> by <b>Michael Thomas</b><a class="anchor" name="1254329706">&nbsp;</a></div><pre>Yes, the problem is fixed now.  You can close this ticket.  I opened
+additional tickets to address the root causes of the problem (7540, 7541).
+
+--Mike</pre></div><div class='update_description'><i onclick="document.location='7538#1254329325'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-30T16:48:45+00:00">Sep 30, 2009 04:48 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1254329325">&nbsp;</a></div><pre>Mike,
+
+I saw the emails going back and fourth last night. I read that your last one said that the problem should be fixed now. Can you confirm this?
+
+Thanks,
+
+Christopher</pre></div><div class='update_description'><i onclick="document.location='7538#1254272108'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-30T00:55:08+00:00">Sep 30, 2009 12:55 AM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1254272108">&nbsp;</a></div><pre>After more thought, I realized that condor-cron has a more fundamental
+flaw&#58;  <a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=7541' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=7541</a>
+
+Summary&#58;  condor-cron should not be binding to the public interface of
+the host at all, since it has no reason to establish any communications
+outside of the CE.
+
+--Mike
+
+Michael Thomas wrote&#58;
+&gt; Brian did some poking around on the gatekeeper and found an old
+&gt; condor_master process from condor_cron that was several days old.  I
+&gt; must have missed that at least 20 times because we also have a
+&gt; condor_master process from our cluster batch system.  Apparently
+&gt; &#39;service condor-cron stop&#39; does not actually kill the condor_master
+&gt; process from condor-cron (ticket #7540).  This meant we had an old
+&gt; condor_master process, and even though it had been started after DNS
+&gt; caches should have been cleared, it still loaded up the bad IP the last
+&gt; time it started a few days ago.
+&gt;
+&gt; I&#39;ve restarted condor-cron (and this stale condor_master process) once
+&gt; more, which I believe will now fix the problem.
+&gt;
+&gt; When can we dump condor-cron and use something more standard like cron,
+&gt; at, or even Nagios?
+&gt;
+&gt; --Mike
+&gt;
+&gt; On 09/25/2009 05&#58;28 PM, Michael Thomas wrote&#58;
+&gt;&gt; We recently had to change the IP address on our CE.  We were able to
+&gt;&gt; update our DNS servers so that the hostname itself and the host/service
+&gt;&gt; certificates did not change, only the ip address.
+&gt;&gt;
+&gt;&gt; We restarted the CE services after the DNS caching had expired, and now
+&gt;&gt; notice that our rsv results are only getting published once before
+<div id='show_748398427' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_748398427'>&gt;&gt; quitting.  The condor-cron starter log shows the following error every
+&gt;&gt; few minutes&#58;
+&gt;&gt;
+&gt;&gt; 9/25 17&#58;13&#58;00 (82.0)  Output file&#58;
+&gt;&gt; /osg/1.2.0/osg-rsv/logs/probes/cit-se2.ultralight.org__srm-ping-probe@....
+&gt;&gt;
+&gt;&gt; 9/25 17&#58;13&#58;00 (82.0)  Error file&#58;
+&gt;&gt; /osg/1.2.0/osg-rsv/logs/probes/cit-se2.ultralight.org__srm-ping-probe@....
+&gt;&gt;
+&gt;&gt; 9/25 17&#58;13&#58;00 (82.0)  About to exec
+&gt;&gt; /osg/1.2.0/osg-rsv/bin/probes/probe_wrapper.pl
+&gt;&gt; /osg/1.2.0/osg-rsv/bin/probes/srm-ping-probe -m org.osg.srm.srmping
+&gt;&gt; --verbose --print-local-time --srm-destination-dir /mnt/hadoop/rsv
+&gt;&gt; --srm-webservice-path &#39;&#39;&#39;&#39;srm/v2/server&#39;&#39;&#39;&#39; --ggs --gsl
+&gt;&gt; /osg/1.2.0/osg-rsv/output/gratia --python-loc /usr/bin/python --uri
+&gt;&gt; cit-se2.ultralight.org --proxy /tmp/x509up_u2500
+&gt;&gt; 9/25 17&#58;13&#58;00 (82.0)  error opening
+&gt;&gt; /osg/1.2.0/condor-cron/local.cithep252/log/procd_pipe.SCHEDD&#58; No such
+&gt;&gt; device or address (6)
+&gt;&gt; 9/25 17&#58;13&#58;00 (82.0)  ProcFamilyClient&#58; error initializing LocalClient
+&gt;&gt; 9/25 17&#58;13&#58;00 (82.0)  ProcFamilyProxy&#58; error initializing
+&gt;&gt; ProcFamilyClient
+&gt;&gt; 9/25 17&#58;13&#58;00 (82.0)  ERROR &quot;ProcD has failed&quot; at line 599 in file
+&gt;&gt; proc_family_proxy.cpp
+&gt;&gt;
+&gt;&gt; ...but the file
+&gt;&gt; /osg/1.2.0/condor-cron/local.cithep252/log/procd_pipe.SCHEDD does exist
+&gt;&gt; as a named pipe.  Note that we had moved this from /tmp to $LOG (a local
+&gt;&gt; disk, not nfs) so that tmpwatch wouldn&#39;t clean it up.
+&gt;&gt;
+&gt;&gt; The probe logs show the same error&#58;
+&gt;&gt;
+&gt;&gt; 021 (086.000.000) 09/25 17&#58;21&#58;01 Error from starter
+&gt;&gt; on&lt;192.84.86.98&#58;50822&gt;&#58;
+&gt;&gt;          ProcD has failed
+&gt;&gt;
+&gt;&gt; I&#39;ve restarted condor-cron a couple of times, but each time the result
+&gt;&gt; is the same&#58;  The probes run once, then start showing this error and
+&gt;&gt; never run correctly again.  Any ideas what might be going wrong with
+&gt;&gt; procd?
+&gt;&gt;
+&gt;&gt; --Mike
+</div><script type='text/javascript'>
+        $('#show_748398427').click(function() {
+            $('#detail_748398427').slideDown("normal");
+            $('#show_748398427').hide();
+            $('#hide_748398427').show();
+        });
+        $('#hide_748398427').click(function() {
+            $('#detail_748398427').slideUp();
+            $('#hide_748398427').hide();
+            $('#show_748398427').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='7538#1254270912'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-30T00:35:12+00:00">Sep 30, 2009 12:35 AM UTC</time> by <b>wart@....</b><a class="anchor" name="1254270912">&nbsp;</a></div><pre>The problem was a stale condor_master process that was never killed
+after running &#39;service condor-cron stop&#39; (ticket #7540)  For some
+reason, even after DNS caching had been cleared, a restart of
+condor-cron started up a condor_master process that had retained the
+original IP address.
+
+I shut down condor-cron and issued a &#39;kill -9&#39; on the stale
+condor_master process.  After restaring condor-cron, it appears to be
+working correctly even after two hours have passed.
+
+--Mike</pre></div><div class='update_description'><i onclick="document.location='7538#1254264252'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-29T22:44:12+00:00">Sep 29, 2009 10:44 PM UTC</time> by <b>Michael Thomas</b><a class="anchor" name="1254264252">&nbsp;</a></div><pre>Here is a link to a tarball containing the condor-cron debug logs after
+the error started appearing&#58;
+
+<a href='http&#58;//ultralight.caltech.edu/' target='_blank' rel='nofollow'>http&#58;//ultralight.caltech.edu/</a>~wart/junk/local.cithep252.tgz</pre></div><div class='update_description'><i onclick="document.location='7538#1254260291'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-29T21:38:11+00:00">Sep 29, 2009 09:38 PM UTC</time> by <b>Michael Thomas</b><a class="anchor" name="1254260291">&nbsp;</a></div><pre>As suggested on the OSG-ITB  mailing list, I did a grep through all of
+the condor-cron directory, and the only place where the old IP shows up
+is in the SchedLog file.  I&#39;ve turned up logging for the schedd, shadow,
+and starters to see if any additional information appears.
+
+--Mike</pre></div><div class='update_description'><i onclick="document.location='7538#1254258106'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-29T21:01:46+00:00">Sep 29, 2009 09:01 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1254258106">&nbsp;</a></div><pre>Reposting from osg-int to provide a ticket that can be tracked&#58;
+
+We recently had to change the IP address on our CE.  We were able to
+update our DNS servers so that the hostname itself and the host/service
+certificates did not change, only the ip address.  The old IP address was 198.32.44.252.  The new IP address is 192.84.86.98.  The hostname is, and has always been, cithep252.ultralight.org (CNAME cit-gatekeeper2.ultralight.org).
+
+We restarted the CE services after the DNS caching had expired, and now
+notice that our rsv results are only getting published once before
+quitting.  The condor-cron StarterLog shows the following error every
+few minutes&#58;
+
+9/25 17&#58;13&#58;00 (82.0)  Output file&#58;
+/osg/1.2.0/osg-rsv/logs/probes/cit-se2.ultralight.org__srm-ping-probe@....
+9/25 17&#58;13&#58;00 (82.0)  Error file&#58;
+/osg/1.2.0/osg-rsv/logs/probes/cit-se2.ultralight.org__srm-ping-probe@....
+9/25 17&#58;13&#58;00 (82.0)  About to exec
+/osg/1.2.0/osg-rsv/bin/probes/probe_wrapper.pl
+/osg/1.2.0/osg-rsv/bin/probes/srm-ping-probe -m org.osg.srm.srmping
+--verbose --print-local-time --srm-destination-dir /mnt/hadoop/rsv
+--srm-webservice-path &#39;&#39;&#39;&#39;srm/v2/server&#39;&#39;&#39;&#39; --ggs --gsl
+/osg/1.2.0/osg-rsv/output/gratia --python-loc /usr/bin/python --uri
+cit-se2.ultralight.org --proxy /tmp/x509up_u2500
+9/25 17&#58;13&#58;00 (82.0)  error opening
+/osg/1.2.0/condor-cron/local.cithep252/log/procd_pipe.SCHEDD&#58; No such
+device or address (6)
+9/25 17&#58;13&#58;00 (82.0)  ProcFamilyClient&#58; error initializing LocalClient
+9/25 17&#58;13&#58;00 (82.0)  ProcFamilyProxy&#58; error initializing ProcFamilyClient
+9/25 17&#58;13&#58;00 (82.0)  ERROR &quot;ProcD has failed&quot; at line 599 in file
+proc_family_proxy.cpp
+
+The ScheddLog also has an entry that contains the old IP address&#58;
+
+9/29 12&#58;46&#58;25 (pid&#58;11261) attempt to connect to &lt;198.32.44.252&#58;51039&gt; failed&#58; timed out after 20 seconds.
+
+...but the file
+<div id='show_489635547' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_489635547'>/osg/1.2.0/condor-cron/local.cithep252/log/procd_pipe.SCHEDD does exist
+as a named pipe.  Note that we had moved this from /tmp to $LOG (a local
+disk, not nfs) so that tmpwatch wouldn&#39;t clean it up.
+
+The probe logs show the same error&#58;
+
+021 (086.000.000) 09/25 17&#58;21&#58;01 Error from starter on &lt;192.84.86.98&#58;50822&gt;&#58;
+ProcD has failed
+
+I&#39;ve restarted condor-cron a couple of times, but each time the result
+is the same&#58;  The probes run once, then start showing this error and
+never run correctly again.  Any ideas what might be going wrong with procd/schedd?
+
+[META Information for OSG ITB Support Staff]
+Resource on which user is having this issue&#58; CIT_CMS_T2B(224)
+Selecting CMS(FP name&#58; USCMS) for Destination VO since it has the highest resource ownership.
+Primary Admin for CIT_CMS_T2B is Michael Thomas and has been CC&#39;d.
+</div><script type='text/javascript'>
+        $('#show_489635547').click(function() {
+            $('#detail_489635547').slideDown("normal");
+            $('#show_489635547').hide();
+            $('#hide_489635547').show();
+        });
+        $('#hide_489635547').click(function() {
+            $('#detail_489635547').slideUp();
+            $('#hide_489635547').hide();
+            $('#show_489635547').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F7538">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 7538});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

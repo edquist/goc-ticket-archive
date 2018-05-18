@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[18707] Condor Gratia probe not reporting</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=18707" method="post">
+<div class="page-header">
+    <h3><span class="muted">18707</span> / Condor Gratia probe not reporting</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Igor Sfiligoi</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Igor Sfiligoi</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">GRATIA Dev</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Wait for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-01-23</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">FNAL (Prod)&nbsp;<a target="_blank" href="https://fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000402091">INC000000402091</a> <span class="muted"> / Ticket Exchange</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Suchandra Thapa <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=18707", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/18707?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/18707?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Condor%20Gratia%20probe%20not%20reporting%20ISSUE%3D18707%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='18707#1390434072'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-22T23:41:12+00:00">Jan 22, 2014 11:41 PM UTC</time> by <b>Marco Mambelli</b><a class="anchor" name="1390434072">&nbsp;</a></div><pre>I&#39;ve been asked to summarize the problem and what was the solution to help with similar cases in the future.
+
+The Gratia HTCondor probe was not configured for a campus grid and was quarantining all records.
+The host (SiteName=&#34;UCSDGrid-Engage-Frontend&#34;, host&#58; engage-submit-1.t2.ucsd.edu) is a HTCondor submit host (schedd) part of a campus grid, submitting to OSG via the Engage front-end at UCSD (engage-fe-2.t2.ucsd.edu). It is not a ComputeElement (so it is not running GUMS, osg-configure, no certificates and user-vo-map, ...).
+
+The solution was to configure the HTCondor probe to force the VO mapping as described in <a href='https&#58;//twiki.grid.iu.edu/bin/view/Accounting/ProbeConfigGlideinWMS#Users_without_Certificates' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Accounting/ProbeConfigGlideinWMS#Users_without_Certificates</a>
+Adding these 3 lines&#58;
+&#60;pre&#62;
+MapUnknownToGroup=&#34;1&#34;
+MapGroupToRole=&#34;1&#34;
+VOOverride=&#34;VO_NAME&#34;
+&#60;/pre&#62;
+
+PS This update should not change the status of the ticket that should remain closed</pre></div><div class='update_description'><i onclick="document.location='18707#1390421686'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-22T20:14:46+00:00">Jan 22, 2014 08:14 PM UTC</time><a class="anchor" name="1390421686">&nbsp;</a></div><pre>I am glad we could help. I am moving this ticket to solved
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='18707#1390421109'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-22T20:05:09+00:00">Jan 22, 2014 08:05 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1390421109">&nbsp;</a></div><pre>Yes it seems that it was the configuration, not any missing software. Please feel free to close this ticket.
+
+Thanks for all the help &#58;)</pre></div><div class='update_description'><i onclick="document.location='18707#1390420824'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-22T20:00:24+00:00">Jan 22, 2014 08:00 PM UTC</time> by <b>Marco Mambelli</b><a class="anchor" name="1390420824">&nbsp;</a></div><pre>After Terrence fixed the probe configuration the problem seems resolved. The probe is now reporting&#58;
+<a href='http&#58;//gratiaweb.grid.iu.edu/gratia/xml/osg_sharing_vos?endtime=2014-01-22+23%3A59%3A59&span=86400&facility=.*&probe=.*&resource-type=%5EBatchPilot%24&vo=UCSD&role=.*&user=.*&starttime=2014-01-09+00%3A00%3A00&exclude-facility=NONE&exclude-user=NONE&includeSuccess=true&exclude-vo=unknown&includeFailed=true&exclude-role=NONE' target='_blank' rel='nofollow'>http&#58;//gratiaweb.grid.iu.edu/gratia/xml/osg_sharing_vos?endtime=2014-01-22+23%3A59%3A59&span=86400&facility=.*&probe=.*&resource-type=%5EBatchPilot%24&vo=UCSD&role=.*&user=.*&starttime=2014-01-09+00%3A00%3A00&exclude-facility=NONE&exclude-user=NONE&includeSuccess=true&exclude-vo=unknown&includeFailed=true&exclude-role=NONE</a>
+
+Marco</pre></div><div class='update_description'><i onclick="document.location='18707#1390363689'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-22T04:08:09+00:00">Jan 22, 2014 04:08 AM UTC</time> by <b>Marco Mambelli</b><a class="anchor" name="1390363689">&nbsp;</a></div><pre>Hi Terrence,
+I don&#39;t think you need GUMS.
+
+Gratia&#39;s HTCondor probe is used for&#58;
+1. CEs where x509 authentication is used and GUMS or edg-mkgridmap generate the users-vi-mapfile used by the probe to map users to the correct VO
+2. submit hosts without grid certificates (e.g. condor schedds flocking to a VO frontend) where the VO mapping uses a manual override
+
+For the 2nd case your probe configuration needs to have the following 3 lines (replace VO_NAME with your VO)&#58;
+&#60;pre&#62;
+MapUnknownToGroup=&#34;1&#34;
+MapGroupToRole=&#34;1&#34;
+VOOverride=&#34;VO_NAME&#34;
+&#60;/pre&#62;
+
+This is documented here&#58; <a href='https&#58;//twiki.grid.iu.edu/bin/view/Accounting/ProbeConfigGlideinWMS#Users_without_Certificates' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Accounting/ProbeConfigGlideinWMS#Users_without_Certificates</a>
+
+You may be interested also in&#58;
+- This document mentioning the RPM to install a submit host to OSG-XD and other OSG front ends (I think it was already mentioned below)&#58; <a href='https&#58;//twiki.grid.iu.edu/bin/view/CampusGrids/InstallCondorFlockSubmit' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/CampusGrids/InstallCondorFlockSubmit</a>
+- This document describing the &#34;manual&#34; configuration of a similar setup (flocking to an arbitrary VO frontend )&#58; <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/GlideinWMSCampusGrid' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/GlideinWMSCampusGrid</a>
+
+The ticket is long and I&#39;m not sure I understood correctly your installation
+If you prefer we can have a brief call/IM to work on the issue, drop me an email (marcom@....)
+Cheers,
+Marco</pre></div><div class='update_description'><i onclick="document.location='18707#1390363460'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-22T04:04:20+00:00">Jan 22, 2014 04:04 AM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1390363460">&nbsp;</a></div><pre>I will install the OSG gums client in the morning so we can get that file to appear. That should address that issue.</pre></div><div class='update_description'><i onclick="document.location='18707#1390344583'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-21T22:49:43+00:00">Jan 21, 2014 10:49 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1390344583">&nbsp;</a></div><pre>Ok lets back up a bit though, we do not even have gums client on this host.
+
+How would you suggest I grab the gums client?</pre></div><div class='update_description'><i onclick="document.location='18707#1390344207'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-21T22:43:27+00:00">Jan 21, 2014 10:43 PM UTC</time><a class="anchor" name="1390344207">&nbsp;</a></div><pre>Hi Terrence,
+
+My guess is the following&#58;
+
+1. The probe uses the file /var/lib/osg/user-vo-map to &#34;know&#34; to which VO map certain transactions
+
+2. When QuarantineUnknownVORecords is set to 1 which is the default and strongly recommended. The probe code quarantines the records for which it cannot map to a VO.
+
+So I recommend you two things, ( I guess you are using GUMS authentication),
+
+Check here (Although the twiki is about the grid ftp probe the gums authorization config should be similar if not the same)&#58;
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/GratiaTransferProbe#Using_GUMS_authorization_mode' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/GratiaTransferProbe#Using_GUMS_authorization_mode</a>
+
+Also in the ProbeConfig grep for UserVOMapFile and double check that it is pointing to /var/lib/osg/user-vo-map then check the gums part of the twiki to make sure the user-vo-map gets created. You can also test if setting QuarantineUnknownVORecords to 0 &#34;fixes&#34; temporarily the reporting.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='18707#1390342286'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-21T22:11:26+00:00">Jan 21, 2014 10:11 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1390342286">&nbsp;</a></div><pre>Sorry if this is duplicated, the email did not seem to get added to the ticket.
+
+Again as below, here is the information.
+
+[1402] root@engage-submit-1 /var/lib# cat /etc/issue
+CentOS release 6.4 (Final)
+Kernel &#92;r on an &#92;m
+
+[1403] root@engage-submit-1 /var/lib# rpm -qa |grep osg-release
+osg-release-3.1-3.osg31.el6.noarch
+[1403] root@engage-submit-1 /var/lib#
+
+[1403] root@engage-submit-1 /var/lib# ls -ld  /var/lib/osg/user-vo-map
+ls&#58; cannot access /var/lib/osg/user-vo-map&#58; No such file or directory
+[1403] root@engage-submit-1 /var/lib#
+
+That in itself might be an issue of course since scrolling down this ticket it seems that you cannot find the user-vo-map. Now this should be generated by a gums probe if I recally. Presumably this is a required bit of config?</pre></div><div class='update_description'><i onclick="document.location='18707#1390342273'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-21T22:11:13+00:00">Jan 21, 2014 10:11 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1390342273">&nbsp;</a></div><pre>Again as below, here is the information.
+
+[1402] root@engage-submit-1 /var/lib# cat /etc/issue
+CentOS release 6.4 (Final)
+Kernel &#92;r on an &#92;m
+
+[1403] root@engage-submit-1 /var/lib# rpm -qa |grep osg-release
+osg-release-3.1-3.osg31.el6.noarch
+[1403] root@engage-submit-1 /var/lib#
+
+[1403] root@engage-submit-1 /var/lib# ls -ld /var/lib/osg/user-vo-map
+ls&#58; cannot access /var/lib/osg/user-vo-map&#58; No such file or directory
+[1403] root@engage-submit-1 /var/lib#
+
+That in itself might be an issue of course since scrolling down this
+ticket it seems that you cannot find the user-vo-map. Now this should be
+generated by a gums probe if I recally. Presumably this is a required
+bit of config?
+
+Terrence
+
+On 1/21/2014 9&#58;35 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='18707#1390335059'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-21T20:10:59+00:00">Jan 21, 2014 08:10 PM UTC</time><a class="anchor" name="1390335059">&nbsp;</a></div><pre>Hi,
+
+WHat I meant in (1) is to change &#34;QuarantineUnknownVORecords&#34; to 0 and do the testing.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='18707#1390325745'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-21T17:35:45+00:00">Jan 21, 2014 05:35 PM UTC</time><a class="anchor" name="1390325745">&nbsp;</a></div><pre>Hi Terrence, Igor
+
+I would like to reproduce this problem. So it is condor probe, Sl5 and osg 3.1?
+
+Meanwhile can you do some tests please&#58;
+
+1. In your ProbeConfig change the SuppressUnknownVORecords to 1 and test if it reports.
+
+2. Can you send me your /var/lib/osg/user-vo-map and also check that UserVOMapFile in the ProbeConfig is pointing to the correct user-vo-map
+
+In my experience when the probe moves the files to quarantine is because of it cannot find the correct VO to match it.
+
+Thanks,
+
+Edgar
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='18707#1389918847'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-17T00:34:07+00:00">Jan 17, 2014 12:34 AM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1389918847">&nbsp;</a></div><pre>The repo is 3.1, should I go to 3.2 and will that cause any other issues on the system?</pre></div><div class='update_description'><i onclick="document.location='18707#1389918814'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-17T00:33:34+00:00">Jan 17, 2014 12:33 AM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1389918814">&nbsp;</a></div><pre>[osg]
+name=OSG Software for Enterprise Linux 6 - $basearch
+#baseurl=<a href='http&#58;//repo.grid.iu.edu/osg/3.1/el6/release/' target='_blank' rel='nofollow'>http&#58;//repo.grid.iu.edu/osg/3.1/el6/release/</a>$basearch
+mirrorlist=<a href='http&#58;//repo.grid.iu.edu/mirror/osg/3.1/el6/release/' target='_blank' rel='nofollow'>http&#58;//repo.grid.iu.edu/mirror/osg/3.1/el6/release/</a>$basearch
+failovermethod=priority
+priority=98
+enabled=1
+gpgcheck=1
+gpgkey=file&#58;///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+consider_as_osg=yes
+
+[osg-source]
+name=OSG Software for Enterprise Linux 6 - $basearch - Source
+baseurl=<a href='http&#58;//repo.grid.iu.edu/osg/3.1/el6/release/source/SRPMS' target='_blank' rel='nofollow'>http&#58;//repo.grid.iu.edu/osg/3.1/el6/release/source/SRPMS</a>
+failovermethod=priority
+priority=98
+enabled=0
+gpgkey=file&#58;///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+gpgcheck=1
+
+[osg-debug]
+name=OSG Software for Enterprise Linux 6 - $basearch - Debug
+baseurl=<a href='http&#58;//repo.grid.iu.edu/osg/3.1/el6/release/' target='_blank' rel='nofollow'>http&#58;//repo.grid.iu.edu/osg/3.1/el6/release/</a>$basearch/debug
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file&#58;///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG</pre></div><div class='update_description'><i onclick="document.location='18707#1389914854'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-16T23:27:34+00:00">Jan 16, 2014 11:27 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1389914854">&nbsp;</a></div><pre>Igor,
+
+Have you had a chance to look into your OSG yum repo files?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='18707#1389641156'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-13T19:25:56+00:00">Jan 13, 2014 07:25 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1389641156">&nbsp;</a></div><pre>Could you provide your yum repo files?  It looks like you might be using the old OSG 3.0 location in there.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='18707#1389641079'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-13T19:24:39+00:00">Jan 13, 2014 07:24 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1389641079">&nbsp;</a></div><pre>You should be able to use OSG 3.1.  It&#39;s in maintenance mode but I think the gratia packages are the same between the two.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='18707#1389638292'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-13T18:38:12+00:00">Jan 13, 2014 06:38 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1389638292">&nbsp;</a></div><pre>Nope, same error with 31
+
+osg-release-3.1-3.osg31.el6.noarch
+
+Do I need 32?
+
+The package below looks like it wants 31.
+
+Terrence
+
+On 1/13/2014 10&#58;26 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='18707#1389638288'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-13T18:38:08+00:00">Jan 13, 2014 06:38 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1389638288">&nbsp;</a></div><pre>I think I know what the issue is, the osg repo is older
+
+osg-release-3.0-22.osg.el6.noarch
+
+we want 31 or 31 osg?
+
+Terrence
+
+On 1/13/2014 10&#58;26 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='18707#1389637606'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-13T18:26:46+00:00">Jan 13, 2014 06:26 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1389637606">&nbsp;</a></div><pre>reply from&#58; tlevshin@....
+
+Terrence,
+
+What repo have you used to install condor-probe? I will try to reproduce the problem.
+Thanks,
+Tanya
+
+On Jan 13, 2014, at 12&#58;11 PM, Fermilab Service Desk wrote&#58;
+
+Incident INC000000402091&#60;<a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=3d81e1ef80ca91c06054708ccb110994%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&#62' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=3d81e1ef80ca91c06054708ccb110994%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&#62</a>; comments have been updated.
+
+Last update&#58;
+2014-01-13 12&#58;11&#58;15 CST - cd-srv-goc-ops (Additional comments)
+What repo are we supposed to use?
+
+Setting up Install Process
+Examining gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch.rpm&#58; gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch
+Marking gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch.rpm to be installed
+Resolving Dependencies
+--&#62; Running transaction check
+---&#62; Package gratia-probe-glideinwms.noarch 0&#58;1.13.20-1.osg31.el6 will be installed
+--&#62; Processing Dependency&#58; gratia-probe-common &#62;= 1.13.20-1.osg31.el6 for package&#58; gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch
+--&#62; Processing Dependency&#58; gratia-probe-condor &#62;= 1.13.20-1.osg31.el6 for package&#58; gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch
+--&#62; Finished Dependency Resolution
+Error&#58; Package&#58; gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch (/gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch)
+Requires&#58; gratia-probe-condor &#62;= 1.13.20-1.osg31.el6
+Installed&#58; gratia-probe-condor-1.13.18-1.osg.el6.noarch (@osg)
+gratia-probe-condor = 1.13.18-1.osg.el6
+Available&#58; gratia-probe-condor-1.10-0.7.osg.el6.noarch (osg)
+-- by Terrence Martin at Mon Jan 13 18&#58;10&#58;20 UTC 2014
+
+________________________________
+Incident State&#58; Work in Progress
+Caller&#58; cd-srv-goc-ops
+<div id='show_1934561778' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1934561778'>Assignment Group&#58; Gratia Support and Development
+Assigned To&#58;
+Summary&#58;
+We have a new glidein submitter node that we installed the GRATIA probe on.
+But we are not getting any updates sent out.
+
+A symptom we see is that there is nothing in
+/var/lib/gratia/data/
+but a lot of files in
+/var/lib/gratia/data/quarantine/
+
+On a working node the situation is axtacty the way around.
+
+</div><script type='text/javascript'>
+        $('#show_1934561778').click(function() {
+            $('#detail_1934561778').slideDown("normal");
+            $('#show_1934561778').hide();
+            $('#hide_1934561778').show();
+        });
+        $('#hide_1934561778').click(function() {
+            $('#detail_1934561778').slideUp();
+            $('#hide_1934561778').hide();
+            $('#show_1934561778').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='18707#1389636620'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-13T18:10:20+00:00">Jan 13, 2014 06:10 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1389636620">&nbsp;</a></div><pre>What repo are we supposed to use?
+
+Setting up Install Process
+Examining gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch.rpm&#58; gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch
+Marking gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch.rpm to be installed
+Resolving Dependencies
+--&#62; Running transaction check
+---&#62; Package gratia-probe-glideinwms.noarch 0&#58;1.13.20-1.osg31.el6 will be installed
+--&#62; Processing Dependency&#58; gratia-probe-common &#62;= 1.13.20-1.osg31.el6 for package&#58; gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch
+--&#62; Processing Dependency&#58; gratia-probe-condor &#62;= 1.13.20-1.osg31.el6 for package&#58; gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch
+--&#62; Finished Dependency Resolution
+Error&#58; Package&#58; gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch (/gratia-probe-glideinwms-1.13.20-1.osg31.el6.noarch)
+Requires&#58; gratia-probe-condor &#62;= 1.13.20-1.osg31.el6
+Installed&#58; gratia-probe-condor-1.13.18-1.osg.el6.noarch (@osg)
+gratia-probe-condor = 1.13.18-1.osg.el6
+Available&#58; gratia-probe-condor-1.10-0.7.osg.el6.noarch (osg)</pre></div><div class='update_description'><i onclick="document.location='18707#1389305383'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T22:09:43+00:00">Jan 9, 2014 10:09 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1389305383">&nbsp;</a></div><pre>reply from&#58; tlevshin@....
+
+This probe is Derek&#39;s creation - I am afraid that he didn&#39;t updated <a href='https&#58;//twiki.grid.iu.edu/bin/view/CampusGrids/InstallUsageMonitor' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/CampusGrids/InstallUsageMonitor</a> to reflect that. You should either modify condor configuration as described on this page or just install this rpm. This rpm is ONLY required for campus submission node and not for just head node that is running condor.
+
+Thanks,
+Tanya
+________________________________
+From&#58; Fermilab Service Desk [fermi@....]
+Sent&#58; Thursday, January 09, 2014 4&#58;03 PM
+To&#58; Marco Mambelli; Hyun Woo Kim; Tanya Levshina
+Subject&#58; Incident INC000000402091 updated -- Condor Gratia probe not reporting
+
+Incident INC000000402091&#60;<a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=3d81e1ef80ca91c06054708ccb110994%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&#62' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=3d81e1ef80ca91c06054708ccb110994%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&#62</a>; comments have been updated.
+
+Last update&#58;
+2014-01-09 16&#58;02&#58;14 CST - cd-srv-goc-ops (Additional comments)
+I installed that probe as per the document and the yum command from that page. However it did not grab this file.
+
+<a href='http&#58;//repo.grid.iu.edu/3.0/el5/osg-development/x86_64/gratia-probe-glideinwms-1.13.20-1.osg31.el5.noarch.rpm' target='_blank' rel='nofollow'>http&#58;//repo.grid.iu.edu/3.0/el5/osg-development/x86_64/gratia-probe-glideinwms-1.13.20-1.osg31.el5.noarch.rpm</a>
+
+Is that a separate step? I can certainly install that RPM, but a quick re-run over that page, and a re-attempt at
+
+yum install gratia-probe-condor
+
+resulted in no new packages.
+-- by Terrence Martin at Thu Jan 09 22&#58;01&#58;35 UTC 2014
+
+________________________________
+Incident State&#58; Work in Progress
+Caller&#58; cd-srv-goc-ops
+Assignment Group&#58; Gratia Support and Development
+Assigned To&#58;
+Summary&#58;
+We have a new glidein submitter node that we installed the GRATIA probe on.
+But we are not getting any updates sent out.
+<div id='show_1138460244' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1138460244'>
+A symptom we see is that there is nothing in
+/var/lib/gratia/data/
+but a lot of files in
+/var/lib/gratia/data/quarantine/
+
+On a working node the situation is axtacty the way around.
+
+</div><script type='text/javascript'>
+        $('#show_1138460244').click(function() {
+            $('#detail_1138460244').slideDown("normal");
+            $('#show_1138460244').hide();
+            $('#hide_1138460244').show();
+        });
+        $('#hide_1138460244').click(function() {
+            $('#detail_1138460244').slideUp();
+            $('#hide_1138460244').hide();
+            $('#show_1138460244').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='18707#1389305085'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T22:04:45+00:00">Jan 9, 2014 10:04 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1389305085">&nbsp;</a></div><pre>What is the repo to install to get this devel branch package? The gratia we have on the system does not support that probe. I just need to know what to point to so the gratia system will update to allow installing that package.</pre></div><div class='update_description'><i onclick="document.location='18707#1389304895'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T22:01:35+00:00">Jan 9, 2014 10:01 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1389304895">&nbsp;</a></div><pre>I installed that probe as per the document and the yum command from that page. However it did not grab this file.
+
+<a href='http&#58;//repo.grid.iu.edu/3.0/el5/osg-development/x86_64/gratia-probe-glideinwms-1.13.20-1.osg31.el5.noarch.rpm' target='_blank' rel='nofollow'>http&#58;//repo.grid.iu.edu/3.0/el5/osg-development/x86_64/gratia-probe-glideinwms-1.13.20-1.osg31.el5.noarch.rpm</a>
+
+Is that a separate step? I can certainly install that RPM, but a quick re-run over that page, and a re-attempt at
+
+yum install gratia-probe-condor
+
+resulted in no new packages.</pre></div><div class='update_description'><i onclick="document.location='18707#1389303652'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T21:40:52+00:00">Jan 9, 2014 09:40 PM UTC</time> by <b>Marco Mambelli</b><a class="anchor" name="1389303652">&nbsp;</a></div><pre>Igor, could you upload the config files to the ticket so that I can look at it?
+Thanks</pre></div><div class='update_description'><i onclick="document.location='18707#1389300134'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T20:42:14+00:00">Jan 9, 2014 08:42 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1389300134">&nbsp;</a></div><pre>reply from&#58; tlevshin@....
+
+do you have gratia-probe-glideinwms&#60;<a href='http&#58;//repo.grid.iu.edu/3.0/el5/osg-development/x86_64/gratia-probe-glideinwms-1.13.20-1.osg31.el5.noarch.rpm&#62' target='_blank' rel='nofollow'>http&#58;//repo.grid.iu.edu/3.0/el5/osg-development/x86_64/gratia-probe-glideinwms-1.13.20-1.osg31.el5.noarch.rpm&#62</a>; installed? see <a href='https&#58;//twiki.grid.iu.edu/bin/view/CampusGrids/InstallUsageMonitor' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/CampusGrids/InstallUsageMonitor</a>
+
+it should add to condor config&#58;
+Add to the condor configuration (any condor configuration file).
+
+JOBGLIDEIN_ResourceName=&#34;$$([IfThenElse(IsUndefined(TARGET.GLIDEIN_ResourceName), IfThenElse(IsUndefined(TARGET.GLIDEIN_Site), FileSystemDomain, TARGET.GLIDEIN_Site), TARGET.GLIDEIN_ResourceName)])&#34;
+SUBMIT_EXPRS = $(SUBMIT_EXPRS) JOBGLIDEIN_ResourceName
+
+Thanks,
+Tanya
+
+________________________________
+From&#58; Fermilab Service Desk [fermi@....]
+Sent&#58; Thursday, January 09, 2014 2&#58;34 PM
+To&#58; Marco Mambelli; Hyun Woo Kim; Tanya Levshina
+Subject&#58; Incident INC000000402091 updated -- Condor Gratia probe not reporting
+
+Incident INC000000402091&#60;<a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=3d81e1ef80ca91c06054708ccb110994%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&#62' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=3d81e1ef80ca91c06054708ccb110994%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&#62</a>; comments have been updated.
+
+Last update&#58;
+2014-01-09 14&#58;33&#58;16 CST - cd-srv-goc-ops (Additional comments)
+Something is definitely broken. I just submitted a new job, and its record went again in the quarantine area.
+
+Have sent Suchandra the config over a different channel.
+-- by Igor Sfiligoi at Thu Jan 09 20&#58;32&#58;29 UTC 2014
+
+________________________________
+Incident State&#58; Work in Progress
+Caller&#58; cd-srv-goc-ops
+Assignment Group&#58; Gratia Support and Development
+Assigned To&#58;
+Summary&#58;
+We have a new glidein submitter node that we installed the GRATIA probe on.
+<div id='show_171667553' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_171667553'>But we are not getting any updates sent out.
+
+A symptom we see is that there is nothing in
+/var/lib/gratia/data/
+but a lot of files in
+/var/lib/gratia/data/quarantine/
+
+On a working node the situation is axtacty the way around.
+
+</div><script type='text/javascript'>
+        $('#show_171667553').click(function() {
+            $('#detail_171667553').slideDown("normal");
+            $('#show_171667553').hide();
+            $('#hide_171667553').show();
+        });
+        $('#hide_171667553').click(function() {
+            $('#detail_171667553').slideUp();
+            $('#hide_171667553').hide();
+            $('#show_171667553').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='18707#1389299549'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T20:32:29+00:00">Jan 9, 2014 08:32 PM UTC</time> by <b>Igor Sfiligoi</b><a class="anchor" name="1389299549">&nbsp;</a></div><pre>Something is definitely broken. I just submitted a new job, and its record went again in the quarantine area.
+
+Have sent Suchandra the config over a different channel.</pre></div><div class='update_description'><i onclick="document.location='18707#1389296447'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T19:40:47+00:00">Jan 9, 2014 07:40 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1389296447">&nbsp;</a></div><pre>The records are in the quarantine directory so you can recover them from there.  Let&#39;s fix the issue first though so that they don&#39;t get requarantined or lost.  Can you upload your gratia configuration from /etc/gratia/condor/ProbeConfig ?  In particular, the UserVOMapFile setting is of interest since it sounds like gratia can&#39;t find the vo map file.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='18707#1389296438'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T19:40:38+00:00">Jan 9, 2014 07:40 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1389296438">&nbsp;</a></div><pre>yes, it is but it will require some scripting on your site. You will need to add relevant information (VOName) in all the xml files in quarqntine directory and then move them to an appropriate directory under /var/log/gratia/tmp/subdir....</pre></div><div class='update_description'><i onclick="document.location='18707#1389295272'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T19:21:12+00:00">Jan 9, 2014 07:21 PM UTC</time> by <b>Igor Sfiligoi</b><a class="anchor" name="1389295272">&nbsp;</a></div><pre>This could be the lead;
+we just set VOOverride in the config today.
+
+Any way to get the old records back?
+
+Igor
+
+01&#58;38&#58;40 PST Gratia&#58; ***********************************************************
+01&#58;38&#58;40 PST Gratia&#58; OK - Handshake added to bundle (1/100)
+01&#58;38&#58;40 PST Gratia&#58; ***********************************************************
+01&#58;38&#58;40 PST Gratia&#58; List of backup directories&#58; [u&#39;/var/lib/gratia/tmp&#39;]
+01&#58;38&#58;40 PST Gratia&#58; Reprocessing response&#58; OK - Reprocessing 0 record(s) uploaded, 0 bundled, 0 failed
+01&#58;38&#58;40 PST Gratia&#58; After reprocessing&#58; 0 in outbox 0 in staged outbox 0 tar files
+01&#58;38&#58;40 PST Gratia&#58; Creating a UsageRecord 2014-01-08T09&#58;38&#58;40Z
+01&#58;38&#58;40 PST Gratia&#58; Registering transient input file&#58; /var/lib/gratia/data/history.218270.0
+01&#58;38&#58;40 PST Gratia&#58; ***********************************************************
+01&#58;38&#58;40 PST Gratia&#58; Info&#58; suppressing record with GlobalJobId condor.engage-submit-1.t2.ucsd.edu#218270.0#1389084945 due to unknown or null VOName, will be quarantined in /var/lib/gratia/data/quarantine
+01&#58;38&#58;40 PST Gratia&#58; Moving transient input file&#58; /var/lib/gratia/data/history.218270.0 to quarantine in /var/lib/gratia/data/quarantine
+01&#58;38&#58;40 PST Gratia&#58; OK&#58; No unsuppressed usage records in this packet&#58; not sending
+01&#58;38&#58;40 PST Gratia&#58; ***********************************************************
+01&#58;38&#58;40 PST Gratia&#58; Creating a UsageRecord 2014-01-08T09&#58;38&#58;40Z
+01&#58;38&#58;40 PST Gratia&#58; Registering transient input file&#58; /var/lib/gratia/data/history.218271.0
+01&#58;38&#58;40 PST Gratia&#58; ***********************************************************
+01&#58;38&#58;40 PST Gratia&#58; Info&#58; suppressing record with GlobalJobId condor.engage-submit-1.t2.ucsd.edu#218271.0#1389084946 due to unknown or null VOName, will be quarantined in /var/lib/gratia/data/quarantine
+01&#58;38&#58;40 PST Gratia&#58; Moving transient input file&#58; /var/lib/gratia/data/history.218271.0 to quarantine in /var/lib/gratia/data/quarantine
+01&#58;38&#58;40 PST Gratia&#58; OK&#58; No unsuppressed usage records in this packet&#58; not sending
+01&#58;38&#58;40 PST Gratia&#58; ***********************************************************
+01&#58;38&#58;40 PST Gratia&#58; Processing bundle file&#58;
+01&#58;38&#58;40 PST Gratia&#58; Connection via HTTP to&#58; gratia-osg-prod.opensciencegrid.org&#58;80
+01&#58;38&#58;40 PST Gratia&#58; OK - Processed bundle with 1 records&#58;  OK
+01&#58;38&#58;40 PST Gratia&#58; ***********************************************************
+01&#58;38&#58;40 PST Gratia&#58; Removing log files older than 31 days from /var/log/gratia
+0</pre></div><div class='update_description'><i onclick="document.location='18707#1389294726'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T19:12:06+00:00">Jan 9, 2014 07:12 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1389294726">&nbsp;</a></div><pre>Could you include the entire log file?</pre></div><div class='update_description'><i onclick="document.location='18707#1389294671'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T19:11:11+00:00">Jan 9, 2014 07:11 PM UTC</time> by <b>Igor Sfiligoi</b><a class="anchor" name="1389294671">&nbsp;</a></div><pre>This is the lastest entry&#58;
+
+10&#58;57&#58;24 PST Gratia&#58; Using config file&#58; /etc/gratia/condor/ProbeConfig
+10&#58;57&#58;24 PST Gratia&#58; Initializing Gratia with /etc/gratia/condor/ProbeConfig
+10&#58;57&#58;24 PST Gratia&#58; Creating a ProbeDetails record 2014-01-09T18&#58;57&#58;24Z
+10&#58;57&#58;24 PST Gratia&#58; ***********************************************************
+10&#58;57&#58;24 PST Gratia&#58; OK - Handshake added to bundle (1/100)
+10&#58;57&#58;24 PST Gratia&#58; ***********************************************************
+10&#58;57&#58;24 PST Gratia&#58; List of backup directories&#58; [u&#39;/var/lib/gratia/tmp&#39;]
+10&#58;57&#58;24 PST Gratia&#58; Reprocessing response&#58; OK - Reprocessing 0 record(s) uploaded, 0 bundled, 0 failed
+10&#58;57&#58;24 PST Gratia&#58; After reprocessing&#58; 0 in outbox 0 in staged outbox 0 tar files
+10&#58;57&#58;24 PST Gratia&#58; Processing bundle file&#58;
+10&#58;57&#58;24 PST Gratia&#58; Connection via HTTP to&#58; gratia-osg-prod.opensciencegrid.org&#58;80
+10&#58;57&#58;24 PST Gratia&#58; OK - Processed bundle with 1 records&#58;  OK
+10&#58;57&#58;24 PST Gratia&#58; ***********************************************************
+10&#58;57&#58;24 PST Gratia&#58; Removing log files older than 31 days from /var/log/gratia
+10&#58;57&#58;24 PST Gratia&#58; /var/log/gratia uses 0.030% and there is 91% free
+10&#58;57&#58;24 PST Gratia&#58; Removing incomplete data files older than 31 days from /var/lib/gratia/data/
+10&#58;57&#58;25 PST Gratia&#58; /var/lib/gratia/data/quarantine uses 0.124% and there is 91% free
+10&#58;57&#58;25 PST Gratia&#58; End of execution summary&#58; new records sent successfully&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           new records suppressed&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           new records failed&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           records reprocessed successfully&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           reprocessed records failed&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           handshake records sent successfully&#58; 1
+10&#58;57&#58;25 PST Gratia&#58;                           handshake records failed&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           bundle of records sent successfully&#58; 1
+10&#58;57&#58;25 PST Gratia&#58;                           bundle of records failed&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           outstanding records&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           outstanding staged records&#58; 0
+10&#58;57&#58;25 PST Gratia&#58;                           outstanding records tar files&#58; 0
+10&#58;57&#58;25 PST Gratia&#58; End-of-execution disconnect ...</pre></div><div class='update_description'><i onclick="document.location='18707#1389294571'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T19:09:31+00:00">Jan 9, 2014 07:09 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1389294571">&nbsp;</a></div><pre>Please assign this ticket to OSG Software Team and not Gratia Dev.
+Thnaks,
+Tanya</pre></div><div class='update_description'><i onclick="document.location='18707#1389294512'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T19:08:32+00:00">Jan 9, 2014 07:08 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1389294512">&nbsp;</a></div><pre>On the node with the data files in the quarantine directory, what do the logs in /var/log/gratia say?</pre></div><div class='update_description'><i onclick="document.location='18707#1389294305'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-01-09T19:05:05+00:00">Jan 9, 2014 07:05 PM UTC</time> by <b>Igor Sfiligoi</b><a class="anchor" name="1389294305">&nbsp;</a></div><pre>We have a new glidein submitter node that we installed the GRATIA probe on.
+But we are not getting any updates sent out.
+
+A symptom we see is that there is nothing in
+/var/lib/gratia/data/
+but a lot of files in
+/var/lib/gratia/data/quarantine/
+
+On a working node the situation is axtacty the way around.</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F18707">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 18707});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

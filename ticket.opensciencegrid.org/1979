@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[1979] [vdt-support #1829] Provisioning home areas on a per-batch-job basis with PBS</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=1979" method="post">
+<div class="page-header">
+    <h3><span class="muted">1979</span> / [vdt-support #1829] Provisioning home areas on a per-batch-job basis with PBS</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Alan Sill</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Scheduled Maintenance</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">await word from vdt</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2007-01-08</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Rob Quick <span class="muted"> / OSG GOC Management</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=1979", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/1979?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/1979?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20%5Bvdt-support%20%231829%5D%20Provisioning%20home%20areas%20on%20a%20per-batch-job%20basis%20with%20PBS%20ISSUE%3D1979%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='1979#1167930975'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2007-01-04T17:16:15+00:00">Jan 4, 2007 05:16 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1167930975">&nbsp;</a></div><pre>Talked to Alan and Alain today at the VDT Office Hours. Texas Tech has abandon PBS so
+this is not longer and issue. Closing ticket.</pre></div><div class='update_description'><i onclick="document.location='1979#1167329656'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-28T18:14:16+00:00">Dec 28, 2006 06:14 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1167329656">&nbsp;</a></div><pre>Murali,
+
+We are looking for a PBS expert to help with a problem Alan Sill
+reports with PBS and NSF-lite. I have included the important contents
+of the ticket below and copied Alan in case he has more input. The
+ticket contents are ordered from the most recent at the top. Please
+let me know if you have any ideas or can help out!
+
+Thanks in advance for any assistance you might be able to offer,
+Rob
+
+-----</pre></div><div class='update_description'><i onclick="document.location='1979#1167227610'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-27T13:53:30+00:00">Dec 27, 2006 01:53 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1167227610">&nbsp;</a></div><pre>Rob,
+
+I removed Leigh from this ticket.
+
+Tim</pre></div><div class='update_description'><i onclick="document.location='1979#1166668274'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-21T02:31:14+00:00">Dec 21, 2006 02:31 AM UTC</time> by <b>leighg</b><a class="anchor" name="1166668274">&nbsp;</a></div><pre>The PBS expert which I rely on for testing and setup is
+Murali Ramsunder &#60;rmurali@....&#62; who
+is at PSU with the LIGO project.
+
+Thanks -
+leigh</pre></div><div class='update_description'><i onclick="document.location='1979#1166132025'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-14T21:33:45+00:00">Dec 14, 2006 09:33 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1166132025">&nbsp;</a></div><pre>We need to identify a PBS expert that is willing to take this on...</pre></div><div class='update_description'><i onclick="document.location='1979#1165528229'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-07T21:50:29+00:00">Dec 7, 2006 09:50 PM UTC</time> by <b>VDT</b><a class="anchor" name="1165528229">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62;Can you give us an update to this ticket. I have forwarded the</font>
+<font color='#7F7E6F'>&#62;scripts you included to the VDT who is looking for a PBS expert for</font>
+<font color='#7F7E6F'>&#62;assistance. I see the last update is pretty stale, what is the</font>
+<font color='#7F7E6F'>&#62;status here, and what would you like the GOC to do if anything to</font>
+<font color='#7F7E6F'>&#62;help wrap up this issue?</font>
+
+I think my last answer still stands&#58; the VDT team doesn&#39;t know enough
+about PBS to help. Here&#39;s what I wrote in the ticket back on November
+1st, after I looked at the scripts that you sent&#58;
+
+<font color='#7F7E6F'>&#62;I have to admit that I don&#39;t really understand what&#39;s happening in these</font>
+<font color='#7F7E6F'>&#62;scripts, and it sounds like they don&#39;t work at the moment.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;I didn&#39;t see any file transfers, and I didn&#39;t see anything about</font>
+<font color='#7F7E6F'>&#62;transferring the user&#39;s proxy certificate, which will be essential for</font>
+<font color='#7F7E6F'>&#62;this to work. But maybe I&#39;m just not understanding it.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;I think we need to find a PBS expert to help out here.</font>
+
+I think we need help from a PBS expert if we want to resolve the ticket.
+
+-alain
+
+--
+View ticket at &#60;<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1829&#62' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1829&#62</a>;
+VDT Support, vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='1979#1165520427'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-12-07T19:40:27+00:00">Dec 7, 2006 07:40 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1165520427">&nbsp;</a></div><pre>Alan,
+
+Can you give us an update to this ticket. I have forwarded the scripts you included
+to the VDT who is looking for a PBS expert for assistance. I see the last update is
+pretty stale, what is the status here, and what would you like the GOC to do if
+anything to help wrap up this issue?
+
+Thanks,
+Rob</pre></div><div class='update_description'><i onclick="document.location='1979#1162438455'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-11-02T03:34:15+00:00">Nov 2, 2006 03:34 AM UTC</time> by <b>VDT</b><a class="anchor" name="1162438455">&nbsp;</a></div><pre>I have to admit that I don&#39;t really understand what&#39;s happening in these
+scripts, and it sounds like they don&#39;t work at the moment.
+
+I didn&#39;t see any file transfers, and I didn&#39;t see anything about
+transferring the user&#39;s proxy certificate, which will be essential for
+this to work. But maybe I&#39;m just not understanding it.
+
+I think we need to find a PBS expert to help out here.
+
+-alian
+
+--
+View ticket at &#60;<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1829&#62' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1829&#62</a>;
+VDT Support, vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='1979#1162239318'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-10-30T20:15:18+00:00">Oct 30, 2006 08:15 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1162239318">&nbsp;</a></div><pre>Sending more information to VDT.
+
+-----Original Message-----
+From&#58; Chaffin, David
+Sent&#58; Tuesday, August 01, 2006 11&#58;26 AM
+To&#58; Sill, Alan
+Cc&#58; Vadapalli, Ravi; Abbott, James
+Subject&#58; RE&#58; Getting antaeus back online
+
+My changes didn&#39;t work, but I submitted a few globus-pbs jobs to see
+what it was actually doing, like so-
+
+globus-job-submit antaeus.hpcc.ttu.edu/jobmanager-pbs
+&#34;/home/chaffin/a.out&#34; 1&#62;outfile
+globus-job-status &#96;cat outfile&#96;
+globus-job-get-output &#96;cat outfile&#96;
+globus-job-get-output -err &#96;cat outfile&#96;
+
+And saved the script files on antaeus in ~/.globus/job/.. before
+automatic deletion. I don&#39;t know who came up with this, but it is
+screwy. It produces scheduler_pbs_job_script&#58;
+
+------------------------------------------------------------------------
+----
+#! /bin/sh
+# PBS batch job script built by Globus job manager
+#
+#PBS -S /bin/sh
+#PBS -m n
+#PBS -o
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/stdout
+#PBS -e
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/stderr
+#PBS -l nodes=1
+OSG_GANGLIA_HOST=&#34;antaeus.hpcc.ttu.edu&#34;;
+<div id='show_1822166344' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1822166344'>export OSG_GANGLIA_HOST;
+... many variables omitted
+GRID3_TMP_WN_DIR=&#34;/state/partition1&#34;;
+OSG_WN_TMP=&#34;/state/partition1&#34;;
+...
+OSG_VO_MODULES=&#34;y&#34;;
+export OSG_VO_MODULES;
+
+#Change to directory requested by user
+cd /home/chaffin
+
+hosts=&#96;cat $PBS_NODEFILE&#96;;
+counter=0
+while test $counter -lt 1; do
+for host in $hosts; do
+if test $counter -lt 1; then
+/usr/bin/ssh $host &#34;/bin/sh
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/schedule
+r_pbs_cmd_script&#34; &#60; /dev/null &amp;
+counter=&#96;expr $counter + 1&#96;
+else
+break
+fi
+done
+done
+wait
+------------------------------------------------------------------------
+----
+
+where scheduler_pbs_cmd_script is
+------------------------------------------------------------------------
+----
+#!/bin/sh
+cd /home/chaffin
+OSG_GANGLIA_HOST=&#34;antaeus.hpcc.ttu.edu&#34;;
+...looks like the same list of variables
+export OSG_VO_MODULES;
+
+/home/chaffin/a.out
+------------------------------------------------------------------------
+----
+
+If more than one cpu is requested, this makes sure that N copies of the
+program are running at the same time in the same directory. This won&#39;t
+work with any mpi or threaded program, as PBS_NODE_FILES produces n
+copies of, say, compute-0-3 if compute-0-3 has n cpus.
+
+However, I don&#39;t know how to run more than 1 cpu through globus anyway.
+I changed pbs.in&#58;
+
+[root@antaeus globus]# diff pbs.in pbs.in.0
+334,340d332
+&#60; print CMD &#34;PBS_ID=&#96;echo &#92;$PBS_JOBID | sed &#92;&#34;s/&#92;$PBS_O_HOST//&#92;&#34; | sed
+&#92;&#34;s/&#92;&#92;.//&#92;&#34;&#96; &#92;n&#34;;
+&#60; print CMD &#34;echo PBS_ID=$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;cd /state/partition1&#92;n&#34;;
+&#60; print CMD &#34;/bin/rm -rf &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;mkdir &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;cd &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;OSG_TMP_WN_DIR=&#96;pwd&#96;&#92;n&#34;;
+344,346d335
+&#60; print CMD &#34;ls -al&#92;n&#34;;
+&#60; print CMD &#34;cd /state/partition1&#92;n&#34;;
+&#60; print CMD &#34;/bin/rm -rf &#92;$PBS_ID&#92;n&#34;;
+384c373
+&#60; hosts=&#92;&#96;sort -u &#92;$PBS_NODEFILE&#92;&#96;;
+---
+
+<font color='#7F7E6F'>&#62; hosts=&#92;&#96;cat &#92;$PBS_NODEFILE&#92;&#96;;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+Last being so you can run a 2-cpu threaded job. It might be better to
+use OSG_WN_TMP than the hard-code, but this would be ok for testing.
+
+I run config.status, which updates pbs.pm as shown&#58;
+
+[root@antaeus globus]# ./config.status
+config.status&#58; creating
+/usr/local/grid/lib/perl/Globus/GRAM/JobManager/pbs.pm
+[root@antaeus globus]# grep state
+/usr/local/grid/lib/perl/Globus/GRAM/JobManager/pbs.pm
+print CMD &#34;cd /state/partition1&#92;n&#34;;
+print CMD &#34;cd /state/partition1&#92;n&#34;;
+
+I restarted xinetd, but the output pbs scripts don&#39;t change. Must need
+some kind of configure.
+
+DC
+
+----------
+</div><script type='text/javascript'>
+        $('#show_1822166344').click(function() {
+            $('#detail_1822166344').slideDown("normal");
+            $('#show_1822166344').hide();
+            $('#hide_1822166344').show();
+        });
+        $('#hide_1822166344').click(function() {
+            $('#detail_1822166344').slideUp();
+            $('#hide_1822166344').hide();
+            $('#show_1822166344').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='1979#1158765065'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-20T15:11:05+00:00">Sep 20, 2006 03:11 PM UTC</time> by <b>leighg</b><a class="anchor" name="1158765065">&nbsp;</a></div><pre>remove GRASE suport center from assignees
+update Dest support center to be VDT</pre></div><div class='update_description'><i onclick="document.location='1979#1158607992'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-18T19:33:12+00:00">Sep 18, 2006 07:33 PM UTC</time> by <b>VDT</b><a class="anchor" name="1158607992">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; It looks like TTU has developed these scripts and they would like</font>
+<font color='#7F7E6F'>&#62; them to be added tothe Globus-PBS-Setup from the VDT. I am assigning</font>
+<font color='#7F7E6F'>&#62; this to the VDT SC to create a ticket with them. I will follow up at</font>
+<font color='#7F7E6F'>&#62; VDT office hours on Thursday.</font>
+
+I don&#39;t recall a follow up at the office hours.
+
+Send me the modifications and we&#39;ll consider them for a release.
+
+An important point&#58; if I add this to the VDT, will all users see a
+change in default behavior, or will it be an option? How does it work?
+
+-alain
+
+--
+View ticket at &#60;<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1829&#62' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1829&#62</a>;
+VDT Support, vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='1979#1158075351'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-12T15:35:51+00:00">Sep 12, 2006 03:35 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1158075351">&nbsp;</a></div><pre>Alan said he would take this up offline with the VDT. We will still track any
+updates. And I will check the progress at VDT Office Hours.</pre></div><div class='update_description'><i onclick="document.location='1979#1156870601'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-29T16:56:41+00:00">Aug 29, 2006 04:56 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1156870601">&nbsp;</a></div><pre>It looks like TTU has developed these scripts and they would like them to be added to
+the Globus-PBS-Setup from the VDT. I am assigning this to the VDT SC to create a
+ticket with them. I will follow up at VDT office hours on Thursday.</pre></div><div class='update_description'><i onclick="document.location='1979#1154736256'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:04:16+00:00">Aug 5, 2006 12:04 AM UTC</time> by <b>Alan Sill</b><a class="anchor" name="1154736256">&nbsp;</a></div><pre>Here is where things stand.  We have a procedure that works with PBS
+directly to create per-batch-slot sandbox areas and deposit the
+user&#39;s job into one of them when run.  This works for us outside of
+grid software, but we need further help determining how to interface
+this with the globus scripts that set up things for use with PBS.
+When our procedure is run in a grid setting, all jobs end up in the
+same area, I am told by the person who developed this, and do not
+separate themselves by batch slot as desired.
+
+I have included a cc&#58; to Dr. David Chaffin of our High performance
+Computing Center, who developed these scripts.  Further interaction
+with and help from the VDT team and/or another educated PBS-based
+grid site would be appreciated.
+
+Thanks for your help,
+Alan
+
+----------
+
+From&#58; 	  david.chaffin@....
+Subject&#58; 	RE&#58; Getting antaeus back online
+Date&#58; 	August 4, 2006 11&#58;11&#58;14 AM CDT
+To&#58; 	  alan.sill@....
+
+Updated pbs.in, configure updated pbs.pm, but no change in output.  You
+must need to update somewhere else.
+
+DC
+
+-----Original Message-----
+From&#58; Chaffin, David
+Sent&#58; Tuesday, August 01, 2006 11&#58;26 AM
+To&#58; Sill, Alan
+Cc&#58; Vadapalli, Ravi; Abbott, James
+Subject&#58; RE&#58; Getting antaeus back online
+<div id='show_577698661' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_577698661'>
+My changes didn&#39;t work, but I submitted a few globus-pbs jobs to see
+what it was actually doing, like so-
+
+globus-job-submit antaeus.hpcc.ttu.edu/jobmanager-pbs
+&#34;/home/chaffin/a.out&#34; 1&#62;outfile
+globus-job-status &#96;cat outfile&#96;
+globus-job-get-output &#96;cat outfile&#96;
+globus-job-get-output -err &#96;cat outfile&#96;
+
+And saved the script files on antaeus in ~/.globus/job/.. before
+automatic deletion.  I don&#39;t know who came up with this, but it is
+screwy.  It produces scheduler_pbs_job_script&#58;
+
+------------------------------------------------------------------------
+----
+#! /bin/sh
+# PBS batch job script built by Globus job manager
+#
+#PBS -S /bin/sh
+#PBS -m n
+#PBS -o
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/stdout
+#PBS -e
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/stderr
+#PBS -l nodes=1
+OSG_GANGLIA_HOST=&#34;antaeus.hpcc.ttu.edu&#34;;
+export OSG_GANGLIA_HOST;
+... many variables omitted
+GRID3_TMP_WN_DIR=&#34;/state/partition1&#34;;
+OSG_WN_TMP=&#34;/state/partition1&#34;;
+...
+OSG_VO_MODULES=&#34;y&#34;;
+export OSG_VO_MODULES;
+
+#Change to directory requested by user
+cd /home/chaffin
+
+hosts=&#96;cat $PBS_NODEFILE&#96;;
+counter=0
+while test $counter -lt 1; do
+for host in $hosts; do
+if test $counter -lt 1; then
+/usr/bin/ssh $host &#34;/bin/sh
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/schedule
+r_pbs_cmd_script&#34; &#60; /dev/null &
+counter=&#96;expr $counter + 1&#96;
+else
+break
+fi
+done
+done
+wait
+------------------------------------------------------------------------
+----
+
+where scheduler_pbs_cmd_script is
+------------------------------------------------------------------------
+----
+#!/bin/sh
+cd /home/chaffin
+OSG_GANGLIA_HOST=&#34;antaeus.hpcc.ttu.edu&#34;;
+...looks like the same list of variables
+export OSG_VO_MODULES;
+
+/home/chaffin/a.out
+------------------------------------------------------------------------
+----
+
+If more than one cpu is requested, this makes sure that N copies of the
+program are running at the same time in the same directory.  This won&#39;t
+work with any mpi or threaded program, as PBS_NODE_FILES produces n
+copies of, say, compute-0-3 if compute-0-3 has n cpus.
+
+However, I don&#39;t know how to run more than 1 cpu through globus anyway.
+I changed pbs.in&#58;
+
+[root@antaeus globus]# diff pbs.in pbs.in.0
+334,340d332
+&#60; print CMD &#34;PBS_ID=&#96;echo &#92;$PBS_JOBID | sed &#92;&#34;s/&#92;$PBS_O_HOST//&#92;&#34; | sed
+&#92;&#34;s/&#92;&#92;.//&#92;&#34;&#96; &#92;n&#34;;
+&#60; print CMD &#34;echo PBS_ID=$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;cd /state/partition1&#92;n&#34;;
+&#60; print CMD &#34;/bin/rm -rf &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;mkdir &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;cd &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;OSG_TMP_WN_DIR=&#96;pwd&#96;&#92;n&#34;;
+344,346d335
+&#60; print CMD &#34;ls -al&#92;n&#34;;
+&#60; print CMD &#34;cd /state/partition1&#92;n&#34;;
+&#60; print CMD &#34;/bin/rm -rf &#92;$PBS_ID&#92;n&#34;;
+384c373
+&#60; hosts=&#92;&#96;sort -u &#92;$PBS_NODEFILE&#92;&#96;;
+---
+
+<font color='#7F7E6F'>&#62; hosts=&#92;&#96;cat &#92;$PBS_NODEFILE&#92;&#96;;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+Last being so you can run a 2-cpu threaded job.  It might be better to
+use OSG_WN_TMP than the hard-code, but this would be ok for testing.
+
+I run config.status, which updates pbs.pm as shown&#58;
+
+[root@antaeus globus]# ./config.status
+config.status&#58; creating
+/usr/local/grid/lib/perl/Globus/GRAM/JobManager/pbs.pm
+[root@antaeus globus]# grep state
+/usr/local/grid/lib/perl/Globus/GRAM/JobManager/pbs.pm
+print CMD &#34;cd /state/partition1&#92;n&#34;;
+print CMD &#34;cd /state/partition1&#92;n&#34;;
+
+I restarted xinetd, but the output pbs scripts don&#39;t change.  Must need
+some kind of configure.
+
+DC
+
+----------
+
+On Aug 4, 2006, at 6&#58;11 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_577698661').click(function() {
+            $('#detail_577698661').slideDown("normal");
+            $('#show_577698661').hide();
+            $('#hide_577698661').show();
+        });
+        $('#hide_577698661').click(function() {
+            $('#detail_577698661').slideUp();
+            $('#hide_577698661').hide();
+            $('#show_577698661').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='1979#1152543986'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-07-10T15:06:26+00:00">Jul 10, 2006 03:06 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1152543986">&nbsp;</a></div><pre>Alan,
+
+Hi. I see that this is a fairly old ticket. This was sent to the VDT last month and the VDT stated
+that they know little about PBS so they can&#39;t offer any valuable assistance. The ticket has been
+assigned to one of the GOC engineers for followup, but I want to get a response from you on where
+things stand at the moment so that we aren&#39;t wasting our resources. Has the status changed
+recently? Our last correspondence with you is included below.
+
+Thanks,
+
+Tim
+
+From&#58; Alan.Sill@....
+Subject&#58; TTU-ANTAEUS status 6-16-2006
+Date&#58; June 16, 2006 11&#58;27&#58;08 AM EDT
+To&#58; goc@....
+Cc&#58; Alan.Sill@...., david.chaffin@...., james.abbott@...., Philip.Smith@....
+
+Our TTU-ANTAEUS system is nearly back in service.
+
+We are encountering what we hope to be temporary problems with our Lustre shared file system
+(replacing nfs for those portions of the filesystem that need to be mounted cluster-wide) that are
+temporarily preventing us from installing the worker node client and exporting grid certificates to
+the
+worker nodes.
+
+The batch system is up and we are studying the &#34;NFS-lite&#34; recommendations to determine the best
+way
+of provisioning home areas on a per-batch-job basis with PBS. Advice from anyone who has done
+this
+before under PBS would be appreciated, including some interaction with the VDT team. Note that
+the
+current &#34;NFS-lite&#34; document, OSG document 382, only refers to Condor.
+
+A site-verify has been run from a separate machine (our OSG ITB cluster head node) to verify the
+<div id='show_1995299986' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1995299986'>antaeus installation, with successful results as attached below. The site status code has been left at
+3
+for the moment while we try to resolve problems with our Lustre file system.
+
+Alan Sill
+TIGRE Senior Scientist
+High Performance Computing Center
+TTU
+</div><script type='text/javascript'>
+        $('#show_1995299986').click(function() {
+            $('#detail_1995299986').slideDown("normal");
+            $('#show_1995299986').hide();
+            $('#hide_1995299986').show();
+        });
+        $('#hide_1995299986').click(function() {
+            $('#detail_1995299986').slideUp();
+            $('#hide_1995299986').hide();
+            $('#show_1995299986').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='1979#1150603149'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-18T03:59:09+00:00">Jun 18, 2006 03:59 AM UTC</time> by <b>VDT</b><a class="anchor" name="1150603149">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; VDT Support,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Please create a ticket on the following issue. Can you give Alan any</font>
+<font color='#7F7E6F'>&#62; advice?</font>
+
+<font color='#7F7E6F'>&#62; &#62; The batch system is up and we are studying the &#34;NFS-lite&#34;</font>
+<font color='#7F7E6F'>&#62; &#62; recommendations to determine the best way of provisioning home</font>
+<font color='#7F7E6F'>&#62; &#62; areas on a per-batch-job basis with PBS.  Advice from anyone who</font>
+<font color='#7F7E6F'>&#62; &#62; has done this before under PBS would be appreciated, including some</font>
+<font color='#7F7E6F'>&#62; &#62; interaction with the VDT team.  Note that the current &#34;NFS-lite&#34;</font>
+<font color='#7F7E6F'>&#62; &#62; document, OSG document 382, only refers to Condor.</font>
+
+Hi GOC and Alan--
+
+I wish we could give some advice here, but we know so little about PBS
+that we cannot offer anything useful here.
+
+Sorry!
+-alain</pre></div><div class='update_description'><i onclick="document.location='1979#1150477865'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-16T17:11:05+00:00">Jun 16, 2006 05:11 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1150477865">&nbsp;</a></div><pre>I forwarded the following email to the VDT. They created a ticket on their end and I have included their
+ticket number in the Title of our ticket in Footprints. Updates should flow in both directions now. --Tim
+
+From&#58; 	  Alan.Sill@....
+Subject&#58; 	TTU-ANTAEUS status 6-16-2006
+Date&#58; 	June 16, 2006 11&#58;27&#58;08 AM EDT
+To&#58; 	  goc@....
+Cc&#58; 	  Alan.Sill@...., david.chaffin@...., james.abbott@...., Philip.Smith@....
+
+Our TTU-ANTAEUS system is nearly back in service.
+
+We are encountering what we hope to be temporary problems with our Lustre shared file system
+(replacing nfs for those portions of the filesystem that need to be mounted cluster-wide) that are
+temporarily preventing us from installing the worker node client and exporting grid certificates to the
+worker nodes.
+
+The batch system is up and we are studying the &#34;NFS-lite&#34; recommendations to determine the best way
+of provisioning home areas on a per-batch-job basis with PBS.  Advice from anyone who has done this
+before under PBS would be appreciated, including some interaction with the VDT team.  Note that the
+current &#34;NFS-lite&#34; document, OSG document 382, only refers to Condor.
+
+A site-verify has been run from a separate machine (our OSG ITB cluster head node) to verify the
+antaeus installation, with successful results as attached below.  The site status code has been left at 3
+for the moment while we try to resolve problems with our Lustre file system.
+
+Alan Sill
+TIGRE Senior Scientist
+High Performance Computing Center
+TTU</pre></div><div class='update_description'><i onclick="document.location='1979#1150308768'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-14T18:12:48+00:00">Jun 14, 2006 06:12 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1150308768">&nbsp;</a></div><pre>Assigning engineer to the ticket for further investigation. Should this question be answered by the GOC
+or should it go to osg-general (Community Support)? --Tim</pre></div><div class='update_description'><i onclick="document.location='1979#1150306696'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-14T17:38:16+00:00">Jun 14, 2006 05:38 PM UTC</time> by <b>Alan Sill</b><a class="anchor" name="1150306696">&nbsp;</a></div><pre>File system has been restored.  All worker nodes have now been added
+back into the system, and some new 64-bit ones added.
+
+We could gratefully use some advice on how to set up the NFS-lite
+approach with per-job (i.e., per-batch-slot) home areas under PBS Pro,
+and on which OSG VO accounts this is desired and permissible.
+
+The hardware of the system is ready to go, and OSG 0.4.1 has been
+reinstalled, awaiting resolution of the above points while we study
+them, so advice would be appreciated.
+
+Best,
+Alan
+
+On Jun 14, 2006, at 9&#58;06 AM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='1979#1150293995'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-14T14:06:35+00:00">Jun 14, 2006 02:06 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1150293995">&nbsp;</a></div><pre>Alan,
+
+Hi. The GOC hasn&#39;t had an update since the first of the month so we just wanted followup on the
+status.
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the OSG Support Page&#58;
+<a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a>
+RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></pre></div><div class='update_description'><i onclick="document.location='1979#1149173592'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-01T14:53:12+00:00">Jun 1, 2006 02:53 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1149173592">&nbsp;</a></div><pre>Begin forwarded message&#58;
+
+<font color='#7F7E6F'>&#62; From&#58; Alan Sill &#60;Alan.Sill@....&#62;</font>
+<font color='#7F7E6F'>&#62; Date&#58; June 1, 2006 10&#58;40&#58;17 AM EDT</font>
+<font color='#7F7E6F'>&#62; To&#58; Grid Operations Center &#60;goc@....&#62;</font>
+<font color='#7F7E6F'>&#62; Cc&#58; Alan Sill &#60;Alan.Sill@....&#62;</font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; TTU-ANTAEUS Maintenance - ISSUE=1979</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Head node is working.  Lustre file system is behind schedule.  As a</font>
+<font color='#7F7E6F'>&#62; result, our account space is not available and worker nodes are not</font>
+<font color='#7F7E6F'>&#62; yet open.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Once we get the file system working, it should be quick to re-</font>
+<font color='#7F7E6F'>&#62; enable batch jobs, but without user-space accounts (including our</font>
+<font color='#7F7E6F'>&#62; grid ones), the system is still down.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Alan</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Jun 1, 2006, at 9&#58;25 AM, Grid Operations Center wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Alan,</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; I just wanted to get a quick update regarding the new head node.</font>
+<font color='#7F7E6F'>&#62;&#62; When you get a chance, let us know how it&#39;s going.</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Thank You,</font>
+<font color='#7F7E6F'>&#62;&#62; OSG Grid Operations Center</font>
+<font color='#7F7E6F'>&#62;&#62; goc@...., 317-278-9699</font>
+<font color='#7F7E6F'>&#62;&#62; Visit the OSG Support Page&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; <a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a></font>
+<font color='#7F7E6F'>&#62;&#62; RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></font></pre></div><div class='update_description'><i onclick="document.location='1979#1149172153'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-01T14:29:13+00:00">Jun 1, 2006 02:29 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1149172153">&nbsp;</a></div><pre>Begin forwarded message&#58;
+
+<font color='#7F7E6F'>&#62; From&#58; Grid Operations Center &#60;goc@....&#62;</font>
+<font color='#7F7E6F'>&#62; Date&#58; June 1, 2006 10&#58;25&#58;38 AM EDT</font>
+<font color='#7F7E6F'>&#62; To&#58; Alan Sill &#60;Alan.Sill@....&#62;</font>
+<font color='#7F7E6F'>&#62; Subject&#58; TTU-ANTAEUS Maintenance - ISSUE=1979</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Alan,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I just wanted to get a quick update regarding the new head node.</font>
+<font color='#7F7E6F'>&#62; When you get a chance, let us know how it&#39;s going.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thank You,</font>
+<font color='#7F7E6F'>&#62; OSG Grid Operations Center</font>
+<font color='#7F7E6F'>&#62; goc@...., 317-278-9699</font>
+<font color='#7F7E6F'>&#62; Visit the OSG Support Page&#58;</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//www.opensciencegrid.org/ops' target='_blank' rel='nofollow'>http&#58;//www.opensciencegrid.org/ops</a></font>
+<font color='#7F7E6F'>&#62; RSS&#58; <a href='http&#58;//www.grid.iu.edu/news' target='_blank' rel='nofollow'>http&#58;//www.grid.iu.edu/news</a></font></pre></div><div class='update_description'><i onclick="document.location='1979#1147840808'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-05-17T04:40:08+00:00">May 17, 2006 04:40 AM UTC</time> by <b>Adam Williamson</b><a class="anchor" name="1147840808">&nbsp;</a></div><pre>**This Ticket was moved from Project OpenScienceGrid**<br>
+<br></pre></div><div class='update_description'><i onclick="document.location='1979#0'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="1970-01-01T00:00:00+00:00">Jan 1, 1970 12:00 AM UTC</time> by <b>leighg&#58;</b><a class="anchor" name="0">&nbsp;</a></div><pre>The PBS expert which I rely on for testing and setup is
+Murali Ramsunder &#60;rmurali@....&#62; who
+is at PSU with the LIGO project.
+
+Thanks -
+leigh
+
+
+
+We need to identify a PBS expert that is willing to take this on...
+
+
+
+<font color='#7F7E6F'>&#62;Can you give us an update to this ticket. I have forwarded the</font>
+<font color='#7F7E6F'>&#62;scripts you included to the VDT who is looking for a PBS expert for</font>
+<font color='#7F7E6F'>&#62;assistance. I see the last update is pretty stale, what is the</font>
+<font color='#7F7E6F'>&#62;status here, and what would you like the GOC to do if anything to</font>
+<font color='#7F7E6F'>&#62;help wrap up this issue?</font>
+
+I think my last answer still stands&#58; the VDT team doesn&#39;t know enough
+about PBS to help. Here&#39;s what I wrote in the ticket back on November
+1st, after I looked at the scripts that you sent&#58;
+
+<font color='#7F7E6F'>&#62;I have to admit that I don&#39;t really understand what&#39;s happening in</font>
+these
+<font color='#7F7E6F'>&#62;scripts, and it sounds like they don&#39;t work at the moment.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;I didn&#39;t see any file transfers, and I didn&#39;t see anything about</font>
+<font color='#7F7E6F'>&#62;transferring the user&#39;s proxy certificate, which will be essential for</font>
+<font color='#7F7E6F'>&#62;this to work. But maybe I&#39;m just not understanding it.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;I think we need to find a PBS expert to help out here.</font>
+
+I think we need help from a PBS expert if we want to resolve the ticket.
+
+<div id='show_686418113' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_686418113'>-alain
+
+--
+View ticket at &#60;<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?</a>
+user=guest&pass=guest&id=1829&#62;
+VDT Support, vdt-support@....
+
+
+
+Alan,
+
+Can you give us an update to this ticket. I have forwarded the
+scripts you included
+to the VDT who is looking for a PBS expert for assistance. I see the
+last update is
+pretty stale, what is the status here, and what would you like the
+GOC to do if
+anything to help wrap up this issue?
+
+Thanks,
+Rob
+
+
+
+I have to admit that I don&#39;t really understand what&#39;s happening in these
+scripts, and it sounds like they don&#39;t work at the moment.
+
+I didn&#39;t see any file transfers, and I didn&#39;t see anything about
+transferring the user&#39;s proxy certificate, which will be essential for
+this to work. But maybe I&#39;m just not understanding it.
+
+I think we need to find a PBS expert to help out here.
+
+-alian
+
+--
+View ticket at &#60;<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?</a>
+user=guest&pass=guest&id=1829&#62;
+VDT Support, vdt-support@....
+
+
+
+Sending more information to VDT.
+
+-----Original Message-----
+From&#58; Chaffin, David
+Sent&#58; Tuesday, August 01, 2006 11&#58;26 AM
+To&#58; Sill, Alan
+Cc&#58; Vadapalli, Ravi; Abbott, James
+Subject&#58; RE&#58; Getting antaeus back online
+
+My changes didn&#39;t work, but I submitted a few globus-pbs jobs to see
+what it was actually doing, like so-
+
+globus-job-submit antaeus.hpcc.ttu.edu/jobmanager-pbs
+&#34;/home/chaffin/a.out&#34; 1&#62;outfile
+globus-job-status &#96;cat outfile&#96;
+globus-job-get-output &#96;cat outfile&#96;
+globus-job-get-output -err &#96;cat outfile&#96;
+
+And saved the script files on antaeus in ~/.globus/job/.. before
+automatic deletion. I don&#39;t know who came up with this, but it is
+screwy. It produces scheduler_pbs_job_script&#58;
+
+------------------------------------------------------------------------
+----
+#! /bin/sh
+# PBS batch job script built by Globus job manager
+#
+#PBS -S /bin/sh
+#PBS -m n
+#PBS -o
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/stdout
+#PBS -e
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/stderr
+#PBS -l nodes=1
+OSG_GANGLIA_HOST=&#34;antaeus.hpcc.ttu.edu&#34;;
+export OSG_GANGLIA_HOST;
+... many variables omitted
+GRID3_TMP_WN_DIR=&#34;/state/partition1&#34;;
+OSG_WN_TMP=&#34;/state/partition1&#34;;
+...
+OSG_VO_MODULES=&#34;y&#34;;
+export OSG_VO_MODULES;
+
+#Change to directory requested by user
+cd /home/chaffin
+
+hosts=&#96;cat $PBS_NODEFILE&#96;;
+counter=0
+while test $counter -lt 1; do
+for host in $hosts; do
+if test $counter -lt 1; then
+/usr/bin/ssh $host &#34;/bin/sh
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/schedule
+r_pbs_cmd_script&#34; &#60; /dev/null &
+counter=&#96;expr $counter + 1&#96;
+else
+break
+fi
+done
+done
+wait
+------------------------------------------------------------------------
+----
+
+where scheduler_pbs_cmd_script is
+------------------------------------------------------------------------
+----
+#!/bin/sh
+cd /home/chaffin
+OSG_GANGLIA_HOST=&#34;antaeus.hpcc.ttu.edu&#34;;
+...looks like the same list of variables
+export OSG_VO_MODULES;
+
+/home/chaffin/a.out
+------------------------------------------------------------------------
+----
+
+If more than one cpu is requested, this makes sure that N copies of the
+program are running at the same time in the same directory. This won&#39;t
+work with any mpi or threaded program, as PBS_NODE_FILES produces n
+copies of, say, compute-0-3 if compute-0-3 has n cpus.
+
+However, I don&#39;t know how to run more than 1 cpu through globus anyway.
+I changed pbs.in&#58;
+
+[root@antaeus globus]# diff pbs.in pbs.in.0
+334,340d332
+&#60; print CMD &#34;PBS_ID=&#96;echo &#92;$PBS_JOBID | sed &#92;&#34;s/&#92;$PBS_O_HOST//&#92;&#34; | sed
+&#92;&#34;s/&#92;&#92;.//&#92;&#34;&#96; &#92;n&#34;;
+&#60; print CMD &#34;echo PBS_ID=$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;cd /state/partition1&#92;n&#34;;
+&#60; print CMD &#34;/bin/rm -rf &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;mkdir &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;cd &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;OSG_TMP_WN_DIR=&#96;pwd&#96;&#92;n&#34;;
+344,346d335
+&#60; print CMD &#34;ls -al&#92;n&#34;;
+&#60; print CMD &#34;cd /state/partition1&#92;n&#34;;
+&#60; print CMD &#34;/bin/rm -rf &#92;$PBS_ID&#92;n&#34;;
+384c373
+&#60; hosts=&#92;&#96;sort -u &#92;$PBS_NODEFILE&#92;&#96;;
+---
+
+<font color='#7F7E6F'>&#62; hosts=&#92;&#96;cat &#92;$PBS_NODEFILE&#92;&#96;;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+Last being so you can run a 2-cpu threaded job. It might be better to
+use OSG_WN_TMP than the hard-code, but this would be ok for testing.
+
+I run config.status, which updates pbs.pm as shown&#58;
+
+[root@antaeus globus]# ./config.status
+config.status&#58; creating
+/usr/local/grid/lib/perl/Globus/GRAM/JobManager/pbs.pm
+[root@antaeus globus]# grep state
+/usr/local/grid/lib/perl/Globus/GRAM/JobManager/pbs.pm
+print CMD &#34;cd /state/partition1&#92;n&#34;;
+print CMD &#34;cd /state/partition1&#92;n&#34;;
+
+I restarted xinetd, but the output pbs scripts don&#39;t change. Must need
+some kind of configure.
+
+DC
+
+
+
+Here is where things stand. We have a procedure that works with PBS
+directly to create per-batch-slot sandbox areas and deposit the
+user&#39;s job into one of them when run. This works for us outside of
+grid software, but we need further help determining how to interface
+this with the globus scripts that set up things for use with PBS.
+When our procedure is run in a grid setting, all jobs end up in the
+same area, I am told by the person who developed this, and do not
+separate themselves by batch slot as desired.
+
+I have included a cc&#58; to Dr. David Chaffin of our High performance
+Computing Center, who developed these scripts. Further interaction
+with and help from the VDT team and/or another educated PBS-based
+grid site would be appreciated.
+
+Thanks for your help,
+Alan
+
+----------
+
+From&#58; david.chaffin@....
+Subject&#58; RE&#58; Getting antaeus back online
+Date&#58; August 4, 2006 11&#58;11&#58;14 AM CDT
+To&#58; alan.sill@....
+
+Updated pbs.in, configure updated pbs.pm, but no change in output. You
+must need to update somewhere else.
+
+DC
+
+-----Original Message-----
+From&#58; Chaffin, David
+Sent&#58; Tuesday, August 01, 2006 11&#58;26 AM
+To&#58; Sill, Alan
+Cc&#58; Vadapalli, Ravi; Abbott, James
+Subject&#58; RE&#58; Getting antaeus back online
+
+My changes didn&#39;t work, but I submitted a few globus-pbs jobs to see
+what it was actually doing, like so-
+
+globus-job-submit antaeus.hpcc.ttu.edu/jobmanager-pbs
+&#34;/home/chaffin/a.out&#34; 1&#62;outfile
+globus-job-status &#96;cat outfile&#96;
+globus-job-get-output &#96;cat outfile&#96;
+globus-job-get-output -err &#96;cat outfile&#96;
+
+And saved the script files on antaeus in ~/.globus/job/.. before
+automatic deletion. I don&#39;t know who came up with this, but it is
+screwy. It produces scheduler_pbs_job_script&#58;
+
+------------------------------------------------------------------------
+----
+#! /bin/sh
+# PBS batch job script built by Globus job manager
+#
+#PBS -S /bin/sh
+#PBS -m n
+#PBS -o
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/stdout
+#PBS -e
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/stderr
+#PBS -l nodes=1
+OSG_GANGLIA_HOST=&#34;antaeus.hpcc.ttu.edu&#34;;
+export OSG_GANGLIA_HOST;
+... many variables omitted
+GRID3_TMP_WN_DIR=&#34;/state/partition1&#34;;
+OSG_WN_TMP=&#34;/state/partition1&#34;;
+...
+OSG_VO_MODULES=&#34;y&#34;;
+export OSG_VO_MODULES;
+
+#Change to directory requested by user
+cd /home/chaffin
+
+hosts=&#96;cat $PBS_NODEFILE&#96;;
+counter=0
+while test $counter -lt 1; do
+for host in $hosts; do
+if test $counter -lt 1; then
+/usr/bin/ssh $host &#34;/bin/sh
+/home/chaffin/.globus/job/antaeus.hpcc.ttu.edu/25682.1154443578/schedule
+r_pbs_cmd_script&#34; &#60; /dev/null &
+counter=&#96;expr $counter + 1&#96;
+else
+break
+fi
+done
+done
+wait
+------------------------------------------------------------------------
+----
+
+where scheduler_pbs_cmd_script is
+------------------------------------------------------------------------
+----
+#!/bin/sh
+cd /home/chaffin
+OSG_GANGLIA_HOST=&#34;antaeus.hpcc.ttu.edu&#34;;
+...looks like the same list of variables
+export OSG_VO_MODULES;
+
+/home/chaffin/a.out
+------------------------------------------------------------------------
+----
+
+If more than one cpu is requested, this makes sure that N copies of the
+program are running at the same time in the same directory. This won&#39;t
+work with any mpi or threaded program, as PBS_NODE_FILES produces n
+copies of, say, compute-0-3 if compute-0-3 has n cpus.
+
+However, I don&#39;t know how to run more than 1 cpu through globus anyway.
+I changed pbs.in&#58;
+
+[root@antaeus globus]# diff pbs.in pbs.in.0
+334,340d332
+&#60; print CMD &#34;PBS_ID=&#96;echo &#92;$PBS_JOBID | sed &#92;&#34;s/&#92;$PBS_O_HOST//&#92;&#34; | sed
+&#92;&#34;s/&#92;&#92;.//&#92;&#34;&#96; &#92;n&#34;;
+&#60; print CMD &#34;echo PBS_ID=$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;cd /state/partition1&#92;n&#34;;
+&#60; print CMD &#34;/bin/rm -rf &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;mkdir &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;cd &#92;$PBS_ID&#92;n&#34;;
+&#60; print CMD &#34;OSG_TMP_WN_DIR=&#96;pwd&#96;&#92;n&#34;;
+344,346d335
+&#60; print CMD &#34;ls -al&#92;n&#34;;
+&#60; print CMD &#34;cd /state/partition1&#92;n&#34;;
+&#60; print CMD &#34;/bin/rm -rf &#92;$PBS_ID&#92;n&#34;;
+384c373
+&#60; hosts=&#92;&#96;sort -u &#92;$PBS_NODEFILE&#92;&#96;;
+---
+
+<font color='#7F7E6F'>&#62; hosts=&#92;&#96;cat &#92;$PBS_NODEFILE&#92;&#96;;</font>
+<font color='#7F7E6F'>&#62;</font>
+
+Last being so you can run a 2-cpu threaded job. It might be better to
+use OSG_WN_TMP than the hard-code, but this would be ok for testing.
+
+I run config.status, which updates pbs.pm as shown&#58;
+
+[root@antaeus globus]# ./config.status
+config.status&#58; creating
+/usr/local/grid/lib/perl/Globus/GRAM/JobManager/pbs.pm
+[root@antaeus globus]# grep state
+/usr/local/grid/lib/perl/Globus/GRAM/JobManager/pbs.pm
+print CMD &#34;cd /state/partition1&#92;n&#34;;
+print CMD &#34;cd /state/partition1&#92;n&#34;;
+
+I restarted xinetd, but the output pbs scripts don&#39;t change. Must need
+some kind of configure.
+
+DC
+
+----------
+
+On Aug 4, 2006, at 6&#58;11 PM, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+
+
+
+Alan,
+
+Hi. I see that this is a fairly old ticket. This was sent to the VDT
+last month and the VDT stated
+that they know little about PBS so they can&#39;t offer any valuable
+assistance. The ticket has been
+assigned to one of the GOC engineers for followup, but I want to get
+a response from you on where
+things stand at the moment so that we aren&#39;t wasting our resources.
+Has the status changed
+recently? Our last correspondence with you is included below.
+
+Thanks,
+
+Tim
+
+From&#58; Alan.Sill@....
+Subject&#58; TTU-ANTAEUS status 6-16-2006
+Date&#58; June 16, 2006 11&#58;27&#58;08 AM EDT
+To&#58; goc@....
+Cc&#58; Alan.Sill@...., david.chaffin@...., james.abbott@....,
+Philip.Smith@....
+
+Our TTU-ANTAEUS system is nearly back in service.
+
+We are encountering what we hope to be temporary problems with our
+Lustre shared file system
+(replacing nfs for those portions of the filesystem that need to be
+mounted cluster-wide) that are
+temporarily preventing us from installing the worker node client and
+exporting grid certificates to
+the
+worker nodes.
+
+The batch system is up and we are studying the &#34;NFS-lite&#34;
+recommendations to determine the best
+way
+of provisioning home areas on a per-batch-job basis with PBS. Advice
+from anyone who has done
+this
+before under PBS would be appreciated, including some interaction
+with the VDT team. Note that
+the
+current &#34;NFS-lite&#34; document, OSG document 382, only refers to Condor.
+
+A site-verify has been run from a separate machine (our OSG ITB
+cluster head node) to verify the
+antaeus installation, with successful results as attached below. The
+site status code has been left at
+3
+for the moment while we try to resolve problems with our Lustre file
+system.
+
+Alan Sill
+TIGRE Senior Scientist
+High Performance Computing Center
+TTU
+
+
+
+<font color='#7F7E6F'>&#62; VDT Support,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Please create a ticket on the following issue. Can you give Alan any</font>
+<font color='#7F7E6F'>&#62; advice?</font>
+
+<font color='#7F7E6F'>&#62; &#62; The batch system is up and we are studying the &#34;NFS-lite&#34;</font>
+<font color='#7F7E6F'>&#62; &#62; recommendations to determine the best way of provisioning home</font>
+<font color='#7F7E6F'>&#62; &#62; areas on a per-batch-job basis with PBS. Advice from anyone who</font>
+<font color='#7F7E6F'>&#62; &#62; has done this before under PBS would be appreciated, including some</font>
+<font color='#7F7E6F'>&#62; &#62; interaction with the VDT team. Note that the current &#34;NFS-lite&#34;</font>
+<font color='#7F7E6F'>&#62; &#62; document, OSG document 382, only refers to Condor.</font>
+
+Hi GOC and Alan--
+
+I wish we could give some advice here, but we know so little about PBS
+that we cannot offer anything useful here.
+
+Sorry!
+-alain
+
+
+
+I forwarded the following email to the VDT. They created a ticket on
+their end and I have included their
+ticket number in the Title of our ticket in Footprints. Updates
+should flow in both directions now. --Tim
+
+From&#58; Alan.Sill@....
+Subject&#58; TTU-ANTAEUS status 6-16-2006
+Date&#58; June 16, 2006 11&#58;27&#58;08 AM EDT
+To&#58; goc@....
+Cc&#58; Alan.Sill@...., david.chaffin@...., james.abbott@....,
+Philip.Smith@....
+
+Our TTU-ANTAEUS system is nearly back in service.
+
+We are encountering what we hope to be temporary problems with our
+Lustre shared file system
+(replacing nfs for those portions of the filesystem that need to be
+mounted cluster-wide) that are
+temporarily preventing us from installing the worker node client and
+exporting grid certificates to the
+worker nodes.
+
+The batch system is up and we are studying the &#34;NFS-lite&#34;
+recommendations to determine the best way
+of provisioning home areas on a per-batch-job basis with PBS. Advice
+from anyone who has done this
+before under PBS would be appreciated, including some interaction
+with the VDT team. Note that the
+current &#34;NFS-lite&#34; document, OSG document 382, only refers to Condor.
+
+A site-verify has been run from a separate machine (our OSG ITB
+cluster head node) to verify the
+antaeus installation, with successful results as attached below. The
+site status code has been left at 3
+for the moment while we try to resolve problems with our Lustre file
+system.
+
+Alan Sill
+TIGRE Senior Scientist
+High Performance Computing Center
+TTU
+
+
+
+Assigning engineer to the ticket for further investigation. Should
+this question be answered by the GOC
+or should it go to osg-general (Community Support)? --Tim
+
+
+
+File system has been restored. All worker nodes have now been added
+back into the system, and some new 64-bit ones added.
+
+We could gratefully use some advice on how to set up the NFS-lite
+approach with per-job (i.e., per-batch-slot) home areas under PBS Pro,
+and on which OSG VO accounts this is desired and permissible.
+
+The hardware of the system is ready to go, and OSG 0.4.1 has been
+reinstalled, awaiting resolution of the above points while we study
+them, so advice would be appreciated.
+
+Best,
+Alan
+
+
+
+Begin forwarded message&#58;
+
+<font color='#7F7E6F'>&#62; From&#58; Alan Sill &#60;Alan.Sill@....&#62;</font>
+<font color='#7F7E6F'>&#62; Date&#58; June 1, 2006 10&#58;40&#58;17 AM EDT</font>
+<font color='#7F7E6F'>&#62; To&#58; Grid Operations Center &#60;goc@....&#62;</font>
+<font color='#7F7E6F'>&#62; Cc&#58; Alan Sill &#60;Alan.Sill@....&#62;</font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; TTU-ANTAEUS Maintenance - ISSUE=1979</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Head node is working. Lustre file system is behind schedule. As a</font>
+<font color='#7F7E6F'>&#62; result, our account space is not available and worker nodes are not</font>
+<font color='#7F7E6F'>&#62; yet open.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Once we get the file system working, it should be quick to re-</font>
+<font color='#7F7E6F'>&#62; enable batch jobs, but without user-space accounts (including our</font>
+<font color='#7F7E6F'>&#62; grid ones), the system is still down.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Alan</font>
+<font color='#7F7E6F'>&#62;</font>
+
+
+
+**This Ticket was moved from Project OpenScienceGrid**
+
+
+
+From&#58; Alan Sill &#60;Alan.Sill@....&#62;
+To&#58; GOC Operations &#60;goc@....&#62;
+cc&#58; James Abbott &#60;james.abbott@....&#62;, Alan Sill &#60;Alan.Sill@....&#62;
+Subject&#58; Status of TTU-ANTAEUS
+Date-Sent&#58; Monday, May 15, 2006 2&#58;51 PM -0500
+
+We have our new head node in and are configuring some parts of it.
+Unfortunately the user file systems and batch scheduler are not
+ready.  Estimated continued down time will last through the end of
+the month.
+
+If I can get partial functionality up before then, I will let you know.
+
+Alan
+
+====================================================================
+&#58;  Alan Sill, Texas Tech University  Office&#58; Admin 233, MS 4-1167  &#58;
+&#58;  e-mail&#58; Alan.Sill@....   ph. 806-742-4350  fax 806-742-4358  &#58;
+====================================================================
+
+
+
+From&#58; Alan Sill &#60;Alan.Sill@....&#62;
+To&#58; Grid Operations &#60;goc@....&#62;
+cc&#58; osg-general@....
+Subject&#58; TTU-ANTAEUS down for scheduled maintenance and upgrades
+periodically
+beginning May 1
+Date-Sent&#58; Friday, April 28, 2006 4&#58;20 PM -0500
+
+We will be adding worker nodes and taking our TTU-ANTAEUS OSG
+production resource
+down periodically for file system reconfiguration, change of head
+nodes, and other
+substantial work beginning Monday, May 1. The cluster will be
+unavailable at times
+over the subsequent two weeks as this work proceeds. Your
+understanding and
+patience during this period is appreciated.
+
+Alan Sill
+TIGRE Senior Scientist
+High Performance Computing Center
+TTU
+
+====================================================================
+&#58; Alan Sill, Texas Tech University Office&#58; Admin 233, MS 4-1167 &#58;
+&#58; e-mail&#58; Alan.Sill@.... ph. 806-742-4350 fax 806-742-4358 &#58;
+====================================================================
+
+---------------------------
+
+The following data is incompatible with the receiving project&#58;
+Field&#58; Status (The original Status was not recognized. Defaulted to
+&#34;Open&#34;)
+Original Data&#58; SD-Active
+Field&#58; Originating VO Support Center (Not a valid choice for this
+Project field )
+Original Data&#58; Community Support Center
+Field&#58; Destination VO Support Center (Not a valid choice for this
+Project field )
+Original Data&#58; Communtiy Support Center
+Field&#58; Service Affecting (Project field not present)
+Original Data&#58; Yes
+Field&#58; Short Description (Project field not present)
+Original Data&#58; TTU-ANTAEUS Maintenance
+Field&#58; Reservation/Maintenance Duration (Project field not present)
+Original Data&#58; 2 weeks
+
+
+From&#58; Alan Sill &lt;Alan.Sill@....&gt;<BR>To&#58; GOC Operations &lt;goc@....&gt;<BR>cc&#58; James Abbott &lt;james.abbott@....&gt;, Alan Sill &lt;Alan.Sill@....&gt;<BR>Subject&#58; Status of TTU-ANTAEUS<BR>Date-Sent&#58; Monday, May 15, 2006 2&#58;51 PM -0500<BR><BR>We have our new head node in and are configuring some parts of it. &nbsp;Unfortunately the user file systems and batch scheduler are not ready. &nbsp;Estimated continued down time will last through the end of the month.<BR><BR>If I can get partial functionality up before then, I will let you know.<BR><BR>Alan<BR><BR>====================================================================<BR>&#58; &nbsp;Alan Sill, Texas Tech University &nbsp;Office&#58; Admin 233, MS 4-1167 &nbsp;&#58;<BR>&#58; &nbsp;e-mail&#58; Alan.Sill@.... &nbsp;&nbsp;ph. 806-742-4350 &nbsp;fax 806-742-4358 &nbsp;&#58;<BR>====================================================================<BR><BR>
+<br>
+
+
+From&#58; Alan Sill &#60;Alan.Sill@....&#62;<br>
+To&#58; Grid Operations &#60;goc@....&#62;<br>
+cc&#58; osg-general@....<br>
+Subject&#58; TTU-ANTAEUS down for scheduled maintenance and upgrades periodically<br>
+beginning May 1<br>
+Date-Sent&#58; Friday, April 28, 2006 4&#58;20 PM -0500<br>
+<br>
+We will be adding worker nodes and taking our TTU-ANTAEUS OSG  production resource<br>
+down periodically for file system  reconfiguration, change of head nodes, and other<br>
+substantial work  beginning Monday, May 1.  The cluster will be unavailable at times<br>
+over the subsequent two weeks as this work proceeds.  Your  understanding and<br>
+patience during this period is appreciated.<br>
+<br>
+Alan Sill<br>
+TIGRE Senior Scientist<br>
+High Performance Computing Center<br>
+TTU<br>
+<br>
+====================================================================<br>
+&#58;  Alan Sill, Texas Tech University  Office&#58; Admin 233, MS 4-1167  &#58;<br>
+&#58;  e-mail&#58; Alan.Sill@....   ph. 806-742-4350  fax 806-742-4358  &#58;<br>
+====================================================================<br>
+<br>
+---------------------------<br>
+<br>
+<br>
+The following data is incompatible with the receiving project&#58;<br>
+Field&#58; Status (The original Status was not recognized. Defaulted to &#34;Open&#34;)  <br>
+Original Data&#58; SD-Active<br>
+Field&#58; Originating VO Support Center (Not a valid choice for this Project field )  <br>
+Original Data&#58; Community Support Center<br>
+Field&#58; Destination VO Support Center (Not a valid choice for this Project field )  <br>
+Original Data&#58; Communtiy Support Center<br>
+Field&#58; Service Affecting (Project field not present)  <br>
+Original Data&#58; Yes<br>
+Field&#58; Short Description (Project field not present)  <br>
+Original Data&#58; TTU-ANTAEUS Maintenance<br>
+Field&#58; Reservation/Maintenance Duration (Project field not present)  <br>
+Original Data&#58; 2 weeks<br>
+</div><script type='text/javascript'>
+        $('#show_686418113').click(function() {
+            $('#detail_686418113').slideDown("normal");
+            $('#show_686418113').hide();
+            $('#hide_686418113').show();
+        });
+        $('#hide_686418113').click(function() {
+            $('#detail_686418113').slideUp();
+            $('#hide_686418113').hide();
+            $('#show_686418113').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F1979">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 1979});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

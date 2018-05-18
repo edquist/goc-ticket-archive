@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[6967] dCache - File replicas not being removed</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=6967" method="post">
+<div class="page-header">
+    <h3><span class="muted">6967</span> / dCache - File replicas not being removed</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">neha sharma</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2009-12-09</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Rob Quick <span class="muted"> / OSG GOC Management</span></div><div class="assignee" style="width: 60%">Neha Sharma <span class="muted"> / OSG Storage Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=6967", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/6967?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/6967?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20dCache%20-%20File%20replicas%20not%20being%20removed%20ISSUE%3D6967%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='6967#1260452555'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-12-10T13:42:35+00:00">Dec 10, 2009 01:42 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1260452555">&nbsp;</a></div><pre>Neha, in an attempt to clean up old tickets, I&#39;m going to close this ticket. Please open another if this has not been patched.
+
+Rob</pre></div><div class='update_description'><i onclick="document.location='6967#1260375481'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-12-09T16:18:01+00:00">Dec 9, 2009 04:18 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1260375481">&nbsp;</a></div><pre>It looks like the October 1st entry says this was patched. Neha, if this is the case can you close this ticket?</pre></div><div class='update_description'><i onclick="document.location='6967#1254413479'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-10-01T16:11:19+00:00">Oct 1, 2009 04:11 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1254413479">&nbsp;</a></div><pre>pacth</pre></div><div class='update_description'><i onclick="document.location='6967#1253126269'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-09-16T18:37:49+00:00">Sep 16, 2009 06:37 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1253126269">&nbsp;</a></div><pre>Hi Owen
+
+Were you able to get to this? If yes, which version has the fix?
+
+thanks
+-neha
+On Aug 19, 2009, at 4&#58;45 AM, Owen Synge via RT wrote&#58;
+
+Hi Neha,
+
+I am coming to the end of my top priority dev task and will put a patch in within the week for the lock
+file issue.
+
+Regards
+
+Owen</pre></div><div class='update_description'><i onclick="document.location='6967#1250717257'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-19T21:27:37+00:00">Aug 19, 2009 09:27 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1250717257">&nbsp;</a></div><pre>Hi Neha,
+
+I am coming to the end of my top priority dev task and will put a patch in within the week for the lock
+file issue.
+
+Regards</pre></div><div class='update_description'><i onclick="document.location='6967#1250716938'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-08-19T21:22:18+00:00">Aug 19, 2009 09:22 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1250716938">&nbsp;</a></div><pre>spoke to Paul about this ticket 4555
+
+He states that this is low priority too. and created two trac bugs to track the corresponding
+development work and placed the bug in suspected state.
+
+He doubts anyone will look at this before October (at the earliest).
+
+Regards
+
+Owen</pre></div><div class='update_description'><i onclick="document.location='6967#1245868988'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-24T18:43:08+00:00">Jun 24, 2009 06:43 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1245868988">&nbsp;</a></div><pre>Hi Will,
+
+I am looking at the Cleaner code, and it looks like this file is used as
+&#34;cleaner&#34; lock and  is created every time on cleaner start up and deleted
+when cleaner finishes.
+I will talk with developers, I would assume it should some clean up on
+restart that should be able to handle this situation.
+
+Tanya</pre></div><div class='update_description'><i onclick="document.location='6967#1244131358'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2009-06-04T16:02:38+00:00">Jun 4, 2009 04:02 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1244131358">&nbsp;</a></div><pre>Hi Tanya-
+
+On Mon, Jun 01, 2009 at 02&#58;19&#58;28PM -0500, Tanya Levshina wrote&#58;
+1. What version of dcache you are running?
+
+We&#39;re running 1.9.0-8.
+
+2. Do I understand correctly that numerous files become orphans after
+removal of the file from pnfs?
+
+As far as I can tell, all of the replicas for a given PNFSID become
+orphans after the file is removed from PNFS.
+
+3. Does this happen only with  precious files?
+
+I&#39;m not sure. I&#39;m at a conference this week, but I&#39;ll test this soon.
+
+Hi all-
+
+We recently ran out of space in dCache. As it turns out, ~45% of our
+space was used by files that had been removed from PNFS but remained on
+our pool disks. We&#39;ve observed this problem in the past, but never at
+such a high frequency.
+
+For example, the following file was removed this morning by PhEDEx&#58;
+
+/pnfs/hep.wisc.edu/data4/PA_TFC/store/Generators/2008/4/13/FastSim-QCD_250_500-madgraph-
+1208074320/0001/A2B297BA-FC09-DD11-9A81-000423D6B2D8.root
+
+Indeed, it no longer exists in our PNFS. Before it was removed, we found
+three replicas of this file on our various pools (this is expected).
+After the removal, even though the file no longer exists in PNFS, I find
+it on each of the three pools. One of the pools hosting replicas for
+this file (000600000000000005D9C0E0) is g10n20_0&#58;
+
+<div id='show_1281072769' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1281072769'>&#60;admin interface after removal from pnfs&#62;
+[cmsdcache02.hep.wisc.edu] (g10n20_0) admin &#62; rep ls 000600000000000005D9C0E0
+000600000000000005D9C0E0 &#60;-P---------(0)[0]&#62; 2268686216 si={myStore&#58;STRING}
+
+In that pool&#39;s log, I don&#39;t see any mention of the PNFSID in question. I
+do see lots of messages like the following&#58;
+
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58; (DCap_3_nio) Can&#39;t connect to 127.0.0.1
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58; Exception in runIO for &#58;
+0006000000000000073AF1B8 java.net.ConnectException&#58; Connection refused
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58; java.net.ConnectException&#58; Connection refused
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at sun.nio.ch.Net.connect(Native Method)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at
+sun.nio.ch.SocketChannelImpl.connect(SocketChannelImpl.java&#58;464)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at
+java.nio.channels.SocketChannel.open(SocketChannel.java&#58;146)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at
+diskCacheV111.movers.DCapProtocol_3_nio.runIO(DCapProtocol_3_nio.java&#58;436)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at
+diskCacheV111.pools.MultiProtocolPoolV3$RepositoryIoHandler.run(MultiProtocolPoolV3.java&#58;1843)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at
+diskCacheV111.util.SimpleJobScheduler$SJob.run(SimpleJobScheduler.java&#58;121)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at
+java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java&#58;650)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at
+java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java&#58;675)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at
+dmg.cells.nucleus.CellNucleus$1.run(CellNucleus.java&#58;536)
+05/29 12&#58;28&#58;26 Cell(g10n20_0@g10n20_0Domain) &#58;  at java.lang.Thread.run(Thread.java&#58;595)
+
+Could this message have anything to do with the failure to delete files
+(even though it references a different PNFSID)? Reads and writes via
+both dcap and SRM succeed, so the pool is at least nominally functional.
+I see these messages on all of our pools that I&#39;ve spotchecked.
+
+If the message is unrelated, where else might I look to understand why
+files aren&#39;t being removed from the pools?
+
+Thanks!
+
+--
+
+o--------------------------{ Will Maier }--------------------------o
+| sms&#58;.wcmaier+text@.... | email&#58;..will.maier@.... |
+| office&#58;...........608.263.9692 | cell&#58;..............608.438.6162 |
+*--------------------[ UW High Energy Physics ]--------------------*
+Thanks!
+</div><script type='text/javascript'>
+        $('#show_1281072769').click(function() {
+            $('#detail_1281072769').slideDown("normal");
+            $('#show_1281072769').hide();
+            $('#hide_1281072769').show();
+        });
+        $('#hide_1281072769').click(function() {
+            $('#detail_1281072769').slideUp();
+            $('#hide_1281072769').hide();
+            $('#show_1281072769').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F6967">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 6967});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

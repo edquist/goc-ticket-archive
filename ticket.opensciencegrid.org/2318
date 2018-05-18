@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[2318] modified site_verify.pl script with vds component checks</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=2318" method="post">
+<div class="page-header">
+    <h3><span class="muted">2318</span> / modified site_verify.pl script with vds component checks</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Leigh Grundhoefer</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Eng Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2006-08-08</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Rob Quick <span class="muted"> / OSG GOC Management</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=2318", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/2318?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/2318?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20modified%20site_verify.pl%20script%20with%20vds%20component%20checks%20ISSUE%3D2318%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='2318#1155052742'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-08T15:59:02+00:00">Aug 8, 2006 03:59 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1155052742">&nbsp;</a></div><pre>I have updated the site-verify package in the ITB 0.5.0 with this new version of site
+verify. Closing ticket.</pre></div><div class='update_description'><i onclick="document.location='2318#1155051546'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-08T15:39:06+00:00">Aug 8, 2006 03:39 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1155051546">&nbsp;</a></div><pre>The script was run today and here is the output&#58;
+
+mlmonitor@grid01 .globus $ perl /home/rquick/new_site_verify.pl --host=atlas.iu.edu
+===============================================================
+================
+Info&#58; Site verification initiated at Tue Aug  8 15&#58;27&#58;15 2006 GMT.
+===============================================================
+================
+-------------------------------------------------------------------------------
+-------------- Begin atlas.iu.edu at Tue Aug  8 15&#58;27&#58;15 2006 GMT -------------
+-------------------------------------------------------------------------------
+Checking prerequisites needed for testing&#58; PASS
+Checking for a valid proxy for tsilver@....&#58; PASS
+Checking if remote host is reachable&#58; PASS
+Checking for a running gatekeeper&#58; YES; port 2119
+Checking authentication&#58; PASS
+Checking &#39;Hello, World&#39; application&#58; PASS
+Checking remote host uptime&#58; PASS
+11&#58;27&#58;24  up 27 days, 23&#58;53,  2 users,  load average&#58; 1.14, 2.92, 3.43
+Checking remote Internet network services list&#58; PASS
+Checking remote Internet servers database configuration&#58; PASS
+Checking for GLOBUS_LOCATION&#58; /N/hd00/OSG-0.4.1/globus
+Checking expiration date of remote host certificate&#58; Mar  7 14&#58;50&#58;41 2007 GMT
+Checking for gatekeeper configuration file&#58; YES
+/N/hd00/OSG-0.4.1/globus/etc/globus-gatekeeper.conf
+Checking for a running gsiftp server&#58; YES; port 2811
+Checking gsiftp (local client, local host -&#62; remote host)&#58; PASS
+Checking gsiftp (local client, remote host -&#62; local host)&#58; PASS
+Checking that no differences exist between gsiftp&#39;d files&#58; PASS
+Checking users in grid-mapfile, if none must be using Prima&#58;
+cdf,dosar,fermilab,fmri,gadu,geant4,glow,grase,gridex,grow,ivdgl,ligo,mis,nanohub,sam,samgrid,sd
+ss,ssimms,star,turnerg,usatlas1,uscms01
+Checking for remote globus-sh-tools-vars.sh&#58; YES
+Checking configured grid services&#58; PASS
+jobmanager,jobmanager-fork,jobmanager-mis,jobmanager-pbs
+<div id='show_574607248' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_574607248'>Checking scheduler types associated with remote jobmanagers&#58; PASS
+jobmanager is of type fork
+jobmanager-fork is of type fork
+jobmanager-mis is of type mis
+jobmanager-pbs is of type pbs
+Checking for paths to binaries of remote schedulers&#58; PASS
+Path to mis binaries is /N/hd00/OSG-0.4.1/MIS-CI/bin
+Path to pbs binaries is /usr/pbs/bin
+Checking remote scheduler status&#58; PASS
+pbs &#58; 113 jobs running, 187 jobs idle/pending
+Checking for a running MDS service&#58; YES; port 2135
+Checking for configured Generic Information Provider service&#58; NO; Unable to search at
+grid3.avidd.iu.edu&#58;2135
+access denied&#58; gridmap lookup failed
+Checking if Globus is deployed from the VDT&#58; YES; version 1.3.10b
+Checking for OSG osg-attributes.conf&#58; YES
+Checking for OSG grid3-user-vo-map.txt&#58; YES
+ivdgl users&#58; ivdgl
+i2u2 users&#58; i2u2
+geant4 users&#58; geant4
+grow users&#58; grow
+osgedu users&#58; osgedu
+nanohub users&#58; nanohub
+gridex users&#58; gridex
+fmri users&#58; fmri
+cdf users&#58; cdf
+osg users&#58; osg
+usatlas users&#58; usatlas1
+mariachi users&#58; mariachi
+star users&#58; star
+dosar users&#58; dosar
+uscms users&#58; uscms01
+grase users&#58; grase
+ligo users&#58; ligo
+glow users&#58; glow
+fermilab users&#58; fermilab
+dzero users&#58; sam,samgrid
+mis users&#58; mis
+des users&#58; des
+sdss users&#58; sdss
+gadu users&#58; gadu
+Checking for OSG site name&#58; IU_ATLAS_Tier2
+Checking for OSG $GRID3 definition&#58; /N/hd00/OSG-0.4.1
+Checking for OSG $OSG_GRID definition&#58; /N/hd00/OSG-0.4.1
+Checking for OSG $APP definition&#58; /N/hd00/OSG-0.4.1/apps
+Checking for OSG $DATA definition&#58; /N/ivdgl/data
+Checking for OSG $TMP definition&#58; /N/ivdgl/data
+Checking for OSG $WNTMP definition&#58; /osgscr
+Checking for OSG $OSG_GRID existence&#58; PASS
+Checking for OSG $APP existence&#58; PASS
+Checking for OSG $DATA existence&#58; FAIL
+Checking for OSG $TMP existence&#58; FAIL
+Checking for OSG $APP writability&#58; PASS
+Checking for OSG $DATA writability&#58; FAIL
+Checking for OSG $TMP writability&#58; FAIL
+Checking for OSG $APP available space&#58; 83.617 GB
+Checking for OSG $DATA available space&#58; UNTESTED
+Checking for OSG $TMP available space&#58; UNTESTED
+Checking for OSG additional site-specific variable definitions&#58; YES
+&#60;No Location List Name&#62;
+ATLAS_APP prod /N/hd03/OSG/AVIDD/apps/atlas_app
+ATLAS_DATA prod /N/ivdgl/data/atlas_data
+ATLAS_LOC_1001 10.0.1 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/10.0.1
+ATLAS_LOC_1004 10.0.4 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/10.0.4
+ATLAS_LOC_1050 10.5.0 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/10.5.0
+ATLAS_LOC_1100 11.0.0 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.0.0
+ATLAS_LOC_1101 11.0.1 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.0.1
+ATLAS_LOC_1102 11.0.2 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.0.2
+ATLAS_LOC_1103 11.0.3 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.0.3
+ATLAS_LOC_1104 11.0.4 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.0.4
+ATLAS_LOC_11041 11.0.41 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.0.41
+ATLAS_LOC_11042 11.0.42 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.0.42
+ATLAS_LOC_1105 11.0.5 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.0.5
+ATLAS_LOC_1130 11.3.0 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.3.0
+ATLAS_LOC_1150 11.5.0 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/11.5.0
+ATLAS_LOC_1200 12.0.0 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/12.0.0
+ATLAS_LOC_1201 12.0.1 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/12.0.1
+ATLAS_LOC_650 6.5.0 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/6.5.0
+ATLAS_LOC_802 8.0.2 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/8.0.2
+ATLAS_LOC_805 8.0.5 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/8.0.5
+ATLAS_LOC_805mla 8.0.5.mla /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/8.0.5.mla
+ATLAS_LOC_903 9.0.3 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/9.0.3
+ATLAS_LOC_904 9.0.4 /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/9.0.4
+ATLAS_LOC_GCC 3.2 /N/hd03/OSG/AVIDD/apps/atlas_app/gcc32
+ATLAS_LOC_GCE prod /N/hd03/OSG/AVIDD/apps/atlas_app/GCE-Server/gce-server
+ATLAS_LOC_KitVal prod /N/hd03/OSG/AVIDD/apps/atlas_app/atlas_rel/kitval/KitValidation
+ATLAS_LOC_Trfs prod /N/hd03/OSG/AVIDD/apps/atlas_app/Atlas-Trfs/atlas-trfs
+ATLAS_STAGE prod /N/ivdgl/data/atlas_data
+Checking for OSG execution jobmanager(s)&#58; grid3.avidd.iu.edu/jobmanager-pbs
+Checking for OSG utility jobmanager(s)&#58; grid3.avidd.iu.edu/jobmanager
+Checking for OSG sponsoring VO&#58; ivdgl
+Checking for OSG policy expression&#58; NONE
+Checking for OSG setup.sh&#58; YES
+Checking for OSG $Monalisa_HOME definition&#58; /N/hd00/OSG-0.4.1/MonaLisa
+Checking for MonALISA configuration&#58; PASS
+key ml_env vars&#58;
+FARM_NAME = IU_ATLAS_Tier2
+FARM_HOME = /N/hd00/OSG-0.4.1/MonaLisa/Service/VDTFarm
+FARM_CONF_FILE = /N/hd00/OSG-0.4.1/MonaLisa/Service/VDTFarm/vdtFarm.conf
+SHOULD_UPDATE = false
+URL_LIST_UPDATE = <a href='http&#58;//monalisa.cacr.caltech.edu/FARM_ML' target='_blank' rel='nofollow'>http&#58;//monalisa.cacr.caltech.edu/FARM_ML</a>,<a href='http&#58;//monalisa.cern.ch/' target='_blank' rel='nofollow'>http&#58;//monalisa.cern.ch/</a>
+MONALISA/FARM_ML
+key ml_properties vars&#58;
+lia.Monitor.group = OSG
+lia.Monitor.useIPaddress = undef
+MonaLisa.ContactEmail = malallen@....
+Checking for a running MonALISA&#58; PASS
+MonALISA is ALIVE (pid 2574)
+MonALISA_Version = 1.4.12-200603031824
+MonALISA_VDate = 2006-03-03
+VoModulesDir = VoModules-v0.20
+tcpServer_Port = 9002
+storeType = epgsqldb
+Checking for a running GANGLIA gmond daemon&#58; PASS (pid 1604 ...)
+/usr/sbin/gmond
+name = &#34;part_max_used&#34;
+owner = &#34;UITS Indiana University&#34;
+url = &#34;<a href='http&#58;//grid3.avidd.iu.edu/ganglia/&#34' target='_blank' rel='nofollow'>http&#58;//grid3.avidd.iu.edu/ganglia/&#34</a>;
+Checking for a running GANGLIA gmetad daemon&#58; PASS (pid 1474 ...)
+/usr/sbin/gmetad
+trusted_hosts 127.0.0.1 169.229.50.165 129.79.5.217 129.107.83.161
+Checking for VDS existence&#58; PASS
+Checking for VDS kickstart existence&#58; PASS
+Checking for VDS k.2 (OPTIONAL) existence&#58; PASS
+Checking for VDS dirmanager existence&#58; PASS
+Checking for VDS invoke existence&#58; PASS
+Checking for VDS transfer existence&#58; PASS
+Checking for VDS T2 (OPTIONAL) existence&#58; PASS
+Checking for VDS seqexec existence&#58; PASS
+Checking for VDS mpiexec (OPTIONAL) existence&#58; FAIL
+-------------------------------------------------------------------------------
+--------------- End atlas.iu.edu at Tue Aug  8 15&#58;32&#58;48 2006 GMT --------------
+-------------------------------------------------------------------------------
+===============================================================
+================
+Info&#58; Site verification completed at Tue Aug  8 15&#58;32&#58;48 2006 GMT.
+</div><script type='text/javascript'>
+        $('#show_574607248').click(function() {
+            $('#detail_574607248').slideDown("normal");
+            $('#show_574607248').hide();
+            $('#hide_574607248').show();
+        });
+        $('#hide_574607248').click(function() {
+            $('#detail_574607248').slideUp();
+            $('#hide_574607248').hide();
+            $('#show_574607248').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='2318#1155042792'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-08T13:13:12+00:00">Aug 8, 2006 01:13 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1155042792">&nbsp;</a></div><pre>Rob, I removed myself as an Assignee. I don&#39;t see anything for me to do here. I&#39;ve also set the NAD
+ahead to today. Perhaps you&#39;ll find time to work the ticket this afternoon. --Tim</pre></div><div class='update_description'><i onclick="document.location='2318#1154733630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:20:30+00:00">Aug 4, 2006 11:20 PM UTC</time> by <b>Thomas Wang</b><a class="anchor" name="1154733630">&nbsp;</a></div><pre>removed leigh from OSG workgroup RR,
+re-RR&#39;d to Rob
+
+From&#58; leighg@....
+To&#58; goc@....
+Subject&#58; removed from Round-robin
+Date-Sent&#58; Friday, August 04, 2006 7&#58;03 PM -0400
+
+I will be on holiday, please remove me from the
+OSG workgroup round robin.
+
+Thanks-
+leigh</pre></div><div class='update_description'><i onclick="document.location='2318#1154733501'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:18:21+00:00">Aug 4, 2006 11:18 PM UTC</time> by <b>Thomas Wang</b><a class="anchor" name="1154733501">&nbsp;</a></div><pre>From&#58; leighg@....
+To&#58; goc@....
+Subject&#58; [dmeyers@....&#58; modified site_verify.pl script with vds
+component checks]
+Date-Sent&#58; Friday, August 04, 2006 7&#58;01 PM -0400
+
+Please make a ticket.
+
+This should be noted in the new OSG CE 0.5.0 and
+reviewed for addition into the Scan service.
+
+thanks-
+leigh
+----- Forwarded message from David Meyers &#60;dmeyers@....&#62; -
+----
+
+Date&#58; Fri, 04 Aug 2006 14&#58;39&#58;32 -0700
+From&#58; David Meyers &#60;dmeyers@....&#62;
+User-Agent&#58; Mozilla Thunderbird 1.0.7-1.1.fc4 (X11/20050929)
+X-Accept-Language&#58; en-us, en
+To&#58; Robert Gardner &#60;rwg@....&#62;, leighg@....,
+griphynligo mailing list &#60;griphynligo@....&#62;,
+Michael Thomas &#60;thomas@....&#62;
+Subject&#58; modified site_verify.pl script with vds component checks
+X-Spam-Score&#58; undef - Sender Whitelisted (dmeyers@....&#58;
+Mail from user authenticated via SMTP AUTH allowed always)
+X-Canit-Stats-ID&#58; 4090446 - 425c4cb33198
+X-Scanned-By&#58; CanIt (www . roaringpenguin . com) on 131.215.115.19
+
+Hi Rob and Leigh&#58;
+
+As noted in the minutes to the July 06 ITB meeting&#58;
+
+Discussed proposal to add a vds-verify method added to site verify
+script. This would test out the VDS required functionality at
+<div id='show_1132156613' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1132156613'>installation time - |kickstart| and |transfer| vds methods. David will
+follow-up with the VDS team to get a prototype developed, then will work
+with Leigh to get it into site verify.
+
+Here is a contribution from the Virtual Data System team that Michael
+Thomas and I have tested locally on two ITB systems at Caltech that
+performs the function&#58;
+
+Addition of a vds verify method to the site_verify.pl script&#58;
+
+Here is the additional functionality found by the functions added to the
+script to check the vds components&#58;
+
+=====================================================
+==========================
+Info&#58; Site verification initiated at Fri Aug  4 21&#58;25&#58;24 2006 GMT.
+=====================================================
+==========================
+-------------------------------------------------------------------------------
+-------- Begin osg-itb.ligo.caltech.edu at Fri Aug  4 21&#58;25&#58;24 2006 GMT
+-------
+-------------------------------------------------------------------------------
+Checking prerequisites needed for testing&#58; PASS
+Checking for a valid proxy for dmeyers@....&#58; PASS
+Checking if remote host is reachable&#58; PASS
+Checking for a running gatekeeper&#58; YES; port 2119
+Checking authentication&#58; PASS
+Checking &#39;Hello, World&#39; application&#58; PASS
+Checking remote host uptime&#58; PASS
+14&#58;25&#58;26 up 14 days,  4&#58;12,  2 users,  load average&#58; 0.13, 0.08, 0.08
+...
+...
+...
+Checking for a running MonALISA&#58; PASS
+MonALISA is ALIVE (pid 2924)
+MonALISA_Version = 1.4.12-200603031824
+MonALISA_VDate = 2006-03-03
+VoModulesDir = VoModules-v0.20
+tcpServer_Port = 9002
+storeType = epgsqldb
+Checking for a running GANGLIA gmond daemon&#58; PASS (pid 2415 ...)
+/usr/sbin/gmond
+name = &#34;part_max_used&#34;
+Checking for a running GANGLIA gmetad daemon&#58; PASS (pid 1970 ...)
+/usr/sbin/gmetad
+trusted_hosts osg-itb.ligo.caltech.edu gocmon.uits.iupui.edu node1 node2
+Checking for VDS existence&#58; PASS
+Checking for VDS kickstart existence&#58; PASS
+Checking for VDS k.2 (OPTIONAL) existence&#58; PASS
+Checking for VDS dirmanager existence&#58; PASS
+Checking for VDS invoke existence&#58; PASS
+Checking for VDS transfer existence&#58; PASS
+Checking for VDS T2 (OPTIONAL) existence&#58; PASS
+Checking for VDS seqexec existence&#58; PASS
+Checking for VDS mpiexec (OPTIONAL) existence&#58; FAIL
+-------------------------------------------------------------------------------
+--------- End osg-itb.ligo.caltech.edu at Fri Aug  4 21&#58;26&#58;25 2006 GMT
+--------
+-------------------------------------------------------------------------------
+=====================================================
+==========================
+Info&#58; Site verification completed at Fri Aug  4 21&#58;26&#58;25 2006 GMT.
+
+The script is now available for download from&#58;
+<a href='http&#58;//osg-itb.ligo.caltech.edu/Inspiral/vds_site_verify.pl' target='_blank' rel='nofollow'>http&#58;//osg-itb.ligo.caltech.edu/Inspiral/vds_site_verify.pl</a>
+
+Thank you for your assistance,
+
+David
+
+begin&#58;vcard
+fn&#58;David Meyers
+n&#58;Meyers;David
+org&#58;LIGO Laboratory;Systems Engineering
+adr;dom&#58;;;;Pasadena;CA
+email;internet&#58;dmeyers@....
+tel;work&#58;(626) 395-8515
+x-mozilla-html&#58;FALSE
+version&#58;2.1
+end&#58;vcard
+
+----- End forwarded message -----
+</div><script type='text/javascript'>
+        $('#show_1132156613').click(function() {
+            $('#detail_1132156613').slideDown("normal");
+            $('#show_1132156613').hide();
+            $('#hide_1132156613').show();
+        });
+        $('#hide_1132156613').click(function() {
+            $('#detail_1132156613').slideUp();
+            $('#hide_1132156613').hide();
+            $('#show_1132156613').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F2318">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 2318});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

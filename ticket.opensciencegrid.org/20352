@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[20352] glidein jobs from Gluex failing to start up on UCSD nodes</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=20352" method="post">
+<div class="page-header">
+    <h3><span class="muted">20352</span> / glidein jobs from Gluex failing to start up on UCSD nodes</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Richard T. Jones</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">UCSDT2</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Richard T. Jones</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier2</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-04-09</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">USCMS Tier 2 <span class="muted"> / OSG Support Centers</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=20352", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/20352?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/20352?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20glidein%20jobs%20from%20Gluex%20failing%20to%20start%20up%20on%20UCSD%20nodes%20ISSUE%3D20352%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='20352#1397062478'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-09T16:54:38+00:00">Apr 9, 2014 04:54 PM UTC</time> by <b>echism</b><a class="anchor" name="1397062478">&nbsp;</a></div><pre>Thanks, Richard.</pre></div><div class='update_description'><i onclick="document.location='20352#1397048529'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-09T13:02:09+00:00">Apr 9, 2014 01:02 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1397048529">&nbsp;</a></div><pre>This issue has been resolved, and our jobs are now running smoothly on the
+ucsd site.  This ticket can be closed.
+thanks, -richard jones
+
+On Tue, Apr 8, 2014 at 5&#58;29 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396992549'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T21:29:09+00:00">Apr 8, 2014 09:29 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1396992549">&nbsp;</a></div><pre>Yes, that seems to have resolved it!
+Thanks for this, I will watch the jobs run, and assuming that all goes as
+expected, I will post a &#34;problem resolved&#34; to this ticket.
+-Richard Jones
+
+On Tue, Apr 8, 2014 at 5&#58;08 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396991349'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T21:09:09+00:00">Apr 8, 2014 09:09 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1396991349">&nbsp;</a></div><pre>There we got some new ones now submitted within the past minute or so.</pre></div><div class='update_description'><i onclick="document.location='20352#1396991282'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T21:08:02+00:00">Apr 8, 2014 09:08 PM UTC</time><a class="anchor" name="1396991282">&nbsp;</a></div><pre>Hi Richard,
+
+No, the system doesn&#39;t make any decisions based on job failure rate, though there are some mechanisms that can have a similar effect. I took another look - according to the factories, you have a few hundred jobs queued at UCSD, so the factories see no need to submit more. The submit dates on these glideins are all between 4/3 and 4/6, though, so they&#39;ll probably never run. I&#39;ll try clearing the queues, and hopefully some fresh glideins will start up for you.
+
+Cheers,
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='20352#1396990391'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T20:53:11+00:00">Apr 8, 2014 08:53 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1396990391">&nbsp;</a></div><pre>Hello Dan,
+
+Ok.  I guess I am surprised because I was seeing UCSD glideins all last
+week when our authentication on the UCSD site was not working, but have not
+seen one since Monday morning 4/7 at 7&#58;42&#58;25 EDT.  If it was not a
+configuration change, is there an automatic switch that shuts off glidein
+acceptance if the job failure rate exceeds some threshold?  UCSD is
+currently the only site in the list of those supporting the Gluex VO that
+has not started a single job in over 24 hours.
+
+-Richard J.
+
+On Tue, Apr 8, 2014 at 4&#58;21 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396988488'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T20:21:28+00:00">Apr 8, 2014 08:21 PM UTC</time><a class="anchor" name="1396988488">&nbsp;</a></div><pre>Hi Richard,
+
+It looks like Gluex was never blacklisted in the factories in the first place, so you should be able to request glideins for UCSD. Let us know if you see any further problems.
+
+Cheers,
+Dan Klein
+UCSD Glidein Factory Ops
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dklein/CN=747387/CN=Daniel Klein</pre></div><div class='update_description'><i onclick="document.location='20352#1396985170'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T19:26:10+00:00">Apr 8, 2014 07:26 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1396985170">&nbsp;</a></div><pre>Hello Terrence,
+
+Yes, that works now, thank you.  I now see that your gatekeeper is
+accepting my /Gluex/production jobs, whereas before it was refusing them
+with authentication errors if I set the /Gluex/production FQAN in my proxy.
+I believe that our glideins will now start up successfully at ucsd.  I
+don&#39;t plan to actually submit work through the grid universe, I was just
+using it to test the authentication.  All Gluex production workload is
+being submitted through the gwms service.
+
+Could you ask Igor to enable the gfactory to request glideins at the ucsd
+site again?  I appreciate his turning it off for us, while we were fixing
+this, but would like to confirm that things are now working.
+
+Let&#39;s not respect Gluex proxy certs without voms info.  Other sites are
+requiring valid /Gluex voms info in the proxy, and my how-to for Gluex
+users states that without the voms info in the proxy the jobs will fail, so
+I would prefer to stick with that policy.
+
+-Richard J.
+
+On Tue, Apr 8, 2014 at 1&#58;35 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396978513'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T17:35:13+00:00">Apr 8, 2014 05:35 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1396978513">&nbsp;</a></div><pre>I had changed that actually, and even told it to not worry about VO. I
+set it though to VO lets see if it works.
+
+You want to accept or deny non-VOMS certs?
+
+Terrence
+
+On 4/8/2014 4&#58;35 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396956909'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T11:35:09+00:00">Apr 8, 2014 11:35 AM UTC</time> by <b>GLUEX</b><a class="anchor" name="1396956909">&nbsp;</a></div><pre>Hello,
+
+Could I request the following information regarding our gums record on your
+site?  Could you go to the admin interface of your gums, and select the
+option &#34;Map grid identity to account&#34; (not &#34;Map account to grid
+identity(s)&#34;), and enter the following in the form&#58;
+
+- DN (Distinguished Name) for service&#58; &#60;the DN for one of your worker
+nodes where things were failing&#62;
+- DN (Distinguished Name) for user&#58; /DC=com/DC=DigiCert-Grid/O=Open
+Science Grid/OU=People/CN=Richard T. Jones 594
+- VOMS FQAN for user&#58; /Gluex/production
+
+This should fail to map to any local account, according to my tests.  Next,
+try it again with the VOMS FQAN set to simply &#34;/Gluex&#34;.  According to my
+tests, this will succeed.  The problem, I believe, is in how the gums entry
+is set up to filter the voms information in the proxy.  If you look in the
+Summary table on the gums admin interface, you may have &#34;User Group&#34; /
+&#34;Match FQAN&#34; set to &#34;exact&#34; or &#34;vogroup&#34;.  If so, could you change it to
+&#34;vo&#34;?  That will map all of our FQAN groups to the same local account,
+which is I think what you intend.
+
+thank you, Richard Jones
+
+On Mon, Apr 7, 2014 at 11&#58;57 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396929472'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T03:57:52+00:00">Apr 8, 2014 03:57 AM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1396929472">&nbsp;</a></div><pre>I do not have anything specific. The DNS map in GUMS, but there may be a trick with lcmaps.
+
+My only reference is CMS as far as GUMS and their stuff runs.</pre></div><div class='update_description'><i onclick="document.location='20352#1396891071'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-07T17:17:51+00:00">Apr 7, 2014 05:17 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1396891071">&nbsp;</a></div><pre>Hello,
+
+Has there been any progress on this ticket?  There are a couple of other
+issues that have arisen in the course of the Gluex data challenge so far,
+which I would like to raise with you on the glideinwms team, but it
+probably makes sense first to clear up this issue.
+
+-Richard Jones
+
+On Mon, Mar 31, 2014 at 6&#58;10 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396654163'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-04T23:29:23+00:00">Apr 4, 2014 11:29 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1396654163">&nbsp;</a></div><pre>I am not sure, though I recall we had some sort of glexec issue in the past it is not clear to me what the specific issue is if I am already mapping him in GUMS to the right user.
+
+If it is a lcmaps pool related issue then we may need to ask Brian.</pre></div><div class='update_description'><i onclick="document.location='20352#1396649525'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-04T22:12:05+00:00">Apr 4, 2014 10:12 PM UTC</time><a class="anchor" name="1396649525">&nbsp;</a></div><pre>I am observing a problem that I think Terrence still needs to work out on his end.
+
+Terrence, from what I can tell, now glideins are passing validation, but glexec is still failing for real user jobs.  In the Starter logs of the pilots I see these errors, which I think we&#39;ve observed a long time ago.  Terrence or Igor, do you remember how we solved it before?
+
+04/04/14 12&#58;20&#58;19 (pid&#58;12550) GLExecPrivSepHelper&#58;&#58;run_script&#58; /data1/condor_local/execute/dir_30177/glide_6aVUTH/main/condor/libexec/condor_glexec_setup exited with status 768 and following output&#58;
+04/04/14 12&#58;20&#58;19 (pid&#58;12550) ERROR &#34;failed to chown sandbox to user&#34; at line 1974 in file /slots/08/dir_18737/userdir/src/condor_starter.V6.1/baseStarter.cpp
+04/04/14 12&#58;20&#58;19 (pid&#58;12550) ShutdownFast all jobs.
+04/04/14 12&#58;20&#58;19 (pid&#58;12550) Can&#39;t open directory &#34;/data1/condor_local/execute/dir_30177/glide_6aVUTH/execute/dir_12550&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+04/04/14 12&#58;20&#58;19 (pid&#58;12550) Can&#39;t open directory &#34;/data1/condor_local/execute/dir_30177/glide_6aVUTH/execute/dir_12550&#34; as PRIV_CONDOR, errno&#58; 2 (No such file or directory)
+04/04/14 12&#58;25&#58;19 (pid&#58;12550) condor_read()&#58; timeout reading 21 bytes from &#60;137.99.19.33&#58;9615&#62;.
+04/04/14 12&#58;25&#58;19 (pid&#58;12550) IO&#58; Failed to read packet header
+
+Jeff
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost</pre></div><div class='update_description'><i onclick="document.location='20352#1396640676'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-04T19:44:36+00:00">Apr 4, 2014 07:44 PM UTC</time><a class="anchor" name="1396640676">&nbsp;</a></div><pre>Hello,
+
+Would it be possible to speak by phone sometime this afternoon?  My number is 860-377-5224.
+
+-Richard Jones
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='20352#1396639451'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-04T19:24:11+00:00">Apr 4, 2014 07:24 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1396639451">&nbsp;</a></div><pre>Yes they map as well.
+
+Terrence
+
+On 04/03/2014 06&#58;57 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396581554'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-04T03:19:14+00:00">Apr 4, 2014 03:19 AM UTC</time><a class="anchor" name="1396581554">&nbsp;</a></div><pre>Hello Terrence,
+
+Also, could you check if the DN=&#34;/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594&#34; is set to match to a group account for the Gluex vo on your site?  That is the actual owner of the job that runs in the glidein.  I think that is what is failing, because the error message shows up in my condor submit log, not in the frontend collector logs.  The voms info for this user proxy certificate is &#34;/Gluex/production&#34;, so if you have &#34;exact&#34; set for this entry in the GUMS table, it will not work to just match the &#34;/Gluex&#34; part.
+
+-Richard J.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='20352#1396576630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-04T01:57:10+00:00">Apr 4, 2014 01:57 AM UTC</time> by <b>GLUEX</b><a class="anchor" name="1396576630">&nbsp;</a></div><pre>Hello Terrence,
+
+Great, I will check if things are working better now, as soon as I start
+seeing glideins from the UCSD site.  In your message, you said&#58;
+
+<font color='#7F7E6F'>&#62; However&#58;</font>
+<font color='#7F7E6F'>&#62; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot1/</font>
+gluex.phys.uconn.edu
+<font color='#7F7E6F'>&#62; /Gluex</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; does resolve to a user.</font>
+
+Can you confirm that the following two are also mapped to a local account?
+
+/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot2/
+gluex.phys.uconn.edu
+/Gluex
+/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot3/
+gluex.phys.uconn.edu
+/Gluex
+
+-Richard Jones
+
+On Thu, Apr 3, 2014 at 5&#58;46 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396561851'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-03T21:50:51+00:00">Apr 3, 2014 09:50 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1396561851">&nbsp;</a></div><pre>Let me know if this works any better now.</pre></div><div class='update_description'><i onclick="document.location='20352#1396561596'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-03T21:46:36+00:00">Apr 3, 2014 09:46 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1396561596">&nbsp;</a></div><pre>I see the issue, just trying to figure out how to fix it.
+
+Basically I think for some reason the VO extension is not being handled properly. I seem to recall something regarding this, I just need to get your config on our gums to match I think.
+
+However
+
+/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot1/gluex.phys.uconn.edu
+/Gluex
+
+does resolve to a user.</pre></div><div class='update_description'><i onclick="document.location='20352#1396560969'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-03T21:36:09+00:00">Apr 3, 2014 09:36 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1396560969">&nbsp;</a></div><pre>Igor,
+
+Not for the moment.  It should be very simple to fix.  If it stretches into
+the weekend then yes, please.
+
+-Richard J.
+
+On Thu, Apr 3, 2014 at 2&#58;34 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='20352#1396550078'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-03T18:34:38+00:00">Apr 3, 2014 06:34 PM UTC</time> by <b>Igor Sfiligoi</b><a class="anchor" name="1396550078">&nbsp;</a></div><pre>Do you want us to blacklist UCSD at the factory level for you until this is fixed?
+
+Igor</pre></div><div class='update_description'><i onclick="document.location='20352#1396491860'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-03T02:24:20+00:00">Apr 3, 2014 02:24 AM UTC</time><a class="anchor" name="1396491860">&nbsp;</a></div><pre>This problem still persists.  I am seeing jobs flushing through into HOLD state continuously on the UCSD site instead of starting up.  The symptoms are the same as stated in the first post&#58; LCMAPS fails to succeed.
+
+Error from glidein_30901@....&#58; error changing sandbox ownership to the user&#58; condor_glexec_setup
+exited with status 768 and the following output&#58; [gLExec]&#58;  LCMAPS failed.;            The reason can be found in the syslog.; Glexec
+exited with status 203; retrying in 5 seconds.; [gLExec]&#58;  LCMAPS failed.;            The reason can be found in the syslog.; Glexec
+exited with status 203; retrying in 10 seconds.; [gLExec]&#58;  LCMAPS failed.;            The reason can be found in the syslog.; Glexec
+exited with status 203; retrying in 5 seconds.; [gLExec]&#58;  LCMAPS failed.;            The reason can be found in the syslog.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><div class='update_description'><i onclick="document.location='20352#1396303846'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-31T22:10:46+00:00">Mar 31, 2014 10:10 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1396303846">&nbsp;</a></div><pre>It looks like it could be a CA update issue. I am updating them now, hopefully this will clear this problem.</pre></div><div class='update_description'><i onclick="document.location='20352#1396303398'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-31T22:03:18+00:00">Mar 31, 2014 10:03 PM UTC</time><a class="anchor" name="1396303398">&nbsp;</a></div><pre>It looks like only one or two glideins happened to pass validation, but fail on glexec switching user jobs.  Most glideins from the gluex VO have been failing at validation in a similar way&#58;
+
+Validation failed in main/glexec_setup.sh.
+
+glexec test failed, nonzero value 203
+result&#58;
+
+stderr&#58;
+[gLExec]&#58;  LCMAPS failed.
+The reason can be found in the syslog.
+
+Terrence to help you track these down, I pasted the list of nodes where these errors occurred yesterday. Also below see the pilot proxies used; note there are 3 of them.
+
+Jeff
+
+subject   &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot1/gluex.phys.uconn.edu/CN=proxy
+issuer    &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot1/gluex.phys.uconn.edu
+identity  &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot1/gluex.phys.uconn.edu
+type      &#58; proxy
+strength  &#58; 1024 bits
+path      &#58; /var/gfactory/clientproxies/user_fegluex/glidein_v3_0/entry_CMS_T2_US_UCSD_gw7/x509_CMS_T2_US_UCSD_gw7@v3_0@SDSC@....s,v1_0.dot,main_0.proxy
+timeleft  &#58; 239&#58;54&#58;27
+key usage &#58; Digital Signature, Key Encipherment, Data Encipherment
+=== VO Gluex extension information ===
+VO        &#58; Gluex
+subject   &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot1/gluex.phys.uconn.edu
+issuer    &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=voms/gryphn.phys.uconn.edu
+attribute &#58; /Gluex/Role=NULL/Capability=NULL
+timeleft  &#58; 239&#58;54&#58;27
+uri       &#58; gryphn.phys.uconn.edu&#58;15014
+
+2 others pilots proxies that vary only by DN&#58;
+identity  &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot2/gluex.phys.uconn.edu
+identity  &#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot3/gluex.phys.uconn.edu
+
+<div id='show_1668450928' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1668450928'>cabinet-2-2-28.t2.ucsd.edu
+cabinet-2-2-2.t2.ucsd.edu
+cabinet-2-2-34.t2.ucsd.edu
+cabinet-2-2-9.t2.ucsd.edu
+cabinet-6-6-0.t2.ucsd.edu
+cabinet-6-6-10.t2.ucsd.edu
+cabinet-6-6-11.t2.ucsd.edu
+cabinet-6-6-14.t2.ucsd.edu
+cabinet-6-6-15.t2.ucsd.edu
+cabinet-6-6-16.t2.ucsd.edu
+cabinet-6-6-17.t2.ucsd.edu
+cabinet-6-6-18.t2.ucsd.edu
+cabinet-6-6-19.t2.ucsd.edu
+cabinet-6-6-1.t2.ucsd.edu
+cabinet-6-6-21.t2.ucsd.edu
+cabinet-6-6-26.t2.ucsd.edu
+cabinet-6-6-31.t2.ucsd.edu
+cabinet-6-6-3.t2.ucsd.edu
+cabinet-6-6-6.t2.ucsd.edu
+cabinet-6-6-7.t2.ucsd.edu
+cabinet-7-7-0.t2.ucsd.edu
+cabinet-7-7-4.t2.ucsd.edu
+cabinet-7-7-5.t2.ucsd.edu
+cabinet-8-8-0.t2.ucsd.edu
+cabinet-8-8-11.t2.ucsd.edu
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jdost/CN=732648/CN=Jeffrey Michael Dost
+</div><script type='text/javascript'>
+        $('#show_1668450928').click(function() {
+            $('#detail_1668450928').slideDown("normal");
+            $('#show_1668450928').hide();
+            $('#hide_1668450928').show();
+        });
+        $('#hide_1668450928').click(function() {
+            $('#detail_1668450928').slideUp();
+            $('#hide_1668450928').hide();
+            $('#show_1668450928').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='20352#1396302198'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-31T21:43:18+00:00">Mar 31, 2014 09:43 PM UTC</time> by <b>Igor Sfiligoi</b><a class="anchor" name="1396302198">&nbsp;</a></div><pre>Adding GF support in CC, too.</pre></div><div class='update_description'><i onclick="document.location='20352#1396290994'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-31T18:36:34+00:00">Mar 31, 2014 06:36 PM UTC</time> by <b>echism</b><a class="anchor" name="1396290994">&nbsp;</a></div><pre>UCSD,
+
+Do you have anything on this?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='20352#1396179944'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-30T11:45:44+00:00">Mar 30, 2014 11:45 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1396179944">&nbsp;</a></div><pre>Over the past few hours I have been getting glideins from the t2.uscd.edu site starting up to run my jobs (Gluex vo), which is great.  But there seems to be a problem with the userid of the account that is set up for the Gluex vo, because they never actually start the job.  The stdout/stderr returned for the job are empty, but there are messages (below) in the condor log file that indicate the source of the problem.  If you could look into the cause for this, I would appreciate it.  -Richard Jones
+
+007 (307.025.000) 03/30 07&#58;31&#58;38 Shadow exception!
+Error from glidein_8533@....&#58; error changing sandbox ownership to the user&#58;
+condor_glexec_setup exited with status 768 and the following output&#58; [gLExec]&#58;  LCMAPS failed.;            The reason can be found in the syslog.;
+Glexec exited with status 203; retrying in 5 seconds.; [gLExec]&#58;  LCMAPS failed.;            The reason can be found in the syslog.;
+Glexec exited with status 203; retrying in 10 seconds.; [gLExec]&#58;  LCMAPS failed.;            The reason can be found in the syslog.;
+Glexec exited with status 203; retrying in 5 seconds.; [gLExec]&#58;  LCMAPS failed.;            The reason can be found in the syslog.
+0  -  Run Bytes Sent By Job
+72247  -  Run Bytes Received By Job
+...
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F20352">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 20352});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

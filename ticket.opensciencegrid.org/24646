@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[24646] compute element emergency reboot procedure</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=24646" method="post">
+<div class="page-header">
+    <h3><span class="muted">24646</span> / compute element emergency reboot procedure</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Daniel Caunt</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Daniel Caunt</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2015-05-04</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=24646", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/24646?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/24646?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20compute%20element%20emergency%20reboot%20procedure%20ISSUE%3D24646%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='24646#1430496199'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-01T16:03:19+00:00">May 1, 2015 04:03 PM UTC</time><a class="anchor" name="1430496199">&nbsp;</a></div><pre>Thanks for the email, Brian.  I&#39;ll open a ticket with factory ops.  I didn&#39;t update to HTCondor CE yet.  I&#39;m saving that until I&#39;m sure that the OSG update succeeded.  You can go ahead and close this ticket.  I appreciate all your help with this ticket.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1430496026'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-01T16:00:26+00:00">May 1, 2015 04:00 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1430496026">&nbsp;</a></div><pre>Daniel,
+
+Did you update to HTCondor CE as part of the update or are you saving that for later? If you did, you&#39;ll have to let the factories know that you&#39;re now using an HTCondor CE rather than a GRAM CE. Regardless, factory ops would have a better idea of the status of pilots submitted to your site. You can shoot them an e-mail here&#58; osg-gfactory-support@..... If you want, I can leave this ticket open but any troubleshooting will probably happen in the ticket that factoryops opens anyway.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='24646#1430493328'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-05-01T15:15:28+00:00">May 1, 2015 03:15 PM UTC</time><a class="anchor" name="1430493328">&nbsp;</a></div><pre>Brian,
+
+I completed the OSG 3.2 upgrade yesterday on both the CE and worker nodes but I&#39;m not really sure what to make of it.  There are not very many jobs coming in and the worker nodes are not busy at all, but I can&#39;t seem to locate any specific errors in the logs to indicate a particular problem.  Let me know if it&#39;s best for me to open a new ticket for this matter.  But if you can see any problems with our site, please let me know.  I&#39;ll continue to search and I&#39;ll keep you posted with anything I find.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1430317962'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-29T14:32:42+00:00">Apr 29, 2015 02:32 PM UTC</time><a class="anchor" name="1430317962">&nbsp;</a></div><pre>Will do.  Thanks.  I&#39;ll let you know how it goes.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1430253525'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-28T20:38:45+00:00">Apr 28, 2015 08:38 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1430253525">&nbsp;</a></div><pre>I don&#39;t believe anything has changed in the process so you can go ahead and use that doc.</pre></div><div class='update_description'><i onclick="document.location='24646#1430253149'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-28T20:32:29+00:00">Apr 28, 2015 08:32 PM UTC</time><a class="anchor" name="1430253149">&nbsp;</a></div><pre>It looks like this is the document that I should follow&#58;
+<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallWNClientTarball' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallWNClientTarball</a>
+
+If there is a different document to follow (I noticed that this document is now two years old) please let me know.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1430250997'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-28T19:56:37+00:00">Apr 28, 2015 07:56 PM UTC</time><a class="anchor" name="1430250997">&nbsp;</a></div><pre>It looks like we don&#39;t have any osg repositories on our worker nodes - all the worker node software (e.g. osg-wn-client) is on a mounted NFS share.  Sorry, I&#39;m figuring this out as I go - I am not the person who configured this site.  He left the organization recently and I&#39;m picking this up in his absence.  It looks like I&#39;ll need the latest osg-wn-client tarball and install that on our NFS share.  If you have any tips for this type of configuration, let me know.  I&#39;ll keep you posted on my progress.  Thanks.
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1430249353'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-28T19:29:13+00:00">Apr 28, 2015 07:29 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1430249353">&nbsp;</a></div><pre>You should follow this section for your WN&#39;s for the 3.2 upgrade&#58;
+
+<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/OSGReleaseSeries#Updating_from_OSG_3_1_to_3_2' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/OSGReleaseSeries#Updating_from_OSG_3_1_to_3_2</a></pre></div><div class='update_description'><i onclick="document.location='24646#1430239282'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-28T16:41:22+00:00">Apr 28, 2015 04:41 PM UTC</time><a class="anchor" name="1430239282">&nbsp;</a></div><pre>Brian,
+
+I do have a question about these updates/upgrades.  There&#39;s no mention in the documentation (<a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/OSGReleaseSeries' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/OSGReleaseSeries</a>) about upgrading anything on the worker nodes.  Is there anything that needs to be done on the worker nodes for either the 3.1.46 update or the 3.2 upgrade?
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1430166099'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-27T20:21:39+00:00">Apr 27, 2015 08:21 PM UTC</time><a class="anchor" name="1430166099">&nbsp;</a></div><pre>Brian,
+
+The 3.1.46 update seems to have gone smoothly.  I&#39;m going to let it run overnight and check the logs in the morning for any discrepancies.  Barring any problems, I&#39;ll take care of the 3.2 upgrade tomorrow.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1430160236'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-27T18:43:56+00:00">Apr 27, 2015 06:43 PM UTC</time><a class="anchor" name="1430160236">&nbsp;</a></div><pre>Hi Brian,
+
+I&#39;m actually working on it as we speak.  I&#39;m about to do the update to the latest release of 3.1 (just waiting for a few jobs to drain) and then I&#39;ll move on to the 3.2 upgrade.  I hope to have both done by tomorrow.  I&#39;ll keep you posted.  And thanks for checking in again.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1430160069'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-27T18:41:09+00:00">Apr 27, 2015 06:41 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1430160069">&nbsp;</a></div><pre>Hey Daniel,
+
+Have you had the chance to get started on your upgrade?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='24646#1429552156'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-20T17:49:16+00:00">Apr 20, 2015 05:49 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1429552156">&nbsp;</a></div><pre>No, there aren&#39;t any docs. You can just run &#39;yum update&#39; and it should go by smoothly since you&#39;re on a somewhat recent version of 3.1. Let me know if you need any help!
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='24646#1429551244'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-20T17:34:04+00:00">Apr 20, 2015 05:34 PM UTC</time><a class="anchor" name="1429551244">&nbsp;</a></div><pre>Hi Brian,
+
+This is actually perfectly timed - I plan to begin the OSG upgrade this week.  &#39;osg-version&#39; returns 3.1.41.  Are there docs that I should reference when performing the update to the latest version of 3.1?
+
+And, yes, I am all set on the job cleanup front.  Thanks for checking.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1429541042'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-20T14:44:02+00:00">Apr 20, 2015 02:44 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1429541042">&nbsp;</a></div><pre>Sorry for the late reply. You will need to upgrade to 3.2 before updating to HTCondor CE. Theoretically, you should be able to update from an old version of 3.1 to the latest 3.2 but if I were you, I&#39;d update to the latest 3.1 first. What version of 3.1 are you on? Seeing as the other ticket&#39;s closed, I assume you&#39;re all set on the job cleanup front?</pre></div><div class='update_description'><i onclick="document.location='24646#1428008072'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-02T20:54:32+00:00">Apr 2, 2015 08:54 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1428008072">&nbsp;</a></div><pre>Reassigning to Brian Lin before I head out on vacation.</pre></div><div class='update_description'><i onclick="document.location='24646#1427913641'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-04-01T18:40:41+00:00">Apr 1, 2015 06:40 PM UTC</time><a class="anchor" name="1427913641">&nbsp;</a></div><pre>Tim,
+
+Thanks for the info about the needed upgrades.  Since we do intend to upgrade to 3.2 and HTCondor CE, can you let me know if there&#39;s a specific order that works best?  In other words, does it matter if we upgrade to OSG 3.2 before or after HTCondor CE?  Also, to upgrade to OSG 3.2, do we first need to make sure we&#39;re on the latest iteration of 3.1 or can we upgrade directly to 3.2 from the version we&#39;re on now?
+
+I was not aware of osg-cleanup.  Thanks for letting me know about that.  So, I think that ties into my other ticket (<a href='https&#58;//ticket.grid.iu.edu/24651' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/24651</a>) insofar as osg-cleanup will kill any state information about jobs older than $OSG_CLEANUP_AGE and it should therefore be safe to kill any jobs on the worker nodes older than $OSG_CLEANUP_AGE, correct?
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1427728221'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-30T15:10:21+00:00">Mar 30, 2015 03:10 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1427728221">&nbsp;</a></div><pre>Dan&#58;
+
+Yeah, looking over your globus-* package versions, you are using rather outdated software, even for the OSG 3.1 series, which in turn will not be supported after about a month. And given the time that it could take to chase down the specific problems you are seeing, probably our best advice at this time is to upgrade. Whether it is best to update within OSG 3.1 now and then to OSG 3.2 later or to go straight to OSG 3.2, we will leave up to you.
+
+I think the advice for rebooting remains the same&#58; Do a gentle reboot (i.e., leave time for processes to come down first, then restart the machine) and you should be fine. It is probably best not to clean out GRAM state files between shutting down and restarting. And as for cleaning up those files, are you aware of and using the osg-cleanup package for doing so?
+
+One final note with the move to OSG 3.2&#58; We are transitioning away from GRAM entirely. You can certainly upgrade your OSG 3.1 installation and still use GRAM in OSG 3.2, but the preferred job gateway software is now HTCondor CE. So depending on how many upgrades you think you can handle, and the time you have available, you may want to plan switching to HTCondor CE as part of your upgrade. Something to think about.
+
+— Tim</pre></div><div class='update_description'><i onclick="document.location='24646#1427482179'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-27T18:49:39+00:00">Mar 27, 2015 06:49 PM UTC</time><a class="anchor" name="1427482179">&nbsp;</a></div><pre>Thanks, Tim.  I wouldn&#39;t be surprised if the versions of software that we&#39;re running are causing some problems.  We are planning to upgrade to OSG 3.2 in the next month or so.  But I&#39;m attaching the osg-profile.txt in case there are any other red flags in there that you can see.  I had a ticket (<a href='https&#58;//ticket.grid.iu.edu/24531' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/24531</a>) open recently to try to figure out why we were running out of memory so quickly.  But I was having trouble getting a good backtrace and resorted to advice that I found in another ticket (<a href='http&#58;//ticket.grid.iu.edu/18332' target='_blank' rel='nofollow'>http&#58;//ticket.grid.iu.edu/18332</a>) regarding the contents of the /var/lib/globus/gram_job_state/ directory.  I&#39;m not sure why deleting the files in that directory solved the problem - if you happen to have any insight as to what that actually did, I&#39;d be grateful.
+
+Although our CE doesn&#39;t run out of memory every half hour like it did then, the memory usage of certain globus-job-manager processes are still steadily growing and I think we&#39;ll need to reboot the CE in the next week or so because of it.  Hence the question in this ticket.  Also, it would be nice to know if there are any things that I should normally be doing any other time that I need to reboot the CE.  I&#39;m relatively new to OSG so I&#39;m curious to know if there are procedures to follow to prevent jobs from being orphaned or other strange behaviors when the CE goes offline.  One thing I assume is that I should set the site to &#39;broker-off&#39; or &#39;offline&#39; before rebooting if I have the chance, correct?  Should I let the worker nodes drain if I have the time, or will the running jobs handle the CE rebooting without problems?
+
+Thanks for your help in gaining a better understanding of this.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='24646#1427479995'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-27T18:13:15+00:00">Mar 27, 2015 06:13 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1427479995">&nbsp;</a></div><pre>Dan&#58;
+
+Off the top of my head, I cannot think of anything better to do than shut down the gatekeeper first, then reboot as you described. But I will ask around and see if anyone has any better tips.
+
+But I am troubled by the need to reboot so often to begin with. I thought that we had dealt with major memory leaks long ago. Can you run osg-system-profiler on your CE and attach its output? That will let me see a great deal of detail about your software versions, configuration, etc.
+
+— Tim</pre></div><div class='update_description'><i onclick="document.location='24646#1427289426'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2015-03-25T13:17:06+00:00">Mar 25, 2015 01:17 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1427289426">&nbsp;</a></div><pre>Hi,
+
+I have a question about the proper procedure for rebooting a compute element that has become unstable.  Our compute element often runs out of memory due to globus-job-manager processes that grow too large and consume all available memory, in turn causing fork failures and other generally bad things to happen.  When such a situation occurs, we have no choice but to reboot the CE.  I&#39;m wondering if there are any checks we should do or procedures to follow when rebooting the CE to ensure that jobs don&#39;t fall into an inconsistent state and that operations continue normally.  Up until now, I have simply been rebooting the CE and restarting globus-gatekeeper.
+
+Thanks for any advice you can offer.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F24646">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 24646});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[28532] HTCondor issue in osg 3.3.9</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=28532" method="post">
+<div class="page-header">
+    <h3><span class="muted">28532</span> / HTCondor issue in osg 3.3.9</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Bob Ball</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Bob Ball</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Customer Reply</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-02-26</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=28532", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/28532?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/28532?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20HTCondor%20issue%20in%20osg%203.3.9%20ISSUE%3D28532%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='28532#1456431977'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-25T20:26:17+00:00">Feb 25, 2016 08:26 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1456431977">&nbsp;</a></div><pre>Bob,
+
+I think you&#39;re right&#58; your batch system schedd believes its name is gate03.aglt2.org (because that&#39;s what &#96;hostname&#96; returns) and that&#39;s how it reports to your collector on aglbatch.local. If you were to set &#39;NETWORK_HOSTNAME = gate03.local&#39; then you would have to set JOB_ROUTER_SCHEDD2_NAME to gate03.local but let&#39;s not mess with a working config. Marking this ticket as resolved.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='28532#1456338910'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-24T18:35:10+00:00">Feb 24, 2016 06:35 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1456338910">&nbsp;</a></div><pre>I&#39;m sorry, yesterday was pretty crazy here.  Yes, the changes I made
+worked, thank you for your help.  I updated our remaining 2 gatekeepers,
+including the changes, and had no issues from the get-go.
+
+FYI, gate03.aglt2.org is needed instead of gate03.local, because (I
+believe) that is the name the machine is known by in Condor. hostname
+always resolves to the public name we assign to a machine. I think you
+had a question about this.
+
+bob
+
+On 2/24/2016 1&#58;21 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1456338097'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-24T18:21:37+00:00">Feb 24, 2016 06:21 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1456338097">&nbsp;</a></div><pre>Bob,
+
+Is this config working for you?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='28532#1456156750'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-22T15:59:10+00:00">Feb 22, 2016 03:59 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1456156750">&nbsp;</a></div><pre>It&#39;s a little strange to me that gate03.aglt2.org works for your
+JOB_ROUTER_SCHEDD2_NAME because that&#39;s the public hostname and your
+batch system schedd should only be listening on the private network.
+
+Good spot on the incorrect port!
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='28532#1456111748'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-22T03:29:08+00:00">Feb 22, 2016 03:29 AM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1456111748">&nbsp;</a></div><pre>I got it.  The port being wrong sent me looking, and I found I was
+specifying it wrong in the 55-aglt2.conf file
+Had&#58; JOB_ROUTER_SCHEDD2_POOL=aglbatch.local
+Should have been&#58;JOB_ROUTER_SCHEDD2_POOL=aglbatch.local&#58;9618
+50-osg-configure.conf actually specified that, but I over-rode it in the
+55 file.  (bad, bob!  bad bob!)
+
+That meant the &#34;JOB_ROUTER_SCHEDD2_NAME=gate03.aglt2.org&#34; was actually
+correct.
+
+I need to confirm all this tomorrow, but I think it is working now.
+
+bob
+
+On 2/21/2016 9&#58;05 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1456106709'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-22T02:05:09+00:00">Feb 22, 2016 02:05 AM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1456106709">&nbsp;</a></div><pre>[root@gate03 ~]# cd /etc/condor-ce/config.d
+[root@gate03 config.d]# condor_ce_config_val -v PRIVATE_NETWORK_HOSTNAME
+Not defined&#58; PRIVATE_NETWORK_HOSTNAME
+[root@gate03 config.d]# condor_config_val -v PRIVATE_NETWORK_HOSTNAME
+Not defined&#58; PRIVATE_NETWORK_HOSTNAME
+
+I completed these 2 changes&#58;
+Do NOT set NETWORK_INTERFACE in your CE config
+JOB_ROUTER_SCHEDD2_NAME = gate03.local&#39;
+
+This is a condor-ce-trace --debug gate03.aglt2.org&#34; job I ran from
+gate04.  These 3 sequences of line are repeating as jobs come in.
+
+02/21/16 20&#58;56&#58;26 ERROR (pool aglbatch.local) Can&#39;t find address of schedd
+02/21/16 20&#58;56&#58;26 JobRouter failure (src=366206.0,route=Other ATLAS
+Production)&#58; failed to submit job
+02/21/16 20&#58;56&#58;26 attempt to connect to &#60;10.10.1.3&#58;9619&#62; failed&#58;
+Connection refused (connect errno = 111).
+
+Port 9619 is definitely not in use on aglbatch.local, isn&#39;t that the CE
+collector port?
+
+The full ce conf file now is
+# Over-ride whatever OSG may think to do
+#
+JOB_ROUTER_SCHEDD2_POOL=aglbatch.local
+JOB_ROUTER_SCHEDD2_NAME=gate03.local
+#
+
+I&#39;ll look at this again in the morning.
+
+bob
+
+On 2/18/2016 5&#58;56 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1455836170'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-18T22:56:10+00:00">Feb 18, 2016 10:56 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1455836170">&nbsp;</a></div><pre>You can find where a value is being defined with &#96;condor_config_val -v
+&#60;config knob&#62;&#96; (similarly with condor_ce_config_val).
+
+# condor_ce_config_val -v PRIVATE_NETWORK_HOSTNAME
+# condor_config_val -v PRIVATE_NETWORK_HOSTNAME
+
+I think the JOB_ROUTER_SCHEDD2_NAME value is the one that&#39;s messing
+everything up. The ones I deemed unnecessary shouldn&#39;t harm anything so
+try making the JOB_ROUTER_SCHEDD2_NAME value first.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='28532#1455835448'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-18T22:44:08+00:00">Feb 18, 2016 10:44 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1455835448">&nbsp;</a></div><pre>On the condor master, aglbatch, and also on gate03&#58;
+
+[root@aglbatch config.d]# pwd
+/etc/condor/config.d
+[root@aglbatch config.d]# grep -i network *
+# Basic Network Info
+50-host-defs_gatekeeper.conf&#58;# Networking
+50-host-defs_gatekeeper.conf&#58;NETWORK_INTERFACE = 10.10.*
+
+Now, on gate03, in /etc/condor-ce/config.d
+[ball@gate03&#58;config.d]$ grep -i network *
+03-ce-shared-port.conf&#58;# to 9619 and reduce our network footprint.
+55-aglt2-configure.conf&#58;NETWORK_INTERFACE = 192.41.*
+
+So, there is the HTCondor-CE setting you believe is not necessary. It is
+probably worth while to show that entire conf file, as I think there is
+where I will make any needed changes.
+
+# Over-ride whatever OSG may think to do
+#
+JOB_ROUTER_SCHEDD2_POOL=aglbatch.local
+JOB_ROUTER_SCHEDD2_NAME=$(FULL_HOSTNAME)
+NETWORK_INTERFACE = 192.41.*
+
+These over-rides were certainly needed when we set this up.  Perhaps not
+now?
+
+I do not explicitly set PRIVATE_NETWORK_INTERFACE anywhere now. Perhaps
+it is being inferrred?
+
+bob
+
+On 2/18/2016 4&#58;11 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1455834161'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-18T22:22:41+00:00">Feb 18, 2016 10:22 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1455834161">&nbsp;</a></div><pre>Additionally, you should set &#39;JOB_ROUTER_SCHEDD2_NAME = gate03.local&#39; because your HTCondor schedd is only listening on the private network and your current config says to contact the schedd via the public hostname.</pre></div><div class='update_description'><i onclick="document.location='28532#1455830588'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-18T21:23:08+00:00">Feb 18, 2016 09:23 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1455830588">&nbsp;</a></div><pre>gate03 shows up fine.  The output from aglbatch is identical to this
+one.  The fundamental HTCondor communications over the private network
+seems fine, it is the CE injection that is not working.
+
+[ball@umt3int01&#58;~]$ condor_status -schedd
+Name                 Machine    TotalRunningJobs TotalIdleJobs TotalHeldJobs
+
+aglbatch.aglt2.org   aglbatch.a                0 0              0
+gate02.grid.umich.ed gate02.gri              243 407              0
+gate03.aglt2.org     gate03.agl                0 0              0
+gate04.aglt2.org     gate04.agl             2894 781              0
+splitter.aglt2.org   splitter.a                0 0              0
+umt3int01.aglt2.org  umt3int01.              250 430              0
+umt3int02.aglt2.org  umt3int02.               19 0              0
+umt3int03.aglt2.org  umt3int03.                2 0              0
+umt3int04.aglt2.org  umt3int04.                0 0              0
+TotalRunningJobs      TotalIdleJobs TotalHeldJobs
+
+Total              3408 1618                  0
+
+I&#39;m sure you are correct, it is something related to what is listening,
+where.  There seems to be a change here from the Condor 8.2.10 behavior,
+and I guess I&#39;m going to have to struggle with various combinations to
+get this right.
+
+I&#39;ll send you more info on this shortly, I&#39;m in a meeting for another 15
+minutes.
+
+bob
+
+On 2/18/2016 4&#58;11 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1455829879'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-18T21:11:19+00:00">Feb 18, 2016 09:11 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1455829879">&nbsp;</a></div><pre>Bob,
+
+What does &#96;condor_status -schedd&#96; from aglbatch show you? Does the gate03 schedd show up? The error indicates that&#39;s where our problem lies. I think the problem is that you&#39;re setting &#39;PRIVATE_NETWORK_INTERFACE = gate03.aglt2.org&#39; when it shouldn&#39;t need to be set (and I don&#39;t think setting NETWORK_INTERFACE in your CE config is necessary) but I&#39;d like to see how your schedd shows up in the collector first.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='28532#1455816728'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-18T17:32:08+00:00">Feb 18, 2016 05:32 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1455816728">&nbsp;</a></div><pre>Well, unfortunately, neither of these solutions worked in our default
+configuration case.
+
+The good news is that the central manager at 8.4.4 from uwisc is happily
+working with the balance of our machines, so I will leave that updated
+while I continue to fuss around with the updated gate03.
+
+Something definitely seems amiss though with these dual-NIC machines.
+
+bob
+
+On 2/18/2016 11&#58;56 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1455814570'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-18T16:56:10+00:00">Feb 18, 2016 04:56 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1455814570">&nbsp;</a></div><pre>I have a possible answer.  The central manager is still running condor
+8.2.10, and is configured with
+10-site.conf&#58;USE_SHARED_PORT = True
+10-site.conf&#58;SHARED_PORT_ARGS = -p 33003
+
+I see that under 8.4.x, these have changed somewhat.  On a test machine,
+configured as a central manager, I updated to Condor 8.4.3, and simply
+dropping the SHARED_PORT_ARGS macro re-enabled communication with itself
+(&#34;condor_status -schedd&#34; worked).
+
+So, I am going to do 2 things&#58;
+1. Drop that same SHARED_PORT_ARGS on gate03
+2. retry an update of our central manager to 8.4.3, with only this
+gatekeeper also on 8.4.3, and see if either of these resolves the issue.
+
+bob
+
+On 2/17/2016 10&#58;53 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1455767588'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-18T03:53:08+00:00">Feb 18, 2016 03:53 AM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1455767588">&nbsp;</a></div><pre>I&#39;ve uploaded 3 .txt files to the ticket containing the requested
+information.
+
+The central manager for HTCondor is aglbatch.aglt2.org.   All &#34;normal&#34;
+condor exchanges though are on the private 10.10.0.0/22 subnet.
+
+HTCondor-CE must listen on the public net though.
+
+[root@gate03 public]# host aglbatch
+aglbatch.local has address 10.10.1.3
+
+[root@gate03 public]# host aglbatch.aglt2.org
+aglbatch.aglt2.org has address 192.41.231.136
+
+[root@gate03 public]# host gate03
+gate03.local has address 10.10.2.35
+
+[root@gate03 public]# host gate03.aglt2.org
+gate03.aglt2.org has address 192.41.231.35
+
+bob
+
+On 2/17/2016 5&#58;18 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1455747503'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-17T22:18:23+00:00">Feb 17, 2016 10:18 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1455747503">&nbsp;</a></div><pre>Bob,
+
+You can drop the &#39;GridResource...&#39; lines, they are not required anymore. Could you provide the output from &#39;osg-system-profiler&#39;, &#39;condor_ce_config_val -dump&#39;, and &#39;condor_config_val -dump&#39;? Where is your condor central manager located and is your non-CE schedd only listening on the private network interface?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='28532#1455746689'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-17T22:04:49+00:00">Feb 17, 2016 10:04 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1455746689">&nbsp;</a></div><pre>Assigned to Brian Lin, our HTCondor-CE rockstar.</pre></div><div class='update_description'><i onclick="document.location='28532#1455745085'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-17T21:38:05+00:00">Feb 17, 2016 09:38 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1455745085">&nbsp;</a></div><pre>Hi Bob,
+
+I left a VM for Tim to review this.
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='28532#1455742029'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-17T20:47:09+00:00">Feb 17, 2016 08:47 PM UTC</time> by <b>Bobby Ball</b><a class="anchor" name="1455742029">&nbsp;</a></div><pre>Hi, hoping to get attention on this before I leave today.
+
+More info,
+[root@gate03 config.d]# cat 55-aglt2-configure.conf
+# Over-ride whatever OSG may think to do
+#
+JOB_ROUTER_SCHEDD2_POOL=gate03.aglt2.org
+#  This pool was previously aglbatch.local
+#
+JOB_ROUTER_SCHEDD2_NAME=$(FULL_HOSTNAME)
+NETWORK_INTERFACE = 192.41.*
+NETWORK_HOSTNAME = gate03.aglt2.org
+#
+# Defaults for MP8 counting
+LastAndFrac = True
+IdleMP8Pressure = True
+
+I have added &#34;NETWORK_HOSTNAME&#34; (to no avail) and changed the
+JOB_ROUTER_SCHEDD2_POOL as indicated in the file content.  This seems to
+have suppressed most of the error messages indicated below, but newly
+submitted jobs never get injected into the HTCondor pool.
+
+bob
+
+On 2/17/2016 3&#58;12 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='28532#1455739921'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-02-17T20:12:01+00:00">Feb 17, 2016 08:12 PM UTC</time> by <b>Vince Neal</b><a class="anchor" name="1455739921">&nbsp;</a></div><pre>From&#58; Bob Ball &#60;ball@....&#62;
+To&#58; OSG Operations Center &#60;goc@....&#62;
+cc&#58; Bob Ball &#60;ball@....&#62;
+Subject&#58; HTCondor issue in osg 3.3.9
+Date-Sent&#58; Wednesday, February 17, 2016 8&#58;02 PM +0000
+
+Today I upgraded our test gatekeeper from osg 3.2 to 3.3.  The upgrade
+and system reboot went smoothly, but, the HTCondor side can no longer
+talk to Condor.
+
+The JobRouterLog spewed these error messages, and still does&#58;
+02/17/16 12&#58;41&#58;36 JobRouter failure (src=356742.0,route=Other ATLAS
+Production)&#58; failed to submit job
+02/17/16 12&#58;41&#58;36 attempt to connect to &#60;10.10.1.3&#58;9619&#62; failed&#58;
+Connection refused (connect errno = 111).
+02/17/16 12&#58;41&#58;36 ERROR (pool aglbatch.local) Can&#39;t find address of schedd
+02/17/16 12&#58;41&#58;36 JobRouter failure (src=356735.0,route=ATLAS Production
+Queue)&#58; failed to submit job
+02/17/16 12&#58;41&#58;36 attempt to connect to &#60;10.10.1.3&#58;9619&#62; failed&#58;
+Connection refused (connect errno = 111).
+02/17/16 12&#58;41&#58;36 ERROR (pool aglbatch.local) Can&#39;t find address of schedd
+02/17/16 12&#58;41&#58;36 JobRouter failure (src=356745.0,route=Other ATLAS
+Production)&#58; failed to submit job
+02/17/16 12&#58;41&#58;36 attempt to connect to &#60;10.10.1.3&#58;9619&#62; failed&#58;
+Connection refused (connect errno = 111).
+02/17/16 12&#58;41&#58;36 ERROR (pool aglbatch.local) Can&#39;t find address of schedd
+
+This worked fine before the upgrade.  So, a bit about our
+configuration.  We run condor using public names over a private IP
+network.  /etc/condor/config.d contains a file with
+50-host-defs_gatekeeper.conf&#58;NETWORK_INTERFACE = 10.10.*
+On the other hand, as HTCondor-CE must work with public access, we have
+in /etc/condor-ce/config.d
+55-aglt2-configure.conf&#58;NETWORK_INTERFACE = 192.41.*
+
+<div id='show_168452243' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_168452243'>I have a memory about problems along these lines when we first
+implemented the CE protocol, but I don&#39;t remember much in the way of
+answers about this.
+
+We use host-based authentication&#58; in /etc/condor/config.d
+10-site.conf&#58;ALLOW_WRITE = 10.10.1.*, 10.10.2.*, 10.10.128.*,
+10.10.129.*,192.41.230.*, 192.41.231.*, 192.41.236.*, 192.41.237.*,
+141.211.43.122, 141.211.43.101
+10-site.conf&#58;ALLOW_ADMINISTRATOR = $(CONDOR_HOST),
+condor@local/$(IP_ADDRESS)
+
+I am hoping there is a truly trivial answer to this issue?
+
+But, while I have your attention, I notice in the JobRouter
+configuration, lines such as this are no longer mentioned in the
+documentation in the case of using HTCondor as the batch system&#58;
+GridResource = &#34;condor localhost localhost&#34;; &#92;
+Are these no longer required?  Are they damaging, or just ignored.
+
+Thanks,
+bob ball
+
+</div><script type='text/javascript'>
+        $('#show_168452243').click(function() {
+            $('#detail_168452243').slideDown("normal");
+            $('#show_168452243').hide();
+            $('#hide_168452243').show();
+        });
+        $('#hide_168452243').click(function() {
+            $('#detail_168452243').slideUp();
+            $('#hide_168452243').hide();
+            $('#show_168452243').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F28532">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 28532});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

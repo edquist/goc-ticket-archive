@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[17008] Gratia accounting is under-reporting cpu for NERSC-PDSF</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=17008" method="post">
+<div class="page-header">
+    <h3><span class="muted">17008</span> / Gratia accounting is under-reporting cpu for NERSC-PDSF</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Iwona Sakrejda</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">NERSC-PDSF</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">NERSC</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Iwona Sakrejda</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">NERSC</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-09-18</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">NERSC <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">FNAL (Prod)&nbsp;<a target="_blank" href="https://fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000394559">INC000000394559</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=17008", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/17008?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/17008?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Gratia%20accounting%20is%20under-reporting%20cpu%20for%20NERSC-PDSF%20ISSUE%3D17008%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='17008#1379519632'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-18T15:53:52+00:00">Sep 18, 2013 03:53 PM UTC</time><a class="anchor" name="1379519632">&nbsp;</a></div><pre>It looks like the EGI accounting portal is still having some problems but
+from this OSG view, it appears we now have the correct data for August.
+<a href='http&#58;//accounting.egi.eu/osg.php?query=sumcpu&startYear=2013&startMonth=8&endYear=2013&endMonth=9&yRange=SITE&xRange=DATE&voGroup=lhc&chart=GRBAR&scale=LIN&localJobs=onlygridjobs' target='_blank' rel='nofollow'>http&#58;//accounting.egi.eu/osg.php?query=sumcpu&startYear=2013&startMonth=8&endYear=2013&endMonth=9&yRange=SITE&xRange=DATE&voGroup=lhc&chart=GRBAR&scale=LIN&localJobs=onlygridjobs</a>
+
+This ticket can be closed.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1379420463'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-17T12:21:03+00:00">Sep 17, 2013 12:21 PM UTC</time><a class="anchor" name="1379420463">&nbsp;</a></div><pre>Well, it looks like we have to wait another day to finish this ticket.
+The data has gone up but only some of the data has been updated
+on the EGI side.  It looks like they may be having some interface issues
+between APEL and EGI as the date at the bottom of the page still
+shows 9/16 8am as the last update.   Number of jobs was updated
+but not CPU... strange.  We will look again tomorrow and raise a red flag
+then.  No point bothering them now.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1379348158'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T16:15:58+00:00">Sep 16, 2013 04:15 PM UTC</time><a class="anchor" name="1379348158">&nbsp;</a></div><pre>As noted by Kevin, updates have been applied to Gratia fro August and
+September up through 9/10.
+The Gratia-APEL interface was re-run for August and September.
+The results of what was sent to APEL can be seen here&#58;
+- <a href='http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-08.summary.html' target='_blank' rel='nofollow'>http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-08.summary.html</a>
+- <a href='http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-09.summary.html' target='_blank' rel='nofollow'>http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-09.summary.html</a>
+- <a href='http&#58;//gratiaweb.grid.iu.edu/gratia/wlcg_reporting' target='_blank' rel='nofollow'>http&#58;//gratiaweb.grid.iu.edu/gratia/wlcg_reporting</a>
+- <a href='http&#58;//gratiaweb.grid.iu.edu/gratia/wlcg_reporting?year=2013&month=8' target='_blank' rel='nofollow'>http&#58;//gratiaweb.grid.iu.edu/gratia/wlcg_reporting?year=2013&month=8</a>
+
+Verification of the APEL to EGI accounting transfer can be verified later today or tomorrow
+as this is a periodic update.
+<a href='http&#58;//accounting.egi.eu/tier2.php?Path=1.33.4&query=normcpu-HEPSPEC06&startYear=2013&startMonth=8&endYear=2013&endMonth=9&yRange=SITE&xRange=DATE&voGroup=lhc&chart=GRBAR&scale=LIN&localJobs=onlygridjobs' target='_blank' rel='nofollow'>http&#58;//accounting.egi.eu/tier2.php?Path=1.33.4&query=normcpu-HEPSPEC06&startYear=2013&startMonth=8&endYear=2013&endMonth=9&yRange=SITE&xRange=DATE&voGroup=lhc&chart=GRBAR&scale=LIN&localJobs=onlygridjobs</a>
+
+We will wait for that verification before closing ticket.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1379344198'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T15:09:58+00:00">Sep 16, 2013 03:09 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1379344198">&nbsp;</a></div><pre>Updates have been applied.
+-- by kevinh at Mon Sep 16 15&#58;08&#58;19 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000394559' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000394559</a></pre></div><div class='update_description'><i onclick="document.location='17008#1379338900'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-16T13:41:40+00:00">Sep 16, 2013 01:41 PM UTC</time><a class="anchor" name="1379338900">&nbsp;</a></div><pre>Gratia operations,
+
+Attached is a file that will update the MasterSUmmaryData table for the
+necessary adjustments to NERSC-PDSF Gratia data.
+This must be applied against the collector mysql database and NOT the replica.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1379093049'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-13T17:24:09+00:00">Sep 13, 2013 05:24 PM UTC</time> by <b>Jeff Porter</b><a class="anchor" name="1379093049">&nbsp;</a></div><pre>Hi John,
+
+Thanks for the detailed summary.  I represent ALICE-USA computing in
+ALICE - if that&#39;s sufficient, I OK your method.
+
+thanks again,
+
+Jeff
+
+On 9/13/13 9&#58;37 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='17008#1379090259'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-13T16:37:39+00:00">Sep 13, 2013 04:37 PM UTC</time><a class="anchor" name="1379090259">&nbsp;</a></div><pre>A little summary. Only 1 open item left.
+
+Items covered&#58;
+1. JIRA ticket Gratia-120 to address sge probe changes
+2. JIRA ticket MYOSG-70 to address the false CPU queries
+3. LCG Accouting August Tier 2 MOU report adjusted for CPU
+
+So, the only open item is getting the corrected/approximated CPU numbers
+into Gratia and then up to APEL-EGI accounting for 8/1 through 9/10.
+Sept 11 is when the old probe was put in place reporting good CPU numbers.
+
+Based on Lisa&#39;s analysis of the SGE logs, we provided 527,990 for the raw CPU
+to LCG.  The easiest way (already have the script) to bring Gratia in line is to
+directly update the MasterSummaryData table for the ALICE records only.
+This affects 83 records from 8/1 - 9/10 inclusive.   This will result in
+this being the Gratia numbers for those periods&#58;
++------------+-----------+--------+--------------+--------------+---------+-----------+
+| Site       | DateValue | Njobs  | WallDuration | TotalCPU_Hrs | cpuUser | cpuSystem |
++------------+-----------+--------+--------------+--------------+---------+-----------+
+| NERSC-PDSF | 2013-08   | 254915 |       682294 |       527846 |  512800 |     15046 |
+| NERSC-PDSF | 2013-09   |  73574 |       261465 |       202277 |  196511 |      5766 |
++------------+-----------+--------+--------------+--------------+---------+-----------+
+I did this by just applying a CPU efficiency factor of 77.35% against Wall and using that
+for CPU User and System  (75.15% for CPU and .2.2% for System based on an analysis of other months).
+This gets it the closest.
+
+After Gratia is updated, I can re-run the APEL interface for August thus getting APEL-EGI updated.
+As for September, since Gratia is up-to-date, the normal daily APEL interface will take care of it.
+We won&#39;t have to ask for modifications at the end of this month for the MOU reports.
+This immediate crisis will be over with.
+
+This is the simplest way of doing it.  I don&#39;t even want to try and estimate another method.
+My only issue  is I have no clue who to get the OK from to do it this way.
+I don&#39;t know if it as a violation of any policy.
+
+<div id='show_1838069051' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1838069051'>If anyone has a better idea, speak up.
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144
+</div><script type='text/javascript'>
+        $('#show_1838069051').click(function() {
+            $('#detail_1838069051').slideDown("normal");
+            $('#show_1838069051').hide();
+            $('#hide_1838069051').show();
+        });
+        $('#hide_1838069051').click(function() {
+            $('#detail_1838069051').slideUp();
+            $('#hide_1838069051').hide();
+            $('#show_1838069051').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='17008#1379087357'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-13T15:49:17+00:00">Sep 13, 2013 03:49 PM UTC</time><a class="anchor" name="1379087357">&nbsp;</a></div><pre>I have created JIRA ticket MYOSG-70 <a href='https&#58;//jira.opensciencegrid.org/browse/MYOSG-70' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/MYOSG-70</a>
+to address the issue of MyOSG incorrectly indicating Gratia displays of CPU when they were
+actually displays of wall time.
+This was a major reason why this problem went undetected for as long as it did.
+If anyone is interested in this, please add yourself as a &#34;watcher&#34; and comment on
+any resolutions proposed.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1379006286'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-12T17:18:06+00:00">Sep 12, 2013 05:18 PM UTC</time><a class="anchor" name="1379006286">&nbsp;</a></div><pre>I&#39;ve created this JIRA ticket to address the Gratia SGE probe issue
+<a href='https&#58;//jira.opensciencegrid.org/browse/GRATIA-120' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/GRATIA-120</a>
+
+I am trying to figure out how to get folks not register with JIRA on the watcher list
+as it is important they all be able to provide feedback.
+
+I will be creating another JIRA ticket to address the problem in MyOSG/OIM/gratiaweb
+where the supposed CPU queries were showing Wall and not CPU... but not there yet.
+
+Will keep you posted on this longer term resolutions.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1379006031'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-12T17:13:51+00:00">Sep 12, 2013 05:13 PM UTC</time><a class="anchor" name="1379006031">&nbsp;</a></div><pre>John,
+I see your point. My guess as to why modification was not fed back to OSG is that the person who
+did the fix did not have time for the formalities of testing, checking with other sites etc.
+
+I hope that this time around we can resolve the issue in a manner that will last.
+I don&#39;t think it&#39;s a good idea to live will a local fix that will blow up into somebody&#39;s face
+three years down the road when I am not around any more.
+
+If there were issues with the cpu field that SGE guarantees to be &#34;cpu time usage by job in seconds&#34;
+those issues should be debugged and fixed and I volunteer to work on debugging this issue
+and enter the fix back to the SGE repository via UNIVA (we buy support from them but the feed fixes back
+to the source tree).
+
+How do you propose we handle this case? Since you suggest this ticket covers only the
+accounting issue, should another ticket be opened to resolve the probe issues?
+
+There are couple reasons why I&#39;d love to see this issue resolved properly.
+
+1. It&#39;s just not right to live with a  local fix that I need to re-apply after each upgrade.
+2. If Alice ever runs at other OSG SGE sites, they will encounter this problem
+- as I mentioned before other European SGE sites see similar behavior and
+they use the &#34;cpu&#34; field for reporting.
+
+Thanks a lot for managing this issue and let me know how you want to proceed.
+
+Iwona
+If Ali
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1379002569'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-12T16:16:09+00:00">Sep 12, 2013 04:16 PM UTC</time><a class="anchor" name="1379002569">&nbsp;</a></div><pre>Iwona,
+
+The problem with what you suggest, is 2-fold&#58;
+1. there are 3 other sites using SGE and we, first, have to verify how they are reporting cpu
+2. we have to verify this does not screw up reporting of non-alice pilot jobs as they seem to be the problem
+
+This (#2)  must be why, the old probe was modified from what osg distributes.
+
+Another factor, is that at a meeting today Tony Tiradani mentioned that when
+he was playing with  SGE 2 years ago, he recalls that SGE  populated cpu differently depending
+on how you submitted the jobs&#58;
+1. in the 2 ru fields
+2. in the cpu field
+3. not at all
+
+Unfortuneatly, he does not recall the submit methods just the variations.
+
+I think you will need to keep using the modified old probe for now and I will create
+a JIRA ticket for the analysis of the correct modifications needed for the sge probe.
+Just not there yet.
+
+I would like to focus in this ticket with getting the missing CPU data into Gratia.
+
+Sound OK?
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1379002110'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-12T16:08:30+00:00">Sep 12, 2013 04:08 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1379002110">&nbsp;</a></div><pre>reply from&#58; tlevshin@....
+
+Hi Iwona,
+Thank you for information. Did UNIVA provide the definition of cpu field?
+Tanya
+________________________________
+From&#58; Fermilab Service Desk [fermi@....]
+Sent&#58; Thursday, September 12, 2013 11&#58;03 AM
+To&#58; V. Daniel Elvira; Hyun Woo Kim; Philippe G Canal; Tanya Levshina
+Subject&#58; Incident INC000000394559 updated -- Gratia accounting is under-reporting cpu for NERSC-PDSF
+
+Incident INC000000394559&#60;<a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=434e9f41f0b745400757e5c8c4e93d1b%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&#62' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=434e9f41f0b745400757e5c8c4e93d1b%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&#62</a>; comments have been updated.
+
+Last update&#58;
+2013-09-12 11&#58;02&#58;17 CDT - cd-srv-goc-ops (Additional comments)
+Hi,
+
+I checked with two European sites that use SGE and run Alice jobs. They have similar numbers in the SGE accounting fields. There are tiny values for ru_utime and the cpu field reflecting cpu used by jobs. They use cpu field for the reporting. Taking into account conditions under which ru_utime reflects real cpu consumed by the job, I believe the probe should switch over to the cpu field. I don&#39;t think we should subtract ru_stime as it is as unreliable as ru_utime.
+
+Thank you,
+
+Iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474
+-- by goc at Thu Sep 12 16&#58;01&#58;22 UTC 2013
+
+________________________________
+Incident State&#58; Work in Progress
+Caller&#58; cd-srv-goc-ops
+Assignment Group&#58; Gratia Support and Development
+Assigned To&#58;
+Summary&#58;
+
+Problem started in August when the gatekeeper got upgraded from an old pacman install to a newer version built in July.
+Version of gratia is&#58;
+<div id='show_109186452' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_109186452'>gratia-probe-sge-1.13.11-1.osg.el6.noarch
+gratia-probe-gridftp-transfer-1.13.11-1.osg.el6.noarch
+osg-configure-gratia-1.0.30-1.osg.el6.noarch
+gratia-probe-common-1.13.11-1.osg.el6.noarch
+gratia-probe-gram-1.13.11-1.osg.el6.noarch
+
+ALICE monitoring of CPU & Wall, done independent of gratia, shows about
+550k cpu-hours delivered out of 682k wall hours
+Gratia showing same wall but only 91 cpu-hours
+
+Tanya asked for SGE logs (accounting file I am guessing?) but I don&#39;t see how to attach it.
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474
+
+</div><script type='text/javascript'>
+        $('#show_109186452').click(function() {
+            $('#detail_109186452').slideDown("normal");
+            $('#show_109186452').hide();
+            $('#hide_109186452').show();
+        });
+        $('#hide_109186452').click(function() {
+            $('#detail_109186452').slideUp();
+            $('#hide_109186452').hide();
+            $('#show_109186452').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='17008#1379001682'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-12T16:01:22+00:00">Sep 12, 2013 04:01 PM UTC</time><a class="anchor" name="1379001682">&nbsp;</a></div><pre>Hi,
+
+I checked with two European sites that use SGE and run Alice jobs. They have similar numbers in the SGE accounting fields. There are tiny values for ru_utime and the cpu field reflecting cpu used by jobs. They use cpu field for the reporting. Taking into account conditions under which ru_utime reflects real cpu consumed by the job, I believe the probe should switch over to the cpu field. I don&#39;t think we should subtract ru_stime as it is as unreliable as ru_utime.
+
+Thank you,
+
+Iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378993783'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-12T13:49:43+00:00">Sep 12, 2013 01:49 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1378993783">&nbsp;</a></div><pre>1. I think this ticket should go to gratia-operation not development.
+2. I have to add that it looks like that gratia probe (from pacman) at NERSC  has been  modified by somebody to pick up &#34;cpu&#34; field of the log instead of ru_utime,ru_stime. When they upgraded to a new version the modification has been lost.
+
+Tanya
+-- by tlevshin at Thu Sep 12 13&#58;48&#58;53 UTC 2013
+
+GOCTX Source&#58; <a href='https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000394559' target='_blank' rel='nofollow'>https&#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000394559</a></pre></div><div class='update_description'><i onclick="document.location='17008#1378992287'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-12T13:24:47+00:00">Sep 12, 2013 01:24 PM UTC</time><a class="anchor" name="1378992287">&nbsp;</a></div><pre>Sending to GGUS as an FYI to the APEL operators. No action is necessary from the APEL end.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Robert Quick 62</pre></div><div class='update_description'><i onclick="document.location='17008#1378989241'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-12T12:34:01+00:00">Sep 12, 2013 12:34 PM UTC</time><a class="anchor" name="1378989241">&nbsp;</a></div><pre>Just an FYI.
+
+I notified LCG Accounting that the August normalized CPU should be 8,180,677.
+(527,990  *15.494).   And warned we may doing this again for September.
+So, check the numbers when a revised report comes out.
+Or check here sometime next week...
+<a href='https&#58;//espace.cern.ch/WLCG-document-repository/Accounting/Forms/AllItems.aspx' target='_blank' rel='nofollow'>https&#58;//espace.cern.ch/WLCG-document-repository/Accounting/Forms/AllItems.aspx</a>
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378940860'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T23:07:40+00:00">Sep 11, 2013 11:07 PM UTC</time><a class="anchor" name="1378940860">&nbsp;</a></div><pre>Hi,
+
+I got a response from UNIVA&#58;
+Digging into the code a bit we see that the &#39;ru_usage&#39; data comes from wait3 system call. The wait3 system call calls getrusage with RUSAGE_BOTH which should get the usage generated by all descendant child processes. In order for the data to be collected, though, the child processes must have completed and have been &#39;waited&#39; for.
+
+Now I need to check how Alice handles her children....
+
+Iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378931209'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T20:26:49+00:00">Sep 11, 2013 08:26 PM UTC</time><a class="anchor" name="1378931209">&nbsp;</a></div><pre>Hi,
+
+I looked at some jobs from other groups (no pilot jobs involved, I don&#39;t have another project with pilots) and
+cpu and ru_utime come pretty close.
+We are running the UGE 8.1.4 flavor of grid engine.
+I think it what ru_utime reports probably depends on how exactly those children are started.
+I read a bit about  getrusage and there is no simple answer.
+
+Iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378929648'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T20:00:48+00:00">Sep 11, 2013 08:00 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1378929648">&nbsp;</a></div><pre>Log from UColorado_HEP  shows that
+cpu=ru_utime+ru_stime
+
+the version they are running is
+Version of SGE&#58;  SGEV62u4
+
+I will try to contact other sites to get information.
+I am wondering if it is save to change to cpu in for all sge probes.
+Tanya</pre></div><div class='update_description'><i onclick="document.location='17008#1378928983'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T19:49:43+00:00">Sep 11, 2013 07:49 PM UTC</time><a class="anchor" name="1378928983">&nbsp;</a></div><pre>Lisa,
+
+As to why the job numbers are slightly off (also affects CPU and Wall).....
+you are summarizing with local time.... and send up local time on the probe.
+Gratia converts it to UTC.  So there is a 7 hour difference, at least today.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378927017'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T19:16:57+00:00">Sep 11, 2013 07:16 PM UTC</time><a class="anchor" name="1378927017">&nbsp;</a></div><pre>Hi,
+
+We looked at it with Lisa and we think the old fix will work in this environment. Lisa gave me a line
+I am going to replace and the run tomorrow (I am still doing it once a day because the probe
+is not handling the log rotation - Lisa just had a fix that we were going to test when this issue broke out)
+and all the rest of September should be ok.
+We will also calculate the missing chunk for the beginning of September and have it handy.
+
+Iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378926549'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T19:09:09+00:00">Sep 11, 2013 07:09 PM UTC</time> by <b>Jeff Porter</b><a class="anchor" name="1378926549">&nbsp;</a></div><pre>Hi John,
+
+These are AliEn pilots - that&#39;s the ALICE variant.  There are a set of
+fork&#39;d processes that monitor and execute the payload via a system
+call.  I don&#39;t know if that&#39;s different from the panda or glideinwms pilots.
+
+Jeff
+
+On 9/11/13 11&#58;59 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='17008#1378926137'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T19:02:17+00:00">Sep 11, 2013 07:02 PM UTC</time><a class="anchor" name="1378926137">&nbsp;</a></div><pre>For August, my accounting shows 253050 jobs (compared to 254915) and for July I show 240044 jobs (compared to 232092).
+I&#39;m not sure why these numbers are slightly different, unless OSG is doing some prorating for jobs that start or end outside of the month?
+
+Lisa
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Lisa Gerhardt 1458</pre></div><div class='update_description'><i onclick="document.location='17008#1378925957'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T18:59:17+00:00">Sep 11, 2013 06:59 PM UTC</time><a class="anchor" name="1378925957">&nbsp;</a></div><pre>Iwona/Jeff,
+
+Will the old probe work in the new environment?
+Or
+Are you going to temporarily modify the new probe to pick
+up the right data ( as in &#39;cpu&#39; + the others)?
+
+I will write up a JIRA ticket to see if we can get this straightened out
+but need to see why the other 3 sge locations are not having this problem.
+
+A question&#58;  The other 2 VOs did not seem to have this problem.
+Did they run with pilots too?  Curious, if the pilots are the issue in
+how SGE handles things.  Kind of like the question Derick asked
+outside of the ticket relating to how the pilot spawns the user jobs.
+
+Another question&#58;  Whose pilot are you using? glideinwms, panda, ?
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378925650'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T18:54:10+00:00">Sep 11, 2013 06:54 PM UTC</time> by <b>Jeff Porter</b><a class="anchor" name="1378925650">&nbsp;</a></div><pre>Hi John, Lisa,
+
+I agree - as long as the numbers need to go to LCG, I don&#39;t care about
+purging Gratia.
+
+We should fix the probe now (before October) and provide the numbers to
+WLCG for September in the same way we do for August.
+
+thanks,
+
+Jeff
+
+On 9/11/13 11&#58;48 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='17008#1378925319'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T18:48:39+00:00">Sep 11, 2013 06:48 PM UTC</time><a class="anchor" name="1378925319">&nbsp;</a></div><pre>Lisa,
+
+Thanks.  This will help.  Do you have a count of the number of jobs?
+The numbers seem reasonably close.
+
+As for how we will make the adjustments, this will take a little thought.
+There are 254,915 records in Gratia for August (1 per job) and
+&#34;purging&#34; them could be a nightmare.
+
+For the short term, being the August LCG report, I think I can just give the 527,990
+to LCG accounting for CPU.
+Long term, we want to get them in Gratia.  Just need to figure out the easiest way.
+We will have to do this for part of September as well.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378924215'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T18:30:15+00:00">Sep 11, 2013 06:30 PM UTC</time><a class="anchor" name="1378924215">&nbsp;</a></div><pre>Hi,
+Here are my numbers for July and August. These numbers are the sum of (cpu - ru_stime) for only scheduled ALICE jobs on the NERSC-PDSF resource. This should be very close to what was reported before.
+
+For July CPU I have 635556 hours (compared to 628634).
+For August CPU I have 527990 hours.
+
+Previously I was totaling all jobs run by the ALICE group, so this also included some ALICE jobs from local users, which is why these numbers were higher before.
+
+Bye,
+Lisa
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Lisa Gerhardt 1458</pre></div><div class='update_description'><i onclick="document.location='17008#1378923308'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T18:15:08+00:00">Sep 11, 2013 06:15 PM UTC</time><a class="anchor" name="1378923308">&nbsp;</a></div><pre>I opened a case with UNIVA (our SGE supporter) asking for clarification of ru_utime vs CPU&#58;
+Request #10889 &#34;ru_utime and cpu in qacct r...&#34; created
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378921620'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T17:47:00+00:00">Sep 11, 2013 05:47 PM UTC</time><a class="anchor" name="1378921620">&nbsp;</a></div><pre>Timeout.... Gratia is not purge-able, at least to my knowledge.
+
+For the short term, we will need....
+1. a fix to the probe locally for now.
+
+2. Lisa to run her analysis with the parameters I mentioned earlier.
+This is to fix August for LCG reporting before Monday.
+
+More to come as we are canvassing the other sge sites to see if
+they have this &#39;cpu&#39; thing in theirs and to understand if this is local
+to you or widespread and you were the only lucky ones so far.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378920938'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T17:35:38+00:00">Sep 11, 2013 05:35 PM UTC</time><a class="anchor" name="1378920938">&nbsp;</a></div><pre>Hi,
+I dug out the old install from the backups.
+It is osg-1.2.9 installed with pacman in May 2010. The probe itself has a date of 09/13/2010.
+I am attaching the probe, but the  crucial line is&#58;
+r.CpuDuration(float(self.sgeRecord[&#39;cpu&#39;])-float(self.sgeRecord[&#39;ru_stime&#39;]),&#34;user&#34;,&#34;was entered in seconds&#34;)
+I have no recollection of modifying the probe, especially that at that time I knew no python, but
+I am not sure. I could speculate, but without lots of work I cannot figure it out, so
+I hope it&#39;s not important.
+
+Taking into account that ru_stime is reported only for the parent, that &#34;fix&#34; is not correct either, although
+pretty close. Jobs don&#39;t page and system time is pretty low.
+This would explain the difference between July and August.
+If we come with a probe we can agree on and you purge our records for September, I can easily re-run the probe on
+the September records. I can re-run them for August too if you think it&#39;s needed.
+Thank you for sorting this out,
+
+Iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378919430'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T17:10:30+00:00">Sep 11, 2013 05:10 PM UTC</time><a class="anchor" name="1378919430">&nbsp;</a></div><pre>This has to be an issue with the probe, possibly a local fix as a guess.
+This is making no sense.
+
+For the 2 examples of jobs shown earlier, this is what I see in the basic detail JobUsageRecord in Gratia;
+select LocalJobId,ReportableVOName,Host,CpuSystemDuration,CpuUserDuration,Status from JobUsageRecord where EndTime = &#39;2013-07-11 16&#58;01&#58;39&#39; and ReportableVOName=&#39;alice&#39;;
++------------+------------------+---------------------+-------------------+-----------------+--------+
+| LocalJobId | ReportableVOName | Host                | CpuSystemDuration | CpuUserDuration | Status |
++------------+------------------+---------------------+-------------------+-----------------+--------+
+| 2662259    | alice            | mc0120-ib.nersc.gov |              0.11 |        17401.22 | 137    |
++------------+------------------+---------------------+-------------------+-----------------+--------+
+1 row in set (0.00 sec)
+
+select LocalJobId,ReportableVOName,Host,CpuSystemDuration,CpuUserDuration,Status from JobUsageRecord where EndTime = &#39;2013-09-10 18&#58;52&#58;30&#39; and ReportableVOName=&#39;alice&#39;;
++------------+------------------+------------------+-------------------+-----------------+--------+
+| LocalJobId | ReportableVOName | Host             | CpuSystemDuration | CpuUserDuration | Status |
++------------+------------------+------------------+-------------------+-----------------+--------+
+| 3908554    | alice            | pc2635.nersc.gov |              0.09 |            0.09 | 137    |
+| 3908548    | alice            | pc2605.nersc.gov |               0.1 |            0.08 | 137    |
++------------+------------------+------------------+-------------------+-----------------+--------+
+2 rows in set (0.05 sec)
+
+I think we need to dig up that old probe if  at all possible.
+Unless someone has a better idea.
+
+I think we are going to need that analysis of Lisa&#39;s as we are going to have to fix both
+August and, later, September for WLCG reporting purposes.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378916426'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T16:20:26+00:00">Sep 11, 2013 04:20 PM UTC</time><a class="anchor" name="1378916426">&nbsp;</a></div><pre>All,
+
+I have gone back it the svn and old cvs software repos and that probe has always
+populated CPU with this code (as far back as 2007)
+&#60;pre&#62;
+# 3.11 CpuDuration - &#34;CPU time used, summed over all processes in the job
+# SGE ru_utime is the user CpuDuration
+# SGE ru_stime is the sys CpuDuration
+# Use float or int so that Gratia can format it appropriately
+r.CpuDuration(float(self.sgeRecord[&#39;ru_utime&#39;]),&#34;user&#34;,&#34;was entered in seconds&#34;)
+r.CpuDuration(float(self.sgeRecord[&#39;ru_stime&#39;]),&#34;sys&#34;,&#34;was entered in seconds&#34;)
+&#60;/pre&#62;
+
+I am assuming the top comment about &#34;summing over all processes&#34; is something in SGE
+as the probe never has.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378916292'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T16:18:12+00:00">Sep 11, 2013 04:18 PM UTC</time> by <b>Iwona Sakrejda</b><a class="anchor" name="1378916292">&nbsp;</a></div><pre>Jeff is running a new version of pilots I think, but the July ru_utime is
+very similar to August.
+I just checked that.
+
+On Wed, Sep 11, 2013 at 9&#58;04 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='17008#1378915487'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T16:04:47+00:00">Sep 11, 2013 04:04 PM UTC</time><a class="anchor" name="1378915487">&nbsp;</a></div><pre>Iwona,
+Are pilot jobs introduced in August or were they also
+running in July?
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378915400'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T16:03:20+00:00">Sep 11, 2013 04:03 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1378915400">&nbsp;</a></div><pre>Hi,
+nothing has changed in the probe for a very long time.  What sge version are you  using?
+
+Tanya
+From&#58; owner-osg-software@.... [owner-osg-software@....] on behalf of Open Science Grid FootPrints [osg@....]
+Sent&#58; Wednesday, September 11, 2013 10&#58;55 AM
+To&#58; osg-software@....
+Subject&#58; Open Science Grid&#58; Gratia accounting is under-reporting cpu for NERSC-PDSF ISSUE=17008 PROJ=71
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='17008#1378915330'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T16:02:10+00:00">Sep 11, 2013 04:02 PM UTC</time><a class="anchor" name="1378915330">&nbsp;</a></div><pre>Below is an example of a July job - you can see that ru_utime  is negligible.
+I checked all alicesgm jobs for taht day and they all had similar ru_utime with healthy cpu.
+I believe that the probe changed at some point to look at ru_utime.
+
+Could be that our version of SGE is not reporting ru_utime properly - I will
+contact our vendor to clarify.
+
+qname        alice.q
+hostname     mc0120-ib.nersc.gov
+group        alice
+owner        alicesgm
+project      alice
+department   defaultdepartment
+jobname      data
+jobnumber    2662259
+taskid       undefined
+account      28409.pdsfgrid4
+priority     0
+qsub_time    Thu Jul 11 01&#58;16&#58;35 2013
+start_time   Thu Jul 11 03&#58;07&#58;31 2013
+end_time     Thu Jul 11 09&#58;01&#58;39 2013
+granted_pe   NONE
+slots        1
+failed       100 &#58; assumedly after job
+exit_status  137
+ru_wallclock 21248
+ru_utime     0.072
+ru_stime     0.120
+ru_maxrss    2788
+ru_ixrss     0
+ru_ismrss    0
+ru_idrss     0
+ru_isrss     0
+ru_minflt    21554
+ru_majflt    0
+<div id='show_181051734' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_181051734'>ru_nswap     0
+ru_inblock   0
+ru_oublock   16
+ru_msgsnd    0
+ru_msgrcv    0
+ru_nsignals  0
+ru_nvcsw     12335
+ru_nivcsw    74
+cpu          17401.340
+mem          35267.797
+io           61.871
+iow          0.000
+maxvmem      4.505G
+arid         undefined
+jc_name      NONE
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474
+</div><script type='text/javascript'>
+        $('#show_181051734').click(function() {
+            $('#detail_181051734').slideDown("normal");
+            $('#show_181051734').hide();
+            $('#hide_181051734').show();
+        });
+        $('#hide_181051734').click(function() {
+            $('#detail_181051734').slideUp();
+            $('#hide_181051734').hide();
+            $('#show_181051734').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='17008#1378914900'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T15:55:00+00:00">Sep 11, 2013 03:55 PM UTC</time><a class="anchor" name="1378914900">&nbsp;</a></div><pre>Version of the probe we are using right now was at the bottom of this ticket actually but here it is once more&#58;
+gratia-probe-sge-1.13.11-1.osg.el6.noarch
+gratia-probe-gridftp-transfer-1.13.11-1.osg.el6.noarch
+osg-configure-gratia-1.0.30-1.osg.el6.noarch
+gratia-probe-common-1.13.11-1.osg.el6.noarch
+gratia-probe-gram-1.13.11-1.osg.el6.noarch
+
+We did not upgrade SGE in July so July and August probes were looking at an accounting file that has same format, but
+the probe running in July was at least 3 years old. If you need to know the version of the old probe, I&#39;d have to
+resuscitate the gatekeeper that we just retired. Doable, but some work as we took away it&#39;s name and IP.
+
+I will check with UNIVA (we get our sge from them) what ru_utime is but I believe it just reports cpu of the
+pilot process.
+
+Iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378911463'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T14:57:43+00:00">Sep 11, 2013 02:57 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1378911463">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62;Is there a way we can find out what version of probes they are using?</font>
+Yes, I will ask.
+
+What version  NERSC is using?
+Tanya</pre></div><div class='update_description'><i onclick="document.location='17008#1378911075'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T14:51:15+00:00">Sep 11, 2013 02:51 PM UTC</time><a class="anchor" name="1378911075">&nbsp;</a></div><pre>Tanya,
+
+These are the currently active sge probes reporting for August.
++---------------+---------------------------+-----------+---------+-----------+--------------+
+| Site          | Probe                     | DateValue | Njobs   | cpu       | WallDuration |
++---------------+---------------------------+-----------+---------+-----------+--------------+
+| NERSC-PDSF    | sge&#58;pdsfgrid.nersc.gov    | 2013-08   |  255270 |     120.9 |     682345.2 |
+| NET2          | sge&#58;atlas-net2.bu.edu     | 2013-08   | 1970618 | 1020524.8 |    1113186.8 |
+| TTU-TINGE     | sge&#58;tinge.hpcc.ttu.edu    | 2013-08   |    5222 |   27877.6 |      54717.1 |
+| UColorado_HEP | sge&#58;heposg01.colorado.edu | 2013-08   |  102219 |  397414.0 |     494866.5 |
++---------------+---------------------------+-----------+---------+-----------+--------------+
+
+Is there a way we can find out what version of probes they are using?
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378910766'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T14:46:06+00:00">Sep 11, 2013 02:46 PM UTC</time><a class="anchor" name="1378910766">&nbsp;</a></div><pre>Lisa,
+
+When you did your comparison of the data in <a href='http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-08.summary.html' target='_blank' rel='nofollow'>http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-08.summary.html</a> against
+the local accounting logs&#58;
+1. what fields in the accounting log were you using for CPU?
+
+2. Can you run it for just alice jobs?  If reasonable, I might be able to give that to
+the lcg accounting office for the August report?
+
+3. Does you analysis include only jobs submitted on the NERSC-PDSF gatekeeper?
+There is a 2nd resource, NERSC-PDSF2 (fqdn&#58; pdsfgrid2.nersc.gov) defined in MyOSG/OIM that has
+never reported to Gratia as best I can tell.  This resource is also not defined as reportable to
+WLCG.  If the SGE accounting logs include jobs submitted from that gatekeeper, can they
+be excluded.
+
+Thanks
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378899909'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T11:45:09+00:00">Sep 11, 2013 11:45 AM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1378899909">&nbsp;</a></div><pre>Hi,
+I am looking qacct  output structure&#58;
+ru_utime
+This is the total amount of time spent executing in user mode, expressed in a timeval structure (seconds plus microseconds).
+ru_stime
+This is the total amount of time spent executing in kernel mode, expressed in a timeval structure (seconds plus microseconds).
+
+cpu
+The cpu time usage in seconds.
+
+and in gratia probe&#58;
+# 3.11 CpuDuration - &#34;CPU time used, summed over all processes in the job
+# SGE ru_utime is the user CpuDuration
+# SGE ru_stime is the sys CpuDuration
+# Use float or int so that Gratia can format it appropriately
+r.CpuDuration(float(self.sgeRecord[&#39;ru_utime&#39;]),&#34;user&#34;,&#34;was entered in seconds&#34;)
+r.CpuDuration(float(self.sgeRecord[&#39;ru_stime&#39;]),&#34;sys&#34;,&#34;was entered in seconds&#34;)
+
+sge-probe has been written by&#58;
+# Author&#58; Shreyas Cholia, NERSC-LBL, scholia@....
+
+So my question is why ru_utime,stime do not populated correctly? When did it change?
+I will try to find other sge installation and compare the output.
+Thanks,
+Tanya</pre></div><div class='update_description'><i onclick="document.location='17008#1378877228'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T05:27:08+00:00">Sep 11, 2013 05:27 AM UTC</time> by <b>lgerhardt@....</b><a class="anchor" name="1378877228">&nbsp;</a></div><pre>Here&#39;s the output from &#34;qacct -j 3908554&#34;, it looks like the gratia probe
+is grabbing the ru_utime field&#58;
+pdsf4 sl64&#62; qacct -j 3908554
+==============================================================
+qname        alice.q
+hostname     pc2635.nersc.gov
+group        alice
+owner        alicesgm
+project      alice
+department   defaultdepartment
+jobname      scheduler_sge_job_script
+jobnumber    3908554
+taskid       undefined
+account      5944.pdsfgrid4.2772459.0
+priority     0
+qsub_time    Tue Sep 10 06&#58;04&#58;40 2013
+start_time   Tue Sep 10 08&#58;38&#58;54 2013
+end_time     Tue Sep 10 11&#58;52&#58;30 2013
+granted_pe   NONE
+slots        1
+failed       100 &#58; assumedly after job
+exit_status  137
+ru_wallclock 11616
+ru_utime     0.095
+ru_stime     0.097
+ru_maxrss    3300
+ru_ixrss     0
+ru_ismrss    0
+ru_idrss     0
+ru_isrss     0
+ru_minflt    25489
+ru_majflt    0
+ru_nswap     0
+ru_inblock   0
+ru_oublock   16
+<div id='show_2076817906' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2076817906'>ru_msgsnd    0
+ru_msgrcv    0
+ru_nsignals  0
+ru_nvcsw     12937
+ru_nivcsw    68
+cpu          7877.600
+mem          19389.257
+io           22.571
+iow          0.000
+maxvmem      4.657G
+arid         undefined
+jc_name      NONE
+
+Bye,
+Lisa
+
+On Tue, Sep 10, 2013 at 6&#58;39 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2076817906').click(function() {
+            $('#detail_2076817906').slideDown("normal");
+            $('#show_2076817906').hide();
+            $('#hide_2076817906').show();
+        });
+        $('#hide_2076817906').click(function() {
+            $('#detail_2076817906').slideUp();
+            $('#hide_2076817906').hide();
+            $('#show_2076817906').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='17008#1378863572'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T01:39:32+00:00">Sep 11, 2013 01:39 AM UTC</time><a class="anchor" name="1378863572">&nbsp;</a></div><pre>Hi,
+
+This one has cpu          7877.600     (and it agrees with the entry you are showing). Unfortunately this is one of the few
+&#34;over the memory limit&#34;&#58;
+3908554 exceeds job hard limit &#34;h_vmem&#34; of queue &#34;alice.q@....&#34;
+
+Today so far out of 4868 jobs 900 finished that way.
+When this happens we get non-zero fail code (100 here) and 137 exit code
+even though it was the last of the payload that got in trouble.
+
+Iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378862111'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T01:15:11+00:00">Sep 11, 2013 01:15 AM UTC</time><a class="anchor" name="1378862111">&nbsp;</a></div><pre>Hi,
+
+Are you able to see the times for specific jobs?  Maybe it would be best to look at a single job and debug why the probe is not figuring out the correct values.
+
+For example, can you look up the job number 3908554.  The probe reads that it started on 9/10/2013 at 10&#58;38&#58;54 AM GMT-5.  The job should have lasted 11616 seconds walltime.  Gratia reads that it only used 0.094985 cputime.  What values does the PDSF accounting have?  What does SGE have? qacct -j 3908554
+
+Below is the line from the attached accounting log line&#58;
+alice.q&#58;pc2635.nersc.gov&#58;alice&#58;alicesgm&#58;scheduler_sge_job_script&#58;3908554&#58;5944.pdsfgrid4.2772459.0&#58;0&#58;1378818280&#58;1378827534&#58;1378839150&#58;100&#58;137&#58;11616&#58;0.094985&#58;0.096985&#58;3300.000000&#58;0&#58;0&#58;0&#58;0&#58;25489&#58;0&#58;0&#58;0.000000&#58;16&#58;0&#58;0&#58;0&#58;12937&#58;68&#58;alice&#58;defaultdepartment&#58;NONE&#58;1&#58;0&#58;7877.600000&#58;19389.256593&#58;22.571017&#58;-u alicesgm -l alice=1,h_stack=10240K,h_vmem=4.5G -binding no_job_binding 0 0 0 0 no_explicit_binding&#58;0.000000&#58;NONE&#58;4999958528.000000&#58;0&#58;0&#58;NONE
+
+-Derek
+
+by /DC=org/DC=doegrids/OU=People/CN=Derek Weitzel 285345</pre></div><div class='update_description'><i onclick="document.location='17008#1378860802'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-11T00:53:22+00:00">Sep 11, 2013 12:53 AM UTC</time><a class="anchor" name="1378860802">&nbsp;</a></div><pre>Hi,
+I calculated our CPU and Wall times directly from the local accounting files on PDSF and compared them to the numbers at <a href='http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-07.summary.html' target='_blank' rel='nofollow'>http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-07.summary.html</a>
+
+For the CPU time, I calculated 684964 hours compared to 628634 hours from the web page. This is about a 9% difference.
+For the Wall time, I calculated 805894 hours compared to 744961 hours from the web page. This is about an 8% difference.
+
+I did a similar calculations for August (this time with <a href='http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-08.summary.html' target='_blank' rel='nofollow'>http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-08.summary.html</a>).
+CPU time&#58; my calculation is 552253 hours compared to 91 hours from the web page.
+Wall time&#58; my calculation is 694672 hours compared to 682294 hours from the web page.
+
+Since the numbers are in reasonable agreement for July and the PDSF numbers for July and August are consistent with each other, I think somehow our data for August has gotten corrupted somewhere on the gratia side.
+Is it possible to get a copy of the reported data? It might help to compare our archived accounting files against what gratia has.
+
+Thanks,
+Lisa
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Lisa Gerhardt 1458</pre></div><div class='update_description'><i onclick="document.location='17008#1378852389'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T22:33:09+00:00">Sep 10, 2013 10:33 PM UTC</time> by <b>Iwona Sakrejda</b><a class="anchor" name="1378852389">&nbsp;</a></div><pre>To clarify - one pilot runs multiple jobs and the exit status is the status
+for the last job the pilot was managing.
+
+On Tue, Sep 10, 2013 at 3&#58;12 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='17008#1378851136'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T22:12:16+00:00">Sep 10, 2013 10:12 PM UTC</time> by <b>Iwona Sakrejda</b><a class="anchor" name="1378851136">&nbsp;</a></div><pre>Hi Tanya,
+
+In your table you have Alice Nonprod, is that the account that is being
+reported?
+Alice jobs (but taht was also the case before) ran the pilot and pilot took
+jobs for more or less a day and if a job went over declared memory, the
+pilot was killed
+- together with the job that was going over the limit.
+This way we protected other jobs running on the system. After that a new
+pilot would start and run new jobs.
+But that was also the case prior to the upgrade. I noticed that this month
+we saw more than before non-zero exit codes, but Alice was not complaining
+about unusually high loss of jobs at our site.
+
+Iwona
+
+On Tue, Sep 10, 2013 at 2&#58;57 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='17008#1378850260'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T21:57:40+00:00">Sep 10, 2013 09:57 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1378850260">&nbsp;</a></div><pre>Hi Jeff,
+
+There are a lot of jobs with NonZero exit code for the last month&#58;
++----------------+--------+---------------------+------------+--------+------+
+| CommonName     | VOName | ApplicationExitCode | sum(Njobs) | wall   | cpu  |
++----------------+--------+---------------------+------------+--------+------+
+| Iwona Sakrejda | ligo   | 0                   |         36 |      1 |    0 |
+| Iwona Sakrejda | ligo   | 1                   |          4 |      0 |    0 |
+| Lidia Didenko  | star   | 0                   |        376 |    134 |   84 |
+| Lidia Didenko  | star   | 1                   |         26 |      1 |    0 |
+| Lidia Didenko  | star   | 255                 |          1 |      0 |    0 |
+| Alice Nonprod  | alice  | 0                   |      24531 |    139 |    8 |
+| Alice Nonprod  | alice  | 135                 |         53 |     36 |    0 |
+| Alice Nonprod  | alice  | 137                 |     291285 | 919610 |  112 |
++----------------+--------+---------------------+------------+--------+------+</pre></div><div class='update_description'><i onclick="document.location='17008#1378849150'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T21:39:10+00:00">Sep 10, 2013 09:39 PM UTC</time> by <b>Jeff Porter</b><a class="anchor" name="1378849150">&nbsp;</a></div><pre>My tests showed that CHOS value does not affect accounting - as it
+shouldn&#39;t.  We do see I high rate of non-zero exit codes for the pilot job.
+
+Does gratia filter by exit status?
+
+thanks,
+
+Jeff
+
+On 9/10/13 1&#58;57 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='17008#1378846630'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T20:57:10+00:00">Sep 10, 2013 08:57 PM UTC</time> by <b>Jeff Porter</b><a class="anchor" name="1378846630">&nbsp;</a></div><pre>Hi All,
+
+These aren&#39;t muli-core jobs so that&#39;s not an issue.  I don&#39;t believe we
+changed SGE during the upgrade on Aug 3rd and ALICE workflow (AliEn) was
+not changed either.  And pre-upgrade results look fine - e.g.
+<a href='http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-07.summary.html' target='_blank' rel='nofollow'>http&#58;//gr13x6.fnal.gov&#58;8319/gratia-apel//2013-07.summary.html</a>
+
+We did one other change at that time - move ALICE to a new CHOS
+(SL6.2).  PDSF runs a virtual OS via CHOS and we moved ALICE from SL5.3
+to SL6.2.  I&#39;ll have to wait for Iwona or Lisa to respond to whether
+that could affect accounting.   I might run a quick test as well.
+
+thanks,
+
+Jeff
+
+On 9/10/13 1&#58;48 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='17008#1378846129'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T20:48:49+00:00">Sep 10, 2013 08:48 PM UTC</time><a class="anchor" name="1378846129">&nbsp;</a></div><pre>Here is an off the wall question...
+are any of these multi-core jobs for alice.
+Just want to exclude that factor.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378845887'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T20:44:47+00:00">Sep 10, 2013 08:44 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1378845887">&nbsp;</a></div><pre>To confirmed Derek&#39;s statement&#58;
+
+2013-07-01 - 2013-08-01&#58;
++--------+------------+--------+--------+
+| VOName | sum(Njobs) | wall   | cpu    |
++--------+------------+--------+--------+
+| alice  |     222934 | 716756 | 609014 |
+| ligo   |          3 |      5 |      0 |
+| star   |       1977 |   1715 |    380 |
++--------+------------+--------+--------+
+
+after 2013-08-01&#58;
++--------+------------+--------+------+
+| VOName | sum(Njobs) | wall   | cpu  |
++--------+------------+--------+------+
+| alice  |     315869 | 919785 |  120 |
+| ligo   |         40 |      1 |    0 |
+| star   |        403 |    135 |   85 |
++--------+------------+--------+------+
+
+cpu for alice doesn&#39;t make any sense
+Tanya</pre></div><div class='update_description'><i onclick="document.location='17008#1378844768'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T20:26:08+00:00">Sep 10, 2013 08:26 PM UTC</time><a class="anchor" name="1378844768">&nbsp;</a></div><pre>Hi All,
+
+I just did some tests on the SGE probe, and it is reporting exactly what SGE is writing in it&#39;s accounting log.  Tiny user and system time, long walltime.  Here is the script I used to test against the attached accounting&#58;
+<a href='https&#58;//gist.github.com/djw8605/6514869' target='_blank' rel='nofollow'>https&#58;//gist.github.com/djw8605/6514869</a>
+
+It&#39;s output is&#58;
+Group = alice
+user time = 0.900863
+system time = 0.501923
+walltime = 3949
+
+But when I change the script to only look at non-alice groups, the usertime and walltime match up.  Therefore my question&#58; is alice doing something that is causing SGE to lose track of the process time?  Forking oddly, daemoning?  The probe looks good, the SGE accounting log looks suspicious.
+
+-Derek
+
+by /DC=org/DC=doegrids/OU=People/CN=Derek Weitzel 285345</pre></div><div class='update_description'><i onclick="document.location='17008#1378841494'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T19:31:34+00:00">Sep 10, 2013 07:31 PM UTC</time><a class="anchor" name="1378841494">&nbsp;</a></div><pre>Tired again to add osg-software
+
+john weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378841323'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T19:28:43+00:00">Sep 10, 2013 07:28 PM UTC</time><a class="anchor" name="1378841323">&nbsp;</a></div><pre>Added osg-software and Suchandra to the cc.
+
+Please note that this is a Tier 2 WLCG reporting site and we really need to
+get their numbers straightened out by the weekend if possible.
+
+John Weigand
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=John Weigand 144</pre></div><div class='update_description'><i onclick="document.location='17008#1378839290'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T18:54:50+00:00">Sep 10, 2013 06:54 PM UTC</time><a class="anchor" name="1378839290">&nbsp;</a></div><pre>Accounting file attached.
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='17008#1378839112'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-09-10T18:51:52+00:00">Sep 10, 2013 06:51 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1378839112">&nbsp;</a></div><pre>Problem started in August when the gatekeeper got upgraded from an old pacman install to a newer version built in July.
+Version of gratia is&#58;
+gratia-probe-sge-1.13.11-1.osg.el6.noarch
+gratia-probe-gridftp-transfer-1.13.11-1.osg.el6.noarch
+osg-configure-gratia-1.0.30-1.osg.el6.noarch
+gratia-probe-common-1.13.11-1.osg.el6.noarch
+gratia-probe-gram-1.13.11-1.osg.el6.noarch
+
+ALICE monitoring of CPU & Wall, done independent of gratia, shows about
+550k cpu-hours delivered out of 682k wall hours
+Gratia showing same wall but only 91 cpu-hours
+
+Tanya asked for SGE logs (accounting file I am guessing?) but I don&#39;t see how to attach it.
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F17008">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 17008});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

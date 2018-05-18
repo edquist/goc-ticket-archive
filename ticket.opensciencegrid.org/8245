@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[8245] OSG Storage&#58; dCache&#58; Pools being disabled on their own at AGLT2</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=8245" method="post">
+<div class="page-header">
+    <h3><span class="muted">8245</span> / OSG Storage&#58; dCache&#58; Pools being disabled on their own at AGLT2</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">neha sharma</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls"></div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2010-03-17</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Neha Sharma <span class="muted"> / OSG Storage Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=8245", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/8245?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/8245?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20OSG%20Storage%26%2358%3B%20dCache%26%2358%3B%20Pools%20being%20disabled%20on%20their%20own%20at%20AGLT2%20ISSUE%3D8245%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='8245#1269457949'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-24T19:12:29+00:00">Mar 24, 2010 07:12 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1269457949">&nbsp;</a></div><pre>For the issue with the pool going disabled…we downgraded the Java JDK to 1.6.0_12 and didn’t have the problem on our 2.6.30-9UL1smp kernel.
+
+We have indications that 1.6.0_16 may also be OK…it seemed to be 1.6.0_17 that caused the problem in our case.</pre></div><div class='update_description'><i onclick="document.location='8245#1268670302'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2010-03-15T16:25:02+00:00">Mar 15, 2010 04:25 PM UTC</time> by <b>Neha Sharma</b><a class="anchor" name="1268670302">&nbsp;</a></div><pre>Hey all,
+
+Things look suspiciously like this bug&#58;
+
+<a href='http&#58;//bugs.sun.com/bugdatabase/view_bug.do?bug_id=6652379' target='_blank' rel='nofollow'>http&#58;//bugs.sun.com/bugdatabase/view_bug.do?bug_id=6652379</a>
+
+According to that bug report, you need the following to trigger it&#58;
+- Linux 2.6.22 or higher
+- Java 1.6.0u6 or lower
+
+The site is running 2.6.30 and Java 1.6.0u17, which shouldn&#39;t be able to trigger the bug ... yet there it is!  We&#39;re going to downgrade the JVM
+versions to see if the bug has regressed.
+
+Brian
+
+On Feb 19, 2010, at 7&#58;16 AM, McKee, Shawn wrote&#58;
+
+Some more info…I got the ‘strace’ to show something on the last restart of the pool&#58;
+
+[root@umfs13 ~]# strace -f -p 203964 2&#62;&amp;1 | grep utime
+[pid 204636] utimes(&#34;/dcache3/pool/data/000025E896AAE8984B17A4400BD129D0E19F&#34;, {{1833276856, 54}, {1882560792, 1882560788}})
+= 0
+[pid 204636] utimes(&#34;/dcache3/pool/data/0000466544FD70EA490CB8586FE07E52E482&#34;, {{1266433191, 520000000}, {9828, 0}} &#60;unfinished
+...&#62;
+[pid 204636] &#60;... utimes resumed&#62; )     = -1 EINVAL (Invalid argument)
+[pid 204636] utimes(&#34;/dcache3/pool/data/00005EA2043B154343719E8F4EFBFA62E99A&#34;, {{1266433191, 715000000}, {9802, 0}}) = -1
+EINVAL (Invalid argument)
+[pid 204636] utimes(&#34;/dcache3/pool/data/0000466544FD70EA490CB8586FE07E52E482&#34;, {{1266433191, 520000000}, {9828, 0}}) = -1
+EINVAL (Invalid argument)
+[pid 204636] utimes(&#34;/dcache3/pool/data/00005EA2043B154343719E8F4EFBFA62E99A&#34;, {{1266433191, 715000000}, {9802, 0}}) = -1
+EINVAL (Invalid argument)
+[pid 204636] utimes(&#34;/dcache3/pool/data/00007BE5CC637249454EACCC1EB55B603C30&#34;, {{1266432461, 500000000}, {9806, 0}}) = -1
+EINVAL (Invalid argument)
+[pid 204636] utimes(&#34;/dcache3/pool/data/0000F64C65C6C75C4CC78858ACF45CC99718&#34;, {{1266521658, 551253945}, {9781, 0}}) = -1
+EINVAL (Invalid argument)
+<div id='show_950555572' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_950555572'>
+Not sure if this is helpful.   “Invalid argument”  Let me know if  you want the corresponding umfs13Domain.log.
+
+Shawn
+
+From&#58; McKee, Shawn [mailto&#58;smckee@....]
+Sent&#58; Friday, February 19, 2010 8&#58;03 AM
+To&#58; Brian Bockelman
+Cc&#58; user-forum@....; OSG STORAGE; AGLT2 Admin; usatlas-ddm-l@....
+Subject&#58; RE&#58; Problems with disabled pools after dCache upgrade at AGLT2
+Importance&#58; High
+
+Hi Brian,
+
+Oh well…I spoke too soon.    We still have the problem.   In fact the same pool  has gone disabled again (UMFS13_4).     I tried modifying the
+java_options (our storage nodes have 16 GB up to 32GB of ram each) as follows (original is from our dCacheSetup and the new is the poolSetup file).
+
+&#60; java_options=&#34;-server -Xmx1024m -XX&#58;MaxDirectMemorySize=1024m &#92;
+---
+<font color='#7F7E6F'>&#62; java_options=&#34;-server -Xms2048m -Xmx2048m -XX&#58;MaxDirectMemorySize=2048m &#92;</font>
+<font color='#7F7E6F'>&#62;               -Xss128k -XX&#58;+UseParallelGC -XX&#58;ParallelGCThreads=20 &#92;</font>
+
+This didn’t help.
+
+I was running the ‘strace –f’ in another window and looking for utime but it never found it during the pool restart.   Without the ‘grep utime’ it seems
+to be setting a timer and waking up on expiration (sleep/loop).
+
+The  error we are seeing is shown in the  umfs13Domain log below.
+
+I still have another question out to OSG storage about the SRM_INVALID_PATH errors we are seeing.    Here are some errors being reported if this
+helps to isolate the cause (we have 71 successful transfers to AGLT2_CALIBDISK and 101 errors in the last 4 hours)&#58;
+
+36 are &#34;[FTS] FTS State [Failed] FTS Retries [1] Reason [TRANSFER error during
+TRANSFER phase&#58; [GRIDFTP_ERROR] globus
+_ftp_client&#58; the server responded with an error426 Transfer aborted ()]&#34;
+
+36 are &#34;[FTS] FTS State [Failed] FTS Retries [1] Reason [TRANSFER error during
+TRANSFER phase&#58; [GRIDFTP_ERROR] globus
+_xio&#58; Unable to connect to lxfsrb5604.cern.ch&#58;20568globus_xio&#58; System error in
+connect&#58; Connection refusedglo
+bus_xio&#58; A system call failed&#58; Connection refused]&#34;
+
+17 are “[FTS] FTS State [Failed] FTS Retries [1] Reason [DESTINATION error during
+TRANSFER_FINALIZATION phase&#58; [GENERAL_FAILURE] failed to complete PrepareToPut request [-2084701586] on remote SRM
+[httpg&#58;//head01.aglt2.org&#58;8443/srm/managerv2]&#58; [SRM_FAILURE] no file transfer(s) were performed on SURL(s).The PrepareToPut request has
+been successfully aborted]”
+
+6 are “[FTS] FTS State [Failed] FTS Retries [1] Reason [TRANSFER error during TRANSFER
+phase&#58; [GRIDFTP_ERROR] globus_ftp_client&#58; the server responded with an error550 File not found]”
+
+3 are “[FTS] FTS State [Failed] FTS Retries [1] Reason [DESTINATION error during
+TRANSFER phase&#58; [INVALID_PATH] globus_ftp_client&#58; the server responded with an error550 Permission denied,
+reason&#58;CacheException(rc=10001;msg=No such file or directory
+/pnfs/aglt2.org/atlascalibdisk/step09/RAW/closed/step09.20201008000147.physics_D.daq
+.RAW.closed/step09.20201008000147.physics_D.daq.RAW.closed._lb0005._0001.data_1266573625)]”
+
+3 are “[FTS] FTS State [Failed] FTS Retries [1] Reason [DESTINATION error during
+TRANSFER_PREPARATION phase&#58; [REQUEST_TIMEOUT] failed to prepare Destination file in 180 seconds]”
+
+I am also including the  pool ‘setup’ file for reference if that is helpful for anyone.
+
+#
+# Created by dcache_1(diskCacheV111.pools.MultiProtocolPool2) at Tue Nov 02 11&#58;25&#58;00 CET 2004
+#
+set max diskspace 12102g
+set heartbeat 30
+set sticky allowed
+set report remove on
+set breakeven 0.7
+set gap 4294967296
+set duplicate request none
+set p2p separated
+#
+# Flushing Thread setup
+#
+flush set max active 1000
+flush set interval 60
+flush set retry delay 60
+#
+# HsmStorageHandler2(diskCacheV111.pools.HsmStorageHandler2)
+#
+rh set max active 0
+st set max active 0
+rh set timeout 14400
+st set timeout 14400
+# hsm set osm -hsmBase=/work/data/nfs/qcdperm
+# hsm set osm -pnfs=/pnfs/fs
+# hsm set osm -command=/opt/d-cache/jobs/hsmcpV4.sh
+#
+# Nothing from the diskCacheV111.pools.SpaceSweeper0#
+mover set max active 100
+p2p set max active 10
+#
+#  Pool to Pool (P2P) [$Id&#58; setup.temp,v 1.7 2007-03-21 14&#58;11&#58;42 radicke Exp $]
+#
+pp set port 0
+pp set max active 10
+jtm set timeout -queue=io -lastAccess=0 -total=0
+jtm set timeout -queue=p2p -lastAccess=0 -total=0
+csm set checksumtype adler32
+csm set policy -frequently=off
+csm set policy -onread=off -onwrite=off -onrestore=off -ontransfer=on -enforcecrc=on -getcrcfromhsm=off
+
+================Dump of umfs13Domain.log ===================
+Starting BatchCell on /opt/d-cache/config/pool.batch
+19 Feb 2010 07&#58;41&#58;04 (umfs13_1) [] Pool mode changed to disabled(fetch,store,stage,p2p-client,p2p-server)
+Feb 19, 2010 7&#58;41&#58;04 AM com.sun.grizzly.Controller start
+INFO&#58; Starting Grizzly Framework 1.9.19-SNAPSHOT - Fri Feb 19 07&#58;41&#58;04 EST 2010
+19 Feb 2010 07&#58;41&#58;05 (umfs13_1) [] Reading inventory from [data=/dcache/pool/data;meta=/dcache/pool/meta]
+19 Feb 2010 07&#58;41&#58;37 (umfs13_1) [] Pool mode changed to enabled
+19 Feb 2010 07&#58;41&#58;37 (umfs13_2) [] Pool mode changed to disabled(fetch,store,stage,p2p-client,p2p-server)
+19 Feb 2010 07&#58;41&#58;37 (umfs13_2) [] Reading inventory from [data=/dcache1/pool/data;meta=/dcache1/pool/meta]
+19 Feb 2010 07&#58;41&#58;40 (umfs13_2) [] Pool mode changed to enabled
+19 Feb 2010 07&#58;41&#58;40 (umfs13_3) [] Pool mode changed to disabled(fetch,store,stage,p2p-client,p2p-server)
+19 Feb 2010 07&#58;41&#58;40 (umfs13_3) [] Reading inventory from [data=/dcache2/pool/data;meta=/dcache2/pool/meta]
+19 Feb 2010 07&#58;42&#58;20 (umfs13_3) [] Pool mode changed to enabled
+19 Feb 2010 07&#58;42&#58;20 (umfs13_4) [] Pool mode changed to disabled(fetch,store,stage,p2p-client,p2p-server)
+19 Feb 2010 07&#58;42&#58;20 (umfs13_4) [] Reading inventory from [data=/dcache3/pool/data;meta=/dcache3/pool/meta]
+19 Feb 2010 07&#58;42&#58;23 (umfs13_4) [] Pool mode changed to enabled
+19 Feb 2010 07&#58;42&#58;23 (umfs13_4) [gridftp-umfs12Domain-1266581863021 GFTP-umfs12-Unknown-346 PoolDeliverFile
+0000466544FD70EA490CB8586FE07E52E482] Fault occured in repository&#58; Internal repository error
+CacheException(rc=204;msg=Failed to set modification time&#58; /dcache3/pool/data/0000466544FD70EA490CB8586FE07E52E482)
+at org.dcache.pool.repository.meta.db.CacheRepositoryEntryImpl.touch(CacheRepositoryEntryImpl.java&#58;215)
+at org.dcache.pool.repository.v5.CacheRepositoryV5.openEntry(CacheRepositoryV5.java&#58;497)
+at org.dcache.pool.classic.PoolIOReadTransfer.&#60;init&#62;(PoolIOReadTransfer.java&#58;34)
+at org.dcache.pool.classic.PoolV4.ioFile(PoolV4.java&#58;972)
+at org.dcache.pool.classic.PoolV4.messageArrived(PoolV4.java&#58;1620)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;39)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;25)
+at java.lang.reflect.Method.invoke(Method.java&#58;597)
+at org.dcache.cells.LongReceiver.deliver(CellMessageDispatcher.java&#58;67)
+at org.dcache.cells.CellMessageDispatcher.call(CellMessageDispatcher.java&#58;255)
+at org.dcache.cells.AbstractCell.messageArrived(AbstractCell.java&#58;869)
+at org.dcache.cells.UniversalSpringCell.messageArrived(UniversalSpringCell.java&#58;230)
+at dmg.cells.nucleus.CellAdapter.messageArrived(CellAdapter.java&#58;991)
+at dmg.cells.nucleus.CellNucleus.run(CellNucleus.java&#58;552)
+at dmg.cells.nucleus.CellNucleus$1.run(CellNucleus.java&#58;624)
+at java.lang.Thread.run(Thread.java&#58;619)
+19 Feb 2010 07&#58;42&#58;23 (umfs13_4) [gridftp-umfs12Domain-1266581863021 GFTP-umfs12-Unknown-346 PoolDeliverFile
+0000466544FD70EA490CB8586FE07E52E482] Pool mode changed to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;42&#58;23 (umfs13_4) [gridftp-umfs12Domain-1266581863021 GFTP-umfs12-Unknown-346 PoolDeliverFile
+0000466544FD70EA490CB8586FE07E52E482] Possible bug found&#58; Internal repository error
+java.lang.RuntimeException&#58; Internal repository error
+at org.dcache.pool.repository.v5.CacheRepositoryV5.openEntry(CacheRepositoryV5.java&#58;508)
+at org.dcache.pool.classic.PoolIOReadTransfer.&#60;init&#62;(PoolIOReadTransfer.java&#58;34)
+at org.dcache.pool.classic.PoolV4.ioFile(PoolV4.java&#58;972)
+at org.dcache.pool.classic.PoolV4.messageArrived(PoolV4.java&#58;1620)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java&#58;39)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java&#58;25)
+at java.lang.reflect.Method.invoke(Method.java&#58;597)
+at org.dcache.cells.LongReceiver.deliver(CellMessageDispatcher.java&#58;67)
+at org.dcache.cells.CellMessageDispatcher.call(CellMessageDispatcher.java&#58;255)
+at org.dcache.cells.AbstractCell.messageArrived(AbstractCell.java&#58;869)
+at org.dcache.cells.UniversalSpringCell.messageArrived(UniversalSpringCell.java&#58;230)
+at dmg.cells.nucleus.CellAdapter.messageArrived(CellAdapter.java&#58;991)
+at dmg.cells.nucleus.CellNucleus.run(CellNucleus.java&#58;552)
+at dmg.cells.nucleus.CellNucleus$1.run(CellNucleus.java&#58;624)
+at java.lang.Thread.run(Thread.java&#58;619)
+Caused by&#58; CacheException(rc=204;msg=Failed to set modification time&#58; /dcache3/pool/data/0000466544FD70EA490CB8586FE07E52E482)
+at org.dcache.pool.repository.meta.db.CacheRepositoryEntryImpl.touch(CacheRepositoryEntryImpl.java&#58;215)
+at org.dcache.pool.repository.v5.CacheRepositoryV5.openEntry(CacheRepositoryV5.java&#58;497)
+... 15 more
+
+&#60;CUT MAN lines of similar errors here&#62;
+
+Caused by&#58; CacheException(rc=204;msg=Failed to set modification time&#58; /dcache3/pool/data/0000AD36C43D1D8F4CAB83795D4AF97C1B20)
+at org.dcache.pool.repository.meta.db.CacheRepositoryEntryImpl.touch(CacheRepositoryEntryImpl.java&#58;215)
+at org.dcache.pool.repository.v5.CacheRepositoryV5.openEntry(CacheRepositoryV5.java&#58;497)
+... 14 more
+19 Feb 2010 07&#58;42&#58;53 (umfs13_4) [gridftp-umfs12Domain-1266581863021 PoolManager PoolCheckFile
+0000466544FD70EA490CB8586FE07E52E482] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;42&#58;53 (umfs13_4) [gridftp-umfs09Domain-1266582091330 PoolManager PoolCheckFile
+00005EA2043B154343719E8F4EFBFA62E99A] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;42&#58;53 (umfs13_4) [gridftp-umfs12Domain-1266581929306 PoolManager PoolCheckFile
+00007BE5CC637249454EACCC1EB55B603C30] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;42&#58;53 (umfs13_4) [gridftp-msufs06Domain-1266581636041 PoolManager PoolCheckFile
+0000F64C65C6C75C4CC78858ACF45CC99718] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;42&#58;53 (umfs13_4) [gridftp-umfs11Domain-1266582554463 PoolManager PoolCheckFile
+00001B08AE6D926D48E987EE111F901F5A57] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;42&#58;53 (umfs13_4) [gridftp-msufs02Domain-1266581861406 PoolManager PoolCheckFile
+000025E896AAE8984B17A4400BD129D0E19F] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;42&#58;53 (umfs13_4) [gridftp-msufs09Domain-1266582245724 PoolManager PoolCheckFile
+00006625D22C6C58409BB7CC258B37986024] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;42&#58;53 (umfs13_4) [gridftp-msufs07Domain-1266581826617 PoolManager PoolCheckFile
+0000AD36C43D1D8F4CAB83795D4AF97C1B20] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+19 Feb 2010 07&#58;43&#58;19 (umfs13_4) [gridftp-umfs10Domain-1266583397602 PoolManager PoolCheckFile
+0000E900176377604F0E821C6BCB7C4A8498] PoolCheckable request rejected due to disabled(store,stage,p2p-client)
+------------------------------------------------------------------------------------------
+
+If anyone has suggestions on how to proceed we would love to hear them.  Thanks,
+
+Shawn
+
+From&#58; McKee, Shawn [mailto&#58;smckee@....]
+Sent&#58; Thursday, February 18, 2010 4&#58;33 PM
+To&#58; Brian Bockelman
+Cc&#58; user-forum@....; OSG STORAGE; AGLT2 Admin; usatlas-ddm-l@....
+Subject&#58; RE&#58; Problems with disabled pools after dCache upgrade at AGLT2
+
+Hey Brian,
+
+In setting up to do your test  I also changed our install script a bit and reinstalled using the change.   The change involves copying dCacheSetup to
+poolSetup and to gridftpSetup.   Those particular files are then no longer soft-links to dCacheSetup.
+
+I changed the java memory used in poolSetup to 2048m instead of 1024m.   I set the buffer variables in dCacheSetup and poolSetup back to
+1048576 and only set  the large buffers 8388608 in gridftpSetup.
+
+That was it…after reinstalling and running strace I get to enabling pool umfs13_4…and then there is NO problem!   I will redeploy using the new
+setup on all our storage nodes.
+
+FYI,  I had previously tried  increasing the java memory to 2048m when I used only ‘dCacheSetup’ but I still had the problem so I am guessing the
+buffer setting was the culprit (or perhaps just the combined memory pressure).
+
+However, I will be peeved if I have to run ‘strace’ in another window to make this work J
+
+More soon,  once I verify things are working cluster-wide.
+
+Thanks,
+
+Shawn
+
+From&#58; Brian Bockelman [mailto&#58;bbockelm@....]
+Sent&#58; Thursday, February 18, 2010 4&#58;05 PM
+To&#58; McKee, Shawn
+Cc&#58; user-forum@....; OSG STORAGE; AGLT2 Admin; usatlas-ddm-l@....
+Subject&#58; Re&#58; Problems with disabled pools after dCache upgrade at AGLT2
+Importance&#58; High
+
+Hey Shawn,
+
+Can you run strace against a pool Java process?  You&#39;ll need the &#34;-f&#34; flag, otherwise Java makes strace unhappy.
+
+strace -f -p 1234 2&#62;&amp;1 | grep utime
+
+(replace 1234 with your PID, of course)  Look for the utime call and see what error is getting returned from the system.
+
+Brian
+
+On Feb 18, 2010, at 2&#58;31 PM, McKee, Shawn wrote&#58;
+</div><script type='text/javascript'>
+        $('#show_950555572').click(function() {
+            $('#detail_950555572').slideDown("normal");
+            $('#show_950555572').hide();
+            $('#hide_950555572').show();
+        });
+        $('#hide_950555572').click(function() {
+            $('#detail_950555572').slideUp();
+            $('#hide_950555572').hide();
+            $('#show_950555572').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F8245">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 8245});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,2917 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[2002] [vdt-support #1727] GUMS Memory Leak v1.1.0</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=2002" method="post">
+<div class="page-header">
+    <h3><span class="muted">2002</span> / [vdt-support #1727] GUMS Memory Leak v1.1.0</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">John Hover</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">testing in 0.5.1</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2006-10-27</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Rob Quick <span class="muted"> / OSG GOC Management</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=2002", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/2002?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/2002?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20%5Bvdt-support%20%231727%5D%20GUMS%20Memory%20Leak%20v1.1.0%20ISSUE%3D2002%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='2002#1162223483'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-10-30T15:51:23+00:00">Oct 30, 2006 03:51 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1162223483">&nbsp;</a></div><pre>This is  fixed closing ticket.</pre></div><div class='update_description'><i onclick="document.location='2002#1159907300'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-10-03T20:28:20+00:00">Oct 3, 2006 08:28 PM UTC</time> by <b>VDT</b><a class="anchor" name="1159907300">&nbsp;</a></div><pre>I made Ted&#39;s change to the forthcoming VDT 1.4.0.  The server-config.wsdd is
+updated correctly and we noticed no change in functional test results in GUMS,
+so I think the change was safe.  Others will have to test whether it fixes the
+GUMS memory leak.  But from our perspective, this ticket is closed.
+
+-- Tim
+
+--
+View ticket at &#60;<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1727&#62' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=1727&#62</a>;
+VDT Support, vdt-support@....</pre></div><div class='update_description'><i onclick="document.location='2002#1159571625'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-29T23:13:45+00:00">Sep 29, 2006 11:13 PM UTC</time> by <b>leighg</b><a class="anchor" name="1159571625">&nbsp;</a></div><pre>From Alain Roy-
+
+- progress on GUMS memory leak
+<font color='#7F7E6F'>&#62;&#62;Ted has identified the GUMS memory leak using jProfiler. It turn out</font>
+<font color='#7F7E6F'>&#62;&#62;that both Tomcat and Axis cache a session for every authorization</font>
+<font color='#7F7E6F'>&#62;&#62;request. The sessions were not configured to expire, therefore they</font>
+<font color='#7F7E6F'>&#62;&#62;were never garbage collected. Ted has changed the parameters of the</font>
+<font color='#7F7E6F'>&#62;&#62;axis sessions in the configuration and shows that the memory is</font>
+<font color='#7F7E6F'>&#62;&#62;periodically garbage collected (See attached plot&#58; blue area is</font>
+<font color='#7F7E6F'>&#62;&#62;utilized memory, green is free memory&#58; after a certain threshold of</font>
+<font color='#7F7E6F'>&#62;&#62;memory growth, the garbage collection is triggered and memory usage</font>
+<font color='#7F7E6F'>&#62;&#62;drops).</font>
+<font color='#7F7E6F'>&#62;&#62;Ted still wants to spend some time investigating if this solution is</font>
+<font color='#7F7E6F'>&#62;&#62;the best for the problem.</font></pre></div><div class='update_description'><i onclick="document.location='2002#1159287193'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-26T16:13:13+00:00">Sep 26, 2006 04:13 PM UTC</time> by <b>Mariachi</b><a class="anchor" name="1159287193">&nbsp;</a></div><pre>Our new full-time Java developer and I are both looking into it. He is
+re-working the build system (with Maven v.2) to make it easier to do
+testing.
+
+We have a new version of the privilege.jar and are looking to get an
+updated version of the egee-trustmanager . We also now have instructions
+from Tim Cartwright at VDT on running GUMS in Tomcat standalone (without
+Apache). The plan is to check each of these, in turn, to at least
+identify which component/configuration causes the leak.
+
+Again, for the record, our formal recommendation for the VDT is to have
+a weekly Tomcat restart until this is tracked down. For reference, I&#39;ve
+copied below an exchange on the LCG-ROLLOUT list with the same
+recommendation. (Maarten Litmaath is one of the gLite developers.) So
+we&#39;re hardly the only ones with this common problem.
+
+Cheers,
+
+--john
+
+<font color='#7F7E6F'>&#62; Re&#58; [LCG-ROLLOUT] tomcat processes grow without any limit</font>
+<font color='#7F7E6F'>&#62; Maarten Litmaath wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; Torsten Harenberg wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Dear all,</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I attached to ganglia plots to this mail showing the number of</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; processes on our MON_BOX. As you can see, the # is raising</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; monotonously. Making this machine very slow after a certain period of</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; time.</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; This high number of processes are from tomcat! The drops appear when I</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; restart tomcat (or - of course - reboot the machine).</font>
+<font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I assume this to be a bug!</font>
+<div id='show_2049833956' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2049833956'><font color='#7F7E6F'>&#62;&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Should I report in Savannah?</font>
+<font color='#7F7E6F'>&#62;&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; Yes.  In the meantime you can restart tomcat every week or so.</font>
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2049833956').click(function() {
+            $('#detail_2049833956').slideDown("normal");
+            $('#show_2049833956').hide();
+            $('#hide_2049833956').show();
+        });
+        $('#hide_2049833956').click(function() {
+            $('#detail_2049833956').slideUp();
+            $('#hide_2049833956').hide();
+            $('#show_2049833956').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='2002#1159285362'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-09-26T15:42:42+00:00">Sep 26, 2006 03:42 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1159285362">&nbsp;</a></div><pre>John,
+
+There has been no word of the GUMS memory leak in quite some time. Can you give us an
+update? Is there still ongoing effort to fix this, or has it been dropped?
+
+Thanks,
+Rob</pre></div><div class='update_description'><i onclick="document.location='2002#1154958566'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-07T13:49:26+00:00">Aug 7, 2006 01:49 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1154958566">&nbsp;</a></div><pre>I added VDT back to this ticket as an Assignee. Ticket updates should flow in each direction now.</pre></div><div class='update_description'><i onclick="document.location='2002#1154786759'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T14:05:59+00:00">Aug 5, 2006 02:05 PM UTC</time> by <b>Thomas Wang</b><a class="anchor" name="1154786759">&nbsp;</a></div><pre>removed VDT Support as an Assignee as this was looping.
+put VDT ticket number in the title</pre></div><div class='update_description'><i onclick="document.location='2002#1154749034'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T03:37:14+00:00">Aug 5, 2006 03:37 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154749034">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2060' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2060</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2060]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154748676'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T03:31:16+00:00">Aug 5, 2006 03:31 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154748676">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2059' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2059</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2059]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154748313'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T03:25:13+00:00">Aug 5, 2006 03:25 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154748313">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2058' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2058</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2058]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154748131'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T03:22:11+00:00">Aug 5, 2006 03:22 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154748131">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2057' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2057</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2057]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154747770'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T03:16:10+00:00">Aug 5, 2006 03:16 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154747770">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2056' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2056</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2056]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154747231'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T03:07:11+00:00">Aug 5, 2006 03:07 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154747231">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2055' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2055</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2055]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154746871'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T03:01:11+00:00">Aug 5, 2006 03:01 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154746871">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2054' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2054</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2054]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154746514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:55:14+00:00">Aug 5, 2006 02:55 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154746514">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2053' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2053</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2053]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154746330'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:52:10+00:00">Aug 5, 2006 02:52 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154746330">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2052' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2052</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2052]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154745971'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:46:11+00:00">Aug 5, 2006 02:46 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154745971">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2051' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2051</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2051]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154745613'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:40:13+00:00">Aug 5, 2006 02:40 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154745613">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2050' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2050</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2050]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154745269'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:34:29+00:00">Aug 5, 2006 02:34 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154745269">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2049' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2049</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2049]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154745087'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:31:27+00:00">Aug 5, 2006 02:31 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154745087">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2048' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2048</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2048]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154744714'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:25:14+00:00">Aug 5, 2006 02:25 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154744714">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2047' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2047</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2047]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154744530'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:22:10+00:00">Aug 5, 2006 02:22 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154744530">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2046' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2046</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2046]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154744170'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:16:10+00:00">Aug 5, 2006 02:16 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154744170">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2045' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2045</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2045]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154743814'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:10:14+00:00">Aug 5, 2006 02:10 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154743814">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2044' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2044</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2044]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154743633'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:07:13+00:00">Aug 5, 2006 02:07 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154743633">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2043' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2043</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2043]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154743270'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T02:01:10+00:00">Aug 5, 2006 02:01 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154743270">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2042' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2042</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2042]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154742913'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:55:13+00:00">Aug 5, 2006 01:55 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154742913">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2041' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2041</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2041]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154742730'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:52:10+00:00">Aug 5, 2006 01:52 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154742730">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2040' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2040</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2040]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154742373'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:46:13+00:00">Aug 5, 2006 01:46 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154742373">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2039' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2039</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2039]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154742015'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:40:15+00:00">Aug 5, 2006 01:40 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154742015">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2038' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2038</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2038]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154741830'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:37:10+00:00">Aug 5, 2006 01:37 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154741830">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2037' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2037</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2037]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154741473'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:31:13+00:00">Aug 5, 2006 01:31 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154741473">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2036' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2036</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2036]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154741113'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:25:13+00:00">Aug 5, 2006 01:25 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154741113">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2035' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2035</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2035]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154740931'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:22:11+00:00">Aug 5, 2006 01:22 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154740931">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2034' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2034</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2034]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154740570'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:16:10+00:00">Aug 5, 2006 01:16 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154740570">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2033' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2033</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2033]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154740213'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:10:13+00:00">Aug 5, 2006 01:10 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154740213">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2032' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2032</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2032]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154740031'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:07:11+00:00">Aug 5, 2006 01:07 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154740031">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2031' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2031</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2031]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154739670'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T01:01:10+00:00">Aug 5, 2006 01:01 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154739670">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2030' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2030</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2030]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154739323'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:55:23+00:00">Aug 5, 2006 12:55 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154739323">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2029' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2029</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2029]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154739130'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:52:10+00:00">Aug 5, 2006 12:52 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154739130">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2028' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2028</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2028]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154738770'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:46:10+00:00">Aug 5, 2006 12:46 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154738770">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2027' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2027</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2027]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154738414'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:40:14+00:00">Aug 5, 2006 12:40 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154738414">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2026' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2026</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2026]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154738235'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:37:15+00:00">Aug 5, 2006 12:37 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154738235">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2025' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2025</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2025]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154738167'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:36:07+00:00">Aug 5, 2006 12:36 AM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1154738167">&nbsp;</a></div><pre>Closing momentarily to stop looping tickets.</pre></div><div class='update_description'><i onclick="document.location='2002#1154737870'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:31:10+00:00">Aug 5, 2006 12:31 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154737870">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2024' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2024</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2024]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154737514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:25:14+00:00">Aug 5, 2006 12:25 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154737514">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2023' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2023</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2023]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154737338'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:22:18+00:00">Aug 5, 2006 12:22 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154737338">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2022' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2022</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2022]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154736970'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:16:10+00:00">Aug 5, 2006 12:16 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154736970">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2021' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2021</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2021]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154736615'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:10:15+00:00">Aug 5, 2006 12:10 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154736615">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2020' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2020</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2020]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154736435'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:07:15+00:00">Aug 5, 2006 12:07 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154736435">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2019' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2019</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2019]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154736070'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-05T00:01:10+00:00">Aug 5, 2006 12:01 AM UTC</time> by <b>VDT</b><a class="anchor" name="1154736070">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2018' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2018</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2018]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154735713'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:55:13+00:00">Aug 4, 2006 11:55 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154735713">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2017' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2017</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2017]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154735530'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:52:10+00:00">Aug 4, 2006 11:52 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154735530">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2016' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2016</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2016]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154735171'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:46:11+00:00">Aug 4, 2006 11:46 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154735171">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2015' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2015</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2015]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154734813'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:40:13+00:00">Aug 4, 2006 11:40 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154734813">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2014' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2014</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2014]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154734629'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:37:09+00:00">Aug 4, 2006 11:37 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154734629">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2013' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2013</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2013]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154734269'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:31:09+00:00">Aug 4, 2006 11:31 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154734269">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2012' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2012</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2012]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154733916'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:25:16+00:00">Aug 4, 2006 11:25 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154733916">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2011' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2011</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2011]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154733729'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:22:09+00:00">Aug 4, 2006 11:22 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154733729">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2010' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2010</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2010]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1154733370'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-08-04T23:16:10+00:00">Aug 4, 2006 11:16 PM UTC</time> by <b>VDT</b><a class="anchor" name="1154733370">&nbsp;</a></div><pre>Greetings from the VDT support system!
+
+This message was generated automatically in response to the creation of a
+ticket regarding&#58;
+
+Open Science Grid&#58; GUMS Memory Leak v1.1.0 ISSUE=2002 PROJ=71
+
+Your original request is copied below for reference.
+
+There is no need to reply to this message right now -- someone from the VDT
+team will respond to you as soon as possible.  If you wish to view your
+support ticket online, visit&#58;
+
+<a href='http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2009' target='_blank' rel='nofollow'>http&#58;//vdt.cs.wisc.edu/rt/Ticket/Display.html?user=guest&pass=guest&id=2009</a>
+
+Your ticket has been assigned an ID as follows&#58;
+
+[vdt-support #2009]
+
+Please include the ticket ID in the subject line of all future email about
+this issue.  To do so, you may reply to this message.
+
+Thank you for your interest in the VDT.
+
+-------------------------------------------------------------------------
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='2002#1149821229'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-09T02:47:09+00:00">Jun 9, 2006 02:47 AM UTC</time> by <b>VDT</b><a class="anchor" name="1149821229">&nbsp;</a></div><pre>Hi--
+
+Thanks for the notification. We&#39;re staying in touch with John Hover to
+track this. So far we still have no news.
+
+-alain
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='2002#1149794543'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-06-08T19:22:23+00:00">Jun 8, 2006 07:22 PM UTC</time> by <b>Tim Silvers</b><a class="anchor" name="1149794543">&nbsp;</a></div><pre>Reassigning these tickets. Rob will be unavailable to work on them.</pre></div><div class='update_description'><i onclick="document.location='2002#1147841958'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2006-05-17T04:59:18+00:00">May 17, 2006 04:59 AM UTC</time> by <b>Adam Williamson</b><a class="anchor" name="1147841958">&nbsp;</a></div><pre>**This Ticket was moved from Project OpenScienceGrid**<br>
+<br></pre></div><div class='update_description'><i onclick="document.location='2002#0'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="1970-01-01T00:00:00+00:00">Jan 1, 1970 12:00 AM UTC</time> by <b>Rob Quick&#58;<br></b><a class="anchor" name="0">&nbsp;</a></div><pre>I talked to Alain about this at the VDT Office Hours Today. There is no update as of<br>
+Condor Week, John is still testing and trying to find where the leak is coming from.<br>
+<br>
+
+
+No update on this issue. This looks like it will not make it into VDT 1.3.11 either.<br>
+<br>
+
+
+Begin forwarded message&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; From&#58; Dan Yocum &#60;yocum@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Date&#58; April 5, 2006 9&#58;45&#58;38 AM EDT<br></font>
+<font color='#7F7E6F'>&#62; To&#58; &#34;John R. Hover&#34; &#60;jhover@....&#62;, Privilege project  <br></font>
+<font color='#7F7E6F'>&#62; &#60;privilege_project@....&#62;, OSG Operations &#60;osg- <br></font>
+<font color='#7F7E6F'>&#62; operations@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; GUMS Resource Leak Status Report<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Hi John,<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; I just got dug out of email after a week on vacation.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; John R. Hover wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62; No more to add yet, except that Gabrielle Carcassi and I had a sit- <br></font>
+<font color='#7F7E6F'>&#62;&#62; down<br></font>
+<font color='#7F7E6F'>&#62;&#62; discussion and he made a good case for the error *not* being in GUMS<br></font>
+<font color='#7F7E6F'>&#62;&#62; because the tree of retained references starts before the  <br></font>
+<font color='#7F7E6F'>&#62;&#62; execution path<br></font>
+<font color='#7F7E6F'>&#62;&#62; ever reaches GUMS code. The org.apache.axis.transport and<br></font>
+<font color='#7F7E6F'>&#62;&#62; org.apache.catalina.session classes all have to do with tomcat  <br></font>
+<font color='#7F7E6F'>&#62;&#62; session<br></font>
+<font color='#7F7E6F'>&#62;&#62; lifecycle.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Ugh.  But, I guess that shouldn&#39;t be unexpected.  The VOMS/VOMRS  <br></font>
+<font color='#7F7E6F'>&#62; people have been fighting tomcat and the jvm for a while, now  <br></font>
+<div id='show_155751765' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_155751765'><font color='#7F7E6F'>&#62; (though I think they&#39;ve solved their problems for the most part, now).<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; In any case the next step is to do some tests Gabrielle suggested&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62; 1) Run the system with the mock GUMS that just returns static strings<br></font>
+<font color='#7F7E6F'>&#62;&#62; for queries.<br></font>
+<font color='#7F7E6F'>&#62;&#62; 2) Run system on Tomcat 5.5 and Tomcat 4.0 normally to see if the  <br></font>
+<font color='#7F7E6F'>&#62;&#62; leak<br></font>
+<font color='#7F7E6F'>&#62;&#62; occurs.<br></font>
+<font color='#7F7E6F'>&#62;&#62; 3) Do more profiling with more detailed tracing/profiling to trace  <br></font>
+<font color='#7F7E6F'>&#62;&#62; object creation trees.<br></font>
+<font color='#7F7E6F'>&#62;&#62; I should be able to get back to these tests next week.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Sounds good, and thanks for keeping us posted.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62; Dan<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;&#62; John R. Hover wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; This is just an update to report that I haven&#39;t made any further  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; progress on the problem. Currently I&#39;m tracing code and learning  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; how Apache, mod_jk, Tomcat, Axis, the OSG Privilege Project AuthZ  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; code, and the GUMS application code works. I&#39;m also trying to  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; streamline the code-build-deploy-profile cycle on my testing setup.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; One slight modification to something I said below is that not all  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; allocated members of these classes live permanently, just any  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; that aren&#39;t immediately reclaimed. So for these 5 suspect  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; classes, after mapping 3-4000 DNs, there are 150-200 un-garbage  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; collected instances.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;  These numbers appear to scale linearly over time, i.e. about 1  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; in 20<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;  leaks.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; John R. Hover wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; I&#39;ve made some progress on characterizing the resource leak  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; issue with GUMS. I finally got remote profiling running by way  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; of Netbeans against the VDT install of GUMS (though using JDK  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; 1.5 instead of the default 1.4). This allows one to track things  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; like number of live objects of a class, total number ever  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; allocated, and<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;  how many generations of garbage collection they have survived.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Several specific classes are implicated in the problem. These  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; are classes where the number of live objects is a high  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; percentage of the number ever allocated, and this number is  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; monotonically increasing while the server is being exercised  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; (responding to DN mapping requests). Out of 4000 or so classes  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; in the JVM while GUMS/Tomcat is running, only 8 show these  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; characteristics.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Here are the classes&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; *gov.bnl.gums.service.GUMSAuthZServiceImpl  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; *org.apache.axis.transport.http.AxisHttpSession  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; *org.apache.catalina.session.StandardSessionFacade  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; *org.apache.catalina.session.StandardSession  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; *org.opensciencegrid.authz.service.BasicMappingAuthZService  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; java.beans.PropertyChangeSupport org.glite.security.SecurityContext<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;  java.lang.ref.Finalizer<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; * indicates classes where # live _exactly_ equals # allocated.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; This seems to strongly suggest some problem closing out a http/ <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; tomcat connection, and that the hitch may be related to security.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; At least this gives me somewhere specific to start in tracing  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; the code. I have to say I&#39;m relieved that it doesn&#39;t seem to  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; involve hibernate/c3po/or mysql.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; I&#39;ll post more as I learn what is going on.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; John R. Hover wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; No problem. Unfortunately, no real answers yet. I&#39;ve spent the  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; last couple weeks setting up a proper development testbed for  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; GUMS&#58; installed a dev box, vdt-1.3.9, turned up debug levels, and<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;  wrote scripts to exercise the app and log statistics.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; GUMS currently has *very* good unit test coverage, but system- <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; level functional tests and performance tests are not provided  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; for. The only previous provision for functional testing is a  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; gums command line command to map a user N times. This has  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; probably been used more to test speed than track resource usage.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; So far...<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 1) There was a theory that the memory usage was caused by  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; increasing unclosed MySQL connections resulting from failure to  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; contact VOMS servers. I think I&#39;ve disproved that by setting up a<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;  very simple gums.config that is hitting a VOMS server that  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; hasn&#39;t ever failed.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; [Note&#58; All these examples are from a test system with a mapping  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; query every few seconds, one pool, and a very simple single VO  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; VOMS update every 10 minutes or so. ]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; [2006-2-9&#58;537] mysql&#58; 110148 rss= 13516 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 100644 [2006-2-9&#58;737] mysql&#58; 110148 rss= 13212 conns= 9 tomcat&#58;  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; rss= 101940 [2006-2-9&#58;937] mysql&#58; 110148 rss= 13212 conns= 9  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; tomcat&#58; rss= 103980 [2006-2-9&#58;1137] mysql&#58; 111172 rss= 13240  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; conns= 9 tomcat&#58; rss= 105348 [2006-2-9&#58;137] mysql&#58; 111172 rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 13808 conns= 9 tomcat&#58; rss= 107448 [2006-2-9&#58;1437] mysql&#58;  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 111172 rss= 13808 conns= 9 tomcat&#58; rss= 109644 [2006-2-9&#58;1637]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; mysql&#58; 111172 rss= 13808 conns= 9 tomcat&#58; rss= 110980  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; [2006-2-9&#58;1837] mysql&#58; 111172 rss= 13820 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 112968 [2006-2-9&#58;2037] mysql&#58; 111172 rss= 13820 conns= 9  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; tomcat&#58; rss= 114412 [2006-2-9&#58;2237] mysql&#58; 111172 rss= 13820  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; conns= 8 tomcat&#58; rss= 116416 [2006-2-9&#58;2337] mysql&#58; 111172 rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 13820 conns= 8 tomcat&#58; rss= 117028 [2006-2-10&#58;137] mysql&#58;  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 111172 rss= 13820 conns= 9 tomcat&#58; rss= 118948 [2006-2-10&#58;37]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; mysql&#58; 111172 rss= 13816 conns= 8 tomcat&#58; rss= 121012  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; [2006-2-10&#58;437] mysql&#58; 111172 rss= 13136 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 122080 [2006-2-10&#58;637] mysql&#58; 111172 rss= 13136 conns= 9  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; tomcat&#58; rss= 123428 [2006-2-10&#58;837] mysql&#58; 111172 rss= 13140  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; conns= 9 tomcat&#58; rss= 125460 [2006-2-10&#58;1037] mysql&#58; 111172  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; rss= 13140 conns= 9 tomcat&#58; rss= 126748 [2006-2-10&#58;1237] mysql&#58;  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 111172 rss= 13140 conns= 8 tomcat&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;  rss= 128840 [2006-2-10&#58;1337] mysql&#58; 111172 rss= 13704 conns= 9  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; tomcat&#58; rss= 130816<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; So this reflects an increase of about 25MB/day, but with MySQL  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; connections remaining unchanged. Note that MySQL memory usage  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; is variable, but flat.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 2) More importantly, I have shown that the memory increase is  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; within the JVM heap, and therefore is a problem with object  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; allocation and/or garbage collection. I have seen monotonically  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; increasing heap size. From catalina.out with -verbose&#58;gc turned  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; on&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 264870.009&#58; [GC 96608K-&#62;88943K(130176K), 0.0433680 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 265004.839&#58; [GC 97134K-&#62;89175K(130176K), 0.0274840 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 265219.755&#58; [GC 97367K-&#62;89228K(130176K), 0.0222750 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 265454.652&#58; [GC 97420K-&#62;89269K(130176K), 0.0220930 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 265634.724&#58; [GC 97457K-&#62;89362K(130176K), 0.0218340 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 265872.610&#58; [GC 97554K-&#62;89397K(130176K), 0.0233230 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 266089.818&#58; [GC 97589K-&#62;89452K(130176K), 0.0220640 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 266329.554&#58; [GC 97639K-&#62;89522K(130176K), 0.0219780 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 266545.094&#58; [GC 97713K-&#62;89561K(130176K), 0.0217900 secs]  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 266774.383&#58; [GC 97744K-&#62;89619K(130176K), 0.0215030 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 3) I&#39;ve started getting heap dumps from tomcat using<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; CATALINA_OPTS=&#34;-Xrunhprof&#58;heap=all,force=n,format=b  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; $CATALINA_OPTS&#34;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; for analysis with hat ( <a href='https&#58;//hat.dev.java.net/' target='_blank' rel='nofollow'>https&#58;//hat.dev.java.net/</a> ). More on  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; those as I get it. Still trying to get info on tomcat  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; containers rather than info on tomcat classes.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; 4) I&#39;m also working to get remote JVM profiling running so I  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; can figure out which objects are remaining un-garbage  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; collected. The GUMS source base uses maven, which is a powerful  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; but very bleeding edge build system. I&#39;m having a lot of  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; trouble getting it all set up in such a way that I can run  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; remote profiling.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; As soon as I can see what is hanging around, then I can begin  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; figuring out how to correct it, and in the process learn how GUMS<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;  works.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; Even if it is a fairly straightforward fix, I expect it will take<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;  at least a few weeks, if not a couple months. Recall that GUMS  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; is 132 classes, ~10,000 lines of code, and uses MySQL and several<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;  3rd party libs&#58; hibernate&#58; relational object persistence c3po&#58;  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; mysql connection pooling axis&#58; a SOAP implementation opensaml&#58;  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; XML representation of security info cglib&#58; used by hibernate to  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; generate code dynamically<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; A resource leak could exist in any one of these, or be caused  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; by an interaction between more than one.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; I suggested to Alain Roy that VDT add the patch  you suggested to<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;  catalina.sh (or the tomcat init script) to bump up the max  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; heap setting for the JVM provided sufficient memory exists on  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; the box.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; I also suggested they consider officially adding in a periodic  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; (daily) tomcat restart into the VDT. In my research for this I  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; have found *lots* of reports of resource leakage with tomcat  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; and many web applications. They are common and can be extremely  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; difficult to fully correct. Such a restart should be harmless and<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;  could prevent a lot of problems-- and not just with GUMS.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; I&#39;d welcome any other ideas anyone might have, and I&#39;ll keep  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; you posted. My plan is to do another update to OSG-int once I  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; get profiling running and can report something concrete. I also  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; intend to add to the GUMS sources whatever functional testing  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; facilities I put together, so that the VDT people can also run  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; them.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; -- <br></font>
+<font color='#7F7E6F'>&#62; Dan Yocum<br></font>
+<font color='#7F7E6F'>&#62; Fermilab  630.840.6509<br></font>
+<font color='#7F7E6F'>&#62; yocum@...., <a href='http&#58;//computing.fnal.gov/ccf/ftp.html' target='_blank' rel='nofollow'>http&#58;//computing.fnal.gov/ccf/ftp.html</a><br></font>
+<font color='#7F7E6F'>&#62; Fermilab.  Computing the quantum universe.<br></font>
+<br>
+Rob Quick<br>
+Senior Analyst/Programmer - Grid Technologies<br>
+Indiana University<br>
+rquick@....<br>
+(317) 274-5260<br>
+Fax&#58; (317) 278-3659<br>
+<br>
+
+
+Begin forwarded message&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; From&#58; &#34;John R. Hover&#34; &#60;jhover@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Date&#58; March 31, 2006 2&#58;47&#58;00 PM EST<br></font>
+<font color='#7F7E6F'>&#62; To&#58; privilege_project@....<br></font>
+<font color='#7F7E6F'>&#62; Cc&#58; osg-operations@....<br></font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; GUMS Resource Leak Status Report<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; No more to add yet, except that Gabrielle Carcassi and I had a sit- <br></font>
+<font color='#7F7E6F'>&#62; down<br></font>
+<font color='#7F7E6F'>&#62; discussion and he made a good case for the error *not* being in GUMS<br></font>
+<font color='#7F7E6F'>&#62; because the tree of retained references starts before the execution  <br></font>
+<font color='#7F7E6F'>&#62; path<br></font>
+<font color='#7F7E6F'>&#62; ever reaches GUMS code. The org.apache.axis.transport and<br></font>
+<font color='#7F7E6F'>&#62; org.apache.catalina.session classes all have to do with tomcat session<br></font>
+<font color='#7F7E6F'>&#62; lifecycle.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; In any case the next step is to do some tests Gabrielle suggested&#58;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; 1) Run the system with the mock GUMS that just returns static strings<br></font>
+<font color='#7F7E6F'>&#62; for queries.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; 2) Run system on Tomcat 5.5 and Tomcat 4.0 normally to see if the leak<br></font>
+<font color='#7F7E6F'>&#62; occurs.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; 3) Do more profiling with more detailed tracing/profiling to trace  <br></font>
+<font color='#7F7E6F'>&#62; object creation trees.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; I should be able to get back to these tests next week.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<br>
+
+
+Begin forwarded message&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; From&#58; &#34;John R. Hover&#34; &#60;jhover@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Date&#58; March 8, 2006 2&#58;14&#58;43 PM EST<br></font>
+<font color='#7F7E6F'>&#62; To&#58; osg-operations@...., OSG-INT@....<br></font>
+<font color='#7F7E6F'>&#62; Subject&#58; GUMS Resource Leak Status Report<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; This is just an update to report that I haven&#39;t made any further  <br></font>
+<font color='#7F7E6F'>&#62; progress on the problem. Currently I&#39;m tracing code and learning  <br></font>
+<font color='#7F7E6F'>&#62; how Apache, mod_jk, Tomcat, Axis, the OSG Privilege Project AuthZ  <br></font>
+<font color='#7F7E6F'>&#62; code, and the GUMS application code works. I&#39;m also trying to  <br></font>
+<font color='#7F7E6F'>&#62; streamline the code-build-deploy-profile cycle on my testing setup.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; One slight modification to something I said below is that not all  <br></font>
+<font color='#7F7E6F'>&#62; allocated members of these classes live permanently, just any that  <br></font>
+<font color='#7F7E6F'>&#62; aren&#39;t immediately reclaimed. So for these 5 suspect classes, after  <br></font>
+<font color='#7F7E6F'>&#62; mapping 3-4000 DNs, there are 150-200 un-garbage collected  <br></font>
+<font color='#7F7E6F'>&#62; instances. These numbers appear to scale linearly over time, i.e.  <br></font>
+<font color='#7F7E6F'>&#62; about 1 in 20 leaks.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; John R. Hover wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62; I&#39;ve made some progress on characterizing the resource leak issue  <br></font>
+<font color='#7F7E6F'>&#62;&#62; with<br></font>
+<font color='#7F7E6F'>&#62;&#62; GUMS. I finally got remote profiling running by way of Netbeans  <br></font>
+<font color='#7F7E6F'>&#62;&#62; against<br></font>
+<font color='#7F7E6F'>&#62;&#62; the VDT install of GUMS (though using JDK 1.5 instead of the default<br></font>
+<font color='#7F7E6F'>&#62;&#62; 1.4). This allows one to track things like number of live objects  <br></font>
+<font color='#7F7E6F'>&#62;&#62; of a<br></font>
+<font color='#7F7E6F'>&#62;&#62; class, total number ever allocated, and how many generations of  <br></font>
+<font color='#7F7E6F'>&#62;&#62; garbage<br></font>
+<font color='#7F7E6F'>&#62;&#62; collection they have survived.<br></font>
+<font color='#7F7E6F'>&#62;&#62; Several specific classes are implicated in the problem. These are<br></font>
+<font color='#7F7E6F'>&#62;&#62; classes where the number of live objects is a high percentage of the<br></font>
+<font color='#7F7E6F'>&#62;&#62; number ever allocated, and this number is monotonically increasing  <br></font>
+<font color='#7F7E6F'>&#62;&#62; while<br></font>
+<font color='#7F7E6F'>&#62;&#62; the server is being exercised (responding to DN mapping requests).  <br></font>
+<font color='#7F7E6F'>&#62;&#62; Out<br></font>
+<font color='#7F7E6F'>&#62;&#62; of 4000 or so classes in the JVM while GUMS/Tomcat is running, only 8<br></font>
+<font color='#7F7E6F'>&#62;&#62; show these characteristics.<br></font>
+<font color='#7F7E6F'>&#62;&#62; Here are the classes&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62; *gov.bnl.gums.service.GUMSAuthZServiceImpl<br></font>
+<font color='#7F7E6F'>&#62;&#62; *org.apache.axis.transport.http.AxisHttpSession<br></font>
+<font color='#7F7E6F'>&#62;&#62; *org.apache.catalina.session.StandardSessionFacade<br></font>
+<font color='#7F7E6F'>&#62;&#62; *org.apache.catalina.session.StandardSession<br></font>
+<font color='#7F7E6F'>&#62;&#62; *org.opensciencegrid.authz.service.BasicMappingAuthZService<br></font>
+<font color='#7F7E6F'>&#62;&#62; java.beans.PropertyChangeSupport<br></font>
+<font color='#7F7E6F'>&#62;&#62; org.glite.security.SecurityContext<br></font>
+<font color='#7F7E6F'>&#62;&#62; java.lang.ref.Finalizer<br></font>
+<font color='#7F7E6F'>&#62;&#62; * indicates classes where # live _exactly_ equals # allocated.<br></font>
+<font color='#7F7E6F'>&#62;&#62; This seems to strongly suggest some problem closing out a http/tomcat<br></font>
+<font color='#7F7E6F'>&#62;&#62; connection, and that the hitch may be related to security.<br></font>
+<font color='#7F7E6F'>&#62;&#62; At least this gives me somewhere specific to start in tracing the  <br></font>
+<font color='#7F7E6F'>&#62;&#62; code.<br></font>
+<font color='#7F7E6F'>&#62;&#62; I have to say I&#39;m relieved that it doesn&#39;t seem to involve<br></font>
+<font color='#7F7E6F'>&#62;&#62; hibernate/c3po/or mysql.<br></font>
+<font color='#7F7E6F'>&#62;&#62; I&#39;ll post more as I learn what is going on.<br></font>
+<font color='#7F7E6F'>&#62;&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;&#62; John R. Hover wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; No problem. Unfortunately, no real answers yet. I&#39;ve spent the last<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; couple weeks setting up a proper development testbed for GUMS&#58;  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; installed<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; a dev box, vdt-1.3.9, turned up debug levels, and wrote scripts to<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; exercise the app and log statistics.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; GUMS currently has *very* good unit test coverage, but system-level<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; functional tests and performance tests are not provided for. The  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; only<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; previous provision for functional testing is a gums command line  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; command<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; to map a user N times. This has probably been used more to test  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; speed<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; than track resource usage.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; So far...<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 1) There was a theory that the memory usage was caused by increasing<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; unclosed MySQL connections resulting from failure to contact VOMS<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; servers. I think I&#39;ve disproved that by setting up a very simple<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; gums.config that is hitting a VOMS server that hasn&#39;t ever failed.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [Note&#58; All these examples are from a test system with a mapping  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; query<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; every few seconds, one pool, and a very simple single VO VOMS update<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; every 10 minutes or so. ]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;537] mysql&#58; 110148 rss= 13516 conns= 9 tomcat&#58; rss= 100644<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;737] mysql&#58; 110148 rss= 13212 conns= 9 tomcat&#58; rss= 101940<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;937] mysql&#58; 110148 rss= 13212 conns= 9 tomcat&#58; rss= 103980<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;1137] mysql&#58; 111172 rss= 13240 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 105348<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;137] mysql&#58; 111172 rss= 13808 conns= 9 tomcat&#58; rss= 107448<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;1437] mysql&#58; 111172 rss= 13808 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 109644<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;1637] mysql&#58; 111172 rss= 13808 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 110980<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;1837] mysql&#58; 111172 rss= 13820 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 112968<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;2037] mysql&#58; 111172 rss= 13820 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 114412<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;2237] mysql&#58; 111172 rss= 13820 conns= 8 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 116416<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-9&#58;2337] mysql&#58; 111172 rss= 13820 conns= 8 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 117028<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-10&#58;137] mysql&#58; 111172 rss= 13820 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 118948<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-10&#58;37] mysql&#58; 111172 rss= 13816 conns= 8 tomcat&#58; rss= 121012<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-10&#58;437] mysql&#58; 111172 rss= 13136 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 122080<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-10&#58;637] mysql&#58; 111172 rss= 13136 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 123428<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-10&#58;837] mysql&#58; 111172 rss= 13140 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 125460<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-10&#58;1037] mysql&#58; 111172 rss= 13140 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 126748<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-10&#58;1237] mysql&#58; 111172 rss= 13140 conns= 8 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 128840<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; [2006-2-10&#58;1337] mysql&#58; 111172 rss= 13704 conns= 9 tomcat&#58; rss=  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 130816<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; So this reflects an increase of about 25MB/day, but with MySQL<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; connections remaining unchanged. Note that MySQL memory usage is<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; variable, but flat.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 2) More importantly, I have shown that the memory increase is  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; within the<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; JVM heap, and therefore is a problem with object allocation and/or<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; garbage collection. I have seen monotonically increasing heap  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; size. From<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; catalina.out with -verbose&#58;gc turned on&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 264870.009&#58; [GC 96608K-&#62;88943K(130176K), 0.0433680 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 265004.839&#58; [GC 97134K-&#62;89175K(130176K), 0.0274840 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 265219.755&#58; [GC 97367K-&#62;89228K(130176K), 0.0222750 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 265454.652&#58; [GC 97420K-&#62;89269K(130176K), 0.0220930 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 265634.724&#58; [GC 97457K-&#62;89362K(130176K), 0.0218340 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 265872.610&#58; [GC 97554K-&#62;89397K(130176K), 0.0233230 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 266089.818&#58; [GC 97589K-&#62;89452K(130176K), 0.0220640 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 266329.554&#58; [GC 97639K-&#62;89522K(130176K), 0.0219780 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 266545.094&#58; [GC 97713K-&#62;89561K(130176K), 0.0217900 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 266774.383&#58; [GC 97744K-&#62;89619K(130176K), 0.0215030 secs]<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 3) I&#39;ve started getting heap dumps from tomcat using<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; CATALINA_OPTS=&#34;-Xrunhprof&#58;heap=all,force=n,format=b  $CATALINA_OPTS&#34;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; for analysis with hat ( <a href='https&#58;//hat.dev.java.net/' target='_blank' rel='nofollow'>https&#58;//hat.dev.java.net/</a> ). More on  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; those as I<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; get it. Still trying to get info on tomcat containers rather than  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; info<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; on tomcat classes.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; 4) I&#39;m also working to get remote JVM profiling running so I can  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; figure<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; out which objects are remaining un-garbage collected. The GUMS  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; source<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; base uses maven, which is a powerful but very bleeding edge build<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; system. I&#39;m having a lot of trouble getting it all set up in such  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; a way<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; that I can run remote profiling.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; As soon as I can see what is hanging around, then I can begin  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; figuring<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; out how to correct it, and in the process learn how GUMS works.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Even if it is a fairly straightforward fix, I expect it will take at<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; least a few weeks, if not a couple months. Recall that GUMS is 132<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; classes, ~10,000 lines of code, and uses MySQL and several 3rd  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; party libs&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;    hibernate&#58; relational object persistence<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;    c3po&#58; mysql connection pooling<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;    axis&#58; a SOAP implementation<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;    opensaml&#58; XML representation of security info<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;    cglib&#58; used by hibernate to generate code dynamically<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; A resource leak could exist in any one of these, or be caused by an<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; interaction between more than one.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I suggested to Alain Roy that VDT add the patch  you suggested  to<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; catalina.sh (or the tomcat init script) to bump up the max heap  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; setting<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; for the JVM provided sufficient memory exists on the box.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I also suggested they consider officially adding in a periodic  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; (daily)<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; tomcat restart into the VDT. In my research for this I have found  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; *lots*<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; of reports of resource leakage with tomcat and many web  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; applications.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; They are common and can be extremely difficult to fully correct.  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Such a<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; restart should be harmless and could prevent a lot of problems--  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; and not<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; just with GUMS.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I&#39;d welcome any other ideas anyone might have, and I&#39;ll keep you  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; posted.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; My plan is to do another update to OSG-int once I get profiling  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; running<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; and can report something concrete. I also intend to add to the GUMS<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; sources whatever functional testing facilities I put together, so  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; that<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; the VDT people can also run them.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Dan Yocum wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; John,<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; I hope you are well.  I&#39;m just looking for a status update on  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; the GUMS<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; hangs.  Can you give us some news on your progress?<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Thanks,<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62; Dan<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; -- <br></font>
+<font color='#7F7E6F'>&#62; John R. Hover<br></font>
+<font color='#7F7E6F'>&#62; RHIC/Atlas Computing Facility, Bldg. 510M<br></font>
+<font color='#7F7E6F'>&#62; Physics Department<br></font>
+<font color='#7F7E6F'>&#62; Brookhaven National Laboratory<br></font>
+<font color='#7F7E6F'>&#62; Upton, NY 11793<br></font>
+<font color='#7F7E6F'>&#62; email&#58; jhover@....<br></font>
+<font color='#7F7E6F'>&#62; tel&#58; 631-344-2072<br></font>
+<br>
+
+
+The GUMS developer John Hover reported at the monday operations meeting<br>
+that he was making progress toward debugging the issue and had reproduced the problem<br>
+sucessfully<br>
+<br>
+
+
+sent John the gums.config file from my test instance of GUMS 1.1.0<br>
+<br>
+
+
+John continues to work on this. We should ask for a progress report on Friday so we<br>
+have it going into the Ops meeting next week.<br>
+<br>
+
+
+Begin forwarded message&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; From&#58; &#34;John R. Hover&#34; &#60;jhover@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Date&#58; January 24, 2006 5&#58;03&#58;38 PM EST<br></font>
+<font color='#7F7E6F'>&#62; To&#58; Dan Yocum &#60;yocum@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cc&#58; Terrence Martin &#60;tmartin@....&#62;, osg- <br></font>
+<font color='#7F7E6F'>&#62; operations@...., Alain Roy &#60;roy@....&#62;, Tim  <br></font>
+<font color='#7F7E6F'>&#62; Cartwright &#60;cat@....&#62;, Nate Mueller &#60;nmueller@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; GUMS v1.1.0 keeps hanging<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Folks,<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Please understand, I&#39;m just beginning to learn how GUMS works, and  <br></font>
+<font color='#7F7E6F'>&#62; I can&#39;t know the direction investigations will lead, let alone have  <br></font>
+<font color='#7F7E6F'>&#62; any idea of what shape a &#39;fix&#39; will take once we uncover the  <br></font>
+<font color='#7F7E6F'>&#62; problem. So at this point it would be sheer fantasy if I were to  <br></font>
+<font color='#7F7E6F'>&#62; offer some time estimate of when such a fix might be ready.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; I am a Java programmer who graduated with a M.S. in computer  <br></font>
+<font color='#7F7E6F'>&#62; science last May. I have a general idea of how GUMS does its thing&#58;  <br></font>
+<font color='#7F7E6F'>&#62; tomcat, mysql, hibernate, security libraries, etc. I had several  <br></font>
+<font color='#7F7E6F'>&#62; whiteboard meetings with Gabriele before he left about GUMS and the  <br></font>
+<font color='#7F7E6F'>&#62; maven build system it uses. I&#39;ve been able to discuss this bug with  <br></font>
+<font color='#7F7E6F'>&#62; Gabriele and get his opinions and ideas (He couldn&#39;t think of any  <br></font>
+<font color='#7F7E6F'>&#62; obvious culprit).<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; However, I have not had not any in-depth discussion of GUMS&#39; 132  <br></font>
+<font color='#7F7E6F'>&#62; classes, data structures, or paths of execution through the code. I  <br></font>
+<font color='#7F7E6F'>&#62; have no detailed knowledge of what changed between 1.0 and 1.1  <br></font>
+<font color='#7F7E6F'>&#62; beyond what is visible on the gums changelog on the web site, so I  <br></font>
+<font color='#7F7E6F'>&#62; don&#39;t know why 1.1 requires so much more memory than 1.0. And I  <br></font>
+<font color='#7F7E6F'>&#62; have not previously programmed with tomcat, hibernate, axis, or  <br></font>
+<font color='#7F7E6F'>&#62; grid security, just straight mysql jdbc.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; It turns out we didn&#39;t have a full GUMS test server here at BNL, so  <br></font>
+<font color='#7F7E6F'>&#62; I spent yesterday getting a box, setting it up (VDT 1.3.9, tomcat,  <br></font>
+<font color='#7F7E6F'>&#62; mysql, etc.), and loading up our gums.config. Today I&#39;m getting  <br></font>
+<font color='#7F7E6F'>&#62; into the config file format and seeing how that gets parsed,  <br></font>
+<font color='#7F7E6F'>&#62; classes instantiated, and subsequent behavior.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; We agree that GUMS should be robust in the face of forseeable error  <br></font>
+<font color='#7F7E6F'>&#62; conditions like VOMS servers being unavailable. I will be working  <br></font>
+<font color='#7F7E6F'>&#62; (almost) full-time on this until the bug is (at least)  <br></font>
+<font color='#7F7E6F'>&#62; characterized and (I hope) fixed.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; I welcome more troubleshooting input like the experiments Terrence  <br></font>
+<font color='#7F7E6F'>&#62; Martin has been letting me know about, and I could use some more  <br></font>
+<font color='#7F7E6F'>&#62; (annotated) gums.config files. It would be very useful to get an  <br></font>
+<font color='#7F7E6F'>&#62; idea of what sites are using GUMS without memory issues as well.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; In the meantime, to whatever degree I am the official GUMS  <br></font>
+<font color='#7F7E6F'>&#62; representative, I would suggest a weekly tomcat restart as a  <br></font>
+<font color='#7F7E6F'>&#62; workaround.  This was Gabriele&#39;s opinion as well.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Otherwise, I&#39;ll keep you posted.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; --john<br></font>
+<br>
+Alain Roy wrote&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; Dan--A key factor that you may not be aware of is that John can  <br></font>
+<font color='#7F7E6F'>&#62; only spend about 20% of his time on GUMS.<br></font>
+<font color='#7F7E6F'>&#62; -alain<br></font>
+<br>
+From&#58; 	  jhover@....<br>
+Subject&#58; 	Re&#58; GUMS v1.1.0 keeps hanging<br>
+Date&#58; 	January 24, 2006 5&#58;28&#58;15 PM EST<br>
+To&#58; 	  roy@....<br>
+Cc&#58; 	  yocum@...., tmartin@...., osg- <br>
+operations@...., cat@...., nmueller@....<br>
+<br>
+The good news is that we (Razvan Popescu, me, BNL in general) do  <br>
+consider this to be very important, so I have been cleared to spend  <br>
+essentially *all* my time on GUMS until we at least get a clear idea  <br>
+what the problem is.<br>
+<br>
+I was just explaining that even with that, I&#39;m starting from scratch.<br>
+<br>
+In the long run, i.e., for feature additions, minor fixes, cleanup,  <br>
+etc., I&#39;m supposed to be devoted about 20% to GUMS. But for now, it  <br>
+is 95%.<br>
+<br>
+Cheers,<br>
+<br>
+--john<br>
+<br>
+
+
+Begin forwarded message&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; From&#58; Dan Yocum &#60;yocum@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Date&#58; January 24, 2006 2&#58;59&#58;58 PM EST<br></font>
+<font color='#7F7E6F'>&#62; To&#58; &#34;John R. Hover&#34; &#60;jhover@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cc&#58; Terrence Martin &#60;tmartin@....&#62;, osg- <br></font>
+<font color='#7F7E6F'>&#62; operations@...., Alain Roy &#60;roy@....&#62;, Tim  <br></font>
+<font color='#7F7E6F'>&#62; Cartwright &#60;cat@....&#62;, Nate Mueller &#60;nmueller@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; GUMS v1.1.0 keeps hanging<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; John,<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; How&#39;s the fix coming on this problem?  John Weigand mentioned  <br></font>
+<font color='#7F7E6F'>&#62; something about using this option&#58;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;      hibernate.c3p0.timeout=&#34;180&#34;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Is this used?  And what file is it in?<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Thanks,<br></font>
+<font color='#7F7E6F'>&#62; Dan<br></font>
+<br>
+
+
+Tim<br>
+<br>
+Begin forwarded message&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; From&#58; Terrence Martin &#60;tmartin@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Date&#58; January 17, 2006 5&#58;41&#58;08 PM EST<br></font>
+<font color='#7F7E6F'>&#62; To&#58; &#34;John R. Hover&#34; &#60;jhover@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cc&#58; Dan Yocum &#60;yocum@....&#62;, osg-operations@....,  <br></font>
+<font color='#7F7E6F'>&#62; Alain Roy &#60;roy@....&#62;, Tim Cartwright &#60;cat@....&#62;, Nate  <br></font>
+<font color='#7F7E6F'>&#62; Mueller &#60;nmueller@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; GUMS v1.1.0 keeps hanging<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; I believe I have found more to indicate that inability to contact a  <br></font>
+<font color='#7F7E6F'>&#62; VOMS from the config file will cause GUMS memory footprint to  <br></font>
+<font color='#7F7E6F'>&#62; increase. I tested this by altering my gums.config to have wrong  <br></font>
+<font color='#7F7E6F'>&#62; URLS for several VOMS and hitting update members. Each attempt to  <br></font>
+<font color='#7F7E6F'>&#62; run the update members in the gums web admin interface cause the  <br></font>
+<font color='#7F7E6F'>&#62; memory footprint of gums to increase by approximately 8-9MB. One  <br></font>
+<font color='#7F7E6F'>&#62; error seems to have less effect than 9. That is nine errors gave me  <br></font>
+<font color='#7F7E6F'>&#62; 8-9MB increase, one error does not necessarily give me an increase  <br></font>
+<font color='#7F7E6F'>&#62; in memory footprint or is small enough I would need to run it many  <br></font>
+<font color='#7F7E6F'>&#62; times to see a change in top.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; The way I see it no matter how you slice it this is a bug. Since  <br></font>
+<font color='#7F7E6F'>&#62; gums is a critical piece of middleware for OSG I think the goal  <br></font>
+<font color='#7F7E6F'>&#62; should be for it to operate well under the worst conditions not  <br></font>
+<font color='#7F7E6F'>&#62; ideal ones. Since you begged the question, an absolutely critical  <br></font>
+<font color='#7F7E6F'>&#62; component to SE and CE operation like gums I expect to be extremely  <br></font>
+<font color='#7F7E6F'>&#62; robust in the handling its own errors, especially ones that for my  <br></font>
+<font color='#7F7E6F'>&#62; site at least are not that uncommon.<br></font>
+<font color='#7F7E6F'>&#62; When can we expect a fix we can test?<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Terrence<br></font>
+<br>
+
+
+Tim<br>
+<br>
+Begin forwarded message&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; From&#58; &#34;John R. Hover&#34; &#60;jhover@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Date&#58; January 17, 2006 4&#58;24&#58;43 PM EST<br></font>
+<font color='#7F7E6F'>&#62; To&#58; Terrence Martin &#60;tmartin@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cc&#58; Dan Yocum &#60;yocum@....&#62;, osg-operations@....,  <br></font>
+<font color='#7F7E6F'>&#62; Alain Roy &#60;roy@....&#62;, Tim Cartwright &#60;cat@....&#62;, Nate  <br></font>
+<font color='#7F7E6F'>&#62; Mueller &#60;nmueller@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; GUMS v1.1.0 keeps hanging<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; This is sounding more likely to be the case (memory increases  <br></font>
+<font color='#7F7E6F'>&#62; associated with error conditions) than a standard memory leak  <br></font>
+<font color='#7F7E6F'>&#62; during normal operation. (Of course this begs the question of how  <br></font>
+<font color='#7F7E6F'>&#62; robust with respect to error conditions you expect an application  <br></font>
+<font color='#7F7E6F'>&#62; to be.)<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; I spoke with Gabriele and he is doubtful that there is a classic  <br></font>
+<font color='#7F7E6F'>&#62; memory leak. As I noted, we&#39;ve been running 1.1.0 for months here  <br></font>
+<font color='#7F7E6F'>&#62; at BNL, with occasional, but rare, VOMS connection failures,  <br></font>
+<font color='#7F7E6F'>&#62; without memory problems or hangs.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; A thing that changed from 1.0 to 1.1 was the use of Hibernate as  <br></font>
+<font color='#7F7E6F'>&#62; the DB connection/object persistency framework, which is consistent  <br></font>
+<font color='#7F7E6F'>&#62; with the theory that a failure to close a db connection might be  <br></font>
+<font color='#7F7E6F'>&#62; behind this (since this component hasn&#39;t had as much use in the wild).<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; --john<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Terrence Martin wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62; It looks like I was failing to update some of the VOs on my site  <br></font>
+<font color='#7F7E6F'>&#62;&#62; due to URL changes for those VO. So it is very possible I was  <br></font>
+<font color='#7F7E6F'>&#62;&#62; getting the leak for the reason you describe Dan. As gums tried to  <br></font>
+<font color='#7F7E6F'>&#62;&#62; update itself it continued to leave old connections open for  <br></font>
+<font color='#7F7E6F'>&#62;&#62; entries that it could not connect to the VOMS server. Since the  <br></font>
+<font color='#7F7E6F'>&#62;&#62; issue is much more likely to come up in production and so would  <br></font>
+<font color='#7F7E6F'>&#62;&#62; maybe sneak through development testing.<br></font>
+<font color='#7F7E6F'>&#62;&#62; Terrence<br></font>
+<font color='#7F7E6F'>&#62;&#62; Dan Yocum wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; John,<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I had a thought on Friday - what if, when GUMS encounters a  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; problem contacting a VOMS server (either a group doesn&#39;t contain  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; a user or the URL to VOMS server is wrong or...), the java thread  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; isn&#39;t terminated and the mysql connection isn&#39;t closed (the  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; latter may be causing the former)?  We haven&#39;t encountered any  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; ERR or WARN messages in the gums-service-admin.log files and the  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; memory usage, # of java threads, and open mysql connections  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; appears to be stable, now.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Just a thought.<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Dan<br></font>
+<br>
+
+
+More discussion...<br>
+<br>
+From&#58; 	  tmartin@....<br>
+Subject&#58; 	Re&#58; GUMS v1.1.0 keeps hanging<br>
+Date&#58; 	January 11, 2006 1&#58;24&#58;25 PM EST<br>
+To&#58; 	  yocum@....<br>
+Cc&#58; 	  jhover@...., osg-operations@....,  <br>
+roy@...., cat@...., nmueller@....<br>
+<br>
+Dan Yocum wrote&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; John,<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; I&#39;m also seeing that the heap size has increased since Monday from  <br></font>
+<font color='#7F7E6F'>&#62; 1014MB to 1064MB, and the number of java threads has increased from  <br></font>
+<font color='#7F7E6F'>&#62; 58 to 68 and the open mysql connections has increased from 31 to 38.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+The latter is a source of potential problems depending how Mysql is  <br>
+configured. 100 I believe is the default number of open connections  <br>
+and looking at my default gums my.cnf I do not see another setting.  <br>
+The number of simultaneous connections can be increased of course but  <br>
+does GUMS need all those connections?<br>
+<br>
+Terrence<br>
+<br>
+<font color='#7F7E6F'>&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62; Dan<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; John R. Hover wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; This sounds like a very reasonable question. As the new GUMS  <br></font>
+<font color='#7F7E6F'>&#62;&#62; developer, I&#39;ve been getting familiar with the guts of the code.  <br></font>
+<font color='#7F7E6F'>&#62;&#62; I&#39;ll look into what specific functionality was added from 1.0 -&#62;  <br></font>
+<font color='#7F7E6F'>&#62;&#62; 1.1 and do some intensive looking at debug logs to get an idea of  <br></font>
+<font color='#7F7E6F'>&#62;&#62; how memory is getting used.<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; In the meantime, bumping up the tomcat heap size should keep you  <br></font>
+<font color='#7F7E6F'>&#62;&#62; running. And in the worst case, you might consider a (bi-)weekly  <br></font>
+<font color='#7F7E6F'>&#62;&#62; tomcat restart via cron. Ugly, but at least it would keep you going.<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; Terrence, could you send me your gums.config file?<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; john<br></font>
+<br>
+
+
+Discussion continues...<br>
+<br>
+Begin forwarded message&#58;<br>
+<br>
+<font color='#7F7E6F'>&#62; From&#58; Terrence Martin &#60;tmartin@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Date&#58; January 10, 2006 12&#58;48&#58;30 PM EST<br></font>
+<font color='#7F7E6F'>&#62; To&#58; Dan Yocum &#60;yocum@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Cc&#58; osg-operations@...., Alain Roy  <br></font>
+<font color='#7F7E6F'>&#62; &#60;roy@....&#62;, Tim Cartwright &#60;cat@....&#62;, Nate Mueller  <br></font>
+<font color='#7F7E6F'>&#62; &#60;nmueller@....&#62;<br></font>
+<font color='#7F7E6F'>&#62; Subject&#58; Re&#58; GUMS v1.1.0 keeps hanging<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Large heap sizes are required, for programs that use a lot of  <br></font>
+<font color='#7F7E6F'>&#62; memory. However GUMS should not be one of those programs. Compared  <br></font>
+<font color='#7F7E6F'>&#62; to the Java code bases I have deployed in tomcat Gums is a about as  <br></font>
+<font color='#7F7E6F'>&#62; complex as the ls(1) command.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Requiring massing heaps would make sense, if 1.0 required the heap  <br></font>
+<font color='#7F7E6F'>&#62; to be massive, but it didn&#39;t. 1.0 ran for months at UCSD without a  <br></font>
+<font color='#7F7E6F'>&#62; hiccup and the , it is only 1.1 that hung after a couple of weeks.  <br></font>
+<font color='#7F7E6F'>&#62; In fact I still have my gums 1.0 running and even months later and  <br></font>
+<font color='#7F7E6F'>&#62; thousands of submissions it is less than 100MB resident. Gums 1.1  <br></font>
+<font color='#7F7E6F'>&#62; on the other hand is at 251MB and climbing.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Java does not magically use memory, what is Gums doing that is so  <br></font>
+<font color='#7F7E6F'>&#62; memory intensive and why is 1.1 require this modification and 1.0  <br></font>
+<font color='#7F7E6F'>&#62; does not? The variable here is not tomcat, it is gums and its  <br></font>
+<font color='#7F7E6F'>&#62; seemingly slow creep towards memory exhaustion.<br></font>
+<font color='#7F7E6F'>&#62; Terrence<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62; Dan Yocum wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; Dan Yocum wrote&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; Actually, I take this patch back - it&#39;s OK to set CATALINA_OPTS  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; in catalina.sh, but it&#39;s actually more appropriate to set it in  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; the tomcat-5 rc script, somewhere near the top&#58;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; export CATALINA_OPTS=&#34;-Xms128M -Xmx2048M&#34;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I mentioned in the osg operations meeting today that it doesn&#39;t  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; appear that there&#39;s a leak in tomcat or java, but GYMS just  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; simply requires a lot of memory to run.  In fact, the java heap  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; on our gums server is at a constant 1014MB of used memory. &#58;-O   <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; I&#39;m sure that a lot of that is due to the 58 java processes, and  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; the 31 open mysql connections, and I bet that someone very  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; knowledgable in tuning java code could get this down to something  <br></font>
+<font color='#7F7E6F'>&#62;&#62;&#62; more reasonable.<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; I talked with some friends of mine at Yahoo and he said that  <br></font>
+<font color='#7F7E6F'>&#62;&#62; inordinately large heap sizes are the norm for tomcat.  &#58;-(<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; So, it looks like that if you&#39;re going to be using a GUMS server  <br></font>
+<font color='#7F7E6F'>&#62;&#62; to support the OSG, you&#39;d better plan on at having at least 2GB of  <br></font>
+<font color='#7F7E6F'>&#62;&#62; RAM in the machine, just for GUMS, and you&#39;ll need to set the Xmx  <br></font>
+<font color='#7F7E6F'>&#62;&#62; option much higher.<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62; Cheers,<br></font>
+<font color='#7F7E6F'>&#62;&#62; Dan<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<font color='#7F7E6F'>&#62;&#62;<br></font>
+<br>
+Rob Quick<br>
+Senior Analyst/Programmer - Grid Technologies<br>
+Indiana University<br>
+rquick@....<br>
+(317) 274-5260<br>
+Fax&#58; (317) 278-3659<br>
+<br>
+
+
+Mon Jan 09 09&#58;18&#58;00 2006  	leighg@.... - Ticket created 	  	 <br>
+CC&#58; 	osg-operations@...., Tim Cartwright &#60;cat@....&#62;, Nate<br>
+Mueller &#60;nmueller@....&#62;<br>
+Subject&#58; 	Re&#58; GUMS v1.1.0 keeps hanging<br>
+Date&#58; 	Mon, 9 Jan 2006 07&#58;12&#58;15 -0500<br>
+To&#58; 	Alain Roy &#60;roy@....&#62;<br>
+From&#58; 	leighg@....<br>
+Download (untitled)<br>
+text/plain 506b<br>
+<br>
+Alain-<br>
+<br>
+Yes, please open a ticket on GUMS 1.1.0.<br>
+<br>
+I did some testing yesterday with my installation of GUMS 1.1.0<br>
+and the process did grow significantly when I exercised the<br>
+gatekeeper to the service. I<br>
+<br>
+globus client -&#62; | GateKeeper -&#62; Prima -&#62; | -&#62; Gums<br>
+<br>
+leigh<br>
+On Fri, Jan 06, 2006 at 03&#58;40&#58;10PM -0600, Alain Roy wrote&#58;<br>
+<font color='#7F7E6F'>&#62;Is this something we should consider doing in the VDT? I&#39;m a bit<br></font>
+<font color='#7F7E6F'>&#62;worried about it, because it suggests a memory leak, so I wonder if<br></font>
+<font color='#7F7E6F'>&#62;this is a band-aid.<br></font>
+<font color='#7F7E6F'>&#62;<br></font>
+<font color='#7F7E6F'>&#62;-alain<br></font>
+#  	   	Mon Jan 09 09&#58;20&#58;02 2006  	nmueller - Subject changed from &#39;Re&#58; GUMS v1.1.0<br>
+keeps hanging&#39; to &#39;GUMS v1.1.0 keeps hanging&#39; 	  	 <br>
+#  	   	Mon Jan 09 09&#58;32&#58;32 2006  	nmueller - Comments added 	  	 <br>
+Download (untitled)<br>
+text/plain 943b<br>
+Dan Yocum suggests the following patch to address some common GUMS<br>
+problems on OSG. The idea seems good, but I&#39;m not sure we should<br>
+increase the memory by screwing with the init script. It looks like<br>
+we&#39;re going to be setting $CATALINA_OPTS a lot (this is the second or<br>
+third place) so it seems like we&#39;d be better off with something like<br>
+Globus-WS-Options.<br>
+<br>
+--Nate<br>
+<br>
+*** catalina.sh.orig 2006-01-06 12&#58;49&#58;41.000000000 -0600<br>
+--- catalina.sh 2005-12-27 09&#58;50&#58;05.000000000 -0600<br>
+***************<br>
+*** 127,130 ****<br>
+--- 127,133 ----<br>
+fi<br>
+<br>
++ # Allow java to use more memory<br>
++ CATALINA_OPTS=&#34;-Xms128M -Xmx2048M $CATALINA_OPTS&#34;<br>
++<br>
+# ----- Execute The Requested Command<br>
+-----------------------------------------<br>
+<br>
+***************<br>
+*** 133,136 ****<br>
+--- 136,140 ----<br>
+echo &#34;Using CATALINA_TMPDIR&#58; $CATALINA_TMPDIR&#34;<br>
+echo &#34;Using JAVA_HOME&#58; $JAVA_HOME&#34;<br>
++ echo &#34;Using CATALINA_OPTS&#58; $CATALINA_OPTS&#34;<br>
+<br>
+if [ &#34;$1&#34; = &#34;jpda&#34; ] ; then<br>
+<br>
+
+
+GUMS Memory Leak v1.1.0<br>
+<br>
+---------------------------<br>
+<br>
+<br>
+The following data is incompatible with the receiving project&#58;<br>
+Field&#58; Status (The original Status was not recognized. Defaulted to &#34;Open&#34;)  <br>
+Original Data&#58; ENG-Wait<br>
+Field&#58; Ticket-Type (Not a valid choice for this Project field )  <br>
+Original Data&#58; Problem<br>
+Field&#58; Originating VO Support Center (Not a valid choice for this Project field )  <br>
+Original Data&#58; OSG Support Center<br>
+Field&#58; Destination VO Support Center (Not a valid choice for this Project field )  <br>
+Original Data&#58; VDT Support<br>
+Field&#58; Problem Type (Project field not present)  <br>
+Original Data&#58; Service Failure<br>
+Field&#58; Service Affecting (Project field not present)  <br>
+Original Data&#58; Yes<br>
+Field&#58; Short Description (Project field not present)  <br>
+Original Data&#58; GUMS Memory Leak v1.1.0<br>
+</div><script type='text/javascript'>
+        $('#show_155751765').click(function() {
+            $('#detail_155751765').slideDown("normal");
+            $('#show_155751765').hide();
+            $('#hide_155751765').show();
+        });
+        $('#hide_155751765').click(function() {
+            $('#detail_155751765').slideUp();
+            $('#hide_155751765').hide();
+            $('#show_155751765').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F2002">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 2002});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

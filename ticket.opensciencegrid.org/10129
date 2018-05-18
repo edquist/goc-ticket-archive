@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[10129] Incorporating Hyperthreading into WLCG normalization constant</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=10129" method="post">
+<div class="page-header">
+    <h3><span class="muted">10129</span> / Incorporating Hyperthreading into WLCG normalization constant</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Brian Bockelman</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/other</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Brian Bockelman</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2011-10-10</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">OSG RA <span class="muted"> / OSG GOC Support Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=10129", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/10129?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/10129?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Incorporating%20Hyperthreading%20into%20WLCG%20normalization%20constant%20ISSUE%3D10129%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='10129#1318603916'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-10-14T14:51:56+00:00">Oct 14, 2011 02:51 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1318603916">&nbsp;</a></div><pre>This issue has seen no real update since May. It has been mail pinged and brought up in several meetings. I&#39;m closing this issue as abandoned by the OSG Metrics team. Brian can reopen it, or start a new ticket if this is not the case.</pre></div><div class='update_description'><i onclick="document.location='10129#1317757949'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-10-04T19:52:29+00:00">Oct 4, 2011 07:52 PM UTC</time> by <b>Rob Quick</b><a class="anchor" name="1317757949">&nbsp;</a></div><pre>Added this to today&#39;s Production meeting agenda as it seems to have gotten quite stale.</pre></div><div class='update_description'><i onclick="document.location='10129#1316453870'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-09-19T17:37:50+00:00">Sep 19, 2011 05:37 PM UTC</time> by <b>echism</b><a class="anchor" name="1316453870">&nbsp;</a></div><pre>This was mentioned on the operations call today and will be reviewed on the production meeting.</pre></div><div class='update_description'><i onclick="document.location='10129#1312380090'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-08-03T14:01:30+00:00">Aug 3, 2011 02:01 PM UTC</time> by <b>echism</b><a class="anchor" name="1312380090">&nbsp;</a></div><pre>If this issue will remain inactive, may I close this ticket? If you have an update in the future, sending it will reopen the ticket.
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='10129#1308172514'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-06-15T21:15:14+00:00">Jun 15, 2011 09:15 PM UTC</time> by <b>echism</b><a class="anchor" name="1308172514">&nbsp;</a></div><pre>John,
+
+I have been spooling an extensive internal monologue concerning the issue of whether it counts or not.
+
+While it was not my intended result, it was funny enough to make me spit out my coffee. As a compromise, I present you with this cookie <a href='http&#58;//pastebin.com/FqRsDpam' target='_blank' rel='nofollow'>http&#58;//pastebin.com/FqRsDpam</a>
+
+I remain ready to supply actual baked goods for an update of substance.
+
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='10129#1308157210'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-06-15T17:00:10+00:00">Jun 15, 2011 05:00 PM UTC</time> by <b>John Weigand</b><a class="anchor" name="1308157210">&nbsp;</a></div><pre>Chocolate chip?  ... does this count?
+john
+
+On 06/15/11 11&#58;43 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1308156197'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-06-15T16:43:17+00:00">Jun 15, 2011 04:43 PM UTC</time> by <b>echism</b><a class="anchor" name="1308156197">&nbsp;</a></div><pre>The first person to update this ticket gets a cookie.
+
+I am serious.
+
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='10129#1307730948'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-06-10T18:35:48+00:00">Jun 10, 2011 06:35 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1307730948">&nbsp;</a></div><pre>Are there any updates on this issue?
+
+Please submit problems, requests, and questions at&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a>
+
+Thank You,
+OSG Grid Operations Center
+goc@...., 317-278-9699
+Visit the Open Science Grid Operations Page&#58;
+<a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='10129#1307040399'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-06-02T18:46:39+00:00">Jun 2, 2011 06:46 PM UTC</time> by <b>echism</b><a class="anchor" name="1307040399">&nbsp;</a></div><pre>Hi all,
+
+Could we have that anticipated update?
+
+Thank you,
+Elizabeth</pre></div><div class='update_description'><i onclick="document.location='10129#1305650200'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-05-17T16:36:40+00:00">May 17, 2011 04:36 PM UTC</time><a class="anchor" name="1305650200">&nbsp;</a></div><pre>Hi,
+
+Please set NAD for 5-21, as this is waiting for the outcome of the 5-20 Interoperability meeting.
+
+Thanks,
+
+Brian
+
+-- by Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='10129#1305228071'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-05-12T19:21:11+00:00">May 12, 2011 07:21 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1305228071">&nbsp;</a></div><pre>Yes, we had a phone meeting about this a couple of weeks back. Here is the
+most recent update about this&#58;
+
+---------- Forwarded message ----------
+Date&#58; Tue, 03 May 2011 16&#58;20&#58;40 -0500
+From&#58; Anthony Tiradani &#60;tiradani@....&#62;
+To&#58; Karthik Arunachalam &#60;karunach@....&#62;
+Cc&#58; Burt Holzman &#60;burt@....&#62;, Brian Bockelman &#60;bbockelm@....&#62;,
+Horst Severini &#60;hs@....&#62;
+Subject&#58; Re&#58; Interoperability issue
+
+Hi Karthik,
+
+This is on the agenda for discussion at the next interoperability
+meeting (scheduled for May 20).  There is someone slated to take over
+Flavia&#39;s position, but they have been on holiday until recently.
+
+On Thu, 12 May 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1305224400'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-05-12T18:20:00+00:00">May 12, 2011 06:20 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1305224400">&nbsp;</a></div><pre>How are things coming with this project? I haven&#39;t seen any updates on this in a while. Are you meeting offline to discuss the topic?
+
+Regards,
+Christopher
+GOC</pre></div><div class='update_description'><i onclick="document.location='10129#1303248548'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-19T21:29:08+00:00">Apr 19, 2011 09:29 PM UTC</time><a class="anchor" name="1303248548">&nbsp;</a></div><pre>Hi all,
+
+I brought this issue up at the OSG productions meeting today. Since Brian wasn&#39;t on the call, we couldn&#39;t discuss much. Dan suggested that I organize a separate meeting to discuss this topic and to make progress. To choose a date and time for such a meeting, I have created a doodle poll at <a href='http&#58;//doodle.com/qqs3fhy4vxyfke2q.' target='_blank' rel='nofollow'>http&#58;//doodle.com/qqs3fhy4vxyfke2q.</a>
+
+Please vote on which date/time would be suitable for you to attend. The objective of the meeting would be to discuss/clarify this issue and to come up with a list of action items, implementation plan, responsibilities and timelines.
+
+Thanks,
+Karthik
+
+-- by Karthik Arunachalam</pre></div><div class='update_description'><i onclick="document.location='10129#1303148587'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-18T17:43:07+00:00">Apr 18, 2011 05:43 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1303148587">&nbsp;</a></div><pre>Hi Brian,
+
+<font color='#7F7E6F'>&#62; We already have a variable named &#34;hepspec&#34;&#58; this is the &#34;hepspec&#34; per node</font>
+
+Looking at the information in config.ini file, &#34;hepspec&#34; seems to
+represent &#34;hepspec per core&#34; and not &#34;hepspec per node&#34;.
+
+Here is what I see for &#34;hepspec&#34; in the OSG config.ini file.
+
+; Mandatory for WLCG reporting
+; The per-core HEPSPEC score.  See your VO representative for more information.
+;  HEPSPEC = 8
+
+Is that not your interpretation? or Are you saying that we interpret it as
+&#34;hepspec per node&#34; and then use that value as
+
+hepspec / slots_per_node
+
+to get the hepspec per slot? That would be fine as long as we agree that
+&#34;hepspec&#34; does represent &#34;hepspec per node&#34; and not &#34;hepspec per core&#34; as
+the comment says. For example here would be a sample entry&#58;
+
+---------------------------------
+[ Sub cluster E2550 SOME_OSG_SITE ]
+name = OUHEP_OSG_1
+node_count = 35
+cpus_per_node = 2
+cores_per_node = 8
+slots_per_node = 16 ;16 because hyperthreading is turned on
+hepspec = 165 ; This is the hepspec per node
+------------------------------------
+
+So in the case above, the hepspec_per_slot would be
+
+hepspec_per_slot = hepspec / slots_per_node = 165 / 15 = 10.31
+<div id='show_379831259' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_379831259'>
+Is this inline with what you are suggesting?
+
+Thanks,
+Karthik
+
+On Mon, 18 Apr 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_379831259').click(function() {
+            $('#detail_379831259').slideDown("normal");
+            $('#show_379831259').hide();
+            $('#hide_379831259').show();
+        });
+        $('#hide_379831259').click(function() {
+            $('#detail_379831259').slideUp();
+            $('#hide_379831259').hide();
+            $('#show_379831259').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='10129#1303145527'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-18T16:52:07+00:00">Apr 18, 2011 04:52 PM UTC</time> by <b>bbockelm</b><a class="anchor" name="1303145527">&nbsp;</a></div><pre>Hi Karthik,
+
+Agree that we need slots_per_node.
+
+We already have a variable named &#34;hepspec&#34;&#58; this is the &#34;hepspec&#34; per node.  For backward compatibility, rather than have both &#34;hepspec_per_slot&#34; and &#34;hepspec&#34;, maybe we can just have &#34;hepspec&#34;?
+
+Then, the benchmark input for the normalization formula would be&#58;
+
+hepspec / slots_per_node
+
+which is then weighted by number of slots to produce a normalization factor for the WLCG.
+
+This would mean introducing only one &#34;new&#34; variable.  Once this is settled, we can feed it out to the GIP folks and Ashu to update the BDII parsing scripts.
+
+Brian</pre></div><div class='update_description'><i onclick="document.location='10129#1301953807'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-04T21:50:07+00:00">Apr 4, 2011 09:50 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1301953807">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; Brian told me outright he will not support having a separate HS06 value</font>
+<font color='#7F7E6F'>&#62; for hyperthreaded processors.  I assume that he also would not support</font>
+<font color='#7F7E6F'>&#62; adding a hypertheading scaling factor based on the number of slots per</font>
+<font color='#7F7E6F'>&#62; core.</font>
+
+Not sure if I understand completely. You mean to say that the lookup
+table won&#39;t be updated to account for hyperthreading i.e. the hepspec
+value based on the # of job slots for a particular processor type? But
+why? How else could we account for hyperthreading?
+
+But in that case the *bare minimum* we need to have to account for
+hyperthreading is that the sites should publish
+
+slots_per_node
+hepspec_per_slot
+
+which needs to be published by GIP and in turn needs to be used by the UNL
+software to compute the normalized HEPSPEC value for a site with
+hyperthreading accounted for.
+
+-Karthik
+
+On Mon, 4 Apr 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1301952915'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-04T21:35:15+00:00">Apr 4, 2011 09:35 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1301952915">&nbsp;</a></div><pre>Hi,
+
+Brian told me outright he will not support having a separate HS06 value
+for hyperthreaded processors.  I assume that he also would not support
+adding a hypertheading scaling factor based on the number of slots per core.
+
+- B
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1301951288'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-04T21:08:08+00:00">Apr 4, 2011 09:08 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1301951288">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; Since hyperthreading scales sublinearly (200% HT cores =~ 120%</font>
+<font color='#7F7E6F'>&#62; performance, maybe), it&#39;s probably not the right thing to do to publish</font>
+<font color='#7F7E6F'>&#62; that information if hepspec_per_slot</font>
+
+But this sub-linear scaling of hyperthreading is accounted for in our
+proposal for publishing slots_per_node. If you read the detailed
+explanation (at the initial discussions in this ticket) of how we
+calculate the hepspec value per job slot, it would be clear on how we
+account for the sub-linearity. For example here is a sample data&#58;
+
+Lookup table
+--------------------------------------------------------
+Processor type  | # of job slots        | HS06 per slot
+---------------------------------------------------------
+E5520           | 16                    | 7.59
+E5520           | 8                     | 11.92
+X5670           | 16                    | 12.55
+X5670           | 24                    | 8.97
+---------------------------------------------------------
+
+As you could see the HS06 per slot goes down as the # of job slots goes
+up. The process of measuring the HS06 per job slot takes care of this.
+This accounts for &#34;sub-linear scaling&#34; that you are referring to. So I
+don&#39;t see a problem in the sites providing the slots_per_node and GIP in
+turn publishing this value. The only thing is either the site will publish
+the hepspec_per_slot or if not the UNL lookup table needs to have this
+data to looup the correct HS06 per slot.
+
+To summarize sites publish&#58;
+
+[Subcluster X5670]
+cpus_per_node = 2
+cores_per_node = 24
+slots_per_node = 16
+
+<div id='show_2077091663' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2077091663'>And optionally they could include&#58;
+hepspec_per_slot = 12.55 ----- (1)
+
+GIP publishes the slots_per_node and hepspec_per_slot (if available). If
+hepspec_per_slot (1) is included then the UNL software just uses this
+value. If (1) is *not* included then the UNL software does a lookup of
+this value using a lookup table and determines the value (12.55).
+
+So essentially the sites have to provide the slots_per_node and have the
+option to provide hepspec_per_slot. If they do, this value would be used
+to compute the normalized hepspec. If not, the UNL software will lookup
+this value and use it to compute the normalized hepspec. For this the UNL
+table needs to be updated to have the HS06 lookup values depending of the
+# of job slots.
+
+Does this sound like a workable plan? Please let me know if this is
+agreeable to all.
+
+Thanks,
+Karthik
+
+On Mon, 4 Apr 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2077091663').click(function() {
+            $('#detail_2077091663').slideDown("normal");
+            $('#show_2077091663').hide();
+            $('#hide_2077091663').show();
+        });
+        $('#hide_2077091663').click(function() {
+            $('#detail_2077091663').slideUp();
+            $('#hide_2077091663').hide();
+            $('#show_2077091663').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='10129#1301947687'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-04T20:08:07+00:00">Apr 4, 2011 08:08 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1301947687">&nbsp;</a></div><pre>Yes, the GIP only publishes the site information.
+
+We already publish the number of cores per node (via the LogicalCPU,
+PhysicalCPU, and SMPArchitectureSize).  I&#39;m ok with assuming the default
+of slots_per_core = 1, and publishing that, i.e. for a 8 core machine
+
+GlueHostProcessorOtherDescription&#58; Cores=8
+
+Since hyperthreading scales sublinearly (200% HT cores =~ 120%
+performance, maybe), it&#39;s probably not the right thing to do to publish
+that information if hepspec_per_slot -- we could get the normalization
+factors way, way off.  If we do indicate hepspec_per_slot, it would look
+like
+
+GlueHostProcessorOtherDescription&#58; Cores=16, Benchmark=150-HEP-SPEC06
+
+- B
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1301946787'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-04T19:53:07+00:00">Apr 4, 2011 07:53 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1301946787">&nbsp;</a></div><pre><font color='#7F7E6F'>&#62; No.  GIP does not do any lookups.  There is a HEPSPEC table (currently</font>
+<font color='#7F7E6F'>&#62; at UNL, moving to GOC).  The software at UNL does the lookups and</font>
+<font color='#7F7E6F'>&#62; calculates the normalization factor for upload into APEL.</font>
+
+I see. I had totally mis-understood that the GIP was doing the
+normalization factor calculations. But from what you are saying that
+doesn&#39;t seem to be the case, right?
+
+Would it be correct to say that all GIP does is to &#34;publish&#34; the site
+information and the UNL software (moving to the GOC) does the rest?  i.e.&#58;
+- Extracts the subcluster information publishes by the GIP
+- Finds the HEPSPEC values (using a lookup table, which they
+maintain have ownership of)
+- Uses these information to calculate the site normalization factor
+
+Is my above understanding correct?
+
+If this is the case, then it would be better if GIP always publishes the
+slots_per_node value irrespective of if the sites publish the
+hepspec_per_slot or not. If the hepspec_per_slot is published by the site,
+then the UNL software could use that value for its computations. If not,
+it would be better if could still lookup the hepspec_per_slot based on the
+# of job_slots for a particular processor type. This would be easier to
+maintain, more reliable and readily available for sites to use if needed.
+
+-Karthik
+
+On Mon, 4 Apr 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1301942647'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-04T18:44:07+00:00">Apr 4, 2011 06:44 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1301942647">&nbsp;</a></div><pre>No.  GIP does not do any lookups.  There is a HEPSPEC table (currently
+at UNL, moving to GOC).  The software at UNL does the lookups and
+calculates the normalization factor for upload into APEL.
+
+If sites publish slots_per_node but not hepspec_per_slot, we&#39;ll just
+ignore it.
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1301937248'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-04T17:14:08+00:00">Apr 4, 2011 05:14 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1301937248">&nbsp;</a></div><pre>I didn&#39;t mean to say a &#34;central service&#34;, but a &#34;central lookup table&#34; or
+whatever the equivalent of that. I guess this is in line with what you are
+suggesting, which sounds good. So from what you are saying, it seems like
+GIP already has a &#34;lookup table&#34; for the HEPSPEC values, right? Where is
+this table available/maintained? Just curious.
+
+<font color='#7F7E6F'>&#62; [subcluster]</font>
+<font color='#7F7E6F'>&#62; slots_per_node</font>
+<font color='#7F7E6F'>&#62; hepspec_per_slot</font>
+
+<font color='#7F7E6F'>&#62; If these are specified, the GIP will use the information directly from</font>
+<font color='#7F7E6F'>&#62; hepspec_per_slot in the GlueHostProcessorOtherDescription.</font>
+
+Sounds good. One question/clarification is, what if a site publishes
+slots_per_node, but doesn&#39;t publish the hepspec_per_slot? How does the GIP
+get/determine the correct hepspec_per_slot in this case?
+
+Thanks,
+Karthik
+
+On Fri, 1 Apr 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1301690286'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-04-01T20:38:06+00:00">Apr 1, 2011 08:38 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1301690286">&nbsp;</a></div><pre>No, this is even worse.  You definitely don&#39;t want GIP at sites querying
+a central service for this information.  And the central service
+providers are not going to maintain a separate table of HT HEPSPEC06
+benchmarks as well.
+
+I propose we add two new optional GIP configuration parameters.
+
+[subcluster]
+slots_per_node
+hepspec_per_slot
+
+If these are specified, the GIP will use the information directly from
+hepspec_per_slot in the GlueHostProcessorOtherDescription.  We will
+publish a non-Glue attribute per subcluster, HTSlotsPerNode.
+
+When the central system detects these entities are published, it will
+override its lookup table with these values.  I think this solution
+minimizes the effort and operational overhead.
+
+- B
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1301520728'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-30T21:32:08+00:00">Mar 30, 2011 09:32 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1301520728">&nbsp;</a></div><pre>Hi Burt, all,
+
+Burt thanks for the feedback.
+
+<font color='#7F7E6F'>&#62; I&#39;m OK with there being a central lookup table</font>
+
+Sure, a central lookup table would work fine. I guess that is the
+intention of what we meant. What matters is that the GIP
+should get/use the correct HEPSPEC value for a given processor type and
+the given number of jobs slots in use for that processor type. So the
+information source (from which GIP does a lookup for these values) needs
+to be modified to reflect this. This would account for Hyperthreading and
+the reality of how many jobs a processor could support given the memory
+limitations of a particular node.
+
+<font color='#7F7E6F'>&#62; (isn&#39;t this what we have now?) for admins to tweak based on their HT</font>
+<font color='#7F7E6F'>&#62; settings.</font>
+
+Where does the GIP currently gets this information from? Is it
+from <a href='http&#58;//myosg.grid.iu.edu/misccpuinfo?count_sg_1&count_active=on&count_enabled=on&datasource=cpuinfo' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu/misccpuinfo?count_sg_1&count_active=on&count_enabled=on&datasource=cpuinfo</a>
+
+<font color='#7F7E6F'>&#62; However I don&#39;t understand what work would have</font>
+<font color='#7F7E6F'>&#62; to happen at the gratia/APEL layer to use the central table for sites</font>
+<font color='#7F7E6F'>&#62; that don&#39;t configure HEPSPEC_per_slot.</font>
+
+All the gratia/APEL layer does is to use the normalization value that is
+provided/computed for a site by the GIP. These values are maintained per
+site in a configuration file that is updated manually. I don&#39;t see any
+changes need to be done to this component for now.
+
+<font color='#7F7E6F'>&#62; I don&#39;t want CMS OSG sites to be required to tinker with this on every site.</font>
+
+All that needs to happen is that the sites need to publish the # of job
+slots in use using the cores_per_node attribute. This combined with the
+correct HEPSPEC lookup would accomplish what we need.
+<div id='show_237744601' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_237744601'>
+<font color='#7F7E6F'>&#62; Finally, we&#39;re basically in maintenance/support mode in GIP; we garner</font>
+<font color='#7F7E6F'>&#62; effort for new requirements as they&#39;re made known (like the CREAM CE</font>
+<font color='#7F7E6F'>&#62; support).  Is there effort ATLAS is planning to contribute?</font>
+
+Do you have an estimate on how much of time/effort the changes would need?
+I could try to help. Rob, would there be other atlas effort/contribution?
+
+Again the changes needed would be the following&#58;
+
+1) Central lookup table that would publish the measured HEPSPEC value for
+various combinations of processor types and the # of job slots in use.
+This would account for Hyperthreading.
+
+2) Modifying GIP to lookup the correct value of HEPSPEC based on the
+processor type and the # of job slots in use - thereby calculating the
+HEPSPEC value for a site that would take into account Hyperthreading.
+
+Please let me know  your feedback.
+
+Thanks,
+Karthik
+
+On Wed, 30 Mar 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_237744601').click(function() {
+            $('#detail_237744601').slideDown("normal");
+            $('#show_237744601').hide();
+            $('#hide_237744601').show();
+        });
+        $('#hide_237744601').click(function() {
+            $('#detail_237744601').slideUp();
+            $('#hide_237744601').hide();
+            $('#show_237744601').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='10129#1301513348'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-30T19:29:08+00:00">Mar 30, 2011 07:29 PM UTC</time> by <b>Burt Holzman</b><a class="anchor" name="1301513348">&nbsp;</a></div><pre>Hi,
+
+Sorry to come in late to the discussion.
+
+I think hard-coding in a lookup table into GIP is not that good an idea.
+I believe the GIP project should not have responsibility for
+maintaining the table, revising it and pushing a new GIP version every
+time a change is made or new processor type comes out.
+
+I&#39;m OK with there being a central lookup table (isn&#39;t this what we have
+now?) for admins to tweak based on their HT settings.
+
+I&#39;m also OK with adding a parameter per subcluster entry like
+HEPSPEC_per_slot for local admins to configure.  (The less math the GIP
+has to do, the better).  However I don&#39;t understand what work would have
+to happen at the gratia/APEL layer to use the central table for sites
+that don&#39;t configure HEPSPEC_per_slot.  &#60;CMS hat&#62; I don&#39;t want CMS OSG
+sites to be required to tinker with this on every site. &#60;/CMS hat&#62;
+
+Finally, we&#39;re basically in maintenance/support mode in GIP; we garner
+effort for new requirements as they&#39;re made known (like the CREAM CE
+support).  Is there effort ATLAS is planning to contribute?
+
+- B
+
+Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='10129#1301511907'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-30T19:05:07+00:00">Mar 30, 2011 07:05 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1301511907">&nbsp;</a></div><pre>Hi Brian,
+
+We had a discussion on this topic at our USATLAS facilities meeting today.
+We all pretty much seem to be on the same page in our understanding of how
+HyperThreading information needs to be measured and incorporated into the
+OSG framework. For the sake of completion and to make sure that there are
+no gaps in the understanding I am posting the details of our
+understanding below. Most of this feedback comes from Shawn. At the end I
+am listing the action items and would like to know what
+effort/timeline is involved. Please review this and let us know your
+feedback.
+
+Thanks,
+Karthik
+
+HS06 as defined by WLCG is a *per-node* benchmark.  When you run the code it produces a number for the specific node it ran on with the configuration options chosen by whoever configured the benchmark run.   2) For reporting to WLCG we need to estimate the correct HS06 *AVERAGED PER JOB-SLOT*.  WLCG wants to know how powerful the job-slots we provide are in order to estimate the contribution we are making.  This varies a lot as you can see from comparing a site with HT off vs one with HT on which uses ALL the logical cores to run jobs.
+
+For example consider a site with 2 nodes&#58; a) A host with 2xE5520 processors using HT and b) a host with 2xX5670 processors using HT.   Both have 32 GB of RAM.   ATLAS requires 2GB/job-slot.   System a) has 8 real processors and 16 logical ones.  It can run 16 job-slots and still meet the ATLAS spec.  System b) has 12 real processors and 24 logical ones.  It can also run 16 job-slots (but no more) to meet the ATLAS spec.
+
+HS06 for the E5520 system is determined by running the HEPSPEC06 benchmark on this system with HT on and with 16 threads.  The number measured is 121.43 (see <a href='http&#58;//www.usatlas.bnl.gov/twiki/bin/view/Admins/HepSpecBenchmarks.html' target='_blank' rel='nofollow'>http&#58;//www.usatlas.bnl.gov/twiki/bin/view/Admins/HepSpecBenchmarks.html</a> for bl-1-2/M610).
+
+HS06 for the X5670 system is determined by running the HEPSPEC06 benchmark on this system with HT on and with 16 threads (not 24!).   The number measured is 200.74 (see <a href='http&#58;//www.usatlas.bnl.gov/twiki/bin/view/Admins/HepSpecBenchmarks.html' target='_blank' rel='nofollow'>http&#58;//www.usatlas.bnl.gov/twiki/bin/view/Admins/HepSpecBenchmarks.html</a> for bl-5-1/M610)
+
+This &#34;site&#34; has 32 job slots and a total HS06 of 322.17.  The number WLCG needs is the average HS06 per job-slot or 10.07.  Note the E5520 system has an average HS06/job-slot of 7.59 while the X5670 system has 12.55.
+
+The physical core is NOT the right thing to use here.  What matters is how the systems are configured to run jobs.   The above systems have 8 and 12 physical cores respectively.  The corresponding HS06 values with HT off are 95.73 for E5520 and ~200 for X5670.  Total HS06 would be 295.73 divided by physical cores would give 14.79; almost 50% too large.
+
+The current GIP has sufficient configurability to allow site admins to correctly specify how their site is configured *IF* we use the &#34;cpus_per_node&#34; as the number of logical CPUs configured for jobs on that node.  We should use that.  Below is an example of the GIP configuration in OSG&#39;s config.ini file for the cluster I used as an example. Please note that cores_per_node below actually represents job_slots_in_use_per_node. This could be different from the job_slots_available, depending on the memory requirement per job and how much of total memory is available.
+
+Case a)
+[Subcluster E5520]
+cpus_per_node=2
+cores_per_node=16
+HEPSPEC=7.59
+
+<div id='show_663798474' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_663798474'>[Subcluster X5670]
+cpus_per_node=2
+cores_per_node=16
+HEPSPEC=12.55
+
+Case b)
+For case a) let&#39;s pretend we actually have 48GB of RAM on the X5670 cluster...then we could run all 24 logical processors for jobs.  Using the above URL we find that (bl-5-1/M610 24 HT cores used) the HS06 is 215.23 and the HS06/job-slot is 215.23/24=8.97&#58;
+
+[Subcluster E5520]
+cpus_per_node=2
+cores_per_node=16
+HEPSPEC=7.59
+
+[Subcluster X5670]
+cpus_per_node=2
+cores_per_node=24
+HEPSPEC=8.97
+
+Case c)
+For case a) what if we only had 16GB of RAM on the E5520 which only supports 8 ATLAS jobs?  we could lookup the HS06 for that config and find 95.38 and get HS06/job-slot=11.92
+
+[Subcluster E5520]
+cpus_per_node=2
+cores_per_node=8
+HEPSPEC=11.92
+
+[Subcluster X5670]
+cpus_per_node=2
+cores_per_node=16
+HEPSPEC=12.55
+
+For each of the above cases we would report the following to WLCG&#58;
+
+Case a),  32 job slots with HS06/job-slot=10.07, total HS06 322.17
+Case b),  40 job slots with HS06/job-slot= 8.42, total HS06 336.67
+Case c),  24 job slots with HS06/job-slot=12.34, total HS06 296.12
+
+This scheme relies upon sites correctly configuring GIP for both &#39;cores_per_node&#39; and &#39;HEPSPEC&#39; for each Subcluster.
+
+But in addition the OSG/GIP should determine HEPSPEC. This would help us to do a sanity check of the HEPSPEC values or provide them if missing. OSG could just assume HT was on if the GIP value for &#39;cores_per_node&#39; was larger than the known physical cores for a given CPU model used on the subcluster node.  Otherwise it would assume HT was off.  A lookup table like the one shown below could be consulted and the correct HEPSPEC (which is really HS06/job-slot) could be found.
+
+Lookup table
+------------------------------------------------------------------
+Processor type  | # of job slots in use       	| HS06 per slot
+-------------------------------------------------------------------
+E5520           | 16                    	| 7.59
+E5520           | 8                     	| 11.92
+X5670           | 16                    	| 12.55
+X5670           | 24                    	| 8.97
+-------------------------------------------------------------------
+
+Action Items
+============
+
+Sites need to publish their job_slots_in_use_per_node in their cores_per_node under
+their subcluster info in OSG config.ini. GIP needs to have a lookup table like
+the one shown above with possible combinations of processor types with the #
+of job slots in use. Using this information we could calculate the average
+hepspec for a site.
+
+Given this, we would like to know what effort it would take on the GIP side to
+accomplish this and the timeline. The change on how sites publish their
+information in config.ini has to be timed based on this.
+
+Thanks,
+Karthik
+
+*********************************************
+* Karthikeyan Arunachalam                    *
+* Department of Physics and Astronomy        *
+* 440 W. Brooks St., Room 363                *
+* University of Oklahoma, Norman, OK 73019   *
+* Phone&#58; 405 325 3961 x 36363                *
+* <a href='http&#58;//www.nhn.ou.edu' target='_blank' rel='nofollow'>http&#58;//www.nhn.ou.edu</a>                      *
+**********************************************
+</div><script type='text/javascript'>
+        $('#show_663798474').click(function() {
+            $('#detail_663798474').slideDown("normal");
+            $('#show_663798474').hide();
+            $('#hide_663798474').show();
+        });
+        $('#hide_663798474').click(function() {
+            $('#detail_663798474').slideUp();
+            $('#hide_663798474').hide();
+            $('#show_663798474').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='10129#1301507477'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-30T17:51:17+00:00">Mar 30, 2011 05:51 PM UTC</time><a class="anchor" name="1301507477">&nbsp;</a></div><pre>-- by Karthik Arunachalam</pre></div><div class='update_description'><i onclick="document.location='10129#1301457007'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-30T03:50:07+00:00">Mar 30, 2011 03:50 AM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1301457007">&nbsp;</a></div><pre>Hi Brian, all,
+
+Yes, in our discussion Shawn suggested that idea i.e. slots_per_node and
+that seems to be the right thing to do. I thought you were in that email
+thread, but seems like you weren&#39;t in that. It was proposed that the site
+publish the following information
+
+[Subcluster E5520]
+cpus_per_node=2
+cores_per_node=16
+
+Actually above the value assigned to cores_per_node is the slots_per_node
+- at least that is how the sites could publish their slots_per_node
+information for the time being. In turn it was proposed that the OSG/GIP
+use a lookup table like the one below to lookup the appropriate HS06 value
+
+Lookup table
+--------------------------------------------------------
+Processor type  | # of job slots        | HS06 per slot
+---------------------------------------------------------
+E5520           | 16                    | 7.59
+E5520           | 8                     | 11.92
+X5670           | 16                    | 12.55
+X5670           | 24                    | 8.97
+---------------------------------------------------------
+
+To construct this lookup table, we have to run the per-node benchmark on
+the given node, with the desired # of job slots (depending on the memory
+requirements of the job). Then we could calculate the average HS06 per job
+slot that is contained in the above table.
+
+OSG could just assume HT was on if the GIP value for &#39;cores_per_node&#39; was
+larger than the known physical cores for a given CPU model used on the
+subcluster node.  Otherwise it would assume HT was off.
+
+<div id='show_1334987267' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1334987267'><font color='#7F7E6F'>&#62; We can do this immediately in the manual reports if we want, correct?</font>
+
+If you are referring to manually updating the APEL interface to reflect
+that, yes this could be done, provided we could account for HT in the
+calculated HS06 values.
+
+<font color='#7F7E6F'>&#62; I don&#39;t see a mechanism to automatically collect this data based only on</font>
+<font color='#7F7E6F'>&#62; processor model and number of cores (today, most CMS sites are in this</font>
+<font color='#7F7E6F'>&#62; category).  Even if we know the number of slots_per_node, the processing</font>
+<font color='#7F7E6F'>&#62; power per slot doesn&#39;t respond linearly.</font>
+
+The OSG/GIP lookup table is supposed to accomplish that.
+
+Quoting from Shawn&#58; &#34;The current GIP has sufficient configurability to
+allow site admins to correctly specify how their site is configured *IF*
+we use the &#34;cpus_per_node&#34; as the number of logical CPUs configured for
+jobs on that node.&#34;.
+
+This would enable us to calculate the HS06 normalization factor for the
+site as a whole accounting for HT. The action item from this seems to be&#58;
+
+1) Sites should publish the # of job slots (value assigned to
+cores_per_node) under the Sub cluster information in OSG config.ini.
+
+2) GIP needs to have a lookup table in place to provide the
+HS06 value per job slot given a processor type and the # of job slots.
+
+-Karthik
+
+On Wed, 30 Mar 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1334987267').click(function() {
+            $('#detail_1334987267').slideDown("normal");
+            $('#show_1334987267').hide();
+            $('#hide_1334987267').show();
+        });
+        $('#hide_1334987267').click(function() {
+            $('#detail_1334987267').slideUp();
+            $('#hide_1334987267').hide();
+            $('#show_1334987267').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='10129#1301443654'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-30T00:07:34+00:00">Mar 30, 2011 12:07 AM UTC</time><a class="anchor" name="1301443654">&nbsp;</a></div><pre>Hi Karthik,
+
+How about &#34;slots_per_node&#34; instead?  Burt&#58; is there some place to fit this information into the GlueCE schema?
+
+Basically, we want to report the HS06 per batch slot when the node is fully occupied, right?  IIRC, when you run the HS06 benchmark, you choose the number of instances running at once.
+
+We can do this immediately in the manual reports if we want, correct?  I don&#39;t see a mechanism to automatically collect this data based only on processor model and number of cores (today, most CMS sites are in this category).  Even if we know the number of slots_per_node, the processing power per slot doesn&#39;t respond linearly.
+
+Brian
+
+-- by Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='10129#1301090526'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-25T22:02:06+00:00">Mar 25, 2011 10:02 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1301090526">&nbsp;</a></div><pre>Hi Rob and all,
+
+I and Horst talked about this just now for a while, and we have some
+additional questions and comments about this.
+
+<font color='#7F7E6F'>&#62; Incorporating Hyperthreading into WLCG normalization constant</font>
+
+As far as the hyperthreading issue goes, we can&#39;t rush into a decision,
+since we need to understand this better and agree to a procedure that would
+capture the HT information into the HEPSPEC in the easiest and the most
+flexible way possible. I guess there are several points to be discussed.
+
+First of all, should the HEP-SPEC06 value always be reported
+per physical core, or per virtual core if the sub-cluster is hyperthreaded,
+or even per slot? We think always per physical core would cause less
+confusion.
+That way the average can be computed at the end without having to know
+whether a given node is hyperthreaded or not.
+
+Then, assuming for now that we have dual quad nodes with some more or less
+&#34;standard&#34; configurations, we&#39;ll have to compute three HS06 values --
+at least for starters, not taking into account every possible variation
+for now&#58;
+
+1. non-hyperthreaded, 8 jobs, divide by 8
+2. hyperthreaded, 12 jobs, divide by 8
+3. hyperthreaded, 16 jobs, divide by 8
+
+That should give us three different per-physical-core HS06 numbers,
+which we can easily add for each sub-cluster in the spreadsheet,
+and the final average computation should then be straight forward, too.
+
+Are we correct in the assumption that the benchmarks are calculated
+per node, and then divided by physical core? We don&#39;t have a license, so
+we&#39;ve never seen the package. Otherwise the above will have to be adjusted,
+<div id='show_1285698046' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1285698046'>of course.
+
+As far as what needs to be done to get this corrected in the GIP /
+config.ini,
+that&#39;s another story. First we need to agree on what a &#34;core&#34; in
+&#34;cores_per_node&#34; is -- physical or virtual? Assuming physical for now,
+then we&#39;ll have to add another variable, like &#34;slots_per_core&#34;
+or &#34;slots_per_node&#34;, and have the GIP propagate this accordingly.
+The &#34;HEPSPEC&#34; variable is already there, and assuming that is also
+per physical node, we could enter the same value as in the spreadsheet
+above.
+
+Are we correct in the assumption that if &#34;HEPSPEC&#34; is set --
+we don&#39;t have it set at any of our sites right now --
+then that variable overrides whatever number the GIP would otherwise
+look up from Brian&#39;s tables?
+
+That&#39;s about as much as we can think of right now, please feel free
+to comment/critique/...
+
+Thanks,
+Karthik and Horst
+
+On Thu, 24 Mar 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1285698046').click(function() {
+            $('#detail_1285698046').slideDown("normal");
+            $('#show_1285698046').hide();
+            $('#hide_1285698046').show();
+        });
+        $('#hide_1285698046').click(function() {
+            $('#detail_1285698046').slideUp();
+            $('#hide_1285698046').hide();
+            $('#show_1285698046').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='10129#1300982888'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-24T16:08:08+00:00">Mar 24, 2011 04:08 PM UTC</time> by <b>Karthik Arunachalam</b><a class="anchor" name="1300982888">&nbsp;</a></div><pre>Hi Shawn,
+
+<font color='#7F7E6F'>&#62; I had replied to Karthik about this issue before but I didn&#39;t get a</font>
+<font color='#7F7E6F'>&#62; specific response to that email. I am including it here</font>
+
+I had responded to your original email (you have quoted below) and below
+was my response.
+
+---------------------------------------------------
+From karunach@.... Fri Mar 18 13&#58;57&#58;27 2011
+Date&#58; Fri, 18 Mar 2011 13&#58;57&#58;10 -0500 (CDT)
+From&#58; Karthik Arunachalam &#60;karunach@....&#62;
+To&#58; &#34;McKee, Shawn&#34; &#60;smckee@....&#62;
+Cc&#58; Brian Bockelman &#60;bbockelm@....&#62;, Horst Severini &#60;hs@....&#62;, Philippe Canal &#60;pcanal@....&#62;, John Weigand &#60;weigand@....&#62;, Ashu Guru &#60;aguru2@....&#62;, &#34;usatlas-prodsys-l@....&#34; &#60;usatlas-prodsys-l@....&#62;
+Subject&#58; RE&#58; [Usatlas-prodsys-l] Looking for CPU normalizations factors for processors used by OSG
+
+Hi Shawn,
+
+On Fri, 18 Mar 2011, McKee, Shawn wrote&#58;
+
+<font color='#7F7E6F'>&#62; I am still confused as to where the original numbers in your table came</font>
+<font color='#7F7E6F'>&#62; from</font>
+
+It came from the lookup table that is manually maintained in the APEL
+interface, which in turn takes the normalization values published by GIP
+available at
+(1) <a href='http&#58;//red-web.unl.edu/gratia/site_normalization' target='_blank' rel='nofollow'>http&#58;//red-web.unl.edu/gratia/site_normalization</a> or (2)
+<a href='http&#58;//t2.unl.edu/gratia/wlcg_reporting#sitenorm.' target='_blank' rel='nofollow'>http&#58;//t2.unl.edu/gratia/wlcg_reporting#sitenorm.</a>
+
+<font color='#7F7E6F'>&#62; I am trying to determine where the inconsistency arose.  If I look at the</font>
+<font color='#7F7E6F'>&#62; subcluster information at&#58;</font>
+<font color='#7F7E6F'>&#62; <a href='http&#58;//red-web.unl.edu/gratia/wlcg_reporting#gip' target='_blank' rel='nofollow'>http&#58;//red-web.unl.edu/gratia/wlcg_reporting#gip</a>  for AGLT2 I see</font>
+<font color='#7F7E6F'>&#62; information that matches what we have in Rob&#39;s v19 spreadsheet EXCEPT that</font>
+<font color='#7F7E6F'>&#62; the &#34;HS06 Score&#34; does not match the value in the spreadsheet nor what we</font>
+<font color='#7F7E6F'>&#62; report via GIP.</font>
+<div id='show_139904783' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_139904783'>
+This is where the inconsistency arose. i.e. GIP calculates the &#34;HS06 score&#34;
+and this value doesn&#39;t match with what the sites want it to be and the APEL
+interface has been using the value calculated by GIP. I guess it doesn&#39;t
+matter if you plug in the HS06 values inside the config.ini file, still GIP
+does its own calculation.
+
+<font color='#7F7E6F'>&#62; but I think the easiest and most correct way forward is to use this</font>
+<font color='#7F7E6F'>&#62; spreadsheet that Rob has been having us maintain to get the needed values.</font>
+<font color='#7F7E6F'>&#62; The &#34;Average&#34; HS06 by site should be pretty close to the right value now</font>
+<font color='#7F7E6F'>&#62; and should be used to provide the site numbers in your table.</font>
+
+I agree. Assuming this spreadsheet is kept upto date, we can continue to use
+this as a reliable information source for HEPSPEC values. We could use the
+GIP as an additional check, once it starts publishing the right values.
+
+<font color='#7F7E6F'>&#62; As you can see in the v19-v1 of the spreadsheet, we have added some</font>
+<font color='#7F7E6F'>&#62; columns to track &#34;HT&#34; (the BIOS column) and the number of jobs slots/node</font>
+<font color='#7F7E6F'>&#62; in that subcluster.  This will allow us to get the most accurate HS06 for</font>
+<font color='#7F7E6F'>&#62; each site.   Each site should work on updating those extra columns so we</font>
+<font color='#7F7E6F'>&#62; can get to V19-v2.</font>
+
+Sounds like a good idea. I will update the values in the APEL interface
+according to Rob&#39;s spreadsheet, which is the following.
+
+==============================
+Site			HS06
+==============================
+AGLT2			8.5
+HU_ATLAS_Tier2		8.87
+BU_ATLAS_Tier2		8.01
+MWT2_IU			8.68
+MWT2_UC			8.71
+OU_OCHEP_SWT2		9.65
+WT2			10.6
+BNL			12.37
+SWT2_CPB		7.46
+UTA_SWT2		11.24
+==============================
+
+Thanks,
+Karthik
+-------------------------------------------------------------------------
+
+On Thu, 24 Mar 2011, Open Science Grid FootPrints wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_139904783').click(function() {
+            $('#detail_139904783').slideDown("normal");
+            $('#show_139904783').hide();
+            $('#hide_139904783').show();
+        });
+        $('#hide_139904783').click(function() {
+            $('#detail_139904783').slideUp();
+            $('#hide_139904783').hide();
+            $('#show_139904783').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='10129#1300979647'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-24T15:14:07+00:00">Mar 24, 2011 03:14 PM UTC</time> by <b>Shawn McKee</b><a class="anchor" name="1300979647">&nbsp;</a></div><pre>Hi Brian,
+
+As you know we need to report HEPSPEC06 (HS06) scaled CPU and walltime to WLCG.  More than a year ago WLCG requested all sites to benchmark their systems to accurately determine the relevant HS06 values for each type in use at a site.
+
+Within USATLAS we have been trying to do this.  There is a site we are maintaining at&#58;
+
+<a href='https&#58;//www.usatlas.bnl.gov/twiki/bin/view/Admins/HepSpecBenchmarks' target='_blank' rel='nofollow'>https&#58;//www.usatlas.bnl.gov/twiki/bin/view/Admins/HepSpecBenchmarks</a> (Sorry the non-https page isn&#39;t responding; Rob do you know of any changes at BNL?  I can&#39;t seem to get the http&#58;// page to work).
+You can see the site pages at
+Measurements at AGLT2&#58; <a href='https&#58;//hep.pa.msu.edu/twiki/bin/view/AGLT2/HepSpecResults' target='_blank' rel='nofollow'>https&#58;//hep.pa.msu.edu/twiki/bin/view/AGLT2/HepSpecResults</a>
+Measurements at MWT2&#58; <a href='http&#58;//twiki.mwt2.org/bin/view/Main/HepSpecResults' target='_blank' rel='nofollow'>http&#58;//twiki.mwt2.org/bin/view/Main/HepSpecResults</a>
+
+The problem is that within USATLAS we have sites with HT on and with HT off.  You get different HS06 values for a node depending upon whether it is on/off.   Also you will get a different HS06 depending upon how many job slots you run on the node.  Some sites want to benefit from HT but don&#39;t have sufficient memory to run as many jobs slots as they have HT processors.
+
+Let me give you a specific example&#58;  At AGLT2 we have a subcluster AGLT2-Dell3.  These nodes have HT on and the OS will claim there are 16 processors.  However each node has 24GB of RAM.  ATLAS requires we provide 2GB/job-slot.  So we run these nodes with 12 Condor job slots.  Determining HS06 (remember HEPSPEC06 is determined for a whole node) is tricky.  We actually need to run the node in the mode we use it.  So we run the HS06 package on the node with 16 logical processors but running only 12 threads on the benchmark.  The value we get is different from running with 16 threads.  The per-jobslot HS06 value is 10% different if I take the HS06 16 thread value and divide by 12 vs taking the HS06 12 thread value and divide by 12.   That&#39;s the bad news.   The good news is that the GIP seems to have all we need to &#34;publish&#34; the right values (See below).  Why aren&#39;t we using that?
+
+I had replied to Karthik about this issue before but I didn&#39;t get a specific response to that email. I am including it here.
+
+&#34;Hi Karthik,
+
+I am trying to determine where the inconsistency arose.  If I look at the subcluster information at&#58;
+<a href='http&#58;//red-web.unl.edu/gratia/wlcg_reporting#gip' target='_blank' rel='nofollow'>http&#58;//red-web.unl.edu/gratia/wlcg_reporting#gip</a>  for AGLT2 I see information that matches what we have in Rob&#39;s v19 spreadsheet EXCEPT that the &#34;HS06 Score&#34; does not match the value in the spreadsheet nor what we report via GIP.
+
+Checking our OSG monitoring/config.ini on our gatekeeper under the GIP section we are reporting the correct HEPSPEC values as in Rob&#39;s  v19 spreadsheet&#58;
+
+[gate01&#58;monitoring]# grep -E &#34;(Subcluster|HEPSPEC |_per_node)&#34; config.ini | grep -v &#34;;&#34;
+[Subcluster AGLT2-R610]
+cpus_per_node = 2
+cores_per_node = 24
+HEPSPEC = 8.31
+[Subcluster AGLT2-Dell1]
+cpus_per_node = 2
+cores_per_node = 8
+HEPSPEC = 7.45
+[Subcluster AGLT2-Dell2]
+cpus_per_node = 2
+<div id='show_1967756151' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1967756151'>cores_per_node = 8
+HEPSPEC = 8.55
+[Subcluster AGLT2-Dell3]
+cpus_per_node = 2
+cores_per_node = 12
+HEPSPEC = 9.49
+[Subcluster AGLT2-Dell4]
+cpus_per_node = 2
+cores_per_node = 16
+HEPSPEC = 10.26
+[Subcluster AGLT2-X4600]
+cpus_per_node = 8
+cores_per_node = 16
+HEPSPEC = 7.38
+[Subcluster AGLT2-R410A]
+cpus_per_node = 2
+cores_per_node = 24
+HEPSPEC = 8.30
+[Subcluster AGLT2-M610]
+cpus_per_node = 2
+cores_per_node = 24
+HEPSPEC = 8.97
+
+It seems you should have ALL the information you need given the above values from GIP?  I assume the other sites have filled out this information correctly as well...I thought the idea was to use this to accurately report our site values for OSG?
+
+Can you describe where the subcluster column &#34;HEPSPEC06 Score&#34; comes from?  Maybe it comes from the broken link above the table &#34;The lookup table for CPU normalization is_posted_here&#34;?  The broken link is&#58;
+
+<a href='http&#58;//red-web.unl.edu/gratia/cpu_normalization' target='_blank' rel='nofollow'>http&#58;//red-web.unl.edu/gratia/cpu_normalization</a>
+
+Thanks,
+
+Shawn&#34;
+
+Our site would have the correct values if the GIP numbers were actually used.  We were very careful to get these setup correctly and we update them as we modify our cluster (add or decommission nodes).
+
+I understand about having a human in the loop.  What I think should be easy to do is to have the GIP values used to calculate an average HS06/job-slot value and then compare that to what the &#34;internal&#34; value is that will be used to normalize data sent to WLCG.  If they differ the human in the loop needs to resolve it with the site.  (Maybe the OSG values used are wrong for example or the site changed something or the site GIP is wrong)
+
+For AGLT2 we also have another long-standing issue in that non-LHC OSG use doesn&#39;t seem to be counted (It looks like our entire site use is reported as LHC use).   That is a separate topic but it is important to resolve.
+
+Let me know if you have comments or questions.  Thanks,
+
+Shawn
+</div><script type='text/javascript'>
+        $('#show_1967756151').click(function() {
+            $('#detail_1967756151').slideDown("normal");
+            $('#show_1967756151').hide();
+            $('#hide_1967756151').show();
+        });
+        $('#hide_1967756151').click(function() {
+            $('#detail_1967756151').slideUp();
+            $('#hide_1967756151').hide();
+            $('#show_1967756151').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='10129#1300943955'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2011-03-24T05:19:15+00:00">Mar 24, 2011 05:19 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1300943955">&nbsp;</a></div><pre>[by Brian Bockelman]
+
+Hi,
+
+Rob and Shawn (others?  Feel free to expand the CC list) have asked us to consider the incorporation of HT information into the automated calculation of the WLCG normalization constant.
+
+Shawn or Rob - I know we did this once in email, but can you please describe the use case and/or any requirements there might be here?  Basically, I feel a bit behind on this issue&#58; I don&#39;t yet understand what we&#39;re trying to accomplish (not 100% sure my sentence above is correct).
+
+Thanks,
+
+Brian</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F10129">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 10129});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

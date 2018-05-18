@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[21738] Problems with gridftp servers after update</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=21738" method="post">
+<div class="page-header">
+    <h3><span class="muted">21738</span> / Problems with gridftp servers after update</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Sean Dobbs</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">NUMEP_SE</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">Gluex</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Sean Dobbs</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">GLUEX</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-09-24</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">GLUEX <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Tim Cartwright <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Carl Edquist <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=21738", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/21738?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/21738?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Problems%20with%20gridftp%20servers%20after%20update%20ISSUE%3D21738%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='21738#1409344906'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-29T20:41:46+00:00">Aug 29, 2014 08:41 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409344906">&nbsp;</a></div><pre>Sounds good, thanks!
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1409344327'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-29T20:32:07+00:00">Aug 29, 2014 08:32 PM UTC</time><a class="anchor" name="1409344327">&nbsp;</a></div><pre>Everything is tested and working fine now.  I&#39;m okay with closing this ticket.
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1409338009'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-29T18:46:49+00:00">Aug 29, 2014 06:46 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409338009">&nbsp;</a></div><pre>Great!  Sorry about all the red herrings along the way!
+
+Would you like to keep this ticket open for the errors you encountered on the other gridftp servers?
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1409336611'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-29T18:23:31+00:00">Aug 29, 2014 06:23 PM UTC</time><a class="anchor" name="1409336611">&nbsp;</a></div><pre>Yes!  That seems to have done the trick.  I guess I was a little confused about the proper definition of XROOTD_VMP when originally setting things up.  It&#39;s funny that it worked before, though.
+
+I tried rolling out the change to some other gridftp servers and encountered some other errors, but I think that they are unrelated.
+
+Thank you very much for helping track this down!
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1409334149'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-29T17:42:29+00:00">Aug 29, 2014 05:42 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409334149">&nbsp;</a></div><pre>Interesting, maybe the problem is that it&#39;s trying to map everything under the local &#34;/&#34; (ie, everything) to the remote /storage/grid ... So I&#39;m guessing that with the posix preload, even opening /dev/null gets mapped to the remote server ... Maybe you can try setting the local path part to just a particular subdirectory to map?
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1409330045'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-29T16:34:05+00:00">Aug 29, 2014 04:34 PM UTC</time><a class="anchor" name="1409330045">&nbsp;</a></div><pre>In /usr/share/osg/sysconfig/globus-gridftp-server-plugin,  XROOTD_VMP is set to some default value.  I have it set instead in /etc/sysconfig/xrootd-dsi, which just contains
+
+export XROOTD_VMP=&#34;osg-se.research.northwestern.edu&#58;1094&#58;/=/storage/grid&#34;
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1409329524'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-29T16:25:24+00:00">Aug 29, 2014 04:25 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409329524">&nbsp;</a></div><pre>As far as the chroot setup, I found this&#58;
+<a href='http&#58;//toolkit.globus.org/toolkit/docs/5.0/5.0.4/data/gridftp/admin/#chroot-gridftp' target='_blank' rel='nofollow'>http&#58;//toolkit.globus.org/toolkit/docs/5.0/5.0.4/data/gridftp/admin/#chroot-gridftp</a>
+
+Which makes it seem like it&#39;s not a default setting, so you&#39;d have to explicitly pass -chroot-path or have it in a config file.  Otherwise it seems like it shouldn&#39;t be using a chroot jail.
+
+Yeah, if taking out the LD_PRELOAD made it things work, then there could be a problem with the libXrdPosixPreload magic ...
+
+In /usr/share/osg/sysconfig/globus-gridftp-server-plugin, is XROOTD_VMP set to anything?  Also, does /etc/sysconfig/xrootd-dsi exist, and if so, can you paste or attach its contents?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1409248703'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-28T17:58:23+00:00">Aug 28, 2014 05:58 PM UTC</time><a class="anchor" name="1409248703">&nbsp;</a></div><pre>Carl,
+
+Unfortunately, I&#39;m not sure about where the chroot jail might be set up.  I&#39;ve tried to poke around but haven&#39;t found any leads.  Hopefully someone else might have an idea.
+
+I found something else interesting today.  I was playing around with the init script, to see if the PATH was set correctly (It was), and tried unsetting LD_PRELOAD right after all of the configuration was done.  After doing that, the gridftp server started up and I was able to transfer some files.   I had tried something similar to this before, but the server didn&#39;t work, so I&#39;m not sure what is different,
+
+So, this might be an xrootd problem in the end?
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1409243314'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-28T16:28:34+00:00">Aug 28, 2014 04:28 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409243314">&nbsp;</a></div><pre>By the way, for xrootd, ECANCELED appears to be a catch-all for xrootd failures, so it may not have anything to do with the normal meaning of ECANCELED&#58;
+
+int XrdPosixXrootd&#58;&#58;mapError(int rc)
+{
+switch(rc)
+{case kXR_NotFound&#58;      return ENOENT;
+case kXR_NotAuthorized&#58; return EACCES;
+case kXR_IOError&#58;       return EIO;
+case kXR_NoMemory&#58;      return ENOMEM;
+case kXR_NoSpace&#58;       return ENOSPC;
+case kXR_ArgTooLong&#58;    return ENAMETOOLONG;
+case kXR_noserver&#58;      return EHOSTUNREACH;
+case kXR_NotFile&#58;       return ENOTBLK;
+case kXR_isDirectory&#58;   return EISDIR;
+case kXR_FSError&#58;       return ENOSYS;
+default&#58;                return ECANCELED;
+}
+}</pre></div><div class='update_description'><i onclick="document.location='21738#1409241923'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-28T16:05:23+00:00">Aug 28, 2014 04:05 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409241923">&nbsp;</a></div><pre>Thanks Sean for trying it out!
+
+So, in order to put something together quickly, I did the diagnostics with a handful of shell commands (id, stat, ls, env). That they all failed with &#34;command not found&#34; was a little bit of a surprise, but it would totally make sense if it&#39;s a chroot that is just missing all those tools.  The only other explanation would be that PATH was explicitly set to be empty.
+
+The other &#34;Operation canceled&#34; error messages are failed attempts to open /dev/null for writing -- the first one is from globus-ftp-control itself when it fails to fopen(&#34;/dev/null&#34;,&#34;w&#34;), and the second one is from the shell debugging trying to run &#34;echo test &#62; /dev/null&#34; -- so, the shell also fails to open /dev/null for writing, with the same error.  ECANCELED is supposed to mean an asynchronous operation was canceled before it completed ... but maybe it has some special meaning in xrootd&#39;s replacement of open() ... I can look into it.
+
+Sean, do you (or, does anybody else,) know whether a chroot environment is set up that this would be running under, and if so how it gets set up?  I&#39;m guessing it is handled by globus-gridftp-server, but I don&#39;t know off hand what the defaults are or where it gets configured...
+
+Thanks!
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1409230364'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-28T12:52:44+00:00">Aug 28, 2014 12:52 PM UTC</time><a class="anchor" name="1409230364">&nbsp;</a></div><pre>Hi Carl,
+
+Thanks a lot for putting that together!  I installed the new RPM and have put the output of the command below - hopefully that gives some insight.
+I forgot if I&#39;ve mentioned before, but there is always a pause of ~10-20 seconds between running the command and it failing
+Are there any other config files I can take a look at besides the shared library?
+
+---Sean
+
+Starting globus-gridftp-server&#58; fopen(/dev/null)&#58; Operation canceled
+*** debugging info ***
+sh&#58; line 2&#58; id&#58; command not found
+sh&#58; line 3&#58; stat&#58; command not found
+sh&#58; line 4&#58; ls&#58; command not found
+sh&#58; line 5&#58; ls&#58; command not found
+sh&#58; line 6&#58; stat&#58; command not found
+sh&#58; line 7&#58; /dev/null&#58; Operation canceled
+-- dumping environment --
+sh&#58; line 9&#58; env&#58; command not found
+----------------------
+Error&#58; Failed to initialize&#58;
+globus_i_ftp_control_client_activate&#58; Failed to open /dev/null
+[FAILED]
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1409185099'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-28T00:18:19+00:00">Aug 28, 2014 12:18 AM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409185099">&nbsp;</a></div><pre>Hi Sean,
+
+I made a scratch build of globus-ftp-control with some added debugging for the fopen(&#34;/dev/null&#34;,&#34;w&#34;) failure&#58;
+
+<a href='https&#58;//koji-hub.batlab.org/koji/taskinfo?taskID=127947' target='_blank' rel='nofollow'>https&#58;//koji-hub.batlab.org/koji/taskinfo?taskID=127947</a>
+<a href='https&#58;//koji-hub.batlab.org/koji/getfile?taskID=127947&name=globus-ftp-control-4.7-1.2.devnulldebug.osg32.el6.x86_64.rpm' target='_blank' rel='nofollow'>https&#58;//koji-hub.batlab.org/koji/getfile?taskID=127947&name=globus-ftp-control-4.7-1.2.devnulldebug.osg32.el6.x86_64.rpm</a>
+
+If you are up for it, you can download and install it, and (hopefully) see what output accompanies the /dev/null error message...
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1409170857'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-27T20:20:57+00:00">Aug 27, 2014 08:20 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409170857">&nbsp;</a></div><pre>If we&#39;ve ruled out selinux being an issue, the only other ideas from the ticket were&#58;
+
+(1) a bad chroot jail, or
+(2) &#34;export LD_PRELOAD=$XROOTDLIB/libXrdPosixPreload.so&#34; is causing calls to fopen() to fail.
+
+I can try making a custom build of globus-ftp-control package that does some diagnostics when it hits this failure -- that could tell us what the environment looks like from the perspective of the process that&#39;s failing ... maybe checking&#58;
+- the current user/group
+- see if we&#39;re inside a chroot (stat /, Inode = 2 vs &#62; 2)
+- make sure that /dev/null exists and with the expected permissions
+- the current value of LD_PRELOAD
+
+libXrdPosixPreload.so is part of xrootd-client-libs, and, I suppose I can try making a custom build of that with debugging also, for the cases where the functions it overrides fail...
+
+Beyond that I don&#39;t have any other ideas at the moment.  Sorry this has been tedious to debug  &#58;(
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1409160219'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-27T17:23:39+00:00">Aug 27, 2014 05:23 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1409160219">&nbsp;</a></div><pre>Sean&#58; Thanks for the update. I am honestly surprised, as it seemed like the kind of thing that could cause that problem. But we will keep going. Carl Edquist of the OSG Software team will own this ticket for now (I am staying on to watch), and he will send some more debugging ideas as soon as he can.</pre></div><div class='update_description'><i onclick="document.location='21738#1409159329'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-27T17:08:49+00:00">Aug 27, 2014 05:08 PM UTC</time><a class="anchor" name="1409159329">&nbsp;</a></div><pre>Tim (and Richard)&#58;
+
+Thank you for the clarification.  I agree that SELinux is a headache, and I generally run with it turned off.
+
+I had previously verified that I get the same behavior with SELinux completely disabled, and just verified that this is still the case.  Sorry if I didn&#39;t mention that on this ticket.
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1409151190'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-27T14:53:10+00:00">Aug 27, 2014 02:53 PM UTC</time> by <b>GLUEX</b><a class="anchor" name="1409151190">&nbsp;</a></div><pre>Sean,
+
+I agree with this. We boot all of our cluster systems with the kernel
+command-line option &#34;selinux=0&#34;. Trying to run a production OSG cluster
+with selinux enabled leads to no end of worry.
+
+-Richard J.
+
+On Wed, Aug 27, 2014 at 10&#58;38 AM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62;  [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21738#1409150294'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-27T14:38:14+00:00">Aug 27, 2014 02:38 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1409150294">&nbsp;</a></div><pre>Sean&#58;
+
+I am sorry that this point did not get across sooner ... but we do not support SELinux at all. We do not test with SELinux, and I know that some software will fail. Please disable SELinux and try again (possibly with a reboot?).
+
+--
+Tim Cartwright
+Open Science Grid Software Manager
+Center for High Throughput Computing, University of Wisconsin-Madison
+1210 West Dayton Street, Room 4265; Madison, WI 53706; United States
+Email&#58; cat@.... / Tel&#58; +1 (608) 262-4002</pre></div><div class='update_description'><i onclick="document.location='21738#1408730345'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-22T17:59:05+00:00">Aug 22, 2014 05:59 PM UTC</time><a class="anchor" name="1408730345">&nbsp;</a></div><pre>Not really at this momment
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='21738#1408553921'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-20T16:58:41+00:00">Aug 20, 2014 04:58 PM UTC</time> by <b>echism</b><a class="anchor" name="1408553921">&nbsp;</a></div><pre>Edgar,
+
+Do you have any suggestions other than that?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='21738#1408384500'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-18T17:55:00+00:00">Aug 18, 2014 05:55 PM UTC</time><a class="anchor" name="1408384500">&nbsp;</a></div><pre>Hi,
+
+Unfortunately, I don&#39;t see anything in my GUMS log either.
+
+I am getting the impression that the only thing to do at this point is to reimage the machine and hope that there aren&#39;t any problems when installing from scratch.
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1408034858'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-14T16:47:38+00:00">Aug 14, 2014 04:47 PM UTC</time><a class="anchor" name="1408034858">&nbsp;</a></div><pre>Hi,
+
+Can you check your GUMS log and see if there is anything when you try to start the grid ftp service?
+
+Everything else looks fine to me.
+
+Cheers,
+
+Edgar
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='21738#1407446687'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-07T21:24:47+00:00">Aug 7, 2014 09:24 PM UTC</time> by <b>echism</b><a class="anchor" name="1407446687">&nbsp;</a></div><pre>Hello,
+
+Is there anything new on this?
+
+Thank you.</pre></div><div class='update_description'><i onclick="document.location='21738#1406770183'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-31T01:29:43+00:00">Jul 31, 2014 01:29 AM UTC</time><a class="anchor" name="1406770183">&nbsp;</a></div><pre>OK, I tried turning SELinux on, and that didn&#39;t work.
+
+Here&#39;s the output of the commands you asked&#58;
+
+[numep-proc8 ~]# ls -lh / | grep dev
+drwxr-xr-x.  19 root root 3.8K Jul 30 19&#58;17 dev
+[numep-proc8 ~]# ls -lh /dev | grep null
+crw-rw-rw-.  1 root root      1,   3 Jul 30 19&#58;16 null
+[numep-proc8 ~]# groups daemon
+daemon &#58; daemon bin adm lp
+[numep-proc8 ~]# groups xrootd
+groups&#58; xrootd&#58; No such user
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1406764881'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-31T00:01:21+00:00">Jul 31, 2014 12:01 AM UTC</time><a class="anchor" name="1406764881">&nbsp;</a></div><pre>One more thing,
+
+The problem maybe with /dev and not with /dev/null
+
+can you please run
+
+ls -lh / | grep dev
+
+and
+
+ls -lh /dev | grep null
+
+Also, may you run&#58;
+
+groups daemon
+groups xrootd
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='21738#1406762818'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T23:26:58+00:00">Jul 30, 2014 11:26 PM UTC</time><a class="anchor" name="1406762818">&nbsp;</a></div><pre>Well,
+
+My only guess is to try to enable temporairly selinux and see if it works&#58;
+
+echo 1 &#62;/selinux/enforce
+
+Can you try that Sean please?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='21738#1406750418'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T20:00:18+00:00">Jul 30, 2014 08:00 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1406750418">&nbsp;</a></div><pre>Hmm, well, I am running out of ideas too!  &#58;)
+
+I guess you could un-comment those logging settings in gridftp.conf, since that didn&#39;t seem to help.  But it sounds like it it still isn&#39;t writing anything to the log files (right?)
+
+Edgar, do you have any suggestions based on the a copy of /etc/fstab and /etc/sysconfig/xrootd-dsi that Sean attached?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1406749506'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T19:45:06+00:00">Jul 30, 2014 07:45 PM UTC</time><a class="anchor" name="1406749506">&nbsp;</a></div><pre>Sorry, there&#39;s nothing in that directory... anything else you want me to try?
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1406748543'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T19:29:03+00:00">Jul 30, 2014 07:29 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1406748543">&nbsp;</a></div><pre>Yeah, looks like the gridftp.conf changes are just the logging lines commented out&#58;
+
+#log_level ERROR,WARN,INFO
+#log_single /var/log/gridftp-auth.log
+#log_transfer /var/log/gridftp.log
+
+Another idea -- can you do an &#34;ls /etc/gridftp.d&#34; ?  globus-gridftp-server also uses any config files from that dir...
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1406747018'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T19:03:38+00:00">Jul 30, 2014 07:03 PM UTC</time><a class="anchor" name="1406747018">&nbsp;</a></div><pre>Here are the SELinux results&#58;
+
+[numep-proc8 ~]# /usr/sbin/getenforce
+Permissive
+[numep-proc8 ~]# ls --lcontext /dev/null
+crw-rw-rw-. 1 system_u&#58;object_r&#58;null_device_t&#58;s0 root root 1, 3 Jul  8 15&#58;06 /dev/null
+
+Now that you mean it, I do seem to remember SELinux handles /dev/null in a weird way, though I&#39;m not sure why it would be invoked since I&#39;m running in permissive mode.
+
+For the gridftp.conf, I forget exactly when it was edited.  I have gone ahead and attached it.  The only difference is some lines related to logging.  I tried taking them out and still had the same problems.
+
+For the gsi-authz.conf, it&#39;s just one line to enable GUMS authentication.
+
+/etc/grid-security/gsi-authz.conf&#58;
+globus_mapping liblcas_lcmaps_gt4_mapping.so lcmaps_callout
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1406745777'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T18:42:57+00:00">Jul 30, 2014 06:42 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1406745777">&nbsp;</a></div><pre>Ok, looks like the right java versions are being used, and /dev/null looks normal ... But I do see there&#39;s a &#34;.&#34; at the end of &#34;crw-rw-rw-.&#34;, which I think has to do with selinux.  Just out of curiosity, try running &#34;/usr/sbin/getenforce&#34; and &#34;ls --lcontext /dev/null&#34; .
+
+Apart from that, I&#39;m looking at config files which are modified, based on the osg-profile log.  Looks like /etc/gridftp.conf differs from what gets installed by default from the rpm&#58;
+
+***** rpm --verify globus-gridftp-server-progs-6.38-1.3.osg32.el6.x86_64
+S.5....T.  c /etc/gridftp.conf
+
+Do you know if this was hand-edited before or after the osg-3.2 upgrade?  If it was edited before, there might be a /etc/gridftp.conf.rpmnew laying around, and in that case we should try to see what&#39;s different.  But it could have been edited after the upgrade too.  Could you attach a copy of your /etc/gridftp.conf here?
+
+This may be less likely to be relevant, but I see /etc/grid-security/gsi-authz.conf is modified also -- maybe we can check that one out too.
+
+Thanks!
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1406738049'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T16:34:09+00:00">Jul 30, 2014 04:34 PM UTC</time><a class="anchor" name="1406738049">&nbsp;</a></div><pre>Hi Carl,
+
+Thanks for the insight.  That&#39;s a good point about a problematic chroot jail.
+I&#39;ve put the output of the commands you asked below.
+
+[numep-proc8 ~]# java -version
+java version &#34;1.7.0_55&#34;
+OpenJDK Runtime Environment (rhel-2.4.7.1.el6_5-x86_64 u55-b13)
+OpenJDK 64-Bit Server VM (build 24.51-b03, mixed mode)
+[numep-proc8 ~]# javac -version
+javac 1.7.0_55
+[numep-proc8 ~]# ls -l /dev/null
+crw-rw-rw-. 1 root root 1, 3 Jul  8 15&#58;06 /dev/null
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1406736921'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T16:15:21+00:00">Jul 30, 2014 04:15 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1406736921">&nbsp;</a></div><pre>Thanks Sean for the info.
+
+I&#39;m just taking a look around --
+
+From the osg-profile output, it does look like all the osg packages are updated to the OSG 3.2 versions.  There are a few packages that osg ships installed with non-osg versions (slf4j-1.5.8-8.el6, voms-api-java-2.0.10-4.el6, & xalan-j2-2.7.0-9.9.el6_5) but I doubt they are causing problems here.
+
+I do see the java-1.6.0-openjdk packages installed alongside the 1.7.0 versions.  That doesn&#39;t always cause trouble, but just in case, can you check to see which version is the default by running&#58;
+
+java -version
+javac -version
+
+As far as the error message, looks like that is actually coming from the globus-ftp-control package ... I am not familiar with this source code at all, but it it looks straightforward enough -- it&#39;s just complaining after a failed attempt to open &#34;/dev/null&#34; for writing.  That&#39;s a little odd, but they are at least good about making sure it succeeds.  The only reasons I can imagine for this are if the permissions are bad on /dev/null, or if it doesn&#39;t exist, which might happen inside of a chroot jail that&#39;s not set up properly ...
+
+In any case, Sean, can you try running &#34;ls -l /dev/null&#34; ?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='21738#1406576203'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-28T19:36:43+00:00">Jul 28, 2014 07:36 PM UTC</time><a class="anchor" name="1406576203">&nbsp;</a></div><pre>Hi Edgar,
+
+I&#39;ve gone ahead and attached the configuration files you asked for.  I tried restarting the gridftp server again, but it dies before writing anything to the log files.
+
+Cheers,
+Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1406574729'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-28T19:12:09+00:00">Jul 28, 2014 07:12 PM UTC</time><a class="anchor" name="1406574729">&nbsp;</a></div><pre>Hi,
+
+Can you try to restart the gridftp server and attach these logs&#58;
+
+/var/log/gridftp.log	GridFTP transfer log
+/var/log/gridftp-auth.log
+
+Also
+
+Can you attach a copy of /etc/fstab and /etc/sysconfig/xrootd-dsi
+
+Thanks,
+
+Edgar
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='21738#1406319661'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-25T20:21:01+00:00">Jul 25, 2014 08:21 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1406319661">&nbsp;</a></div><pre>I&#39;m not quite sure at this point.  Carl, do you have suggestions?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='21738#1406142335'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-23T19:05:35+00:00">Jul 23, 2014 07:05 PM UTC</time><a class="anchor" name="1406142335">&nbsp;</a></div><pre>Hi Suchandra,
+
+Yes, the xrootd-dsi package is from the OSG repo.  Are there any other packages that I should check?
+
+---Sean
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1406139384'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-23T18:16:24+00:00">Jul 23, 2014 06:16 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1406139384">&nbsp;</a></div><pre>Hi Sam,
+
+Could you check the rpms the dsi modules come from and verify that they&#39;re from the OSG repo and not epel?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='21738#1405977057'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-21T21:10:57+00:00">Jul 21, 2014 09:10 PM UTC</time> by <b>echism</b><a class="anchor" name="1405977057">&nbsp;</a></div><pre>Software, any ideas?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='21738#1405541906'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T20:18:26+00:00">Jul 16, 2014 08:18 PM UTC</time><a class="anchor" name="1405541906">&nbsp;</a></div><pre>Hi Suchandra,
+
+The error happens as the program is starting up, so there aren&#39;t any logs.  I did some more digging and found that the xrootd-dsi module seems to be the source of the problems, since if I comment out the loading of /usr/share/osg/sysconfig/globus-gridftp-server-plugin, I could still copy files through the gridftp server, since I have the xrootd filesystem mounted through xrootdfs.
+
+Looking through /usr/share/osg/sysconfig/globus-gridftp-server-plugin, I was able to get rid of the /dev/null error by commenting out the line &#34;export LD_PRELOAD=$XROOTDLIB/libXrdPosixPreload.so&#34;.  Of course, then the gridftp server didn&#39;t work - I can send some log files of that if you&#39;re interested.
+
+The workers nodes do have access to the full xrootd filesystem.
+
+Any ideas on where to go from here?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1405537483'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T19:04:43+00:00">Jul 16, 2014 07:04 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1405537483">&nbsp;</a></div><pre>Could you check the gridftp logs on the worker nodes and send a few samples of the logs?  Also, do the worker nodes have access to the the full xrootd filesystem?
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='21738#1405451958'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-15T19:19:18+00:00">Jul 15, 2014 07:19 PM UTC</time> by <b>echism</b><a class="anchor" name="1405451958">&nbsp;</a></div><pre>Suchandra,
+
+Do you have anything on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='21738#1405100699'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T17:44:59+00:00">Jul 11, 2014 05:44 PM UTC</time><a class="anchor" name="1405100699">&nbsp;</a></div><pre>Sure, I&#39;ve attached the output to the ticket.
+
+I don&#39;t know the exact revision, but in this case I was upgrading the node from a reasonably recent version of OSG 3.1 to 3.2.  I&#39;ve seen similar errors on nodes just updating to the newest 3.1, though.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><div class='update_description'><i onclick="document.location='21738#1405100208'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T17:36:48+00:00">Jul 11, 2014 05:36 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1405100208">&nbsp;</a></div><pre>Sorry I mean osg-system-profiler instead of osg-profile.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='21738#1405100159'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T17:35:59+00:00">Jul 11, 2014 05:35 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1405100159">&nbsp;</a></div><pre>Hi,
+Which version were you previously running?  Can you run osg-profile on the affected machines and then attach the output to this ticket?
+
+Suchandra Thapa
+OSG Software Team</pre></div><div class='update_description'><i onclick="document.location='21738#1405097288'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-11T16:48:08+00:00">Jul 11, 2014 04:48 PM UTC</time> by <b>echism</b><a class="anchor" name="1405097288">&nbsp;</a></div><pre>Software team,
+
+To recap, this is the inquiry&#58;
+
+I&#39;m running a Bestman/xrootd-based SE and am also running some extra gridftp servers on some of my worker nodes to share some of the file transfer load.
+I updated the software on the WNs recently, and the gridftp servers, which worked fine before, are now failing to start, with the following error&#58;
+
+globus_i_ftp_control_client_activate&#58; Failed to open /dev/null
+
+Can someone helping in diagnoising this problem? At first I thought it had something to do with the authentication, but I am stuck on where to look at the moment.  The WNs are running CentOS 6.5 and OSG 3.2, with the osg-wn-client and osg-gridftp-xrootd metapackages installed, and I use GUMS for authentication.</pre></div><div class='update_description'><i onclick="document.location='21738#1405025167'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-10T20:46:07+00:00">Jul 10, 2014 08:46 PM UTC</time> by <b>echism</b><a class="anchor" name="1405025167">&nbsp;</a></div><pre>I&#39;m actually not sure what that is, to be frank, and I didn&#39;t get much from google. I&#39;m adding the software team to this ticket.
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='21738#1405013349'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-10T17:29:09+00:00">Jul 10, 2014 05:29 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1405013349">&nbsp;</a></div><pre>Hi,
+
+I&#39;m running a Bestman/xrootd-based SE and am also running some extra gridftp servers on some of my worker nodes to share some of the file transfer load.
+I updated the software on the WNs recently, and the gridftp servers, which worked fine before, are now failing to start, with the following error&#58;
+
+globus_i_ftp_control_client_activate&#58; Failed to open /dev/null
+
+Can someone helping in diagnoising this problem? At first I thought it had something to do with the authentication, but I am stuck on where to look at the moment.  The WNs are running CentOS 6.5 and OSG 3.2, with the osg-wn-client and osg-gridftp-xrootd metapackages installed, and I use GUMS for authentication.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Sean Dobbs 1149</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F21738">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 21738});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[19959] SL6 uberftp client doesn&#39;t follow DNS aliases</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=19959" method="post">
+<div class="page-header">
+    <h3><span class="muted">19959</span> / SL6 uberftp client doesn&#39;t follow DNS aliases</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Marc Mengel</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Marc Mengel</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Wait for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-04-14</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=19959", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/19959?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/19959?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20SL6%20uberftp%20client%20doesn%26%2339%3Bt%20follow%20DNS%20aliases%20ISSUE%3D19959%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='19959#1397654650'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-16T13:24:10+00:00">Apr 16, 2014 01:24 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1397654650">&nbsp;</a></div><pre>It will show up in our next release, on May 13.
+-Mat
+
+On 04/14/14 10&#58;15, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='19959#1397488549'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-14T15:15:49+00:00">Apr 14, 2014 03:15 PM UTC</time><a class="anchor" name="1397488549">&nbsp;</a></div><pre>I just have one question -- when might this move from osg-testing to being released?
+
+by /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Marc W. Mengel/CN=UID&#58;mengel</pre></div><div class='update_description'><i onclick="document.location='19959#1397484705'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-14T14:11:45+00:00">Apr 14, 2014 02:11 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1397484705">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.  Please submit problems, requests, and questions at&#58; <a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a> OSG Grid Operations Center goc@...., 317-278-9699 Visit the OSG Operations Page&#58; <a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='19959#1396976889'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T17:08:09+00:00">Apr 8, 2014 05:08 PM UTC</time> by <b>Marc W. Mengel</b><a class="anchor" name="1396976889">&nbsp;</a></div><pre>Matt,
+
+Thanks!  Yes, this seems to solve the problem.</pre></div><div class='update_description'><i onclick="document.location='19959#1396975158'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-04-08T16:39:18+00:00">Apr 8, 2014 04:39 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1396975158">&nbsp;</a></div><pre>Hi Marc,
+
+You can install an updated version of UberFTP from the osg-testing repositories by doing
+yum upgrade --enablerepo=osg-testing uberftp
+Please try it and let me know if it indeed solves your problem.
+
+-Mat</pre></div><div class='update_description'><i onclick="document.location='19959#1395868525'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-26T21:15:25+00:00">Mar 26, 2014 09:15 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1395868525">&nbsp;</a></div><pre>This issue may have been fixed in a newer version of UberFTP -- I see the following item in the ChangeLog for 2.7&#58;
+&#34;- Fixed reverse DNS looks for GSI name comparison.&#34;
+I&#39;ve made a JIRA ticket about upgrading to the latest version -- it is <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1436.' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1436.</a>
+It&#39;s too late for the April release, but we can place it in our testing repos once it&#39;s ready.
+-Mat</pre></div><div class='update_description'><i onclick="document.location='19959#1395841643'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-26T13:47:23+00:00">Mar 26, 2014 01:47 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1395841643">&nbsp;</a></div><pre>Mat&#58; This is in your court now.</pre></div><div class='update_description'><i onclick="document.location='19959#1395427196'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-21T18:39:56+00:00">Mar 21, 2014 06:39 PM UTC</time><a class="anchor" name="1395427196">&nbsp;</a></div><pre>Added session log (typescript.txt) of globus-url-copy succeeding while uberftp -ls fails.
+
+by /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Marc W. Mengel/CN=UID&#58;mengel</pre></div><div class='update_description'><i onclick="document.location='19959#1395425653'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-21T18:14:13+00:00">Mar 21, 2014 06:14 PM UTC</time> by <b>Marc W. Mengel</b><a class="anchor" name="1395425653">&nbsp;</a></div><pre>Sorry, yes this only happens with uberftp, and only on SL6.
+
+globus-url-copy is fine; but globus-url-copy doesn&#39;t have mkdir, rmdir, etc.</pre></div><div class='update_description'><i onclick="document.location='19959#1395422930'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-21T17:28:50+00:00">Mar 21, 2014 05:28 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1395422930">&nbsp;</a></div><pre>I believe we&#39;re still waiting on Marc to respond to Mat&#39;s query of whether this only occurs with uberftp or if the same problem happens with globus-url-copy.</pre></div><div class='update_description'><i onclick="document.location='19959#1395422140'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-21T17:15:40+00:00">Mar 21, 2014 05:15 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1395422140">&nbsp;</a></div><pre>Hi Software team,
+
+Any luck with figuring this out?</pre></div><div class='update_description'><i onclick="document.location='19959#1395250001'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-19T17:26:41+00:00">Mar 19, 2014 05:26 PM UTC</time><a class="anchor" name="1395250001">&nbsp;</a></div><pre>Ping
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='19959#1395095592'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-17T22:33:12+00:00">Mar 17, 2014 10:33 PM UTC</time><a class="anchor" name="1395095592">&nbsp;</a></div><pre>I am not sure if related. But I wonder the openssl versions on both cases are different&#58;
+
+SL5&#58;
+***** Running&#58; openssl version
+OpenSSL 0.9.8e-fips-rhel5 01 Jul 2008
+
+SL6&#58;
+
+***** Running&#58; openssl version
+OpenSSL 1.0.1e-fips 11 Feb 2013
+
+Although I could not find nothing in the changelog here&#58;
+
+<a href='https&#58;//www.openssl.org/news/changelog.html' target='_blank' rel='nofollow'>https&#58;//www.openssl.org/news/changelog.html</a>
+
+That mentions the alias vs cannonical reverse lookup.
+
+So I would still want to know if you can try with a globus-url-copy in verbose mode?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='19959#1394648814'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-12T18:26:54+00:00">Mar 12, 2014 06:26 PM UTC</time> by <b>Matyas Selmeci</b><a class="anchor" name="1394648814">&nbsp;</a></div><pre>Marc, is this just uberftp, or does globus-url-copy fail in the same manner?
+-Mat</pre></div><div class='update_description'><i onclick="document.location='19959#1394641356'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-12T16:22:36+00:00">Mar 12, 2014 04:22 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1394641356">&nbsp;</a></div><pre>Mat,
+
+Do you have an update on this, yet?
+
+Brian, have you heard from Mat, outside of the ticket?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='19959#1394131566'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-06T18:46:06+00:00">Mar 6, 2014 06:46 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1394131566">&nbsp;</a></div><pre>Mat&#58; Do you have any reason why uberftp would have issues with DNS aliases on SL6 but not SL5? Marc&#39;s got all the same versions of globus-gssapi-* (OSG 3.1) on both machines.</pre></div><div class='update_description'><i onclick="document.location='19959#1394124042'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-06T16:40:42+00:00">Mar 6, 2014 04:40 PM UTC</time><a class="anchor" name="1394124042">&nbsp;</a></div><pre>adding lyon@.... a for Cc&#58; list
+
+by /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Marc W. Mengel/CN=UID&#58;mengel</pre></div><div class='update_description'><i onclick="document.location='19959#1394123978'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-06T16:39:38+00:00">Mar 6, 2014 04:39 PM UTC</time><a class="anchor" name="1394123978">&nbsp;</a></div><pre>Sorry, I assumed it would attach email attachments...
+
+by /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Marc W. Mengel/CN=UID&#58;mengel</pre></div><div class='update_description'><i onclick="document.location='19959#1394122270'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-06T16:11:10+00:00">Mar 6, 2014 04:11 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1394122270">&nbsp;</a></div><pre>Marc&#58; I don&#39;t see the attachments. You may have to use the web form (<a href='https&#58;//ticket.grid.iu.edu/19959' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/19959</a>).</pre></div><div class='update_description'><i onclick="document.location='19959#1394121430'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-06T15:57:10+00:00">Mar 6, 2014 03:57 PM UTC</time> by <b>Marc W. Mengel</b><a class="anchor" name="1394121430">&nbsp;</a></div><pre>Marc, could you provide the output of osg-system-profiler?
+
+Brian Lin blin@....
+
+Brian,
+
+I&#39;m attaching the profile of an sl6 system which fails, and an sl5 system which works...</pre></div><div class='update_description'><i onclick="document.location='19959#1394061168'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-05T23:12:48+00:00">Mar 5, 2014 11:12 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1394061168">&nbsp;</a></div><pre>Marc, could you provide the output of osg-system-profiler?</pre></div><div class='update_description'><i onclick="document.location='19959#1394041329'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-05T17:42:09+00:00">Mar 5, 2014 05:42 PM UTC</time> by <b>Marc W. Mengel</b><a class="anchor" name="1394041329">&nbsp;</a></div><pre>Can we add Adam Lyon &#60;lyon@....&#62; as  a watcher on this ticket?</pre></div><div class='update_description'><i onclick="document.location='19959#1394041068'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-03-05T17:37:48+00:00">Mar 5, 2014 05:37 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1394041068">&nbsp;</a></div><pre>On SL5, the command
+uberftp -ls <a href='gsiftp&#58;//fndca1.fnal.gov/scratch' target='_blank' rel='nofollow'>gsiftp&#58;//fndca1.fnal.gov/scratch</a>
+with a fermilab&#58;/fermilab/nova/Role=Analysis proxy works fine.  On SL6, the same command
+yeilds&#58;
+------------------------------------------------
+Failed to init security context
+GSS Major Status&#58; Unexpected Gatekeeper or Service Name
+
+GSS Minor Status Error Chain&#58;
+globus_gsi_gssapi&#58; Authorization denied&#58; The expected name for the remote host (host@....) does not match the authenticated name of the remote host (fndca4a.fnal.gov). This happens when the name in the host certificate does not match the information obtained from DNS and is often a DNS configuration problem.
+
+Exception&#58;ls failed.
+-------------------------------------------------
+The SL5 and SL6 systems have the same DNS server and same DNS configuration; both give output&#58;
+------------------------------------
+&#60;bel-kwinith&#62; nslookup fndca1.fnal.gov
+Server&#58;		131.225.0.254
+Address&#58;	131.225.0.254#53
+
+fndca1.fnal.gov	canonical name = fndca4a.fnal.gov.
+Name&#58;	fndca4a.fnal.gov
+Address&#58; 131.225.13.30
+-------------------------
+
+We can work around this in isloated cases by putting an /etc/hosts entry&#58;
+131.225.13.30 fndca4a.fnal.gov fndca4a fndca1.fnal.gov fndca1
+
+but this is not suitable for production use.
+
+Is  there some reason the SL6 build does not trust the DNS Cannonical Name entry?
+Can this be fixed?
+
+by Marc Mengel (guest)</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F19959">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 19959});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

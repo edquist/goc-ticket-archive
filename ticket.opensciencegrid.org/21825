@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[21825] wrong md5sum & files corruption while download files via lcg-cp/srm</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=21825" method="post">
+<div class="page-header">
+    <h3><span class="muted">21825</span> / wrong md5sum & files corruption while download files via lcg-cp/srm</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Tanya Levshina</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">GLOW-CMS-SE</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">CMS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Tanya Levshina</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USCMS_Tier2</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for response by BrianB</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2014-08-28</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">USCMS Tier 2 <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Matyas Selmeci <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=21825", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/21825?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/21825?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20wrong%20md5sum%20%26%20files%20corruption%20while%20download%20files%20via%20lcg-cp%2Fsrm%20ISSUE%3D21825%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='21825#1410465364'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-11T19:56:04+00:00">Sep 11, 2014 07:56 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1410465364">&nbsp;</a></div><pre>Great, thanks Tapas!
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21825#1410379409'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-09-10T20:03:29+00:00">Sep 10, 2014 08:03 PM UTC</time><a class="anchor" name="1410379409">&nbsp;</a></div><pre>For the record (Reply to Carl E.),
+
+we have upgraded (middle of it) gridftp-hdfs and osg-gridftp-hdfs to the recent version, i.e.
+gridftp-hdfs-0.5.4-18.osg32.el6.x86_64.rpm
+osg-gridftp-hdfs-3.0.0-7.osg32.el6.x86_64.rpm
+
+and comment out,
+#$GLOBUS_THREAD_MODEL pthread
+
+in gridftp-hdfs.conf
+
+md5sum is successful and returns the same value for multiple copies of the same file, opposing to what I had mentioned earlier.
+
+The new package will be rolled in to all the gridftp servers in a few days time span.
+
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1409248061'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-28T17:47:41+00:00">Aug 28, 2014 05:47 PM UTC</time> by <b>Kyle Gross</b><a class="anchor" name="1409248061">&nbsp;</a></div><pre>I will close this ticket based on Tanya&#39;s update.
+
+-Kyle</pre></div><div class='update_description'><i onclick="document.location='21825#1409246885'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-28T17:28:05+00:00">Aug 28, 2014 05:28 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1409246885">&nbsp;</a></div><pre>Thank you for informing us that this issue has been resolved. I will close this ticket.  Please submit problems, requests, and questions at&#58; <a href='https&#58;//ticket.grid.iu.edu/goc/open' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/open</a> OSG Grid Operations Center goc@...., 317-278-9699 Visit the OSG Operations Page&#58; <a href='http&#58;//osggoc.blogspot.com/' target='_blank' rel='nofollow'>http&#58;//osggoc.blogspot.com/</a></pre></div><div class='update_description'><i onclick="document.location='21825#1409160018'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-27T17:20:18+00:00">Aug 27, 2014 05:20 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409160018">&nbsp;</a></div><pre>sure, thank you! I think the ticket should be closed.
+
+Tanya
+On Aug 27, 2014, at 12&#58;06 PM, Open Science Grid FootPrints &#60;osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21825#1409159176'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-27T17:06:16+00:00">Aug 27, 2014 05:06 PM UTC</time><a class="anchor" name="1409159176">&nbsp;</a></div><pre>Hi Tanya,
+
+I have tested all the gridftp servers at Wisconsin. They should all behave appropriately now. Please let us know if you see any problem.
+
+Thanks
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1409083790'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T20:09:50+00:00">Aug 26, 2014 08:09 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409083790">&nbsp;</a></div><pre>Hi Tapas,
+Great! If you have the whole list I will stop checking it.
+Let us know when it is done.
+Tanya</pre></div><div class='update_description'><i onclick="document.location='21825#1409083505'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T20:05:05+00:00">Aug 26, 2014 08:05 PM UTC</time><a class="anchor" name="1409083505">&nbsp;</a></div><pre>Hi Tanya,
+
+I see the source of the problem. At some point during the discussion of this ticket, we downgraded gridftp-hdfs to a version that didn&#39;t have the bug. Somehow many of the machines that you reported didn&#39;t downgrade. I will fix this.
+
+Sorry about the inconvenience.
+
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1409082954'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T19:55:54+00:00">Aug 26, 2014 07:55 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409082954">&nbsp;</a></div><pre>globus-url-copy <a href='gsiftp&#58;//g12n16.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//g12n16.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz</a> file&#58;///.../a3
+globus-url-copy <a href='gsiftp&#58;//g12n16.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//g12n16.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz</a> file&#58;///..../a4
+
+md5sum a3 a4
+81d5557d5ef2cbddceab736e0ee45261  a3
+e908f7bf82e16bff795c58003c6d548a  a4
+
+(my previous ticket update looks weird, so i am trying again)</pre></div><div class='update_description'><i onclick="document.location='21825#1409082769'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T19:52:49+00:00">Aug 26, 2014 07:52 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409082769">&nbsp;</a></div><pre>2014-08-26 19&#58;49&#58;46 UTC [tanya@osg-xsede&#58;/local-scratch/tanya]$ globus-url-copy <a href='gsiftp&#58;//g12n16.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//g12n16.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz</a> file&#58;///${PWD}/a3
+2014-08-26 19&#58;50&#58;49 UTC [tanya@osg-xsede&#58;/local-scratch/tanya]$ globus-url-copy <a href='gsiftp&#58;//g12n16.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//g12n16.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz</a> file&#58;///${PWD}/a4
+md5sum a3 a4
+81d5557d5ef2cbddceab736e0ee45261  a3
+e908f7bf82e16bff795c58003c6d548a  a4
+
+and both are wrong</pre></div><div class='update_description'><i onclick="document.location='21825#1409081650'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T19:34:10+00:00">Aug 26, 2014 07:34 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409081650">&nbsp;</a></div><pre>do you have any sane method to check configuration on all the server? My way of checking is too painful.</pre></div><div class='update_description'><i onclick="document.location='21825#1409081588'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T19:33:08+00:00">Aug 26, 2014 07:33 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409081588">&nbsp;</a></div><pre>two more&#58;
+g14n02.hep.wisc.edu
+d221d8b7c3e81131d3f20bf3ffa1f55c  a1
+g14n09.hep.wisc.edu
+4dc3e51454d7a1a2706f12983c532d77  a1</pre></div><div class='update_description'><i onclick="document.location='21825#1409080880'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T19:21:20+00:00">Aug 26, 2014 07:21 PM UTC</time><a class="anchor" name="1409080880">&nbsp;</a></div><pre>That is strange. I just tested one of the nodes that you have mentioned, I don&#39;t see discrepancies in md5sum.
+
+-Tapas
+
+]$ globus-url-copy -v <a href='gsiftp&#58;//g12n15.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//g12n15.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a> b
+Source&#58; <a href='gsiftp&#58;//g12n15.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/' target='_blank' rel='nofollow'>gsiftp&#58;//g12n15.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/</a>
+Dest&#58;   file&#58;///scratch/tapas/
+nt.18.tar.gz  -&#62;  b
+[tapas@login05 tapas]$ globus-url-copy -v <a href='gsiftp&#58;//g12n15.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//g12n15.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a> a
+Source&#58; <a href='gsiftp&#58;//g12n15.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/' target='_blank' rel='nofollow'>gsiftp&#58;//g12n15.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/</a>
+Dest&#58;   file&#58;///scratch/tapas/
+nt.18.tar.gz  -&#62;  a
+[tapas@login05 tapas]$ md5sum a b
+8d3a9cde3cec377008045767693e0333  a
+8d3a9cde3cec377008045767693e0333  b
+[tapas@login05 tapas]$ md5sum /hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz
+8d3a9cde3cec377008045767693e0333  /hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1409079685'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T19:01:25+00:00">Aug 26, 2014 07:01 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409079685">&nbsp;</a></div><pre>another affected server&#58;
+g12n16.hep.wisc.edu
+
+I am testing all of them now.
+g12n15.hep.wisc.edu
+b61147ea32a69c735bf3cddd5223750c  a1
+g12n16.hep.wisc.edu
+51457123e3b9c48a7856262ffb31a566  a1
+g12n17.hep.wisc.edu
+b61147ea32a69c735bf3cddd5223750c  a1</pre></div><div class='update_description'><i onclick="document.location='21825#1409079681'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T19:01:21+00:00">Aug 26, 2014 07:01 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409079681">&nbsp;</a></div><pre>another affected server&#58;
+g12n16.hep.wisc.edu
+
+I am testing all of them now.
+g12n15.hep.wisc.edu
+b61147ea32a69c735bf3cddd5223750c  a1
+g12n16.hep.wisc.edu
+51457123e3b9c48a7856262ffb31a566  a1
+g12n17.hep.wisc.edu
+b61147ea32a69c735bf3cddd5223750c  a1</pre></div><div class='update_description'><i onclick="document.location='21825#1409078230'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T18:37:10+00:00">Aug 26, 2014 06:37 PM UTC</time><a class="anchor" name="1409078230">&nbsp;</a></div><pre>Possibly. In any case, gridftp server is not running on this machine, so bestman wont be able to get anything through login01.
+
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1409077908'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T18:31:48+00:00">Aug 26, 2014 06:31 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409077908">&nbsp;</a></div><pre>I still see it in the list. I don&#39;t know if there is some timeout before bestman update the list</pre></div><div class='update_description'><i onclick="document.location='21825#1409077411'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T18:23:31+00:00">Aug 26, 2014 06:23 PM UTC</time><a class="anchor" name="1409077411">&nbsp;</a></div><pre>sorry, that was an oversight. I have removed login01 from the list of gridftp servers in Wisconsin. Let me know if you still see checksum differences from any other gridftp server.
+
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1409076399'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T18:06:39+00:00">Aug 26, 2014 06:06 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409076399">&nbsp;</a></div><pre>Unfortunately it is listed in the list of availble gridftp servers&#58;
+do srm-ping <a href='srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/' target='_blank' rel='nofollow'>srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/</a>
+
+gsiftpTxfServers[197]=g27n25.hep.wisc.edu
+gsiftpTxfServers[198]=g27n26.hep.wisc.edu
+gsiftpTxfServers[199]=g27n27.hep.wisc.edu
+gsiftpTxfServers[200]=g27n28.hep.wisc.edu
+gsiftpTxfServers[201]=g27n29.hep.wisc.edu
+gsiftpTxfServers[202]=g27n30.hep.wisc.edu
+gsiftpTxfServers[203]=login01.hep.wisc.edu
+gsiftpTxfServers[204]=s15n01.hep.wisc.edu
+gsiftpTxfServers[205]=s15n02.hep.wisc.edu
+gsiftpTxfServers[206]=s15n03.hep.wisc.edu
+gsiftpTxfServers[207]=s15n04.hep.wisc.edu
+gsiftpTxfServers[208]=s15n06.hep.wisc.edu
+gsiftpTxfServers[209]=s15n08.hep.wisc.edu
+gsiftpTxfServers[210]=s15n09.hep.wisc.edu
+gsiftpTxfServers[211]=s15n10.hep.wisc.edu
+...
+so when you are using srm command this server is picked up and download the corrupted file</pre></div><div class='update_description'><i onclick="document.location='21825#1409076181'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T18:03:01+00:00">Aug 26, 2014 06:03 PM UTC</time> by <b>Terrence Martin</b><a class="anchor" name="1409076181">&nbsp;</a></div><pre>I was actually messing with these gridftp servers last week, and they were fairly patched, this is something that has not been pushed out to the world then as far as a workaround in the RPMs?</pre></div><div class='update_description'><i onclick="document.location='21825#1409071200'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T16:40:00+00:00">Aug 26, 2014 04:40 PM UTC</time><a class="anchor" name="1409071200">&nbsp;</a></div><pre>Tanya,
+
+login01.hep.wisc.edu is a test machine created for understanding this ticket. Please don&#39;t use that for testing the correctness of the site. You can lcg-cp command that should invoke gridftp.
+
+Thanks
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1409070944'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-26T16:35:44+00:00">Aug 26, 2014 04:35 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1409070944">&nbsp;</a></div><pre>Hi,
+We are still seeing random failures. I&#39;ve just found one of the grdiftp server that produces different checksums&#58;
+globus-url-copy <a href='gsiftp&#58;//login01.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz</a> file&#58;///${PWD}/a1
+globus-url-copy <a href='gsiftp&#58;//login01.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.02.tar.gz</a> file&#58;///${PWD}/a2
+2014-08-26 16&#58;34&#58;06 UTC [tanya@osg-xsede&#58;/local-scratch/tanya]$ md5sum a1 a2
+364fcf5c43e01c0a0320c71a2055617e  a1
+08c81be522a0e402753ae36103944448  a2
+
+I didn&#39;t check all the gridftp server that are available.
+
+Could you please check what version it is running and configuration?
+
+Thanks,
+Tanya</pre></div><div class='update_description'><i onclick="document.location='21825#1409002535'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-25T21:35:35+00:00">Aug 25, 2014 09:35 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1409002535">&nbsp;</a></div><pre>Does anyone want to keep this ticket open, or is it OK to close and follow the JIRA tickets?
+
+<a href='https&#58;//globus.atlassian.net/browse/GT-547' target='_blank' rel='nofollow'>https&#58;//globus.atlassian.net/browse/GT-547</a>
+<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1495' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1495</a>
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21825#1409001172'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-25T21:12:52+00:00">Aug 25, 2014 09:12 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1409001172">&nbsp;</a></div><pre>The Globus JIRA ticket is here&#58; &#60;<a href='https&#58;//globus.atlassian.net/browse/GT-547&#62' target='_blank' rel='nofollow'>https&#58;//globus.atlassian.net/browse/GT-547&#62</a>;. As it stands, Mike Long with Globus is saying that it is complicated and may not be within his control, but there are some inconsistencies between his view of the problem and ours. Brian Bockelman is going to investigate, when he can.
+
+In the short term, I think it is best to go with the known workaround (described earlier in this ticket). A fix, if it comes, will be a ways off it seems.</pre></div><div class='update_description'><i onclick="document.location='21825#1408475896'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-19T19:18:16+00:00">Aug 19, 2014 07:18 PM UTC</time> by <b>Marko Slyz</b><a class="anchor" name="1408475896">&nbsp;</a></div><pre>I&#39;m away from the office.
+For OSG questions please contact user-support@....</pre></div><div class='update_description'><i onclick="document.location='21825#1408475780'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-19T19:16:20+00:00">Aug 19, 2014 07:16 PM UTC</time> by <b>Christopher Pipes</b><a class="anchor" name="1408475780">&nbsp;</a></div><pre>Hello Brian et All,
+
+Are there any updates on this?
+
+Thanks,
+Chris</pre></div><div class='update_description'><i onclick="document.location='21825#1407783772'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-11T19:02:52+00:00">Aug 11, 2014 07:02 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1407783772">&nbsp;</a></div><pre>By the way, Tapas, thanks for your update on the failures you were seeing.
+
+I tried my tests again with the &#34;$GLOBUS_THREAD_MODEL pthread&#34; line commented out -- I tried copying a 2gb file 5 times and it has the same md5sum each time. Also, uncommenting the line immediately brings back the failures after restarting globus-gridftp-server.  So as far as I can tell, commenting out that line works consistently for me.  Not sure why you were still seeing errors, maybe there&#39;s something else going on on your setup...
+
+In any case, hopefully the globus folks will be able to help shed some light on it...
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21825#1407782406'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-11T18:40:06+00:00">Aug 11, 2014 06:40 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1407782406">&nbsp;</a></div><pre>I&#39;m going to put together some text for Tim C to make a Globus JIRA ticket (I don&#39;t have an account there myself).
+
+When that happens I&#39;ll put the ticket number here.
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21825#1407777826'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-11T17:23:46+00:00">Aug 11, 2014 05:23 PM UTC</time><a class="anchor" name="1407777826">&nbsp;</a></div><pre>Hi Carl,
+
+Was  there a Jira globus ticket created about this?
+
+Brian B,
+
+Have you got time to look deeper into this?
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='21825#1407256999'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-05T16:43:19+00:00">Aug 5, 2014 04:43 PM UTC</time><a class="anchor" name="1407256999">&nbsp;</a></div><pre>This is how the conf. file looks like in login01.hep.wisc.edu.
+
+]$ less /etc/gridftp.d/gridftp-hdfs.conf
+# gridftp-hdfs specific config for globus-gridftp-server
+
+#$GLOBUS_THREAD_MODEL pthread
+
+blocksize 1048576
+load_dsi_module hdfs
+
+I had tested this earlier, and I tested it again today, I don&#39;t see repeated success for globus-url-copy. Here is the md5sum for the same file copied 3 times, out of which 2 times it fails the checksum.
+
+globus-url-copy -v <a href='gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root</a> test2.root
+
+]$ md5sum test.root test1.root test2.root /hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root
+ed8c3115fafd40336511c5314bafd6d7  test.root
+5f53646ede1b45a47f352a431cd0fde7  test1.root
+5f53646ede1b45a47f352a431cd0fde7  test2.root
+ed8c3115fafd40336511c5314bafd6d7  /hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root
+
+# Restarted gridftp-server on login01
+
+]$ md5sum a b /hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz
+8d3a9cde3cec377008045767693e0333  a
+7147d8249c120e4cc9f482370290baa6  b
+8d3a9cde3cec377008045767693e0333  /hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz
+
+In between each of these two (file) copies, I restarted gridftp-server on login01.hep.wisc.edu. I have observed that, after each restart the first globus-url-copy gives a correct checksum, and then the subsequent ones fail. This might be coincidental.
+
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1407175227'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-04T18:00:27+00:00">Aug 4, 2014 06:00 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1407175227">&nbsp;</a></div><pre>We haven&#39;t located the source of the problem yet, but as a workaround for the latest version of gridftp-hdfs, in my tests it does fix the problem to comment out the line&#58;
+
+# $GLOBUS_THREAD_MODEL pthread
+
+in /etc/gridftp.d/gridftp-hdfs.conf
+
+Brian B was planning to help look into this also.
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21825#1407166036'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-08-04T15:27:16+00:00">Aug 4, 2014 03:27 PM UTC</time><a class="anchor" name="1407166036">&nbsp;</a></div><pre>Hi,
+
+As it stands, it seems NOT to be a problem of our site, but rather in the recommended/latest gridftp-hdfs version. Is there any update on this problem from the developer&#39;s side ?
+
+Thanks
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1406761929'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T23:12:09+00:00">Jul 30, 2014 11:12 PM UTC</time> by <b>GLOW-TECH</b><a class="anchor" name="1406761929">&nbsp;</a></div><pre>Hi Carl,
+
+As you found, the problem was always with single-stream corruption. If
+that were not the case, we would have noticed this problem right away
+when multi-stream Phedex transfers via gridftp failed.  But they didn&#39;t.
+
+Thanks for looking into it.
+
+--Dan
+
+On 7/30/14, 5&#58;31 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21825#1406759516'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T22:31:56+00:00">Jul 30, 2014 10:31 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1406759516">&nbsp;</a></div><pre>I think I just misunderstood the issue before (I thought the errors were only with parallelism).
+
+In any case, I can reproduce the single-stream corruption with both gridftp-hdfs 0.5.4-18 and 0.5.4-17, so that gives us a good place to start...
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='21825#1406757864'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-30T22:04:24+00:00">Jul 30, 2014 10:04 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1406757864">&nbsp;</a></div><pre>That&#39;s very interesting...
+
+The bugfix for the latest version of gridftp-hdfs (0.5.4-18, which you have installed) was supposed to address when parallelism &#62; 1 was used, but you are seeing the opposite errors -- only when no parallelism is used.
+
+Dan, is that the same error behavior you observed with the previous version (only single-stream copies got corrupted), or was it the other way around?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='21825#1406647822'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-29T15:30:22+00:00">Jul 29, 2014 03:30 PM UTC</time> by <b>GLOW-TECH</b><a class="anchor" name="1406647822">&nbsp;</a></div><pre>Hi Brian,
+
+I installed the broken version of gridftp on login01.hep.wisc.edu&#58;
+
+$ rpm -qa | grep gridftp
+globus-gridftp-server-6.38-1.3.osg32.el6.x86_64
+gridftp-hdfs-0.5.4-18.osg32.el6.x86_64
+globus-gridftp-server-control-2.10-1.osg32.el6.x86_64
+osg-gridftp-hdfs-3.0.0-7.osg32.el6.x86_64
+globus-gridftp-server-progs-6.38-1.3.osg32.el6.x86_64
+gridftp-ifce-2.2.0-0.el6.x86_64
+edg-gridftp-client-1.2.9.2-3.osg.el6.x86_64
+gratia-probe-gridftp-transfer-1.13.30-3.osg32.el6.noarch
+
+# Observe different md5sums in three attempts to copy a file (no
+parallelism)
+
+[dan@login01&#58;~]$ globus-url-copy
+<a href='gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a>
+/scratch/dan/a; md5sum /scratch/dan/a
+66456161ccb17edf16fe4079c2d6c6c1  /scratch/dan/a
+[dan@login01&#58;~]$ globus-url-copy
+<a href='gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a>
+/scratch/dan/a; md5sum /scratch/dan/a
+00eb9c0a07408d5562f3203906d33032  /scratch/dan/a
+[dan@login01&#58;~]$ globus-url-copy
+<a href='gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a>
+/scratch/dan/a; md5sum /scratch/dan/a
+ba7124dbb0bb585bdb63e7f30e354ebd  /scratch/dan/a
+
+# Observe same md5sum in three attempts to copy a file (parallelism 2)
+
+[dan@login01&#58;~]$ globus-url-copy -p 2
+<a href='gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a>
+/scratch/dan/a; md5sum /scratch/dan/a
+<div id='show_2013468856' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_2013468856'>8d3a9cde3cec377008045767693e0333  /scratch/dan/a
+[dan@login01&#58;~]$ globus-url-copy -p 2
+<a href='gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a>
+/scratch/dan/a; md5sum /scratch/dan/a
+8d3a9cde3cec377008045767693e0333  /scratch/dan/a
+[dan@login01&#58;~]$ globus-url-copy -p 2
+<a href='gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>gsiftp&#58;//login01.hep.wisc.edu&#58;2811//hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a>
+/scratch/dan/a; md5sum /scratch/dan/a
+8d3a9cde3cec377008045767693e0333  /scratch/dan/a
+
+--Dan
+
+On 7/28/14, 8&#58;20 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_2013468856').click(function() {
+            $('#detail_2013468856').slideDown("normal");
+            $('#show_2013468856').hide();
+            $('#hide_2013468856').show();
+        });
+        $('#hide_2013468856').click(function() {
+            $('#detail_2013468856').slideUp();
+            $('#hide_2013468856').hide();
+            $('#show_2013468856').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='21825#1406646673'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-29T15:11:13+00:00">Jul 29, 2014 03:11 PM UTC</time><a class="anchor" name="1406646673">&nbsp;</a></div><pre>Hi Brian,
+
+Some more info&#58;
+At hep cluster here, we have reverted back to a version of gridftp-hdfs (0.5.4-11.*) that is working correctly. Any test that you may do at Wisconsin should succeed at this time.
+
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1406596823'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-29T01:20:23+00:00">Jul 29, 2014 01:20 AM UTC</time><a class="anchor" name="1406596823">&nbsp;</a></div><pre>Hi Dan,
+
+It would indeed be useful - could be that I wasn&#39;t reproducing right or could be this is a slight variant.  I have an account (&#34;brian&#34;) on login.hep.wisc.edu already.
+
+Brian
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='21825#1406586970'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-28T22:36:10+00:00">Jul 28, 2014 10:36 PM UTC</time> by <b>GLOW-TECH</b><a class="anchor" name="1406586970">&nbsp;</a></div><pre>Hi Brian,
+
+Mysterious.  We definitely tried restarting globus-gridftp-server
+multiple times, long after the upgrade to
+gridftp-hdfs-0.5.4-18.osg32.el6 had happened.  It still exhibited the
+bug.  If it would help to have an environment set up in which you can
+observe the bug, I can do that.
+
+--Dan
+
+On 7/28/14, 11&#58;47 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21825#1406560252'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-28T15:10:52+00:00">Jul 28, 2014 03:10 PM UTC</time><a class="anchor" name="1406560252">&nbsp;</a></div><pre>Hi Dan,
+
+I&#39;ve been unable to replicate locally.  Can you confirm the globus-gridftp-server process was restarted since the upgrade (i.e., the running globus-gridftp-server process is pulling the new binaries)?
+
+Brian
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='21825#1405969680'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-21T19:08:00+00:00">Jul 21, 2014 07:08 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1405969680">&nbsp;</a></div><pre>I&#39;ve reopened Jira ticket&#58; <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1495' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1495</a></pre></div><div class='update_description'><i onclick="document.location='21825#1405968791'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-21T18:53:11+00:00">Jul 21, 2014 06:53 PM UTC</time> by <b>GLOW-TECH</b><a class="anchor" name="1405968791">&nbsp;</a></div><pre>Hi all,
+
+We did not find that the latest gridftp package in the OSG repo solve
+this problem.
+
+The following packages exhibit the bug&#58; gridftp-hdfs-0.5.4-18.osg32.el6
++ osg-gridftp-hdfs-3.0.0-7.osg32.el6.
+
+The following packages do not exhibit the bug&#58;
+gridftp-hdfs-0.5.4-11.osg32.el6 + osg-gridftp-hdfs-3.0.0-3.osg.el6.
+
+The problem we observe is that single-stream copies sometimes get
+corrupted, just like Nebraska reported.
+
+--Dan
+
+On 7/21/14, 10&#58;53 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='21825#1405957991'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-21T15:53:11+00:00">Jul 21, 2014 03:53 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1405957991">&nbsp;</a></div><pre>Hi,
+
+The problem still remained! What version have you installed?
+Thanks,
+Tanya</pre></div><div class='update_description'><i onclick="document.location='21825#1405616929'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-17T17:08:49+00:00">Jul 17, 2014 05:08 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1405616929">&nbsp;</a></div><pre>Hi,
+
+I don&#39;t know if the changes have been propagated but the problem still remained&#58;
+lcg-cp -D srmv2 -b <a href='srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a> a
+lcg-cp -D srmv2 -b <a href='srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a> b
+md5sum a b
+8d3a9cde3cec377008045767693e0333  a
+55a1300041dc574e4556a034057327d8  b
+If you think that you have installed the newest version with a fix and it still doesn&#39;t work we will need to open Jira ticket for developers.
+Thanks,
+Tanya</pre></div><div class='update_description'><i onclick="document.location='21825#1405544924'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T21:08:44+00:00">Jul 16, 2014 09:08 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1405544924">&nbsp;</a></div><pre>Adding Mat Selmeci to take a look ... I am leaving for vacation in about an hour!</pre></div><div class='update_description'><i onclick="document.location='21825#1405544488'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T21:01:28+00:00">Jul 16, 2014 09:01 PM UTC</time><a class="anchor" name="1405544488">&nbsp;</a></div><pre>Being said that earlier, I went to check one machine with the updated version. I still see different md5sum for copies of the same file. Here is an example &#58;
+
+[tapas@g12n01 ~]$ rpm -qa | grep gridftp-hdfs
+osg-gridftp-hdfs-3.0.0-7.osg32.el6.x86_64
+gridftp-hdfs-0.5.4-18.osg32.el6.x86_64
+
+]$ globus-url-copy <a href='gsiftp&#58;//g12n01.hep.wisc.edu&#58;2811//hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root' target='_blank' rel='nofollow'>gsiftp&#58;//g12n01.hep.wisc.edu&#58;2811//hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root</a> test.root
+]$ globus-url-copy <a href='gsiftp&#58;//g12n01.hep.wisc.edu&#58;2811//hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root' target='_blank' rel='nofollow'>gsiftp&#58;//g12n01.hep.wisc.edu&#58;2811//hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root</a> test1.root
+]$ md5sum test1.root test.root /hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root
+ed8c3115fafd40336511c5314bafd6d7  test1.root
+634699f4309ca178a0713bce6250a6b5  test.root
+ed8c3115fafd40336511c5314bafd6d7  /hdfs/store/user/tapas/ETauSkim/skim_12_1_erV.root
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1405544261'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T20:57:41+00:00">Jul 16, 2014 08:57 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1405544261">&nbsp;</a></div><pre>That update was released as part of a normal update cycle, FYI.</pre></div><div class='update_description'><i onclick="document.location='21825#1405544166'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T20:56:06+00:00">Jul 16, 2014 08:56 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1405544166">&nbsp;</a></div><pre>Great! We will check tomorrow.
+Tanya</pre></div><div class='update_description'><i onclick="document.location='21825#1405544039'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T20:53:59+00:00">Jul 16, 2014 08:53 PM UTC</time><a class="anchor" name="1405544039">&nbsp;</a></div><pre>We have updated our local repo with the recommended version (gridftp-hdfs-0.5.4-18.osg32.el6.x86_64) which should be propagated (by package manager) to all our nodes within next 24 hours.
+
+-Tapas
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=tapas/CN=665744/CN=Tapas Sarangi</pre></div><div class='update_description'><i onclick="document.location='21825#1405542570'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T20:29:30+00:00">Jul 16, 2014 08:29 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1405542570">&nbsp;</a></div><pre>Tim - yes it is this issue. I wonder how we can  notify sites that it was an emergency release.</pre></div><div class='update_description'><i onclick="document.location='21825#1405541853'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T20:17:33+00:00">Jul 16, 2014 08:17 PM UTC</time> by <b>Tim Cartwright</b><a class="anchor" name="1405541853">&nbsp;</a></div><pre>Is it this (closed) issue? <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1495' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-1495</a></pre></div><div class='update_description'><i onclick="document.location='21825#1405540655'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T19:57:35+00:00">Jul 16, 2014 07:57 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1405540655">&nbsp;</a></div><pre>Derek,
+
+Do you know if software team announced that this was an urgent release? I am adding Tim C.</pre></div><div class='update_description'><i onclick="document.location='21825#1405540389'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T19:53:09+00:00">Jul 16, 2014 07:53 PM UTC</time><a class="anchor" name="1405540389">&nbsp;</a></div><pre>This has been fixed in the latest release of gridftp-hdfs.  Hopefully, all the site would need to do is update.
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Derek Weitzel 605</pre></div><div class='update_description'><i onclick="document.location='21825#1405539478'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2014-07-16T19:37:58+00:00">Jul 16, 2014 07:37 PM UTC</time> by <b>Tanya Levshina</b><a class="anchor" name="1405539478">&nbsp;</a></div><pre>Hi,
+
+It looks like GLOW has the same problem as we have discovered at Nebraska (see <a href='https&#58;//ticket.opensciencegrid.org/21157' target='_blank' rel='nofollow'>https&#58;//ticket.opensciencegrid.org/21157</a> - please see  the fix!). Big files downloaded from GLOW CE are corrupted&#58;
+lcg-cp -D srmv2 -b <a href='srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a> a
+lcg-cp -D srmv2 -b <a href='srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz' target='_blank' rel='nofollow'>srm&#58;//cmssrm.hep.wisc.edu&#58;8443/srm/v2/server?SFN=/hdfs/osg/vo/osg/irods/home/goc/nt.5-30-2014/nt.18.tar.gz</a> b
+ls -l a b
+-rw-r--r-- 1 irods irods 298246371 Jul 16 14&#58;31 a
+-rw-r--r-- 1 irods irods 298246371 Jul 16 14&#58;31 b
+
+md5sum a b
+63ecf327cd5784d9bf55d5ba6e2a90ed  a
+02d813d99ca9910a9da2a69cc3f552da  b
+
+Please fix it ASAP!!!
+
+Thanks,
+Tanya</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F21825">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 21825});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

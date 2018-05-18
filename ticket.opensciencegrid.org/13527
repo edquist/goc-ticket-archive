@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[13527] issue with condor-g and a SGE gatekeepper at Boston University</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=13527" method="post">
+<div class="page-header">
+    <h3><span class="muted">13527</span> / issue with condor-g and a SGE gatekeepper at Boston University</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Jose Caballero</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Resource Name</label><div class="controls">NET2</div></div><div class="control-group"><label class="control-label">Associated VO</label><div class="controls">ATLAS</div></div><div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Jose Caballero</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">USATLAS</div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2013-02-14</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Kyle Gross <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">USATLAS (BNL Prod)&nbsp;<a target="_blank" href="https://rt.racf.bnl.gov/rt/Ticket/Display.html?id=22918">22918</a> <span class="muted"> / Ticket Exchange</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=13527", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/13527?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/13527?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20issue%20with%20condor-g%20and%20a%20SGE%20gatekeepper%20at%20Boston%20University%20ISSUE%3D13527%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='13527#1360341966'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-08T16:46:06+00:00">Feb 8, 2013 04:46 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1360341966">&nbsp;</a></div><pre>This problem is resolved. PanDA queues with SGE are working and Jose has the
+condor feedback he needs.
+-- by youssef@.... at Fri Feb 08 16&#58;45&#58;54 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918</pre></div><div class='update_description'><i onclick="document.location='13527#1360098193'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-05T21:03:13+00:00">Feb 5, 2013 09:03 PM UTC</time> by <b>augustine@....</b><a class="anchor" name="1360098193">&nbsp;</a></div><pre>Jose,
+
+we would like to add output of condor status to illustrated observed
+difference between using gram protocol gt2 vs gt5 when submiting through
+our local instance of condor.  It is unclear to us if it&#39;s related to
+the problem, however it looks suspicious and any feedback on what this
+means would be appreciated.  Job 26 is using &#34;grid-resource&#34; gt2 and job
+27 is using gt5.  Both jobs were launched about 1 second apart from each
+other and are identical in every way except for output file names and
+grid-resource parameter.
+
+-- Submitter&#58; atlas-net2.bu.edu &#58; &#60;192.5.207.233&#58;43062&#62; &#58; atlas-net2.bu.edu
+ID      OWNER          STATUS  MANAGER  HOST EXECUTABLE
+26.0   youssef       UNSUBMITTED sge      atlas-net2.bu.edu
+/home/scv/augustin
+27.0   youssef       UNSUBMITTED fork     [?????] /home/scv/augustin
+
+-- Submitter&#58; atlas-net2.bu.edu &#58; &#60;192.5.207.233&#58;43062&#62; &#58; atlas-net2.bu.edu
+ID      OWNER          STATUS  MANAGER  HOST EXECUTABLE
+26.0   youssef       PENDING sge      atlas-net2.bu.edu
+/home/scv/augustin
+27.0   youssef       PENDING fork     [?????] /home/scv/augustin
+
+-- Submitter&#58; atlas-net2.bu.edu &#58; &#60;192.5.207.233&#58;43062&#62; &#58; atlas-net2.bu.edu
+ID      OWNER          STATUS  MANAGER  HOST EXECUTABLE
+26.0   youssef       STAGE_OUT sge      atlas-net2.bu.edu
+/home/scv/augustin
+27.0   youssef       PENDING fork     [?????] /home/scv/augustin
+
+-- Submitter&#58; atlas-net2.bu.edu &#58; &#60;192.5.207.233&#58;43062&#62; &#58; atlas-net2.bu.edu
+ID      OWNER          STATUS  MANAGER  HOST EXECUTABLE
+26.0   youssef       DONE sge      atlas-net2.bu.edu /home/scv/augustin
+27.0   youssef       DONE fork     [?????] /home/scv/augustin
+
+In our /etc/globus/globus-gram-job-manager.conf we have
+<div id='show_1950575985' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1950575985'>-globus-toolkit-version UNKNOWN
+
+Augustine & Saul
+
+On 02/05/2013 03&#58;39 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_1950575985').click(function() {
+            $('#detail_1950575985').slideDown("normal");
+            $('#show_1950575985').hide();
+            $('#hide_1950575985').show();
+        });
+        $('#hide_1950575985').click(function() {
+            $('#detail_1950575985').slideUp();
+            $('#hide_1950575985').hide();
+            $('#show_1950575985').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1360096750'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-05T20:39:10+00:00">Feb 5, 2013 08:39 PM UTC</time> by <b>Jose Caballero</b><a class="anchor" name="1360096750">&nbsp;</a></div><pre>Hi everyone.
+
+I will try to summarize the last piece of information I have collected
+related this issue.
+
+[1]  right now, the condors at BNL submitting condor-g jobs to these
+SGE-base gatekeepers see all jobs as pending.
+We don&#39;t see jobs in UNSUBMITTED status anymore, as a few days ago.
+We just see all submitted jobs to look as idle, pending in queue.
+
+[2] However, according to site information, as well the PanDA (ATLAS
+workload management system) monitor, jobs are actually running.
+
+[3] Administrators at the site have noticed that, even the gatekeeper is
+OSG 3, and therefore it has globus GT5, things run smoothly if the
+condor submission file says the grid_resource is GT2 rather that GT5.
+
+Seems like the interface between the gatekeeper components and SGE are
+not working 100% fine yet.
+The fact that we don&#39;t see UNSUBMITTED jobs is a progress. And it points
+that the communication between our local condors and the remote
+gatekeepers are working fine. Therefore, there is not too much we can do
+from the submission point of view.
+The flow of reliable information within the gatekeeper seems to be the
+issue to be resolved.
+
+-- Questions for the Boston sys admins&#58; is the information I just
+reported consistent with your observations? Am I missing something?
+
+-- Questions for the OSG folks in this ticket&#58; is there anything else
+you would like the Boston guys to try?
+Do you need them to provide for more info?
+Should we invite more experts to the conversation? I don&#39;t know if every
+OSG expert is already involved or not. Please, do not hesitate to invite
+more people if needed.
+<div id='show_454546369' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_454546369'>
+Cheers,
+Jose
+
+On 02/05/2013 03&#58;34 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_454546369').click(function() {
+            $('#detail_454546369').slideDown("normal");
+            $('#show_454546369').hide();
+            $('#hide_454546369').show();
+        });
+        $('#hide_454546369').click(function() {
+            $('#detail_454546369').slideUp();
+            $('#hide_454546369').hide();
+            $('#show_454546369').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1360096498'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-05T20:34:58+00:00">Feb 5, 2013 08:34 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1360096498">&nbsp;</a></div><pre>Moving back to the RT ticket from an email thread... S.Y.
+
+Hi Jose,
+
+On Tue, Feb 5, 2013 at 3&#58;16 PM, Jose Caballero &#60;jcaballero@....&#62; wrote&#58;
+
+Right now, all our logs say that there is 0 running jobs. That all
+submitted pilots get queued, but no one enters to run.
+However, PanDA monitor sees running jobs. So I assume that info is not
+correct.
+
+OK. You mean that the APF information below is not correct, right?
+
+I can kill all pilots to start from scratch, but that will most probably
+kill any running job (if any)
+
+Did you try pretending that our site was gt2 instead of gt5? That&#39;s what works
+for us locally. Also, I don&#39;t really understand how PanDA could get the right
+running information about the jobs, but APF doesn&#39;t. I think that Jose want&#39;s
+us to move back to the RT ticket thread. Let&#39;s continue there, OK? - Saul
+
+APF scheduler info&#58;
+
+gridui18.usatlas.bnl.gov - BU_ATLAS_Tier2&#58; 2013-02-05 20&#58;09&#58;24,527 (UTC) -
+main.schedplugin[BU_ATLAS_Tier2]&#58; INFO&#58; ActivatedSchedPlugin&#58; _calc_online
+(activated=3; pending=3; running=0;) &#58; Return=0
+gridui19.usatlas.bnl.gov - BU_ATLAS_Tier2&#58; 2013-02-05 20&#58;10&#58;14,975 (UTC) -
+main.schedplugin[BU_ATLAS_Tier2]&#58; INFO&#58; ActivatedSchedPlugin&#58; _calc_online
+(activated=3; pending=3; running=0;) &#58; Return=0
+gridui20.usatlas.bnl.gov - BU_ATLAS_Tier2&#58; 2013-02-05 20&#58;08&#58;22,929 (UTC) -
+main.schedplugin[BU_ATLAS_Tier2]&#58; INFO&#58; ActivatedSchedPlugin&#58; _calc_online
+(activated=1; pending=3; running=0;) &#58; Return=0
+gridui18.usatlas.bnl.gov - ANALY_BU_ATLAS_Tier2&#58; 2013-02-05 20&#58;04&#58;57,793
+(UTC) - main.schedplugin[ANALY_BU_ATLAS_Tier2]&#58; INFO&#58; ActivatedSchedPlugin&#58;
+_calc_online (activated=469; pending=200; running=0;) &#58; Return=0
+<div id='show_10523106' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_10523106'>gridui19.usatlas.bnl.gov - ANALY_BU_ATLAS_Tier2&#58; 2013-02-05 20&#58;09&#58;55,412
+(UTC) - main.schedplugin[ANALY_BU_ATLAS_Tier2]&#58; INFO&#58; ActivatedSchedPlugin&#58;
+_calc_online (activated=467; pending=200; running=0;) &#58; Return=0
+gridui20.usatlas.bnl.gov - ANALY_BU_ATLAS_Tier2&#58; 2013-02-05 20&#58;08&#58;29,916
+(UTC) - main.schedplugin[ANALY_BU_ATLAS_Tier2]&#58; INFO&#58; ActivatedSchedPlugin&#58;
+_calc_online (activated=468; pending=197; running=0;) &#58; Return=3
+
+Queue status&#58;
+
+gridui18.usatlas.bnl.gov | BU_ATLAS_Tier2 FAILED = 0 UNSUB = 0 DONE = 0
+STAGE_OUT = 0 SUSP = 0 ACTIVE = 0 STAGE_IN = 0 PENDING = 3
+gridui19.usatlas.bnl.gov | BU_ATLAS_Tier2 FAILED = 0 UNSUB = 0 DONE = 0
+STAGE_OUT = 0 SUSP = 0 ACTIVE = 0 STAGE_IN = 0 PENDING = 2
+gridui20.usatlas.bnl.gov | BU_ATLAS_Tier2 FAILED = 0 UNSUB = 0 DONE = 1
+STAGE_OUT = 0 SUSP = 0 ACTIVE = 0 STAGE_IN = 0 PENDING = 2
+gridui18.usatlas.bnl.gov | ANALY_BU_ATLAS_Tier2 FAILED = 0 UNSUB = 0 DONE =
+0 STAGE_OUT = 0 SUSP = 0 ACTIVE = 0 STAGE_IN = 0 PENDING = 200
+gridui19.usatlas.bnl.gov | ANALY_BU_ATLAS_Tier2 FAILED = 0 UNSUB = 0 DONE =
+0 STAGE_OUT = 0 SUSP = 0 ACTIVE = 0 STAGE_IN = 0 PENDING = 200
+gridui20.usatlas.bnl.gov | ANALY_BU_ATLAS_Tier2 FAILED = 0 UNSUB = 0 DONE =
+1 STAGE_OUT = 0 SUSP = 0 ACTIVE = 0 STAGE_IN = 0 PENDING = 195
+-- by youssef@.... at Tue Feb 05 20&#58;34&#58;47 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918
+</div><script type='text/javascript'>
+        $('#show_10523106').click(function() {
+            $('#detail_10523106').slideDown("normal");
+            $('#show_10523106').hide();
+            $('#hide_10523106').show();
+        });
+        $('#hide_10523106').click(function() {
+            $('#detail_10523106').slideUp();
+            $('#hide_10523106').hide();
+            $('#show_10523106').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1359750737'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-02-01T20:32:17+00:00">Feb 1, 2013 08:32 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359750737">&nbsp;</a></div><pre>Hi again Jose;
+
+Thanks for the help in the other context. If we could clear this up too, it
+would be really nice.
+
+Let me summarize the situation with BU_ATLAS_Tier2-sge&#58;
+
+a) When the hc jobs get into the &#34;run&#34; panda state at BU_ATLAS_Tier2-sge, they
+complete successfully (100% success) and the log files arrive, e.g.
+
+&#60;a href=&#34;<a href='http&#58;//panda.cern.ch/server/pandamon/query?job=1722043882&#34' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch/server/pandamon/query?job=1722043882&#34</a>;&#62;query?job=1722043882&#60;/a&#62;&#60;br&#62;
+&#60;a href=&#34;<a href='http&#58;//panda.cern.ch/server/pandamon/query?job=1722043202&#34' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch/server/pandamon/query?job=1722043202&#34</a>;&#62;query?job=1722043202&#60;/a&#62;&#60;br&#62;
+&#60;a href=&#34;<a href='http&#58;//panda.cern.ch/server/pandamon/query?job=1721584940&#34' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch/server/pandamon/query?job=1721584940&#34</a>;&#62;query?job=1721584940&#60;/a&#62;&#60;br&#62;
+
+b)��However, you aren&#39;t getting monitoring information via condor-g.
+
+c)��The queue gets &#34;stuck&#34; as it is now, with no jobs getting to the run state and everything being cancelled.  I think that this is caused by b).  Am I right about that?
+
+d)��SEG��is running at atlas-net2.bu.edu and is logging successful hits.
+
+If this is all correct, we are a little bit stuck at this end because (unless
+I&#39;m missing something) we have nothing that I can say is not working. Is that
+right too, or should we be doing something else? If all that is correct, is
+there an error that you can reproduce on your side where condor-g is failing to
+get it&#39;s monitoring information to you?
+
+- Saul
+
+On Thu Jan 31 16&#58;21&#58;02 2013, youssef@.... wrote&#58;
+<font color='#7F7E6F'>&#62; Is there anything else we can try on this end? I&#39;m not very familiar with</font>
+<font color='#7F7E6F'>&#62; Condor, but does it provide you with information about why it&#39;s failing to</font>
+<font color='#7F7E6F'>&#62; contact us?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks a lot for you help today, too, on both issues.... - Saul</font>
+<font color='#7F7E6F'>&#62;</font>
+<div id='show_1354204834' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1354204834'><font color='#7F7E6F'>&#62; On Thu Jan 31 15&#58;59&#58;20 2013, youssef@.... wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; Interesting....</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; There are hits in the SEG logs here in the past few minutes which I&#39;m</font>
+<font color='#7F7E6F'>&#62; &#62; supposing</font>
+<font color='#7F7E6F'>&#62; &#62; is condor asking. They all have exitstatus=0 as if everything is fine.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; - Saul</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; On Thu Jan 31 15&#58;41&#58;11 2013, osg-goc-rest wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; Because the factories submitted a few new pilots. And they are</font>
+<font color='#7F7E6F'>&#62; &#62; running</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; jobs from panda. So that is ok.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; The problem is still condor doesn&#39;t see them as running. They all</font>
+<font color='#7F7E6F'>&#62; &#62; look</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; as idle.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; Jose</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; On 01/31/2013 03&#58;33 PM, Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; &#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; -- by Jose Caballero at Thu Jan 31 20&#58;40&#58;09 UTC 2013</font>
+-- by youssef@.... at Fri Feb 01 20&#58;32&#58;05 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918
+</div><script type='text/javascript'>
+        $('#show_1354204834').click(function() {
+            $('#detail_1354204834').slideDown("normal");
+            $('#show_1354204834').hide();
+            $('#hide_1354204834').show();
+        });
+        $('#hide_1354204834').click(function() {
+            $('#detail_1354204834').slideUp();
+            $('#hide_1354204834').hide();
+            $('#show_1354204834').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1359667274'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T21:21:14+00:00">Jan 31, 2013 09:21 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359667274">&nbsp;</a></div><pre>Is there anything else we can try on this end? I&#39;m not very familiar with
+Condor, but does it provide you with information about why it&#39;s failing to
+contact us?
+
+Thanks a lot for you help today, too, on both issues.... - Saul
+
+On Thu Jan 31 15&#58;59&#58;20 2013, youssef@.... wrote&#58;
+<font color='#7F7E6F'>&#62; Interesting....</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; There are hits in the SEG logs here in the past few minutes which I&#39;m</font>
+<font color='#7F7E6F'>&#62; supposing</font>
+<font color='#7F7E6F'>&#62; is condor asking. They all have exitstatus=0 as if everything is fine.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; - Saul</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Thu Jan 31 15&#58;41&#58;11 2013, osg-goc-rest wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; Because the factories submitted a few new pilots. And they are</font>
+<font color='#7F7E6F'>&#62; running</font>
+<font color='#7F7E6F'>&#62; &#62; jobs from panda. So that is ok.</font>
+<font color='#7F7E6F'>&#62; &#62; The problem is still condor doesn&#39;t see them as running. They all</font>
+<font color='#7F7E6F'>&#62; look</font>
+<font color='#7F7E6F'>&#62; &#62; as idle.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Jose</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; On 01/31/2013 03&#58;33 PM, Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; &#62; -- by Jose Caballero at Thu Jan 31 20&#58;40&#58;09 UTC 2013</font>
+-- by youssef@.... at Thu Jan 31 21&#58;21&#58;02 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918</pre></div><div class='update_description'><i onclick="document.location='13527#1359665971'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T20:59:31+00:00">Jan 31, 2013 08:59 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359665971">&nbsp;</a></div><pre>Interesting....
+
+There are hits in the SEG logs here in the past few minutes which I&#39;m supposing
+is condor asking. They all have exitstatus=0 as if everything is fine.
+
+- Saul
+
+On Thu Jan 31 15&#58;41&#58;11 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; Because the factories submitted a few new pilots. And they are running</font>
+<font color='#7F7E6F'>&#62; jobs from panda. So that is ok.</font>
+<font color='#7F7E6F'>&#62; The problem is still condor doesn&#39;t see them as running. They all look</font>
+<font color='#7F7E6F'>&#62; as idle.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Jose</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On 01/31/2013 03&#58;33 PM, Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; -- by Jose Caballero at Thu Jan 31 20&#58;40&#58;09 UTC 2013</font>
+-- by youssef@.... at Thu Jan 31 20&#58;59&#58;20 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918</pre></div><div class='update_description'><i onclick="document.location='13527#1359664809'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T20:40:09+00:00">Jan 31, 2013 08:40 PM UTC</time> by <b>Jose Caballero</b><a class="anchor" name="1359664809">&nbsp;</a></div><pre>Because the factories submitted a few new pilots. And they are running
+jobs from panda. So that is ok.
+The problem is still condor doesn&#39;t see them as running. They all look
+as idle.
+
+Jose
+
+On 01/31/2013 03&#58;33 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13527#1359664391'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T20:33:11+00:00">Jan 31, 2013 08:33 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359664391">&nbsp;</a></div><pre>Multiple jobs and athena.py-s are running again all of a sudden. I don&#39;t know
+why, though. - Saul
+
+On Thu Jan 31 15&#58;14&#58;24 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; According to the factories logs, submitted thru</font>
+<font color='#7F7E6F'>&#62; atlas-net2.bu.edu/jobmanager-sge we only have a handful of pilots&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; -- 21 (= 7 x 3) for the production queue</font>
+<font color='#7F7E6F'>&#62; -- 18 (= 6 x 3) for the analysis one.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; They look like condor lost track of them again.</font>
+<font color='#7F7E6F'>&#62; Some of them are a little bit old. They should be gone by now.</font>
+<font color='#7F7E6F'>&#62; I am going to condor_rm them.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Jose</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On 01/31/2013 02&#58;56 PM, Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; -- by Jose Caballero at Thu Jan 31 20&#58;13&#58;09 UTC 2013</font>
+-- by youssef@.... at Thu Jan 31 20&#58;32&#58;59 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918</pre></div><div class='update_description'><i onclick="document.location='13527#1359663189'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T20:13:09+00:00">Jan 31, 2013 08:13 PM UTC</time> by <b>Jose Caballero</b><a class="anchor" name="1359663189">&nbsp;</a></div><pre>According to the factories logs, submitted thru
+atlas-net2.bu.edu/jobmanager-sge we only have a handful of pilots&#58;
+
+-- 21 (= 7 x 3) for the production queue
+-- 18 (= 6 x 3) for the analysis one.
+
+They look like condor lost track of them again.
+Some of them are a little bit old. They should be gone by now.
+I am going to condor_rm them.
+
+Jose
+
+On 01/31/2013 02&#58;56 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13527#1359662201'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T19:56:41+00:00">Jan 31, 2013 07:56 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359662201">&nbsp;</a></div><pre>Hi Jose,
+
+I think that this might be the state we were in when you saw &#34;hundreds of
+pilots idle on queue&#34; at the APF end and needed to kill them on for us to get
+jobs again. Could you check for that condition again and re-kill them if
+necessary?
+
+- Saul
+
+On Thu Jan 31 14&#58;48&#58;59 2013, youssef@.... wrote&#58;
+<font color='#7F7E6F'>&#62; Hi again,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Augustine double checked and restarted SEG. It&#39;s running and has 44</font>
+<font color='#7F7E6F'>&#62; log entries</font>
+<font color='#7F7E6F'>&#62; today all with statuscode=0.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; All the pilots are now failing with the following on stdout</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Sequence code&#58; Killing proxy watchdog (pid=13242)...job exit status =</font>
+<font color='#7F7E6F'>&#62; 0jw exit</font>
+<font color='#7F7E6F'>&#62; status = 0,modify&#58;2013-01-31 12&#58;41&#58;29</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We don&#39;t know why.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; - Saul</font>
+<font color='#7F7E6F'>&#62; On Thu Jan 31 13&#58;11&#58;10 2013, osg-goc-rest wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; In my previous message should be&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; You just need to replicate the accounting section in that script and</font>
+<font color='#7F7E6F'>&#62; &#62; replace accounting by reporting.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; On Thu, Jan 31, 2013 at 10&#58;06 AM, Iwona Sakrejda &#60;isakrejda@....&#62;</font>
+<font color='#7F7E6F'>&#62; &#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; Hi,</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<div id='show_701813760' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_701813760'><font color='#7F7E6F'>&#62; &#62; &#62; So I ran into an osg-configure problem in January. You managed to</font>
+<font color='#7F7E6F'>&#62; &#62; escape it.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; Suchandra is fixing the osg-configure script.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; From your answers looks like SEG should work for you with no</font>
+<font color='#7F7E6F'>&#62; &#62; trouble.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; I rotate the reporting file because ours gets huge. The only thing</font>
+<font color='#7F7E6F'>&#62; &#62; to</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; watch out is to not</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; zip it. I use same SGE script that rotates accounting and</font>
+<font color='#7F7E6F'>&#62; messages.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; You just need to replicate the accounting section in that script</font>
+<font color='#7F7E6F'>&#62; and</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; replicate accounting by</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; reporting.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; Unfortunately that log rotation script has one ZIP setting for all</font>
+<font color='#7F7E6F'>&#62; &#62; the</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; files it rotates -</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; so it&#39;s all on or off. So if you want to zip accounting and</font>
+<font color='#7F7E6F'>&#62; messages</font>
+<font color='#7F7E6F'>&#62; &#62; and not zip</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; reporting you need to do some extra hacking....</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; Also if you accidentally point SEG at a directory instead of the</font>
+<font color='#7F7E6F'>&#62; &#62; file</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; - it just hungs without</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; complaining. We opened a globus ticket about it. osg-configure got</font>
+<font color='#7F7E6F'>&#62; &#62; me</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; into that state</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; and I discovered it by stracing the daemon.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; So then I fix the /etc/globus/globus-sge.conf by hand and allis</font>
+<font color='#7F7E6F'>&#62; &#62; well.</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; That&#39;s all I know about it...</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; Iwona</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; On Thu, Jan 31, 2013 at 9&#58;04 AM, Open Science Grid FootPrints</font>
+<font color='#7F7E6F'>&#62; &#62; &#62; &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; &#62;&#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; &#62; -- by Iwona Sakrejda at Thu Jan 31 18&#58;10&#58;09 UTC 2013</font>
+-- by youssef@.... at Thu Jan 31 19&#58;56&#58;30 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918
+</div><script type='text/javascript'>
+        $('#show_701813760').click(function() {
+            $('#detail_701813760').slideDown("normal");
+            $('#show_701813760').hide();
+            $('#hide_701813760').show();
+        });
+        $('#hide_701813760').click(function() {
+            $('#detail_701813760').slideUp();
+            $('#hide_701813760').hide();
+            $('#show_701813760').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1359661750'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T19:49:10+00:00">Jan 31, 2013 07:49 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359661750">&nbsp;</a></div><pre>Hi again,
+
+Augustine double checked and restarted SEG. It&#39;s running and has 44 log entries
+today all with statuscode=0.
+
+All the pilots are now failing with the following on stdout
+
+Sequence code&#58; Killing proxy watchdog (pid=13242)...job exit status = 0jw exit
+status = 0,modify&#58;2013-01-31 12&#58;41&#58;29
+
+We don&#39;t know why.
+
+- Saul
+On Thu Jan 31 13&#58;11&#58;10 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; In my previous message should be&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; You just need to replicate the accounting section in that script and</font>
+<font color='#7F7E6F'>&#62; replace accounting by reporting.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Thu, Jan 31, 2013 at 10&#58;06 AM, Iwona Sakrejda &#60;isakrejda@....&#62;</font>
+<font color='#7F7E6F'>&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; Hi,</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; So I ran into an osg-configure problem in January. You managed to</font>
+<font color='#7F7E6F'>&#62; escape it.</font>
+<font color='#7F7E6F'>&#62; &#62; Suchandra is fixing the osg-configure script.</font>
+<font color='#7F7E6F'>&#62; &#62; From your answers looks like SEG should work for you with no</font>
+<font color='#7F7E6F'>&#62; trouble.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; I rotate the reporting file because ours gets huge. The only thing</font>
+<font color='#7F7E6F'>&#62; to</font>
+<font color='#7F7E6F'>&#62; &#62; watch out is to not</font>
+<font color='#7F7E6F'>&#62; &#62; zip it. I use same SGE script that rotates accounting and messages.</font>
+<font color='#7F7E6F'>&#62; &#62; You just need to replicate the accounting section in that script and</font>
+<font color='#7F7E6F'>&#62; &#62; replicate accounting by</font>
+<div id='show_131801621' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_131801621'><font color='#7F7E6F'>&#62; &#62; reporting.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Unfortunately that log rotation script has one ZIP setting for all</font>
+<font color='#7F7E6F'>&#62; the</font>
+<font color='#7F7E6F'>&#62; &#62; files it rotates -</font>
+<font color='#7F7E6F'>&#62; &#62; so it&#39;s all on or off. So if you want to zip accounting and messages</font>
+<font color='#7F7E6F'>&#62; and not zip</font>
+<font color='#7F7E6F'>&#62; &#62; reporting you need to do some extra hacking....</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Also if you accidentally point SEG at a directory instead of the</font>
+<font color='#7F7E6F'>&#62; file</font>
+<font color='#7F7E6F'>&#62; &#62; - it just hungs without</font>
+<font color='#7F7E6F'>&#62; &#62; complaining. We opened a globus ticket about it. osg-configure got</font>
+<font color='#7F7E6F'>&#62; me</font>
+<font color='#7F7E6F'>&#62; &#62; into that state</font>
+<font color='#7F7E6F'>&#62; &#62; and I discovered it by stracing the daemon.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; So then I fix the /etc/globus/globus-sge.conf by hand and allis</font>
+<font color='#7F7E6F'>&#62; well.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; That&#39;s all I know about it...</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Iwona</font>
+<font color='#7F7E6F'>&#62; &#62; On Thu, Jan 31, 2013 at 9&#58;04 AM, Open Science Grid FootPrints</font>
+<font color='#7F7E6F'>&#62; &#62; &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;&#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; -- by Iwona Sakrejda at Thu Jan 31 18&#58;10&#58;09 UTC 2013</font>
+-- by youssef@.... at Thu Jan 31 19&#58;48&#58;59 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918
+</div><script type='text/javascript'>
+        $('#show_131801621').click(function() {
+            $('#detail_131801621').slideDown("normal");
+            $('#show_131801621').hide();
+            $('#hide_131801621').show();
+        });
+        $('#hide_131801621').click(function() {
+            $('#detail_131801621').slideUp();
+            $('#hide_131801621').hide();
+            $('#show_131801621').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1359655809'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T18:10:09+00:00">Jan 31, 2013 06:10 PM UTC</time> by <b>Iwona Sakrejda</b><a class="anchor" name="1359655809">&nbsp;</a></div><pre>In my previous message should be&#58;
+
+You just need to replicate the accounting section in that script and
+replace  accounting by reporting.
+
+On Thu, Jan 31, 2013 at 10&#58;06 AM, Iwona Sakrejda &#60;isakrejda@....&#62; wrote&#58;
+<font color='#7F7E6F'>&#62; Hi,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; So I ran into an osg-configure problem in January. You managed to escape it.</font>
+<font color='#7F7E6F'>&#62; Suchandra is fixing the osg-configure script.</font>
+<font color='#7F7E6F'>&#62; From your answers looks like SEG should work for you with no trouble.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I rotate the reporting file because ours gets huge. The only thing to</font>
+<font color='#7F7E6F'>&#62; watch out is to not</font>
+<font color='#7F7E6F'>&#62; zip it. I use same SGE script that rotates accounting and messages.</font>
+<font color='#7F7E6F'>&#62; You just need to replicate the accounting section in that script and</font>
+<font color='#7F7E6F'>&#62; replicate accounting by</font>
+<font color='#7F7E6F'>&#62; reporting.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Unfortunately that log rotation script has one ZIP setting for all the</font>
+<font color='#7F7E6F'>&#62; files it rotates -</font>
+<font color='#7F7E6F'>&#62; so it&#39;s all on or off. So if you want to zip accounting and messages and not zip</font>
+<font color='#7F7E6F'>&#62; reporting you need to do some extra hacking....</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Also if you accidentally point SEG at a directory instead of the file</font>
+<font color='#7F7E6F'>&#62; - it just hungs without</font>
+<font color='#7F7E6F'>&#62; complaining. We opened a globus ticket about it. osg-configure got me</font>
+<font color='#7F7E6F'>&#62; into that state</font>
+<font color='#7F7E6F'>&#62; and I discovered it by stracing the daemon.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; So then I fix the /etc/globus/globus-sge.conf by hand and allis well.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; That&#39;s all I know about it...</font>
+<font color='#7F7E6F'>&#62;</font>
+<div id='show_458921292' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_458921292'><font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Iwona</font>
+<font color='#7F7E6F'>&#62; On Thu, Jan 31, 2013 at 9&#58;04 AM, Open Science Grid FootPrints</font>
+<font color='#7F7E6F'>&#62; &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; [Duplicate message snipped]</font>
+</div><script type='text/javascript'>
+        $('#show_458921292').click(function() {
+            $('#detail_458921292').slideDown("normal");
+            $('#show_458921292').hide();
+            $('#hide_458921292').show();
+        });
+        $('#hide_458921292').click(function() {
+            $('#detail_458921292').slideUp();
+            $('#hide_458921292').hide();
+            $('#show_458921292').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1359655629'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T18:07:09+00:00">Jan 31, 2013 06:07 PM UTC</time> by <b>Iwona Sakrejda</b><a class="anchor" name="1359655629">&nbsp;</a></div><pre>Hi,
+
+So I ran into an osg-configure problem in January. You managed to escape it.
+Suchandra is fixing the osg-configure script.
+From your answers looks like SEG should work for you with no trouble.
+
+I rotate the reporting file because ours gets huge. The only thing to
+watch out is to not
+zip it. I use same SGE script that rotates accounting and messages.
+You just need to replicate the accounting section in that script and
+replicate accounting by
+reporting.
+
+Unfortunately that log rotation script has one ZIP setting for all the
+files it rotates -
+so it&#39;s all on or off. So if you want to zip accounting and messages and not zip
+reporting you need to do some extra hacking....
+
+Also if you accidentally point SEG at a directory instead of the file
+- it just hungs without
+complaining. We opened a globus ticket about it. osg-configure got me
+into that state
+and I discovered it by stracing the daemon.
+
+So then I fix the /etc/globus/globus-sge.conf by hand and allis well.
+
+That&#39;s all I know about it...
+
+Iwona
+On Thu, Jan 31, 2013 at 9&#58;04 AM, Open Science Grid FootPrints
+&#60;osg@....&#62; wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13527#1359651849'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T17:04:09+00:00">Jan 31, 2013 05:04 PM UTC</time> by <b>augustine@....</b><a class="anchor" name="1359651849">&nbsp;</a></div><pre>Ooops, it looks like my previous reply got mangled.
+
+No, we are not using ARCO module.  We compiled SGE ourselves using
+source code from&#58;
+<a href='http&#58;//gridscheduler.sourceforge.net/' target='_blank' rel='nofollow'>http&#58;//gridscheduler.sourceforge.net/</a>
+
+Yes, it&#39;s full path is&#58; /usr/local/sge/sge_root/atlas/common/reporting
+File currently is only 2.6M and is not being rotated. Do you have a
+recommendation on rotation policy?
+
+/etc/globus/globus-sge.conf appears a little strange to me.  I did have
+a setting of&#58;
+
+log_path=&#34;/usr/local/sge/sge_root/atlas/common/reporting&#34;
+
+however I just noticed that running osg-configure -c did some strange
+things to the overall config.  It appended&#58;
+log_path=&#34;/usr/local/sge/sge_root/atlas/common&#34;
+
+I suspect this is coming from log_dir setting
+in /etc/osg/config.d/20-sge.ini
+
+I removed the 2nd incorrect log_path variable from globus-sge.conf and
+restarted event
+generator and globus services.
+
+- Augustine
+
+On 01/31/2013 11&#58;07 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13527#1359651131'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T16:52:11+00:00">Jan 31, 2013 04:52 PM UTC</time> by <b>augustine@....</b><a class="anchor" name="1359651131">&nbsp;</a></div><pre>On 01/31/2013 11&#58;07 AM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13527#1359648429'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T16:07:09+00:00">Jan 31, 2013 04:07 PM UTC</time> by <b>Iwona Sakrejda</b><a class="anchor" name="1359648429">&nbsp;</a></div><pre>Hi,
+
+My SGE install was also an outside one so this aspect of the install is similar.
+
+Are you using an ARCO module of SGE? If you did not set it up then probably not.
+Is there on your system $SGE_ROOT/$SGE_CELL/common/reporting file?
+What is the absolute path to this file?
+Is this file being rotated and if yes, do you zip the rotated out file?
+
+I am asking because it&#39;s the reporting file taht is used by the SEG module.
+And globus takes the location from &#58;
+/etc/globus/globus-sge.conf
+In that file there should be a line pointing to the reporting file.
+In my case I have&#58;
+log_path=&#34;/common/nsg/sge/prod/default/common/reporting&#34;
+
+Iwona
+
+On Thu, Jan 31, 2013 at 7&#58;52 AM, Open Science Grid FootPrints
+&#60;osg@....&#62; wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13527#1359647534'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T15:52:14+00:00">Jan 31, 2013 03:52 PM UTC</time> by <b>augustine@....</b><a class="anchor" name="1359647534">&nbsp;</a></div><pre>Our OSG install is rpm based, however we are running a non RPM build of
+SGE out of /usr/local.
+
+seg_enabled is set in /etc/osg/config.d/20-sge.ini as specified.
+
+globus-scheduler-event-generator service is running and logs are being
+created in
+/var/lib/globus/globus-seg-sge
+
+Our reporting params are&#58;
+reporting_params             accounting=true reporting=true
+flush_time=00&#58;00&#58;15 joblog=false
+sharelog=00&#58;00&#58;00
+
+I am also attaching newly generated osg-profile.txt
+
+I had some help setting this up during initial install&#58;
+<a href='https&#58;//ticket.grid.iu.edu/goc/12381' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/12381</a>
+
+Please let me know what additional information I can provide to help
+resolve this.
+
+- Augustine
+617-353-8266
+
+On 01/30/2013 09&#58;59 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13527#1359601169'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T02:59:29+00:00">Jan 31, 2013 02:59 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359601169">&nbsp;</a></div><pre>On Wed Jan 30 21&#58;50&#58;11 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; Have you done your install from rpms?</font>
+<font color='#7F7E6F'>&#62;</font>
+
+Yes.
+
+<font color='#7F7E6F'>&#62;</font>
+<a href='https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/InstallComputeElement' target='_blank' rel='nofollow'>https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/InstallComputeElement</a>
+<font color='#7F7E6F'>&#62; The /etc/osg/config.d/20-sge.ini will tell you.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; ; By default, this is disabled</font>
+<font color='#7F7E6F'>&#62; seg_enabled = True</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; It really offloads the gatekeeper if enabled, but enabling is a bit</font>
+<font color='#7F7E6F'>&#62; tricky.</font>
+<font color='#7F7E6F'>&#62; If you have install from rpms, I can help you,</font>
+
+OK, great. Augustine and I will try to contact you tomorrow morning.
+
+- Saul
+
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; iwona</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Wed, Jan 30, 2013 at 6&#58;18 PM, Open Science Grid FootPrints</font>
+<font color='#7F7E6F'>&#62; &#60;osg@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; -- by Iwona Sakrejda at Thu Jan 31 02&#58;49&#58;08 UTC 2013</font>
+-- by youssef@.... at Thu Jan 31 02&#58;59&#58;20 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918</pre></div><div class='update_description'><i onclick="document.location='13527#1359600548'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T02:49:08+00:00">Jan 31, 2013 02:49 AM UTC</time> by <b>Iwona Sakrejda</b><a class="anchor" name="1359600548">&nbsp;</a></div><pre>Have you done your install from rpms?
+<a href='https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/InstallComputeElement' target='_blank' rel='nofollow'>https&#58;//www.opensciencegrid.org/bin/view/Documentation/Release3/InstallComputeElement</a>
+The /etc/osg/config.d/20-sge.ini  will tell you.
+
+; By default, this is disabled
+seg_enabled = True
+
+It really offloads the gatekeeper if enabled, but enabling is a bit tricky.
+If you have install from rpms, I can help you,
+
+iwona
+
+On Wed, Jan 30, 2013 at 6&#58;18 PM, Open Science Grid FootPrints
+&#60;osg@....&#62; wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='13527#1359598709'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T02:18:29+00:00">Jan 31, 2013 02:18 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359598709">&nbsp;</a></div><pre>Hi Brian,
+
+Augustine might know, but I don&#39;t. I&#39;m not seeing anything in the OSG pages
+about SEG. Can you direct us to some instructions?
+
+- Saul
+
+On Wed Jan 30 19&#58;54&#58;10 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; Hi Saul,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Those are normal messages that Condor-G generates after the remote</font>
+<font color='#7F7E6F'>&#62; side</font>
+<font color='#7F7E6F'>&#62; restarts some of its daemons.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; This still can be a SEG issue (if the SEG is enabled but not</font>
+<font color='#7F7E6F'>&#62; functioning, GRAM won&#39;t see any state changes such as running or</font>
+<font color='#7F7E6F'>&#62; finished). Do you know if it is enabled at your site or not?</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Brian</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brian</font>
+<font color='#7F7E6F'>&#62; Bockelman</font>
+<font color='#7F7E6F'>&#62; -- by goc at Thu Jan 31 00&#58;53&#58;14 UTC 2013</font>
+-- by youssef@.... at Thu Jan 31 02&#58;18&#58;20 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918</pre></div><div class='update_description'><i onclick="document.location='13527#1359593594'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-31T00:53:14+00:00">Jan 31, 2013 12:53 AM UTC</time><a class="anchor" name="1359593594">&nbsp;</a></div><pre>Hi Saul,
+
+Those are normal messages that Condor-G generates after the remote side restarts some of its daemons.
+
+This still can be a SEG issue (if the SEG is enabled but not functioning, GRAM won&#39;t see any state changes such as running or finished).  Do you know if it is enabled at your site or not?
+
+Brian
+
+by /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Brian Bockelman</pre></div><div class='update_description'><i onclick="document.location='13527#1359586228'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-30T22:50:28+00:00">Jan 30, 2013 10:50 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359586228">&nbsp;</a></div><pre>We just got a couple of these in the gram log. I don&#39;t know if it&#39;s related.
+
+ts=2013-01-30T22&#58;46&#58;10.686065Z id=5857 event=gram.validate_rsl.end level=ERROR
+msg=&#34;Unsupported RSL attribute&#34; attribute=invalid status=-48
+ts=2013-01-30T22&#58;46&#58;10.686099Z id=5857 event=gram.query.end level=ERROR
+gramid=/16290078863403533441/6053409348385804438/
+uri=&#34;/16290078863403533441/6053409348385804438/&#34; msg=&#34;Error processing query&#34;
+status=-48 reason=&#34;the provided RSL could not be properly parsed
+
+- Saul
+
+On Wed Jan 30 17&#58;40&#58;40 2013, youssef@.... wrote&#58;
+<font color='#7F7E6F'>&#62; For what it&#39;s worth, jobs are finishing successfully and the logs make</font>
+<font color='#7F7E6F'>&#62; it to</font>
+<font color='#7F7E6F'>&#62; the panda &#34;holding&#34; state and they have the logs</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<a href='http&#58;//panda.cern.ch/server/pandamon/query?overview=viewlogfile&nocachemark=yes&guid=18b295fc-' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch/server/pandamon/query?overview=viewlogfile&nocachemark=yes&guid=18b295fc-</a>
+<font color='#7F7E6F'>&#62; 472e-4e32-be22-a6089446c480&lfn=ec85e2fd-bf79-4869-96c4-</font>
+<font color='#7F7E6F'>&#62; 915066d06208.job.log.tgz&site=NET2_PRODDISK</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Wed Jan 30 17&#58;22&#58;09 2013, osg-goc-rest wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; I think it is still not working.</font>
+<font color='#7F7E6F'>&#62; &#62; New condor-g jobs have been submitted. They are running, as it can</font>
+<font color='#7F7E6F'>&#62; be</font>
+<font color='#7F7E6F'>&#62; &#62; seen in the Panda monitor. However condor_q reports them as IDLE.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; Jose</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; On Jan 30, 2013, at 1&#58;03 PM, Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; &#62; -- by Jose Caballero at Wed Jan 30 22&#58;21&#58;09 UTC 2013</font>
+-- by youssef@.... at Wed Jan 30 22&#58;50&#58;17 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918</pre></div><div class='update_description'><i onclick="document.location='13527#1359585649'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-30T22:40:49+00:00">Jan 30, 2013 10:40 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359585649">&nbsp;</a></div><pre>For what it&#39;s worth, jobs are finishing successfully and the logs make it to
+the panda &#34;holding&#34; state and they have the logs
+
+<a href='http&#58;//panda.cern.ch/server/pandamon/query?overview=viewlogfile&nocachemark=yes&guid=18b295fc-472e-4e32-be22-a6089446c480&lfn=ec85e2fd-bf79-4869-96c4-915066d06208.job.log.tgz&site=NET2_PRODDISK' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch/server/pandamon/query?overview=viewlogfile&nocachemark=yes&guid=18b295fc-472e-4e32-be22-a6089446c480&lfn=ec85e2fd-bf79-4869-96c4-915066d06208.job.log.tgz&site=NET2_PRODDISK</a>
+
+On Wed Jan 30 17&#58;22&#58;09 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; I think it is still not working.</font>
+<font color='#7F7E6F'>&#62; New condor-g jobs have been submitted. They are running, as it can be</font>
+<font color='#7F7E6F'>&#62; seen in the Panda monitor. However condor_q reports them as IDLE.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Jose</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Jan 30, 2013, at 1&#58;03 PM, Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font>
+<font color='#7F7E6F'>&#62; -- by Jose Caballero at Wed Jan 30 22&#58;21&#58;09 UTC 2013</font>
+-- by youssef@.... at Wed Jan 30 22&#58;40&#58;40 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918</pre></div><div class='update_description'><i onclick="document.location='13527#1359584469'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-30T22:21:09+00:00">Jan 30, 2013 10:21 PM UTC</time> by <b>Jose Caballero</b><a class="anchor" name="1359584469">&nbsp;</a></div><pre>I think it is still not working.
+New condor-g jobs have been submitted. They are running, as it can be seen in the Panda monitor. However condor_q reports them as IDLE.
+
+Jose
+
+On Jan 30, 2013, at 1&#58;03 PM, Open Science Grid FootPrints wrote&#58;
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='13527#1359572307'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-30T18:58:27+00:00">Jan 30, 2013 06:58 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359572307">&nbsp;</a></div><pre>Hmmm. Now it looks like nothing more is running due to getting no pilots(?)
+
+<a href='http&#58;//apfmon.lancs.ac.uk/mon/q/758/' target='_blank' rel='nofollow'>http&#58;//apfmon.lancs.ac.uk/mon/q/758/</a>
+
+Jose, are you reading this? If I don&#39;t hear back, I&#39;ll go back to the email
+thread.
+
+- Saul
+
+On Wed Jan 30 12&#58;25&#58;51 2013, youssef@.... wrote&#58;
+<font color='#7F7E6F'>&#62; Hi,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Continuing from the email thread...</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; I think that Augustine might have just fixed the problem. For the</font>
+<font color='#7F7E6F'>&#62; latest</font>
+<font color='#7F7E6F'>&#62; succeeding job, you can see the log files in the panda monitor.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<a href='http&#58;//panda.cern.ch/server/pandamon/query?overview=viewlogfile&nocachemark=yes&guid=71623ca6-' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch/server/pandamon/query?overview=viewlogfile&nocachemark=yes&guid=71623ca6-</a>
+<font color='#7F7E6F'>&#62; e7b7-4fb7-9597-db7e2216e236&lfn=61c64d18-9ecf-4322-b763-</font>
+<font color='#7F7E6F'>&#62; 8af9d6dc9ed4.job.log.tgz&site=NET2_PRODDISK</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; - Saul</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; On Wed Jan 30 12&#58;02&#58;08 2013, osg-goc-rest wrote&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; we are seeing some problems with remote job submission to a SGE-</font>
+<font color='#7F7E6F'>&#62; based</font>
+<font color='#7F7E6F'>&#62; &#62; gatekeeper.</font>
+<font color='#7F7E6F'>&#62; &#62; The grid resource in particular is</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; We submit from BNL. Our condors are 7.9.2</font>
+<div id='show_1627264915' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1627264915'><font color='#7F7E6F'>&#62; &#62; Condor job submission files look like this one [1]</font>
+<font color='#7F7E6F'>&#62; &#62; What we observe is&#58;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; -- out and error files are never back, even when the job finished</font>
+<font color='#7F7E6F'>&#62; &#62; hours</font>
+<font color='#7F7E6F'>&#62; &#62; ago.</font>
+<font color='#7F7E6F'>&#62; &#62; -- log files looks like this [2]</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+-----------------------------------------------------------------------------------------------------
+<font color='#7F7E6F'>&#62; &#62; [1]</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; grid_resource=gt5 atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; &#62; globusrsl=(jobtype=single)(queue=production)</font>
+<font color='#7F7E6F'>&#62; &#62; copy_to_spool = false</font>
+<font color='#7F7E6F'>&#62; &#62; +Nonessential = True</font>
+<font color='#7F7E6F'>&#62; &#62; universe=grid</font>
+<font color='#7F7E6F'>&#62; &#62; Dir=/home/apf/factory/logs/2013-01-30/BU_ATLAS_Tier2/</font>
+<font color='#7F7E6F'>&#62; &#62; notify_user=jhover@....</font>
+<font color='#7F7E6F'>&#62; &#62; +MATCH_APF_QUEUE=&#34;BU_ATLAS_Tier2&#34;</font>
+<font color='#7F7E6F'>&#62; &#62; x509userproxy=/tmp/prodProxy</font>
+<font color='#7F7E6F'>&#62; &#62; environment = &#34;PANDA_JSID=BNL-gridui18-jhover</font>
+<font color='#7F7E6F'>&#62; &#62; GTAG=<a href='http&#58;//gridui18.usatlas.bnl.gov&#58;25880/2013-01-' target='_blank' rel='nofollow'>http&#58;//gridui18.usatlas.bnl.gov&#58;25880/2013-01-</a></font>
+<font color='#7F7E6F'>&#62; &#62; 30/BU_ATLAS_Tier2/$(Cluster).$(Process).out</font>
+<font color='#7F7E6F'>&#62; &#62; APFCID=$(Cluster).$(Process) APFFID=BNL-gridui18-jhover</font>
+<font color='#7F7E6F'>&#62; &#62; APFMON=<a href='http&#58;//apfmon.lancs.ac.uk/mon/' target='_blank' rel='nofollow'>http&#58;//apfmon.lancs.ac.uk/mon/</a> FACTORYQUEUE=BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62; &#62; FACTORYUSER=apf TMP=/scratch/ DATA=/atlasgrid/osg-data&#34;</font>
+<font color='#7F7E6F'>&#62; &#62; periodic_hold=GlobusResourceUnavailableTime =!= UNDEFINED</font>
+<font color='#7F7E6F'>&#62; &#62; &&(CurrentTime-GlobusResourceUnavailableTime&#62;500)</font>
+<font color='#7F7E6F'>&#62; &#62; periodic_remove = (JobStatus == 5 && (CurrentTime -</font>
+<font color='#7F7E6F'>&#62; &#62; EnteredCurrentStatus) &#62; 3600) || (JobStatus == 1 && globusstatus =!=</font>
+<font color='#7F7E6F'>&#62; 1</font>
+<font color='#7F7E6F'>&#62; &#62; && (CurrentTime - EnteredCurrentStatus) &#62; 86400)</font>
+<font color='#7F7E6F'>&#62; &#62; executable=/usr/libexec/wrapper.sh</font>
+<font color='#7F7E6F'>&#62; &#62; arguments=--wrappergrid=OSG --wrapperwmsqueue=BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62; &#62; --wrapperbatchqueue=BU_ATLAS_Tier2-sge --wrappervo=ATLAS</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; --wrappertarballurl=<a href='http&#58;//dev.racf.bnl.gov/dist/wrapper/wrapper.tar.gz' target='_blank' rel='nofollow'>http&#58;//dev.racf.bnl.gov/dist/wrapper/wrapper.tar.gz</a></font>
+<font color='#7F7E6F'>&#62; &#62; --wrapperserverurl=<a href='http&#58;//pandaserver.cern.ch&#58;25080/cache/pilot' target='_blank' rel='nofollow'>http&#58;//pandaserver.cern.ch&#58;25080/cache/pilot</a></font>
+<font color='#7F7E6F'>&#62; &#62; --wrapperloglevel=debug --script=pilot.py</font>
+<font color='#7F7E6F'>&#62; &#62; --libcode=pilotcode.tar.gz,pilotcode-rc.tar.gz</font>
+<font color='#7F7E6F'>&#62; &#62; --pilotsrcurl=<a href='http&#58;//panda.cern.ch&#58;25880/cache' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch&#58;25880/cache</a> -f false -m false</font>
+<font color='#7F7E6F'>&#62; &#62; --user</font>
+<font color='#7F7E6F'>&#62; &#62; managed</font>
+<font color='#7F7E6F'>&#62; &#62; output=$(Dir)/$(Cluster).$(Process).out</font>
+<font color='#7F7E6F'>&#62; &#62; error=$(Dir)/$(Cluster).$(Process).err</font>
+<font color='#7F7E6F'>&#62; &#62; log=$(Dir)/$(Cluster).$(Process).log</font>
+<font color='#7F7E6F'>&#62; &#62; stream_output=False</font>
+<font color='#7F7E6F'>&#62; &#62; stream_error=False</font>
+<font color='#7F7E6F'>&#62; &#62; notification=Error</font>
+<font color='#7F7E6F'>&#62; &#62; transfer_executable = True</font>
+<font color='#7F7E6F'>&#62; &#62; should_transfer_files = YES</font>
+<font color='#7F7E6F'>&#62; &#62; when_to_transfer_output = ON_EXIT_OR_EVICT</font>
+<font color='#7F7E6F'>&#62; &#62; queue 3</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+-----------------------------------------------------------------------------------------------------
+<font color='#7F7E6F'>&#62; &#62; [2]</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; 000 (879208.002.000) 01/29 12&#58;05&#58;28 Job submitted from host&#58;</font>
+<font color='#7F7E6F'>&#62; &#62; &#60;192.12.15.97&#58;24088&#62;</font>
+<font color='#7F7E6F'>&#62; &#62; ...</font>
+<font color='#7F7E6F'>&#62; &#62; 017 (879208.002.000) 01/29 12&#58;05&#58;40 Job submitted to Globus</font>
+<font color='#7F7E6F'>&#62; &#62; RM-Contact&#58; atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; &#62; JM-Contact&#58; atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; &#62; Can-Restart-JM&#58; 1</font>
+<font color='#7F7E6F'>&#62; &#62; ...</font>
+<font color='#7F7E6F'>&#62; &#62; 027 (879208.002.000) 01/29 12&#58;05&#58;40 Job submitted to grid resource</font>
+<font color='#7F7E6F'>&#62; &#62; GridResource&#58; gt2 atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; &#62; GridJobId&#58; gt5 atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; &#62; https&#58;//atlas-</font>
+<font color='#7F7E6F'>&#62; &#62; net2.bu.edu&#58;35920/16289861159637387801/6053409348385831860/</font>
+<font color='#7F7E6F'>&#62; &#62; ...</font>
+<font color='#7F7E6F'>&#62; &#62; 029 (879208.002.000) 01/29 14&#58;48&#58;09 The job&#39;s remote status is</font>
+<font color='#7F7E6F'>&#62; unknown</font>
+<font color='#7F7E6F'>&#62; &#62; ...</font>
+<font color='#7F7E6F'>&#62; &#62; 030 (879208.002.000) 01/29 14&#58;48&#58;36 The job&#39;s remote status is known</font>
+<font color='#7F7E6F'>&#62; &#62; again</font>
+<font color='#7F7E6F'>&#62; &#62; ...</font>
+<font color='#7F7E6F'>&#62; &#62; 029 (879208.002.000) 01/30 02&#58;37&#58;34 The job&#39;s remote status is</font>
+<font color='#7F7E6F'>&#62; unknown</font>
+<font color='#7F7E6F'>&#62; &#62; ...</font>
+<font color='#7F7E6F'>&#62; &#62; 030 (879208.002.000) 01/30 02&#58;48&#58;35 The job&#39;s remote status is known</font>
+<font color='#7F7E6F'>&#62; &#62; again</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; by /DC=org/DC=doegrids/OU=People/CN=Jose Caballero 511275</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; [META Information]</font>
+<font color='#7F7E6F'>&#62; &#62; Resource on which user is having this issue&#58; NET2(477)</font>
+<font color='#7F7E6F'>&#62; &#62; Primary Admin for NET2 is Augustine Abaris and has been CC&#39;d.</font>
+<font color='#7F7E6F'>&#62; &#62;</font>
+<font color='#7F7E6F'>&#62; &#62; [Ticket Origin]</font>
+<font color='#7F7E6F'>&#62; &#62; <a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=13527#1359565310' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=13527#1359565310</a></font>
+-- by youssef@.... at Wed Jan 30 18&#58;58&#58;18 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918
+</div><script type='text/javascript'>
+        $('#show_1627264915').click(function() {
+            $('#detail_1627264915').slideDown("normal");
+            $('#show_1627264915').hide();
+            $('#hide_1627264915').show();
+        });
+        $('#hide_1627264915').click(function() {
+            $('#detail_1627264915').slideUp();
+            $('#hide_1627264915').hide();
+            $('#show_1627264915').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1359568981'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-30T18:03:01+00:00">Jan 30, 2013 06:03 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359568981">&nbsp;</a></div><pre>Hi,
+
+I&#39;m only think that it might be solved, but Jose and John should give the all
+clear.
+
+The problem seems to have been distributing /etc/grid-security/certificates
+from the new gatekeeper to the worker nodes. This got out of sync at some
+point, causing PanDA jobs to start failing but not returning any logs. I fixed
+this up temporarily last night and jobs finished successfully. However Jose
+still saw a problem with condor not being able to talk to our site. I also just
+noticed that the successfully finishing panda jobs gave a certificate related
+error message in the &#34;show log files&#34; link.
+
+Coincidentally, Augustine fixed up the distribution of
+/etc/grid-security/certificates properly, finishing at 12&#58;04 p.m. today. When I
+checked the very last hc job, it had succeeded and had log files in the panda
+monitory.
+
+I&#39;m guessing that the certificate related error message was the same reason why
+condor was not working. I don&#39;t know however. Let&#39;s keep the ticket open for a
+while.
+
+On Wed Jan 30 12&#58;30&#58;11 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; Hi,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Could you share how the problem got solved and what it was? Might be</font>
+<font color='#7F7E6F'>&#62; useful in the future.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks!</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; iwona</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</font>
+<font color='#7F7E6F'>&#62; -- by goc at Wed Jan 30 17&#58;29&#58;54 UTC 2013</font>
+-- by youssef@.... at Wed Jan 30 18&#58;02&#58;52 UTC 2013
+<div id='show_1015121964' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1015121964'>
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918
+</div><script type='text/javascript'>
+        $('#show_1015121964').click(function() {
+            $('#detail_1015121964').slideDown("normal");
+            $('#show_1015121964').hide();
+            $('#hide_1015121964').show();
+        });
+        $('#hide_1015121964').click(function() {
+            $('#detail_1015121964').slideUp();
+            $('#hide_1015121964').hide();
+            $('#show_1015121964').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1359566994'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-30T17:29:54+00:00">Jan 30, 2013 05:29 PM UTC</time><a class="anchor" name="1359566994">&nbsp;</a></div><pre>Hi,
+
+Could you share how the problem got solved and what it was? Might be useful in the future.
+
+Thanks!
+
+iwona
+
+by /DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474</pre></div><div class='update_description'><i onclick="document.location='13527#1359566760'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-30T17:26:00+00:00">Jan 30, 2013 05:26 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359566760">&nbsp;</a></div><pre>Hi,
+
+Continuing from the email thread...
+
+I think that Augustine might have just fixed the problem. For the latest
+succeeding job, you can see the log files in the panda monitor.
+
+<a href='http&#58;//panda.cern.ch/server/pandamon/query?overview=viewlogfile&nocachemark=yes&guid=71623ca6-e7b7-4fb7-9597-db7e2216e236&lfn=61c64d18-9ecf-4322-b763-8af9d6dc9ed4.job.log.tgz&site=NET2_PRODDISK' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch/server/pandamon/query?overview=viewlogfile&nocachemark=yes&guid=71623ca6-e7b7-4fb7-9597-db7e2216e236&lfn=61c64d18-9ecf-4322-b763-8af9d6dc9ed4.job.log.tgz&site=NET2_PRODDISK</a>
+
+- Saul
+
+On Wed Jan 30 12&#58;02&#58;08 2013, osg-goc-rest wrote&#58;
+<font color='#7F7E6F'>&#62; we are seeing some problems with remote job submission to a SGE-based</font>
+<font color='#7F7E6F'>&#62; gatekeeper.</font>
+<font color='#7F7E6F'>&#62; The grid resource in particular is</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; We submit from BNL. Our condors are 7.9.2</font>
+<font color='#7F7E6F'>&#62; Condor job submission files look like this one [1]</font>
+<font color='#7F7E6F'>&#62; What we observe is&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; -- out and error files are never back, even when the job finished</font>
+<font color='#7F7E6F'>&#62; hours</font>
+<font color='#7F7E6F'>&#62; ago.</font>
+<font color='#7F7E6F'>&#62; -- log files looks like this [2]</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+-----------------------------------------------------------------------------------------------------
+<font color='#7F7E6F'>&#62; [1]</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; grid_resource=gt5 atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; globusrsl=(jobtype=single)(queue=production)</font>
+<font color='#7F7E6F'>&#62; copy_to_spool = false</font>
+<div id='show_1130795453' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1130795453'><font color='#7F7E6F'>&#62; +Nonessential = True</font>
+<font color='#7F7E6F'>&#62; universe=grid</font>
+<font color='#7F7E6F'>&#62; Dir=/home/apf/factory/logs/2013-01-30/BU_ATLAS_Tier2/</font>
+<font color='#7F7E6F'>&#62; notify_user=jhover@....</font>
+<font color='#7F7E6F'>&#62; +MATCH_APF_QUEUE=&#34;BU_ATLAS_Tier2&#34;</font>
+<font color='#7F7E6F'>&#62; x509userproxy=/tmp/prodProxy</font>
+<font color='#7F7E6F'>&#62; environment = &#34;PANDA_JSID=BNL-gridui18-jhover</font>
+<font color='#7F7E6F'>&#62; GTAG=<a href='http&#58;//gridui18.usatlas.bnl.gov&#58;25880/2013-01-' target='_blank' rel='nofollow'>http&#58;//gridui18.usatlas.bnl.gov&#58;25880/2013-01-</a></font>
+<font color='#7F7E6F'>&#62; 30/BU_ATLAS_Tier2/$(Cluster).$(Process).out</font>
+<font color='#7F7E6F'>&#62; APFCID=$(Cluster).$(Process) APFFID=BNL-gridui18-jhover</font>
+<font color='#7F7E6F'>&#62; APFMON=<a href='http&#58;//apfmon.lancs.ac.uk/mon/' target='_blank' rel='nofollow'>http&#58;//apfmon.lancs.ac.uk/mon/</a> FACTORYQUEUE=BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62; FACTORYUSER=apf TMP=/scratch/ DATA=/atlasgrid/osg-data&#34;</font>
+<font color='#7F7E6F'>&#62; periodic_hold=GlobusResourceUnavailableTime =!= UNDEFINED</font>
+<font color='#7F7E6F'>&#62; &&(CurrentTime-GlobusResourceUnavailableTime&#62;500)</font>
+<font color='#7F7E6F'>&#62; periodic_remove = (JobStatus == 5 && (CurrentTime -</font>
+<font color='#7F7E6F'>&#62; EnteredCurrentStatus) &#62; 3600) || (JobStatus == 1 && globusstatus =!= 1</font>
+<font color='#7F7E6F'>&#62; && (CurrentTime - EnteredCurrentStatus) &#62; 86400)</font>
+<font color='#7F7E6F'>&#62; executable=/usr/libexec/wrapper.sh</font>
+<font color='#7F7E6F'>&#62; arguments=--wrappergrid=OSG --wrapperwmsqueue=BU_ATLAS_Tier2</font>
+<font color='#7F7E6F'>&#62; --wrapperbatchqueue=BU_ATLAS_Tier2-sge --wrappervo=ATLAS</font>
+<font color='#7F7E6F'>&#62; --wrappertarballurl=<a href='http&#58;//dev.racf.bnl.gov/dist/wrapper/wrapper.tar.gz' target='_blank' rel='nofollow'>http&#58;//dev.racf.bnl.gov/dist/wrapper/wrapper.tar.gz</a></font>
+<font color='#7F7E6F'>&#62; --wrapperserverurl=<a href='http&#58;//pandaserver.cern.ch&#58;25080/cache/pilot' target='_blank' rel='nofollow'>http&#58;//pandaserver.cern.ch&#58;25080/cache/pilot</a></font>
+<font color='#7F7E6F'>&#62; --wrapperloglevel=debug --script=pilot.py</font>
+<font color='#7F7E6F'>&#62; --libcode=pilotcode.tar.gz,pilotcode-rc.tar.gz</font>
+<font color='#7F7E6F'>&#62; --pilotsrcurl=<a href='http&#58;//panda.cern.ch&#58;25880/cache' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch&#58;25880/cache</a> -f false -m false</font>
+<font color='#7F7E6F'>&#62; --user</font>
+<font color='#7F7E6F'>&#62; managed</font>
+<font color='#7F7E6F'>&#62; output=$(Dir)/$(Cluster).$(Process).out</font>
+<font color='#7F7E6F'>&#62; error=$(Dir)/$(Cluster).$(Process).err</font>
+<font color='#7F7E6F'>&#62; log=$(Dir)/$(Cluster).$(Process).log</font>
+<font color='#7F7E6F'>&#62; stream_output=False</font>
+<font color='#7F7E6F'>&#62; stream_error=False</font>
+<font color='#7F7E6F'>&#62; notification=Error</font>
+<font color='#7F7E6F'>&#62; transfer_executable = True</font>
+<font color='#7F7E6F'>&#62; should_transfer_files = YES</font>
+<font color='#7F7E6F'>&#62; when_to_transfer_output = ON_EXIT_OR_EVICT</font>
+<font color='#7F7E6F'>&#62; queue 3</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;</font>
+-----------------------------------------------------------------------------------------------------
+<font color='#7F7E6F'>&#62; [2]</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; 000 (879208.002.000) 01/29 12&#58;05&#58;28 Job submitted from host&#58;</font>
+<font color='#7F7E6F'>&#62; &#60;192.12.15.97&#58;24088&#62;</font>
+<font color='#7F7E6F'>&#62; ...</font>
+<font color='#7F7E6F'>&#62; 017 (879208.002.000) 01/29 12&#58;05&#58;40 Job submitted to Globus</font>
+<font color='#7F7E6F'>&#62; RM-Contact&#58; atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; JM-Contact&#58; atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; Can-Restart-JM&#58; 1</font>
+<font color='#7F7E6F'>&#62; ...</font>
+<font color='#7F7E6F'>&#62; 027 (879208.002.000) 01/29 12&#58;05&#58;40 Job submitted to grid resource</font>
+<font color='#7F7E6F'>&#62; GridResource&#58; gt2 atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; GridJobId&#58; gt5 atlas-net2.bu.edu/jobmanager-sge</font>
+<font color='#7F7E6F'>&#62; https&#58;//atlas-</font>
+<font color='#7F7E6F'>&#62; net2.bu.edu&#58;35920/16289861159637387801/6053409348385831860/</font>
+<font color='#7F7E6F'>&#62; ...</font>
+<font color='#7F7E6F'>&#62; 029 (879208.002.000) 01/29 14&#58;48&#58;09 The job&#39;s remote status is unknown</font>
+<font color='#7F7E6F'>&#62; ...</font>
+<font color='#7F7E6F'>&#62; 030 (879208.002.000) 01/29 14&#58;48&#58;36 The job&#39;s remote status is known</font>
+<font color='#7F7E6F'>&#62; again</font>
+<font color='#7F7E6F'>&#62; ...</font>
+<font color='#7F7E6F'>&#62; 029 (879208.002.000) 01/30 02&#58;37&#58;34 The job&#39;s remote status is unknown</font>
+<font color='#7F7E6F'>&#62; ...</font>
+<font color='#7F7E6F'>&#62; 030 (879208.002.000) 01/30 02&#58;48&#58;35 The job&#39;s remote status is known</font>
+<font color='#7F7E6F'>&#62; again</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; by /DC=org/DC=doegrids/OU=People/CN=Jose Caballero 511275</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [META Information]</font>
+<font color='#7F7E6F'>&#62; Resource on which user is having this issue&#58; NET2(477)</font>
+<font color='#7F7E6F'>&#62; Primary Admin for NET2 is Augustine Abaris and has been CC&#39;d.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; [Ticket Origin]</font>
+<font color='#7F7E6F'>&#62; <a href='https&#58;//ticket.grid.iu.edu/goc/viewer?id=13527#1359565310' target='_blank' rel='nofollow'>https&#58;//ticket.grid.iu.edu/goc/viewer?id=13527#1359565310</a></font>
+-- by youssef@.... at Wed Jan 30 17&#58;25&#58;51 UTC 2013
+
+GOCTX Source&#58; BNL Ticket&#58; Queue=NETier2 ID=22918
+</div><script type='text/javascript'>
+        $('#show_1130795453').click(function() {
+            $('#detail_1130795453').slideDown("normal");
+            $('#show_1130795453').hide();
+            $('#hide_1130795453').show();
+        });
+        $('#hide_1130795453').click(function() {
+            $('#detail_1130795453').slideUp();
+            $('#hide_1130795453').hide();
+            $('#show_1130795453').show();
+        });
+        </script></pre></div><div class='update_description'><i onclick="document.location='13527#1359565310'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2013-01-30T17:01:50+00:00">Jan 30, 2013 05:01 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1359565310">&nbsp;</a></div><pre>we are seeing some problems with remote job submission to a SGE-based gatekeeper.
+The grid resource in particular is
+
+atlas-net2.bu.edu/jobmanager-sge
+
+We submit from BNL. Our condors are 7.9.2
+Condor job submission files look like this one [1]
+What we observe is&#58;
+
+-- out and error files are never back, even when the job finished hours ago.
+-- log files looks like this [2]
+
+-----------------------------------------------------------------------------------------------------
+[1]
+
+grid_resource=gt5 atlas-net2.bu.edu/jobmanager-sge
+globusrsl=(jobtype=single)(queue=production)
+copy_to_spool = false
++Nonessential = True
+universe=grid
+Dir=/home/apf/factory/logs/2013-01-30/BU_ATLAS_Tier2/
+notify_user=jhover@....
++MATCH_APF_QUEUE=&#34;BU_ATLAS_Tier2&#34;
+x509userproxy=/tmp/prodProxy
+environment = &#34;PANDA_JSID=BNL-gridui18-jhover GTAG=<a href='http&#58;//gridui18.usatlas.bnl.gov&#58;25880/2013-01-30/BU_ATLAS_Tier2/' target='_blank' rel='nofollow'>http&#58;//gridui18.usatlas.bnl.gov&#58;25880/2013-01-30/BU_ATLAS_Tier2/</a>$(Cluster).$(Process).out APFCID=$(Cluster).$(Process) APFFID=BNL-gridui18-jhover APFMON=<a href='http&#58;//apfmon.lancs.ac.uk/mon/' target='_blank' rel='nofollow'>http&#58;//apfmon.lancs.ac.uk/mon/</a> FACTORYQUEUE=BU_ATLAS_Tier2 FACTORYUSER=apf TMP=/scratch/ DATA=/atlasgrid/osg-data&#34;
+periodic_hold=GlobusResourceUnavailableTime =!= UNDEFINED &&(CurrentTime-GlobusResourceUnavailableTime&#62;500)
+periodic_remove = (JobStatus == 5 && (CurrentTime - EnteredCurrentStatus) &#62; 3600) || (JobStatus == 1 && globusstatus =!= 1 && (CurrentTime - EnteredCurrentStatus) &#62; 86400)
+executable=/usr/libexec/wrapper.sh
+arguments=--wrappergrid=OSG --wrapperwmsqueue=BU_ATLAS_Tier2 --wrapperbatchqueue=BU_ATLAS_Tier2-sge --wrappervo=ATLAS --wrappertarballurl=<a href='http&#58;//dev.racf.bnl.gov/dist/wrapper/wrapper.tar.gz' target='_blank' rel='nofollow'>http&#58;//dev.racf.bnl.gov/dist/wrapper/wrapper.tar.gz</a> --wrapperserverurl=<a href='http&#58;//pandaserver.cern.ch&#58;25080/cache/pilot' target='_blank' rel='nofollow'>http&#58;//pandaserver.cern.ch&#58;25080/cache/pilot</a> --wrapperloglevel=debug --script=pilot.py --libcode=pilotcode.tar.gz,pilotcode-rc.tar.gz --pilotsrcurl=<a href='http&#58;//panda.cern.ch&#58;25880/cache' target='_blank' rel='nofollow'>http&#58;//panda.cern.ch&#58;25880/cache</a> -f false -m false --user managed
+output=$(Dir)/$(Cluster).$(Process).out
+error=$(Dir)/$(Cluster).$(Process).err
+log=$(Dir)/$(Cluster).$(Process).log
+stream_output=False
+stream_error=False
+notification=Error
+<div id='show_700541621' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_700541621'>transfer_executable = True
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT_OR_EVICT
+queue 3
+
+-----------------------------------------------------------------------------------------------------
+[2]
+
+000 (879208.002.000) 01/29 12&#58;05&#58;28 Job submitted from host&#58; &#60;192.12.15.97&#58;24088&#62;
+...
+017 (879208.002.000) 01/29 12&#58;05&#58;40 Job submitted to Globus
+RM-Contact&#58; atlas-net2.bu.edu/jobmanager-sge
+JM-Contact&#58; atlas-net2.bu.edu/jobmanager-sge
+Can-Restart-JM&#58; 1
+...
+027 (879208.002.000) 01/29 12&#58;05&#58;40 Job submitted to grid resource
+GridResource&#58; gt2 atlas-net2.bu.edu/jobmanager-sge
+GridJobId&#58; gt5 atlas-net2.bu.edu/jobmanager-sge <a href='https&#58;//atlas-net2.bu.edu&#58;35920/16289861159637387801/6053409348385831860/' target='_blank' rel='nofollow'>https&#58;//atlas-net2.bu.edu&#58;35920/16289861159637387801/6053409348385831860/</a>
+...
+029 (879208.002.000) 01/29 14&#58;48&#58;09 The job&#39;s remote status is unknown
+...
+030 (879208.002.000) 01/29 14&#58;48&#58;36 The job&#39;s remote status is known again
+...
+029 (879208.002.000) 01/30 02&#58;37&#58;34 The job&#39;s remote status is unknown
+...
+030 (879208.002.000) 01/30 02&#58;48&#58;35 The job&#39;s remote status is known again
+
+by /DC=org/DC=doegrids/OU=People/CN=Jose Caballero 511275
+
+</div><script type='text/javascript'>
+        $('#show_700541621').click(function() {
+            $('#detail_700541621').slideDown("normal");
+            $('#show_700541621').hide();
+            $('#hide_700541621').show();
+        });
+        $('#hide_700541621').click(function() {
+            $('#detail_700541621').slideUp();
+            $('#hide_700541621').hide();
+            $('#show_700541621').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F13527">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 13527});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

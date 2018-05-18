@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[29869] HTCondor-CE / SLURM discrepancies</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=29869" method="post">
+<div class="page-header">
+    <h3><span class="muted">29869</span> / HTCondor-CE / SLURM discrepancies</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Daniel Caunt</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Daniel Caunt</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">Waiting for user response</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2016-06-28</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=29869", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/29869?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/29869?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20HTCondor-CE%20%2F%20SLURM%20discrepancies%20ISSUE%3D29869%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='29869#1467226259'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-29T18:50:59+00:00">Jun 29, 2016 06:50 PM UTC</time> by <b>echism</b><a class="anchor" name="1467226259">&nbsp;</a></div><pre>Thanks, I&#39;ll close this.</pre></div><div class='update_description'><i onclick="document.location='29869#1467123419'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-28T14:16:59+00:00">Jun 28, 2016 02:16 PM UTC</time><a class="anchor" name="1467123419">&nbsp;</a></div><pre>Everything&#39;s looking really good on our end right now.  I think we can close this ticket.  Thanks so much for all the help, everyone.  Things are running really smoothly.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1466776746'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-24T13:59:06+00:00">Jun 24, 2016 01:59 PM UTC</time><a class="anchor" name="1466776746">&nbsp;</a></div><pre>Hi Elizabeth,
+
+Things are looking good so far.  But if it&#39;s okay with you, let&#39;s revisit this next week and make sure that things are still going well then.  At that time, we should hopefully be able to close this ticket.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1466776145'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-24T13:49:05+00:00">Jun 24, 2016 01:49 PM UTC</time> by <b>echism</b><a class="anchor" name="1466776145">&nbsp;</a></div><pre>Hey Dan,
+
+Is there any news? Should I check on this next week?</pre></div><div class='update_description'><i onclick="document.location='29869#1466524313'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-21T15:51:53+00:00">Jun 21, 2016 03:51 PM UTC</time><a class="anchor" name="1466524313">&nbsp;</a></div><pre>Hi Brian.  Yes, it looks to be doing well from this end too.  There are some tweaks we need to make (job requirements, etc) but they can be done as we go.  I&#39;m working with Jose at the moment to continue moving more nodes from GRAM to HTCondor-CE.  I hope to have them all migrated this week.  I&#39;ll keep you posted.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1466519777'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-21T14:36:17+00:00">Jun 21, 2016 02:36 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1466519777">&nbsp;</a></div><pre>Hey Dan,
+
+Your HTCondor-CE looks to be faring pretty well, will you have time to transition to it this week?
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1466003598'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-15T15:13:18+00:00">Jun 15, 2016 03:13 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1466003598">&nbsp;</a></div><pre>Awesome, I&#39;m completely on board with transitioning off of your GRAM CE &#58;). I&#39;ll check back next week to see if things are still going well and help with the transition if you need it.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1466002787'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-15T14:59:47+00:00">Jun 15, 2016 02:59 PM UTC</time><a class="anchor" name="1466002787">&nbsp;</a></div><pre>Thanks for the explanation and suggestion, Brian.  I added the public address to /etc/hosts and condor_ce_host_network_check seems to be happy now&#58;
+
+[root@net2 ~]# condor_ce_host_network_check
+Starting analysis of host networking for HTCondor-CE
+System hostname&#58; net2.rc.fas.harvard.edu
+FQDN matches hostname
+Forward resolution of hostname net2.rc.fas.harvard.edu is 140.247.179.131.
+Backward resolution of IPv4 140.247.179.131 is net2.rc.fas.harvard.edu.
+Forward and backward resolution match!
+HTCondor is considering all network interfaces and addresses.
+HTCondor would pick address of 140.247.179.131 as primary address.
+HTCondor primary address 140.247.179.131 matches system preferred address.
+Host network configuration should work with HTCondor-CE
+[root@net2 ~]#
+
+I&#39;ll just keep an eye on the system for a while to see if that change had any unintended consequences.  As for that nervous feeling you were having - I was having it too.  But I think that if HTCondor-CE/SLURM is still performing well by the end of the day, it probably is the best option to migrate over from GRAM/LSF which is still not filling its worker nodes.  I think the OSG 3.3 & HTCondor-CE upgrades helped our HTCondor-CE/SLURM integration.  Any residual problems that I thought I was seeing after the upgrade may have been misinterpretations.  Plus, it would be great to have only one scheduling system to troubleshoot from now on instead of two &#58;-)
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1466001656'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-15T14:40:56+00:00">Jun 15, 2016 02:40 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1466001656">&nbsp;</a></div><pre>Daniel,
+
+Well, we could potentially leave NETWORK_INTERFACE alone and fix this outside HTCondor-CE. We could try adding net2.rc.fas.harvard.edu on the public interface to /etc/hosts so that the DNS resolution uses your public interface. If you want to go ahead and try unsetting NETWORK_INTERFACE, you can restart the htcondor-ce service to force a config reload, but I think it&#39;s probably better to try editing your hosts file and seeing if that appeases the condor_ce_host_network_check tool.
+
+I think the inability to condor_ce_reconfig is related to this issue; the HTCondor-CE daemons (and any tool commands) are permitted to talk to each other based on some of the ALLOW_* permissions in /etc/condor-ce/config.d/01-ce-auth.conf. You&#39;ll see that ALLOW_ADMINISTRATOR in particular is set to &#39;$(HOSTNAME)@daemon.opensciencegrid.org/$(FULL_HOSTNAME)&#39;, and since DNS resolution isn&#39;t working on your public interface, your daemons and commands are not being mapped using your hostname and will fail with &#39;PERMISSION DENIED&#39;.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1466000515'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-15T14:21:55+00:00">Jun 15, 2016 02:21 PM UTC</time><a class="anchor" name="1466000515">&nbsp;</a></div><pre>Brian,
+
+If I remember correctly, before setting &#34;NETWORK_INTERFACE = 140.247.179.131&#34; the pilot jobs were not arriving at the CE.  But I am willing to remove that entry just to see how it affects condor_ce_host_network_check.  However, condor_ce_reconfig isn&#39;t working at the moment&#58;
+
+[root@net2 ~]# condor_ce_reconfig
+ERROR
+SECMAN&#58;2010&#58;Received &#34;DENIED&#34; from server for user condor@.... using method FS.
+Can&#39;t send Reconfig command to local master
+[root@net2 ~]#
+
+I don&#39;t remember having this problem before.  Is there a different user I need to be in order to run &#39;condor_ce_reconfig&#39;?  I tried using my own account, usatlas1, and root but got the same response each time.  Or could it be related to&#58;
+
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS,GSI
+
+in /etc/condor-ce/config.d/01-common-auth.conf?
+
+&#39;FS&#39; was added there per this ticket&#58; <a href='https&#58;//ticket.opensciencegrid.org/26367' target='_blank' rel='nofollow'>https&#58;//ticket.opensciencegrid.org/26367</a>
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1465937171'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-14T20:46:11+00:00">Jun 14, 2016 08:46 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1465937171">&nbsp;</a></div><pre>Daniel,
+
+I&#39;m both glad and nervous that your HTCondor-CE/Slurm setup is looking
+better. Nervous because we don&#39;t really know the root cause. However, if
+it&#39;s looking that much better than your GRAM CE, then it does make sense
+to make the switch.
+
+I&#39;ve been poking at your CE for a good portion of afternoon and I was
+wondering if you removed the NETWORK_INTERFACE configuration, run
+condor_ce_reconfig, if that would improve the output of
+condor_ce_host_network_check.
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1465924031'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-14T17:07:11+00:00">Jun 14, 2016 05:07 PM UTC</time><a class="anchor" name="1465924031">&nbsp;</a></div><pre>Brian,
+
+Thanks for that command.  It&#39;s very useful.
+
+I believe you should be able to submit jobs now.  I added your DN to the local-grid-mapfile.
+
+However, things seem to be running a lot better since the weekend.  At least in HTCondor-CE/SLURM.  I&#39;m not seeing that behavior anymore where the worker nodes remain empty for extended periods.  GRAM is another story but since we&#39;re migrating away from that (and since HTCondor-CE/SLURM seems to be performing very well now) I may simply begin the full cutover now rather than troubleshoot why the GRAM queues are still not filling completely.
+
+Here are the results from &#39;condor_ce_host_network_check&#39;&#58;
+
+[root@net2 ~]# condor_ce_host_network_check
+Starting analysis of host networking for HTCondor-CE
+System hostname&#58; net2.rc.fas.harvard.edu
+FQDN matches hostname
+Forward resolution of hostname net2.rc.fas.harvard.edu is 10.31.131.202.
+Backward resolution of IPv4 10.31.131.202 is net2.rc.fas.harvard.edu.
+Forward and backward resolution match!
+HTCondor is considering all network interfaces and addresses.
+HTCondor would pick address of 140.247.179.131 as primary address.
+Backward of resolution of HTCondor address 140.247.179.131 matches default hostname of net2.rc.fas.harvard.edu.
+HTCondor primary address 140.247.179.131 is not a valid address for default FQDN of net2.rc.fas.harvard.edu.
+Host network configuration not expected to work with HTCondor-CE.
+
+I assume that last error about 140.247.179.131 not being a valid address for net2 is a result of net2 having a private NAT&#39;d address as well.  So, if you run &#39;nslookup net2&#39; from net2, you&#39;ll get the private IP (10.31.131.202).
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1465595394'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-10T21:49:54+00:00">Jun 10, 2016 09:49 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1465595394">&nbsp;</a></div><pre>Dan,
+
+Have you added my DN to your auth system? It doesn&#39;t look like I&#39;m authorized to submit jobs. As for all the idle jobs on your HTCondor-CE, you can find all corresponding Slurm job ID&#39;s by running the following command&#58;
+
+condor_ce_q  -const &#39;gridjobid isnt null && jobstatus =?= 1&#39; -af gridjobid | awk -F &#39;/&#39; &#39;{print $3}&#39;
+
+If you spot check some of these job IDs, perhaps we can see why HTCondor-CE thinks they&#39;re all idle.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1465576139'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-10T16:28:59+00:00">Jun 10, 2016 04:28 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1465576139">&nbsp;</a></div><pre>Hmm, if jobs are running through the Panda queues but you aren&#39;t getting much, it might be useful to contact John Hoover directly to see if there&#39;s something he can tweak</pre></div><div class='update_description'><i onclick="document.location='29869#1465575596'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-10T16:19:56+00:00">Jun 10, 2016 04:19 PM UTC</time><a class="anchor" name="1465575596">&nbsp;</a></div><pre>Also, I didn&#39;t see any errors in /var/log/globus-gatekeeper.log so I increased the log level to TRACE as recommended and I&#39;ll post the log file after it has run for a few hours.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1465574663'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-10T16:04:23+00:00">Jun 10, 2016 04:04 PM UTC</time><a class="anchor" name="1465574663">&nbsp;</a></div><pre>Updating the site config with the path to lsm-get and lsm-put seems to have resolved those errors.  Thanks for helping me find that.  However, it still looks like we&#39;re experiencing other job-related issues.  For instance, we&#39;re seeing about 150 jobs at any given time in GRAM/LSF in the ATLAS_Analysis queue (ANALY_HU_ATLAS_Tier2 in Panda), and only a trickle of jobs (maybe 8 at a time) in the ATLAS_MCORE (HU_ATLAS_Tier2_MCORE in Panda).  So most of our worker nodes are idle.  And we&#39;re still experiencing the same problem in HTCondor-CE/SLURM that we were hoping the OSG 3.3 upgrade might help resolve - namely, the two worker nodes that we have there at the moment fill up with jobs at first (16 jobs each) and then slowly drain even though there are plenty of jobs sitting idle in HTCondor-CE.  As jobs complete, new jobs don&#39;t fill those cores.
+
+Brian, regarding your note about OSG 3.3 and ATLAS... I did upgrade the worker nodes to OSG 3.3 as well.  We keep the client software on an NFS mount across the cluster so I followed these instructions (<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallWNClientTarball' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/InstallWNClientTarball</a>) to bring them up to date.  I now see that there are only about half as many files in osg-wn-client/usr/bin as there used to be in 3.2.  Is this something worth looking into more closely?
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1465499588'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T19:13:08+00:00">Jun 9, 2016 07:13 PM UTC</time><a class="anchor" name="1465499588">&nbsp;</a></div><pre>Thanks, Suchandra.  And thanks, John.  I believe I&#39;ve updated the appropriate config to include the path to lsm-get and lsm-put.  I&#39;ll keep an eye on things to see if that resolves this issue.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1465495827'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T18:10:27+00:00">Jun 9, 2016 06:10 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1465495827">&nbsp;</a></div><pre>Jon said that the problem is a site configuration issue and not a pilot problem. It looks like you need to update the panda/site config to point to the the location of lsm-get and friends.
+
+Suchandra</pre></div><div class='update_description'><i onclick="document.location='29869#1465495450'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T18:04:10+00:00">Jun 9, 2016 06:04 PM UTC</time><a class="anchor" name="1465495450">&nbsp;</a></div><pre>Thanks, Brian and Suchandra.  The queues I&#39;m on are HU_ATLAS_Tier2 and HU_ATLAS_Tier2_MCORE.  I&#39;m now seeing this error in Panda&#58;
+
+&#34;Pilot error 1097&#58; Get function can not be called for staging input files&#58; No module named rucio.client|Log put error&#58; which&#58; no lsm-get in (/net/atlasgrid/nfs_atlasgrid/osg-wn-client/usr/bin&#58;/net/atlasgrid/nfs_atlasgrid/osg-wn-client/usr/sbin&#58;/cvmfs/atlas.cern.ch/repo
+pilot&#58; Get function can not be called for staging input files&#58; No module named rucio.client|Log put error&#58; which&#58; no lsm-get in (/net/atlasgrid/nfs_atlasgrid/osg-wn-client/usr/bin&#58;/net/atlasgrid/nfs_atlasgrid/osg-wn-client/usr/sbin&#58;/cvmfs/atlas.cern.ch/repo&#34;
+
+I&#39;ll look into that now and see what I can do to resolve it.  Then I&#39;ll follow your suggestions, Brian.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1465493966'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T17:39:26+00:00">Jun 9, 2016 05:39 PM UTC</time> by <b>Suchandra Thapa</b><a class="anchor" name="1465493966">&nbsp;</a></div><pre>Which Panda queue  are you on?  I&#39;m next to Jon Hoover and he can look at the factory bits but needs to know which Panda queue the jobs are supposed to be going to?</pre></div><div class='update_description'><i onclick="document.location='29869#1465489157'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T16:19:17+00:00">Jun 9, 2016 04:19 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1465489157">&nbsp;</a></div><pre>Dan,
+
+I&#39;m curious if there&#39;s any indication from the Panda factories on why there are so few jobs?
+
+As far as I know, the packages that are missing for ATLAS are on 3.3 are only relevant to the worker node client, but I may be misremembering. I don&#39;t think that issue should have any effect if you&#39;ve only upgraded your CE. Additionally, I don&#39;t believe the upgrade would have *removed* any existing packages.
+
+Any errors in /var/log/globus-gatekeeper.log? If not, it may be a good idea to bump the debug level to the TRACE&#58; <a href='https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/TroubleshootingComputeElement#Troubleshooting_Common_Job_Submi' target='_blank' rel='nofollow'>https&#58;//twiki.grid.iu.edu/bin/view/Documentation/Release3/TroubleshootingComputeElement#Troubleshooting_Common_Job_Submi</a>
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1465487948'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T15:59:08+00:00">Jun 9, 2016 03:59 PM UTC</time><a class="anchor" name="1465487948">&nbsp;</a></div><pre>I should clarify that this lull in jobs is happening in GRAM/LSF.  That is where our production jobs are still being sent.  We are still working out the bugs in HTCondor-CE/SLURM but for now I&#39;m trying to get GRAM/LSF working properly as it was before the OSG 3.3 upgrade.  Then I will continue preparing HTCondor-CE/SLURM for production.  If there are particular log files that may be helpful, let me know and I will attach them.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1465480495'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T13:54:55+00:00">Jun 9, 2016 01:54 PM UTC</time><a class="anchor" name="1465480495">&nbsp;</a></div><pre>Hi Elizabeth,
+
+I upgraded our site (CE and worker nodes) to OSG 3.3 on Tuesday.  Since then we are receiving very few jobs.  Whereas we used to have approximately 1800 jobs running concurrently, we now have anywhere between 15 and 200 jobs running.  I opened another ticket regarding one discrepancy that I noticed so far (<a href='https&#58;//ticket.opensciencegrid.org/30190' target='_blank' rel='nofollow'>https&#58;//ticket.opensciencegrid.org/30190</a>) and I also emailed Jose Caballero regarding the low number of jobs.  He CC&#39;d Eric Lancon on his response to me and inquired about any known issues with ATLAS and the OSG 3.3 client saying &#34;Some packages that ATLAS needs are missing in OSG 3.3&#34; but I haven&#39;t heard a response from Eric yet.
+
+Any help would be appreciated.
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1465480089'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T13:48:09+00:00">Jun 9, 2016 01:48 PM UTC</time> by <b>Jose Caballero</b><a class="anchor" name="1465480089">&nbsp;</a></div><pre>I am on vacations. I will read your email on June 15.</pre></div><div class='update_description'><i onclick="document.location='29869#1465480008'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-09T13:46:48+00:00">Jun 9, 2016 01:46 PM UTC</time> by <b>echism</b><a class="anchor" name="1465480008">&nbsp;</a></div><pre>Hi Dan,
+
+Anything new on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='29869#1464986069'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-03T20:34:29+00:00">Jun 3, 2016 08:34 PM UTC</time><a class="anchor" name="1464986069">&nbsp;</a></div><pre>Hi Brian,
+
+Sorry for the delay.  It&#39;s been a very busy week.  But next week I should have all the time in the world to work on this.
+
+It looks as though condor_ce_host_network_check was released in a slightly newer version of htcondor-ce than I&#39;m currently running.  My first priority will be to upgrade OSG and HTCondor-CE.  And I&#39;ll add your DN as well.
+
+To answer your other question, there haven&#39;t been any recent changes to this system as far as I can tell.
+
+Have a great weekend and I&#39;ll be in touch next week with updates.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1464878713'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-02T14:45:13+00:00">Jun 2, 2016 02:45 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1464878713">&nbsp;</a></div><pre>As for the network-related issues, have you tried running
+condor_ce_host_network_check?
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1464813489'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-06-01T20:38:09+00:00">Jun 1, 2016 08:38 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1464813489">&nbsp;</a></div><pre>Dan,
+
+I don&#39;t think the GIP configuration would be causing this sort of issue. Would you be able to enable the GLOW/osg VOs or add my DN to your auth system so that I can submit jobs? I&#39;d be able to submit some local universe jobs and do some poking from here. Were there any changes to perhaps the packages when this started happening? What&#39;s the window to update to OSG 3.3 look like now? I don&#39;t see any running jobs at all so this looks like a major problem.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1464291262'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-26T19:34:22+00:00">May 26, 2016 07:34 PM UTC</time><a class="anchor" name="1464291262">&nbsp;</a></div><pre>One additional thought?  Since we are still running GRAM/LSF on this CE while we test and prepare for using only HTCondor-CE/SLURM, GIP is still set to LSF.  Could this be causing these issues with HTCondor-CE/SLURM jobs?
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1464290053'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-26T19:14:13+00:00">May 26, 2016 07:14 PM UTC</time><a class="anchor" name="1464290053">&nbsp;</a></div><pre>Brian,
+
+Submitting one of those scripts again using qsub succeeds.  Well, the job submission succeeds - the job itself fails with this in the error log&#58;
+
+slurmstepd&#58; error&#58; couldn&#39;t chdir to &#96;/scratch/blah/bl_fb8fd3e74ab8.debug&#39;&#58; No such file or directory&#58; going to /tmp instead
+/var/slurmd/spool/slurmd/job62379835/slurm_script&#58; line 62&#58; /n/atlasgrid/condor/6780/0/cluster336780.proc0.subproc0/_condor_stdout&#58; No such file or directory
+
+I would assume that&#39;s normal since this job already ran and those directories must have been cleaned up after it ran, right?
+
+Running &#39;hostname&#39; does return the public FQDN of the CE, &#39;net2.rc.fas.harvard.edu&#39;
+And NETWORK_INTERFACE was set to the CE&#39;s public IP some time ago in 99-local.conf
+
+I can attempt the upgrade of HTCondor-CE and OSG but that may take several days.  Is there anything I can check in the meantime?
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1464214995'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-25T22:23:15+00:00">May 25, 2016 10:23 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1464214995">&nbsp;</a></div><pre>Dan,
+
+Nothing looks particularly wrong in the submit files that you&#39;ve attached (they&#39;re all named &#39;submit.script&#39; under all the various bl_* files). Could you submit one of those files manually using qsub?
+
+For the dual-NIC stuff&#58; does running &#96;hostname&#96; in a shell return the public hostname of your CE (it should)? You should probably set &#39;NETWORK_INTERFACE=&#60;public IP&#62;&#39; in /etc/condor-ce/config.d/ somewhere.
+
+I noticed that you&#39;re on an old version of HTCondor (and probably HTCondor-CE). You may want to think about bumping up to OSG 3.3 and running a &#96;yum update&#96; to update your blahp/HTCondor/HTCondor-CE.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1464119613'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-24T19:53:33+00:00">May 24, 2016 07:53 PM UTC</time><a class="anchor" name="1464119613">&nbsp;</a></div><pre>Brian,
+
+I&#39;m attaching some of the debug output from setting blah_debug_save_submit_info.  Please let me know what you are able to find from this.  Thanks.
+
+Marian,
+
+Thank you for the ideas.  I wonder if this once again is related to the dual NICs on the CE.  I&#39;ll see what I can figure out with regard to that.
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1464108553'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-24T16:49:13+00:00">May 24, 2016 04:49 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1464108553">&nbsp;</a></div><pre>Dan,
+
+I do see the following in the GridManagerLog.usatlas1&#58;
+
+05/23/16 15&#58;47&#58;42 [29805] Updating classad values for 319710.0&#58;
+05/23/16 15&#58;47&#58;42 [29805]    EnteredCurrentStatus = 1464032857
+05/23/16 15&#58;47&#58;42 [29805]    HoldReason = &#34;Attempts to submit failed&#58; &#34;
+05/23/16 15&#58;47&#58;42 [29805]    JobStatus = 3
+05/23/16 15&#58;47&#58;42 [29805]    Managed = &#34;ScheddDone&#34;
+05/23/16 15&#58;47&#58;42 [29805]    RemoveReason = &#34;Attempts to submit failed&#58; &#34;
+
+The blank output often means that there&#39;s an issue with the pbs_submit.sh script. We&#39;ll probably want to see if there&#39;s an issue with the generated PBS submission scripts so you&#39;ll need to set blah_debug_save_submit_info (<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#BLAHP_Configuration_File' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#BLAHP_Configuration_File</a>).
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1464060946'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-24T03:35:46+00:00">May 24, 2016 03:35 AM UTC</time><a class="anchor" name="1464060946">&nbsp;</a></div><pre>Hi Dan,
+
+I don&#39;t like in particular these lines in the logs&#58;
+
+MasterLog&#58;
+05/23/16 15&#58;39&#58;25 PERMISSION DENIED to condor@.... from host 140.247.179.131 for command 60008 (DC_CHILDALIVE), access level DAEMON&#58; reason&#58; DAEMON authorization policy contains no matching ALLOW entry for this request; identifiers used for this host&#58; 140.247.179.131, hostname size = 0, original ip address = 140.247.179.131
+
+SchedLog&#58;
+05/23/16 15&#58;49&#58;32 QMGR Connection closed
+...
+05/23/16 15&#58;49&#58;32 QMGR Connection closed
+^ blocked connection to your CE schedd
+
+StarterLog&#58;
+09/10/15 11&#58;10&#58;48 (pid&#58;6642) (12.0)  condor_write()&#58; Socket closed when trying to write 53 bytes to daemon at &#60;140.247.179.131&#58;9620&#62;, fd is 9
+09/10/15 11&#58;10&#58;48 (pid&#58;6642) (12.0)  Buf&#58;&#58;write()&#58; condor_write() failed
+^ this is typical network issue, worker node can&#39;t talk to your schedd, firewall or local iptables? Though I&#39;m bit confused, are you running STARTER deamon which mean the worker node condor-based here? Isn&#39;t it underlying batch SLURM? Oh, scratch that! I just found StarteLog is irrelevant here completelly, it has also very old timestamp!
+
+CollectorLog&#58;
+05/23/16 15&#58;42&#58;21 DC_AUTHENTICATE&#58; attempt to open invalid session net2&#58;3336&#58;1463952405&#58;518, failing; this session was requested by &#60;192.12.15.97&#58;28484&#62; with return address &#60;192.12.15.97&#58;21971&#62;
+^ again, some network issue it seems, lost open session between collector and startd on the worker
+
+You&#39;re submitting from Panda, nothing on that side in corresponding logs when job loose contact? After &#96;service condor-ce restart&#96; it could possibly be things resurrect due nature of htcondor reconnect mechanism and job may simply start right away. So I think there is some throttle on the networking part between components in the submission chain.
+
+Sorry for incomplete analysis, I just threw here my thoughts before I go to bed...
+
+-Marian
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=zvada/CN=684832/CN=Marian Zvada</pre></div><div class='update_description'><i onclick="document.location='29869#1464033509'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-23T19:58:29+00:00">May 23, 2016 07:58 PM UTC</time><a class="anchor" name="1464033509">&nbsp;</a></div><pre>Our datacenter outage kept me busy most of last week.  Thanks for waiting on this.  So, the CE continues to get to the state where no jobs (or very few jobs) are running even though the worker nodes are idle (or very close to idle) and there are plenty of pending jobs.  After restarting the condor-ce service, the worker nodes fill up again.  I&#39;m wondering if you can help me find a cause for this based on data in the log files.  At 15&#58;39 today, there were 292 idle jobs in HTCondor-CE and both worker nodes (atlas5201 and atlas5202) were idle.  Node atlas5201 hadn&#39;t run any jobs yet today and atlas5202 had only run 14 jobs today, all starting around 13&#58;09.  I then restarted condor-ce on the CE (around 15&#58;39) and the worker nodes immediately filled up with 16 jobs each.  Do you see any reason why so few jobs were being sent to the worker nodes prior to the condor-ce restart?  I&#39;m attaching log files.  Please let me know if there&#39;s any other information I can provide.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1463426081'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-16T19:14:41+00:00">May 16, 2016 07:14 PM UTC</time><a class="anchor" name="1463426081">&nbsp;</a></div><pre>Thanks Brian and Suchandra,
+
+Our site is offline at the moment for a datacenter power outage happening tonight and tomorrow.  We will be back online by Wednesday so I will do some more investigating then and report back.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1463415674'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-16T16:21:14+00:00">May 16, 2016 04:21 PM UTC</time> by <b>ssthapa@....</b><a class="anchor" name="1463415674">&nbsp;</a></div><pre>Yeah I can take a look, although I&#39;m getting a wisdom tooth removed this
+afternoon so I&#39;ll be out tomorrow and possibly Wednesday. I may not be able
+to get to this until Thursday.
+
+Suchandra Thapa
+sthapa@....
+Computation Institute
+Searle Chemistry Laboratory #201A
+5735 South Ellis Avenue
+Chicago, IL 60637
+
+On Fri, May 13, 2016 at 4&#58;10 PM, Open Science Grid FootPrints &#60;
+osg@....&#62; wrote&#58;
+
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='29869#1463408410'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-16T14:20:10+00:00">May 16, 2016 02:20 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1463408410">&nbsp;</a></div><pre>Daniel,
+
+Are you taking into account that there are two CE jobs per incoming job for SLURM? <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/HTCondorCEOverview#On_other_batch_systems' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/HTCondorCEOverview#On_other_batch_systems</a>
+
+I believe condor_ce_router_q should give you a much closer number of how many jobs are actually routed to your SLURM backend&#58; <a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#condor_ce_router_q.' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#condor_ce_router_q.</a>
+
+Cheers,
+Brian</pre></div><div class='update_description'><i onclick="document.location='29869#1463173832'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-13T21:10:32+00:00">May 13, 2016 09:10 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1463173832">&nbsp;</a></div><pre>Suchandra, is this something you can take a look at?
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='29869#1463166661'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-13T19:11:01+00:00">May 13, 2016 07:11 PM UTC</time><a class="anchor" name="1463166661">&nbsp;</a></div><pre>After submitting this ticket, I noticed that jobs started up again around 12&#58;23pm.  Perhaps the logs will reveal something around that time.
+
+[root@net2 ~]# condor_ce_q | grep R
+ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD
+264310.0   usatlas1        5/13 11&#58;51   0+02&#58;27&#58;03 R  0   0.0  wrapper-0.9.15.sh
+264431.0   usatlas1        5/13 11&#58;55   0+02&#58;27&#58;03 R  0   0.0  wrapper-0.9.15.sh
+264487.0   usatlas1        5/13 11&#58;55   0+02&#58;27&#58;04 R  0   0.0  wrapper-0.9.15.sh
+264536.0   usatlas1        5/13 12&#58;17   0+02&#58;27&#58;04 R  0   0.0  wrapper-0.9.15.sh
+264559.0   usatlas1        5/13 12&#58;19   0+02&#58;27&#58;03 R  0   0.0  wrapper-0.9.15.sh
+264563.0   usatlas1        5/13 12&#58;19   0+02&#58;27&#58;03 R  0   0.0  wrapper-0.9.15.sh
+264570.0   usatlas1        5/13 12&#58;19   0+02&#58;27&#58;04 R  0   0.0  wrapper-0.9.15.sh
+264576.0   usatlas1        5/13 12&#58;19   0+02&#58;27&#58;04 R  0   0.0  wrapper-0.9.15.sh
+
+[root@net2 ~]# sacct -u usatlas1 -s RUNNING -o jobid,Submit,State,Elapsed,TotalCPU,NodeList,Partition,Timelimit
+JobID              Submit      State    Elapsed   TotalCPU        NodeList  Partition  Timelimit
+------------ ------------------- ---------- ---------- ---------- --------------- ---------- ----------
+61618944     2016-05-13T12&#58;23&#58;41    RUNNING   02&#58;28&#58;22   00&#58;00&#58;00       atlas5202 ATLAS_Ana+ 1-00&#58;00&#58;00
+61618945     2016-05-13T12&#58;23&#58;41    RUNNING   02&#58;28&#58;22   00&#58;00&#58;00       atlas5202 ATLAS_Ana+ 1-00&#58;00&#58;00
+61618946     2016-05-13T12&#58;23&#58;41    RUNNING   02&#58;28&#58;22   00&#58;00&#58;00       atlas5202 ATLAS_Ana+ 1-00&#58;00&#58;00
+61618949     2016-05-13T12&#58;23&#58;42    RUNNING   02&#58;28&#58;19   00&#58;00&#58;00       atlas5202 ATLAS_Ana+ 1-00&#58;00&#58;00
+
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt</pre></div><div class='update_description'><i onclick="document.location='29869#1463162620'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2016-05-13T18:03:40+00:00">May 13, 2016 06:03 PM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1463162620">&nbsp;</a></div><pre>Hi,
+
+I&#39;m running some tests on our new HTCondor-CE/SLURM environment and I&#39;m trying to figure out the cause of some discrepancies between HTCondor-CE and SLURM.  When I start the condor-ce service, the worker nodes get their jobs and they complete successfully.  However, after a while, the system gets into a state where the number of running jobs reported by HTCondor-CE doesn&#39;t match the number of jobs actually running on the worker nodes.  And I don&#39;t believe it&#39;s a simple lag issue as it will stay in this state for half an hour or more.  When I left work yesterday at 5pm, it looked like this&#58;
+
+[root@net2 ~]# condor_ce_q | grep R
+ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD
+253101.0   usatlas1        5/12 11&#58;43   0+04&#58;25&#58;37 R  0   0.0  wrapper-0.9.15.sh
+253113.0   usatlas1        5/12 11&#58;43   0+04&#58;25&#58;35 R  0   0.0  wrapper-0.9.15.sh
+253116.0   usatlas1        5/12 11&#58;43   0+02&#58;48&#58;24 R  0   0.0  wrapper-0.9.15.sh
+253121.0   usatlas1        5/12 11&#58;43   0+04&#58;25&#58;35 R  0   0.0  wrapper-0.9.15.sh
+253127.0   usatlas1        5/12 11&#58;43   0+00&#58;05&#58;16 R  0   0.0  wrapper-0.9.15.sh
+253128.0   usatlas1        5/12 11&#58;43   0+04&#58;25&#58;37 R  0   0.0  wrapper-0.9.15.sh
+253129.0   usatlas1        5/12 11&#58;43   0+04&#58;25&#58;38 R  0   0.0  wrapper-0.9.15.sh
+253267.0   usatlas1        5/12 11&#58;44   0+02&#58;51&#58;43 R  0   0.0  wrapper-0.9.15.sh
+253300.0   usatlas1        5/12 11&#58;55   0+02&#58;11&#58;26 R  0   0.0  wrapper-0.9.15.sh
+253321.0   usatlas1        5/12 11&#58;55   0+02&#58;52&#58;45 R  0   0.0  wrapper-0.9.15.sh
+253332.0   usatlas1        5/12 11&#58;56   0+00&#58;20&#58;31 R  0   0.0  wrapper-0.9.15.sh
+253362.0   usatlas1        5/12 12&#58;01   0+02&#58;04&#58;25 R  0   0.0  wrapper-0.9.15.sh
+253363.0   usatlas1        5/12 12&#58;01   0+04&#58;25&#58;34 R  0   0.0  wrapper-0.9.15.sh
+253365.0   usatlas1        5/12 12&#58;01   0+02&#58;25&#58;51 R  0   0.0  wrapper-0.9.15.sh
+253397.0   usatlas1        5/12 12&#58;18   0+04&#58;25&#58;37 R  0   0.0  wrapper-0.9.15.sh
+253399.0   usatlas1        5/12 12&#58;18   0+02&#58;11&#58;26 R  0   0.0  wrapper-0.9.15.sh
+253408.0   usatlas1        5/12 12&#58;18   0+04&#58;25&#58;35 R  0   0.0  wrapper-0.9.15.sh
+253419.0   usatlas1        5/12 12&#58;18   0+04&#58;25&#58;35 R  0   0.0  wrapper-0.9.15.sh
+253428.0   usatlas1        5/12 12&#58;18   0+02&#58;52&#58;45 R  0   0.0  wrapper-0.9.15.sh
+253464.0   usatlas1        5/12 12&#58;18   0+00&#58;20&#58;31 R  0   0.0  wrapper-0.9.15.sh
+253473.0   usatlas1        5/12 12&#58;18   0+02&#58;48&#58;24 R  0   0.0  wrapper-0.9.15.sh
+253520.0   usatlas1        5/12 12&#58;18   0+00&#58;05&#58;16 R  0   0.0  wrapper-0.9.15.sh
+253538.0   usatlas1        5/12 12&#58;18   0+02&#58;04&#58;25 R  0   0.0  wrapper-0.9.15.sh
+253547.0   usatlas1        5/12 12&#58;18   0+04&#58;25&#58;37 R  0   0.0  wrapper-0.9.15.sh
+253565.0   usatlas1        5/12 12&#58;18   0+04&#58;25&#58;34 R  0   0.0  wrapper-0.9.15.sh
+253574.0   usatlas1        5/12 12&#58;18   0+04&#58;25&#58;38 R  0   0.0  wrapper-0.9.15.sh
+253616.0   usatlas1        5/12 12&#58;18   0+02&#58;25&#58;51 R  0   0.0  wrapper-0.9.15.sh
+253641.0   usatlas1        5/12 12&#58;18   0+02&#58;51&#58;43 R  0   0.0  wrapper-0.9.15.sh
+
+<div id='show_1520249285' class=''><button class="btn">Show More</button></div><div class='detail hidden' id='detail_1520249285'>[root@net2 ~]# sacct -u usatlas1 -s RUNNING -o jobid,Submit,State,Elapsed,TotalCPU,NodeList,Partition,Timelimit
+JobID              Submit      State    Elapsed   TotalCPU        NodeList  Partition  Timelimit
+------------ ------------------- ---------- ---------- ---------- --------------- ---------- ----------
+61547464     2016-05-12T12&#58;26&#58;08    RUNNING   04&#58;26&#58;46   00&#58;00&#58;00       atlas5202 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547465     2016-05-12T12&#58;26&#58;09    RUNNING   04&#58;26&#58;28   00&#58;00&#58;00       atlas5202 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547473     2016-05-12T12&#58;26&#58;09    RUNNING   04&#58;26&#58;28   00&#58;00&#58;00       atlas5201 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547474     2016-05-12T12&#58;26&#58;09    RUNNING   04&#58;26&#58;28   00&#58;00&#58;00       atlas5201 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547475     2016-05-12T12&#58;26&#58;09    RUNNING   04&#58;26&#58;28   00&#58;00&#58;00       atlas5201 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547477     2016-05-12T12&#58;26&#58;09    RUNNING   04&#58;26&#58;28   00&#58;00&#58;00       atlas5201 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547479     2016-05-12T12&#58;26&#58;09    RUNNING   04&#58;26&#58;28   00&#58;00&#58;00       atlas5201 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547484     2016-05-12T12&#58;26&#58;11    RUNNING   02&#58;54&#58;03   00&#58;00&#58;00       atlas5202 ATLAS_Ana+ 1-00&#58;00&#58;00
+61547485     2016-05-12T12&#58;26&#58;11    RUNNING   02&#58;53&#58;28   00&#58;00&#58;00       atlas5202 ATLAS_Ana+ 1-00&#58;00&#58;00
+61547486     2016-05-12T12&#58;26&#58;11    RUNNING   02&#58;49&#58;46   00&#58;00&#58;00       atlas5201 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547488     2016-05-12T12&#58;26&#58;11    RUNNING   02&#58;26&#58;27   00&#58;00&#58;00       atlas5202 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547489     2016-05-12T12&#58;26&#58;11    RUNNING   02&#58;12&#58;33   00&#58;00&#58;00       atlas5201 ATLAS_Ana+ 1-00&#58;00&#58;00
+61547491     2016-05-12T12&#58;26&#58;11    RUNNING   02&#58;04&#58;44   00&#58;00&#58;00       atlas5202 ATLAS_Pro+ 1-00&#58;00&#58;00
+61547492     2016-05-12T12&#58;26&#58;11    RUNNING   01&#58;46&#58;56   00&#58;00&#58;00       atlas5202 ATLAS_Ana+ 1-00&#58;00&#58;00
+61547493     2016-05-12T12&#58;26&#58;11    RUNNING   00&#58;23&#58;37   00&#58;00&#58;00       atlas5202 ATLAS_Ana+ 1-00&#58;00&#58;00
+61547495     2016-05-12T12&#58;26&#58;11    RUNNING   00&#58;05&#58;38   00&#58;00&#58;00       atlas5201 ATLAS_Pro+ 1-00&#58;00&#58;00
+[root@net2 ~]#
+
+As you can see, there were 16 x 2-core jobs between the two worker nodes - they were full.  However, the CE reports that there are 28 jobs running.
+
+Additionally, after about a day or so, the system will get to the state where it is now - no jobs are running even though there are hundreds of jobs IDLE according to HTCondor-CE.  If I restart the condor-ce service, things go back to normal for about a day or so and then this happens again.
+
+I have attached all the files from /var/log/condor-ce.  Please let me know if there are any tests I can run to help resolve this issue.
+
+Thanks.
+Dan
+
+by /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=dcaunt/CN=763648/CN=Daniel Caunt
+
+</div><script type='text/javascript'>
+        $('#show_1520249285').click(function() {
+            $('#detail_1520249285').slideDown("normal");
+            $('#show_1520249285').hide();
+            $('#hide_1520249285').show();
+        });
+        $('#hide_1520249285').click(function() {
+            $('#detail_1520249285').slideUp();
+            $('#hide_1520249285').hide();
+            $('#show_1520249285').show();
+        });
+        </script></pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F29869">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 29869});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

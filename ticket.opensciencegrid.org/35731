@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[35731] GRACC results breaking display1/2</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=35731" method="post">
+<div class="page-header">
+    <h3><span class="muted">35731</span> / GRACC results breaking display1/2</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Sarah Schmiechen</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Sarah Schmiechen</div></div><div class="control-group"><label class="control-label">Support Center</label><div class="controls">GRACC (Operations)</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Resolved</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2018-02-21</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Sarah Schmiechen <span class="muted"> / OSG GOC Support Team</span></div><div class="assignee" style="width: 60%">Sarah Schmiechen <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">Scott Teige <span class="muted"> / OSG Operations Infrastructure</span></div><div class="assignee" style="width: 60%">GRACC (Operations) <span class="muted"> / OSG Support Centers</span></div><div class="assignee" style="width: 60%">Carl Edquist <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Derek Weitzel <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=35731", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/35731?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/35731?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20GRACC%20results%20breaking%20display1%2F2%20ISSUE%3D35731%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='35731#1519222035'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T14:07:15+00:00">Feb 21, 2018 02:07 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1519222035">&nbsp;</a></div><pre>The new version of display has been installed. Large transfer rates still break the 24 hour transfers plots.
+Seems this is not related to display and recovery time seems to be improved. The next update should
+take care of moving the endpoint, I&#39;ll keep an eye out for that. The large rate problem will get fixed or
+not, but not part of this ticket or service so I&#39;m resolving this.
+S</pre></div><div class='update_description'><i onclick="document.location='35731#1519218431'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-21T13:07:11+00:00">Feb 21, 2018 01:07 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1519218431">&nbsp;</a></div><pre>Scott,
+
+Do you have any updates on this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='35731#1518642599'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-14T21:09:59+00:00">Feb 14, 2018 09:09 PM UTC</time><a class="anchor" name="1518642599">&nbsp;</a></div><pre>I don&#39;t believe we&#39;ve seen any issues with the display-itb instance yet.
+
+Scott, what is the release schedule for prod display?
+
+Thanks,
+Carl
+
+by EDQUIST@....</pre></div><div class='update_description'><i onclick="document.location='35731#1518617641'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-14T14:14:01+00:00">Feb 14, 2018 02:14 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1518617641">&nbsp;</a></div><pre>Hello,
+
+Any updates on this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='35731#1518190009'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-09T15:26:49+00:00">Feb 9, 2018 03:26 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1518190009">&nbsp;</a></div><pre>display-itb&#58;
+
+Feb 09 14&#58;05&#58;17 Installed&#58; osg-display-data-1.1.3-1.osg34.el7.noarch
+
+No problems encountered with the build, looks good to me.
+
+PLEASE test.</pre></div><div class='update_description'><i onclick="document.location='35731#1518132460'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-08T23:27:40+00:00">Feb 8, 2018 11:27 PM UTC</time><a class="anchor" name="1518132460">&nbsp;</a></div><pre>New build is now available from osg-contrib.
+
+Carl
+
+by EDQUIST@....</pre></div><div class='update_description'><i onclick="document.location='35731#1518131111'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-08T23:05:11+00:00">Feb 8, 2018 11:05 PM UTC</time><a class="anchor" name="1518131111">&nbsp;</a></div><pre>I&#39;ve built a new version of the osg-display-data package that now handles the empty time windows that were breaking for us previously.
+
+It&#39;s currently available from the osg-3.4-el7-development repo, and pending approval from Brian L we&#39;ll move it into osg-3.4-el7-contrib.
+
+Alternatively, a direct download link&#58;
+
+<a href='http&#58;//koji.chtc.wisc.edu/kojifiles/packages/osg-display-data/1.1.3/1.osg34.el7/noarch/osg-display-data-1.1.3-1.osg34.el7.noarch.rpm' target='_blank' rel='nofollow'>http&#58;//koji.chtc.wisc.edu/kojifiles/packages/osg-display-data/1.1.3/1.osg34.el7/noarch/osg-display-data-1.1.3-1.osg34.el7.noarch.rpm</a>
+
+Carl
+
+by EDQUIST@....</pre></div><div class='update_description'><i onclick="document.location='35731#1518110597'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-08T17:23:17+00:00">Feb 8, 2018 05:23 PM UTC</time><a class="anchor" name="1518110597">&nbsp;</a></div><pre>Yup, I&#39;ll try to get a build in today.
+
+<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-3117' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-3117</a>
+
+Carl
+
+by EDQUIST@....</pre></div><div class='update_description'><i onclick="document.location='35731#1518109279'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-08T17:01:19+00:00">Feb 8, 2018 05:01 PM UTC</time> by <b>Derek Weitzel</b><a class="anchor" name="1518109279">&nbsp;</a></div><pre>I believe this will take a release from Carl of the osg-display package?</pre></div><div class='update_description'><i onclick="document.location='35731#1518106683'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-08T16:18:03+00:00">Feb 8, 2018 04:18 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1518106683">&nbsp;</a></div><pre>GRACC, can you comment on this? the warnings from display continue.</pre></div><div class='update_description'><i onclick="document.location='35731#1518095426'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-02-08T13:10:26+00:00">Feb 8, 2018 01:10 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1518095426">&nbsp;</a></div><pre>Hello,
+
+Any updates on this? Can this be closed out?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='35731#1517421983'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-31T18:06:23+00:00">Jan 31, 2018 06:06 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1517421983">&nbsp;</a></div><pre>Scott&#58;
+
+<font color='#7F7E6F'>&#62;Carl&#39;s recent response seems to say that GRACC is responding but the result is empty.</font>
+
+Yeah, that&#39;s what I conclude too.
+
+<font color='#7F7E6F'>&#62; 4) the query to GRACC is wrong.</font>
+
+If anybody would like to independently verify, in kibana or wherever, the hourly windows for transfers circa 2018-01-09 00&#58;00&#58;00 UTC -- We filter out SiteName=[&#39;NONE&#39;, &#39;Generic&#39;, &#39;Obsolete&#39;], and do a date_histogram with the sum of the Network and Njobs fields.
+
+<font color='#7F7E6F'>&#62; How is a &#34;transfer&#34; event defined?</font>
+
+I think they&#39;re the records sent by the gratia transfer probes, ie&#58;
+gratia-probe-dcache-transfer
+gratia-probe-enstore-transfer
+gratia-probe-gridftp-transfer
+gratia-probe-xrootd-transfer
+
+Eg, the &#34;Transfer stats&#58;&#34; found in /var/log/gridftp-auth.log
+
+---
+
+Kevin&#58;
+
+<font color='#7F7E6F'>&#62; 2. There is naturally some lag between when a transfer happens and when it is recorded in GRACC</font>
+
+That would sound like a possible explanation for why no records show up when osg-display-data is run on the most recent data, but given that I was able to reproduce for the old time window based on the error timestamp Scott provided (2018-01-09 00&#58;00&#58;07), it seems that there was actually no data for that window.
+
+<font color='#7F7E6F'>&#62; 3. If the query is using the summary records, there will be even more lag [...]</font>
+
+From what I see in the sources, the transfers queries are done against the raw indexes (&#39;gracc.osg-transfer.raw-*&#39;)
+
+Carl</pre></div><div class='update_description'><i onclick="document.location='35731#1517415411'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-31T16:16:51+00:00">Jan 31, 2018 04:16 PM UTC</time><a class="anchor" name="1517415411">&nbsp;</a></div><pre>A couple comments&#58;
+
+1. The vast majority of transfers being reported are from Fermilab dCache, which does its own summarization and reports hourly. Many more transfers are not being reported at all.
+
+2. There is naturally some lag between when a transfer happens and when it is recorded in GRACC. You can observe this in the raw records by comparing &#34;EndTime&#34; or &#34;@timestamp&#34; (when the transfer ended), &#34;CreateTime&#34; (when the probe made the record), and &#34;@received&#34; (when GRACC received the record). <a href='https&#58;//gracc.opensciencegrid.org/kibana/goto/1680a9220e4bf98d58de62f049eb0d3c' target='_blank' rel='nofollow'>https&#58;//gracc.opensciencegrid.org/kibana/goto/1680a9220e4bf98d58de62f049eb0d3c</a>
+
+3. If the query is using the summary records, there will be even more lag as summaries are updated from raw records every fifteen minutes (as I recall).
+
+/Kevin
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Kevin Retzke 3130</pre></div><div class='update_description'><i onclick="document.location='35731#1517414131'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-31T15:55:31+00:00">Jan 31, 2018 03:55 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1517414131">&nbsp;</a></div><pre>Hello,
+It is statistically impossible that there were really 0 transfers in a sample window (1 hour)
+This comes from a particular time (~9&#58;30 31/Jan) but is typical of what I see.
+
+16 hours ago&#58;
+12k Jobs/hr
+160k CPU hr/hr
+1.1M Transfers/hr
+34 TB/hr
+
+now&#58;
+12k Jobs/hr
+170k Jobs/hr
+~0 Transfers/hr
+~0 TB/hr
+
+That is, the usage as measured by job activity is effectively constant in time. For the transfer rates to behave this way requires jobs to change in a pretty dramatic way.
+Another observation is that (unless today is always different than yesterday) &#34;now&#34; should be statistically identical to &#34;24 hours ago&#34;. This is the case for job metrics but not transfer metrics.
+
+To attempt to understand this here are some hypotheses. (If you have others, please chime in)
+
+1) the Jobs numbers are wrong. I find this unlikely, job submission at these rates must be largely automated, no way are there people typing condor_submit...
+automated jobs don&#39;t care what time it is.
+2) the numbers returned from GRACC are wrong. Carls recent response seems to say that GRACC is responding but the result is empty.
+I can&#39;t say if that response is correct (that is, there is no data) or if the GRACC response is incorrect.
+3) there is an unknown time dependence in the data, different for transfers and CPU. The results for &#34;now&#34; are unrealistic but if you wait 16 hours &#34;now&#34; becomes 16 hours ago and those numbers seem rational.
+4) the query to GRACC is wrong.
+
+If we take 1) off the table for now both 2) and 3) require we understand what is going *into* GRACC. Derek indicated there was a probe that produces the data. When it comes out of the box is there  some default schedule it runs on? I&#39;m betting installers rarely change a default like that. How is a &#34;transfer&#34; event defined? When is it accounted, when the transfer completes, when the job completes, when the probe runs, sunrise .... ? Is there some unfortunate timing problem between the display update and the GRACC update, miss by one minute for example? Other ideas? As for 4) comparison of the jobs queries and transfer queries might shed some light. If they are seriously different, why? Do they localize  the source of the differences? Is it an easy one and the transfer query is actually wrong?
+
+I&#39;m hoping to be useful here, no finger pointing in the above, just a brain dump. Let me know what you think.
+S</pre></div><div class='update_description'><i onclick="document.location='35731#1517354332'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-30T23:18:52+00:00">Jan 30, 2018 11:18 PM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1517354332">&nbsp;</a></div><pre>Reproducing is really annoying since the software does not allow specifying the time window, but if i hard code epoch time 1515456007 (based on the &#34;2018-01-09 00&#58;00&#58;07&#34; log timestamp for the error) everywhere that the current time is taken, I am able to reproduce the failures Scott was seeing.
+
+I think this is just an issue with there being no transfers data available in certain time windows, which I think Derek explained could just be due to less people running the transfers probes.
+
+In that case the main thing to do is fix osg-display-data to handle empty data sets.
+
+I&#39;ve created <a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-3117' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-3117</a> to track the work for this.
+
+Thanks,
+Carl</pre></div><div class='update_description'><i onclick="document.location='35731#1517231325'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-29T13:08:45+00:00">Jan 29, 2018 01:08 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1517231325">&nbsp;</a></div><pre>Hello,
+
+Any updates on this?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='35731#1516629073'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-22T13:51:13+00:00">Jan 22, 2018 01:51 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1516629073">&nbsp;</a></div><pre>I do not know how long the problem has existed, I implemented diagnostics that picked it up fairly recently.
+S
+
+Scott Teige PhD
+Grid Operations Center Manager
+Indiana University Research Technologies
+steige@....&#60;mailto&#58;steige@....&#62;
+Office&#58; +1 812 856 7331
+…  ..  -.  -.  .  .-.   …  ..  -.  -.  .  .-.
+
+On Jan 19, 2018, at 8&#58;27 PM, Open Science Grid FootPrints &#60;osg@....&#60;mailto&#58;osg@....&#62;&#62; wrote&#58;
+
+[Duplicate message snipped]</pre></div><div class='update_description'><i onclick="document.location='35731#1516411670'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-20T01:27:50+00:00">Jan 20, 2018 01:27 AM UTC</time> by <b>Carl Edquist</b><a class="anchor" name="1516411670">&nbsp;</a></div><pre>Hi all, sorry for not chiming into this earlier.
+
+So I see the draw function is blowing up when there is no data, because there is no special handling for an empty data set, and the call to max() throws an exception for the empty data sequence.  We should update the code to behave a bit more gently in this case -- but the question is still, is there really no transfers data in gracc for these time windows, or is something broken with the gracc queries?
+
+And, the timing is somewhat curious -- i see the first error messages were from Jan 2 ... Did this problem only start to appear in 2018?
+
+I&#39;ll try to reproduce this on a VM also... If the logging level is set to INFO, in theory we should be seeing some log lines that say &#34;GRACC returned 0 results for transfers&#34; ...
+
+Carl
+
+PS&#58;
+<font color='#7F7E6F'>&#62; adding Carl to this thread, as he is the developer behind this software.</font>
+
+Note that Brian Bockelman was actually the primary author of this osg-display-data software that&#39;s running here, though I made the changes to get its data from GRACC.</pre></div><div class='update_description'><i onclick="document.location='35731#1516199259'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-17T14:27:39+00:00">Jan 17, 2018 02:27 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1516199259">&nbsp;</a></div><pre>Looks like I spoke too soon, it seems better but still not fixed, it is now throwing warnings rather than errors&#58;
+# grep &#34;WARN&#34; /var/log/osg_display/*.log
+...
+/var/log/osg_display/osg_display.log&#58;2018-01-16 23&#58;15&#58;04,302 - WARNING - No transfer results found for 2018-01-16 23&#58;00&#58;00.
+/var/log/osg_display/osg_display.log&#58;2018-01-17 00&#58;15&#58;04,065 - WARNING - No transfer results found for 2018-01-17 00&#58;00&#58;00.
+/var/log/osg_display/osg_display.log&#58;2018-01-17 05&#58;15&#58;03,508 - WARNING - No transfer results found for 2018-01-17 05&#58;00&#58;00.
+/var/log/osg_display/osg_display.log&#58;2018-01-17 06&#58;15&#58;03,331 - WARNING - No transfer results found for 2018-01-17 06&#58;00&#58;00.
+/var/log/osg_display/osg_display.log&#58;2018-01-17 07&#58;15&#58;03,805 - WARNING - No transfer results found for 2018-01-17 07&#58;00&#58;00.
+/var/log/osg_display/osg_display.log&#58;2018-01-17 08&#58;15&#58;04,091 - WARNING - No transfer results found for 2018-01-17 08&#58;00&#58;00.
+/var/log/osg_display/osg_display.log&#58;2018-01-17 13&#58;15&#58;03,595 - WARNING - No transfer results found for 2018-01-17 13&#58;00&#58;00.
+
+The last few plotted points on the 24 hour pictures are near or at zero.</pre></div><div class='update_description'><i onclick="document.location='35731#1516105140'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-16T12:19:00+00:00">Jan 16, 2018 12:19 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1516105140">&nbsp;</a></div><pre>Hello,
+Did anyone change anything to fix this? Information is appreciated.
+S</pre></div><div class='update_description'><i onclick="document.location='35731#1515764763'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-12T13:46:03+00:00">Jan 12, 2018 01:46 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1515764763">&nbsp;</a></div><pre>Looks like things have improved, it did not throw errors this AM,
+<a href='http&#58;//tinyurl.com/yc7nboh9' target='_blank' rel='nofollow'>http&#58;//tinyurl.com/yc7nboh9</a>
+Will keep an eye out.</pre></div><div class='update_description'><i onclick="document.location='35731#1515591484'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-10T13:38:04+00:00">Jan 10, 2018 01:38 PM UTC</time> by <b>Scott Teige</b><a class="anchor" name="1515591484">&nbsp;</a></div><pre>Here is some detailed timing information for 9/Jan
+Errors occurred at 0&#58;00, 2&#58;45, 5&#58;30. 8&#58;15, 11&#58;00, 13&#58;45, 16&#58;30, 19&#58;15 and 22&#58;00
+The transaction triggering them left this in the log&#58;
+
+2018-01-09 00&#58;00&#58;07,044 - INFO - GET <a href='http&#58;//gracc.opensciencegrid.org&#58;443/q/gracc.osg-transfer.summary/_search' target='_blank' rel='nofollow'>http&#58;//gracc.opensciencegrid.org&#58;443/q/gracc.osg-transfer.summary/_search</a> [status&#58;200 request&#58;0.107s]
+2018-01-09 00&#58;00&#58;07,045 - INFO - -------- GRACC returned 1 results for transfers----------------
+2018-01-09 00&#58;00&#58;07,344 - ERROR - max() arg is an empty sequence
+2018-01-09 00&#58;00&#58;07,344 - ERROR - max() arg is an empty sequence
+Traceback (most recent call last)&#58;
+File &#34;/usr/lib/python2.7/site-packages/osg_display/osg_display.py&#34;, line 230, in main
+main_unwrapped()
+File &#34;/usr/lib/python2.7/site-packages/osg_display/osg_display.py&#34;, line 149, in main
+dg.run(&#34;transfers_daily&#34;, mode=&#34;daily&#34;)
+File &#34;/usr/lib/python2.7/site-packages/osg_display/display_graph.py&#34;, line 187, in run
+self.draw()
+File &#34;/usr/lib/python2.7/site-packages/osg_display/display_graph.py&#34;, line 138, in draw
+max_ax = max(data)*1.1
+ValueError&#58; max() arg is an empty sequence
+ERROR&#58; OSG Display updater exited with code 1
+
+A normal update (the one immediately after this one) left this&#58;
+
+2018-01-09 00&#58;15&#58;06,374 - INFO - GET <a href='http&#58;//gracc.opensciencegrid.org&#58;443/q/gracc.osg-transfer.summary/_search' target='_blank' rel='nofollow'>http&#58;//gracc.opensciencegrid.org&#58;443/q/gracc.osg-transfer.summary/_search</a> [status&#58;200 request&#58;0.172s]
+2018-01-09 00&#58;15&#58;06,375 - INFO - -------- GRACC returned 31 results for transfers----------------
+
+These do not show up on the timeline Sarah gave you because the timing of the diagnostic misses these by one minute.
+If it would be useful, I can modify the diagnostic to find these too.
+
+I modified the status tester in response to the issue with GRACC initially noticed below, hence the fact the _diagnostic_ only shows
+up for a week. I can&#39;t say if it has been going on longer than that.
+
+FYI,
+S</pre></div><div class='update_description'><i onclick="document.location='35731#1515434294'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-08T17:58:14+00:00">Jan 8, 2018 05:58 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1515434294">&nbsp;</a></div><pre>They seem to be fairly regular in occurrence, but not just at 12&#58;30&#58;
+<a href='http&#58;//myosg.grid.iu.edu/rgstatushistory/index?downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=yesterday&start_date=01%2F07%2F2018&end_type=now&end_date=01%2F07%2F2018&facility_sel%5B%5D=10009&rg=on&rg_sel%5B%5D=261&gridtype=on&gridtype_1=on&active=on&active_value=1&disable_value=1' target='_blank' rel='nofollow'>http&#58;//myosg.grid.iu.edu/rgstatushistory/index?downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=yesterday&start_date=01%2F07%2F2018&end_type=now&end_date=01%2F07%2F2018&facility_sel%5B%5D=10009&rg=on&rg_sel%5B%5D=261&gridtype=on&gridtype_1=on&active=on&active_value=1&disable_value=1</a></pre></div><div class='update_description'><i onclick="document.location='35731#1515434144'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-08T17:55:44+00:00">Jan 8, 2018 05:55 PM UTC</time> by <b>Derek Weitzel</b><a class="anchor" name="1515434144">&nbsp;</a></div><pre>I&#39;m adding Carl to this thread, as he is the developer behind this software.
+
+It&#39;s possible that the errors you are seeing are un-related to the errors we saw when you first opened this ticket.  Carl, could you replicate this issue?  Maybe extract the GRACC query you are running?
+
+From the debug message you sent below, it appears that the request to GRACC is successful (status = 200).
+
+Sarah - Are the errors correlated to any particular time?  Do they always happen at 12&#58;30?</pre></div><div class='update_description'><i onclick="document.location='35731#1515425658'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-08T15:34:18+00:00">Jan 8, 2018 03:34 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1515425658">&nbsp;</a></div><pre>Hi Derek,
+
+I&#39;m reopening this, as we are continuing to get these errors periodically. The error does correct itself, but we are getting regular warnings. Can you explain what&#39;s going on and if it&#39;s possible to fix it so these warnings don&#39;t occur?
+
+Thanks,
+Sarah</pre></div><div class='update_description'><i onclick="document.location='35731#1514984774'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-03T13:06:14+00:00">Jan 3, 2018 01:06 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1514984774">&nbsp;</a></div><pre>Closing, thanks.</pre></div><div class='update_description'><i onclick="document.location='35731#1514921347'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-02T19:29:07+00:00">Jan 2, 2018 07:29 PM UTC</time> by <b>Derek Weitzel</b><a class="anchor" name="1514921347">&nbsp;</a></div><pre>There was an issue with GRACC this morning that caused the data to not be available temporarily.  It has since been resolved, and it has been fixed so it should not happen again.
+
+This ticket can be closed.</pre></div><div class='update_description'><i onclick="document.location='35731#1514918430'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-02T18:40:30+00:00">Jan 2, 2018 06:40 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1514918430">&nbsp;</a></div><pre>This seems fixed now.</pre></div><div class='update_description'><i onclick="document.location='35731#1514898281'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-02T13:04:41+00:00">Jan 2, 2018 01:04 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1514898281">&nbsp;</a></div><pre>Changing assignees</pre></div><div class='update_description'><i onclick="document.location='35731#1514898239'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2018-01-02T13:03:59+00:00">Jan 2, 2018 01:03 PM UTC</time> by <b>Sarah Schmiechen</b><a class="anchor" name="1514898239">&nbsp;</a></div><pre>GRACC seems to be having a problem that is breaking display1/2.
+
+Our logs from our cron job show&#58;
+
+ERROR&#58; OSG Display updater exited with code 1
+2018-01-02 12&#58;30&#58;01,757 - INFO - Starting new HTTPS connection (1)&#58; gracc.opensciencegrid.org
+2018-01-02 12&#58;30&#58;01,876 - INFO - GET <a href='http&#58;//gracc.opensciencegrid.org&#58;443/q/gracc.osg.raw-*/_search' target='_blank' rel='nofollow'>http&#58;//gracc.opensciencegrid.org&#58;443/q/gracc.osg.raw-*/_search</a> [status&#58;200 request&#58;0.119s]
+2018-01-02 12&#58;30&#58;01,876 - INFO - GRACC returned 0 results for jobs
+2018-01-02 12&#58;30&#58;01,935 - ERROR - max() arg is an empty sequence
+2018-01-02 12&#58;30&#58;01,935 - ERROR - max() arg is an empty sequence
+
+Can you please take a look?
+Thanks,
+Sarah</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F35731">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 35731});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>

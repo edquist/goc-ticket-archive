@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <base href="/">
+    <title>[34912] Errors running HTCondor-CE with SLURM LRM</title>    <meta charset="utf-8" />
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <link href="https://ticket.opensciencegrid.org/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     #search {
+            width: 300px;
+     }
+
+    </style>
+
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
+
+    <link href="css/ticket.css" rel="stylesheet" />
+    <script src="lib/jquery.cookie.js"></script>
+
+    <link href="images/tag_orange.png" rel="icon" type="image/png"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
+            <ul class="nav">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GOC Ticket <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="https://ticket.opensciencegrid.org/sso/">Login</a></li>            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+			 <li id="menu_submit"><a href="https://ticket.opensciencegrid.org/submit">Submit</a></li><li id="menu_view" class="dropdown"><a href="\#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a><ul class="dropdown-menu"><li id="submenu_listopen"><a href="https://ticket.opensciencegrid.org/list/open">Open Tickets</a></li><li id="submenu_listrecentclose"><a href="https://ticket.opensciencegrid.org/list/recentclose">Recently Closed Tickets</a></li><li class="divider"></li><li id="submenu_alltickets"><a href="https://ticket.opensciencegrid.org/search?q=&amp;sort=id">All Tickets</a></li></ul></li>                </ul>
+
+                <form class="navbar-search pull-right" action="viewer">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value=""/>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+<script type='text/javascript' src='lib/byte2size.js'></script>
+<style>
+#updates .toolbar {
+position: relative;
+margin-top: 0px;
+top: -10px;
+font-weight: normal;
+}
+#updates a.anchor {
+position: relative;
+top: -50px;
+}
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
+}
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+padding: 5px;
+}
+#updates .header {
+color: #999;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+pointer-events: none;
+padding: 5px;
+background-color: #f4f4f4;
+}
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
+</style>
+
+<div class="container-fluid">
+<ul id="peers"></ul>
+<div class="alert alert-danger"><a class="close" href="#" data-dismiss="alert">&times;</a>By the end of May 2018, the ticketing system at https://ticket.opensciencegrid.org will be retired and support will be provided at https://support.opensciencegrid.org. Throughout this transition the support email (help@opensciencegrid.org) will be available as a point of contact.<br><br>                                                   
+                                                                                                                                                                                   
+Please see the service migration page for details: https://opensciencegrid.github.io/technology/policy/service-migrations-spring-2018/#ticket</div><div id="presence" class="pull-right"></div><div class="ticketgui"><script type="text/javascript" src="https://ticket.opensciencegrid.org/lib/checktab.js"></script>
+
+<script>
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+</script>
+
+
+
+<style>
+.form-horizontal .control-label {
+padding-top: inherit;
+font-size:90%;
+color:#666;
+}
+label {
+margin-bottom: 0px;
+}
+.controls {
+line-height: 18px;
+}
+</style>
+<form class="form-horizontal" action="https://ticket.opensciencegrid.org/viewer/updatebasic?id=34912" method="post">
+<div class="page-header">
+    <h3><span class="muted">34912</span> / Errors running HTCondor-CE with SLURM LRM</h3>
+</div>
+
+<div class="row-fluid">
+<div class="span5">
+    <legend>Contact</legend>
+    <div class="control-group">
+        <label class="control-label">Full Name</label>
+        <div class="controls">Jeff Porter</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Phone</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">CC</label>
+        <div class="controls">
+            <i class="icon-lock"></i>        </div>
+    </div>
+
+    <legend>Details</legend>
+    <div class="control-group"><label class="control-label">Submitted Via</label><div class="controls">GOC Ticket/submit</div></div><div class="control-group"><label class="control-label">Submitter</label><div class="controls">Jeff Porter</div></div><div class="control-group"><label class="control-label">Ticket Links</label><div class="controls"></div></div>
+    <div class="control-group">
+        <label class="control-label">Ticket Type</label>
+        <div class="controls">Problem/Request</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Priority</label>
+        <div class="controls">Normal</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Status</label>
+        <div class="controls">
+Closed</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action</label>
+        <div class="controls">ENG Action</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Next Action Deadline</label>
+        <div class="controls flag_red">2017-11-20</div>
+    </div>
+
+</div><!--span-->
+<div class="span7">
+    <legend>Assignees</legend>
+    <div class="assignee" style="width: 60%">Software Support (Triage) <span class="muted"> / OSG Software Team</span></div><div class="assignee" style="width: 60%">Brian Lin <span class="muted"> / OSG Software Team</span></div>    <br>
+
+    <legend>Assignees</legend>
+    TODO
+    <br>
+
+    <style>
+legend.noborder {
+border-bottom: none;
+}
+</style>
+
+<div id="attachment-list"/>
+<script>
+$(function () {
+    var first = true;
+    $.getJSON("https://ticket.opensciencegrid.org/attachment/list?id=34912", function (files) {
+        //console.dir(files);
+        var html = "<table class=\"table table-condensed\">";
+        $(files).each(function() {
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
+            html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
+            html += "<td>"+bytesToSize(this.size, 1)+"</td>";
+            html += "</tr>";
+        });
+        html += "</table>";
+        $("#attachment-list").html(html);
+    });
+});
+
+function download(url) {
+    window.open(url, "_blank");
+}
+</script>
+
+
+</div><!--span-->
+</div><!--row-fluid-->
+
+
+</form>
+
+</div>
+<div id="updates" style="clear: both;">
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+                <a class="btn btn-small" href="/34912?sort=up&"><i class="icon-arrow-up"></i> Sort</a>
+
+        
+        <a class="btn btn-small" href="/34912?expandall=true&">Expand Descriptions</a>        <a class="btn btn-small" target="_blank" href="mailto:osg@tick.globalnoc.iu.edu?subject=Open%20Science%20Grid%3A%20Errors%20running%20HTCondor-CE%20with%20SLURM%20LRM%20ISSUE%3D34912%20PROJ%3D71"><i class="icon-envelope"></i> Update w/Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
+    <div class='update_description'><i onclick="document.location='34912#1511793930'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-27T14:45:30+00:00">Nov 27, 2017 02:45 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1511793930">&nbsp;</a></div><pre>Closing this ticket since Jeff&#39;s initial issue was solved and subsequent discussions can be continued elsewhere.</pre></div><div class='update_description'><i onclick="document.location='34912#1510868092'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-16T21:34:52+00:00">Nov 16, 2017 09:34 PM UTC</time> by <b>echism</b><a class="anchor" name="1510868092">&nbsp;</a></div><pre>Does anyone have news?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1510685706'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-14T18:55:06+00:00">Nov 14, 2017 06:55 PM UTC</time> by <b>echism</b><a class="anchor" name="1510685706">&nbsp;</a></div><pre>Hey Brian Lin,
+
+Is anything further coming of this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1510341829'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-10T19:23:49+00:00">Nov 10, 2017 07:23 PM UTC</time> by <b>echism</b><a class="anchor" name="1510341829">&nbsp;</a></div><pre>Does anyone have anything new?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1510181412'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-08T22:50:12+00:00">Nov 8, 2017 10:50 PM UTC</time> by <b>bbockelm</b><a class="anchor" name="1510181412">&nbsp;</a></div><pre>Hi,
+
+HTCondor-CE itself should limit the proxy before making it land on the CE, right?
+
+We definitely have a strategic interest in keeping the full-strength pilot proxy off the WN.
+
+Brian
+
+Sent from my iPhone
+
+<font color='#7F7E6F'>&#62; On Nov 8, 2017, at 5&#58;26 PM, Brian Lin &#60;blin@....&#62; wrote&#58;</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Jaime,</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; AFAIK, the OSG doesn&#39;t have any reason to run with limited proxies but if you&#39;d like to go ahead and fix it, I&#39;m sure we&#39;d be able to help with testing.</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62; Thanks,</font>
+<font color='#7F7E6F'>&#62; Brian</font>
+<font color='#7F7E6F'>&#62;</font>
+<font color='#7F7E6F'>&#62;&#62; On 11/08/2017 04&#58;11 PM, Open Science Grid FootPrints wrote&#58;</font>
+<font color='#7F7E6F'>&#62;&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34912#1510180152'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-08T22:29:12+00:00">Nov 8, 2017 10:29 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1510180152">&nbsp;</a></div><pre>Jaime,
+
+AFAIK, the OSG doesn&#39;t have any reason to run with limited proxies but
+if you&#39;d like to go ahead and fix it, I&#39;m sure we&#39;d be able to help with
+testing.
+
+Thanks,
+Brian
+
+On 11/08/2017 04&#58;11 PM, Open Science Grid FootPrints wrote&#58;
+<font color='#7F7E6F'>&#62; [Duplicate message snipped]</font></pre></div><div class='update_description'><i onclick="document.location='34912#1510179089'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-08T22:11:29+00:00">Nov 8, 2017 10:11 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1510179089">&nbsp;</a></div><pre>This confirms that disabling all of the GSI calls in the blahp avoids the problem. But the problem remains, waiting for someone who enables one of these blahp features. I think I understand the issue at a high level. The blahp is a multi-threaded program that calls GSI functions in a non-thread-safe way. Is there any interest on OSG&#39;s part in fixing the underlying problem, or do you want to say &#34;don&#39;t change these settings&#34;?
+
+I believe I can fix the code, and could use some help in testing the fix.</pre></div><div class='update_description'><i onclick="document.location='34912#1510174998'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-08T21:03:18+00:00">Nov 8, 2017 09:03 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1510174998">&nbsp;</a></div><pre>Great! Was there anything else you needed or can I close this ticket?</pre></div><div class='update_description'><i onclick="document.location='34912#1510173876'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-08T20:44:36+00:00">Nov 8, 2017 08:44 PM UTC</time><a class="anchor" name="1510173876">&nbsp;</a></div><pre>Hi All,
+
+I was finally able to reconfigure my system to repeat these tests from 3+ weeks ago and indeed I do not see the error after setting &#34;blah_disable_limited_proxy=yes&#34;.  This looks like a good solution.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1510154033'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-08T15:13:53+00:00">Nov 8, 2017 03:13 PM UTC</time> by <b>echism</b><a class="anchor" name="1510154033">&nbsp;</a></div><pre>Hello,
+
+What is the status of this issue?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1509999038'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-06T20:10:38+00:00">Nov 6, 2017 08:10 PM UTC</time> by <b>echism</b><a class="anchor" name="1509999038">&nbsp;</a></div><pre>Hi Jeff,
+
+Any news on this?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1509647462'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-11-02T18:31:02+00:00">Nov 2, 2017 06:31 PM UTC</time> by <b>echism</b><a class="anchor" name="1509647462">&nbsp;</a></div><pre>Hey Jeff,
+
+Welcome back. How did it turn out?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1509470220'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-31T17:17:00+00:00">Oct 31, 2017 05:17 PM UTC</time><a class="anchor" name="1509470220">&nbsp;</a></div><pre>Hi Elizabeth & all,
+
+Sorry - I&#39;ve been on vacation since the 15th and will still be on vacation until Thursday.   I was able to give it a try back when you asked and I think it worked.  But I had so many things going on that I didn&#39;t take sufficient notes.  Let me try again on Thursday and will let you know.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1509469069'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-31T16:57:49+00:00">Oct 31, 2017 04:57 PM UTC</time> by <b>echism</b><a class="anchor" name="1509469069">&nbsp;</a></div><pre>Jeff,
+
+Do you have news?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1508775284'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-23T16:14:44+00:00">Oct 23, 2017 04:14 PM UTC</time><a class="anchor" name="1508775284">&nbsp;</a></div><pre>Hi Jeff,
+
+Do you have any update for this ticket?
+
+Edgar
+OSG Software Support
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Edgar Mauricio Fajardo Hernandez 2020</pre></div><div class='update_description'><i onclick="document.location='34912#1508430208'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-19T16:23:28+00:00">Oct 19, 2017 04:23 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1508430208">&nbsp;</a></div><pre>Jeff,
+
+Have you tried setting &#34;blah_disable_limited_proxy=yes&#34; in /etc/blah.config?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1507920138'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-13T18:42:18+00:00">Oct 13, 2017 06:42 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1507920138">&nbsp;</a></div><pre>Can you try setting blah_disable_limited_proxy=yes in the blah.config file? I believe that would suppress all calls into the Globus libraries.</pre></div><div class='update_description'><i onclick="document.location='34912#1507919383'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-13T18:29:43+00:00">Oct 13, 2017 06:29 PM UTC</time><a class="anchor" name="1507919383">&nbsp;</a></div><pre>Hi Brian,
+
+Here&#39;s a grep of &#39;prox&#39; from the blah.config&#58;
+
+#or delegating proxies to the worker node where a job is running. (default = no)
+blah_disable_wn_proxy_renewal=&#34;yes&#34;
+#Set to yes to enable delegation (instead of copy) of renewed proxies
+#to worker nodes. NOTE&#58; limited *and* delegated proxes are not
+#be enabled only if non-limited proxies are used for proxy renewal. (default = no)
+blah_delegate_renewed_proxies=
+#Set to yes to disable creation of a limited proxy. (default = no)
+blah_disable_limited_proxy=
+#if blah requires proxy on submit (default no)
+blah_require_proxy_on_submit=
+#disable proxy user copy (default no)
+#blah_disable_proxy_user_copy=yes
+
+I never did anything with that file except temporarily add the &#39;blah_debug_save_submit_info&#39; field to investigate the submit file.
+
+I will work on getting the core file.  We have our test system that currently is empty of jobs and thus should exhibit the errors.  It may be next week before that&#39;s done.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1507909276'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-13T15:41:16+00:00">Oct 13, 2017 03:41 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1507909276">&nbsp;</a></div><pre>Jeff,
+
+I believe the GOC ticket issues should be fixed, could you respond with the requested blahp params/core files when you get the chance?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1507754478'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-11T20:41:18+00:00">Oct 11, 2017 08:41 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1507754478">&nbsp;</a></div><pre>Jeff,
+
+Jaime had this to say&#58;
+
+How are the following parameters set in the blahp config file&#58;
+blah_disable_wn_proxy_renewal
+blah_delegate_renewed_proxies
+blah_disable_limited_proxy
+
+Can you get a core file from one of these errors? The blahp is dying with SIGABRT and should be trying to write one. You would probably need to make wrapper script for the blahp binary that cd&#39;s to a directory writable by the job owner and sets the coredump size limit to unlimited.</pre></div><div class='update_description'><i onclick="document.location='34912#1507742745'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-11T17:25:45+00:00">Oct 11, 2017 05:25 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1507742745">&nbsp;</a></div><pre>Jeff actually got it to me off-list because of the GOC maintenance on Monday. As it stands, this is in the Condor team&#39;s court.</pre></div><div class='update_description'><i onclick="document.location='34912#1507740114'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-11T16:41:54+00:00">Oct 11, 2017 04:41 PM UTC</time> by <b>echism</b><a class="anchor" name="1507740114">&nbsp;</a></div><pre>Hey Jeff,
+
+Could you get us that condor_version?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1507574704'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-09T18:45:04+00:00">Oct 9, 2017 06:45 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1507574704">&nbsp;</a></div><pre>Jeff,
+
+Just to verify, could you run condor_version and let us know what the output is?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1507224737'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-10-05T17:32:17+00:00">Oct 5, 2017 05:32 PM UTC</time> by <b>echism</b><a class="anchor" name="1507224737">&nbsp;</a></div><pre>Does anyone have news on this?
+
+Thank you</pre></div><div class='update_description'><i onclick="document.location='34912#1506709940'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-29T18:32:20+00:00">Sep 29, 2017 06:32 PM UTC</time><a class="anchor" name="1506709940">&nbsp;</a></div><pre>Hi Brian,
+
+I ran the tests.  The end result is the same however the original error has changed from being an assertion in globus_hashtable to one in globus_module&#58;
+
+09/29/17 11&#58;07&#58;41 [745817] GAHP[745821] (stderr) -&#62; Assertion mutex-&#62;level &#62; 0 failed in file globus_module.c at line 1147
+09/29/17 11&#58;07&#58;41 [745817] GAHP[745821] -&#62; EOF
+09/29/17 11&#58;07&#58;41 [745817] ERROR &#34;Bad BLAH_JOB_SUBMIT Request&#58; Empty response&#34; at line 2684 in file /builddir/build/BUILD/condor-8.6.5/src/condor_gridmanager/gahp-client.cp
+
+Let me know if there is anything else I can try.
+
+I also verified that once I get the CE processing jobs, this error goes away.  It only seems to hit when starting from an empty CE.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1506619860'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-28T17:31:00+00:00">Sep 28, 2017 05:31 PM UTC</time><a class="anchor" name="1506619860">&nbsp;</a></div><pre>Hi Brian & Elizabeth,
+
+Sorry - meant to reply yesterday.   We started running jobs via ALICE on the CE before I understood how to upgrade just condor & I wanted to let that run for a few days to see if there were any issues.   So far no issues, so I will let the CE drain today and run the test later today or tomorrow.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1506619151'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-28T17:19:11+00:00">Sep 28, 2017 05:19 PM UTC</time> by <b>echism</b><a class="anchor" name="1506619151">&nbsp;</a></div><pre>Jeff,
+
+Do you have any news?
+
+Thanks</pre></div><div class='update_description'><i onclick="document.location='34912#1506462472'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-26T21:47:52+00:00">Sep 26, 2017 09:47 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1506462472">&nbsp;</a></div><pre>Follow the instructions in this section EXCEPT for #4&#58; <a href='http&#58;//opensciencegrid.github.io/docs/release/release_series/#updating-from-osg-31-32-33-to-33-or-34' target='_blank' rel='nofollow'>http&#58;//opensciencegrid.github.io/docs/release/release_series/#updating-from-osg-31-32-33-to-33-or-34</a>
+
+Instead of #4, run&#58;
+
+# yum update condor blahp
+
+After that&#39;s done, try submitting your test jobs again and seeing if you can reproduce the failure.</pre></div><div class='update_description'><i onclick="document.location='34912#1506101057'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-22T17:24:17+00:00">Sep 22, 2017 05:24 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1506101057">&nbsp;</a></div><pre>Hi,
+
+I am out of the office until September 26, 2017. For OSG software related matters, you can contact the software team at osg-software@..... If your matter is urgent, please contact goc@.....
+
+Cheers,
+
+Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1506100865'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-22T17:21:05+00:00">Sep 22, 2017 05:21 PM UTC</time><a class="anchor" name="1506100865">&nbsp;</a></div><pre>Ok that sounds good.  Can you give me instructions.  The osg repo that I&#39;m configured for is osg-3.3 which only had condor 8.3 and 8.4 variants - which is what I see when I search via&#58; &#34;yum --showduplicates list condor&#34;
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1506094675'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-22T15:37:55+00:00">Sep 22, 2017 03:37 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1506094675">&nbsp;</a></div><pre>Jeff,
+
+I would just upgrade condor for now, it would be fine to have a mix of 3.3 and 3.4 packages to troubleshoot this particular issue. If 8.6.5 fixes the issue you&#39;re running into, then we could think about a complete 3.4 upgrade.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1506094167'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-22T15:29:27+00:00">Sep 22, 2017 03:29 PM UTC</time><a class="anchor" name="1506094167">&nbsp;</a></div><pre>Hi Brian,
+
+I could to either upgrade condor or go to OSG 3.4.  I took a quick look at OSG 3.4 and I don&#39;t use any of the items dropped from OSG 3.3 - except it&#39;s unclear that it still supports grid-mapfile user mapping.  Does it?
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1506092259'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-22T14:57:39+00:00">Sep 22, 2017 02:57 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1506092259">&nbsp;</a></div><pre>Jeff,
+
+Since we have a reliable way of reproducing the bug, would you be able to install condor-8.6.5 out of OSG 3.4 and see if the problem still occurs?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1506037885'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-21T23:51:25+00:00">Sep 21, 2017 11:51 PM UTC</time><a class="anchor" name="1506037885">&nbsp;</a></div><pre>Hi Brian,
+
+Thanks for staying engaged.  I believe I understand the bug a bit better and how to work around it.
+
+Since this is a new CE talking to our new slurm system, I have been running test jobs by hand.  The test jobs hit this &#34;globus_hashtable_lookup bad parms&#34;   error that would cause the CE to get stuck - that is the condor_gridmanager would die, be restarted every 5 minutes and hit the same error again and again.  If I waited long enough (~hours) it would cycle enough to somehow not hit the error and jobs would submit.   But my next tests or the one after that or the one after that would hit the error and get stuck again.
+
+As I noted in my last update, our production CE (that submits to SGE) was down and drained, so when it was back up I ran my tests on it and hit the same error.  Ah ha! it was not an issue on my new CE to slurm system. I then turned on our production spicket of ALICE jobs onto the production CE and the system just worked, filling the queue, running jobs without any of the &#39;hash table&#39; errors.   That &#39;s why I asked if there was some difference in the production and my test submit files that would cause the problem.  But as you noted, that doesn&#39;t seem to be the problem - and yes both my tests and the ALICE submits were submitted from the same host.
+
+I had noticed that I could unstick the CE if I submitted more jobs onto a stuck system.  And then it occurred to me that our production &#39;spicket&#39; is always keeping the CE queue filled with jobs - it never is starting from 0 which is how my by-hand tests are run.  So I wrote a little script to automate my test jobs to keep submitting them to the new CE. I hit the error once on start up, the next auto-submits got it unstuck, and never hit the error again as I let it run for ~hours.  I then stopped the script, waited for the queue to empty, ran 1 job-set and hit the error.
+
+My conclusion is that there is a bug that can cause this
+
+GAHP[56405] (stderr) -&#62; Assertion 0 && &#34;globus_hashtable_lookup bad parms&#34; failed in file globus_hashtable.c at line 433
+
+error which causes the blahpd to die.  It can only really be hit if the CE is empty (or perhaps nearly empty).  The bug is circumvented by submitting more jobs and keeping the queues filled.
+
+Unless you can think of something else, I plan on putting the new CE into limited production and see if my conclusion holds for the longer term.  I&#39;d be interested in whether this behavior is understood at the coding level.
+
+thanks again for your help,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1506030426'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-21T21:47:06+00:00">Sep 21, 2017 09:47 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1506030426">&nbsp;</a></div><pre>Jeff,
+
+Could you elaborate on the differences between ALICE and mpdsf? It appears they&#39;re through the same CE, are you submitting these jobs from the same submit host? I gather mpdsf.sub is designed to run on your slurm backend, what&#39;s ALICE running on? There&#39;s certainly nothing that strikes me as &#34;wrong&#34; in the submit files.
+
+Could you attach /etc/blah.config? The only place I see globus_hashtable_lookup that looks relevant in the condor code involves a function dealing with cached proxies, so I&#39;m suspecting issues with proxies and thus this blahp config&#58; <a href='https&#58;//opensciencegrid.github.io/docs/compute-element/install-htcondor-ce/#disable-worker-node-proxy-renewal.' target='_blank' rel='nofollow'>https&#58;//opensciencegrid.github.io/docs/compute-element/install-htcondor-ce/#disable-worker-node-proxy-renewal.</a>
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1505885090'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-20T05:24:50+00:00">Sep 20, 2017 05:24 AM UTC</time><a class="anchor" name="1505885090">&nbsp;</a></div><pre>Hi Brian,
+
+I just attached my test submit file (mpdsf.sub.txt).  This submit file works but it also (inconsistently) produces the errors mentioned in this report.  We had a downtime on our production system so when we got it back up, I submitted these test jobs to that system and got the same errors.  Since then, I turned back on the ALICE jobs service and it&#39;s submitting to our production system and is not showing those errors.   The submit file for that workflow is also attached - &#39;alice.sub.txt&#39;.
+
+Is there something in my test submit file that could cause a problem?
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505845537'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-19T18:25:37+00:00">Sep 19, 2017 06:25 PM UTC</time><a class="anchor" name="1505845537">&nbsp;</a></div><pre>Hi Brian,
+
+A quick update - I had access to different HW so I did a fresh install on a new system - same result.  The GridmangerLog contains the error&#58;
+
+09/19/17 11&#58;13&#58;14 [21248] GAHP[21250] (stderr) -&#62; Assertion 0 && &#34;globus_hashtable_lookup bad parms&#34; failed in file globus_hashtable.c at line 433
+
+followed by either&#58;
+
+09/19/17 11&#58;13&#58;14 [21248] ERROR &#34;Gahp Server (pid=21250) died due to signal 6 (Aborted) unexpectedly&#34; at line 354 in file /builddir/build/BUILD/condor-8.4.12/src/condor_gridmanager/gahp-client.cpp
+Or
+
+09/19/17 11&#58;09&#58;24 [21025] ERROR &#34;Bad BLAH_JOB_SUBMIT Request&#58; Empty response&#34; at line 2620 in file /builddir/build/BUILD/condor-8.4.12/src/condor_gridmanager/gahp-client.cpp
+
+with the SchedLog containing&#58;
+
+09/19/17 11&#58;13&#58;14 condor_gridmanager (PID 21248, owner alicesgm) exited with return code 4.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505775799'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-18T23:03:19+00:00">Sep 18, 2017 11:03 PM UTC</time><a class="anchor" name="1505775799">&nbsp;</a></div><pre>Hi Brian,
+
+It&#39;s attached.
+
+One curiosity, recall the environment issue I included in the original report, is that the osg-configure.log in both my working and this broken CE contain the lines&#58;
+
+2017-09-18 14&#58;21&#58;09,666 DEBUG Getting value for job_envvar_path
+2017-09-18 14&#58;21&#58;09,666 DEBUG Got /bin&#58;/usr/bin&#58;/sbin&#58;/usr/sbin
+
+And indeed, that&#39;s the job&#39;s path on the working CE.  But on the problem one, the jobs end up with&#58;
+
+/usr/local/sbin&#58;/usr/local/bin&#58;/usr/sbin&#58;/usr/bin
+
+I&#39;m sure this is not important, but thought I&#39;d pass it along as a hint that something may be overriding the configuration?
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505744112'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-18T14:15:12+00:00">Sep 18, 2017 02:15 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1505744112">&nbsp;</a></div><pre>Jeff,
+
+Could you also attach the output of osg-system-profiler?
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1505709735'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-18T04:42:15+00:00">Sep 18, 2017 04:42 AM UTC</time><a class="anchor" name="1505709735">&nbsp;</a></div><pre>Hi Brian,
+
+We reinstalled from scratch on Scientific Linux release 6.9 (Carbon), so that we&#39;re essentially the same as UNL (we&#39;re running slurm 17.02.7 instead of 17.02.6).  The problem persists.  In case there is a configuration issue, I&#39;ve attached a dump from &#39;condor_ce_config_val -dump&#39; to the ticket.
+
+Let me know if you see anything &/or have some suggestion on what else to try.  This is perplexing.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505493533'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-15T16:38:53+00:00">Sep 15, 2017 04:38 PM UTC</time><a class="anchor" name="1505493533">&nbsp;</a></div><pre>Hi Brian,
+
+The only real difference between UNL and our installation is the OS.  Since we have an SL6.9 image, we&#39;ve booted from that and I&#39;ll work on the install today.  I&#39;ll let you know.
+
+Steve&#39;s notes about SLES at NERSC/LBNL applies to the HPC systems (Cori and Edison) not the more conventional PDSF cluster, where we run Scientific Linux.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505415776'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-14T19:02:56+00:00">Sep 14, 2017 07:02 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1505415776">&nbsp;</a></div><pre>Here are the relevant versions at UNL&#58;
+
+Scientific Linux release 6.9 (Carbon)
+htcondor-ce-2.2.3-1.osg33.el6.noarch
+condor-8.4.12-2.1.osg33.el6.x86_64
+blahp-1.18.33.bosco-1.osg33.el6.x86_64
+slurm-17.02.6-1.el6.x86_64
+
+Speaking with Steve Timm at LBNL, it sounds like they&#39;re actually using BOSCO to submit jobs to LBNL. He mentioned that because of the underlying SUSE versions on your nodes, they had to copy over some Globus libraries from RHEL to get the blahp to work.</pre></div><div class='update_description'><i onclick="document.location='34912#1505405558'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-14T16:12:38+00:00">Sep 14, 2017 04:12 PM UTC</time><a class="anchor" name="1505405558">&nbsp;</a></div><pre>Ok - I&#39;ll run through our installation again and see if there are any inconsistencies.   Can you reach out to people at UNL &/or Fermilab about their OS+OSG+Slurm versions?  I can probably adjust accordingly.
+
+We&#39;re at  SL7.3+OSG 3.3.28+Slurm 17.02.7
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505404632'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-14T15:57:12+00:00">Sep 14, 2017 03:57 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1505404632">&nbsp;</a></div><pre>Jeff,
+
+UNL and Fermilab come to mind as sites using Slurm. I don&#39;t believe
+they&#39;ve run into any such problems.
+
+- Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1505404226'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-14T15:50:26+00:00">Sep 14, 2017 03:50 PM UTC</time><a class="anchor" name="1505404226">&nbsp;</a></div><pre>I don&#39;t see a core file.  Since the blahpd is run as the submit users, I checked the user $HOME.   Any other place to check or to force it?  It exists for such a short time it&#39;s hard to catch.   I understand why you&#39;d like the core.  I see this globus_hashtable_lookup function is called in at least 4 different codes - globus_extension.c, globus_module.c, globus_object_cache.c and globus_symbol_table.c - all of which seem to be generic support routines.
+
+So is anyone else running HTCondorCE submitting to SLURM?
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505400313'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-14T14:45:13+00:00">Sep 14, 2017 02:45 PM UTC</time> by <b>Jaime Frey</b><a class="anchor" name="1505400313">&nbsp;</a></div><pre>I have not seen that error before. Globus code in the blahp is pretty limited (should just be some GSI functions for proxy handling). If this produced a core file, I&#39;d love to see at least the stack trace.</pre></div><div class='update_description'><i onclick="document.location='34912#1505337813'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-13T21:23:33+00:00">Sep 13, 2017 09:23 PM UTC</time><a class="anchor" name="1505337813">&nbsp;</a></div><pre>Hi Brian - thanks.  I added the files to this ticket.
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505337166'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-13T21:12:46+00:00">Sep 13, 2017 09:12 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1505337166">&nbsp;</a></div><pre>Jaime,
+
+Have you seen the following error before?
+
+09/08/17 16&#58;00&#58;40 [24760] GAHP[24772] (stderr) -&#62; Assertion 0 && &#34;globus_hashtable_lookup bad parms&#34; failed in file globus_hashtable.c at line 433
+09/08/17 16&#58;00&#58;40 [24760] GAHP[24772] -&#62; EOF
+09/08/17 16&#58;00&#58;40 [24760] ERROR &#34;Bad BLAH_JOB_SUBMIT Request&#58; Empty response&#34; at line 2620 in file /builddir/build/BUILD/condor-8.4.11/src/condor_gridmanager/gahp-client.cpp
+
+You can find it in this file&#58; <a href='http&#58;//portal.nersc.gov/project/alice/porter/debug_osg/GridmanagerLog.alicesgm' target='_blank' rel='nofollow'>http&#58;//portal.nersc.gov/project/alice/porter/debug_osg/GridmanagerLog.alicesgm</a>
+
+Jeff,
+
+It says I don&#39;t have permission to view the submit file or the new GridmanagerLog
+
+P.S. If you add a &#39;.txt&#39; suffix, you should be able to upload the files to the ticket.
+
+Thanks,
+Brian</pre></div><div class='update_description'><i onclick="document.location='34912#1505276113'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-13T04:15:13+00:00">Sep 13, 2017 04:15 AM UTC</time><a class="anchor" name="1505276113">&nbsp;</a></div><pre>A quick update.  I did alter the environment as described.  That worked so I&#39;ll leave it for now as a curiosity as to why I needed to do it.
+
+I also upgraded to OSG 3.3.28.  I still have the problem but there appears to be a slight change in behavior.  I never got the &#34;ERROR &#34;Gahp Server (pid=27508) died due to signal 6 &#34;  error so perhaps that went away?   I still get the Assertion failure followed by the &#39;Empty response&#39; error.    But in that case, I was able to see that after a number tries & errors, it was able to recover and complete the submissions without a restart of the condor-ce.   Unfortunately the &#34;number&#34; was sometimes very large - 2 hours or more. So it&#39;s still a problem.    I put the GridmanagerLog from today&#39;s test in the same web directory as Gridmanager.alicesgm.091217
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505256675'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-12T22:51:15+00:00">Sep 12, 2017 10:51 PM UTC</time><a class="anchor" name="1505256675">&nbsp;</a></div><pre>Hi Brian,
+
+I&#39;m running OSG 3.3.26 with SLURM version 17.02.7.  I can upgrade to 3.3.28 and retest.   I put the files you requested at   -
+
+<a href='http&#58;//portal.nersc.gov/project/alice/porter/debug_osg/' target='_blank' rel='nofollow'>http&#58;//portal.nersc.gov/project/alice/porter/debug_osg/</a>
+
+(when I tried to attach to the ticket, it says &#39;file type not allowed&#39;. )
+
+For the environment question, I can modify the local setting config file, it just seems odd that I didn&#39;t have to do that for the other installation.
+
+thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><div class='update_description'><i onclick="document.location='34912#1505243010'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-12T19:03:30+00:00">Sep 12, 2017 07:03 PM UTC</time> by <b>Brian Lin</b><a class="anchor" name="1505243010">&nbsp;</a></div><pre>For the environment, you probably need to set [Local Settings] in /etc/osg/config.d/ (<a href='https&#58;//opensciencegrid.github.io/docs/other/configuration-with-osg-configure/#local-settings' target='_blank' rel='nofollow'>https&#58;//opensciencegrid.github.io/docs/other/configuration-with-osg-configure/#local-settings</a>).
+
+As for the more serious problem, what version of the blahp and slurm do you have installed? There&#39;s a new version of the blahp that will be released today that contains a slurm status checking fix (<a href='https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2871' target='_blank' rel='nofollow'>https&#58;//jira.opensciencegrid.org/browse/SOFTWARE-2871</a>) but it looks like you&#39;ve got an issue with submission so that&#39;s probably not related. Could you attach the relevant GridmanagerLog files? Can you set blah_debug_save_submit_info to a dir (<a href='https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#BLAHP_Configuration_File' target='_blank' rel='nofollow'>https&#58;//twiki.opensciencegrid.org/bin/view/Documentation/Release3/TroubleshootingHTCondorCE#BLAHP_Configuration_File</a>)? Perhaps there&#39;s an issue with the submit files created.</pre></div><div class='update_description'><i onclick="document.location='34912#1505102336'; reset_anchor();" class="pull-right icon icon-share"></i><div class="header"><time datetime="2017-09-11T03:58:56+00:00">Sep 11, 2017 03:58 AM UTC</time> by <b>OSG-GOC</b><a class="anchor" name="1505102336">&nbsp;</a></div><pre>Hi,
+
+We&#39;re moving the PDSF batch system from UGE to SLURM and I am setting up a separate HTCondor-CE for that purpose.  I&#39;m running into a couple of problems - one small and one seemingly more significant.
+
+The small one first. When I submit a few jobs through the CE, they run on the cluster and complete and report back.  The problem is that they don&#39;t have the same (or sufficient) environment as jobs that go through the HTCondor-CE submitting to UGE.  e.g. PATH does not include /bin.  I don&#39;t know if this is a system or HTCondor-CE configuration issue but I can see by dumping the environment in slurm_submit.sh that the user environment at that point is the problem. I just don&#39;t know where to fix.
+
+The larger problem is when I submit several jobs at once (e.g. &#34;queue 10&#34;) or several in rapid succession. Then the BLAH_JOB_SUBMIT process will hit an error that prevents submission.   The errors are viewable in the Gridmanger.user log file.   Restarting condor-ce will recover the submission attempts which may fail in a similar way.  Without a restart, the submissions are stuck.
+
+The error in the logs is&#58;
+
+GAHP[27508] (stderr) -&#62; Assertion 0 && &#34;globus_hashtable_lookup bad parms&#34; failed in file globus_hashtable.c at line 433
+
+This comes after several &#34;GAHP[28052] &#60;- &#39;BLAH_JOB_SUBMIT 2 [&#92; OriginalMemory&#92; =&#92; 8000;&#92; ...environment vars ...&#34; and culminates with in one of two ways, either&#58;
+
+GAHP[28052] -&#62; EOF
+ERROR &#34;Bad BLAH_JOB_SUBMIT Request&#58; Empty response&#34; at line 2620 in file /builddir/build/BUILD/condor-8.4.11/src/condor_gridmanager
+/gahp-client.cpp
+
+or
+
+GAHP[27508] &#60;- &#39;RESULTS&#39;
+GAHP[27508] -&#62; EOF
+GAHP command &#39;RESULTS&#39; failed
+ERROR &#34;Gahp Server (pid=27508) died due to signal 6 (Aborted) unexpectedly&#34; at line 354 in file /builddir/build/BUILD/condor-8.4.11/src/condor_gridmanager/gahp-client.cpp
+
+These errors do not occur on our HTCondor-CE submitting to UGE.
+
+Thanks,
+
+Jeff
+
+by /DC=org/DC=opensciencegrid/O=Open Science Grid/OU=People/CN=Jeff Porter 226</pre></div><legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend><div id="similar_tickets"><p class="muted">No similar tickets found.</p></div>
+</div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
+
+$(function() {
+    reset_anchor();
+    var ADDITIONAL_COOKIE_NAME = 'gocticket';
+    var options = { path: '/', expires: 365};
+
+    if(window.opener && window.opener.name == "gocticket_list") {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+    $(".description").focus(expand_description);
+});
+</script>
+<hr/>
+<footer>
+<p>GOC Ticket Version 2.2 | <a href="https://ticket.opensciencegrid.org/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=https%3A%2F%2Fticket.opensciencegrid.org%3A443%2F34912">Report Bugs</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
+</p>
+
+<p> <img align="top" src="/images/tag_orange.png"/> Copyright 2018 The Trustees of Indiana University - Developed for Open Science Grid</p>
+</footer>
+
+
+</div><!--container-fluid-->
+<script src="https://ticket1.grid.iu.edu:8443/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('https://ticket1.grid.iu.edu:8443');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'', ticketid: 34912});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
+    }
+    if(chat.io.engine.id == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_navigator").addClass("active"); 
+    $("#submenu_").addClass("active"); 
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "search/autocomplete",
+                dataType: "text",
+                data: {
+                    //featureClass: "P",
+                    //style: "full",
+                    //maxRows: 12,
+                    //name_startsWith: request.term
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "search?q="+ui.item.value;
+        }
+    });
+    
+});
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-69012-13");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+</body>
