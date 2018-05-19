@@ -1,0 +1,90 @@
+Out1
+
+    Misc. StageOut error: 99109 (Exit Code: 99109)
+
+        Error in StageOut: 99109
+        StageOutFailure
+        Message: Failure for fallback stage out:
+        StageOutError
+        Message: Command exited non-zero
+        	ErrorCode : 60311
+        	ModuleName : WMCore.Storage.StageOutError
+        	MethodName : __init__
+        	ErrorType : GeneralStageOutFailure
+        	ClassInstance : None
+        	FileName : /wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMCore.zip/WMCore/Storage/StageOutError.py
+        	ClassName : None
+        	Command : #!/bin/sh
+        REPORT_FILE=`pwd`/srm.report.$$
+        srmcp -2 -report=$REPORT_FILE -retry_num=0 -debug  file:////wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMTaskSpace/cmsRun1/Merged.root  srm://bsrm-3.t2.ucsd.edu:8443/srm/v2/server?SFN=/hadoop/cms/phedex//store/mc/TP2023HGCALDR/DYToEE_M-20_TuneZ2star_14TeV-pythia6-tauola/GEN-SIM-RECO/HGCALee18_PU140BX25_newsplit_PH2_1K_FB_V6-v1/30000/B005FC08-802E-E511-94DF-0025901F8740.root 2>&1 | tee srm.output.$$ 
+
+                    EXIT_STATUS=`cat $REPORT_FILE | cut -f3 -d" "`
+                    echo "srmcp exit status: $EXIT_STATUS"
+                    if [[ "X$EXIT_STATUS" == "X" ]] && [[ `grep -c SRM_INVALID_PATH srm.output.$$` != 0 ]]; then
+                        exit 1 # dir does not eixst
+                    elif [[ $EXIT_STATUS != 0 ]]; then
+                       echo "Non-zero srmcp Exit status!!!"
+                       echo "Cleaning up failed file:"
+                        srmrm srm://bsrm-3.t2.ucsd.edu:8443/srm/v2/server?SFN=/hadoop/cms/phedex//store/mc/TP2023HGCALDR/DYToEE_M-20_TuneZ2star_14TeV-pythia6-tauola/GEN-SIM-RECO/HGCALee18_PU140BX25_newsplit_PH2_1K_FB_V6-v1/30000/B005FC08-802E-E511-94DF-0025901F8740.root
+                       exit 60311
+                    fi
+
+                    FILE_SIZE=`stat -c %s //wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMTaskSpace/cmsRun1/Merged.root `
+        echo "Local File Size is: $FILE_SIZE"
+
+                for ((a=1; a <= 10 ; a++))
+                do
+                   SRM_SIZE=`srmls -recursion_depth=0 -retry_num=0 srm://bsrm-3.t2.ucsd.edu:8443/srm/v2/server?SFN=/hadoop/cms/phedex//store/mc/TP2023HGCALDR/DYToEE_M-20_TuneZ2star_14TeV-pythia6-tauola/GEN-SIM-RECO/HGCALee18_PU140BX25_newsplit_PH2_1K_FB_V6-v1/30000/B005FC08-802E-E511-94DF-0025901F8740.root 2>/dev/null | grep '/hadoop/cms/phedex//store/mc/TP2023HGCALDR/DYToEE_M-20_TuneZ2star_14TeV-pythia6-tauola/GEN-SIM-RECO/HGCALee18_PU140BX25_newsplit_PH2_1K_FB_V6-v1/30000/B005FC08-802E-E511-94DF-0025901F8740.root' | grep -v 'bsrm-3.t2.ucsd.edu' | awk '{print $1;}'`
+                   echo "SRM Size is $SRM_SIZE"
+                   if [[ $SRM_SIZE > 0 ]]; then
+                      if [[ $SRM_SIZE == $FILE_SIZE ]]; then
+                         exit 0
+                      else
+                         echo "Error: Size Mismatch between local and SE"
+                         echo "Cleaning up failed file:"
+                         srmrm srm://bsrm-3.t2.ucsd.edu:8443/srm/v2/server?SFN=/hadoop/cms/phedex//store/mc/TP2023HGCALDR/DYToEE_M-20_TuneZ2star_14TeV-pythia6-tauola/GEN-SIM-RECO/HGCALee18_PU140BX25_newsplit_PH2_1K_FB_V6-v1/30000/B005FC08-802E-E511-94DF-0025901F8740.root
+                         exit 60311
+                      fi
+                   else
+                      sleep 2
+                   fi
+                done
+                echo "Cleaning up failed file:"
+                srmrm srm://bsrm-3.t2.ucsd.edu:8443/srm/v2/server?SFN=/hadoop/cms/phedex//store/mc/TP2023HGCALDR/DYToEE_M-20_TuneZ2star_14TeV-pythia6-tauola/GEN-SIM-RECO/HGCALee18_PU140BX25_newsplit_PH2_1K_FB_V6-v1/30000/B005FC08-802E-E511-94DF-0025901F8740.root
+                exit 60311
+
+                
+        	LineNumber : 32
+        	ErrorNr : 0
+        	ExitCode : 151
+
+        Traceback: 
+          File "/wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMCore.zip/WMCore/Storage/StageOutImpl.py", line 196, in __call__
+            self.executeCommand(command)
+
+          File "/wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMCore.zip/WMCore/Storage/StageOutImpl.py", line 65, in executeCommand
+            raise StageOutError(msg, Command = command, ExitCode = exitCode)
+
+
+        	TargetPFN : srm://bsrm-3.t2.ucsd.edu:8443/srm/v2/server?SFN=/hadoop/cms/phedex//store/mc/TP2023HGCALDR/DYToEE_M-20_TuneZ2star_14TeV-pythia6-tauola/GEN-SIM-RECO/HGCALee18_PU140BX25_newsplit_PH2_1K_FB_V6-v1/30000/B005FC08-802E-E511-94DF-0025901F8740.root
+        	ErrorCode : 60311
+        	ModuleName : WMCore.Storage.StageOutError
+        	MethodName : __init__
+        	LFN : /store/mc/TP2023HGCALDR/DYToEE_M-20_TuneZ2star_14TeV-pythia6-tauola/GEN-SIM-RECO/HGCALee18_PU140BX25_newsplit_PH2_1K_FB_V6-v1/30000/B005FC08-802E-E511-94DF-0025901F8740.root
+        	ClassInstance : None
+        	FileName : /wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMCore.zip/WMCore/Storage/StageOutError.py
+        	ClassName : None
+        	Command : srmv2
+        	LineNumber : 32
+        	InputPFN : /wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMTaskSpace/cmsRun1/Merged.root
+        	ErrorNr : 0
+        	ErrorType : GeneralStageOutFailure
+
+        Traceback: 
+          File "/wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMCore.zip/WMCore/Storage/StageOutMgr.py", line 260, in fallbackStageOut
+            impl(fbParams['command'], localPfn, pfn, fbParams.get("option", None), checksums)
+
+          File "/wntmp/condor/execute/dir_6933/glide_SSo3qE/execute/dir_8890/job/WMCore.zip/WMCore/Storage/StageOutImpl.py", line 214, in __call__
+            raise ex
+
+

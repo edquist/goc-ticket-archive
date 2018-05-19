@@ -1,0 +1,112 @@
+
+This is an automated notification sent by LCG Savannah.
+It relates to:
+		support #140625, project CMS Computing Infrastructure  Support
+
+==============================================================================
+ OVERVIEW of support #140625:
+==============================================================================
+
+URL:
+  <http://savannah.cern.ch/support/?140625>
+
+                 Summary: Problems with missing/corrupt files at FNAL
+                 Project: CMS Computing Infrastructure  Support
+            Submitted by: jenimal
+            Submitted on: 2013-11-07 18:27
+                Category: Central Workflows
+                Priority: 5 - Normal
+                Severity: 4 - Important
+                  Status: None
+                 Privacy: Public
+             Assigned to: cmscompinfrasup-t1usfnal
+        Originator Email: 
+             Open/Closed: Open
+         Discussion Lock: Any
+         GGUS ticket url: 
+                Use GGUS: Yes
+                    Site: T1_US_FNAL
+
+    _______________________________________________________
+
+
+We have been having problems the since the EOS upgrades with missing/corrupt
+files/stage-out problems at FNAL.
+
+For the most part we are surviving by running ACDC which solves the stage out
+problems or the recovery script which regenerates the missing/corrupt files
+but this increases the latency of the workflows a great deal as both ACDC and
+especially recovery require a LOT of manual intervention.
+
+I've tasked Dorian with coming up with a more complete list of
+missing/problem files.  
+(excuse my verbosity but I'm going to point Dorian here to see how to debug
+this.. and then have him put notes on debugging on the twiki)
+But I will do so for one workflow only here so you have a chance to start
+digging and let's see if we can figure out what's going on and get the
+problem fixed.
+
+franzoni_Fall53_2011A_HT_Run2011A-v1_Prio1_5312p1_130916_235328_2218
+
+
+https://cmsweb.cern.ch/couchdb/workloadsummary/_design/WorkloadSummary/_show/histogramByWorkflow/franzoni_Fall53_2011A_HT_Run2011A-v1_Prio1_5312p1_130916_235328_2218
+
+The following 2 files are missing in lusture:
+cmsdataops@cmslpc42:~ >  ls
+/lustre//unmerged/Run2011A/HT/RECO/12Oct2013-v1/20028/80CBB0D8-3F42-E311-A00A-002590596498.root
+ls:
+/lustre//unmerged/Run2011A/HT/RECO/12Oct2013-v1/20028/80CBB0D8-3F42-E311-A00A-002590596498.root:
+No such file or directory
+ ls
+/lustre/unmerged/Run2011A/HT/RECO/12Oct2013-v1/20025/1E9D699F-2842-E311-B87C-0025905964A6.root
+ls:
+/lustre/unmerged/Run2011A/HT/RECO/12Oct2013-v1/20025/1E9D699F-2842-E311-B87C-0025905964A6.root:
+No such file or directory
+
+
+If you look into the directory, there are other files there that were all
+written on Oct 31 so these files should be there still.
+
+The next files:
+Is still on disk, it's from Oct 31, and looks to be OK but the WF failed on
+it due to stageout failures
+:
+/store/unmerged/Run2011A/HT/RECO/12Oct2013-v1/20028/C68BE37C-4442-E311-B28F-002618943915.root
+:
+/store/unmerged/Run2011A/HT/RECO/12Oct2013-v1/20026/300530A3-3442-E311-AA56-00261894387E.root
+:
+/store/unmerged/Run2011A/HT/RECO/12Oct2013-v1/20028/C68BE37C-4442-E311-B28F-002618943915.root
+:
+/store/unmerged/Run2011A/HT/RECO/12Oct2013-v1/20028/181DFA0D-4642-E311-B81F-00304867924A.root
+
+/store/data/Run2011A/HT/RAW/v1/000/163/332/FAB1BA2C-BD6D-E011-AE91-003048F1BF66.root
+
+
+Since the missing files will need to be regenerated anyway.  I am going to
+start the recovery proceedure on this workflow.  But we need to understand
+what is happening on EOS so these problems don't crop up in the first place.
+
+Jen
+
+
+
+    _______________________________________________________
+
+Carbon-Copy List:
+
+CC Address                          | Comment
+------------------------------------+-----------------------------
+6249                                | -SUB-
+
+
+
+
+==============================================================================
+
+This item URL is:
+  <http://savannah.cern.ch/support/?140625>
+
+_______________________________________________
+  Message sent via/by LCG Savannah
+  http://savannah.cern.ch/
+

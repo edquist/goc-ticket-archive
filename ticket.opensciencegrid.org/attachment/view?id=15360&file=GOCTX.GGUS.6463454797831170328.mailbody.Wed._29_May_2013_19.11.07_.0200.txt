@@ -1,0 +1,239 @@
+A couple things, I have not yet deployed the ENV change that should help
+our setup.
+
+First some of those doors you are saying are not working are not being
+given out by the bestman server. These are the correct doors and have
+been since the 24th.
+
+gsiftp://cabinet-6-6-4.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-5.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-6.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-7.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-8.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-9.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-10.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-11.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-15.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-16.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-17.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-18.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-19.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-20.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-21.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-22.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-23.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-24.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-25.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-26.t2.ucsd.edu:2811
+gsiftp://cabinet-6-6-27.t2.ucsd.edu:2811
+
+The only door that did not work  for me, that you tested, was 13 and
+that is not in the list, and was simply not running, I started it anyway
+and re-ran my test, which came back 100%. I would not use uberftp, it is
+rather inconsistent. Instead I use the globus-url-copy command directly
+and do a real file transfer.
+
+[1006] tmartin@uaf-9 ~$ for i in `cat gftp.txt`; do globus-url-copy -vb
+file:/home/users/tmartin/testfile-73.txt
+gsiftp://${i}:2811/cms/store/user/tmartin/write-test.zero; done
+Source: file:/home/users/tmartin/
+Dest: gsiftp://cabinet-6-6-11.t2.ucsd.edu:2811/cms/store/user/tmartin/
+   testfile-73.txt  ->  write-test.zero
+
+      96468992 bytes        29.72 MB/sec avg        43.64 MB/sec inst
+Source: file:/home/users/tmartin/
+Dest: gsiftp://cabinet-6-6-12.t2.ucsd.edu:2811/cms/store/user/tmartin/
+   testfile-73.txt  ->  write-test.zero
+
+     112197632 bytes        13.93 MB/sec avg        11.82 MB/sec inst
+Source: file:/home/users/tmartin/
+Dest: gsiftp://cabinet-6-6-13.t2.ucsd.edu:2811/cms/store/user/tmartin/
+   testfile-73.txt  ->  write-test.zero
+
+      85983232 bytes        16.01 MB/sec avg        27.00 MB/sec inst
+Source: file:/home/users/tmartin/
+Dest: gsiftp://cabinet-6-6-14.t2.ucsd.edu:2811/cms/store/user/tmartin/
+   testfile-73.txt  ->  write-test.zero
+
+     115343360 bytes        11.62 MB/sec avg        18.18 MB/sec inst
+Source: file:/home/users/tmartin/
+Dest: gsiftp://cabinet-6-6-15.t2.ucsd.edu:2811/cms/store/user/tmartin/
+   testfile-73.txt  ->  write-test.zero
+
+      89128960 bytes        16.08 MB/sec avg        22.00 MB/sec inst
+[1006] tmartin@uaf-9 ~$
+
+My point is that whenever I have gone to re-create these failures I do
+not see any issues at all. This is why we think that this load issue may
+be the culprit.
+
+As to the other question we are running stock gridftp doors, and
+apparently that is part of the issue since the stock gridftp door config
+is sadly very poor for any type of load on the door itself.
+
+Terrnece
+
+On 5/28/2013 4:24 PM, noreply [James Letts] wrote:
+> This is an automated notification sent by LCG Savannah.
+> It relates to:
+>               support #137510, project CMS Computing Infrastructure  Support
+>
+> ==============================================================================
+>   LATEST MODIFICATIONS of support #137510:
+> ==============================================================================
+>
+> Follow-up Comment #6, sr #137510 (project cmscompinfrasup):
+>
+> Terrence thinks he may have found why we see SAM and phedex issues sometimes.
+> It seems that the gridftp server sleeps if it decides internally that the
+> system is too loaded. It does this with what appears to be a simple load
+> check. The result is the transfers block, for sometimes a long time. This
+> feature is a terrible thing for our gridftp servers and one that does not
+> have an obvious toggle.
+>
+>
+> ==============================================================================
+>   OVERVIEW of support #137510:
+> ==============================================================================
+>
+> URL:
+>    <http://savannah.cern.ch/support/?137510>
+>
+>                   Summary: SAM SRM get/put test fails on bsrm-3.t2.ucsd.edu
+>                   Project: CMS Computing Infrastructure  Support
+>              Submitted by: bockjoo
+>              Submitted on: 2013-05-11 01:17
+>                  Category: SAM tests
+>                  Priority: 5 - Normal
+>                  Severity: 3 - Normal
+>                    Status: None
+>                   Privacy: Public
+>               Assigned to: cmscompinfrasup-t2usucsd
+>          Originator Email:
+>               Open/Closed: Open
+>           Discussion Lock: Any
+>           GGUS ticket url:
+>                  Use GGUS: No
+>                      Site: None
+>
+>      _______________________________________________________
+>
+>
+> Hi,
+> I am on the computing shift.
+> SAM SRM get/put test fails on bsrm-3.t2.ucsd.edu intermittently:
+> http://dashb-cms-sum.cern.ch/dashboard/request.py/historicalsmryview-sum#view=test&time=last48&granularity=default&profile=CMS_CRITICAL_FULL&group=Tier2s&site=T2_US_UCSD&flavour=All+Service+Flavours&disabledFlavours=true&metric=All+Metrics&disabledMetrics=true&host=bsrm-3.t2.ucsd.edu
+>
+> The reason seems to be in the gridftp servers, 6-6-12, 6-6-14, and 6-6-15:
+> servers="cabinet-6-6-11.t2.ucsd.edu cabinet-6-6-12.t2.ucsd.edu
+> cabinet-6-6-13.t2.ucsd.edu cabinet-6-6-14.t2.ucsd.edu
+> cabinet-6-6-15.t2.ucsd.edu"
+> for s in $servers ; do uberftp $s "pwd" ; done
+>
+> 220 cabinet-6-6-11.t2.ucsd.edu GridFTP Server 6.5 (gcc64, 1323378368-83)
+> [unknown] ready.
+> 230 User cmswriter logged in.
+> /
+> 220 cabinet-6-6-12.t2.ucsd.edu GridFTP Server 6.5 (gcc64, 1323378368-83)
+> [unknown] ready.
+> Server unexpectedly closed the socket.
+> 220 cabinet-6-6-13.t2.ucsd.edu GridFTP Server 6.5 (gcc64, 1323378368-83)
+> [unknown] ready.
+> 230 User cmswriter logged in.
+> /
+> 220 cabinet-6-6-14.t2.ucsd.edu GridFTP Server 6.5 (gcc64, 1323378368-83)
+> [unknown] ready.
+> Server unexpectedly closed the socket.
+> 220 cabinet-6-6-15.t2.ucsd.edu GridFTP Server 6.5 (gcc64, 1323378368-83)
+> [unknown] ready.
+> Server unexpectedly closed the socket.
+>
+> Please check.
+> Thanks,
+> Bockjoo
+>
+>      _______________________________________________________
+>
+> Follow-up Comments:
+>
+>
+> -------------------------------------------------------
+> Date: 2013-05-28 23:24              By: James Letts <jletts>
+> Terrence thinks he may have found why we see SAM and phedex issues sometimes.
+> It seems that the gridftp server sleeps if it decides internally that the
+> system is too loaded. It does this with what appears to be a simple load
+> check. The result is the transfers block, for sometimes a long time. This
+> feature is a terrible thing for our gridftp servers and one that does not
+> have an obvious toggle.
+>
+>
+> -------------------------------------------------------
+> Date: 2013-05-23 22:22              By: James Letts <jletts>
+> Later errors appear to have been caused by heavy load. We doubled the number
+> of gridftp doors.
+>
+> We are unable to verify if the SAM tests are consistently green yet since SAM
+> seems to have stopped sending tests or reporting. See ticket 137790.
+>
+> -------------------------------------------------------
+> Date: 2013-05-23 15:18              By: James Letts <jletts>
+> We found kernel errors on one gftp node, and removed it.
+>
+> Now the errors are spread over many nodes ... We continue to investigate, but
+> it seems to be an obscure problem.
+>
+> JAMES
+>
+> -------------------------------------------------------
+> Date: 2013-05-21 16:12              By: James Letts <jletts>
+> When we check the gftp nodes that have given errors in the past 24h, as far
+> as we can tell they are fine, not under significant load. Perhaps we need to
+> check some things like network load on these hosts. It does not appear to be
+> any configuration issue, and not a hardware problem on the gftp nodes
+> themselves. Most SAM tests pass, but we do have failures from time to time.
+>
+> -------------------------------------------------------
+> Date: 2013-05-14 02:26              By: James Letts <jletts>
+> All the recent errors are coming from cabinet-6-6-12.t2.ucsd.edu. This
+> appears to be the bad gftp door.
+>
+> James
+>
+> -------------------------------------------------------
+> Date: 2013-05-12 18:15              By: James Letts <jletts>
+> Hello Bockjoo,
+>
+> The error message from SAM is not very helpful, but we have had full disk
+> pools which caused intermittent write failures. The pools are being balanced
+> but it is slow.
+>
+> We will keep an eye on it.
+>
+> James
+>
+>
+>
+>
+>
+>      _______________________________________________________
+>
+> Carbon-Copy List:
+>
+> CC Address                          | Comment
+> ------------------------------------+-----------------------------
+> 2990                                | -COM-
+> 1533                                | -SUB-
+>
+>
+>
+>
+> ==============================================================================
+>
+> This item URL is:
+>    <http://savannah.cern.ch/support/?137510>
+>
+> _______________________________________________
+>    Message sent via/by LCG Savannah
+>    http://savannah.cern.ch/
+>
+

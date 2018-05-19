@@ -1,0 +1,24 @@
+universe = grid
+executable = nagrun.sh
+arguments = " -v cms -f /cms/Role=lcgadmin -d /queue/grid.probe.metricOutput.EGEE.sam-cms-preprod_cern_ch -b 'stomp://oldsam.msg.cern.ch:6163/' -c heposg01.colorado.edu:2119/jobmanager-sge-lnxfarm -t 600 -w 1"
+transfer_executable = true
+
+output  = /var/lib/gridprobes/cms.Role=lcgadmin/org.sam/CONDORJS/heposg01.colorado.edu/jobOutput/gridjob.out
+error   = /var/lib/gridprobes/cms.Role=lcgadmin/org.sam/CONDORJS/heposg01.colorado.edu/jobOutput/gridjob.err
+log     = /var/lib/gridprobes/cms.Role=lcgadmin/org.sam/CONDORJS/heposg01.colorado.edu/jobOutput/gridjob.log
+log_xml = true
+
+#<jdlInputSandboxExecutable>
+transfer_input_files = /var/lib/gridprobes/cms.Role=lcgadmin/org.sam/CONDORJS/heposg01.colorado.edu/wnlogs.tgz, /var/lib/gridprobes/cms.Role=lcgadmin/org.sam/CONDORJS/heposg01.colorado.edu/gridjob.tgz
+transfer_output_files = wnlogs.tgz
+transfer_output_remaps = "wnlogs.tgz=/var/lib/gridprobes/cms.Role=lcgadmin/org.sam/CONDORJS/heposg01.colorado.edu/jobOutput/wnlogs.tgz"
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+leave_in_queue = (JobStatus != 3)
+
+globus_rsl=(jobtype=single)(queue=lnxfarm)
+
+grid_resource = gt2 heposg01.colorado.edu:2119/jobmanager-sge
+queue
+

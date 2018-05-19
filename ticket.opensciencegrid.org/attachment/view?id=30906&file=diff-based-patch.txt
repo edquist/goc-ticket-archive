@@ -1,0 +1,30 @@
+--- a/etc/rc.d/init.d/condor-ce	2016-08-10 15:14:27.454946862 -0400
++++ b/etc/rc.d/init.d/condor-ce	2016-08-10 15:13:56.750945918 -0400
+@@ -59,6 +59,12 @@
+ start() {
+     echo -n $"Starting Condor-CE daemons: "
+ 
++    # ensure the condor-ce rundir and lockdir exist
++    local rundir=$(condor_ce_config_val RUN)
++    local lockdir=$(condor_ce_config_val LOCK)
++    mkdir -p ${rundir} ${lockdir}
++    chown condor:condor ${rundir} ${lockdir}
++
+     # Check value of QUEUE_SUPER_USER_MAY_IMPERSONATE for HTCondor batch systems
+     condor_ce_config_val -config 2>&1 | grep '02-ce-condor.conf' > /dev/null
+     if [ $? -eq 0 ]; then
+--- a/etc/rc.d/init.d/condor-cron	2016-08-10 15:14:38.127947189 -0400
++++ b/etc/rc.d/init.d/condor-cron	2016-08-10 15:11:07.992940735 -0400
+@@ -43,6 +43,12 @@
+ start() {
+     echo -n $"Starting Condor-cron daemons: "
+ 
++    # ensure the condor-cron rundir and lockdir exist
++    local rundir=$(condor_cron_config_val RUN)
++    local lockdir=$(condor_cron_config_val LOCK)
++    mkdir -p ${rundir} ${lockdir}
++    chown cndrcron:cndrcron ${rundir} ${lockdir}
++
+     daemon --pidfile $pidfile --check $prog $prog -pidfile $pidfile
+     RETVAL=$?
+     echo

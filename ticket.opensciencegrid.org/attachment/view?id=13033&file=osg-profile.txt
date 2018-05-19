@@ -1,0 +1,2913 @@
+OSG System Profile
+Created at Seg Nov 26 17:18:32 BRST 2012
+
+***** Running: hostname 
+voms.grid.unesp.br
+
+***** Running: uname -a
+Linux voms.grid.unesp.br 2.6.32-279.14.1.el6.x86_64 #1 SMP Tue Nov 6 23:43:09 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+
+***** Kernel RPMs
+kernel-2.6.32-220.el6.x86_64
+kernel-2.6.32-279.14.1.el6.x86_64
+kernel-2.6.32-279.2.1.el6.x86_64
+kernel-2.6.32-279.5.2.el6.x86_64
+kernel-2.6.32-279.el6.x86_64
+kernel-firmware-2.6.32-279.14.1.el6.noarch
+
+***** /etc/issue
+CentOS release 6.3 (Final)
+Kernel \r on an \m
+
+
+***** /etc/redhat-release
+CentOS release 6.3 (Final)
+
+***** /etc/nsswitch.conf
+#
+# /etc/nsswitch.conf
+#
+# An example Name Service Switch config file. This file should be
+# sorted with the most-used services at the beginning.
+#
+# The entry '[NOTFOUND=return]' means that the search for an
+# entry should stop if the search in the previous entry turned
+# up nothing. Note that if the search failed due to some other reason
+# (like no NIS server responding) then the search continues with the
+# next entry.
+#
+# Valid entries include:
+#
+#	nisplus			Use NIS+ (NIS version 3)
+#	nis			Use NIS (NIS version 2), also called YP
+#	dns			Use DNS (Domain Name Service)
+#	files			Use the local files
+#	db			Use the local database (.db) files
+#	compat			Use NIS on compat mode
+#	hesiod			Use Hesiod for user lookups
+#	[NOTFOUND=return]	Stop searching if not found so far
+#
+
+# To use db, put the "db" in front of "files" for entries you want to be
+# looked up first in the databases
+#
+# Example:
+#passwd:    db files nisplus nis
+#shadow:    db files nisplus nis
+#group:     db files nisplus nis
+
+passwd:     files ldap
+shadow:     files ldap
+group:      files ldap
+
+#hosts:     db files nisplus nis dns
+hosts:      files dns
+
+# Example - obey only what nisplus tells us...
+#services:   nisplus [NOTFOUND=return] files
+#networks:   nisplus [NOTFOUND=return] files
+#protocols:  nisplus [NOTFOUND=return] files
+#rpc:        nisplus [NOTFOUND=return] files
+#ethers:     nisplus [NOTFOUND=return] files
+#netmasks:   nisplus [NOTFOUND=return] files     
+
+bootparams: nisplus [NOTFOUND=return] files
+
+ethers:     files
+netmasks:   files
+networks:   files
+protocols:  files
+rpc:        files
+services:   files
+
+netgroup:   files ldap
+
+publickey:  nisplus
+
+automount:  files ldap
+aliases:    files nisplus
+
+
+***** /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+***** Running: df --human-readable --print-type
+Sist. Arq.    Tipo    Size  Used Avail Use% Montado em
+/dev/mapper/vg_voms-lv_root
+              ext4     14G  2,4G   11G  19% /
+tmpfs        tmpfs    939M     0  939M   0% /dev/shm
+/dev/vda1     ext4    485M  121M  339M  27% /boot
+
+***** Running: free 
+             total       used       free     shared    buffers     cached
+Mem:       1922880    1853536      69344          0     100896     550476
+-/+ buffers/cache:    1202164     720716
+Swap:      2064376      14832    2049544
+
+***** /proc/cpuinfo
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 13
+model name	: QEMU Virtual CPU version (cpu64-rhel6)
+stepping	: 3
+cpu MHz		: 2400.084
+cache size	: 4096 KB
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 4
+wp		: yes
+flags		: fpu de pse tsc msr pae mce cx8 apic mtrr pge mca cmov pse36 clflush mmx fxsr sse sse2 syscall nx lm up unfair_spinlock pni cx16 hypervisor lahf_lm
+bogomips	: 4800.16
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 40 bits physical, 48 bits virtual
+power management:
+
+
+***** Running: netstat -i
+Tabela de Interfaces do Kernel
+Iface       MTU Met    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+eth0       1500   0  4430282      0      0      0  4209853      0      0      0 BMRU
+lo        16436   0 76515442      0      0      0 76515442      0      0      0 LRU
+
+***** Running: /sbin/iptables -vL
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+18968 1432K fail2ban-SSH  tcp  --  any    any     anywhere             anywhere            tcp dpt:ssh 
+  80M   30G ACCEPT     all  --  any    any     anywhere             anywhere            state RELATED,ESTABLISHED 
+   30  1703 ACCEPT     icmp --  any    any     anywhere             anywhere            
+ 170K   10M ACCEPT     all  --  lo     any     anywhere             anywhere            
+    4   240 ACCEPT     tcp  --  any    any     200.145.46.0/24      anywhere            tcp dpt:bacula-fd 
+ 182K   11M ACCEPT     tcp  --  any    any     anywhere             anywhere            state NEW tcp dpt:pcsync-https 
+    0     0 ACCEPT     tcp  --  any    any     anywhere             anywhere            state NEW tcp dpt:hydap 
+    0     0 ACCEPT     tcp  --  any    any     anywhere             anywhere            state NEW tcp dpt:15001 
+   45  2700 ACCEPT     tcp  --  any    any     anywhere             anywhere            state NEW tcp dpt:7512 
+  264 23470 ACCEPT     udp  --  any    any     anywhere             anywhere            state NEW udp dpt:snmp 
+    0     0 ACCEPT     tcp  --  any    any     voms.grid.unesp.br   voms.grid.unesp.br  state NEW tcp dpt:smtp 
+  157  9048 ACCEPT     tcp  --  any    any     anywhere             anywhere            state NEW tcp dpt:ssh 
+ 120K   17M REJECT     all  --  any    any     anywhere             anywhere            reject-with icmp-host-prohibited 
+
+Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 REJECT     all  --  any    any     anywhere             anywhere            reject-with icmp-host-prohibited 
+
+Chain OUTPUT (policy ACCEPT 9536K packets, 3899M bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain fail2ban-SSH (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+18660 1403K RETURN     all  --  any    any     anywhere             anywhere            
+
+***** /etc/selinux/config
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=disabled
+# SELINUXTYPE= can take one of these two values:
+#     targeted - Targeted processes are protected,
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted 
+
+
+
+***** /selinux/enforce
+/selinux/enforce doesn't exist
+
+***** Running: osg-version 
+OSG 3.1.11
+
+osg-ca-certs-1.31-2.osg.el6.noarch
+osg-gums-config-43-2.osg.el6.noarch
+osg-release-3.0-18.osg.el6.noarch
+osg-system-profiler-1.0.9-1.osg.el6.noarch
+osg-version-3.1.11-1.osg.el6.noarch
+osg-voms-3.0.0-2.osg.el6.noarch
+osg-webapp-common-1-1.osg.el6.noarch
+
+***** RPM: osg-configure
+o pacote osg-configure não está instalado
+
+***** /var/log/osg/osg-configure.log (last 200 lines)
+/var/log/osg/osg-configure.log doesn't exist
+
+***** Files in /etc/osg/config.d
+/etc/osg/config.d can't be read
+
+***** RPM: perl
+perl-5.10.1-127.el6.x86_64
+perl has not been modified
+
+***** Running: perl -V
+Summary of my perl5 (revision 5 version 10 subversion 1) configuration:
+   
+  Platform:
+    osname=linux, osvers=2.6.32-220.el6.x86_64, archname=x86_64-linux-thread-multi
+    uname='linux c6b7.bsys.dev.centos.org 2.6.32-220.el6.x86_64 #1 smp tue dec 6 19:48:22 gmt 2011 x86_64 x86_64 x86_64 gnulinux '
+    config_args='-des -Doptimize=-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic -DDEBUGGING=-g -Dversion=5.10.1 -Dmyhostname=localhost -Dperladmin=root@localhost -Dcc=gcc -Dcf_by=Red Hat, Inc. -Dprefix=/usr -Dvendorprefix=/usr -Dsiteprefix=/usr/local -Dsitelib=/usr/local/share/perl5 -Dsitearch=/usr/local/lib64/perl5 -Dprivlib=/usr/share/perl5 -Darchlib=/usr/lib64/perl5 -Dvendorlib=/usr/share/perl5/vendor_perl -Dvendorarch=/usr/lib64/perl5/vendor_perl -Dinc_version_list=5.10.0 -Darchname=x86_64-linux-thread-multi -Dlibpth=/usr/local/lib64 /lib64 /usr/lib64 -Duseshrplib -Dusethreads -Duseithreads -Duselargefiles -Dd_dosuid -Dd_semctl_semun -Di_db -Ui_ndbm -Di_gdbm -Di_shadow -Di_syslog -Dman3ext=3pm -Duseperlio -Dinstallusrbinperl=n -Ubincompat5005 -Uversiononly -Dpager=/usr/bin/less -isr -Dd_gethostent_r_proto -Ud_endhostent_r_proto -Ud_sethostent_r_proto -Ud_endprotoent_r_proto -Ud_setprotoent_r_proto -Ud_endservent_r_proto -Ud_setservent_r_proto -Dscriptdir=/usr/bin -Dusesitecustomize'
+    hint=recommended, useposix=true, d_sigaction=define
+    useithreads=define, usemultiplicity=define
+    useperlio=define, d_sfio=undef, uselargefiles=define, usesocks=undef
+    use64bitint=define, use64bitall=define, uselongdouble=undef
+    usemymalloc=n, bincompat5005=undef
+  Compiler:
+    cc='gcc', ccflags ='-D_REENTRANT -D_GNU_SOURCE -fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64',
+    optimize='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic',
+    cppflags='-D_REENTRANT -D_GNU_SOURCE -fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include'
+    ccversion='', gccversion='4.4.6 20120305 (Red Hat 4.4.6-4)', gccosandvers=''
+    intsize=4, longsize=8, ptrsize=8, doublesize=8, byteorder=12345678
+    d_longlong=define, longlongsize=8, d_longdbl=define, longdblsize=16
+    ivtype='long', ivsize=8, nvtype='double', nvsize=8, Off_t='off_t', lseeksize=8
+    alignbytes=8, prototype=define
+  Linker and Libraries:
+    ld='gcc', ldflags =' -fstack-protector'
+    libpth=/usr/local/lib64 /lib64 /usr/lib64
+    libs=-lresolv -lnsl -lgdbm -ldb -ldl -lm -lcrypt -lutil -lpthread -lc
+    perllibs=-lresolv -lnsl -ldl -lm -lcrypt -lutil -lpthread -lc
+    libc=, so=so, useshrplib=true, libperl=libperl.so
+    gnulibc_version='2.12'
+  Dynamic Linking:
+    dlsrc=dl_dlopen.xs, dlext=so, d_dlsymun=undef, ccdlflags='-Wl,-E -Wl,-rpath,/usr/lib64/perl5/CORE'
+    cccdlflags='-fPIC', lddlflags='-shared -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic'
+
+
+Characteristics of this binary (from libperl): 
+  Compile-time options: MULTIPLICITY PERL_DONT_CREATE_GVSV
+                        PERL_IMPLICIT_CONTEXT PERL_MALLOC_WRAP USE_64_BIT_ALL
+                        USE_64_BIT_INT USE_ITHREADS USE_LARGE_FILES
+                        USE_PERLIO USE_REENTRANT_API USE_SITECUSTOMIZE
+  Built under linux
+  Compiled at Jun 22 2012 13:27:28
+  @INC:
+    /usr/local/lib64/perl5
+    /usr/local/share/perl5
+    /usr/lib64/perl5/vendor_perl
+    /usr/share/perl5/vendor_perl
+    /usr/lib64/perl5
+    /usr/share/perl5
+    .
+
+***** RPM: python
+python-2.6.6-29.el6_3.3.x86_64
+python has not been modified
+
+***** Python information:
+Version: 2.6.6 (r266:84292, Sep 11 2012, 08:34:23) 
+[GCC 4.4.6 20120305 (Red Hat 4.4.6-4)]
+Executable: /usr/bin/python
+Prefix: /usr
+Architecture:  ('64bit', 'ELF')
+Search paths:  ['', '/usr/lib64/python26.zip', '/usr/lib64/python2.6', '/usr/lib64/python2.6/plat-linux2', '/usr/lib64/python2.6/lib-tk', '/usr/lib64/python2.6/lib-old', '/usr/lib64/python2.6/lib-dynload', '/usr/lib64/python2.6/site-packages', '/usr/lib/python2.6/site-packages']
+
+***** RPM: openssl
+openssl-1.0.0-25.el6_3.1.x86_64
+openssl has not been modified
+
+***** Running: openssl version
+OpenSSL 1.0.0-fips 29 Mar 2010
+
+***** Running: /usr/bin/env | sort
+CVS_RSH=ssh
+G_BROKEN_FILENAMES=1
+HISTSIZE=1000
+HOME=/root
+HOSTNAME=voms.grid.unesp.br
+LANG=pt_BR.utf8
+LESSOPEN=|/usr/bin/lesspipe.sh %s
+LOGNAME=root
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+MAIL=/var/spool/mail/winckler
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+PWD=/home/winckler
+QTDIR=/usr/lib64/qt-3.3
+SHELL=/bin/bash
+SHLVL=2
+SUDO_COMMAND=/bin/bash
+SUDO_GID=10005
+SUDO_UID=10001
+SUDO_USER=winckler
+TERM=xterm
+USERNAME=root
+USER=root
+_=/usr/bin/env
+
+***** Contents of /etc/grid-security
+total 104
+drwxr-xr-x.   6 root   root    4096 Ago 13 17:05 ./
+drwxr-xr-x. 102 root   root   12288 Nov 24 03:19 ../
+-rw-r--r--    1 root   root    4829 Out 30 09:44 backup.tgz
+drwxr-xr-x.   2 root   root   61440 Out 14 12:42 certificates/
+-rw-r--r--    1 root   root    1647 Out 30 09:42 hostcert.pem
+-rw-------    1 root   root    1675 Out 30 09:42 hostkey.pem
+drwxr-xr-x.   2 tomcat tomcat  4096 Out 30 09:46 http/
+drwxr-xr-x.   2 root   root    4096 Ago 13 17:05 voms/
+drwxr-xr-x.   2 root   root    4096 Ago 13 17:05 vomsdir/
+
+***** Certificate: /etc/grid-security/hostcert.pem
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 76459 (0x12aab)
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: DC=org, DC=DOEGrids, OU=Certificate Authorities, CN=DOEGrids CA 1
+        Validity
+            Not Before: Oct 30 11:34:13 2012 GMT
+            Not After : Oct 30 11:34:13 2013 GMT
+        Subject: DC=org, DC=doegrids, OU=Services, CN=voms.grid.unesp.br
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c1:bb:d8:8f:e3:4d:7d:a3:d4:d4:2d:45:b4:4c:
+                    06:4f:80:f8:2c:92:4b:15:14:80:4f:f6:a1:81:0f:
+                    6c:4d:f2:66:fc:47:f9:bd:55:62:14:50:1c:ff:f3:
+                    76:55:6e:ed:af:7b:78:7c:c5:26:b5:c4:07:67:75:
+                    9b:d1:02:bc:40:cd:a2:f6:f3:3e:64:15:99:23:9b:
+                    f1:b4:11:8e:4c:8f:83:bb:64:09:f6:8d:1e:10:63:
+                    9f:f2:f7:b1:f1:cd:65:4c:32:dd:2c:a1:a1:e1:b5:
+                    65:c2:24:e7:cf:65:32:0d:3e:4f:0f:2f:dc:21:a3:
+                    ff:7c:4c:35:b1:fe:07:30:e2:f3:11:83:be:bf:22:
+                    1a:ee:5a:a8:8e:a4:0d:12:61:2b:3f:f7:d8:4c:67:
+                    c2:38:95:d6:a0:e2:10:50:da:66:9b:da:2e:31:09:
+                    1b:ff:e6:b2:13:ab:47:31:1f:32:6e:a3:47:b1:98:
+                    7d:03:4d:a5:bb:d7:ad:23:22:4e:ab:fa:fe:d6:f5:
+                    6b:37:7e:b7:b3:6b:c1:e1:d0:c3:6e:08:d4:86:2e:
+                    dd:be:e8:e1:4b:a3:c4:e0:22:fc:4a:85:5d:9a:39:
+                    00:a9:81:55:cc:31:43:39:71:d6:8e:3c:aa:dd:57:
+                    60:2e:f9:f3:22:4e:98:77:2c:66:47:ce:4d:6e:14:
+                    05:8b
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            Netscape Cert Type: 
+                SSL Client, SSL Server, S/MIME
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment, Data Encipherment
+            X509v3 Certificate Policies: 
+                Policy: 1.2.840.113612.3.7.1.3.1
+                Policy: 1.2.840.113612.5.2.2.1
+                Policy: 1.2.840.113612.5.2.3.2.1.1
+
+            X509v3 CRL Distribution Points: 
+
+                Full Name:
+                  URI:http://crl.doegrids.org/1c3f2ca8/1c3f2ca8.crl
+
+                Full Name:
+                  URI:http://commondatastorage.googleapis.com/1c3f2ca8/1c3f2ca8.crl
+
+            X509v3 Subject Alternative Name: 
+                DNS:voms.grid.unesp.br, email:jadir@ncc.unesp.br
+            X509v3 Authority Key Identifier: 
+                keyid:CA:19:1D:12:8E:6E:A4:38:5D:42:D4:31:0E:08:DB:D9:8D:17:0D:5D
+
+    Signature Algorithm: sha1WithRSAEncryption
+        06:63:37:45:fb:42:90:ab:0b:27:36:93:16:79:46:82:b4:fd:
+        73:95:7c:5c:bd:9c:5c:07:01:ac:65:0d:6c:3b:a2:21:82:26:
+        26:53:69:b5:4c:5b:d6:f3:22:07:10:fa:11:5c:3c:eb:b3:ca:
+        fc:f4:0b:54:80:80:ca:28:ad:34:7e:14:86:10:fc:c7:4a:92:
+        b6:74:fe:b7:4e:60:e2:1e:ba:28:01:b2:0e:e4:5f:43:dd:c9:
+        6c:ec:3d:0b:06:3d:cd:2d:78:de:3d:ad:94:60:8f:9e:40:cb:
+        46:6e:51:b5:d4:c3:70:2e:0e:e9:36:5c:ec:98:a5:26:04:3c:
+        c8:21:f9:ad:71:50:52:3e:dd:87:6e:74:f8:b5:f9:81:42:54:
+        60:df:ac:83:65:cc:68:b1:3f:ba:bf:b7:57:dd:08:10:df:b7:
+        6a:15:78:d4:1e:5f:6d:01:ab:68:03:b6:54:09:d8:b8:4a:63:
+        23:6e:c9:cf:b4:37:0c:12:8c:76:83:ff:4b:58:55:29:53:c5:
+        91:a7:75:d9:e7:48:e6:3c:82:c8:d2:c8:02:d9:85:9d:fa:df:
+        b4:31:b2:ca:81:89:b7:0f:06:6f:a7:8f:68:af:0b:98:75:37:
+        d0:ab:a4:e9:8e:b6:fd:0f:76:20:f8:e7:d5:55:93:57:74:dc:
+        87:89:41:b8
+
+***** Certificate: /etc/grid-security/http/httpcert.pem
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 76460 (0x12aac)
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: DC=org, DC=DOEGrids, OU=Certificate Authorities, CN=DOEGrids CA 1
+        Validity
+            Not Before: Oct 30 11:34:57 2012 GMT
+            Not After : Oct 30 11:34:57 2013 GMT
+        Subject: DC=org, DC=doegrids, OU=Services, CN=http/voms.grid.unesp.br
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:b8:ee:75:22:4d:86:b0:bb:00:35:d0:1c:a0:eb:
+                    e0:b1:fd:bd:91:8e:08:85:eb:b2:51:1f:54:e4:b6:
+                    4a:74:84:5a:c8:f5:98:2d:c0:5a:b6:8f:9f:93:ef:
+                    9f:b7:2c:63:52:98:98:cc:09:1a:32:19:48:fd:5d:
+                    3e:b6:d4:c7:f0:83:05:0e:70:39:92:bf:b4:19:ad:
+                    9b:a3:08:18:d8:5d:57:e8:24:64:d7:fb:07:12:25:
+                    62:d0:e7:89:92:fd:91:7a:4f:dd:0b:f0:98:0f:64:
+                    7b:a1:60:76:1c:20:13:b6:57:f1:cc:c1:58:a5:04:
+                    2e:34:3f:ef:26:c4:9b:6d:76:ed:23:86:d2:21:66:
+                    63:87:09:96:88:eb:a3:85:f7:04:1f:b6:be:33:5c:
+                    d5:12:1f:a4:52:43:a2:30:af:a0:37:8a:ba:b7:65:
+                    41:e8:a1:38:65:c2:c8:bc:d6:cb:19:03:b5:01:a1:
+                    68:33:2a:07:bd:39:3e:88:30:95:61:d8:0a:65:53:
+                    42:e6:67:da:ce:f5:4c:ed:65:42:3c:d1:da:a0:c0:
+                    69:93:c5:4b:91:63:a7:c5:f1:01:5b:99:d5:fa:b7:
+                    00:86:87:52:68:06:60:b1:24:e4:e5:bb:57:fe:07:
+                    2d:54:a0:d4:fa:a0:d6:4f:1b:4c:93:74:09:eb:dd:
+                    5a:b5
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            Netscape Cert Type: 
+                SSL Client, SSL Server, S/MIME
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment, Data Encipherment
+            X509v3 Certificate Policies: 
+                Policy: 1.2.840.113612.3.7.1.3.1
+                Policy: 1.2.840.113612.5.2.2.1
+                Policy: 1.2.840.113612.5.2.3.2.1.1
+
+            X509v3 CRL Distribution Points: 
+
+                Full Name:
+                  URI:http://crl.doegrids.org/1c3f2ca8/1c3f2ca8.crl
+
+                Full Name:
+                  URI:http://commondatastorage.googleapis.com/1c3f2ca8/1c3f2ca8.crl
+
+            X509v3 Subject Alternative Name: 
+                DNS:voms.grid.unesp.br, email:jadir@ncc.unesp.br
+            X509v3 Authority Key Identifier: 
+                keyid:CA:19:1D:12:8E:6E:A4:38:5D:42:D4:31:0E:08:DB:D9:8D:17:0D:5D
+
+    Signature Algorithm: sha1WithRSAEncryption
+        6c:40:9a:eb:c4:75:27:9f:88:72:a7:f2:45:f8:4d:11:00:5f:
+        91:03:09:38:5d:e9:5b:69:96:85:2d:69:e0:7b:0b:26:0d:f8:
+        bc:01:40:3f:bd:3f:aa:c5:b4:5a:88:4a:d9:1b:f1:a9:de:96:
+        ac:3b:12:31:36:23:90:c4:8a:2b:a2:7e:99:28:f0:35:c8:72:
+        ea:88:90:9a:2e:f2:f1:23:d4:8f:c2:5f:47:79:14:2f:22:38:
+        e7:92:bf:d6:7c:d0:55:a9:6e:21:00:1a:25:26:25:07:74:07:
+        97:f9:51:19:9f:e0:b4:5f:5e:29:7f:5f:65:a8:4c:c4:13:01:
+        c0:ec:be:03:74:11:89:17:98:57:1f:1a:3c:9b:97:90:d7:42:
+        e0:61:9a:6a:cb:2c:1d:85:97:2c:80:46:94:dd:c0:2e:58:62:
+        e3:07:fb:96:12:ee:b4:9a:8d:18:e0:6e:03:1a:9b:0e:f1:9e:
+        62:3e:f1:82:de:2a:41:9d:5f:c6:46:80:65:c0:67:6b:fd:98:
+        33:0d:f6:2d:bd:85:39:20:5c:8b:1c:55:b5:11:e2:09:56:4a:
+        47:9e:11:c4:9a:12:bc:37:74:87:58:45:db:9f:81:57:8f:25:
+        ba:2a:e1:b9:cf:1c:25:9b:63:b0:84:78:05:e1:51:e1:84:0a:
+        1f:83:9c:8d
+
+***** Certificate: /etc/grid-security/rsv/rsvcert.pem
+Can't read /etc/grid-security/rsv/rsvcert.pem
+
+***** Running: rpm -q --whatprovides grid-certificates
+osg-ca-certs-1.31-2.osg.el6.noarch
+
+***** Contents of /etc/grid-security/certificates
+total 4220
+drwxr-xr-x. 2 root root 61440 Out 14 12:42 ./
+drwxr-xr-x. 6 root root  4096 Ago 13 17:05 ../
+lrwxrwxrwx  1 root root     9 Out 10 13:51 0119347c.0 -> ESnet.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 0119347c.namespaces -> ESnet.namespaces
+-rw-r--r--. 1 root root  1353 Nov 26 12:46 0119347c.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 0119347c.signing_policy -> ESnet.signing_policy
+lrwxrwxrwx  1 root root    18 Out 10 13:51 01b5d333.0 -> cilogon-silver.pem
+lrwxrwxrwx  1 root root    25 Out 10 13:51 01b5d333.namespaces -> cilogon-silver.namespaces
+-rw-r--r--. 1 root root   670 Nov 26 12:45 01b5d333.r0
+lrwxrwxrwx  1 root root    29 Out 10 13:51 01b5d333.signing_policy -> cilogon-silver.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 02a45931.0 -> DFN-SLCS.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 02a45931.namespaces -> DFN-SLCS.namespaces
+-rw-r--r--. 1 root root   670 Nov 26 12:46 02a45931.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 02a45931.signing_policy -> DFN-SLCS.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 036b3363.0 -> ANSPGrid.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 036b3363.namespaces -> ANSPGrid.namespaces
+-rw-r--r--  1 root root  1336 Nov 26 12:44 036b3363.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 036b3363.signing_policy -> ANSPGrid.signing_policy
+lrwxrwxrwx  1 root root     7 Out 10 13:51 03a1fa38.0 -> HKU.pem
+lrwxrwxrwx  1 root root    14 Out 10 13:51 03a1fa38.namespaces -> HKU.namespaces
+-rw-r--r--. 1 root root   803 Nov 26 12:46 03a1fa38.r0
+lrwxrwxrwx  1 root root    18 Out 10 13:51 03a1fa38.signing_policy -> HKU.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 03b260e0.0 -> PolishGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 03b260e0.namespaces -> PolishGrid.namespaces
+-rw-r--r--. 1 root root  1108 Nov 26 12:47 03b260e0.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 03b260e0.signing_policy -> PolishGrid.signing_policy
+lrwxrwxrwx  1 root root    11 Out 10 13:51 07397040.0 -> MD-Grid.pem
+lrwxrwxrwx  1 root root    18 Out 10 13:51 07397040.namespaces -> MD-Grid.namespaces
+-rw-r--r--. 1 root root  2254 Nov 26 12:47 07397040.r0
+lrwxrwxrwx  1 root root    22 Out 10 13:51 07397040.signing_policy -> MD-Grid.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 075047ca.0 -> AIST.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 075047ca.namespaces -> AIST.namespaces
+-rw-r--r--. 1 root root   767 Nov 26 12:44 075047ca.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 075047ca.signing_policy -> AIST.signing_policy
+lrwxrwxrwx  1 root root    21 Out 10 13:51 080911ac.0 -> QuoVadis-Root-CA1.pem
+lrwxrwxrwx  1 root root    28 Out 10 13:51 080911ac.namespaces -> QuoVadis-Root-CA1.namespaces
+-rw-r--r--. 1 root root  1791 Nov 26 12:47 080911ac.r0
+lrwxrwxrwx  1 root root    32 Out 10 13:51 080911ac.signing_policy -> QuoVadis-Root-CA1.signing_policy
+lrwxrwxrwx  1 root root    20 Out 10 13:51 081fefd0.0 -> PurdueTeragridRA.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 081fefd0.info -> PurdueTeragridRA.info
+-rw-r--r--. 1 root root   722 Nov 26 12:47 081fefd0.r0
+lrwxrwxrwx  1 root root    31 Out 10 13:51 081fefd0.signing_policy -> PurdueTeragridRA.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 089450c2.0 -> REUNA-ca.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 089450c2.namespaces -> REUNA-ca.namespaces
+-rw-r--r--. 1 root root  5561 Nov 26 12:47 089450c2.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 089450c2.signing_policy -> REUNA-ca.signing_policy
+lrwxrwxrwx  1 root root    17 Out 10 13:51 09ff08b7.0 -> CNRS2-Projets.pem
+lrwxrwxrwx  1 root root    24 Out 10 13:51 09ff08b7.namespaces -> CNRS2-Projets.namespaces
+-rw-r--r--. 1 root root   563 Nov 26 12:45 09ff08b7.r0
+lrwxrwxrwx  1 root root    28 Out 10 13:51 09ff08b7.signing_policy -> CNRS2-Projets.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 0a12b607.0 -> UGRID.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 0a12b607.namespaces -> UGRID.namespaces
+-rw-r--r--. 1 root root  1145 Nov 26 12:47 0a12b607.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 0a12b607.signing_policy -> UGRID.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 0a2bac92.0 -> BrGrid.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 0a2bac92.namespaces -> BrGrid.namespaces
+-rw-r--r--. 1 root root  3407 Nov 25 06:48 0a2bac92.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 0a2bac92.signing_policy -> BrGrid.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 0a49430a.0 -> DZeScience.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 0a49430a.namespaces -> DZeScience.namespaces
+-rw-r--r--. 1 root root  2019 Nov 26 12:46 0a49430a.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 0a49430a.signing_policy -> DZeScience.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 0e635db3.0 -> SRCE.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 0e635db3.namespaces -> SRCE.namespaces
+-rw-r--r--. 1 root root  2730 Nov 26 12:47 0e635db3.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 0e635db3.signing_policy -> SRCE.signing_policy
+lrwxrwxrwx  1 root root    18 Out 10 13:51 10718cba.0 -> cilogon-silver.pem
+lrwxrwxrwx  1 root root    25 Out 10 13:51 10718cba.namespaces -> cilogon-silver.namespaces
+-rw-r--r--. 1 root root   670 Nov 26 12:45 10718cba.r0
+lrwxrwxrwx  1 root root    29 Out 10 13:51 10718cba.signing_policy -> cilogon-silver.signing_policy
+lrwxrwxrwx  1 root root    24 Out 10 13:51 1149214e.0 -> DFN-GridGermany-Root.pem
+lrwxrwxrwx  1 root root    31 Out 10 13:51 1149214e.namespaces -> DFN-GridGermany-Root.namespaces
+-rw-r--r--. 1 root root  8982 Nov 26 12:45 1149214e.r0
+lrwxrwxrwx  1 root root    35 Out 10 13:51 1149214e.signing_policy -> DFN-GridGermany-Root.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 11b4a5a2.0 -> LIPCA.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 11b4a5a2.namespaces -> LIPCA.namespaces
+-rw-r--r--. 1 root root  5374 Nov 26 12:47 11b4a5a2.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 11b4a5a2.signing_policy -> LIPCA.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 126f0acf.0 -> ANSPGrid.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 126f0acf.namespaces -> ANSPGrid.namespaces
+-rw-r--r--  1 root root  1336 Nov 26 12:44 126f0acf.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 126f0acf.signing_policy -> ANSPGrid.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 12d0da68.0 -> DOEGrids.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 12d0da68.namespaces -> DOEGrids.namespaces
+-rw-r--r--. 1 root root 23663 Nov 26 12:46 12d0da68.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 12d0da68.signing_policy -> DOEGrids.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 13ba0088.0 -> BG-ACAD-CA.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 13ba0088.namespaces -> BG-ACAD-CA.namespaces
+-rw-r--r--. 1 root root  1307 Nov 26 12:44 13ba0088.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 13ba0088.signing_policy -> BG-ACAD-CA.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 156a0f0f.0 -> SiGNET-CA.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 156a0f0f.namespaces -> SiGNET-CA.namespaces
+-rw-r--r--. 1 root root   792 Nov 26 12:47 156a0f0f.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 156a0f0f.signing_policy -> SiGNET-CA.signing_policy
+lrwxrwxrwx  1 root root    29 Out 10 13:51 157753a5.0 -> AddTrust-External-CA-Root.pem
+lrwxrwxrwx  1 root root    36 Out 10 13:51 157753a5.namespaces -> AddTrust-External-CA-Root.namespaces
+-rw-r--r--. 1 root root   719 Nov 26 12:44 157753a5.r0
+lrwxrwxrwx  1 root root    40 Out 10 13:51 157753a5.signing_policy -> AddTrust-External-CA-Root.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 163af95c.0 -> CNRS2.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 163af95c.namespaces -> CNRS2.namespaces
+-rw-r--r--. 1 root root   555 Nov 26 12:45 163af95c.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 163af95c.signing_policy -> CNRS2.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 1691b9ba.0 -> TRGrid.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 1691b9ba.namespaces -> TRGrid.namespaces
+-rw-r--r--. 1 root root  9100 Nov 26 12:47 1691b9ba.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 1691b9ba.signing_policy -> TRGrid.signing_policy
+lrwxrwxrwx  1 root root    28 Out 10 13:51 169d7f9c.0 -> TERENAeSciencePersonalCA.pem
+-rw-r--r--. 1 root root 13593 Nov 26 12:47 169d7f9c.r0
+lrwxrwxrwx  1 root root    39 Out 10 13:51 169d7f9c.signing_policy -> TERENAeSciencePersonalCA.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 16da7552.0 -> NIKHEF.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 16da7552.namespaces -> NIKHEF.namespaces
+-rw-r--r--. 1 root root  5325 Nov 26 12:47 16da7552.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 16da7552.signing_policy -> NIKHEF.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 18700496.0 -> PK-Grid-2007.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 18700496.namespaces -> PK-Grid-2007.namespaces
+-rw-r--r--. 1 root root  1985 Nov 26 12:47 18700496.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 18700496.signing_policy -> PK-Grid-2007.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 18bc5b05.0 -> RomanianGRID.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 18bc5b05.namespaces -> RomanianGRID.namespaces
+-rw-r--r--. 1 root root  2470 Nov 26 12:47 18bc5b05.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 18bc5b05.signing_policy -> RomanianGRID.signing_policy
+lrwxrwxrwx  1 root root    11 Out 10 13:51 1b2e5552.0 -> EG-GRID.pem
+lrwxrwxrwx  1 root root    18 Out 10 13:51 1b2e5552.namespaces -> EG-GRID.namespaces
+-rw-r--r--  1 root root  1706 Nov 26 12:46 1b2e5552.r0
+lrwxrwxrwx  1 root root    22 Out 10 13:51 1b2e5552.signing_policy -> EG-GRID.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 1b6f5ede.0 -> UKeScienceCA-2A.pem
+-rw-r--r--. 1 root root   638 Nov 26 12:47 1b6f5ede.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 1b6f5ede.signing_policy -> UKeScienceCA-2A.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 1c3f2ca8.0 -> DOEGrids.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 1c3f2ca8.namespaces -> DOEGrids.namespaces
+-rw-r--r--. 1 root root 23663 Nov 26 12:46 1c3f2ca8.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 1c3f2ca8.signing_policy -> DOEGrids.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 1d879c6c.0 -> CERN-TCA.pem
+-rw-r--r--. 1 root root  6402 Nov 26 12:45 1d879c6c.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 1d879c6c.signing_policy -> CERN-TCA.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 1e12d831.0 -> APAC.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 1e12d831.namespaces -> APAC.namespaces
+-rw-r--r--. 1 root root 53559 Nov 26 12:44 1e12d831.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 1e12d831.signing_policy -> APAC.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 1e3261e6.0 -> NIIF.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 1e3261e6.namespaces -> NIIF.namespaces
+-rw-r--r--. 1 root root  4321 Nov 26 12:47 1e3261e6.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 1e3261e6.signing_policy -> NIIF.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 1e43b9cc.0 -> Grid-Ireland.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 1e43b9cc.namespaces -> Grid-Ireland.namespaces
+-rw-r--r--. 1 root root  7376 Nov 26 12:46 1e43b9cc.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 1e43b9cc.signing_policy -> Grid-Ireland.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 1e4f9475.0 -> MARGI.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 1e4f9475.namespaces -> MARGI.namespaces
+-rw-r--r--. 1 root root   617 Nov 26 12:47 1e4f9475.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 1e4f9475.signing_policy -> MARGI.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 1f0e8352.0 -> NorduGrid.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 1f0e8352.namespaces -> NorduGrid.namespaces
+-rw-r--r--. 1 root root 11126 Nov 26 12:47 1f0e8352.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 1f0e8352.signing_policy -> NorduGrid.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 1f3834d0.0 -> RomanianGRID.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 1f3834d0.namespaces -> RomanianGRID.namespaces
+-rw-r--r--. 1 root root  2470 Nov 26 12:47 1f3834d0.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 1f3834d0.signing_policy -> RomanianGRID.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 20b7db76.0 -> NERSC-SLCS.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 20b7db76.namespaces -> NERSC-SLCS.namespaces
+-rw-r--r--. 1 root root   661 Nov 26 12:47 20b7db76.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 20b7db76.signing_policy -> NERSC-SLCS.signing_policy
+lrwxrwxrwx  1 root root    26 Out 10 13:51 20ce830e.0 -> TERENA-eScience-SSL-CA.pem
+lrwxrwxrwx  1 root root    33 Out 10 13:51 20ce830e.namespaces -> TERENA-eScience-SSL-CA.namespaces
+-rw-r--r--. 1 root root  1332 Nov 26 12:47 20ce830e.r0
+lrwxrwxrwx  1 root root    37 Out 10 13:51 20ce830e.signing_policy -> TERENA-eScience-SSL-CA.signing_policy
+lrwxrwxrwx  1 root root    15 Out 10 13:51 2376bd8e.0 -> PRAGMA-UCSD.pem
+lrwxrwxrwx  1 root root    22 Out 10 13:51 2376bd8e.namespaces -> PRAGMA-UCSD.namespaces
+-rw-r--r--. 1 root root   669 Nov 26 12:47 2376bd8e.r0
+lrwxrwxrwx  1 root root    26 Out 10 13:51 2376bd8e.signing_policy -> PRAGMA-UCSD.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 2418a3f3.0 -> BG-ACAD-CA.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 2418a3f3.namespaces -> BG-ACAD-CA.namespaces
+-rw-r--r--. 1 root root  1307 Nov 26 12:44 2418a3f3.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 2418a3f3.signing_policy -> BG-ACAD-CA.signing_policy
+lrwxrwxrwx  1 root root    15 Out 10 13:51 24c3ccde.0 -> UNAMgrid-ca.pem
+lrwxrwxrwx  1 root root    22 Out 10 13:51 24c3ccde.namespaces -> UNAMgrid-ca.namespaces
+-rw-r--r--. 1 root root  2730 Nov 26 12:47 24c3ccde.r0
+lrwxrwxrwx  1 root root    26 Out 10 13:51 24c3ccde.signing_policy -> UNAMgrid-ca.signing_policy
+lrwxrwxrwx  1 root root     7 Out 10 13:51 25694cc4.0 -> SDG.pem
+lrwxrwxrwx  1 root root    14 Out 10 13:51 25694cc4.namespaces -> SDG.namespaces
+-rw-r--r--. 1 root root  1542 Nov 26 12:47 25694cc4.r0
+lrwxrwxrwx  1 root root    18 Out 10 13:51 25694cc4.signing_policy -> SDG.signing_policy
+lrwxrwxrwx  1 root root    27 Out 10 13:51 2694e4f2.0 -> DigiCertGridRootCA-Root.pem
+lrwxrwxrwx  1 root root    34 Out 10 13:51 2694e4f2.namespaces -> DigiCertGridRootCA-Root.namespaces
+-rw-r--r--. 1 root root   784 Nov 26 12:46 2694e4f2.r0
+lrwxrwxrwx  1 root root    38 Out 10 13:51 2694e4f2.signing_policy -> DigiCertGridRootCA-Root.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 28a58577.0 -> HellasGrid-Root.pem
+lrwxrwxrwx  1 root root    26 Out 10 13:51 28a58577.namespaces -> HellasGrid-Root.namespaces
+-rw-r--r--. 1 root root   642 Nov 26 12:46 28a58577.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 28a58577.signing_policy -> HellasGrid-Root.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 295adc19.0 -> REUNA-ca.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 295adc19.namespaces -> REUNA-ca.namespaces
+-rw-r--r--. 1 root root  5561 Nov 26 12:47 295adc19.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 295adc19.signing_policy -> REUNA-ca.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 2a237f16.0 -> BalticGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 2a237f16.namespaces -> BalticGrid.namespaces
+-rw-r--r--. 1 root root  3752 Nov 26 12:44 2a237f16.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 2a237f16.signing_policy -> BalticGrid.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 2ac09305.0 -> TACC-MICS.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 2ac09305.namespaces -> TACC-MICS.namespaces
+-rw-r--r--. 1 root root   673 Nov 26 12:47 2ac09305.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 2ac09305.signing_policy -> TACC-MICS.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 2c0df5ae.0 -> NCHC.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 2c0df5ae.namespaces -> NCHC.namespaces
+-rw-r--r--. 1 root root   881 Nov 26 12:47 2c0df5ae.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 2c0df5ae.signing_policy -> NCHC.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 2eb756e6.0 -> CERN-Root.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 2eb756e6.namespaces -> CERN-Root.namespaces
+-rw-r--r--. 1 root root  1015 Nov 26 12:45 2eb756e6.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 2eb756e6.signing_policy -> CERN-Root.signing_policy
+lrwxrwxrwx  1 root root     7 Out 10 13:51 2f2f573f.0 -> KEK.pem
+lrwxrwxrwx  1 root root    14 Out 10 13:51 2f2f573f.namespaces -> KEK.namespaces
+-rw-r--r--. 1 root root 17374 Nov 26 12:46 2f2f573f.r0
+lrwxrwxrwx  1 root root    18 Out 10 13:51 2f2f573f.signing_policy -> KEK.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 2f3fadf6.0 -> INFN-CA-2006.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 2f3fadf6.namespaces -> INFN-CA-2006.namespaces
+-rw-r--r--. 1 root root 31732 Nov 26 12:46 2f3fadf6.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 2f3fadf6.signing_policy -> INFN-CA-2006.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 30feecdf.0 -> BEGrid2008.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 30feecdf.namespaces -> BEGrid2008.namespaces
+-rw-r--r--. 1 root root  1092 Nov 26 12:44 30feecdf.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 30feecdf.signing_policy -> BEGrid2008.signing_policy
+lrwxrwxrwx  1 root root    24 Out 10 13:51 30ffc224.0 -> DFN-GridGermany-Root.pem
+lrwxrwxrwx  1 root root    31 Out 10 13:51 30ffc224.namespaces -> DFN-GridGermany-Root.namespaces
+-rw-r--r--. 1 root root  8982 Nov 26 12:45 30ffc224.r0
+lrwxrwxrwx  1 root root    35 Out 10 13:51 30ffc224.signing_policy -> DFN-GridGermany-Root.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 3154fd00.0 -> JUnet-CA.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 3154fd00.namespaces -> JUnet-CA.namespaces
+-rw-r--r--. 1 root root   958 Nov 26 12:46 3154fd00.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 3154fd00.signing_policy -> JUnet-CA.signing_policy
+lrwxrwxrwx  1 root root    11 Out 10 13:51 3232b9bc.0 -> MREN-CA.pem
+lrwxrwxrwx  1 root root    18 Out 10 13:51 3232b9bc.namespaces -> MREN-CA.namespaces
+-rw-r--r--. 1 root root   690 Nov 26 12:47 3232b9bc.r0
+lrwxrwxrwx  1 root root    22 Out 10 13:51 3232b9bc.signing_policy -> MREN-CA.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 33eb0f86.0 -> BrGrid.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 33eb0f86.namespaces -> BrGrid.namespaces
+-rw-r--r--. 1 root root  3407 Nov 25 06:48 33eb0f86.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 33eb0f86.signing_policy -> BrGrid.signing_policy
+lrwxrwxrwx  1 root root    21 Out 10 13:51 367b75c3.0 -> UKeScienceCA-2007.pem
+-rw-r--r--. 1 root root 56854 Nov 26 12:47 367b75c3.r0
+lrwxrwxrwx  1 root root    32 Out 10 13:51 367b75c3.signing_policy -> UKeScienceCA-2007.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 3839294d.0 -> NECTEC.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 3839294d.namespaces -> NECTEC.namespaces
+-rw-r--r--. 1 root root   869 Nov 26 12:47 3839294d.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 3839294d.signing_policy -> NECTEC.signing_policy
+lrwxrwxrwx  1 root root    31 Out 10 13:51 38f7145f.0 -> DigiCertGridTrustCA-Classic.pem
+lrwxrwxrwx  1 root root    38 Out 10 13:51 38f7145f.namespaces -> DigiCertGridTrustCA-Classic.namespaces
+-rw-r--r--. 1 root root   768 Nov 26 12:46 38f7145f.r0
+lrwxrwxrwx  1 root root    42 Out 10 13:51 38f7145f.signing_policy -> DigiCertGridTrustCA-Classic.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 393f7863.0 -> AEGIS.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 393f7863.namespaces -> AEGIS.namespaces
+-rw-r--r--. 1 root root  2267 Nov 26 12:44 393f7863.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 393f7863.signing_policy -> AEGIS.signing_policy
+lrwxrwxrwx  1 root root    29 Out 10 13:51 3c58f906.0 -> AddTrust-External-CA-Root.pem
+lrwxrwxrwx  1 root root    36 Out 10 13:51 3c58f906.namespaces -> AddTrust-External-CA-Root.namespaces
+-rw-r--r--. 1 root root   719 Nov 26 12:44 3c58f906.r0
+lrwxrwxrwx  1 root root    40 Out 10 13:51 3c58f906.signing_policy -> AddTrust-External-CA-Root.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 3d5be7bc.0 -> SiGNET-CA.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 3d5be7bc.namespaces -> SiGNET-CA.namespaces
+-rw-r--r--. 1 root root   792 Nov 26 12:47 3d5be7bc.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 3d5be7bc.signing_policy -> SiGNET-CA.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 3de400d0.0 -> AustrianGrid.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 3de400d0.namespaces -> AustrianGrid.namespaces
+-rw-r--r--. 1 root root 24747 Nov 26 12:44 3de400d0.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 3de400d0.signing_policy -> AustrianGrid.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 3f0f4285.0 -> ULAGrid-CA-2008.pem
+lrwxrwxrwx  1 root root    26 Out 10 13:51 3f0f4285.namespaces -> ULAGrid-CA-2008.namespaces
+-rw-r--r--. 1 root root  1998 Nov 26 12:47 3f0f4285.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 3f0f4285.signing_policy -> ULAGrid-CA-2008.signing_policy
+lrwxrwxrwx  1 root root    11 Out 10 13:51 3fb4d8a6.0 -> ArmeSFo.pem
+lrwxrwxrwx  1 root root    18 Out 10 13:51 3fb4d8a6.namespaces -> ArmeSFo.namespaces
+-rw-r--r--. 1 root root  1412 Nov 26 12:44 3fb4d8a6.r0
+lrwxrwxrwx  1 root root    22 Out 10 13:51 3fb4d8a6.signing_policy -> ArmeSFo.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 4220f3a5.0 -> TACC-Classic.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 4220f3a5.namespaces -> TACC-Classic.namespaces
+-rw-r--r--. 1 root root   982 Nov 26 12:47 4220f3a5.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 4220f3a5.signing_policy -> TACC-Classic.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 468d15b3.0 -> SEE-GRID.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 468d15b3.namespaces -> SEE-GRID.namespaces
+-rw-r--r--. 1 root root  4789 Nov 26 12:47 468d15b3.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 468d15b3.signing_policy -> SEE-GRID.signing_policy
+lrwxrwxrwx  1 root root     7 Out 10 13:51 4798da47.0 -> HKU.pem
+lrwxrwxrwx  1 root root    14 Out 10 13:51 4798da47.namespaces -> HKU.namespaces
+-rw-r--r--. 1 root root   803 Nov 26 12:46 4798da47.r0
+lrwxrwxrwx  1 root root    18 Out 10 13:51 4798da47.signing_policy -> HKU.signing_policy
+lrwxrwxrwx  1 root root    11 Out 10 13:51 4a96b1ea.0 -> EG-GRID.pem
+lrwxrwxrwx  1 root root    18 Out 10 13:51 4a96b1ea.namespaces -> EG-GRID.namespaces
+-rw-r--r--  1 root root  1706 Nov 26 12:46 4a96b1ea.r0
+lrwxrwxrwx  1 root root    22 Out 10 13:51 4a96b1ea.signing_policy -> EG-GRID.signing_policy
+lrwxrwxrwx  1 root root    18 Out 10 13:51 4b2783ac.0 -> PSC-Myproxy-CA.pem
+lrwxrwxrwx  1 root root    25 Out 10 13:51 4b2783ac.namespaces -> PSC-Myproxy-CA.namespaces
+-rw-r--r--. 1 root root   633 Nov 26 12:47 4b2783ac.r0
+lrwxrwxrwx  1 root root    29 Out 10 13:51 4b2783ac.signing_policy -> PSC-Myproxy-CA.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 4ce1cf99.0 -> MaGrid.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 4ce1cf99.namespaces -> MaGrid.namespaces
+-rw-r--r--. 1 root root  1583 Nov 26 12:47 4ce1cf99.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 4ce1cf99.signing_policy -> MaGrid.signing_policy
+lrwxrwxrwx  1 root root    15 Out 10 13:51 4d12be1d.0 -> CESNET-CA-3.pem
+-rw-r--r--. 1 root root   841 Nov 26 12:45 4d12be1d.r0
+lrwxrwxrwx  1 root root    26 Out 10 13:51 4d12be1d.signing_policy -> CESNET-CA-3.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 522b8537.0 -> UNLPGrid.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 522b8537.namespaces -> UNLPGrid.namespaces
+-rw-r--r--. 1 root root   987 Nov 26 12:47 522b8537.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 522b8537.signing_policy -> UNLPGrid.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 524cae41.0 -> HellasGrid-Root.pem
+lrwxrwxrwx  1 root root    26 Out 10 13:51 524cae41.namespaces -> HellasGrid-Root.namespaces
+-rw-r--r--. 1 root root   642 Nov 26 12:46 524cae41.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 524cae41.signing_policy -> HellasGrid-Root.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 530f7122.0 -> UKeScienceCA-2B.pem
+-rw-r--r--. 1 root root 56858 Nov 26 12:47 530f7122.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 530f7122.signing_policy -> UKeScienceCA-2B.signing_policy
+lrwxrwxrwx  1 root root    21 Out 10 13:51 53729190.0 -> UKeScienceCA-2007.pem
+-rw-r--r--. 1 root root 56854 Nov 26 12:47 53729190.r0
+lrwxrwxrwx  1 root root    32 Out 10 13:51 53729190.signing_policy -> UKeScienceCA-2007.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 55994d72.0 -> RDIG.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 55994d72.namespaces -> RDIG.namespaces
+-rw-r--r--. 1 root root  7108 Nov 26 12:47 55994d72.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 55994d72.signing_policy -> RDIG.signing_policy
+lrwxrwxrwx  1 root root    11 Out 10 13:51 56084620.0 -> MREN-CA.pem
+lrwxrwxrwx  1 root root    18 Out 10 13:51 56084620.namespaces -> MREN-CA.namespaces
+-rw-r--r--. 1 root root   690 Nov 26 12:47 56084620.r0
+lrwxrwxrwx  1 root root    22 Out 10 13:51 56084620.signing_policy -> MREN-CA.signing_policy
+lrwxrwxrwx  1 root root    18 Out 10 13:51 578010ce.0 -> SWITCHslcs2011.pem
+-rw-r--r--. 1 root root   707 Nov 26 12:47 578010ce.r0
+lrwxrwxrwx  1 root root    29 Out 10 13:51 578010ce.signing_policy -> SWITCHslcs2011.signing_policy
+lrwxrwxrwx  1 root root    17 Out 10 13:51 585d9326.0 -> CNRS2-Grid-FR.pem
+lrwxrwxrwx  1 root root    24 Out 10 13:51 585d9326.namespaces -> CNRS2-Grid-FR.namespaces
+-rw-r--r--. 1 root root  3184 Nov 26 12:45 585d9326.r0
+lrwxrwxrwx  1 root root    28 Out 10 13:51 585d9326.signing_policy -> CNRS2-Grid-FR.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 58b08cb5.0 -> MYIFAM.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 58b08cb5.namespaces -> MYIFAM.namespaces
+-rw-r--r--. 1 root root  1368 Nov 26 12:47 58b08cb5.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 58b08cb5.signing_policy -> MYIFAM.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 5a68802a.0 -> NAREGI.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 5a68802a.namespaces -> NAREGI.namespaces
+-rw-r--r--. 1 root root  1506 Nov 26 12:47 5a68802a.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 5a68802a.signing_policy -> NAREGI.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 5bb7d63e.0 -> NCSA-mics.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 5bb7d63e.namespaces -> NCSA-mics.namespaces
+-rw-r--r--. 1 root root  6044 Nov 26 12:47 5bb7d63e.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 5bb7d63e.signing_policy -> NCSA-mics.signing_policy
+lrwxrwxrwx  1 root root    21 Out 10 13:51 5cf9d536.0 -> QuoVadis-Root-CA1.pem
+lrwxrwxrwx  1 root root    28 Out 10 13:51 5cf9d536.namespaces -> QuoVadis-Root-CA1.namespaces
+-rw-r--r--. 1 root root  1791 Nov 26 12:47 5cf9d536.r0
+lrwxrwxrwx  1 root root    32 Out 10 13:51 5cf9d536.signing_policy -> QuoVadis-Root-CA1.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 5d674a88.0 -> GridCanada.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 5d674a88.namespaces -> GridCanada.namespaces
+-rw-r--r--. 1 root root  2371 Nov 26 12:46 5d674a88.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 5d674a88.signing_policy -> GridCanada.signing_policy
+lrwxrwxrwx  1 root root    18 Out 10 13:51 5e15f3bd.0 -> SWITCHslcs2011.pem
+-rw-r--r--. 1 root root   707 Nov 26 12:47 5e15f3bd.r0
+lrwxrwxrwx  1 root root    29 Out 10 13:51 5e15f3bd.signing_policy -> SWITCHslcs2011.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 60ef89df.0 -> IGCA.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 60ef89df.namespaces -> IGCA.namespaces
+-rw-r--r--. 1 root root  9607 Nov 26 12:46 60ef89df.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 60ef89df.signing_policy -> IGCA.signing_policy
+lrwxrwxrwx  1 root root     7 Out 10 13:51 617ff41b.0 -> KEK.pem
+lrwxrwxrwx  1 root root    14 Out 10 13:51 617ff41b.namespaces -> KEK.namespaces
+-rw-r--r--. 1 root root 17374 Nov 26 12:46 617ff41b.r0
+lrwxrwxrwx  1 root root    18 Out 10 13:51 617ff41b.signing_policy -> KEK.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 664adba0.0 -> PurdueCA.pem
+lrwxrwxrwx  1 root root    13 Out 10 13:51 664adba0.info -> PurdueCA.info
+-rw-r--r--. 1 root root   673 Nov 26 12:47 664adba0.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 664adba0.signing_policy -> PurdueCA.signing_policy
+lrwxrwxrwx  1 root root    31 Out 10 13:51 67707166.0 -> DigiCertGridTrustCA-Classic.pem
+lrwxrwxrwx  1 root root    38 Out 10 13:51 67707166.namespaces -> DigiCertGridTrustCA-Classic.namespaces
+-rw-r--r--. 1 root root   768 Nov 26 12:46 67707166.r0
+lrwxrwxrwx  1 root root    42 Out 10 13:51 67707166.signing_policy -> DigiCertGridTrustCA-Classic.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 679cff61.0 -> NCSA-tfca.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 679cff61.namespaces -> NCSA-tfca.namespaces
+-rw-r--r--. 1 root root   697 Nov 26 12:47 679cff61.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 679cff61.signing_policy -> NCSA-tfca.signing_policy
+lrwxrwxrwx  1 root root    20 Out 10 13:51 67e8acfa.0 -> PurdueTeragridRA.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 67e8acfa.info -> PurdueTeragridRA.info
+-rw-r--r--. 1 root root   722 Nov 26 12:47 67e8acfa.r0
+lrwxrwxrwx  1 root root    31 Out 10 13:51 67e8acfa.signing_policy -> PurdueTeragridRA.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 684261aa.0 -> TACC-Root.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 684261aa.namespaces -> TACC-Root.namespaces
+-rw-r--r--. 1 root root   669 Nov 26 12:47 684261aa.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 684261aa.signing_policy -> TACC-Root.signing_policy
+lrwxrwxrwx  1 root root    32 Out 10 13:51 69105f4f.0 -> DigiCertAssuredIDRootCA-Root.pem
+lrwxrwxrwx  1 root root    39 Out 10 13:51 69105f4f.namespaces -> DigiCertAssuredIDRootCA-Root.namespaces
+-rw-r--r--. 1 root root   772 Nov 26 12:46 69105f4f.r0
+lrwxrwxrwx  1 root root    43 Out 10 13:51 69105f4f.signing_policy -> DigiCertAssuredIDRootCA-Root.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 6cad3d39.0 -> UniandesCA.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 6cad3d39.namespaces -> UniandesCA.namespaces
+-rw-r--r--. 1 root root  1003 Nov 26 12:47 6cad3d39.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 6cad3d39.signing_policy -> UniandesCA.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 6e3b436b.0 -> AustrianGrid.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 6e3b436b.namespaces -> AustrianGrid.namespaces
+-rw-r--r--. 1 root root 24747 Nov 26 12:44 6e3b436b.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 6e3b436b.signing_policy -> AustrianGrid.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 6fee79b0.0 -> IUCC.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 6fee79b0.namespaces -> IUCC.namespaces
+-rw-r--r--. 1 root root 11260 Nov 26 12:46 6fee79b0.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 6fee79b0.signing_policy -> IUCC.signing_policy
+lrwxrwxrwx  1 root root    17 Out 10 13:51 7022e3c4.0 -> CNRS2-Projets.pem
+lrwxrwxrwx  1 root root    24 Out 10 13:51 7022e3c4.namespaces -> CNRS2-Projets.namespaces
+-rw-r--r--. 1 root root   563 Nov 26 12:45 7022e3c4.r0
+lrwxrwxrwx  1 root root    28 Out 10 13:51 7022e3c4.signing_policy -> CNRS2-Projets.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 709bed08.0 -> BYGCA.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 709bed08.namespaces -> BYGCA.namespaces
+-rw-r--r--. 1 root root   898 Nov 26 12:45 709bed08.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 709bed08.signing_policy -> BYGCA.signing_policy
+lrwxrwxrwx  1 root root    15 Out 10 13:51 712ae4cc.0 -> CESNET-CA-3.pem
+-rw-r--r--. 1 root root   841 Nov 26 12:45 712ae4cc.r0
+lrwxrwxrwx  1 root root    26 Out 10 13:51 712ae4cc.signing_policy -> CESNET-CA-3.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 719a853d.0 -> LACGridCA.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 719a853d.namespaces -> LACGridCA.namespaces
+-rw-r--r--. 1 root root  1243 Nov 25 06:50 719a853d.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 719a853d.signing_policy -> LACGridCA.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 71a89a47.0 -> NCHC.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 71a89a47.namespaces -> NCHC.namespaces
+-rw-r--r--. 1 root root   881 Nov 26 12:47 71a89a47.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 71a89a47.signing_policy -> NCHC.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 722e5071.0 -> KISTI-2007.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 722e5071.namespaces -> KISTI-2007.namespaces
+-rw-r--r--. 1 root root  2851 Nov 26 12:46 722e5071.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 722e5071.signing_policy -> KISTI-2007.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 727146a8.0 -> CNRS2.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 727146a8.namespaces -> CNRS2.namespaces
+-rw-r--r--. 1 root root   555 Nov 26 12:45 727146a8.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 727146a8.signing_policy -> CNRS2.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 742edd45.0 -> CALG.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 742edd45.namespaces -> CALG.namespaces
+-rw-r--r--. 1 root root   876 Nov 26 12:45 742edd45.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 742edd45.signing_policy -> CALG.signing_policy
+lrwxrwxrwx  1 root root    27 Out 10 13:51 74a04bb6.0 -> DigiCertGridRootCA-Root.pem
+lrwxrwxrwx  1 root root    34 Out 10 13:51 74a04bb6.namespaces -> DigiCertGridRootCA-Root.namespaces
+-rw-r--r--. 1 root root   784 Nov 26 12:46 74a04bb6.r0
+lrwxrwxrwx  1 root root    38 Out 10 13:51 74a04bb6.signing_policy -> DigiCertGridRootCA-Root.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 74c6eaeb.0 -> HIAST.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 74c6eaeb.namespaces -> HIAST.namespaces
+-rw-r--r--. 1 root root  1718 Nov 26 12:46 74c6eaeb.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 74c6eaeb.signing_policy -> HIAST.signing_policy
+lrwxrwxrwx  1 root root    26 Out 10 13:51 75680d2e.0 -> AAACertificateServices.pem
+lrwxrwxrwx  1 root root    33 Out 10 13:51 75680d2e.namespaces -> AAACertificateServices.namespaces
+-rw-r--r--. 1 root root   934 Nov 26 12:44 75680d2e.r0
+lrwxrwxrwx  1 root root    37 Out 10 13:51 75680d2e.signing_policy -> AAACertificateServices.signing_policy
+lrwxrwxrwx  1 root root    15 Out 10 13:51 7721d4d3.0 -> PRAGMA-UCSD.pem
+lrwxrwxrwx  1 root root    22 Out 10 13:51 7721d4d3.namespaces -> PRAGMA-UCSD.namespaces
+-rw-r--r--. 1 root root   669 Nov 26 12:47 7721d4d3.r0
+lrwxrwxrwx  1 root root    26 Out 10 13:51 7721d4d3.signing_policy -> PRAGMA-UCSD.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 7b54708e.0 -> MaGrid.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 7b54708e.namespaces -> MaGrid.namespaces
+-rw-r--r--. 1 root root  1583 Nov 26 12:47 7b54708e.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 7b54708e.signing_policy -> MaGrid.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 7cef5492.0 -> APAC.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 7cef5492.namespaces -> APAC.namespaces
+-rw-r--r--. 1 root root 53559 Nov 26 12:44 7cef5492.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 7cef5492.signing_policy -> APAC.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 7d0d064a.0 -> MARGI.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 7d0d064a.namespaces -> MARGI.namespaces
+-rw-r--r--. 1 root root   617 Nov 26 12:47 7d0d064a.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 7d0d064a.signing_policy -> MARGI.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 7ecb2657.0 -> GermanGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 7ecb2657.namespaces -> GermanGrid.namespaces
+-rw-r--r--. 1 root root 29846 Nov 26 12:46 7ecb2657.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 7ecb2657.signing_policy -> GermanGrid.signing_policy
+lrwxrwxrwx  1 root root    23 Out 10 13:51 7ed47087.0 -> UKeScienceRoot-2007.pem
+lrwxrwxrwx  1 root root    30 Out 10 13:51 7ed47087.namespaces -> UKeScienceRoot-2007.namespaces
+-rw-r--r--. 1 root root   609 Nov 26 12:47 7ed47087.r0
+lrwxrwxrwx  1 root root    34 Out 10 13:51 7ed47087.signing_policy -> UKeScienceRoot-2007.signing_policy
+lrwxrwxrwx  1 root root    18 Out 10 13:51 7f4db168.0 -> PSC-Myproxy-CA.pem
+lrwxrwxrwx  1 root root    25 Out 10 13:51 7f4db168.namespaces -> PSC-Myproxy-CA.namespaces
+-rw-r--r--. 1 root root   633 Nov 26 12:47 7f4db168.r0
+lrwxrwxrwx  1 root root    29 Out 10 13:51 7f4db168.signing_policy -> PSC-Myproxy-CA.signing_policy
+lrwxrwxrwx  1 root root    28 Out 10 13:51 82a0ca89.0 -> TERENAeSciencePersonalCA.pem
+-rw-r--r--. 1 root root 13593 Nov 26 12:47 82a0ca89.r0
+lrwxrwxrwx  1 root root    39 Out 10 13:51 82a0ca89.signing_policy -> TERENAeSciencePersonalCA.signing_policy
+lrwxrwxrwx  1 root root    22 Out 10 13:51 82b36fca.0 -> HellasGrid-CA-2006.pem
+-rw-r--r--. 1 root root  4018 Nov 26 12:46 82b36fca.r0
+lrwxrwxrwx  1 root root    33 Out 10 13:51 82b36fca.signing_policy -> HellasGrid-CA-2006.signing_policy
+lrwxrwxrwx  1 root root    28 Out 10 13:51 82c2b224.0 -> DigiCertGridCA-1-Classic.pem
+lrwxrwxrwx  1 root root    35 Out 10 13:51 82c2b224.namespaces -> DigiCertGridCA-1-Classic.namespaces
+-rw-r--r--. 1 root root  1048 Nov 26 12:46 82c2b224.r0
+lrwxrwxrwx  1 root root    39 Out 10 13:51 82c2b224.signing_policy -> DigiCertGridCA-1-Classic.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 83676c6b.0 -> CyGrid.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 83676c6b.namespaces -> CyGrid.namespaces
+-rw-r--r--. 1 root root  3472 Nov 26 12:45 83676c6b.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 83676c6b.signing_policy -> CyGrid.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 86b6fa2c.0 -> CALG.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 86b6fa2c.namespaces -> CALG.namespaces
+-rw-r--r--. 1 root root   876 Nov 26 12:45 86b6fa2c.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 86b6fa2c.signing_policy -> CALG.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 86dacba7.0 -> Grid-Ireland.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 86dacba7.namespaces -> Grid-Ireland.namespaces
+-rw-r--r--. 1 root root  7376 Nov 26 12:46 86dacba7.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 86dacba7.signing_policy -> Grid-Ireland.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 87429ba3.0 -> TRGrid.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 87429ba3.namespaces -> TRGrid.namespaces
+-rw-r--r--. 1 root root  9100 Nov 26 12:47 87429ba3.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 87429ba3.signing_policy -> TRGrid.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 877af676.0 -> UKeScienceCA-2A.pem
+-rw-r--r--. 1 root root   638 Nov 26 12:47 877af676.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 877af676.signing_policy -> UKeScienceCA-2A.signing_policy
+-rw-r--r--  1 root root   798 Jul 10 15:51 89ce5521.0
+-rw-r--r--  1 root root   382 Jul 10 16:07 89ce5521.r0
+-rw-r--r--  1 root root  1265 Jul 10 15:51 89ce5521.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 8a047de1.0 -> NECTEC.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 8a047de1.namespaces -> NECTEC.namespaces
+-rw-r--r--. 1 root root   869 Nov 26 12:47 8a047de1.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 8a047de1.signing_policy -> NECTEC.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 8a661490.0 -> PolishGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 8a661490.namespaces -> PolishGrid.namespaces
+-rw-r--r--. 1 root root  1108 Nov 26 12:47 8a661490.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 8a661490.signing_policy -> PolishGrid.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 9036db5e.0 -> KISTI-2007.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 9036db5e.namespaces -> KISTI-2007.namespaces
+-rw-r--r--. 1 root root  2851 Nov 26 12:46 9036db5e.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 9036db5e.signing_policy -> KISTI-2007.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 94b468c6.0 -> RDIG.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 94b468c6.namespaces -> RDIG.namespaces
+-rw-r--r--. 1 root root  7108 Nov 26 12:47 94b468c6.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 94b468c6.signing_policy -> RDIG.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 95009ddc.0 -> PurdueCA.pem
+lrwxrwxrwx  1 root root    13 Out 10 13:51 95009ddc.info -> PurdueCA.info
+-rw-r--r--. 1 root root   673 Nov 26 12:47 95009ddc.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 95009ddc.signing_policy -> PurdueCA.signing_policy
+lrwxrwxrwx  1 root root    23 Out 10 13:51 98ef0ee5.0 -> UKeScienceRoot-2007.pem
+lrwxrwxrwx  1 root root    30 Out 10 13:51 98ef0ee5.namespaces -> UKeScienceRoot-2007.namespaces
+-rw-r--r--. 1 root root   609 Nov 26 12:47 98ef0ee5.r0
+lrwxrwxrwx  1 root root    34 Out 10 13:51 98ef0ee5.signing_policy -> UKeScienceRoot-2007.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 99f9f5a3.0 -> FNAL-SLCS.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 99f9f5a3.namespaces -> FNAL-SLCS.namespaces
+-rw-r--r--. 1 root root   669 Nov 26 12:46 99f9f5a3.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 99f9f5a3.signing_policy -> FNAL-SLCS.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 9b95bbf2.0 -> NCSA-mics.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 9b95bbf2.namespaces -> NCSA-mics.namespaces
+-rw-r--r--. 1 root root  6044 Nov 26 12:47 9b95bbf2.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 9b95bbf2.signing_policy -> NCSA-mics.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 9c3efee6.0 -> NCSA-tfca.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 9c3efee6.namespaces -> NCSA-tfca.namespaces
+-rw-r--r--. 1 root root   697 Nov 26 12:47 9c3efee6.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 9c3efee6.signing_policy -> NCSA-tfca.signing_policy
+lrwxrwxrwx  1 root root    15 Out 10 13:51 9cd75e87.0 -> ASGCCA-2007.pem
+lrwxrwxrwx  1 root root    22 Out 10 13:51 9cd75e87.namespaces -> ASGCCA-2007.namespaces
+-rw-r--r--. 1 root root 51227 Nov 26 12:44 9cd75e87.r0
+lrwxrwxrwx  1 root root    26 Out 10 13:51 9cd75e87.signing_policy -> ASGCCA-2007.signing_policy
+lrwxrwxrwx  1 root root    26 Out 10 13:51 9d772be7.0 -> TERENA-eScience-SSL-CA.pem
+lrwxrwxrwx  1 root root    33 Out 10 13:51 9d772be7.namespaces -> TERENA-eScience-SSL-CA.namespaces
+-rw-r--r--. 1 root root  1332 Nov 26 12:47 9d772be7.r0
+lrwxrwxrwx  1 root root    37 Out 10 13:51 9d772be7.signing_policy -> TERENA-eScience-SSL-CA.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 9dd23746.0 -> pkIRISGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 9dd23746.namespaces -> pkIRISGrid.namespaces
+-rw-r--r--. 1 root root 26226 Nov 26 12:47 9dd23746.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 9dd23746.signing_policy -> pkIRISGrid.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 9ec3a561.0 -> UTNAAAClient.pem
+-rw-r--r--. 1 root root 42498 Nov 26 12:47 9ec3a561.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 9ec3a561.signing_policy -> UTNAAAClient.signing_policy
+lrwxrwxrwx  1 root root    11 Out 10 13:51 9ff26ea4.0 -> MD-Grid.pem
+lrwxrwxrwx  1 root root    18 Out 10 13:51 9ff26ea4.namespaces -> MD-Grid.namespaces
+-rw-r--r--. 1 root root  2254 Nov 26 12:47 9ff26ea4.r0
+lrwxrwxrwx  1 root root    22 Out 10 13:51 9ff26ea4.signing_policy -> MD-Grid.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 a02131f7.0 -> DFN-SLCS.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 a02131f7.namespaces -> DFN-SLCS.namespaces
+-rw-r--r--. 1 root root   670 Nov 26 12:46 a02131f7.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 a02131f7.signing_policy -> DFN-SLCS.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 a317c467.0 -> AIST.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 a317c467.namespaces -> AIST.namespaces
+-rw-r--r--. 1 root root   767 Nov 26 12:44 a317c467.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 a317c467.signing_policy -> AIST.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 a87d9192.0 -> NAREGI.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 a87d9192.namespaces -> NAREGI.namespaces
+-rw-r--r--. 1 root root  1506 Nov 26 12:47 a87d9192.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 a87d9192.signing_policy -> NAREGI.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 a9082267.0 -> LACGridCA.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 a9082267.namespaces -> LACGridCA.namespaces
+-rw-r--r--. 1 root root  1243 Nov 25 06:50 a9082267.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 a9082267.signing_policy -> LACGridCA.signing_policy
+-rw-r--r--  1 root root    51 Out  2 18:34 AAACertificateServices.crl_url
+-rw-r--r--  1 root root   516 Out  2 18:34 AAACertificateServices.info
+-rw-r--r--  1 root root   834 Out  2 18:34 AAACertificateServices.namespaces
+-rw-r--r--  1 root root  1517 Out  2 18:34 AAACertificateServices.pem
+-rw-r--r--  1 root root   421 Out  2 18:34 AAACertificateServices.signing_policy
+-rw-r--r--  1 root root    52 Out  2 18:34 AddTrust-External-CA-Root.crl_url
+-rw-r--r--  1 root root   869 Out  2 18:34 AddTrust-External-CA-Root.info
+-rw-r--r--  1 root root   849 Out  2 18:34 AddTrust-External-CA-Root.namespaces
+-rw-r--r--  1 root root  1521 Out  2 18:34 AddTrust-External-CA-Root.pem
+-rw-r--r--  1 root root   396 Out  2 18:34 AddTrust-External-CA-Root.signing_policy
+-rw-r--r--  1 root root    52 Out  2 18:34 AEGIS.crl_url
+-rw-r--r--  1 root root   381 Out  2 18:34 AEGIS.info
+-rw-r--r--  1 root root   377 Out  2 18:34 AEGIS.namespaces
+-rw-r--r--  1 root root  1667 Out  2 18:34 AEGIS.pem
+-rw-r--r--  1 root root   201 Out  2 18:34 AEGIS.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 afe55e66.0 -> CyGrid.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 afe55e66.namespaces -> CyGrid.namespaces
+-rw-r--r--. 1 root root  3472 Nov 26 12:45 afe55e66.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 afe55e66.signing_policy -> CyGrid.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 AIST.crl_url
+-rw-r--r--  1 root root   386 Out  2 18:34 AIST.info
+-rw-r--r--  1 root root   432 Out  2 18:34 AIST.namespaces
+-rw-r--r--  1 root root  1257 Out  2 18:34 AIST.pem
+-rw-r--r--  1 root root  1292 Out  2 18:34 AIST.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 ANSPGrid.crl_url
+-rw-r--r--  1 root root   285 Out  2 18:34 ANSPGrid.info
+-rw-r--r--  1 root root   431 Out  2 18:34 ANSPGrid.namespaces
+-rw-r--r--  1 root root  1956 Out  2 18:34 ANSPGrid.pem
+-rw-r--r--  1 root root   178 Out  2 18:34 ANSPGrid.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 APAC.crl_url
+-rw-r--r--  1 root root   265 Out  2 18:34 APAC.info
+-rw-r--r--  1 root root   821 Out  2 18:34 APAC.namespaces
+-rw-r--r--  1 root root  2594 Out  2 18:34 APAC.pem
+-rw-r--r--  1 root root   600 Out  2 18:34 APAC.signing_policy
+-rw-r--r--  1 root root    36 Out  2 18:34 ArmeSFo.crl_url
+-rw-r--r--  1 root root   368 Out  2 18:34 ArmeSFo.info
+-rw-r--r--  1 root root   399 Out  2 18:34 ArmeSFo.namespaces
+-rw-r--r--  1 root root  1196 Out  2 18:34 ArmeSFo.pem
+-rw-r--r--  1 root root   143 Out  2 18:34 ArmeSFo.signing_policy
+-rw-r--r--  1 root root    60 Out  2 18:34 ASGCCA-2007.crl_url
+-rw-r--r--  1 root root   276 Out  2 18:34 ASGCCA-2007.info
+-rw-r--r--  1 root root   428 Out  2 18:34 ASGCCA-2007.namespaces
+-rw-r--r--  1 root root  1667 Out  2 18:34 ASGCCA-2007.pem
+-rw-r--r--  1 root root   245 Out  2 18:34 ASGCCA-2007.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 AustrianGrid.crl_url
+-rw-r--r--  1 root root   413 Out  2 18:34 AustrianGrid.info
+-rw-r--r--  1 root root   494 Out  2 18:34 AustrianGrid.namespaces
+-rw-r--r--  1 root root  1468 Out  2 18:34 AustrianGrid.pem
+-rw-r--r--  1 root root   213 Out  2 18:34 AustrianGrid.signing_policy
+lrwxrwxrwx  1 root root    32 Out 10 13:51 b1159c4c.0 -> DigiCertAssuredIDRootCA-Root.pem
+lrwxrwxrwx  1 root root    39 Out 10 13:51 b1159c4c.namespaces -> DigiCertAssuredIDRootCA-Root.namespaces
+-rw-r--r--. 1 root root   772 Nov 26 12:46 b1159c4c.r0
+lrwxrwxrwx  1 root root    43 Out 10 13:51 b1159c4c.signing_policy -> DigiCertAssuredIDRootCA-Root.signing_policy
+lrwxrwxrwx  1 root root    26 Out 10 13:51 b13cc6df.0 -> UTN-USERFirst-Hardware.pem
+lrwxrwxrwx  1 root root    33 Out 10 13:51 b13cc6df.namespaces -> UTN-USERFirst-Hardware.namespaces
+-rw-r--r--. 1 root root 85759 Nov 26 12:47 b13cc6df.r0
+lrwxrwxrwx  1 root root    37 Out 10 13:51 b13cc6df.signing_policy -> UTN-USERFirst-Hardware.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 b1ac0d46.0 -> BYGCA.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 b1ac0d46.namespaces -> BYGCA.namespaces
+-rw-r--r--. 1 root root   898 Nov 26 12:45 b1ac0d46.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 b1ac0d46.signing_policy -> BYGCA.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 b2771d44.0 -> CNIC.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 b2771d44.namespaces -> CNIC.namespaces
+-rw-r--r--. 1 root root   641 Nov 26 12:45 b2771d44.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 b2771d44.signing_policy -> CNIC.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 b2a87ac7.0 -> CERN-TCA.pem
+-rw-r--r--. 1 root root  6402 Nov 26 12:45 b2a87ac7.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 b2a87ac7.signing_policy -> CERN-TCA.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 b3222f9e.0 -> JUnet-CA.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 b3222f9e.namespaces -> JUnet-CA.namespaces
+-rw-r--r--. 1 root root   958 Nov 26 12:46 b3222f9e.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 b3222f9e.signing_policy -> JUnet-CA.signing_policy
+lrwxrwxrwx  1 root root    15 Out 10 13:51 b459ca48.0 -> ASGCCA-2007.pem
+lrwxrwxrwx  1 root root    22 Out 10 13:51 b459ca48.namespaces -> ASGCCA-2007.namespaces
+-rw-r--r--. 1 root root 51227 Nov 26 12:44 b459ca48.r0
+lrwxrwxrwx  1 root root    26 Out 10 13:51 b459ca48.signing_policy -> ASGCCA-2007.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 b7bcb7b2.0 -> UNLPGrid.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 b7bcb7b2.namespaces -> UNLPGrid.namespaces
+-rw-r--r--. 1 root root   987 Nov 26 12:47 b7bcb7b2.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 b7bcb7b2.signing_policy -> UNLPGrid.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 b874affe.0 -> UGRID.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 b874affe.namespaces -> UGRID.namespaces
+-rw-r--r--. 1 root root  1145 Nov 26 12:47 b874affe.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 b874affe.signing_policy -> UGRID.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 b93d6240.0 -> NERSC-SLCS.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 b93d6240.namespaces -> NERSC-SLCS.namespaces
+-rw-r--r--. 1 root root   661 Nov 26 12:47 b93d6240.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 b93d6240.signing_policy -> NERSC-SLCS.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 ba2f39ca.0 -> IHEP.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 ba2f39ca.namespaces -> IHEP.namespaces
+-rw-r--r--. 1 root root 17240 Nov 26 12:46 ba2f39ca.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 ba2f39ca.signing_policy -> IHEP.signing_policy
+-rw-r--r--  1 root root    37 Out  2 18:34 BalticGrid.crl_url
+-rw-r--r--  1 root root   421 Out  2 18:34 BalticGrid.info
+-rw-r--r--  1 root root   473 Out  2 18:34 BalticGrid.namespaces
+-rw-r--r--  1 root root  1590 Out  2 18:34 BalticGrid.pem
+-rw-r--r--  1 root root   285 Out  2 18:34 BalticGrid.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 bb01cea1.0 -> HIAST.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 bb01cea1.namespaces -> HIAST.namespaces
+-rw-r--r--. 1 root root  1718 Nov 26 12:46 bb01cea1.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 bb01cea1.signing_policy -> HIAST.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 bca425d1.0 -> BalticGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 bca425d1.namespaces -> BalticGrid.namespaces
+-rw-r--r--. 1 root root  3752 Nov 26 12:44 bca425d1.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 bca425d1.signing_policy -> BalticGrid.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 bdf45114.0 -> TACC-MICS.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 bdf45114.namespaces -> TACC-MICS.namespaces
+-rw-r--r--. 1 root root   673 Nov 26 12:47 bdf45114.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 bdf45114.signing_policy -> TACC-MICS.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 be87b272.0 -> LIPCA.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 be87b272.namespaces -> LIPCA.namespaces
+-rw-r--r--. 1 root root  5374 Nov 26 12:47 be87b272.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 be87b272.signing_policy -> LIPCA.signing_policy
+-rw-r--r--  1 root root    37 Out  2 18:34 BEGrid2008.crl_url
+-rw-r--r--  1 root root   357 Out  2 18:34 BEGrid2008.info
+-rw-r--r--  1 root root   437 Out  2 18:34 BEGrid2008.namespaces
+-rw-r--r--  1 root root  1237 Out  2 18:34 BEGrid2008.pem
+-rw-r--r--  1 root root   224 Out  2 18:34 BEGrid2008.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 bfafd1bd.0 -> IUCC.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 bfafd1bd.namespaces -> IUCC.namespaces
+-rw-r--r--. 1 root root 11260 Nov 26 12:46 bfafd1bd.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 bfafd1bd.signing_policy -> IUCC.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 bffbd7d0.0 -> GridCanada.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 bffbd7d0.namespaces -> GridCanada.namespaces
+-rw-r--r--. 1 root root  2371 Nov 26 12:46 bffbd7d0.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 bffbd7d0.signing_policy -> GridCanada.signing_policy
+-rw-r--r--  1 root root    45 Out  2 18:34 BG-ACAD-CA.crl_url
+-rw-r--r--  1 root root   374 Out  2 18:34 BG-ACAD-CA.info
+-rw-r--r--  1 root root   579 Out  2 18:34 BG-ACAD-CA.namespaces
+-rw-r--r--  1 root root  1237 Out  2 18:34 BG-ACAD-CA.pem
+-rw-r--r--  1 root root   302 Out  2 18:34 BG-ACAD-CA.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 BrGrid.crl_url
+-rw-r--r--  1 root root   404 Out  2 18:34 BrGrid.info
+-rw-r--r--  1 root root   527 Out  2 18:34 BrGrid.namespaces
+-rw-r--r--  1 root root  1976 Out  2 18:34 BrGrid.pem
+-rw-r--r--  1 root root   271 Out  2 18:34 BrGrid.signing_policy
+-rw-r--r--  1 root root    32 Out  2 18:34 BYGCA.crl_url
+-rw-r--r--  1 root root   422 Out  2 18:34 BYGCA.info
+-rw-r--r--  1 root root   478 Out  2 18:34 BYGCA.namespaces
+-rw-r--r--  1 root root  1383 Out  2 18:34 BYGCA.pem
+-rw-r--r--  1 root root   379 Out  2 18:34 BYGCA.signing_policy
+lrwxrwxrwx  1 root root     7 Out 10 13:51 c48c63f3.0 -> SDG.pem
+lrwxrwxrwx  1 root root    14 Out 10 13:51 c48c63f3.namespaces -> SDG.namespaces
+-rw-r--r--. 1 root root  1542 Nov 26 12:47 c48c63f3.r0
+lrwxrwxrwx  1 root root    18 Out 10 13:51 c48c63f3.signing_policy -> SDG.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 c5e082db.0 -> UTNAAAClient.pem
+-rw-r--r--. 1 root root 42498 Nov 26 12:47 c5e082db.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 c5e082db.signing_policy -> UTNAAAClient.signing_policy
+lrwxrwxrwx  1 root root    22 Out 10 13:51 c7a3bf7e.0 -> HellasGrid-CA-2006.pem
+-rw-r--r--. 1 root root  4018 Nov 26 12:46 c7a3bf7e.r0
+lrwxrwxrwx  1 root root    33 Out 10 13:51 c7a3bf7e.signing_policy -> HellasGrid-CA-2006.signing_policy
+lrwxrwxrwx  1 root root    28 Out 10 13:51 c7a717ce.0 -> DigiCertGridCA-1-Classic.pem
+lrwxrwxrwx  1 root root    35 Out 10 13:51 c7a717ce.namespaces -> DigiCertGridCA-1-Classic.namespaces
+-rw-r--r--. 1 root root  1048 Nov 26 12:46 c7a717ce.r0
+lrwxrwxrwx  1 root root    39 Out 10 13:51 c7a717ce.signing_policy -> DigiCertGridCA-1-Classic.signing_policy
+-rw-r--r--  1 root root 14795 Out  2 18:36 cacerts_md5sum.txt
+-rw-r--r--  1 root root    34 Out  2 18:34 CALG.crl_url
+-rw-r--r--  1 root root   391 Out  2 18:34 CALG.info
+-rw-r--r--  1 root root   467 Out  2 18:34 CALG.namespaces
+-rw-r--r--  1 root root  1606 Out  2 18:34 CALG.pem
+-rw-r--r--  1 root root   331 Out  2 18:34 CALG.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 cc5645bd.0 -> AEGIS.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 cc5645bd.namespaces -> AEGIS.namespaces
+-rw-r--r--. 1 root root  2267 Nov 26 12:44 cc5645bd.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 cc5645bd.signing_policy -> AEGIS.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 cc800af0.0 -> NIIF.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 cc800af0.namespaces -> NIIF.namespaces
+-rw-r--r--. 1 root root  4321 Nov 26 12:47 cc800af0.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 cc800af0.signing_policy -> NIIF.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 cd536adc.0 -> pkIRISGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 cd536adc.namespaces -> pkIRISGrid.namespaces
+-rw-r--r--. 1 root root 26226 Nov 26 12:47 cd536adc.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 cd536adc.signing_policy -> pkIRISGrid.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 ce33db76.0 -> IRAN-GRID.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 ce33db76.namespaces -> IRAN-GRID.namespaces
+-rw-r--r--. 1 root root  1075 Nov 26 12:46 ce33db76.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 ce33db76.signing_policy -> IRAN-GRID.signing_policy
+-rw-r--r--  1 root root    46 Out  2 18:34 CERN-Root.crl_url
+-rw-r--r--  1 root root   334 Out  2 18:34 CERN-Root.info
+-rw-r--r--  1 root root   566 Out  2 18:34 CERN-Root.namespaces
+-rw-r--r--  1 root root  1350 Out  2 18:34 CERN-Root.pem
+-rw-r--r--  1 root root   284 Out  2 18:34 CERN-Root.signing_policy
+-rw-r--r--  1 root root    72 Out  2 18:34 CERN-TCA.crl_url
+-rw-r--r--  1 root root   379 Out  2 18:34 CERN-TCA.info
+-rw-r--r--  1 root root  2204 Out  2 18:34 CERN-TCA.pem
+-rw-r--r--  1 root root   269 Out  2 18:34 CERN-TCA.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 CESNET-CA-3.crl_url
+-rw-r--r--  1 root root   490 Out  2 18:34 CESNET-CA-3.info
+-rw-r--r--  1 root root  1541 Out  2 18:34 CESNET-CA-3.pem
+-rw-r--r--  1 root root   179 Out  2 18:34 CESNET-CA-3.signing_policy
+-rw-r--r--  1 root root    43 Out  2 18:34 CESNET-CA-Root.crl_url
+-rw-r--r--  1 root root   473 Out  2 18:34 CESNET-CA-Root.info
+-rw-r--r--  1 root root   508 Out  2 18:34 CESNET-CA-Root.namespaces
+-rw-r--r--  1 root root  1464 Out  2 18:34 CESNET-CA-Root.pem
+-rw-r--r--  1 root root   258 Out  2 18:34 CESNET-CA-Root.signing_policy
+-rw-r--r--  1 root root 11717 Out  2 18:37 CHANGES
+-rw-r--r--  1 root root    85 Out  2 18:34 cilogon-silver.crl_url
+-rw-r--r--  1 root root   329 Out  2 18:34 cilogon-silver.info
+-rw-r--r--  1 root root   459 Out  2 18:34 cilogon-silver.namespaces
+-rw-r--r--  1 root root  1391 Out  2 18:34 cilogon-silver.pem
+-rw-r--r--  1 root root   164 Out  2 18:34 cilogon-silver.signing_policy
+-rw-r--r--  1 root root    32 Out  2 18:34 CNIC.crl_url
+-rw-r--r--  1 root root   220 Out  2 18:34 CNIC.info
+-rw-r--r--  1 root root   461 Out  2 18:34 CNIC.namespaces
+-rw-r--r--  1 root root  1793 Out  2 18:34 CNIC.pem
+-rw-r--r--  1 root root   198 Out  2 18:34 CNIC.signing_policy
+-rw-r--r--  1 root root    46 Out  2 18:34 CNRS2.crl_url
+-rw-r--r--  1 root root    49 Out  2 18:34 CNRS2-Grid-FR.crl_url
+-rw-r--r--  1 root root   361 Out  2 18:34 CNRS2-Grid-FR.info
+-rw-r--r--  1 root root   423 Out  2 18:34 CNRS2-Grid-FR.namespaces
+-rw-r--r--  1 root root  1363 Out  2 18:34 CNRS2-Grid-FR.pem
+-rw-r--r--  1 root root   207 Out  2 18:34 CNRS2-Grid-FR.signing_policy
+-rw-r--r--  1 root root   325 Out  2 18:34 CNRS2.info
+-rw-r--r--  1 root root   412 Out  2 18:34 CNRS2.namespaces
+-rw-r--r--  1 root root  1249 Out  2 18:34 CNRS2.pem
+-rw-r--r--  1 root root    54 Out  2 18:34 CNRS2-Projets.crl_url
+-rw-r--r--  1 root root   358 Out  2 18:34 CNRS2-Projets.info
+-rw-r--r--  1 root root   436 Out  2 18:34 CNRS2-Projets.namespaces
+-rw-r--r--  1 root root  1346 Out  2 18:34 CNRS2-Projets.pem
+-rw-r--r--  1 root root   211 Out  2 18:34 CNRS2-Projets.signing_policy
+-rw-r--r--  1 root root   192 Out  2 18:34 CNRS2.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 CyGrid.crl_url
+-rw-r--r--  1 root root   430 Out  2 18:34 CyGrid.info
+-rw-r--r--  1 root root   404 Out  2 18:34 CyGrid.namespaces
+-rw-r--r--  1 root root  1330 Out  2 18:34 CyGrid.pem
+-rw-r--r--  1 root root   138 Out  2 18:34 CyGrid.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 d072977b.0 -> IRAN-GRID.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 d072977b.namespaces -> IRAN-GRID.namespaces
+-rw-r--r--. 1 root root  1075 Nov 26 12:46 d072977b.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 d072977b.signing_policy -> IRAN-GRID.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 d0b701c0.0 -> SWITCHgrid-Root.pem
+lrwxrwxrwx  1 root root    26 Out 10 13:51 d0b701c0.namespaces -> SWITCHgrid-Root.namespaces
+-rw-r--r--. 1 root root   776 Nov 26 12:47 d0b701c0.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 d0b701c0.signing_policy -> SWITCHgrid-Root.signing_policy
+lrwxrwxrwx  1 root root    11 Out 10 13:51 d0c2a341.0 -> ArmeSFo.pem
+lrwxrwxrwx  1 root root    18 Out 10 13:51 d0c2a341.namespaces -> ArmeSFo.namespaces
+-rw-r--r--. 1 root root  1412 Nov 26 12:44 d0c2a341.r0
+lrwxrwxrwx  1 root root    22 Out 10 13:51 d0c2a341.signing_policy -> ArmeSFo.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 d0cd0b27.0 -> NorduGrid.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 d0cd0b27.namespaces -> NorduGrid.namespaces
+-rw-r--r--. 1 root root 11126 Nov 26 12:47 d0cd0b27.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 d0cd0b27.signing_policy -> NorduGrid.signing_policy
+lrwxrwxrwx  1 root root    17 Out 10 13:51 d11f973e.0 -> CNRS2-Grid-FR.pem
+lrwxrwxrwx  1 root root    24 Out 10 13:51 d11f973e.namespaces -> CNRS2-Grid-FR.namespaces
+-rw-r--r--. 1 root root  3184 Nov 26 12:45 d11f973e.r0
+lrwxrwxrwx  1 root root    28 Out 10 13:51 d11f973e.signing_policy -> CNRS2-Grid-FR.signing_policy
+lrwxrwxrwx  1 root root     9 Out 10 13:51 d1b603c3.0 -> ESnet.pem
+lrwxrwxrwx  1 root root    16 Out 10 13:51 d1b603c3.namespaces -> ESnet.namespaces
+-rw-r--r--. 1 root root  1353 Nov 26 12:46 d1b603c3.r0
+lrwxrwxrwx  1 root root    20 Out 10 13:51 d1b603c3.signing_policy -> ESnet.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 d254cc30.0 -> CERN-Root.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 d254cc30.namespaces -> CERN-Root.namespaces
+-rw-r--r--. 1 root root  1015 Nov 26 12:45 d254cc30.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 d254cc30.signing_policy -> CERN-Root.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 d33760ec.0 -> MYIFAM.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 d33760ec.namespaces -> MYIFAM.namespaces
+-rw-r--r--. 1 root root  1368 Nov 26 12:47 d33760ec.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 d33760ec.signing_policy -> MYIFAM.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 d3619baa.0 -> IHEP.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 d3619baa.namespaces -> IHEP.namespaces
+-rw-r--r--. 1 root root 17240 Nov 26 12:46 d3619baa.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 d3619baa.signing_policy -> IHEP.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 d38446c5.0 -> ULAGrid-CA-2008.pem
+lrwxrwxrwx  1 root root    26 Out 10 13:51 d38446c5.namespaces -> ULAGrid-CA-2008.namespaces
+-rw-r--r--. 1 root root  1998 Nov 26 12:47 d38446c5.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 d38446c5.signing_policy -> ULAGrid-CA-2008.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 d492aff2.0 -> NCSA-slcs.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 d492aff2.namespaces -> NCSA-slcs.namespaces
+-rw-r--r--. 1 root root   811 Nov 26 12:47 d492aff2.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 d492aff2.signing_policy -> NCSA-slcs.signing_policy
+lrwxrwxrwx  1 root root    15 Out 10 13:51 d71343e8.0 -> UNAMgrid-ca.pem
+lrwxrwxrwx  1 root root    22 Out 10 13:51 d71343e8.namespaces -> UNAMgrid-ca.namespaces
+-rw-r--r--. 1 root root  2730 Nov 26 12:47 d71343e8.r0
+lrwxrwxrwx  1 root root    26 Out 10 13:51 d71343e8.signing_policy -> UNAMgrid-ca.signing_policy
+lrwxrwxrwx  1 root root    28 Out 10 13:51 d800b164.0 -> SWITCH-QuoVadis-Grid-ICA.pem
+-rw-r--r--. 1 root root  8287 Nov 26 12:47 d800b164.r0
+lrwxrwxrwx  1 root root    39 Out 10 13:51 d800b164.signing_policy -> SWITCH-QuoVadis-Grid-ICA.signing_policy
+lrwxrwxrwx  1 root root    20 Out 10 13:51 d87163a8.0 -> ncsa-gridshib-ca.pem
+lrwxrwxrwx  1 root root    27 Out 10 13:51 d87163a8.namespaces -> ncsa-gridshib-ca.namespaces
+-rw-r--r--. 1 root root   694 Nov 26 12:47 d87163a8.r0
+lrwxrwxrwx  1 root root    31 Out 10 13:51 d87163a8.signing_policy -> ncsa-gridshib-ca.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 da75f6a8.0 -> IGCA.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 da75f6a8.namespaces -> IGCA.namespaces
+-rw-r--r--. 1 root root  9607 Nov 26 12:46 da75f6a8.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 da75f6a8.signing_policy -> IGCA.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 dc75341f.0 -> NICS-MyProxy.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 dc75341f.namespaces -> NICS-MyProxy.namespaces
+-rw-r--r--. 1 root root   776 Nov 26 12:47 dc75341f.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 dc75341f.signing_policy -> NICS-MyProxy.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 dd4b34ea.0 -> GermanGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 dd4b34ea.namespaces -> GermanGrid.namespaces
+-rw-r--r--. 1 root root 29846 Nov 26 12:46 dd4b34ea.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 dd4b34ea.signing_policy -> GermanGrid.signing_policy
+lrwxrwxrwx  1 root root    12 Out 10 13:51 dd51b42a.0 -> SEE-GRID.pem
+lrwxrwxrwx  1 root root    19 Out 10 13:51 dd51b42a.namespaces -> SEE-GRID.namespaces
+-rw-r--r--. 1 root root  4789 Nov 26 12:47 dd51b42a.r0
+lrwxrwxrwx  1 root root    23 Out 10 13:51 dd51b42a.signing_policy -> SEE-GRID.signing_policy
+lrwxrwxrwx  1 root root    10 Out 10 13:51 dfb080e4.0 -> NIKHEF.pem
+lrwxrwxrwx  1 root root    17 Out 10 13:51 dfb080e4.namespaces -> NIKHEF.namespaces
+-rw-r--r--. 1 root root  5325 Nov 26 12:47 dfb080e4.r0
+lrwxrwxrwx  1 root root    21 Out 10 13:51 dfb080e4.signing_policy -> NIKHEF.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 dfcb9731.0 -> NICS-MyProxy.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 dfcb9731.namespaces -> NICS-MyProxy.namespaces
+-rw-r--r--. 1 root root   776 Nov 26 12:47 dfcb9731.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 dfcb9731.signing_policy -> NICS-MyProxy.signing_policy
+-rw-r--r--  1 root root    54 Out  2 18:34 DFN-GridGermany-Root.crl_url
+-rw-r--r--  1 root root   494 Out  2 18:34 DFN-GridGermany-Root.info
+-rw-r--r--  1 root root   783 Out  2 18:34 DFN-GridGermany-Root.namespaces
+-rw-r--r--  1 root root  1294 Out  2 18:34 DFN-GridGermany-Root.pem
+-rw-r--r--  1 root root   522 Out  2 18:34 DFN-GridGermany-Root.signing_policy
+-rw-r--r--  1 root root    49 Out  2 18:34 DFN-SLCS.crl_url
+-rw-r--r--  1 root root   388 Out  2 18:34 DFN-SLCS.info
+-rw-r--r--  1 root root   432 Out  2 18:34 DFN-SLCS.namespaces
+-rw-r--r--  1 root root  1257 Out  2 18:34 DFN-SLCS.pem
+-rw-r--r--  1 root root   287 Out  2 18:34 DFN-SLCS.signing_policy
+-rw-r--r--  1 root root   106 Out  2 18:34 DigiCertAssuredIDRootCA-Root.crl_url
+-rw-r--r--  1 root root   497 Out  2 18:34 DigiCertAssuredIDRootCA-Root.info
+-rw-r--r--  1 root root   543 Out  2 18:34 DigiCertAssuredIDRootCA-Root.namespaces
+-rw-r--r--  1 root root  1350 Out  2 18:34 DigiCertAssuredIDRootCA-Root.pem
+-rw-r--r--  1 root root   281 Out  2 18:34 DigiCertAssuredIDRootCA-Root.signing_policy
+-rw-r--r--  1 root root    92 Out  2 18:34 DigiCertGridCA-1-Classic.crl_url
+-rw-r--r--  1 root root   498 Out  2 18:34 DigiCertGridCA-1-Classic.info
+-rw-r--r--  1 root root   750 Out  2 18:34 DigiCertGridCA-1-Classic.namespaces
+-rw-r--r--  1 root root  1700 Out  2 18:34 DigiCertGridCA-1-Classic.pem
+-rw-r--r--  1 root root   254 Out  2 18:34 DigiCertGridCA-1-Classic.signing_policy
+-rw-r--r--  1 root root    96 Out  2 18:34 DigiCertGridRootCA-Root.crl_url
+-rw-r--r--  1 root root   471 Out  2 18:34 DigiCertGridRootCA-Root.info
+-rw-r--r--  1 root root   521 Out  2 18:34 DigiCertGridRootCA-Root.namespaces
+-rw-r--r--  1 root root  1367 Out  2 18:34 DigiCertGridRootCA-Root.pem
+-rw-r--r--  1 root root   243 Out  2 18:34 DigiCertGridRootCA-Root.signing_policy
+-rw-r--r--  1 root root    98 Out  2 18:34 DigiCertGridTrustCA-Classic.crl_url
+-rw-r--r--  1 root root   521 Out  2 18:34 DigiCertGridTrustCA-Classic.info
+-rw-r--r--  1 root root   778 Out  2 18:34 DigiCertGridTrustCA-Classic.namespaces
+-rw-r--r--  1 root root  2317 Out  2 18:34 DigiCertGridTrustCA-Classic.pem
+-rw-r--r--  1 root root   263 Out  2 18:34 DigiCertGridTrustCA-Classic.signing_policy
+-rw-r--r--  1 root root   107 Out  2 18:34 DOEGrids.crl_url
+-rw-r--r--  1 root root   457 Out  2 18:34 DOEGrids.info
+-rw-r--r--  1 root root   833 Out  2 18:34 DOEGrids.namespaces
+-rw-r--r--  1 root root  1610 Out  2 18:34 DOEGrids.pem
+-rw-r--r--  1 root root  2316 Out  2 18:34 DOEGrids.signing_policy
+-rw-r--r--  1 root root    44 Out  2 18:34 DZeScience.crl_url
+-rw-r--r--  1 root root   464 Out  2 18:34 DZeScience.info
+-rw-r--r--  1 root root   426 Out  2 18:34 DZeScience.namespaces
+-rw-r--r--  1 root root  3849 Out  2 18:34 DZeScience.pem
+-rw-r--r--  1 root root   310 Out  2 18:34 DZeScience.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 e13e0fcf.0 -> SlovakGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 e13e0fcf.namespaces -> SlovakGrid.namespaces
+-rw-r--r--. 1 root root  2136 Nov 26 12:47 e13e0fcf.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 e13e0fcf.signing_policy -> SlovakGrid.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 e2023333.0 -> CNIC.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 e2023333.namespaces -> CNIC.namespaces
+-rw-r--r--. 1 root root   641 Nov 26 12:45 e2023333.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 e2023333.signing_policy -> CNIC.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 e21dc0c0.0 -> SlovakGrid.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 e21dc0c0.namespaces -> SlovakGrid.namespaces
+-rw-r--r--. 1 root root  2136 Nov 26 12:47 e21dc0c0.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 e21dc0c0.signing_policy -> SlovakGrid.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 e580c4f9.0 -> INFN-CA-2006.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 e580c4f9.namespaces -> INFN-CA-2006.namespaces
+-rw-r--r--. 1 root root 31732 Nov 26 12:46 e580c4f9.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 e580c4f9.signing_policy -> INFN-CA-2006.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 e5cc84c2.0 -> TACC-Classic.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 e5cc84c2.namespaces -> TACC-Classic.namespaces
+-rw-r--r--. 1 root root   982 Nov 26 12:47 e5cc84c2.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 e5cc84c2.signing_policy -> TACC-Classic.signing_policy
+lrwxrwxrwx  1 root root    28 Out 10 13:51 e72045ce.0 -> SWITCH-QuoVadis-Grid-ICA.pem
+-rw-r--r--. 1 root root  8287 Nov 26 12:47 e72045ce.r0
+lrwxrwxrwx  1 root root    39 Out 10 13:51 e72045ce.signing_policy -> SWITCH-QuoVadis-Grid-ICA.signing_policy
+lrwxrwxrwx  1 root root    20 Out 10 13:51 e8ac4b61.0 -> ncsa-gridshib-ca.pem
+lrwxrwxrwx  1 root root    27 Out 10 13:51 e8ac4b61.namespaces -> ncsa-gridshib-ca.namespaces
+-rw-r--r--. 1 root root   694 Nov 26 12:47 e8ac4b61.r0
+lrwxrwxrwx  1 root root    31 Out 10 13:51 e8ac4b61.signing_policy -> ncsa-gridshib-ca.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 e8d818e6.0 -> BEGrid2008.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 e8d818e6.namespaces -> BEGrid2008.namespaces
+-rw-r--r--. 1 root root  1092 Nov 26 12:44 e8d818e6.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 e8d818e6.signing_policy -> BEGrid2008.signing_policy
+lrwxrwxrwx  1 root root    18 Out 10 13:51 edca0fc0.0 -> CESNET-CA-Root.pem
+lrwxrwxrwx  1 root root    25 Out 10 13:51 edca0fc0.namespaces -> CESNET-CA-Root.namespaces
+-rw-r--r--. 1 root root   849 Nov 26 12:45 edca0fc0.r0
+lrwxrwxrwx  1 root root    29 Out 10 13:51 edca0fc0.signing_policy -> CESNET-CA-Root.signing_policy
+lrwxrwxrwx  1 root root    26 Out 10 13:51 ee64a828.0 -> AAACertificateServices.pem
+lrwxrwxrwx  1 root root    33 Out 10 13:51 ee64a828.namespaces -> AAACertificateServices.namespaces
+-rw-r--r--. 1 root root   934 Nov 26 12:44 ee64a828.r0
+lrwxrwxrwx  1 root root    37 Out 10 13:51 ee64a828.signing_policy -> AAACertificateServices.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 ef300431.0 -> TACC-Root.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 ef300431.namespaces -> TACC-Root.namespaces
+-rw-r--r--. 1 root root   669 Nov 26 12:47 ef300431.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 ef300431.signing_policy -> TACC-Root.signing_policy
+-rw-r--r--  1 root root    41 Out  2 18:34 EG-GRID.crl_url
+-rw-r--r--  1 root root   437 Out  2 18:34 EG-GRID.info
+-rw-r--r--  1 root root   667 Out  2 18:34 EG-GRID.namespaces
+-rw-r--r--  1 root root  3414 Out  2 18:34 EG-GRID.pem
+-rw-r--r--  1 root root   383 Out  2 18:34 EG-GRID.signing_policy
+-rw-r--r--  1 root root   102 Out  2 18:34 ESnet.crl_url
+-rw-r--r--  1 root root   438 Out  2 18:34 ESnet.info
+-rw-r--r--  1 root root   621 Out  2 18:34 ESnet.namespaces
+-rw-r--r--  1 root root  1448 Out  2 18:34 ESnet.pem
+-rw-r--r--  1 root root  2238 Out  2 18:34 ESnet.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 f2e89fe3.0 -> NCSA-slcs.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 f2e89fe3.namespaces -> NCSA-slcs.namespaces
+-rw-r--r--. 1 root root   811 Nov 26 12:47 f2e89fe3.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 f2e89fe3.signing_policy -> NCSA-slcs.signing_policy
+lrwxrwxrwx  1 root root    18 Out 10 13:51 f4401b90.0 -> CESNET-CA-Root.pem
+lrwxrwxrwx  1 root root    25 Out 10 13:51 f4401b90.namespaces -> CESNET-CA-Root.namespaces
+-rw-r--r--. 1 root root   849 Nov 26 12:45 f4401b90.r0
+lrwxrwxrwx  1 root root    29 Out 10 13:51 f4401b90.signing_policy -> CESNET-CA-Root.signing_policy
+lrwxrwxrwx  1 root root    13 Out 10 13:51 f57f9e36.0 -> FNAL-SLCS.pem
+lrwxrwxrwx  1 root root    20 Out 10 13:51 f57f9e36.namespaces -> FNAL-SLCS.namespaces
+-rw-r--r--. 1 root root   669 Nov 26 12:46 f57f9e36.r0
+lrwxrwxrwx  1 root root    24 Out 10 13:51 f57f9e36.signing_policy -> FNAL-SLCS.signing_policy
+lrwxrwxrwx  1 root root    16 Out 10 13:51 f5ead794.0 -> PK-Grid-2007.pem
+lrwxrwxrwx  1 root root    23 Out 10 13:51 f5ead794.namespaces -> PK-Grid-2007.namespaces
+-rw-r--r--. 1 root root  1985 Nov 26 12:47 f5ead794.r0
+lrwxrwxrwx  1 root root    27 Out 10 13:51 f5ead794.signing_policy -> PK-Grid-2007.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 fc1898ec.0 -> UniandesCA.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 fc1898ec.namespaces -> UniandesCA.namespaces
+-rw-r--r--. 1 root root  1003 Nov 26 12:47 fc1898ec.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 fc1898ec.signing_policy -> UniandesCA.signing_policy
+lrwxrwxrwx  1 root root    14 Out 10 13:51 fdf90b95.0 -> DZeScience.pem
+lrwxrwxrwx  1 root root    21 Out 10 13:51 fdf90b95.namespaces -> DZeScience.namespaces
+-rw-r--r--. 1 root root  2019 Nov 26 12:46 fdf90b95.r0
+lrwxrwxrwx  1 root root    25 Out 10 13:51 fdf90b95.signing_policy -> DZeScience.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 ff430c7f.0 -> SWITCHgrid-Root.pem
+lrwxrwxrwx  1 root root    26 Out 10 13:51 ff430c7f.namespaces -> SWITCHgrid-Root.namespaces
+-rw-r--r--. 1 root root   776 Nov 26 12:47 ff430c7f.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 ff430c7f.signing_policy -> SWITCHgrid-Root.signing_policy
+lrwxrwxrwx  1 root root    26 Out 10 13:51 ff783690.0 -> UTN-USERFirst-Hardware.pem
+lrwxrwxrwx  1 root root    33 Out 10 13:51 ff783690.namespaces -> UTN-USERFirst-Hardware.namespaces
+-rw-r--r--. 1 root root 85759 Nov 26 12:47 ff783690.r0
+lrwxrwxrwx  1 root root    37 Out 10 13:51 ff783690.signing_policy -> UTN-USERFirst-Hardware.signing_policy
+lrwxrwxrwx  1 root root     8 Out 10 13:51 ff94d436.0 -> SRCE.pem
+lrwxrwxrwx  1 root root    15 Out 10 13:51 ff94d436.namespaces -> SRCE.namespaces
+-rw-r--r--. 1 root root  2730 Nov 26 12:47 ff94d436.r0
+lrwxrwxrwx  1 root root    19 Out 10 13:51 ff94d436.signing_policy -> SRCE.signing_policy
+lrwxrwxrwx  1 root root    19 Out 10 13:51 ffc3d59b.0 -> UKeScienceCA-2B.pem
+-rw-r--r--. 1 root root 56858 Nov 26 12:47 ffc3d59b.r0
+lrwxrwxrwx  1 root root    30 Out 10 13:51 ffc3d59b.signing_policy -> UKeScienceCA-2B.signing_policy
+-rw-r--r--  1 root root    41 Out  2 18:34 FNAL-SLCS.crl_url
+-rw-r--r--  1 root root   389 Out  2 18:34 FNAL-SLCS.info
+-rw-r--r--  1 root root   651 Out  2 18:34 FNAL-SLCS.namespaces
+-rw-r--r--  1 root root  1395 Out  2 18:34 FNAL-SLCS.pem
+-rw-r--r--  1 root root   409 Out  2 18:34 FNAL-SLCS.signing_policy
+-rw-r--r--  1 root root    37 Out  2 18:34 GermanGrid.crl_url
+-rw-r--r--  1 root root   395 Out  2 18:34 GermanGrid.info
+-rw-r--r--  1 root root   498 Out  2 18:34 GermanGrid.namespaces
+-rw-r--r--  1 root root  1631 Out  2 18:34 GermanGrid.pem
+-rw-r--r--  1 root root   267 Out  2 18:34 GermanGrid.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 GridCanada.crl_url
+-rw-r--r--  1 root root   408 Out  2 18:34 GridCanada.info
+-rw-r--r--  1 root root   455 Out  2 18:34 GridCanada.namespaces
+-rw-r--r--  1 root root  1521 Out  2 18:34 GridCanada.pem
+-rw-r--r--  1 root root   248 Out  2 18:34 GridCanada.signing_policy
+-rw-r--r--  1 root root    52 Out  2 18:34 Grid-Ireland.crl_url
+-rw-r--r--  1 root root   424 Out  2 18:34 Grid-Ireland.info
+-rw-r--r--  1 root root   476 Out  2 18:34 Grid-Ireland.namespaces
+-rw-r--r--  1 root root  1387 Out  2 18:34 Grid-Ireland.pem
+-rw-r--r--  1 root root   190 Out  2 18:34 Grid-Ireland.signing_policy
+-rw-r--r--  1 root root    56 Out  2 18:34 HellasGrid-CA-2006.crl_url
+-rw-r--r--  1 root root   611 Out  2 18:34 HellasGrid-CA-2006.info
+-rw-r--r--  1 root root  1627 Out  2 18:34 HellasGrid-CA-2006.pem
+-rw-r--r--  1 root root   267 Out  2 18:34 HellasGrid-CA-2006.signing_policy
+-rw-r--r--  1 root root    61 Out  2 18:34 HellasGrid-Root.crl_url
+-rw-r--r--  1 root root   599 Out  2 18:34 HellasGrid-Root.info
+-rw-r--r--  1 root root   611 Out  2 18:34 HellasGrid-Root.namespaces
+-rw-r--r--  1 root root  1505 Out  2 18:34 HellasGrid-Root.pem
+-rw-r--r--  1 root root   326 Out  2 18:34 HellasGrid-Root.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:34 HIAST.crl_url
+-rw-r--r--  1 root root   466 Out  2 18:34 HIAST.info
+-rw-r--r--  1 root root   332 Out  2 18:34 HIAST.namespaces
+-rw-r--r--  1 root root  3374 Out  2 18:34 HIAST.pem
+-rw-r--r--  1 root root   257 Out  2 18:34 HIAST.signing_policy
+-rw-r--r--  1 root root    36 Out  2 18:34 HKU.crl_url
+-rw-r--r--  1 root root   223 Out  2 18:34 HKU.info
+-rw-r--r--  1 root root   435 Out  2 18:34 HKU.namespaces
+-rw-r--r--  1 root root  1371 Out  2 18:34 HKU.pem
+-rw-r--r--  1 root root   169 Out  2 18:34 HKU.signing_policy
+-rw-r--r--  1 root root    39 Out  2 18:34 IGCA.crl_url
+-rw-r--r--  1 root root   364 Out  2 18:34 IGCA.info
+-rw-r--r--  1 root root   484 Out  2 18:34 IGCA.namespaces
+-rw-r--r--  1 root root  1411 Out  2 18:34 IGCA.pem
+-rw-r--r--  1 root root   186 Out  2 18:34 IGCA.signing_policy
+-rw-r--r--  1 root root    35 Out  2 18:34 IHEP.crl_url
+-rw-r--r--  1 root root   416 Out  2 18:34 IHEP.info
+-rw-r--r--  1 root root   436 Out  2 18:34 IHEP.namespaces
+-rw-r--r--  1 root root  1598 Out  2 18:34 IHEP.pem
+-rw-r--r--  1 root root   393 Out  2 18:34 IHEP.signing_policy
+-rw-r--r--  1 root root 16550 Out  2 18:35 INDEX.html
+-rw-r--r--  1 root root 11841 Out  2 18:35 INDEX.txt
+-rw-r--r--  1 root root    45 Out  2 18:34 INFN-CA-2006.crl_url
+-rw-r--r--  1 root root   415 Out  2 18:34 INFN-CA-2006.info
+-rw-r--r--  1 root root   431 Out  2 18:34 INFN-CA-2006.namespaces
+-rw-r--r--  1 root root  1257 Out  2 18:34 INFN-CA-2006.pem
+-rw-r--r--  1 root root   226 Out  2 18:34 INFN-CA-2006.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 IRAN-GRID.crl_url
+-rw-r--r--  1 root root   417 Out  2 18:34 IRAN-GRID.info
+-rw-r--r--  1 root root   459 Out  2 18:34 IRAN-GRID.namespaces
+-rw-r--r--  1 root root  1285 Out  2 18:34 IRAN-GRID.pem
+-rw-r--r--  1 root root   227 Out  2 18:34 IRAN-GRID.signing_policy
+-rw-r--r--  1 root root    43 Out  2 18:34 IUCC.crl_url
+-rw-r--r--  1 root root   422 Out  2 18:34 IUCC.info
+-rw-r--r--  1 root root   429 Out  2 18:34 IUCC.namespaces
+-rw-r--r--  1 root root  1903 Out  2 18:34 IUCC.pem
+-rw-r--r--  1 root root   414 Out  2 18:34 IUCC.signing_policy
+-rw-r--r--  1 root root    45 Out  2 18:34 JUnet-CA.crl_url
+-rw-r--r--  1 root root   479 Out  2 18:34 JUnet-CA.info
+-rw-r--r--  1 root root   321 Out  2 18:34 JUnet-CA.namespaces
+-rw-r--r--  1 root root  1350 Out  2 18:34 JUnet-CA.pem
+-rw-r--r--  1 root root   187 Out  2 18:34 JUnet-CA.signing_policy
+-rw-r--r--  1 root root    44 Out  2 18:34 KEK.crl_url
+-rw-r--r--  1 root root   239 Out  2 18:34 KEK.info
+-rw-r--r--  1 root root   464 Out  2 18:34 KEK.namespaces
+-rw-r--r--  1 root root  1273 Out  2 18:34 KEK.pem
+-rw-r--r--  1 root root  1299 Out  2 18:34 KEK.signing_policy
+-rw-r--r--  1 root root    44 Out  2 18:34 KISTI-2007.crl_url
+-rw-r--r--  1 root root   249 Out  2 18:34 KISTI-2007.info
+-rw-r--r--  1 root root   446 Out  2 18:34 KISTI-2007.namespaces
+-rw-r--r--  1 root root  1460 Out  2 18:34 KISTI-2007.pem
+-rw-r--r--  1 root root   168 Out  2 18:34 KISTI-2007.signing_policy
+-rw-r--r--  1 root root    41 Out  2 18:34 LACGridCA.crl_url
+-rw-r--r--  1 root root   368 Out  2 18:34 LACGridCA.info
+-rw-r--r--  1 root root   548 Out  2 18:34 LACGridCA.namespaces
+-rw-r--r--  1 root root  1627 Out  2 18:34 LACGridCA.pem
+-rw-r--r--  1 root root   290 Out  2 18:34 LACGridCA.signing_policy
+-rw-r--r--  1 root root    29 Out  2 18:34 LIPCA.crl_url
+-rw-r--r--  1 root root   341 Out  2 18:34 LIPCA.info
+-rw-r--r--  1 root root   423 Out  2 18:34 LIPCA.namespaces
+-rw-r--r--  1 root root  1192 Out  2 18:34 LIPCA.pem
+-rw-r--r--  1 root root   198 Out  2 18:34 LIPCA.signing_policy
+-rw-r--r--  1 root root    38 Out  2 18:34 MaGrid.crl_url
+-rw-r--r--  1 root root   348 Out  2 18:34 MaGrid.info
+-rw-r--r--  1 root root   398 Out  2 18:34 MaGrid.namespaces
+-rw-r--r--  1 root root  1619 Out  2 18:34 MaGrid.pem
+-rw-r--r--  1 root root   249 Out  2 18:34 MaGrid.signing_policy
+-rw-r--r--  1 root root    47 Out  2 18:34 MARGI.crl_url
+-rw-r--r--  1 root root   375 Out  2 18:34 MARGI.info
+-rw-r--r--  1 root root   423 Out  2 18:34 MARGI.namespaces
+-rw-r--r--  1 root root  1298 Out  2 18:34 MARGI.pem
+-rw-r--r--  1 root root   244 Out  2 18:34 MARGI.signing_policy
+-rw-r--r--  1 root root    35 Out  2 18:34 MD-Grid.crl_url
+-rw-r--r--  1 root root   362 Out  2 18:34 MD-Grid.info
+-rw-r--r--  1 root root   480 Out  2 18:34 MD-Grid.namespaces
+-rw-r--r--  1 root root  2143 Out  2 18:34 MD-Grid.pem
+-rw-r--r--  1 root root   251 Out  2 18:34 MD-Grid.signing_policy
+-rw-r--r--  1 root root    39 Out  2 18:34 MREN-CA.crl_url
+-rw-r--r--  1 root root   339 Out  2 18:34 MREN-CA.info
+-rw-r--r--  1 root root   414 Out  2 18:34 MREN-CA.namespaces
+-rw-r--r--  1 root root  1346 Out  2 18:34 MREN-CA.pem
+-rw-r--r--  1 root root   144 Out  2 18:34 MREN-CA.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 MYIFAM.crl_url
+-rw-r--r--  1 root root   349 Out  2 18:34 MYIFAM.info
+-rw-r--r--  1 root root   478 Out  2 18:34 MYIFAM.namespaces
+-rw-r--r--  1 root root  1891 Out  2 18:34 MYIFAM.pem
+-rw-r--r--  1 root root   284 Out  2 18:34 MYIFAM.signing_policy
+-rw-r--r--  1 root root    38 Out  2 18:34 NAREGI.crl_url
+-rw-r--r--  1 root root   238 Out  2 18:34 NAREGI.info
+-rw-r--r--  1 root root   518 Out  2 18:34 NAREGI.namespaces
+-rw-r--r--  1 root root  1306 Out  2 18:34 NAREGI.pem
+-rw-r--r--  1 root root  1393 Out  2 18:34 NAREGI.signing_policy
+-rw-r--r--  1 root root    49 Out  2 18:34 NCHC.crl_url
+-rw-r--r--  1 root root   378 Out  2 18:34 NCHC.info
+-rw-r--r--  1 root root   428 Out  2 18:34 NCHC.namespaces
+-rw-r--r--  1 root root  1436 Out  2 18:34 NCHC.pem
+-rw-r--r--  1 root root   128 Out  2 18:34 NCHC.signing_policy
+-rw-r--r--  1 root root    37 Out  2 18:34 ncsa-gridshib-ca.crl_url
+-rw-r--r--  1 root root   375 Out  2 18:34 ncsa-gridshib-ca.info
+-rw-r--r--  1 root root   577 Out  2 18:34 ncsa-gridshib-ca.namespaces
+-rw-r--r--  1 root root  1399 Out  2 18:34 ncsa-gridshib-ca.pem
+-rw-r--r--  1 root root   418 Out  2 18:34 ncsa-gridshib-ca.signing_policy
+-rw-r--r--  1 root root    36 Out  2 18:34 NCSA-mics.crl_url
+-rw-r--r--  1 root root   360 Out  2 18:34 NCSA-mics.info
+-rw-r--r--  1 root root   795 Out  2 18:34 NCSA-mics.namespaces
+-rw-r--r--  1 root root  1379 Out  2 18:34 NCSA-mics.pem
+-rw-r--r--  1 root root   320 Out  2 18:34 NCSA-mics.signing_policy
+-rw-r--r--  1 root root    36 Out  2 18:34 NCSA-slcs.crl_url
+-rw-r--r--  1 root root   360 Out  2 18:34 NCSA-slcs.info
+-rw-r--r--  1 root root   592 Out  2 18:34 NCSA-slcs.namespaces
+-rw-r--r--  1 root root  1387 Out  2 18:34 NCSA-slcs.pem
+-rw-r--r--  1 root root   238 Out  2 18:34 NCSA-slcs.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 NCSA-tfca.crl_url
+-rw-r--r--  1 root root   319 Out  2 18:34 NCSA-tfca.info
+-rw-r--r--  1 root root   575 Out  2 18:34 NCSA-tfca.namespaces
+-rw-r--r--  1 root root  1407 Out  2 18:34 NCSA-tfca.pem
+-rw-r--r--  1 root root   242 Out  2 18:34 NCSA-tfca.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:34 NECTEC.crl_url
+-rw-r--r--  1 root root   264 Out  2 18:34 NECTEC.info
+-rw-r--r--  1 root root   435 Out  2 18:34 NECTEC.namespaces
+-rw-r--r--  1 root root  1367 Out  2 18:34 NECTEC.pem
+-rw-r--r--  1 root root  1259 Out  2 18:34 NECTEC.signing_policy
+-rw-r--r--  1 root root    48 Out  2 18:34 NERSC-SLCS.crl_url
+-rw-r--r--  1 root root   419 Out  2 18:34 NERSC-SLCS.info
+-rw-r--r--  1 root root   483 Out  2 18:34 NERSC-SLCS.namespaces
+-rw-r--r--  1 root root  1415 Out  2 18:34 NERSC-SLCS.pem
+-rw-r--r--  1 root root  1495 Out  2 18:34 NERSC-SLCS.signing_policy
+-rw-r--r--  1 root root    81 Out  2 18:34 NICS-MyProxy.crl_url
+-rw-r--r--  1 root root   535 Out  2 18:34 NICS-MyProxy.info
+-rw-r--r--  1 root root   571 Out  2 18:34 NICS-MyProxy.namespaces
+-rw-r--r--  1 root root  1448 Out  2 18:34 NICS-MyProxy.pem
+-rw-r--r--  1 root root   257 Out  2 18:34 NICS-MyProxy.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 NIIF.crl_url
+-rw-r--r--  1 root root   423 Out  2 18:34 NIIF.info
+-rw-r--r--  1 root root   578 Out  2 18:34 NIIF.namespaces
+-rw-r--r--  1 root root  1310 Out  2 18:34 NIIF.pem
+-rw-r--r--  1 root root   419 Out  2 18:34 NIIF.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 NIKHEF.crl_url
+-rw-r--r--  1 root root   442 Out  2 18:34 NIKHEF.info
+-rw-r--r--  1 root root   630 Out  2 18:34 NIKHEF.namespaces
+-rw-r--r--  1 root root  1704 Out  2 18:34 NIKHEF.pem
+-rw-r--r--  1 root root   342 Out  2 18:34 NIKHEF.signing_policy
+-rw-r--r--  1 root root    34 Out  2 18:34 NorduGrid.crl_url
+-rw-r--r--  1 root root   415 Out  2 18:34 NorduGrid.info
+-rw-r--r--  1 root root   461 Out  2 18:34 NorduGrid.namespaces
+-rw-r--r--  1 root root  1371 Out  2 18:34 NorduGrid.pem
+-rw-r--r--  1 root root   176 Out  2 18:34 NorduGrid.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:34 PK-Grid-2007.crl_url
+-rw-r--r--  1 root root   388 Out  2 18:34 PK-Grid-2007.info
+-rw-r--r--  1 root root   376 Out  2 18:34 PK-Grid-2007.namespaces
+-rw-r--r--  1 root root  1919 Out  2 18:34 PK-Grid-2007.pem
+-rw-r--r--  1 root root   247 Out  2 18:34 PK-Grid-2007.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 pkIRISGrid.crl_url
+-rw-r--r--  1 root root   297 Out  2 18:34 pkIRISGrid.info
+-rw-r--r--  1 root root   462 Out  2 18:34 pkIRISGrid.namespaces
+-rw-r--r--  1 root root  1996 Out  2 18:34 pkIRISGrid.pem
+-rw-r--r--  1 root root   243 Out  2 18:34 pkIRISGrid.signing_policy
+-rw-r--r--  1 root root  3149 Out  2 18:34 policy-igtf-classic.info
+-rw-r--r--  1 root root   285 Out  2 18:34 policy-igtf-mics.info
+-rw-r--r--  1 root root   363 Out  2 18:34 policy-igtf-slcs.info
+-rw-r--r--  1 root root    43 Out  2 18:34 PolishGrid.crl_url
+-rw-r--r--  1 root root   401 Out  2 18:34 PolishGrid.info
+-rw-r--r--  1 root root   404 Out  2 18:34 PolishGrid.namespaces
+-rw-r--r--  1 root root  1468 Out  2 18:34 PolishGrid.pem
+-rw-r--r--  1 root root   145 Out  2 18:34 PolishGrid.signing_policy
+-rw-r--r--  1 root root    47 Out  2 18:34 PRAGMA-UCSD.crl_url
+-rw-r--r--  1 root root   256 Out  2 18:34 PRAGMA-UCSD.info
+-rw-r--r--  1 root root   452 Out  2 18:34 PRAGMA-UCSD.namespaces
+-rw-r--r--  1 root root  1257 Out  2 18:34 PRAGMA-UCSD.pem
+-rw-r--r--  1 root root  1289 Out  2 18:34 PRAGMA-UCSD.signing_policy
+-rw-r--r--  1 root root    39 Out  2 18:34 PSC-Myproxy-CA.crl_url
+-rw-r--r--  1 root root   393 Out  2 18:34 PSC-Myproxy-CA.info
+-rw-r--r--  1 root root   452 Out  2 18:34 PSC-Myproxy-CA.namespaces
+-rw-r--r--  1 root root  1456 Out  2 18:34 PSC-Myproxy-CA.pem
+-rw-r--r--  1 root root   210 Out  2 18:34 PSC-Myproxy-CA.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:35 PurdueCA.crl_url
+-rw-r--r--  1 root root   311 Out  2 18:35 PurdueCA.info
+-rw-r--r--  1 root root  1322 Out  2 18:35 PurdueCA.pem
+-rw-r--r--  1 root root   196 Out  2 18:35 PurdueCA.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:35 PurdueTeragridRA.crl_url
+-rw-r--r--  1 root root   327 Out  2 18:35 PurdueTeragridRA.info
+-rw-r--r--  1 root root  1371 Out  2 18:35 PurdueTeragridRA.pem
+-rw-r--r--  1 root root   225 Out  2 18:35 PurdueTeragridRA.signing_policy
+-rw-r--r--  1 root root    40 Out  2 18:34 QuoVadis-Root-CA1.crl_url
+-rw-r--r--  1 root root   373 Out  2 18:34 QuoVadis-Root-CA1.info
+-rw-r--r--  1 root root   569 Out  2 18:34 QuoVadis-Root-CA1.namespaces
+-rw-r--r--  1 root root  2078 Out  2 18:34 QuoVadis-Root-CA1.pem
+-rw-r--r--  1 root root   450 Out  2 18:34 QuoVadis-Root-CA1.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 RDIG.crl_url
+-rw-r--r--  1 root root   430 Out  2 18:34 RDIG.info
+-rw-r--r--  1 root root   426 Out  2 18:34 RDIG.namespaces
+-rw-r--r--  1 root root  2029 Out  2 18:34 RDIG.pem
+-rw-r--r--  1 root root   338 Out  2 18:34 RDIG.signing_policy
+-rw-r--r--  1 root root    37 Out  2 18:34 REUNA-ca.crl_url
+-rw-r--r--  1 root root   358 Out  2 18:34 REUNA-ca.info
+-rw-r--r--  1 root root   443 Out  2 18:34 REUNA-ca.namespaces
+-rw-r--r--  1 root root  1688 Out  2 18:34 REUNA-ca.pem
+-rw-r--r--  1 root root   251 Out  2 18:34 REUNA-ca.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 RomanianGRID.crl_url
+-rw-r--r--  1 root root   433 Out  2 18:34 RomanianGRID.info
+-rw-r--r--  1 root root   508 Out  2 18:34 RomanianGRID.namespaces
+-rw-r--r--  1 root root  1720 Out  2 18:34 RomanianGRID.pem
+-rw-r--r--  1 root root   272 Out  2 18:34 RomanianGRID.signing_policy
+-rw-r--r--  1 root root    36 Out  2 18:34 SDG.crl_url
+-rw-r--r--  1 root root   226 Out  2 18:34 SDG.info
+-rw-r--r--  1 root root   459 Out  2 18:34 SDG.namespaces
+-rw-r--r--  1 root root  1797 Out  2 18:34 SDG.pem
+-rw-r--r--  1 root root   195 Out  2 18:34 SDG.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:34 SEE-GRID.crl_url
+-rw-r--r--  1 root root   469 Out  2 18:34 SEE-GRID.info
+-rw-r--r--  1 root root   501 Out  2 18:34 SEE-GRID.namespaces
+-rw-r--r--  1 root root  1777 Out  2 18:34 SEE-GRID.pem
+-rw-r--r--  1 root root   171 Out  2 18:34 SEE-GRID.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:34 SiGNET-CA.crl_url
+-rw-r--r--  1 root root   449 Out  2 18:34 SiGNET-CA.info
+-rw-r--r--  1 root root   416 Out  2 18:34 SiGNET-CA.namespaces
+-rw-r--r--  1 root root  1720 Out  2 18:34 SiGNET-CA.pem
+-rw-r--r--  1 root root   145 Out  2 18:34 SiGNET-CA.signing_policy
+-rw-r--r--  1 root root    38 Out  2 18:34 SlovakGrid.crl_url
+-rw-r--r--  1 root root   373 Out  2 18:34 SlovakGrid.info
+-rw-r--r--  1 root root   420 Out  2 18:34 SlovakGrid.namespaces
+-rw-r--r--  1 root root  1704 Out  2 18:34 SlovakGrid.pem
+-rw-r--r--  1 root root   184 Out  2 18:34 SlovakGrid.signing_policy
+-rw-r--r--  1 root root    28 Out  2 18:34 SRCE.crl_url
+-rw-r--r--  1 root root   251 Out  2 18:34 SRCE.info
+-rw-r--r--  1 root root   414 Out  2 18:34 SRCE.namespaces
+-rw-r--r--  1 root root  1229 Out  2 18:34 SRCE.pem
+-rw-r--r--  1 root root   155 Out  2 18:34 SRCE.signing_policy
+-rw-r--r--  1 root root    47 Out  2 18:34 SWITCHgrid-Root.crl_url
+-rw-r--r--  1 root root   375 Out  2 18:34 SWITCHgrid-Root.info
+-rw-r--r--  1 root root   584 Out  2 18:34 SWITCHgrid-Root.namespaces
+-rw-r--r--  1 root root  1322 Out  2 18:34 SWITCHgrid-Root.pem
+-rw-r--r--  1 root root   277 Out  2 18:34 SWITCHgrid-Root.signing_policy
+-rw-r--r--  1 root root    43 Out  2 18:34 SWITCH-QuoVadis-Grid-ICA.crl_url
+-rw-r--r--  1 root root   429 Out  2 18:34 SWITCH-QuoVadis-Grid-ICA.info
+-rw-r--r--  1 root root  1582 Out  2 18:34 SWITCH-QuoVadis-Grid-ICA.pem
+-rw-r--r--  1 root root   371 Out  2 18:34 SWITCH-QuoVadis-Grid-ICA.signing_policy
+-rw-r--r--  1 root root    47 Out  2 18:34 SWITCHslcs2011.crl_url
+-rw-r--r--  1 root root   398 Out  2 18:34 SWITCHslcs2011.info
+-rw-r--r--  1 root root  1513 Out  2 18:34 SWITCHslcs2011.pem
+-rw-r--r--  1 root root   218 Out  2 18:34 SWITCHslcs2011.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 TACC-Classic.crl_url
+-rw-r--r--  1 root root   470 Out  2 18:34 TACC-Classic.info
+-rw-r--r--  1 root root   510 Out  2 18:34 TACC-Classic.namespaces
+-rw-r--r--  1 root root  1493 Out  2 18:34 TACC-Classic.pem
+-rw-r--r--  1 root root   296 Out  2 18:34 TACC-Classic.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 TACC-MICS.crl_url
+-rw-r--r--  1 root root   461 Out  2 18:34 TACC-MICS.info
+-rw-r--r--  1 root root   476 Out  2 18:34 TACC-MICS.namespaces
+-rw-r--r--  1 root root  1489 Out  2 18:34 TACC-MICS.pem
+-rw-r--r--  1 root root   286 Out  2 18:34 TACC-MICS.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 TACC-Root.crl_url
+-rw-r--r--  1 root root   443 Out  2 18:34 TACC-Root.info
+-rw-r--r--  1 root root   619 Out  2 18:34 TACC-Root.namespaces
+-rw-r--r--  1 root root  1489 Out  2 18:34 TACC-Root.pem
+-rw-r--r--  1 root root   348 Out  2 18:34 TACC-Root.signing_policy
+-rw-r--r--  1 root root    55 Out  2 18:34 TERENAeSciencePersonalCA.crl_url
+-rw-r--r--  1 root root   551 Out  2 18:34 TERENAeSciencePersonalCA.info
+-rw-r--r--  1 root root  1744 Out  2 18:34 TERENAeSciencePersonalCA.pem
+-rw-r--r--  1 root root   192 Out  2 18:34 TERENAeSciencePersonalCA.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:34 TERENA-eScience-SSL-CA.crl_url
+-rw-r--r--  1 root root   593 Out  2 18:34 TERENA-eScience-SSL-CA.info
+-rw-r--r--  1 root root   397 Out  2 18:34 TERENA-eScience-SSL-CA.namespaces
+-rw-r--r--  1 root root  1684 Out  2 18:34 TERENA-eScience-SSL-CA.pem
+-rw-r--r--  1 root root   249 Out  2 18:34 TERENA-eScience-SSL-CA.signing_policy
+-rw-r--r--  1 root root    38 Out  2 18:34 TRGrid.crl_url
+-rw-r--r--  1 root root   381 Out  2 18:34 TRGrid.info
+-rw-r--r--  1 root root   404 Out  2 18:34 TRGrid.namespaces
+-rw-r--r--  1 root root  1375 Out  2 18:34 TRGrid.pem
+-rw-r--r--  1 root root   201 Out  2 18:34 TRGrid.signing_policy
+-rw-r--r--  1 root root    30 Out  2 18:34 UGRID.crl_url
+-rw-r--r--  1 root root   366 Out  2 18:34 UGRID.info
+-rw-r--r--  1 root root   432 Out  2 18:34 UGRID.namespaces
+-rw-r--r--  1 root root  1326 Out  2 18:34 UGRID.pem
+-rw-r--r--  1 root root   214 Out  2 18:34 UGRID.signing_policy
+-rw-r--r--  1 root root    48 Out  2 18:34 UKeScienceCA-2007.crl_url
+-rw-r--r--  1 root root   441 Out  2 18:34 UKeScienceCA-2007.info
+-rw-r--r--  1 root root  1314 Out  2 18:34 UKeScienceCA-2007.pem
+-rw-r--r--  1 root root   238 Out  2 18:34 UKeScienceCA-2007.signing_policy
+-rw-r--r--  1 root root    43 Out  2 18:34 UKeScienceCA-2A.crl_url
+-rw-r--r--  1 root root   427 Out  2 18:34 UKeScienceCA-2A.info
+-rw-r--r--  1 root root  1367 Out  2 18:34 UKeScienceCA-2A.pem
+-rw-r--r--  1 root root   237 Out  2 18:34 UKeScienceCA-2A.signing_policy
+-rw-r--r--  1 root root    43 Out  2 18:34 UKeScienceCA-2B.crl_url
+-rw-r--r--  1 root root   427 Out  2 18:34 UKeScienceCA-2B.info
+-rw-r--r--  1 root root  1367 Out  2 18:34 UKeScienceCA-2B.pem
+-rw-r--r--  1 root root   237 Out  2 18:34 UKeScienceCA-2B.signing_policy
+-rw-r--r--  1 root root    50 Out  2 18:34 UKeScienceRoot-2007.crl_url
+-rw-r--r--  1 root root   402 Out  2 18:34 UKeScienceRoot-2007.info
+-rw-r--r--  1 root root  1021 Out  2 18:34 UKeScienceRoot-2007.namespaces
+-rw-r--r--  1 root root  1281 Out  2 18:34 UKeScienceRoot-2007.pem
+-rw-r--r--  1 root root   380 Out  2 18:34 UKeScienceRoot-2007.signing_policy
+-rw-r--r--  1 root root    42 Out  2 18:34 ULAGrid-CA-2008.crl_url
+-rw-r--r--  1 root root   343 Out  2 18:34 ULAGrid-CA-2008.info
+-rw-r--r--  1 root root   540 Out  2 18:34 ULAGrid-CA-2008.namespaces
+-rw-r--r--  1 root root  1688 Out  2 18:34 ULAGrid-CA-2008.pem
+-rw-r--r--  1 root root   186 Out  2 18:34 ULAGrid-CA-2008.signing_policy
+-rw-r--r--  1 root root    55 Out  2 18:34 UNAMgrid-ca.crl_url
+-rw-r--r--  1 root root   429 Out  2 18:34 UNAMgrid-ca.info
+-rw-r--r--  1 root root   424 Out  2 18:34 UNAMgrid-ca.namespaces
+-rw-r--r--  1 root root  1582 Out  2 18:34 UNAMgrid-ca.pem
+-rw-r--r--  1 root root   512 Out  2 18:34 UNAMgrid-ca.signing_policy
+-rw-r--r--  1 root root    48 Out  2 18:34 UniandesCA.crl_url
+-rw-r--r--  1 root root   312 Out  2 18:34 UniandesCA.info
+-rw-r--r--  1 root root   442 Out  2 18:34 UniandesCA.namespaces
+-rw-r--r--  1 root root  1582 Out  2 18:34 UniandesCA.pem
+-rw-r--r--  1 root root   312 Out  2 18:34 UniandesCA.signing_policy
+-rw-r--r--  1 root root    49 Out  2 18:34 UNLPGrid.crl_url
+-rw-r--r--  1 root root   380 Out  2 18:34 UNLPGrid.info
+-rw-r--r--  1 root root   452 Out  2 18:34 UNLPGrid.namespaces
+-rw-r--r--  1 root root  1627 Out  2 18:34 UNLPGrid.pem
+-rw-r--r--  1 root root   219 Out  2 18:34 UNLPGrid.signing_policy
+-rw-r--r--  1 root root    72 Out  2 18:34 UTNAAAClient.crl_url
+-rw-r--r--  1 root root   544 Out  2 18:34 UTNAAAClient.info
+-rw-r--r--  1 root root  1675 Out  2 18:34 UTNAAAClient.pem
+-rw-r--r--  1 root root   283 Out  2 18:34 UTNAAAClient.signing_policy
+-rw-r--r--  1 root root    52 Out  2 18:34 UTN-USERFirst-Hardware.crl_url
+-rw-r--r--  1 root root   563 Out  2 18:34 UTN-USERFirst-Hardware.info
+-rw-r--r--  1 root root   545 Out  2 18:34 UTN-USERFirst-Hardware.namespaces
+-rw-r--r--  1 root root  1529 Out  2 18:34 UTN-USERFirst-Hardware.pem
+-rw-r--r--  1 root root   372 Out  2 18:34 UTN-USERFirst-Hardware.signing_policy
+
+***** /etc/grid-security/gsi-authz.conf
+/etc/grid-security/gsi-authz.conf doesn't exist
+
+***** /etc/lcmaps.db
+/etc/lcmaps.db doesn't exist
+
+***** RPM: rpm
+rpm-4.8.0-27.el6.x86_64
+rpm has not been modified
+
+***** RPM: yum
+yum-3.2.29-30.el6.centos.noarch
+S.5....T.  c /etc/yum.conf
+
+***** /etc/yum.conf
+[main]
+cachedir=/var/cache/yum/$basearch/$releasever
+keepcache=0
+debuglevel=2
+logfile=/var/log/yum.log
+exactarch=1
+obsoletes=1
+gpgcheck=1
+plugins=1
+installonly_limit=5
+bugtracker_url=http://bugs.centos.org/set_project.php?project_id=16&ref=http://bugs.centos.org/bug_report_page.php?category=yum
+distroverpkg=centos-release
+
+#  This is the default, if you make this bigger yum won't see if the metadata
+# is newer on the remote and so you'll "gain" the bandwidth of not having to
+# download the new metadata and "pay" for it by yum not having correct
+# information.
+#  It is esp. important, to have correct metadata, for distributions like
+# Fedora which don't keep old packages around. If you don't like this checking
+# interupting your command line usage, it's much better to have something
+# manually check the metadata once an hour (yum-updatesd will do this).
+# metadata_expire=90m
+
+# PUT YOUR REPOS HERE OR IN separate files named file.repo
+# in /etc/yum.repos.d
+
+proxy=http://proxy.ncc.unesp.br:3128
+
+***** Questions about yum.conf to consider:
+Are plugins enabled in yum.conf?
+If not, could be getting wrong RPMs from EPEL.
+
+***** Files in /etc/yum.repos.d/
+File: /etc/yum.repos.d/CentOS-Base.repo
+# CentOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the 
+# remarked out baseurl= line instead.
+#
+#
+
+[base]
+name=CentOS-$releasever - Base
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os
+#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#released updates 
+[updates]
+name=CentOS-$releasever - Updates
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates
+#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever - Extras
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras
+#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever - Plus
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus
+#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#contrib - packages by Centos Users
+[contrib]
+name=CentOS-$releasever - Contrib
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=contrib
+#baseurl=http://mirror.centos.org/centos/$releasever/contrib/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+File: /etc/yum.repos.d/CentOS-Debuginfo.repo
+# CentOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+
+# All debug packages from all the various CentOS-5 releases
+# are merged into a single repo, split by BaseArch
+#
+# Note: packages in the debuginfo repo are currently not signed
+#
+
+[debug]
+name=CentOS-6 - Debuginfo
+baseurl=http://debuginfo.centos.org/6/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-6
+enabled=0
+
+File: /etc/yum.repos.d/CentOS-Media.repo
+# CentOS-Media.repo
+#
+# This repo is used to mount the default locations for a CDROM / DVD on
+#  CentOS-6.  You can use this repo and yum to install items directly off the
+#  DVD ISO that we release.
+#
+# To use this repo, put in your DVD and use it with the other repos too:
+#  yum --enablerepo=c6-media [command]
+#  
+# or for ONLY the media repo, do this:
+#
+#  yum --disablerepo=\* --enablerepo=c6-media [command]
+ 
+[c6-media]
+name=CentOS-$releasever - Media
+baseurl=file:///media/CentOS/
+        file:///media/cdrom/
+        file:///media/cdrecorder/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+File: /etc/yum.repos.d/CentOS-Vault.repo
+
+#-----------------
+
+[C6.0-base]
+name=CentOS-6.0 - Base
+baseurl=http://vault.centos.org/6.0/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.0-updates]
+name=CentOS-6.0 - Updates
+baseurl=http://vault.centos.org/6.0/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.0-extras]
+name=CentOS-6.0 - Extras
+baseurl=http://vault.centos.org/6.0/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.0-contrib]
+name=CentOS-6.0 - Contrib
+baseurl=http://vault.centos.org/6.0/contrib/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.0-centosplus]
+name=CentOS-6.0 - CentOSPlus
+baseurl=http://vault.centos.org/6.0/centosplus/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+#-----------------
+
+[C6.1-base]
+name=CentOS-6.1 - Base
+baseurl=http://vault.centos.org/6.1/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.1-updates]
+name=CentOS-6.1 - Updates
+baseurl=http://vault.centos.org/6.1/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.1-extras]
+name=CentOS-6.1 - Extras
+baseurl=http://vault.centos.org/6.1/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.1-contrib]
+name=CentOS-6.1 - Contrib
+baseurl=http://vault.centos.org/6.1/contrib/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.1-centosplus]
+name=CentOS-6.1 - CentOSPlus
+baseurl=http://vault.centos.org/6.1/centosplus/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+#-----------------
+
+[C6.2-base]
+name=CentOS-6.2 - Base
+baseurl=http://vault.centos.org/6.2/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.2-updates]
+name=CentOS-6.2 - Updates
+baseurl=http://vault.centos.org/6.2/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.2-extras]
+name=CentOS-6.2 - Extras
+baseurl=http://vault.centos.org/6.2/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.2-contrib]
+name=CentOS-6.2 - Contrib
+baseurl=http://vault.centos.org/6.2/contrib/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+[C6.2-centosplus]
+name=CentOS-6.2 - CentOSPlus
+baseurl=http://vault.centos.org/6.2/centosplus/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+
+File: /etc/yum.repos.d/epel.repo
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 6 - $basearch - Debug
+#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch/debug
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=1
+
+[epel-source]
+name=Extra Packages for Enterprise Linux 6 - $basearch - Source
+#baseurl=http://download.fedoraproject.org/pub/epel/6/SRPMS
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=1
+
+File: /etc/yum.repos.d/epel-testing.repo
+[epel-testing]
+name=Extra Packages for Enterprise Linux 6 - Testing - $basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/testing/6/$basearch
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=testing-epel6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+
+[epel-testing-debuginfo]
+name=Extra Packages for Enterprise Linux 6 - Testing - $basearch - Debug
+#baseurl=http://download.fedoraproject.org/pub/epel/testing/6/$basearch/debug
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=1
+
+[epel-testing-source]
+name=Extra Packages for Enterprise Linux 6 - Testing - $basearch - Source
+#baseurl=http://download.fedoraproject.org/pub/epel/testing/6/SRPMS
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=1
+
+File: /etc/yum.repos.d/osg-el6-contrib.repo
+[osg-contrib]
+name=OSG Software for Enterprise Linux 6 - Contributed - $basearch 
+mirrorlist=http://repo.grid.iu.edu/mirror/3.0/el6/osg-contrib/$basearch
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+consider_as_osg=yes
+
+[osg-contrib-source]
+name=OSG Software for Enterprise Linux 6 - Contributed - $basearch - Source
+baseurl=http://repo.grid.iu.edu/3.0/el6/osg-contrib/source/SRPMS
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+
+[osg-contrib-debug]
+name=OSG Software for Enterprise Linux 6 - Contributed - $basearch - Debug
+baseurl=http://repo.grid.iu.edu/3.0/el6/osg-contrib/$basearch/debug
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+
+
+File: /etc/yum.repos.d/osg-el6-development.repo
+[osg-development]
+name=OSG Software for Enterprise Linux 6 - Development - $basearch 
+#baseurl=http://repo.grid.iu.edu/3.0/el6/osg-development/$basearch
+mirrorlist=http://repo.grid.iu.edu/mirror/3.0/el6/osg-development/$basearch
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+consider_as_osg=yes
+
+[osg-development-source]
+name=OSG Software for Enterprise Linux 6 - Development - $basearch - Source
+baseurl=http://repo.grid.iu.edu/3.0/el6/osg-development/source/SRPMS
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+
+[osg-development-debug]
+name=OSG Software for Enterprise Linux 6 - Development - $basearch - Debug
+baseurl=http://repo.grid.iu.edu/3.0/el6/osg-development/$basearch/debug
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+
+
+File: /etc/yum.repos.d/osg-el6-minefield.repo
+[osg-minefield]
+name=OSG Software for Enterprise Linux 6 - Build Repository - $basearch 
+baseurl=http://koji-hub.batlab.org/mnt/koji/repos/el6-osg-development/latest/$basearch/
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+consider_as_osg=yes
+
+File: /etc/yum.repos.d/osg-el6-prerelease.repo
+[osg-prerelease]
+name=OSG Software for Enterprise Linux 6 - Prerelease Repository for Internal Use - $basearch 
+baseurl=http://koji-hub.batlab.org/mnt/koji/repos/el6-osg-prerelease/latest/$basearch/
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+consider_as_osg=yes
+
+File: /etc/yum.repos.d/osg-el6.repo
+[osg]
+name=OSG Software for Enterprise Linux 6 - $basearch
+#baseurl=http://repo.grid.iu.edu/3.0/el6/osg-release/$basearch
+mirrorlist=http://repo.grid.iu.edu/mirror/3.0/el6/osg-release/$basearch
+failovermethod=priority
+priority=98
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+consider_as_osg=yes
+
+[osg-source]
+name=OSG Software for Enterprise Linux 6 - $basearch - Source
+baseurl=http://repo.grid.iu.edu/3.0/el6/osg-release/source/SRPMS
+failovermethod=priority
+priority=98
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+gpgcheck=1
+
+[osg-debug]
+name=OSG Software for Enterprise Linux 6 - $basearch - Debug
+baseurl=http://repo.grid.iu.edu/3.0/el6/osg-release/$basearch/debug
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+
+
+File: /etc/yum.repos.d/osg-el6-testing.repo
+[osg-testing]
+name=OSG Software for Enterprise Linux 6 - Testing - $basearch 
+#baseurl=http://repo.grid.iu.edu/3.0/el6/osg-testing/$basearch
+mirrorlist=http://repo.grid.iu.edu/mirror/3.0/el6/osg-testing/$basearch
+failovermethod=priority
+priority=98
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+consider_as_osg=yes
+
+[osg-testing-source]
+name=OSG Software for Enterprise Linux 6 - Testing - $basearch - Source
+baseurl=http://repo.grid.iu.edu/3.0/el6/osg-testing/source/SRPMS
+failovermethod=priority
+priority=98
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+gpgcheck=1
+
+[osg-testing-debug]
+name=OSG Software for Enterprise Linux 6 - Testing - $basearch - Debug
+baseurl=http://repo.grid.iu.edu/3.0/el6/osg-testing/$basearch/debug
+failovermethod=priority
+priority=98
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OSG
+gpgcheck=1
+
+
+
+***** Files in /etc/globus/
+/etc/globus/ can't be read
+
+***** /var/log/globus-gatekeeper.log (last 200 lines)
+/var/log/globus-gatekeeper.log doesn't exist
+
+***** /var/log/edg-mkgridmap.log (last 50 lines)
+/var/log/edg-mkgridmap.log doesn't exist
+
+***** /var/log/glite-ce-monitor/glite-ce-monitor.log (last 200 lines)
+/var/log/glite-ce-monitor/glite-ce-monitor.log doesn't exist
+
+***** /var/log/gip/gip.log (last 200 lines)
+/var/log/gip/gip.log doesn't exist
+
+***** /var/log/gridftp.log (last 200 lines)
+/var/log/gridftp.log doesn't exist
+
+***** /var/log/gridftp-auth.log (last 200 lines)
+/var/log/gridftp-auth.log doesn't exist
+
+***** /var/log/bestman2/bestman2.log (last 200 lines)
+/var/log/bestman2/bestman2.log doesn't exist
+
+***** /var/log/bestman2/event.srm.log (last 200 lines)
+/var/log/bestman2/event.srm.log doesn't exist
+
+***** All RPMs 
+abrt-2.0.8-6.el6.centos.x86_64
+abrt-addon-ccpp-2.0.8-6.el6.centos.x86_64
+abrt-addon-kerneloops-2.0.8-6.el6.centos.x86_64
+abrt-addon-python-2.0.8-6.el6.centos.x86_64
+abrt-cli-2.0.8-6.el6.centos.x86_64
+abrt-libs-2.0.8-6.el6.centos.x86_64
+abrt-tui-2.0.8-6.el6.centos.x86_64
+acl-2.2.49-6.el6.x86_64
+acpid-1.0.10-2.1.el6.x86_64
+aic94xx-firmware-30-2.el6.noarch
+alsa-lib-1.0.22-3.el6.x86_64
+alsa-utils-1.0.22-3.el6.x86_64
+at-3.1.10-43.el6_2.1.x86_64
+atk-1.28.0-2.el6.x86_64
+atmel-firmware-1.3-7.el6.noarch
+attr-2.4.44-7.el6.x86_64
+audit-2.2-2.el6.x86_64
+audit-libs-2.2-2.el6.x86_64
+augeas-libs-0.9.0-4.el6.x86_64
+authconfig-6.1.12-10.el6.x86_64
+avahi-libs-0.6.25-11.el6.x86_64
+axis-1.2.1-7.2.el6.noarch
+b43-fwcutter-012-2.2.el6.x86_64
+b43-openfwwf-5.2-4.el6.noarch
+bacula-client-5.0.0-9.el6.x86_64
+bacula-common-5.0.0-9.el6.x86_64
+basesystem-10.0-4.el6.noarch
+bash-4.1.2-9.el6_2.x86_64
+bc-1.06.95-1.el6.x86_64
+bcel-5.2-7.2.el6.x86_64
+bfa-firmware-3.0.0.0-1.el6.noarch
+bind-libs-9.8.2-0.10.rc1.el6_3.5.x86_64
+bind-utils-9.8.2-0.10.rc1.el6_3.5.x86_64
+binutils-2.20.51.0.2-5.34.el6.x86_64
+biosdevname-0.3.11-1.el6.x86_64
+blktrace-1.0.1-6.el6.x86_64
+boost-1.41.0-11.el6_1.2.x86_64
+boost-date-time-1.41.0-11.el6_1.2.x86_64
+boost-filesystem-1.41.0-11.el6_1.2.x86_64
+boost-graph-1.41.0-11.el6_1.2.x86_64
+boost-iostreams-1.41.0-11.el6_1.2.x86_64
+boost-program-options-1.41.0-11.el6_1.2.x86_64
+boost-python-1.41.0-11.el6_1.2.x86_64
+boost-regex-1.41.0-11.el6_1.2.x86_64
+boost-serialization-1.41.0-11.el6_1.2.x86_64
+boost-signals-1.41.0-11.el6_1.2.x86_64
+boost-system-1.41.0-11.el6_1.2.x86_64
+boost-test-1.41.0-11.el6_1.2.x86_64
+boost-thread-1.41.0-11.el6_1.2.x86_64
+boost-wave-1.41.0-11.el6_1.2.x86_64
+bouncycastle13-1.33-4.osg.el6.noarch
+bouncycastle-1.46-1.el6.noarch
+bridge-utils-1.2-9.el6.x86_64
+btparser-0.16-3.el6.x86_64
+busybox-1.15.1-15.el6.x86_64
+bzip2-1.0.5-7.el6_0.x86_64
+bzip2-libs-1.0.5-7.el6_0.x86_64
+ca-certificates-2010.63-3.el6_1.5.noarch
+cairo-1.8.8-3.1.el6.x86_64
+cdparanoia-libs-10.2-5.1.el6.x86_64
+centos-indexhtml-6-1.el6.centos.noarch
+centos-release-6-3.el6.centos.9.x86_64
+checkpolicy-2.0.22-1.el6.x86_64
+chkconfig-1.3.49.3-2.el6.x86_64
+classpathx-jaf-1.0-15.4.el6.x86_64
+classpathx-mail-1.1.1-9.4.el6.noarch
+cog-jglobus-1.8.0-1.osg.el6.noarch
+ConsoleKit-0.4.1-3.el6.x86_64
+ConsoleKit-libs-0.4.1-3.el6.x86_64
+coreutils-8.4-19.el6.x86_64
+coreutils-libs-8.4-19.el6.x86_64
+cpio-2.10-11.el6_3.x86_64
+cpuspeed-1.5-15.el6.x86_64
+cracklib-2.8.16-4.el6.x86_64
+cracklib-dicts-2.8.16-4.el6.x86_64
+crda-1.1.1_2010.11.22-1.el6.x86_64
+cronie-1.4.4-7.el6.x86_64
+cronie-anacron-1.4.4-7.el6.x86_64
+crontabs-1.10-33.el6.noarch
+cryptix-3.2.0-2.osg.el6.noarch
+cryptix-asn1-20011119-2.osg.el6.noarch
+cryptsetup-luks-1.2.0-7.el6.x86_64
+cryptsetup-luks-libs-1.2.0-7.el6.x86_64
+cups-1.4.2-48.el6_3.3.x86_64
+cups-libs-1.4.2-48.el6_3.3.x86_64
+curl-7.19.7-26.el6_2.4.x86_64
+cvs-1.11.23-11.el6_2.1.x86_64
+cyrus-sasl-2.1.23-13.el6.x86_64
+cyrus-sasl-lib-2.1.23-13.el6.x86_64
+cyrus-sasl-plain-2.1.23-13.el6.x86_64
+dash-0.5.5.1-3.1.el6.x86_64
+db4-4.7.25-17.el6.x86_64
+db4-utils-4.7.25-17.el6.x86_64
+dbus-1.2.24-7.el6_3.x86_64
+dbus-glib-0.86-5.el6.x86_64
+dbus-libs-1.2.24-7.el6_3.x86_64
+dbus-python-0.83.0-6.1.el6.x86_64
+desktop-file-utils-0.15-9.el6.x86_64
+device-mapper-1.02.74-10.el6_3.2.x86_64
+device-mapper-event-1.02.74-10.el6_3.2.x86_64
+device-mapper-event-libs-1.02.74-10.el6_3.2.x86_64
+device-mapper-libs-1.02.74-10.el6_3.2.x86_64
+dhclient-4.1.1-31.0.1.P1.el6.centos.1.x86_64
+dhcp-common-4.1.1-31.0.1.P1.el6.centos.1.x86_64
+diffutils-2.8.1-28.el6.x86_64
+dmidecode-2.11-2.el6.x86_64
+dmraid-1.0.0.rc16-11.el6.x86_64
+dmraid-events-1.0.0.rc16-11.el6.x86_64
+dosfstools-3.0.9-4.el6.x86_64
+dracut-004-284.el6_3.1.noarch
+dracut-kernel-004-284.el6_3.1.noarch
+e2fsprogs-1.41.12-12.el6.x86_64
+e2fsprogs-libs-1.41.12-12.el6.x86_64
+ecj-3.4.2-6.el6.x86_64
+ed-1.1-3.3.el6.x86_64
+efibootmgr-0.5.4-10.el6.x86_64
+eggdbus-0.6-3.el6.x86_64
+eject-2.1.5-17.el6.x86_64
+elfutils-0.152-1.el6.x86_64
+elfutils-libelf-0.152-1.el6.x86_64
+elfutils-libs-0.152-1.el6.x86_64
+emi-trustmanager-3.0.3-2.osg.el6.noarch
+emi-trustmanager-tomcat-3.0.0-4.osg.el6.noarch
+epel-release-6-7.noarch
+ethtool-2.6.33-0.3.el6.x86_64
+expat-2.0.1-11.el6_2.x86_64
+fail2ban-0.8.4-28.el6.noarch
+fetch-crl-3.0.8-1.el6.noarch
+file-5.04-13.el6.x86_64
+file-libs-5.04-13.el6.x86_64
+filesystem-2.4.30-3.el6.x86_64
+findutils-4.4.2-6.el6.x86_64
+fipscheck-1.2.0-7.el6.x86_64
+fipscheck-lib-1.2.0-7.el6.x86_64
+fontconfig-2.8.0-3.el6.x86_64
+foomatic-4.0.4-1.el6_1.1.x86_64
+foomatic-db-4.0-7.20091126.el6.noarch
+foomatic-db-filesystem-4.0-7.20091126.el6.noarch
+foomatic-db-ppds-4.0-7.20091126.el6.noarch
+fprintd-0.1-20.git04fd09cfa.el6.x86_64
+fprintd-pam-0.1-20.git04fd09cfa.el6.x86_64
+freetype-2.3.11-6.el6_2.9.x86_64
+gamin-0.1.10-9.el6.x86_64
+gamin-python-0.1.10-9.el6.x86_64
+gawk-3.1.7-9.el6.x86_64
+gdbm-1.8.0-36.el6.x86_64
+gettext-0.17-16.el6.x86_64
+ghostscript-8.70-14.el6_3.1.x86_64
+ghostscript-fonts-5.50-23.1.el6.noarch
+glib2-2.22.5-7.el6.x86_64
+glibc-2.12-1.80.el6_3.6.x86_64
+glibc-common-2.12-1.80.el6_3.6.x86_64
+globus-callout-2.1-4.osg.el6.x86_64
+globus-common-14.5-2.2.osg.el6.x86_64
+globus-gsi-callback-4.4-1.osg.el6.x86_64
+globus-gsi-cert-utils-8.1-4.1.osg.el6.x86_64
+globus-gsi-credential-5.1-4.osg.el6.x86_64
+globus-gsi-openssl-error-2.1-4.osg.el6.x86_64
+globus-gsi-proxy-core-6.1-4.osg.el6.x86_64
+globus-gsi-proxy-ssl-4.1-4.osg.el6.x86_64
+globus-gsi-sysconfig-5.1-4.osg.el6.x86_64
+globus-gssapi-gsi-10.7-2.osg.el6.x86_64
+globus-gss-assist-8.1-4.osg.el6.x86_64
+globus-openssl-module-3.1-4.osg.el6.x86_64
+globus-usage-3.1-4.osg.el6.x86_64
+globus-xio-3.2-4.1.osg.el6.x86_64
+gmp-4.3.1-7.el6_2.2.x86_64
+gnupg2-2.0.14-4.el6.x86_64
+gnutls-2.8.5-4.el6_2.2.x86_64
+gpgme-1.1.8-3.el6.x86_64
+gpg-pubkey-0608b895-4bd22942
+gpg-pubkey-824b8603-4e726d80
+gpg-pubkey-c105b9de-4e0fd3a3
+gpm-libs-1.20.6-12.el6.x86_64
+grep-2.6.3-3.el6.x86_64
+groff-1.18.1.4-21.el6.x86_64
+grub-0.97-77.el6.x86_64
+grubby-7.0.15-3.el6.x86_64
+gsoap-2.7.16-3.el6.x86_64
+gstreamer-0.10.29-1.el6.x86_64
+gstreamer-plugins-base-0.10.29-1.el6.x86_64
+gstreamer-tools-0.10.29-1.el6.x86_64
+gtk2-2.18.9-10.el6.x86_64
+gums-1.3.18.009-5.osg.el6.noarch
+gums-service-1.3.18.009-5.osg.el6.noarch
+gzip-1.3.12-18.el6.x86_64
+hal-0.5.14-11.el6.x86_64
+hal-info-20090716-3.1.el6.noarch
+hal-libs-0.5.14-11.el6.x86_64
+hdparm-9.16-3.4.el6.x86_64
+hicolor-icon-theme-0.11-1.1.el6.noarch
+hunspell-1.2.8-16.el6.x86_64
+hunspell-en-0.20090216-7.1.el6.noarch
+hwdata-0.233-7.8.el6.noarch
+info-4.13a-8.el6.x86_64
+initscripts-9.03.31-2.el6.centos.1.x86_64
+iproute-2.6.32-20.el6.x86_64
+iptables-1.4.7-5.1.el6_2.x86_64
+iptables-ipv6-1.4.7-5.1.el6_2.x86_64
+iputils-20071127-16.el6.x86_64
+ipw2100-firmware-1.3-11.el6.noarch
+ipw2200-firmware-3.1-4.el6.noarch
+irqbalance-0.55-35.el6_3.x86_64
+iso-codes-3.16-2.el6.noarch
+ivtv-firmware-20080701-20.2.noarch
+iw-0.9.17-4.el6.x86_64
+iwl1000-firmware-39.31.5.1-1.el6.noarch
+iwl100-firmware-39.31.5.1-1.el6.noarch
+iwl3945-firmware-15.32.2.9-4.el6.noarch
+iwl4965-firmware-228.61.2.24-2.1.el6.noarch
+iwl5000-firmware-8.83.5.1_1-1.el6_1.1.noarch
+iwl5150-firmware-8.24.2.2-1.el6.noarch
+iwl6000-firmware-9.221.4.1-1.el6.noarch
+iwl6000g2a-firmware-17.168.5.3-1.el6.noarch
+iwl6000g2b-firmware-17.168.5.2-1.el6.noarch
+iwl6050-firmware-41.28.5.1-2.el6.noarch
+jakarta-commons-collections-3.2.1-3.4.el6.noarch
+jakarta-commons-daemon-1.0.1-8.9.el6.x86_64
+jakarta-commons-dbcp-1.2.1-13.8.el6.noarch
+jakarta-commons-discovery-0.4-5.4.el6.noarch
+jakarta-commons-httpclient-3.1-0.6.el6.x86_64
+jakarta-commons-logging-1.0.4-10.el6.noarch
+jakarta-commons-pool-1.3-12.7.el6.x86_64
+jasper-libs-1.900.1-15.el6_1.1.x86_64
+java-1.5.0-gcj-1.5.0.0-29.1.el6.x86_64
+java-1.6.0-sun-compat-1.6.0.37-1.osg.el6.x86_64
+java_cup-0.10k-5.el6.x86_64
+jdk-1.6.0_37-fcs.1.osg.el6.x86_64
+jlex-1.2.6-9.5.el6.x86_64
+jpackage-utils-1.7.5-3.12.el6.noarch
+kbd-1.15-11.el6.x86_64
+kbd-misc-1.15-11.el6.noarch
+kernel-2.6.32-220.el6.x86_64
+kernel-2.6.32-279.14.1.el6.x86_64
+kernel-2.6.32-279.2.1.el6.x86_64
+kernel-2.6.32-279.5.2.el6.x86_64
+kernel-2.6.32-279.el6.x86_64
+kernel-firmware-2.6.32-279.14.1.el6.noarch
+kexec-tools-2.0.0-245.el6.x86_64
+keyutils-libs-1.4-4.el6.x86_64
+kpartx-0.4.9-56.el6_3.1.x86_64
+krb5-libs-1.9-33.el6_3.3.x86_64
+lcms-libs-1.19-1.el6.x86_64
+less-436-10.el6.x86_64
+libacl-2.2.49-6.el6.x86_64
+libaio-0.3.107-10.el6.x86_64
+libart_lgpl-2.3.20-5.1.el6.x86_64
+libattr-2.4.44-7.el6.x86_64
+libblkid-2.17.2-12.7.el6_3.x86_64
+libcap-2.16-5.5.el6.x86_64
+libcap-ng-0.6.4-3.el6_0.1.x86_64
+libcom_err-1.41.12-12.el6.x86_64
+libcurl-7.19.7-26.el6_2.4.x86_64
+libdrm-2.4.25-2.el6.x86_64
+libedit-2.11-4.20080712cvs.1.el6.x86_64
+libertas-usb8388-firmware-5.110.22.p23-3.1.el6.noarch
+libffi-3.0.5-3.2.el6.x86_64
+libfontenc-1.0.5-2.el6.x86_64
+libfprint-0.1.0-19.pre2.el6.x86_64
+libgcc-4.4.6-4.el6.x86_64
+libgcj-4.4.6-4.el6.x86_64
+libgcrypt-1.4.5-9.el6_2.2.x86_64
+libgomp-4.4.6-4.el6.x86_64
+libgpg-error-1.7-4.el6.x86_64
+libgudev1-147-2.42.el6.x86_64
+libICE-1.0.6-1.el6.x86_64
+libicu-4.2.1-9.1.el6_2.x86_64
+libidn-1.18-2.el6.x86_64
+libjpeg-6b-46.el6.x86_64
+libmng-1.0.10-4.1.el6.x86_64
+libnih-1.0.1-7.el6.x86_64
+libnl-1.1-14.el6.x86_64
+libogg-1.1.4-2.1.el6.x86_64
+liboil-0.3.16-4.1.el6.x86_64
+libpcap-1.0.0-6.20091201git117cb5.el6.x86_64
+libpng-1.2.49-1.el6_2.x86_64
+libreport-2.0.9-5.el6.centos.x86_64
+libreport-cli-2.0.9-5.el6.centos.x86_64
+libreport-plugin-kerneloops-2.0.9-5.el6.centos.x86_64
+libreport-plugin-logger-2.0.9-5.el6.centos.x86_64
+libreport-plugin-mailx-2.0.9-5.el6.centos.x86_64
+libreport-plugin-reportuploader-2.0.9-5.el6.centos.x86_64
+libreport-plugin-rhtsupport-2.0.9-5.el6.centos.x86_64
+libreport-python-2.0.9-5.el6.centos.x86_64
+libselinux-2.0.94-5.3.el6.x86_64
+libselinux-utils-2.0.94-5.3.el6.x86_64
+libsemanage-2.0.43-4.1.el6.x86_64
+libsepol-2.0.41-4.el6.x86_64
+libSM-1.1.0-7.1.el6.x86_64
+libss-1.41.12-12.el6.x86_64
+libssh2-1.2.2-11.el6_3.x86_64
+libstdc++-4.4.6-4.el6.x86_64
+libtar-1.2.11-17.el6.x86_64
+libtasn1-2.3-3.el6_2.1.x86_64
+libthai-0.1.12-3.el6.x86_64
+libtheora-1.1.0-2.el6.x86_64
+libtiff-3.9.4-6.el6_3.x86_64
+libtool-ltdl-2.2.6-15.5.el6.x86_64
+libudev-147-2.42.el6.x86_64
+libusb-0.1.12-23.el6.x86_64
+libusb1-1.0.9-0.5.rc1.el6.x86_64
+libuser-0.56.13-5.el6.x86_64
+libutempter-1.1.5-4.1.el6.x86_64
+libuuid-2.17.2-12.7.el6_3.x86_64
+libvisual-0.4.0-9.1.el6.x86_64
+libvorbis-1.2.3-4.el6_2.1.x86_64
+libX11-1.3-2.el6.x86_64
+libX11-common-1.3-2.el6.noarch
+libXau-1.0.5-1.el6.x86_64
+libxcb-1.5-1.el6.x86_64
+libXcomposite-0.4.1-2.el6.x86_64
+libXcursor-1.1.10-2.el6.x86_64
+libXdamage-1.1.2-1.el6.x86_64
+libXext-1.1-3.el6.x86_64
+libXfixes-4.0.4-1.el6.x86_64
+libXfont-1.4.1-2.el6_1.x86_64
+libXft-2.1.13-4.1.el6.x86_64
+libXi-1.3-3.el6.x86_64
+libXinerama-1.1-1.el6.x86_64
+libxml2-2.7.6-8.el6_3.3.x86_64
+libxml2-python-2.7.6-8.el6_3.3.x86_64
+libXrandr-1.3.0-4.el6.x86_64
+libXrender-0.9.5-1.el6.x86_64
+libxslt-1.1.26-2.el6_3.1.x86_64
+libXt-1.0.7-1.el6.x86_64
+libXtst-1.0.99.2-3.el6.x86_64
+libXv-1.0.5-1.el6.x86_64
+libXxf86vm-1.1.0-1.el6.x86_64
+lm_sensors-libs-3.1.1-10.el6.x86_64
+log4j-1.2.14-6.4.el6.x86_64
+logrotate-3.7.8-15.el6.x86_64
+lsof-4.82-4.el6.x86_64
+lua-5.1.4-4.1.el6.x86_64
+lvm2-2.02.95-10.el6_3.2.x86_64
+lvm2-libs-2.02.95-10.el6_3.2.x86_64
+m4-1.4.13-5.el6.x86_64
+mailcap-2.1.31-2.el6.noarch
+mailx-12.4-6.el6.x86_64
+make-3.81-20.el6.x86_64
+MAKEDEV-3.24-6.el6.x86_64
+man-1.6f-30.el6.x86_64
+man-pages-3.22-17.el6.noarch
+man-pages-overrides-6.3.3-1.el6.noarch
+matahari-0.6.0-14.el6.x86_64
+matahari-agent-lib-0.6.0-14.el6.x86_64
+matahari-broker-0.6.0-14.el6.x86_64
+matahari-consoles-0.6.0-14.el6.x86_64
+matahari-core-0.6.0-14.el6.x86_64
+matahari-host-0.6.0-14.el6.x86_64
+matahari-lib-0.6.0-14.el6.x86_64
+matahari-network-0.6.0-14.el6.x86_64
+matahari-python-0.6.0-14.el6.x86_64
+matahari-rpc-0.6.0-14.el6.x86_64
+matahari-service-0.6.0-14.el6.x86_64
+matahari-sysconfig-0.6.0-14.el6.x86_64
+mdadm-3.2.3-9.el6.x86_64
+mesa-dri-drivers-7.11-5.el6.x86_64
+mesa-libGL-7.11-5.el6.x86_64
+mesa-libGLU-7.11-5.el6.x86_64
+microcode_ctl-1.17-11.el6.x86_64
+mingetty-1.08-5.el6.x86_64
+mlocate-0.22.2-3.el6.x86_64
+module-init-tools-3.9-20.el6.x86_64
+mtr-0.75-5.el6.x86_64
+mx4j-3.0.1-9.13.el6.noarch
+myproxy-libs-5.5-3.1.osg.el6.x86_64
+myproxy-server-5.5-3.1.osg.el6.x86_64
+mysql-5.1.66-1.el6_3.x86_64
+mysql-libs-5.1.66-1.el6_3.x86_64
+mysql-server-5.1.66-1.el6_3.x86_64
+nano-2.0.9-7.el6.x86_64
+ncurses-5.7-3.20090208.el6.x86_64
+ncurses-base-5.7-3.20090208.el6.x86_64
+ncurses-libs-5.7-3.20090208.el6.x86_64
+net-snmp-5.5-41.el6_3.1.x86_64
+net-snmp-libs-5.5-41.el6_3.1.x86_64
+net-tools-1.60-110.el6_2.x86_64
+newt-0.52.11-3.el6.x86_64
+newt-python-0.52.11-3.el6.x86_64
+nscd-2.12-1.80.el6_3.6.x86_64
+nspr-4.9.1-2.el6_3.x86_64
+nss-3.13.5-1.el6_3.x86_64
+nss-pam-ldapd-0.7.5-14.el6_2.1.x86_64
+nss-softokn-3.12.9-11.el6.x86_64
+nss-softokn-freebl-3.12.9-11.el6.x86_64
+nss-sysinit-3.13.5-1.el6_3.x86_64
+nss-tools-3.13.5-1.el6_3.x86_64
+nss-util-3.13.5-1.el6_3.x86_64
+ntp-4.2.4p8-2.el6.centos.x86_64
+ntpdate-4.2.4p8-2.el6.centos.x86_64
+ntsysv-1.3.49.3-2.el6.x86_64
+openjpeg-libs-1.3-9.el6_3.x86_64
+openldap-2.4.23-26.el6_3.2.x86_64
+openldap-clients-2.4.23-26.el6_3.2.x86_64
+openldap-servers-2.4.23-26.el6_3.2.x86_64
+openssh-5.3p1-81.el6_3.x86_64
+openssh-clients-5.3p1-81.el6_3.x86_64
+openssh-server-5.3p1-81.el6_3.x86_64
+openssl-1.0.0-25.el6_3.1.x86_64
+osg-ca-certs-1.31-2.osg.el6.noarch
+osg-gums-config-43-2.osg.el6.noarch
+osg-release-3.0-18.osg.el6.noarch
+osg-system-profiler-1.0.9-1.osg.el6.noarch
+osg-version-3.1.11-1.osg.el6.noarch
+osg-voms-3.0.0-2.osg.el6.noarch
+osg-webapp-common-1-1.osg.el6.noarch
+pam-1.1.1-10.el6_2.1.x86_64
+pam_ldap-185-11.el6.x86_64
+pam_passwdqc-1.0.5-6.el6.x86_64
+pango-1.28.1-3.el6_0.5.1.centos.x86_64
+parted-2.1-18.el6.x86_64
+passwd-0.77-4.el6_2.2.x86_64
+patch-2.6-6.el6.x86_64
+pax-3.4-10.1.el6.x86_64
+pciutils-3.1.4-11.el6.x86_64
+pciutils-libs-3.1.4-11.el6.x86_64
+pcmciautils-015-4.2.el6.x86_64
+pcre-7.8-4.el6.x86_64
+perl-5.10.1-127.el6.x86_64
+perl-CGI-3.51-127.el6.x86_64
+perl-Compress-Raw-Zlib-2.020-127.el6.x86_64
+perl-Compress-Zlib-2.020-127.el6.x86_64
+perl-DBD-MySQL-4.013-3.el6.x86_64
+perl-DBI-1.609-4.el6.x86_64
+perl-devel-5.10.1-127.el6.x86_64
+perl-Digest-SHA-5.47-127.el6.x86_64
+perl-ExtUtils-MakeMaker-6.55-127.el6.x86_64
+perl-ExtUtils-ParseXS-2.2003.0-127.el6.x86_64
+perl-HTML-Parser-3.64-2.el6.x86_64
+perl-HTML-Tagset-3.20-4.el6.noarch
+perl-IO-Compress-Base-2.020-127.el6.x86_64
+perl-IO-Compress-Zlib-2.020-127.el6.x86_64
+perl-libs-5.10.1-127.el6.x86_64
+perl-libwww-perl-5.833-2.el6.noarch
+perl-Module-Pluggable-3.90-127.el6.x86_64
+perl-Pod-Escapes-1.04-127.el6.x86_64
+perl-Pod-Simple-3.13-127.el6.x86_64
+perl-Test-Harness-3.17-127.el6.x86_64
+perl-Test-Simple-0.92-127.el6.x86_64
+perl-URI-1.40-2.el6.noarch
+perl-version-0.77-127.el6.x86_64
+phonon-backend-gstreamer-4.6.2-24.el6.x86_64
+pinentry-0.7.6-6.el6.x86_64
+pinfo-0.6.9-12.el6.x86_64
+pixman-0.18.4-1.el6_0.1.x86_64
+pkgconfig-0.23-9.1.el6.x86_64
+plymouth-0.8.3-24.el6.centos.x86_64
+plymouth-core-libs-0.8.3-24.el6.centos.x86_64
+plymouth-scripts-0.8.3-24.el6.centos.x86_64
+pm-utils-1.2.5-9.el6.x86_64
+policycoreutils-2.0.83-19.24.el6.x86_64
+polkit-0.96-2.el6_0.1.x86_64
+poppler-0.12.4-3.el6_0.1.x86_64
+poppler-data-0.4.0-1.el6.noarch
+poppler-utils-0.12.4-3.el6_0.1.x86_64
+popt-1.13-7.el6.x86_64
+portreserve-0.0.4-9.el6.x86_64
+postfix-2.6.6-2.2.el6_1.x86_64
+prelink-0.4.6-3.el6.x86_64
+procps-3.2.8-23.el6.x86_64
+psacct-6.3.2-63.el6_3.3.x86_64
+psmisc-22.6-15.el6_0.1.x86_64
+pth-2.0.7-9.3.el6.x86_64
+puretls-0.9b4-1.osg.el6.noarch
+pygpgme-0.1-18.20090824bzr68.el6.x86_64
+python-2.6.6-29.el6_3.3.x86_64
+python-ethtool-0.6-1.el6.x86_64
+python-iniparse-0.3.1-2.1.el6.noarch
+python-inotify-0.9.1-1.el6.noarch
+python-iwlib-0.1-1.2.el6.x86_64
+python-libs-2.6.6-29.el6_3.3.x86_64
+python-pycurl-7.19.0-8.el6.x86_64
+python-qpid-0.14-11.el6_3.noarch
+python-qpid-qmf-0.14-14.el6_3.x86_64
+python-saslwrapper-0.14-1.el6.x86_64
+python-urlgrabber-3.9.1-8.el6.noarch
+python-ZSI-2.0-6.el6.noarch
+PyXML-0.8.4-19.el6.x86_64
+ql2100-firmware-1.19.38-3.1.el6.noarch
+ql2200-firmware-2.02.08-3.1.el6.noarch
+ql23xx-firmware-3.03.27-3.1.el6.noarch
+ql2400-firmware-5.06.05-1.el6.noarch
+ql2500-firmware-5.06.05-1.el6.noarch
+qpid-cpp-client-0.14-22.el6_3.x86_64
+qpid-cpp-client-ssl-0.14-22.el6_3.x86_64
+qpid-cpp-server-0.14-22.el6_3.x86_64
+qpid-cpp-server-ssl-0.14-22.el6_3.x86_64
+qpid-qmf-0.14-14.el6_3.x86_64
+qpid-tools-0.14-6.el6_3.noarch
+qt3-3.3.8b-30.el6.x86_64
+qt-4.6.2-24.el6.x86_64
+qt-sqlite-4.6.2-24.el6.x86_64
+qt-x11-4.6.2-24.el6.x86_64
+quota-3.17-16.el6.x86_64
+rdate-1.4-16.el6.x86_64
+readahead-1.5.6-1.el6.x86_64
+readline-6.0-4.el6.x86_64
+redhat-logos-60.0.14-12.el6.centos.noarch
+redhat-lsb-4.0-3.el6.centos.x86_64
+redhat-lsb-graphics-4.0-3.el6.centos.x86_64
+redhat-lsb-printing-4.0-3.el6.centos.x86_64
+regexp-1.5-4.4.el6.x86_64
+rfkill-0.3-4.el6.x86_64
+rng-tools-2-13.el6_2.x86_64
+rootfiles-8.1-6.1.el6.noarch
+rpm-4.8.0-27.el6.x86_64
+rpm-libs-4.8.0-27.el6.x86_64
+rpm-python-4.8.0-27.el6.x86_64
+rsync-3.0.6-9.el6.x86_64
+rsyslog-5.8.10-2.el6.x86_64
+rt61pci-firmware-1.2-7.el6.noarch
+rt73usb-firmware-1.8-7.el6.noarch
+saslwrapper-0.14-1.el6.x86_64
+screen-4.0.3-16.el6.x86_64
+sed-4.2.1-10.el6.x86_64
+selinux-policy-3.7.19-155.el6_3.8.noarch
+selinux-policy-targeted-3.7.19-155.el6_3.8.noarch
+setserial-2.17-25.el6.x86_64
+setup-2.8.14-16.el6.noarch
+setuptool-1.19.9-3.el6.x86_64
+sgpio-1.2.0.10-5.el6.x86_64
+shadow-utils-4.1.4.2-13.el6.x86_64
+shorewall-4.5.4-1.el6.noarch
+shorewall-core-4.5.4-1.el6.noarch
+sigar-1.6.5-0.4.git58097d9.el6.x86_64
+sinjdoc-0.5-9.1.el6.x86_64
+slang-2.2.1-1.el6.x86_64
+smartmontools-5.42-2.el6.x86_64
+sos-2.2-29.el6.noarch
+sqlite-3.6.20-1.el6.x86_64
+strace-4.5.19-1.11.el6_3.2.x86_64
+sudo-1.7.4p5-13.el6_3.x86_64
+sysstat-9.0.4-20.el6.x86_64
+system-config-firewall-base-1.2.27-5.el6.noarch
+system-config-firewall-tui-1.2.27-5.el6.noarch
+system-config-network-tui-1.6.0.el6.2-1.el6.noarch
+systemtap-runtime-1.7-5.el6_3.1.x86_64
+sysvinit-tools-2.87-4.dsf.el6.x86_64
+tar-1.23-7.el6.x86_64
+tcpdump-4.0.0-3.20090921gitdf3cb4.2.el6.x86_64
+tcp_wrappers-7.6-57.el6.x86_64
+tcp_wrappers-libs-7.6-57.el6.x86_64
+tcsh-6.17-19.el6_2.x86_64
+telnet-0.17-47.el6_3.1.x86_64
+time-1.7-37.1.el6.x86_64
+tmpwatch-2.9.16-4.el6.x86_64
+tomcat6-6.0.24-45.el6.noarch
+tomcat6-el-2.1-api-6.0.24-45.el6.noarch
+tomcat6-jsp-2.1-api-6.0.24-45.el6.noarch
+tomcat6-lib-6.0.24-45.el6.noarch
+tomcat6-servlet-2.5-api-6.0.24-45.el6.noarch
+traceroute-2.0.14-2.el6.x86_64
+tuned-0.2.19-7.el6.noarch
+tzdata-2012f-1.el6.noarch
+udev-147-2.42.el6.x86_64
+unzip-6.0-1.el6.x86_64
+upstart-0.6.5-12.el6.x86_64
+urw-fonts-2.4-10.el6.noarch
+usbutils-003-4.el6.x86_64
+usermode-1.102-3.el6.x86_64
+ustr-1.0.4-9.1.el6.x86_64
+util-linux-ng-2.17.2-12.7.el6_3.x86_64
+vconfig-1.9-8.1.el6.x86_64
+vim-common-7.2.411-1.8.el6.x86_64
+vim-enhanced-7.2.411-1.8.el6.x86_64
+vim-minimal-7.2.411-1.8.el6.x86_64
+virt-what-1.11-1.1.el6.x86_64
+voms-2.0.8-1.3.osg.el6.x86_64
+voms-admin-client-2.0.16-2.osg.el6.x86_64
+voms-admin-server-2.7.0-1.2.osg.el6.noarch
+voms-mysql-plugin-3.1.6-1.1.osg.el6.x86_64
+voms-server-2.0.8-1.3.osg.el6.x86_64
+wget-1.12-1.4.el6.x86_64
+which-2.19-6.el6.x86_64
+wireless-tools-29-5.1.1.el6.x86_64
+words-3.0-17.el6.noarch
+wsdl4j-1.5.2-7.8.el6.noarch
+xalan-j2-2.7.0-9.8.el6.noarch
+xalan-j2-xsltc-2.7.0-9.8.el6.noarch
+xdg-utils-1.0.2-17.20091016cvs.el6.noarch
+xerces-j2-2.7.1-12.6.el6_0.x86_64
+xml-common-0.6.3-32.el6.noarch
+xml-commons-apis-1.3.04-3.6.el6.x86_64
+xml-commons-resolver-1.1-4.18.el6.x86_64
+xmlrpc-c-1.16.24-1209.1840.el6.x86_64
+xmlrpc-c-client-1.16.24-1209.1840.el6.x86_64
+xorg-x11-drv-ati-firmware-6.14.2-9.el6.noarch
+xorg-x11-font-utils-7.2-11.el6.x86_64
+xz-4.999.9-0.3.beta.20091007git.el6.x86_64
+xz-libs-4.999.9-0.3.beta.20091007git.el6.x86_64
+xz-lzma-compat-4.999.9-0.3.beta.20091007git.el6.x86_64
+yum-3.2.29-30.el6.centos.noarch
+yum-metadata-parser-1.1.2-16.el6.x86_64
+yum-plugin-fastestmirror-1.1.30-14.el6.noarch
+yum-plugin-priorities-1.1.30-14.el6.noarch
+yum-plugin-security-1.1.30-14.el6.noarch
+yum-utils-1.1.30-14.el6.noarch
+zd1211-firmware-1.4-4.el6.noarch
+zip-3.0-1.el6.x86_64
+zlib-1.2.3-27.el6.x86_64
+

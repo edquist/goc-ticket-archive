@@ -1,0 +1,133 @@
+Horst is correct: please don’t try to access servers at BNL; these were decommissioned last November. That is likely what’s causing the client to exceed the total of 16 possible server/proxy combinations, and should alleviate the issue.
+
+~John
+
+> On Apr 29, 2015, at 11:41 AM, Horst Severini <hs@nhn.ou.edu> wrote:
+> 
+> Hi Saul,
+> 
+> umm, I don't think the BNL frontier servers are running anymore. I think we're supposed to use the TRIUMF, IN2P3, or RAL servers. This is what we have now:
+> 
+> export FRONTIER_SERVER="(serverurl=http://ccfrontier.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli02.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli01.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://frontier-atlas.lcg.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier-atlas1.lcg.triumf.ca:3128/ATLAS_frontier)(serverurl=http://tier1nfs.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier.triumf.ca:3128/ATLAS_frontier)(proxyurl=http://tier2-05.ochep.ou.edu:3128)(proxyurl=http://gk07.atlas-swt2.org:3128)"
+> 
+> Hope this helps,
+> 
+> 	Horst
+> 
+> On 04/29/2015 09:58 AM, helpdesk@ggus.org wrote:
+>> Dear group members,
+>> GGUS TEAM ticket #113372 was updated.
+>> 
+>> REFERENCE LINK:https://ggus.eu/index.php?mode=ticket_info&ticket_id=113372
+>> SUBJECT: BU_ATLAS_Tier2_MCORE: Production jobs are heavily failing with frontier channel error
+>> 
+>> =====================
+>> LATEST MODIFICATIONS:
+>> 
+>> LAST MODIFIER -> OSG-GOC (via Footprints)
+>> 
+>> 
+>> PUBLIC DIARY ->
+>> Thanks Arwa,
+>> 
+>> Our squid is timing out accessing any of the BNL frontier servers. We don't
+>> know why at this point. This seems to only affect MCORE jobs. I've contacted
+>> John DeStefano to comment. We'll continue to investigate:
+>> 
+>> http://egg.bu.edu/net2/studies%7btype:egg.Hatch%7d/squid_issue_2015-04-29/
+>> 
+>> If the MCORE errors keep up, we'll turn off the MCORE queue.
+>> 
+>> - Saul & Augustine
+>> 
+>> On Wed Apr 29 05:04:14 2015, osg-goc-rest wrote:
+>>> >BU_ATLAS_Tier2_MCORE: jobs are heavily failing with:
+>>> >
+>>> >RuntimeError: Can not create frontier channel (Additional Information:
+>>> >[frontier_config.c:634]: Reached limit of 16 frontier servers)
+>>> >
+>>> >Example job:
+>>> >http://bigpanda.cern.ch/job?pandaid=2464068886
+>>> >
+>>> >extract from log file:
+>>> >16:47:57 Py:TrigConfigSvcUtils.py INFO Environment FRONTIER_SERVER:
+>>> >
+>> (serverurl=http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier01.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier02.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://lcgft-
+>>> >atlas.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-
+>>> >frontier01.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-
+>>> >frontier02.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://t1-
+>>> >
+>> frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://tier1nfs.triumf.ca:3128/ATLAS_frontier)(proxyurl=http://atlas-
+>>> >net2.bu.edu:3128)(proxyurl=http://net2.rc.fas.harvard.edu:3128)
+>>> >16:47:57 Py:TrigConfigSvcUtils.py INFO Using frontier connection
+>>> >frontier://ATLF/()/ATLAS_CONF_TRIGGER_RUN2_MC
+>>> >16:47:57 Shortened traceback (most recent user call last):
+>>> >16:47:57 File
+>>> >"/cvmfs/atlas.cern.ch/repo/sw/software/x86_64-slc6-gcc48-
+>>> >
+>> opt/20.1.4/AtlasProduction/20.1.4.7/InstallArea/jobOptions/RecJobTransforms/skeleton.RDOtoRDOtrigger.py",
+>>> >line 45, in <module>
+>>> >16:47:57 exec(cmd)
+>>> >16:47:57 File "<string>", line 1, in <module>
+>>> >16:47:57 File
+>>> >"/cvmfs/atlas.cern.ch/repo/sw/software/x86_64-slc6-gcc48-
+>>> >
+>> opt/20.1.4/AtlasTrigger/20.1.4/InstallArea/python/TriggerJobOpts/TriggerFlags.py",
+>>> >line 616, in _do_action
+>>> >16:47:57
+>>> >
+>> tf.triggerMenuSetup=getMenuNameFromDB(tf.triggerDbConnection(),tf.triggerDbKeys()[2])
+>>> >16:47:57 File
+>>> >"/cvmfs/atlas.cern.ch/repo/sw/software/x86_64-slc6-gcc48-
+>>> >
+>> opt/20.1.4/AtlasProduction/20.1.4.7/InstallArea/python/TrigConfigSvc/TrigConfigSvcUtils.py",
+>>> >line 462, in getMenuNameFromDB
+>>> >16:47:57 res = executeQuery(cursor, output, condition, schemaname,
+>>> >tables)
+>>> >16:47:57 File
+>>> >"/cvmfs/atlas.cern.ch/repo/sw/software/x86_64-slc6-gcc48-
+>>> >
+>> opt/20.1.4/AtlasProduction/20.1.4.7/InstallArea/python/TrigConfigSvc/TrigConfigSvcUtils.py",
+>>> >line 328, in executeQuery
+>>> >16:47:57 cursor.execute(str(query))
+>>> >16:47:57 File
+>>> >"/cvmfs/atlas.cern.ch/repo/sw/software/x86_64-slc6-gcc48-
+>>> >
+>> opt/20.1.4/AtlasProduction/20.1.4.7/InstallArea/python/TrigConfigSvc/TrigConfFrontier.py",
+>>> >line 64, in execute
+>>> >16:47:57 conn = fc.Connection(self.url)
+>>> >16:47:57 RuntimeError: Can not create frontier channel (Additional
+>>> >Information: [frontier_config.c:634]: Reached limit of 16 frontier
+>>> >servers)
+>>> >16:47:57 Py:Athena INFO leaving with code 8: "an unknown
+>>> >exception occurred"
+>>> >
+>>> >link to an example log file:
+>>> >
+>>> >http://aipanda057.cern.ch/media/filebrowser/cd783325-45a8-4225-ad7d-
+>>> >
+>> e81385e32034/tarball_PandaJob_2464068886_BU_ATLAS_Tier2_MCORE/log.RDOtoRDOTrigger
+>>> >
+>>> >list of failing tasks:
+>>> >
+>>> >
+>> http://bigpanda.cern.ch/errors/?jobtype=production&sortby=count&jobstatus=failed&hours=12&display_limit=100&computingsite=BU_ATLAS_Tier2_MCORE&jobstatus=failed&exeerrorcode=65&hours=12&display_limit=100
+>>> >
+>>> >Please have a look.
+>>> >
+>>> >Regards,
+>>> >Arwa (ADCoS Shifter)
+>>> >
+>>> >[Ticket Origin]
+>>> >https://ggus.eu/ws/ticket_info.php?ticket=113372
+>>> >
+>>> >[Tick
+>> [Text truncated due to GGUS 4000 char limit]
+>> Please accesshttps://ticket.grid.iu.edu/viewer?id=25147#1430319468  for full text.
+>> 
+>> *********************************************************************************
+>>  This is an automated mail. When replying don't change the subject line!
+>>  Type your text above this box and S T R I P  P R E V I O U S  M A I L S please!!
+>> *********************************************************************************
+>> 
+

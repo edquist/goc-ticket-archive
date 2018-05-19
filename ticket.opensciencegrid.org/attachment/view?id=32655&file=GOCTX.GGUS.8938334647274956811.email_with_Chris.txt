@@ -1,0 +1,207 @@
+Hi Bockjoo,
+    Thanks a bunch for these tests.  They are very helpful.
+
+From your ihepa box I basically get 10G to our central test node on the CRN:
+
+[root@ssrb230a-crn-psonar-1 ~]# iperf3 -R -c gridftp3.ihepa.ufl.edu
+Connecting to host gridftp3.ihepa.ufl.edu, port 5201
+Reverse mode, remote host gridftp3.ihepa.ufl.edu is sending
+[  4] local 128.227.253.14 port 42192 connected to 128.227.221.31 port 5201
+[ ID] Interval           Transfer     Bandwidth
+[  4]   0.00-1.00   sec  1.15 GBytes  9.90 Gbits/sec
+[  4]   1.00-2.00   sec  1.15 GBytes  9.90 Gbits/sec
+[  4]   2.00-3.00   sec  1.15 GBytes  9.90 Gbits/sec
+[  4]   3.00-4.00   sec  1.15 GBytes  9.90 Gbits/sec
+[  4]   4.00-5.00   sec  1.15 GBytes  9.90 Gbits/sec
+[  4]   5.00-6.00   sec  1.15 GBytes  9.90 Gbits/sec
+[  4]   6.00-7.00   sec  1.15 GBytes  9.89 Gbits/sec
+[  4]   7.00-8.00   sec  1.15 GBytes  9.90 Gbits/sec
+[  4]   8.00-9.00   sec  1.15 GBytes  9.89 Gbits/sec
+[  4]   9.00-10.00  sec  1.15 GBytes  9.90 Gbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-10.00  sec  11.5 GBytes  9.90 Gbits/sec    4             sender
+[  4]   0.00-10.00  sec  11.5 GBytes  9.90 Gbits/sec receiver
+
+From a test node on the FLR network in Jacksonville which is rate limited to 5Gbps, I basically get 5Gbps:
+
+[root@jax-nettest-r310-1 ~]# iperf3 -R -c gridftp3.ihepa.ufl.edu
+Connecting to host gridftp3.ihepa.ufl.edu, port 5201
+Reverse mode, remote host gridftp3.ihepa.ufl.edu is sending
+[  4] local 108.59.31.235 port 50818 connected to 128.227.221.31 port 5201
+[ ID] Interval           Transfer     Bandwidth
+[  4]   0.00-1.00   sec   547 MBytes  4.59 Gbits/sec
+[  4]   1.00-2.00   sec   550 MBytes  4.62 Gbits/sec
+[  4]   2.00-3.00   sec   552 MBytes  4.63 Gbits/sec
+[  4]   3.00-4.00   sec   552 MBytes  4.63 Gbits/sec
+[  4]   4.00-5.00   sec   550 MBytes  4.61 Gbits/sec
+[  4]   5.00-6.00   sec   552 MBytes  4.63 Gbits/sec
+[  4]   6.00-7.00   sec   547 MBytes  4.59 Gbits/sec
+[  4]   7.00-8.00   sec   552 MBytes  4.63 Gbits/sec
+[  4]   8.00-9.00   sec   551 MBytes  4.62 Gbits/sec
+[  4]   9.00-10.00  sec   550 MBytes  4.61 Gbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-10.00  sec  5.38 GBytes  4.62 Gbits/sec    0             sender
+[  4]   0.00-10.00  sec  5.38 GBytes  4.62 Gbits/sec receiver
+
+From the FLR server to FNAL, I also get bad performance:
+
+[root@jax-nettest-r310-1 ~]# iperf3 -c mdtm-server.fnal.gov
+Connecting to host mdtm-server.fnal.gov, port 5201
+[  4] local 108.59.31.235 port 41464 connected to 131.225.2.165 port 5201
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.00   sec   404 KBytes  3.31 Mbits/sec   42   4.24 KBytes
+[  4]   1.00-2.00   sec  8.48 KBytes  69.5 Kbits/sec    8   4.24 KBytes
+[  4]   2.00-3.00   sec  36.8 KBytes   301 Kbits/sec    6   2.83 KBytes
+[  4]   3.00-4.00   sec  22.6 KBytes   185 Kbits/sec    8   4.24 KBytes
+[  4]   4.00-5.00   sec  0.00 Bytes  0.00 bits/sec    3   4.24 KBytes
+[  4]   5.00-6.00   sec  2.83 KBytes  23.2 Kbits/sec    4   4.24 KBytes
+[  4]   6.00-7.00   sec  0.00 Bytes  0.00 bits/sec    1   4.24 KBytes
+[  4]   7.00-8.00   sec  0.00 Bytes  0.00 bits/sec    1   4.24 KBytes
+[  4]   8.00-9.00   sec  0.00 Bytes  0.00 bits/sec    0   4.24 KBytes
+[  4]   9.00-10.00  sec  0.00 Bytes  0.00 bits/sec    1   4.24 KBytes
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-10.00  sec   475 KBytes   389 Kbits/sec   74             sender
+[  4]   0.00-10.00  sec   355 KBytes   291 Kbits/sec receiver
+
+I think the issue is northbound of FLR.  Are you working with anyone within FNAL on troubleshooting?
+
+Tnx
+Chris
+
+On 2/13/2017 6:01 PM, Bockjoo Kim wrote:
+> iperf shows the bandwidth has a problem:
+> [root@gridftp3 ~]# iperf3 -c mdtm-server.fnal.gov
+> Connecting to host mdtm-server.fnal.gov, port 5201
+> [  4] local 128.227.221.31 port 53865 connected to 131.225.2.165 port 5201
+> [ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+> [  4]   0.00-1.00   sec  1.94 MBytes  16.3 Mbits/sec    2   1.41
+> KBytes
+> [  4]   1.00-2.00   sec  0.00 Bytes  0.00 bits/sec    1   2.83 KBytes
+> [  4]   2.00-3.00   sec  0.00 Bytes  0.00 bits/sec    2   1.41 KBytes
+> [  4]   3.00-4.00   sec  0.00 Bytes  0.00 bits/sec    1   1.41 KBytes
+> [  4]   4.00-5.00   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes
+> [  4]   5.00-6.00   sec  0.00 Bytes  0.00 bits/sec    1   1.41 KBytes
+> [  4]   6.00-7.00   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes
+> [  4]   7.00-8.00   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes
+> [  4]   8.00-9.00   sec  0.00 Bytes  0.00 bits/sec    1   1.41 KBytes
+> [  4]   9.00-10.00  sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes
+> - - - - - - - - - - - - - - - - - - - - - - - - -
+> [ ID] Interval           Transfer     Bandwidth       Retr
+> [  4]   0.00-10.00  sec  1.94 MBytes  1.63 Mbits/sec    8             sender
+> [  4]   0.00-10.00  sec   372 KBytes   305 Kbits/sec
+> receiver
+>
+> iperf Done.
+>
+>
+> But from FNAL:
+>
+> [liangz@mdtm-server ~]$ iperf3 -c gridftp3.ihepa.ufl.edu
+> <http://gridftp3.ihepa.ufl.edu>
+> Connecting to host gridftp3.ihepa.ufl.edu
+> <http://gridftp3.ihepa.ufl.edu>, port 5201
+> [  4] local 131.225.2.165 port 54701 connected to 128.227.221.31 port 5201
+> [ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+> [  4]   0.00-1.00   sec   109 MBytes   912 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   1.00-2.00   sec  97.5 MBytes   818 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   2.00-3.00   sec  97.5 MBytes   818 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   3.00-4.00   sec  96.2 MBytes   807 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   4.00-5.00   sec  97.5 MBytes   818 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   5.00-6.00   sec  96.2 MBytes   807 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   6.00-7.00   sec  97.5 MBytes   818 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   7.00-8.00   sec  96.2 MBytes   807 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   8.00-9.00   sec  97.5 MBytes   818 Mbits/sec    0   3.06 MBytes
+>
+> [  4]   9.00-10.00  sec  96.2 MBytes   807 Mbits/sec    0   3.06 MBytes
+>
+> - - - - - - - - - - - - - - - - - - - - - - - - -
+> [ ID] Interval           Transfer     Bandwidth       Retr
+> [  4]   0.00-10.00  sec   981 MBytes   823 Mbits/sec    0             sender
+> [  4]   0.00-10.00  sec   920 MBytes   772 Mbits/sec
+> receiver
+>
+> iperf Done.
+>
+>
+> Both gridftp3.ihepa.ufl.edu and mdtm-server.fnal.gov have 10-GiGE
+> network card.
+> Thanks,
+> Bockjoo
+>
+> On 2/13/17 3:49 PM, Bockjoo Kim wrote:
+>> Sorry about that! Yes. It is mdtm-server.fnal.gov:
+>> [root@gridftp3 ~]# traceroute mdtm-server.fnal.gov
+>> traceroute to mdtm-server.fnal.gov (131.225.2.165), 30 hops max, 60
+>> byte packets
+>>  1  npb1114-redge-a7124sx-1-v983-1.ns.ufl.edu (128.227.221.1) 0.143
+>> ms  0.125 ms  0.114 ms
+>>  2  ssrb230a-rwan-msfc-1-v2012-1.ns.ufl.edu (128.227.253.5)  0.157 ms
+>> 0.178 ms  0.214 ms
+>>  3  esnet-lhc1-ufl.es.net (198.124.80.145)  29.350 ms  29.646 ms
+>> 29.923 ms
+>>  4  esnet-lhc1-fnal.es.net (198.124.80.13)  30.416 ms  30.461 ms
+>> 30.517 ms
+>>  5  fnal-lhc1-esnet.es.net (198.124.80.14)  30.702 ms  30.655 ms
+>> 30.725 ms
+>>  6  r-nrtb-lcc-1-vl911.fnal.gov (198.151.133.126)  30.960 ms 30.897
+>> ms  30.987 ms
+>>  7  mdtm-server.fnal.gov (131.225.2.165)  30.645 ms  30.644 ms 30.645 ms
+>>
+>> Thanks,
+>> Bockjoo
+>> On 2/13/17 3:47 PM, Chris Griffin wrote:
+>>> I am not aware of any.  Could you send me a traceroute from the UFL
+>>> machine?  I don't show mddm-server.fnal.gov as a valid DNS address
+>>> BTW. Is it mdtm-server.fnal.gov?
+>>>
+>>> Tnx
+>>> Chris
+>>>
+>>> On 02/13/2017 03:43 PM, Bockjoo Kim wrote:
+>>>> Hi Chris',
+>>>>
+>>>> A colleague at FNAL informed me there is transfer rate change:
+>>>>
+>>>> "
+>>>>
+>>>> I found the data transfer in the direction from UFL to FNAL is far slow
+>>>> today than usual for all tools under testing. It is now about 80Mbps
+>>>> but
+>>>> was 5Gbps for past weeks. The reverse direction is OK. Anything is
+>>>> going
+>>>> on as far as you know?
+>>>>
+>>>> "
+>>>>
+>>>> Was there any recent change or issue that might cause this?
+>>>>
+>>>> The machines that have been tested aremddm-server.fnal.gov
+>>>> <http://mddm-server.fnal.gov/> and gridftp3.ihepa.ufl.edu
+>>>> <mailto:mdtmgui@gridftp3.ihepa.ufl.edu>
+>>>>
+>>>> Thanks,
+>>>>
+>>>> Bockjoo
+>>>>
+>>>>
+>>>>
+>>>>
+>>>>
+>>>>
+>>>>
+>>>>
+>>>>
+>>>>
+>>>>
+

@@ -1,0 +1,646 @@
+######## VO: osg #################################
+###############################################
+General query to determine records to correct
+###############################################
+
+set @CommonName := '/CN=pilot/osg-flock.grid.iu.edu';
+set @start := '2014-07-01';
+set @end   := '2014-10-01';
+set @corrid     := 20;   -- osg
+select
+       SiteName
+      ,Main.ProbeName as ProbeName
+      ,CommonName
+      ,date_format(EndTime,'%Y-%m-%d') as EndTime
+      ,VO.VOName as VOName
+      ,corrid
+      ,sum(Njobs) as Jobs
+      ,round(sum(CpuUserDuration+CpuSystemDuration)/3600,0) as CpuHrs
+      ,round(sum(WallDuration * Cores)/3600,0) as WallHrs
+from MasterSummaryData  Main
+join Probe on (Main.ProbeName = Probe.probename)
+join Site  on (Probe.siteid = Site.siteid)
+join VONameCorrection voc on (Main.VOcorrid = voc.corrid)
+join VO on (voc.VOid = VO.VOid)
+where (Main.ProbeName like '%mwt2.org'
+         or
+       Main.ProbeName = 'condor:mwt2-gk.campuscluster.illinois.edu')
+  and EndTime > @start
+  and EndTime < @end
+  and CommonName = @CommonName
+group by
+       SiteName
+      ,ProbeName
+      ,CommonName
+      ,EndTime
+      ,VOName
+      ,corrid
+;
+
++--------------+-------------------------------------------+---------------------------------+------------+--------+--------+------+--------+---------+
+| SiteName     | ProbeName                                 | CommonName                      | EndTime    | VOName | corrid | Jobs | CpuHrs | WallHrs |
++--------------+-------------------------------------------+---------------------------------+------------+--------+--------+------+--------+---------+
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-02 | osg    |     20 |    3 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-03 | osg    |     20 |   10 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-04 | osg    |     20 |    5 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-05 | osg    |     20 |   40 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-07 | osg    |     20 |    2 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-08 | osg    |     20 |    2 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-09 | osg    |     20 |   20 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-10 | osg    |     20 |    4 |     10 |      13 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-13 | osg    |     20 |    3 |      9 |      10 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-14 | osg    |     20 |    1 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-15 | osg    |     20 |    3 |      9 |       9 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-16 | osg    |     20 |    2 |      6 |       7 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-18 | osg    |     20 |    2 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-19 | osg    |     20 |    2 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-21 | osg    |     20 |    2 |      4 |       4 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-22 | atlas  |    984 |    1 |      0 |       2 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-23 | atlas  |    984 |    1 |      2 |       2 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-25 | atlas  |    984 |    2 |      7 |       7 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-18 | atlas  |    984 |    1 |      4 |       4 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-20 | atlas  |    984 |    3 |      9 |      12 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-21 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-23 | atlas  |    984 |    3 |      6 |       9 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-24 | atlas  |    984 |    5 |      7 |       9 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-28 | atlas  |    984 |    3 |      5 |       6 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-30 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-31 | atlas  |    984 |    4 |      2 |       2 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-01 | atlas  |    984 |    6 |      6 |       6 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-03 | atlas  |    984 |    5 |      9 |      18 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-04 | atlas  |    984 |    1 |      2 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-06 | atlas  |    984 |    2 |      0 |       1 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-07 | atlas  |    984 |    5 |     11 |      12 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-08 | atlas  |    984 |    2 |     13 |      16 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-10 | atlas  |    984 |    3 |     15 |      15 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-11 | atlas  |    984 |    1 |     11 |      11 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-12 | atlas  |    984 |    1 |      1 |       4 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-13 | osg    |     20 |    3 |      3 |       6 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-15 | osg    |     20 |    4 |      9 |      10 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-16 | osg    |     20 |    1 |      4 |       4 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-02 | osg    |     20 |    5 |     54 |      66 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-03 | osg    |     20 |   27 |     44 |      58 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-04 | osg    |     20 |   28 |    413 |     430 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-05 | osg    |     20 | 1914 |  16490 |   17334 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-06 | osg    |     20 | 1072 |  18462 |   19211 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-07 | osg    |     20 |  160 |   1710 |    2175 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-08 | osg    |     20 |  430 |   2437 |    5284 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-09 | osg    |     20 |   75 |    219 |     257 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-10 | osg    |     20 |  253 |   2936 |    3285 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-11 | osg    |     20 | 1290 |  19646 |   21282 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-12 | osg    |     20 |    2 |      1 |       1 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-13 | osg    |     20 |  708 |   7969 |    8518 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-14 | osg    |     20 |  833 |   8642 |    9190 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-15 | osg    |     20 |  858 |  12058 |   12673 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-16 | osg    |     20 | 1506 |  21899 |   23236 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-17 | osg    |     20 | 1681 |  20673 |   21982 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-18 | osg    |     20 | 1273 |  19334 |   21470 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-19 | osg    |     20 |  146 |    821 |     858 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-20 | osg    |     20 |  300 |   1560 |    1787 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-21 | osg    |     20 | 3233 |   3507 |    4713 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-22 | atlas  |    984 |   19 |    279 |     300 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-22 | osg    |     20 |  306 |   4204 |    4520 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-23 | atlas  |    984 |  816 |   6472 |    6718 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-24 | atlas  |    984 | 1724 |  17860 |   18263 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-25 | atlas  |    984 |  456 |   5748 |    6005 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-26 | atlas  |    984 |  518 |   6522 |    6726 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-27 | atlas  |    984 |  355 |   4716 |    4810 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-28 | atlas  |    984 |  736 |   3135 |    3700 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-29 | atlas  |    984 |  861 |   5053 |    5320 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-30 | atlas  |    984 |  683 |   6926 |    7048 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-31 | atlas  |    984 |  141 |    620 |     646 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-01 | atlas  |    984 |  311 |   3454 |    3536 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-02 | atlas  |    984 | 1181 |  14913 |   15494 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-03 | atlas  |    984 | 2385 |  21296 |   22073 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-04 | atlas  |    984 | 2788 |  27474 |   28166 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-05 | atlas  |    984 |  343 |   5352 |    5438 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-06 | atlas  |    984 |    1 |     13 |      14 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-07 | atlas  |    984 |    7 |      0 |       1 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-08 | atlas  |    984 |   29 |    403 |     410 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-09 | atlas  |    984 |  198 |   2778 |    2950 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-10 | atlas  |    984 |  109 |   1389 |    1590 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-11 | atlas  |    984 |   56 |    823 |     853 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-12 | atlas  |    984 |   47 |    622 |     669 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-13 | atlas  |    984 |   29 |    398 |     426 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-14 | atlas  |    984 |   46 |    613 |     635 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-15 | atlas  |    984 |  205 |   2133 |    2305 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-16 | atlas  |    984 |  436 |   5438 |    5774 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-17 | atlas  |    984 |  690 |   6818 |    7148 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-18 | atlas  |    984 |  187 |   2621 |    2663 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-19 | atlas  |    984 | 1536 |  17458 |   18110 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-20 | atlas  |    984 | 1045 |  10081 |   10679 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-21 | atlas  |    984 | 1732 |   6312 |    6969 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-22 | atlas  |    984 | 1307 |  10564 |   12527 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-23 | atlas  |    984 |  544 |   7674 |    8579 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-24 | atlas  |    984 | 1381 |  18656 |   21143 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-25 | atlas  |    984 | 1354 |  19242 |   21370 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-26 | atlas  |    984 | 1351 |  15769 |   18430 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-27 | atlas  |    984 |  265 |   3012 |    3585 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-28 | atlas  |    984 |  118 |    120 |     162 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-29 | atlas  |    984 |  322 |   2318 |    2630 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-30 | atlas  |    984 |   48 |    141 |     183 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-31 | atlas  |    984 |   44 |    289 |     323 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-01 | atlas  |    984 |   41 |    326 |     359 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-02 | atlas  |    984 |  118 |   1013 |    1116 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-03 | atlas  |    984 |   89 |    384 |     479 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-04 | atlas  |    984 |  114 |    291 |     421 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-05 | atlas  |    984 |  127 |     86 |     147 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-06 | atlas  |    984 |   57 |    181 |     192 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-08 | atlas  |    984 |    4 |     39 |      40 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-09 | atlas  |    984 |  131 |   1802 |    2057 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-10 | atlas  |    984 |  286 |   2945 |    3131 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-11 | atlas  |    984 |  178 |   2191 |    2370 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-12 | atlas  |    984 | 1627 |  23001 |   24150 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-13 | atlas  |    984 |   53 |    787 |     859 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-13 | osg    |     20 | 2424 |  31857 |   35582 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-14 | osg    |     20 | 3280 |  47144 |   50475 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-15 | osg    |     20 | 2705 |  36236 |   38597 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-16 | osg    |     20 | 3001 |  38181 |   41216 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-02 | osg    |     20 |    4 |     13 |      13 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-03 | osg    |     20 |   18 |     36 |      59 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-04 | osg    |     20 |   60 |    853 |     883 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-05 | osg    |     20 | 2209 |  19266 |   20174 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-06 | osg    |     20 | 1510 |  23983 |   25344 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-07 | osg    |     20 |  316 |   3342 |    4425 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-08 | osg    |     20 |  915 |   5644 |   10986 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-09 | osg    |     20 |   91 |    643 |     685 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-10 | osg    |     20 |  284 |   3349 |    3934 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-11 | osg    |     20 | 1400 |  21059 |   22752 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-12 | osg    |     20 |    4 |      3 |       4 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-13 | osg    |     20 |  749 |   9386 |   10083 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-14 | osg    |     20 |  901 |  10205 |   11188 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-15 | osg    |     20 |  879 |  12849 |   13335 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-16 | osg    |     20 | 1500 |  21737 |   23010 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-17 | osg    |     20 | 1709 |  21420 |   22659 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-18 | osg    |     20 | 1265 |  19860 |   21053 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-19 | osg    |     20 |   43 |     52 |      54 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-20 | osg    |     20 |  235 |    632 |     762 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-21 | osg    |     20 | 3526 |   3059 |    4308 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-22 | atlas  |    984 |   67 |    630 |     697 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-22 | osg    |     20 |  766 |  10053 |   11062 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-23 | atlas  |    984 | 1020 |   7318 |    7644 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-24 | atlas  |    984 | 1915 |  23654 |   24098 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-25 | atlas  |    984 |  510 |   6757 |    6948 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-26 | atlas  |    984 |  536 |   6811 |    6973 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-27 | atlas  |    984 |  562 |   5771 |    6044 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-28 | atlas  |    984 | 1070 |   5149 |    6230 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-29 | atlas  |    984 | 1355 |   7599 |    7960 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-30 | atlas  |    984 |  735 |   5453 |    5665 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-31 | atlas  |    984 |  126 |    845 |     877 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-01 | atlas  |    984 |  201 |   2827 |    2931 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-02 | atlas  |    984 | 2612 |  30135 |   31221 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-03 | atlas  |    984 | 3222 |  29098 |   30051 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-04 | atlas  |    984 | 3615 |  31342 |   33010 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-05 | atlas  |    984 | 1170 |  17615 |   18030 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-07 | atlas  |    984 |    7 |     19 |      19 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-08 | atlas  |    984 |    2 |     31 |      31 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-09 | atlas  |    984 |  173 |   2446 |    2545 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-10 | atlas  |    984 |   88 |   1086 |    1260 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-11 | atlas  |    984 |  119 |   1401 |    1459 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-12 | atlas  |    984 |  253 |   3390 |    3594 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-13 | atlas  |    984 |   43 |    607 |     641 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-14 | atlas  |    984 |  103 |    704 |     767 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-15 | atlas  |    984 |  192 |   1610 |    1707 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-16 | atlas  |    984 |  410 |   5691 |    5946 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-17 | atlas  |    984 | 1372 |  16497 |   17064 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-18 | atlas  |    984 |  316 |   3739 |    3841 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-19 | atlas  |    984 | 1241 |  13691 |   14263 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-20 | atlas  |    984 |    2 |     31 |      31 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-21 | atlas  |    984 |    6 |     17 |      34 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-22 | atlas  |    984 |    2 |     26 |      38 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-23 | atlas  |    984 |    2 |     28 |      31 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-24 | atlas  |    984 |    1 |     15 |      15 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-25 | atlas  |    984 |    2 |     27 |      28 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-26 | atlas  |    984 |    7 |      8 |      10 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-27 | atlas  |    984 |    9 |     21 |      36 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-28 | atlas  |    984 |    7 |     54 |      73 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-29 | atlas  |    984 |    2 |      4 |       6 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-30 | atlas  |    984 |    5 |     55 |      60 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-31 | atlas  |    984 |   28 |     56 |      61 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-01 | atlas  |    984 |   56 |      0 |       0 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-02 | atlas  |    984 |    9 |     46 |      48 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-03 | atlas  |    984 |    7 |      4 |      18 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-04 | atlas  |    984 |   86 |     16 |      41 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-05 | atlas  |    984 |  128 |     98 |     128 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-06 | atlas  |    984 |    1 |     18 |      18 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-08 | atlas  |    984 |    3 |     36 |      37 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-09 | atlas  |    984 |  115 |   1116 |    1248 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-10 | atlas  |    984 |  246 |   1822 |    1994 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-11 | atlas  |    984 |  149 |   1953 |    2128 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-12 | atlas  |    984 | 1676 |  23617 |   24915 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-13 | atlas  |    984 |   49 |    719 |     774 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-13 | osg    |     20 | 2526 |  33293 |   37219 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-14 | osg    |     20 | 3318 |  47766 |   51182 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-15 | osg    |     20 | 2876 |  37236 |   39893 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-16 | osg    |     20 | 2652 |  33819 |   36697 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-02 | osg    |     20 |   51 |   1968 |    1988 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-03 | osg    |     20 |   82 |    959 |     975 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-04 | osg    |     20 |  118 |     19 |      61 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-05 | osg    |     20 |  848 |   2535 |    2726 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-06 | osg    |     20 |  667 |  23517 |   24072 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-07 | osg    |     20 | 1064 |  44675 |   46127 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-08 | osg    |     20 |  742 |   7445 |   11572 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-09 | osg    |     20 |  337 |   7573 |    8382 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-12 | osg    |     20 |    3 |      0 |       0 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-13 | osg    |     20 |  219 |   2116 |    2241 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-14 | osg    |     20 | 1262 |  34610 |   36834 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-15 | osg    |     20 |  318 |   2116 |    2218 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-16 | osg    |     20 |  849 |  24110 |   26069 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-17 | osg    |     20 |  323 |   2507 |    2538 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-18 | osg    |     20 |  222 |   7265 |    7335 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-19 | osg    |     20 |  212 |   7543 |    8222 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-20 | osg    |     20 |  286 |   3460 |    3622 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-21 | osg    |     20 | 2483 |   8726 |    9695 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-22 | atlas  |    984 |   11 |    314 |     326 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-22 | osg    |     20 |  991 |  28491 |   29614 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-23 | atlas  |    984 |  229 |   2979 |    3086 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-24 | atlas  |    984 | 1226 |  33242 |   33798 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-25 | atlas  |    984 |  527 |  12689 |   12904 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-26 | atlas  |    984 |  340 |   8708 |    8946 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-27 | atlas  |    984 |  600 |  11411 |   11892 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-28 | atlas  |    984 |  583 |   7824 |    8215 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-29 | atlas  |    984 |  586 |   2495 |    2650 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-30 | atlas  |    984 |  517 |  12267 |   12506 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-07-31 | atlas  |    984 |  417 |  12914 |   13136 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-01 | atlas  |    984 |   91 |    670 |     681 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-02 | atlas  |    984 |  217 |   4036 |    4171 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-03 | atlas  |    984 | 1320 |  29678 |   30535 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-04 | atlas  |    984 |  714 |   6072 |    6309 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-05 | atlas  |    984 | 1181 |  43825 |   44273 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-06 | atlas  |    984 |  188 |   7302 |    7358 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-07 | atlas  |    984 |    9 |     29 |      32 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-08 | atlas  |    984 |   29 |     24 |      26 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-09 | atlas  |    984 |   62 |   1631 |    1674 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-10 | atlas  |    984 |   81 |   2766 |    3044 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-11 | atlas  |    984 |  147 |   3439 |    3665 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-13 | atlas  |    984 |   98 |   3538 |    3819 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-14 | atlas  |    984 |   83 |   2623 |    2739 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-15 | atlas  |    984 |  127 |   2050 |    2213 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-16 | atlas  |    984 |  181 |   6053 |    6358 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-17 | atlas  |    984 |  579 |  19593 |   20967 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-18 | atlas  |    984 |  508 |  17950 |   18341 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-20 | atlas  |    984 |   93 |   3414 |    3431 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-21 | atlas  |    984 | 1142 |   1184 |    1399 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-22 | atlas  |    984 |  753 |   8009 |    8366 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-23 | atlas  |    984 | 1052 |  36784 |   41250 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-24 | atlas  |    984 |  345 |  12148 |   12972 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-25 | atlas  |    984 | 1158 |  41862 |   45602 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-26 | atlas  |    984 | 1623 |  43830 |   48125 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-27 | atlas  |    984 |  107 |      0 |       0 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-28 | atlas  |    984 |  130 |    497 |     558 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-29 | atlas  |    984 |  143 |    340 |     469 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-30 | atlas  |    984 |   14 |     82 |      98 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-08-31 | atlas  |    984 |   57 |    465 |     502 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-01 | atlas  |    984 |   35 |    345 |     379 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-02 | atlas  |    984 |   63 |    727 |     776 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-03 | atlas  |    984 |   64 |    400 |     543 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-04 | atlas  |    984 |  100 |    389 |     721 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-05 | atlas  |    984 |  190 |    940 |    1125 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-06 | atlas  |    984 |   36 |     41 |      51 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-07 | atlas  |    984 |    6 |    244 |     246 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-08 | atlas  |    984 |    4 |    189 |     190 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-09 | atlas  |    984 |   29 |    241 |     261 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-10 | atlas  |    984 |  405 |   9332 |    9796 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-11 | atlas  |    984 |   15 |      7 |      15 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-12 | atlas  |    984 | 1421 |  19861 |   21943 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-13 | atlas  |    984 |    1 |      6 |      35 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-13 | osg    |     20 |  221 |   8174 |    8772 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-14 | osg    |     20 |  170 |   6469 |    8990 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-15 | osg    |     20 |  151 |     77 |     144 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/osg-flock.grid.iu.edu | 2014-09-16 | osg    |     20 |  169 |    904 |    1053 |
++--------------+-------------------------------------------+---------------------------------+------------+--------+--------+------+--------+---------+
+
+###############################################
+Update transactions to be applied
+###############################################
+
+set @CommonName := '/CN=pilot/osg-flock.grid.iu.edu';
+set @start := '2014-07-23';
+set @end   := '2014-09-13';
+set @corrid     := 20;   -- osg
+
+select
+CONCAT('update MasterSummaryData set VOCorrid = ',@corrid,' where SummaryID = ',SummaryID,';')
+from MasterSummaryData
+where (ProbeName like '%mwt2.org'
+         or
+       ProbeName = 'condor:mwt2-gk.campuscluster.illinois.edu')
+  and EndTime > @start
+  and EndTime < @end
+  and CommonName = @CommonName
+  and VOcorrid = 984
+;
+
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 74783702;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 74791819;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 74853786;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 74866032;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 74946703;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 75086277;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 75533387;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 75536386;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 75539806;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 75566361;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 75677616;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 75995195;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 76104073;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 76211164;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 76263645;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 76267601;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 76269323;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 76280746;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 76445237;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 76721324;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77052231;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77057067;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77058007;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77142144;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77188582;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77189453;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77690903;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77699729;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77709389;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77744958;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77746034;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 77865761;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 78510141;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 78516310;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 78634482;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 78763852;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 78917548;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 79115227;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 79333448;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 79345858;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 79348884;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 79376265;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 79514681;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 79531738;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 80260983;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 80266074;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 80419097;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 80464368;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 80541818;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 80696353;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81196852;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81207974;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81213777;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81217643;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81221188;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81490339;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81717707;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81749596;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81754623;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 81763360;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 82357529;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 82483194;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 82483488;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 82494527;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 82564076;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 82573721;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 83042395;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 83317507;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 83319615;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 83320013;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 83483771;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 83749175;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 83924873;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 84126211;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 84135273;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 84137689;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 84274959;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 84392340;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 84937202;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 85017953;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 85680184;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 85754360;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 85754471;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 85936769;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 86599264;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 86716238;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 86878674;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 87043268;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 87366600;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 87374545;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 87463132;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 87595311;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 87694251;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 87694728;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 88119025;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 88125729;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 88246651;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 88377926;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 88679229;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 88700027;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 88773606;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 89065910;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 89284279;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 89404558;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 89553619;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 89812393;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 90347547;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 90500700;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 90680112;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 91194172;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 91463936;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 91481996;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 91927007;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 91932859;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 91944147;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 92165352;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 92188459;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 92417791;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 92495281;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 92591608;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 92709032;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 93044249;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 93106992;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 93218406;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 93326178;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 93366166;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 93411329;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94024319;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94026205;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94048106;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94054502;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94105960;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94367553;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94792717;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94796033;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94838882;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94919750;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 94921038;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 95669182;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 95941510;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 96556844;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 96625915;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 96757227;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 97628947;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 98096472;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 98975593;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 98977142;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99222902;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99393874;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99409932;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99422284;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99424371;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99445539;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99683061;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99706378;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 99948455;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 100176270;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 100176278;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 100177443;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 100422147;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 100867008;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101038421;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101050108;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101140673;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101299745;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101365587;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101403260;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101423500;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101471384;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101804627;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101809108;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101850409;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 101946758;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 102124383;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 102230990;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 102381861;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 102469361;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 102487293;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 102602695;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 102727732;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 103115819;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 103191665;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 103552693;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 103561249;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 103618059;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 103635965;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 104412533;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 104430216;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 104435517;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 104706443;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 104777590;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 104788966;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 104871768;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 105043263;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 105344029;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 105452819;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 105585148;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 105645169;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 105645954;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 105956764;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 105971754;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 106144418;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 106144966;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 106451107;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 106470900;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 106495416;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 106565527;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 106804211;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 107208603;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 108539720;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 108550570;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 108754220;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 108778132;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 108921390;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 108931708;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109123863;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109376652;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109395506;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109404224;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109459249;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109628117;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109638633;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109778797;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 109928089;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110094119;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110155433;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110171929;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110285305;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110410629;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110435496;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110483044;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110829324;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110846272;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 110963892;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111103028;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111184102;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111418248;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111647586;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111670866;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111708702;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111756969;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111885558;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 111999676;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112059179;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112062797;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112603287;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112626011;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112636762;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112639112;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112667677;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112713877;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 112968646;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 113379037;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 113379947;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 113380778;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 113433329;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 113442806;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 113465602;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 114278192;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 114278203;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 114280835;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 114292471;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 114322539;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 114700278;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 115107304;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 115107306;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 115135538;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 115208869;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 115450243;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 115749830;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 115825605;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 115900836;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 116060826;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 116061328;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 116176723;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 116307600;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 116407394;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 116409990;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 116880355;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 116880877;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117120201;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117120883;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117121845;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117213157;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117323677;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117399978;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117408614;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117474768;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117878770;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117878774;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117879253;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117881430;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 117985975;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118220142;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118436261;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118484480;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118670833;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118724968;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118772132;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118829982;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118910375;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 118914430;
+update MasterSummaryData set VOCorrid = 20 where SummaryID = 119716272;
+
+##########################################################################
+# To verify... rerun the query at the top of page with all 'set' commands
+#
+# all should show osg with the exception of 2014-07-22 and 2014-09-13
+# .. those 2 dates should show osg and atlas.
+#
+# If looks good, you can commit.
+##########################################################################
+

@@ -1,0 +1,189 @@
+HTML-body converted: (contains div-tag) 
+
+
+cc-ing John and Jose... - Saul
+
+On Wed, Apr 29, 2015 at 10:03 PM, Saul Youssef  wrote:
+Hi John,
+      There is still a mystery with this.  The only way I know to
+explain what&#39;s happening is that the pilot setup has changed, so
+I&#39;m cc-ing Jose & John Hover in case they have an AHA about this.
+ 
+      In the PanDA pilot logs, FRONTIER_SERVER is first set to the
+correct value by the AUTO-SETUP script 
+
+	AUTO-SETUP> INFO: setting
+FRONTIER_SERVER=(serverurl=http://lcgft-atlas.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier03.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier02.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier01.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://ccfrontier.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli02.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli01.in2p3.fr:23128/ccin2p3-AtlasFrontier)(proxyurl=http://atlas-net2.bu.edu:3128)(proxyurl=http://net2.rc.fas.harvard.edu:3128
+[2])But then it is later set to use the old BNL servers
+
+	FRONTIER_SERVER=(serverurl=http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier01.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier02.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://lcgft-atlas.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier01.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier02.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://t1-frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://tier1nfs.triumf.ca:3128/ATLAS_frontier)(proxyurl=http://atlas-net2.bu.edu:3128)(proxyurl=http://net2.rc.fas.harvard.edu:3128
+[3])
+This is true for both our production and mcore pilots  
+
+MCORE
+example: http://gridui20.usatlas.bnl.gov:25880/2015-04-29/BU_ATLAS_Tier2_SL6/6766835.17.out
+[4]PROD
+example: http://gridui19.usatlas.bnl.gov:25880/2015-04-29/BU_ATLAS_Tier2_MCORE/6930694.13.out
+[5]
+If I do what I think the pilot does for it&#39;s setup (from
+information from Jose from some time ago):
+##    Pilot setup at NET2/BU according to Jose#export
+OSG_APP=/atlasgrid/Grid3-appexport OSG_GRID=/etc/osg/wn-client/source
+$OSG_GRID/setup.shssource
+$OSG_APP/atlas_app/atlas_rel/cctools/latest/setup.shsource
+$OSG_APP/atlas_app/atlaswn/setup.shsource
+$OSG_APP/atlas_app/atlas_rel/local/setup.sh
+source $OSG_APP/atlas_app/local/setup.sh -s BU_ATLAS_Tier2_MCORE   (
+On Apr 29, 2015, at 11:41 AM, Horst Severini  wrote:
+  >
+  > Hi Saul,
+  >
+  > umm, I don&#39;t think the BNL frontier servers are running
+ anymore. I think we&#39;re supposed to use the TRIUMF, IN2P3, or RAL
+ servers. This is what we have now:
+  >
+  > export
+ FRONTIER_SERVER="(serverurl=http://ccfrontier.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli02.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli01.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://frontier-atlas.lcg.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier-atlas1.lcg.triumf.ca:3128/ATLAS_frontier)(serverurl=http://tier1nfs.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier.triumf.ca:3128/ATLAS_frontier)(proxyurl=http://tier2-05.ochep.ou.edu:3128)(proxyurl=http://gk07.atlas-swt2.org:3128
+[7]
+ [5])"
+  >
+  > Hope this helps,
+  >
+  >       Horst
+  >
+  > On 04/29/2015 09:58 AM, helpdesk@ggus.org [8] [6] wrote:
+  >> Dear group members,
+  >> GGUS TEAM ticket #113372 was updated.
+  >>
+  >> REFERENCE
+ LINK:https://ggus.eu/index.php?mode=ticket_info&ticket_id=113372 [9]
+[7]
+  >> SUBJECT: BU_ATLAS_Tier2_MCORE: Production jobs are heavily
+failing
+ with frontier channel error
+  >>
+  >> =====================
+  >> LATEST MODIFICATIONS:
+  >>
+  >> LAST MODIFIER -> OSG-GOC (via Footprints)
+  >>
+  >>
+  >> PUBLIC DIARY ->
+  >> Thanks Arwa,
+  >>
+  >> Our squid is timing out accessing any of the BNL frontier
+servers.
+ We don&#39;t
+  >> know why at this point. This seems to only affect MCORE jobs.
+ I&#39;ve contacted
+  >> John DeStefano to comment. We&#39;ll continue to investigate:
+  >>
+  >>
+ http://egg.bu.edu/net2/studies%7btype:egg.Hatch%7d/squid_issue_2015-04-29/
+[10]
+ [8]
+  >>
+  >> If the MCORE errors keep up, we&#39;ll turn off the MCORE queue.
+  >>
+  >> - Saul & Augustine
+  >>
+  >> On Wed Apr 29 05:04:14 2015, osg-goc-rest wrote:
+  >>> >BU_ATLAS_Tier2_MCORE: jobs are heavily failing with:
+  >>> >
+  >>> >RuntimeError: Can not create frontier channel (Additional
+ Information:
+  >>> >[frontier_config.c:634]: Reached limit of 16 frontier servers)
+  >>> >
+  >>> >Example job:
+  >>> >http://bigpanda.cern.ch/job?pandaid=2464068886 [11] [9]
+  >>> >
+  >>> >extract from log file:
+  >>> >16:47:57 Py:TrigConfigSvcUtils.py INFO Environment
+ FRONTIER_SERVER:
+  >>> >
+  >>
+ (serverurl=http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier01.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier02.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://lcgft-
+[12]
+ [10]
+  >>>
+ >atlas.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-
+[13]
+ [11]
+  >>>
+ >frontier01.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-
+[14]
+ [12]
+  >>>
+ >frontier02.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://t1-
+[15]
+ [13]
+  >>> >
+  >>
+ frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://tier1nfs.triumf.ca:3128/ATLAS_frontier)(proxyurl=http://atlas-
+[16]
+ [14]
+  >>> >net2.bu.edu:3128)(proxyurl=http://net2.rc.fas.harvard.edu:3128
+[17]
+ [15])
+  >>> >16:47:57 Py:TrigConfigSvcUtils.py INFO Using frontier
+connection...
+ ...
+ --- body truncated, see attachment
+mailbody.Wed._29_Apr_2015_18.51.30_.0200.txt for full text ---
+ INTERNAL DIARY ->
+ ----------- e-mail with large body ------
+  added in total as mailbody.Wed._29_Apr_2015_18.51.30_.0200.txt
+  ------------ e-mail with large body ------
+ *********************************************************************************
+  This is an automated mail. When replying don&#39;t change the
+subject line!
+  Type your text above this box and S T R I P  P R E V I O U S  M A
+I L S please!!
+ *********************************************************************************
+-- 
+Saul Youssef
+Research Associate ProfessorDepartment of PhysicsBoston University590
+Commonwealth AvenueBoston, MA 02215youssef@bu.edu
+[18]http://physics.bu.edu/~youssef [19]
+-- 
+Saul Youssef
+Research Associate ProfessorDepartment of PhysicsBoston University590
+Commonwealth AvenueBoston, MA 02215youssef@bu.edu
+[20]http://physics.bu.edu/~youssef [21]
+ 
+
+Links:
+------
+[1] mailto:youssef@bu.edu
+[2]
+http://lcgft-atlas.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier03.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier02.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier01.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://ccfrontier.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli02.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli01.in2p3.fr:23128/ccin2p3-AtlasFrontier)(proxyurl=http://atlas-net2.bu.edu:3128)(proxyurl=http://net2.rc.fas.harvard.edu:3128
+[3]
+http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier01.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier02.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://lcgft-atlas.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier01.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-frontier02.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://t1-frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://tier1nfs.triumf.ca:3128/ATLAS_frontier)(proxyurl=http://atlas-net2.bu.edu:3128)(proxyurl=http://net2.rc.fas.harvard.edu:3128
+[4]
+http://gridui20.usatlas.bnl.gov:25880/2015-04-29/BU_ATLAS_Tier2_SL6/6766835.17.out
+[5]
+http://gridui19.usatlas.bnl.gov:25880/2015-04-29/BU_ATLAS_Tier2_MCORE/6930694.13.out
+[6]
+http://egg.bu.edu/usatlas/reporting%7btype:egg.Hatch%7d/pilotenv/FRONTIER_SERVER.html
+[7]
+http://ccfrontier.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli02.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://ccsqfatlasli01.in2p3.fr:23128/ccin2p3-AtlasFrontier)(serverurl=http://frontier-atlas.lcg.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier-atlas1.lcg.triumf.ca:3128/ATLAS_frontier)(serverurl=http://tier1nfs.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier.triumf.ca:3128/ATLAS_frontier)(proxyurl=http://tier2-05.ochep.ou.edu:3128)(proxyurl=http://gk07.atlas-swt2.org:3128
+[8] mailto:helpdesk@ggus.org
+[9] https://ggus.eu/index.php?mode=ticket_info&amp;ticket_id=113372
+[10]
+http://egg.bu.edu/net2/studies%7btype:egg.Hatch%7d/squid_issue_2015-04-29/
+[11] http://bigpanda.cern.ch/job?pandaid=2464068886
+[12]
+http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier01.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://frontier02.racf.bnl.gov:8000/frontieratbnl)(serverurl=http://lcgft-
+[13]
+http://atlas.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-
+[14]
+http://frontier01.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://lcgvo-
+[15]
+http://frontier02.gridpp.rl.ac.uk:3128/frontierATLAS)(serverurl=http://t1-
+[16]
+http://frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://frontier.triumf.ca:3128/ATLAS_frontier)(serverurl=http://tier1nfs.triumf.ca:3128/ATLAS_frontier)(proxyurl=http://atlas-
+[17] http://net2.rc.fas.harvard.edu:3128
+[18] mailto:youssef@bu.edu
+[19] http://physics.bu.edu/~youssef
+[20] mailto:youssef@bu.edu
+[21] http://physics.bu.edu/~youssef

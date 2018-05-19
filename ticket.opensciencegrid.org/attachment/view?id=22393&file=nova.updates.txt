@@ -1,0 +1,107 @@
+######## VO: nova #################################
+###############################################
+General query to determine records to correct
+###############################################
+
+set @CommonName := '/CN=gfrontend/sngpvm02.fnal.gov';
+set @start := '2014-07-01';
+set @end   := '2014-10-01';
+set @corrid     := 504;  -- nova
+
+select
+       SiteName
+      ,Main.ProbeName as ProbeName
+      ,CommonName
+      ,date_format(EndTime,'%Y-%m-%d') as EndTime
+      ,VO.VOName as VOName
+      ,corrid
+      ,sum(Njobs) as Jobs
+      ,round(sum(CpuUserDuration+CpuSystemDuration)/3600,0) as CpuHrs
+      ,round(sum(WallDuration * Cores)/3600,0) as WallHrs
+from MasterSummaryData  Main
+join Probe on (Main.ProbeName = Probe.probename)
+join Site  on (Probe.siteid = Site.siteid)
+join VONameCorrection voc on (Main.VOcorrid = voc.corrid)
+join VO on (voc.VOid = VO.VOid)
+where (Main.ProbeName like '%mwt2.org'
+         or
+       Main.ProbeName = 'condor:mwt2-gk.campuscluster.illinois.edu')
+  and EndTime > @start
+  and EndTime < @end
+  and CommonName = @CommonName
+group by
+       SiteName
+      ,ProbeName
+      ,CommonName
+      ,EndTime
+      ,VOName
+      ,corrid
+;
+
++--------------+-------------------------------------------+---------------------------------+------------+--------+--------+------+--------+---------+
+| SiteName     | ProbeName                                 | CommonName                      | EndTime    | VOName | corrid | Jobs | CpuHrs | WallHrs |
++--------------+-------------------------------------------+---------------------------------+------------+--------+--------+------+--------+---------+
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=gfrontend/sngpvm02.fnal.gov | 2014-07-02 | nova   |    504 |    2 |      1 |       1 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=gfrontend/sngpvm02.fnal.gov | 2014-07-03 | nova   |    504 |    9 |      0 |       4 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=gfrontend/sngpvm02.fnal.gov | 2014-08-20 | atlas  |    984 |   23 |      0 |       8 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=gfrontend/sngpvm02.fnal.gov | 2014-08-21 | atlas  |    984 |   26 |      0 |       8 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=gfrontend/sngpvm02.fnal.gov | 2014-09-03 | atlas  |    984 |    3 |      0 |       1 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=gfrontend/sngpvm02.fnal.gov | 2014-09-04 | atlas  |    984 |   17 |      2 |      10 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=gfrontend/sngpvm02.fnal.gov | 2014-09-05 | atlas  |    984 |    3 |      4 |       5 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=gfrontend/sngpvm02.fnal.gov | 2014-07-02 | nova   |    504 |    1 |      0 |       0 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=gfrontend/sngpvm02.fnal.gov | 2014-07-03 | nova   |    504 |    5 |      0 |       2 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=gfrontend/sngpvm02.fnal.gov | 2014-08-21 | atlas  |    984 |   36 |      4 |      16 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=gfrontend/sngpvm02.fnal.gov | 2014-09-03 | atlas  |    984 |    3 |      0 |       1 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=gfrontend/sngpvm02.fnal.gov | 2014-09-04 | atlas  |    984 |   21 |     10 |      16 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=gfrontend/sngpvm02.fnal.gov | 2014-09-05 | atlas  |    984 |    3 |      4 |       4 |
++--------------+-------------------------------------------+---------------------------------+------------+--------+--------+------+--------+---------+
+
+###############################################
+Update transactions to be applied
+###############################################
+
+set @CommonName := '/CN=gfrontend/sngpvm02.fnal.gov';
+set @start := '2014-07-23';
+set @end   := '2014-09-13';
+set @corrid     := 504;  -- nova
+
+select
+CONCAT('update MasterSummaryData set VOCorrid = ',@corrid,' where SummaryID = ',SummaryID,';')
+from MasterSummaryData
+where (ProbeName like '%mwt2.org'
+         or
+       ProbeName = 'condor:mwt2-gk.campuscluster.illinois.edu')
+  and EndTime > @start
+  and EndTime < @end
+  and CommonName = @CommonName
+  and VOcorrid = 984
+;
+
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 99237991;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 99398367;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 99452015;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 99516284;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 99557713;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 99558881;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 112562801;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 112564738;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 112593313;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 112594947;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 112709931;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 112712051;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 113261946;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 113311842;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 113492097;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 113504290;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 113785116;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 113906682;
+update MasterSummaryData set VOCorrid = 504 where SummaryID = 113921287;
+
+##########################################################################
+# To verify... rerun the query at the top of page with all 'set' commands
+#
+# all should show nova 
+#
+# If looks good, you can commit.
+##########################################################################
+

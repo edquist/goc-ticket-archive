@@ -1,0 +1,96 @@
+--- SlurmProbe.py.orig	2015-06-11 19:15:20.000000000 -0500
++++ SlurmProbe.py	2016-01-20 17:06:47.493436890 -0600
+@@ -244,6 +244,29 @@
+         except (KeyError, TypeError):
+             return err
+ 
++    def _parse_tres(self, tres):
++        """Parse SLURM database tres_alloc job data into dict"""
++        # SLURM 15 changed its job_table.cpus_alloc database column to tres_alloc
++        #    and converted the data to a comma separated list of "key=value" pairs
++        # Keys are defined in tres_types_t in src/common/slurmdb_defs.h
++        #    1 => CPU, 2 => MEM, 3 => ENERGY, 4 => NODE
++
++        ret = dict()
++
++        for item in tres.split(','):
++            # Skip blank entries
++            if not item:
++                continue
++
++            try:
++                k, v = item.split('=', 1)
++                ret[int(k)] = int(v)
++            except ValueError:
++                # TRES string is damaged? Continuing.
++                DebugPrint(1, "Error parsing TRES string '%s'" % tres)
++
++        return ret
++
+     def _addUserInfoIfMissing(self, r):
+         """Add user/acct if missing (resolving uid/gid)"""
+         if r['user'] is None:
+@@ -256,13 +279,17 @@
+     def _users(self, where):
+         cursor = self._conn.cursor()
+ 
++        # Default GROUP_CONCAT() maximum length is 1024 chars
++        # Increase it to 64MB
++        cursor.execute('SET SESSION group_concat_max_len=64*1024*1024;');
++
+         # See enum job_states in slurm/slurm.h for state values
+         sql = '''SELECT j.id_user
+             , j.id_group
+             , (SELECT SUM(cpus_req)   FROM %(cluster)s_job_table WHERE
+                   id_user = j.id_user AND state IN (0,2)) AS cpus_pending
+-            , (SELECT SUM(cpus_alloc) FROM %(cluster)s_job_table WHERE
+-                  id_user = j.id_user AND state IN (1)  ) AS cpus_running
++            , (SELECT GROUP_CONCAT('|', tres_alloc) FROM %(cluster)s_job_table WHERE
++                  id_user = j.id_user AND state IN (1)  ) AS tres_alloc_list
+             , MAX(j.time_end) AS time_end
+             , a.acct
+             , a.user
+@@ -279,11 +306,21 @@
+         for r in cursor:
+             # Add handy data to job record
+             r['cluster'] = self._cluster
++
++            # Extract cpus_alloc from tres_alloc and sum to get cpus_running
++            # We were formerly relying on SQL to sum the cpus_alloc.
++            # Now we get a list of tres_alloc parameters, parse them, and sum
++            # the CPU count ourselves.
++            r['cpus_running'] = 0
++            if r['tres_alloc_list']:
++                for tres_txt in r['tres_alloc_list'].split('|'):
++                    tres = self._parse_tres(tres_txt)
++                    # tres_types_t.TRES_CPU = 1
++                    r['cpus_running'] += tres.get(1, 0)
++
+             # Return 0 instead of None where we don't have values
+             if r['cpus_pending'] is None:
+                 r['cpus_pending'] = 0
+-            if r['cpus_running'] is None:
+-                r['cpus_running'] = 0
+             self._addUserInfoIfMissing(r)
+             yield r
+ 
+@@ -300,7 +337,7 @@
+             , j.id_group
+             , j.id_user
+             , j.job_name
+-            , j.cpus_alloc
++            , j.tres_alloc
+             , j.partition
+             , j.state
+             , MIN(j.time_start) AS time_start
+@@ -339,5 +376,10 @@
+         for r in cursor:
+             # Add handy data to job record
+             r['cluster'] = self._cluster
++
++            # Extract cpus_alloc from tres_alloc
++            tres = self._parse_tres(r['tres_alloc'])
++            r['cpus_alloc'] = tres.get(1, 0) # tres_types_t.TRES_CPU = 1
++
+             self._addUserInfoIfMissing(r)
+             yield r

@@ -1,0 +1,80 @@
+# Specify which port to use
+xrd.port 1094
+
+# The export directive indicates which paths are to be exported. While the
+# default is '/tmp', we indicate it anyway and add the 'stages attribute
+# to allow you to start the frm_xfrd to bring in missing files into '/tmp'.
+# Remove this attribute if you don't want to enable this feature.
+#
+all.export /store nostage
+
+all.role server
+all.role supervisor if cms-d*.rcac.purdue.edu
+all.role manager if xrootd.rcac.purdue.edu
+
+all.manager xrootd.rcac.purdue.edu:3121
+all.manager meta all cmsxrootd.fnal.gov+ 1213 if xrootd.rcac.purdue.edu
+
+all.sitename T2_US_Purdue
+
+cms.space min 2g 5g
+
+cms.allow host xrootd.rcac.purdue.edu
+cms.allow host cms*.rcac.purdue.edu
+
+#authorization
+if cms-*.rcac.purdue.edu
+ofs.authorize 1
+acc.authdb /etc/xrootd/Authfile
+acc.audit deny grant
+fi
+
+#logging
+xrootd.trace emsg login stall redirect
+ofs.trace none
+xrd.trace conn
+cms.trace all
+
+# Security configuration
+sec.protocol /usr/lib64 gsi -certdir:/etc/grid-security/certificates -cert:/etc/grid-security/xrd/xrdcert.pem -key:/etc/grid-security/xrd/xrdkey.pem -crl:3 -authzfun:libXrdLcmaps.so -authzfunparms:--osg,--lcmapscfg,/etc/xrootd/lcmaps.cfg,--loglevel,0|useglobals -gmapopt:10 -gmapto:0
+
+xrootd.seclib /usr/lib64/libXrdSec.so
+xrootd.fslib /usr/lib64/libXrdOfs.so
+ofs.osslib /usr/lib64/libXrdHdfs.so
+all.adminpath /var/run/xrootd
+all.pidpath /var/run/xrootd
+
+if cms-*.rcac.purdue.edu
+xrootd.fslib throttle default
+throttle.throttle concurrency 20
+throttle.trace ioload
+fi
+
+cms.delay startup 10
+cms.fxhold 60s
+
+if xrootd.rcac.purdue.edu
+cms.delay startup 10 qdl 30
+cms.dfs lookup distrib mdhold 10m redirect immed
+fi
+
+oss.namelib /usr/lib64/libXrdCmsTfc.so file:/etc/cms/SITECONF/local/PhEDEx/storage.xml?protocol=hadoop
+
+if exec xrootd
+  xrd.report xrootd.t2.ucsd.edu:9931 every 30s all
+  xrootd.monitor all auth flush 30s mbuff 1472 window 5s dest files io info user xrootd.t2.ucsd.edu:9930
+fi
+
+
+# The copycmd directive tells the frm_xfrd what to use to copy files into
+# an exported path with the 'stage' attribute. Here we just say this will
+# be '/bin/cp' to allow the frm_xfrd to actual start to show that it works.
+# Here missing files are created in /tmp as zero-length files.
+#
+frm.xfr.copycmd /bin/cp /dev/null $PFN
+
+# The adminpath and pidpath variables indicate where the pid and various
+# IPC files should be placed
+#
+all.adminpath /var/spool/xrootd
+all.pidpath /var/run/xrootd

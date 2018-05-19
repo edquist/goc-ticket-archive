@@ -1,0 +1,36 @@
+--- a/gip_osg.py	2015-02-18 22:13:47.000000000 +0000
++++ b/gip_osg.py	2015-03-19 22:15:50.000000000 +0000
+@@ -12,10 +12,13 @@
+     cluster, cesebind, cream, slurm, htcondorce
+ from gip_common import getLogger, py23, vdtDir, get_file_list
+ 
+ log = getLogger("GIP")
+ 
++DEBUG_FILE_1 = '/tmp/gip_osg_cp1.cfg'
++DEBUG_FILE_2 = '/tmp/gip_osg_cp2.cfg'
++
+ site_sec = "Site Information"
+ misc_sec = "Misc Services"
+ pbs_sec = "PBS"
+ condor_sec = "Condor"
+ sge_sec = 'SGE'
+@@ -467,10 +470,19 @@
+     # add all [GIP] items that have not already been handled to the config object
+     for item in gip_items:
+         if not item[0] in gip_handled_items:
+             __write_config(gip_sec, item[0], gip_sec.lower(), item[0])
+ 
++    if os.getuid() == 0:
++        for fname, cfgobj in [(DEBUG_FILE_1, cp), (DEBUG_FILE_2, cp2)]:
++            fh = open(fname, 'w')
++            cfgobj.write(fh)
++            fh.close()
++
++
++
++
+ def configSubclusters(cp, cp2):
+     """
+     Configure the subclusters using the new version of the subclusters config.
+ 
+     Looks for the following attributes (* indicates required option):

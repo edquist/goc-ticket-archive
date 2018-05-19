@@ -1,0 +1,138 @@
+<frontend advertise_delay="5" advertise_with_multiple="True" advertise_with_tcp="True" frontend_monitor_index_page="False" frontend_name="glidein-1-sbgrid-org_OSG_gWMSFrontend" frontend_versioning="False" group_parallel_workers="2" loop_delay="60" restart_attempts="3" restart_interval="1800">
+  <config>
+      <idle_vms_total curb="200" max="1000"/>
+      <idle_vms_total_global curb="200" max="1000"/>
+      <running_glideins_total curb="90000" max="100000"/>
+      <running_glideins_total_global curb="90000" max="100000"/>
+  </config>
+  <high_availability check_interval="300" enabled="False">
+    <ha_frontends>
+    </ha_frontends>
+  </high_availability>
+   <log_retention>
+      <process_logs>
+         <process_log backup_count="5" compression="" extension="all" max_days="30.0" max_mbytes="256.0" min_days="3.0" msg_types="DEBUG,EXCEPTION,INFO,ERROR,ERR"/>
+      </process_logs>
+   </log_retention>
+   <match match_expr="True" start_expr="True">
+      <factory query_expr='((stringListMember("SBGrid", GLIDEIN_Supported_VOs)))'>
+         <match_attrs>
+         </match_attrs>
+         <collectors>
+           <collector DN="/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=gfactory-1.t2.ucsd.edu" comment="UCSD Factory" factory_identity="gfactory@gfactory-1.t2.ucsd.edu" my_identity="fesbgrid@gfactory-1.t2.ucsd.edu" node="gfactory-1.t2.ucsd.edu"/>
+	   <!--
+	       <collector DN="/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=glidein.grid.iu.edu" comment="IU Factory" factory_identity="gfactory@glidein.grid.iu.edu" my_identity="fesbgrid@glidein.grid.iu.edu" node="glidein.grid.iu.edu"/>
+	   -->
+         </collectors>
+      </factory>
+      <job comment="Define job constraint and schedds globally for simplicity" query_expr="(JobUniverse==5)&amp;&amp;(GLIDEIN_Is_Monitor =!= TRUE)&amp;&amp;(JOB_Is_Monitor =!= TRUE)">
+         <match_attrs>
+         </match_attrs>
+         <schedds>
+            <schedd DN="/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=glidein-1.sbgrid.org" fullname="glidein-1.sbgrid.org"/>
+         </schedds>
+      </job>
+   </match>
+   <monitor base_dir="/var/lib/gwms-frontend/web-area/monitor" flot_dir="/usr/share/javascriptrrd/flot" javascriptRRD_dir="/usr/share/javascriptrrd/js" jquery_dir="/usr/share/javascriptrrd/flot"/>
+   <monitor_footer display_txt="" href_link=""/>
+   <security classad_proxy="/var/lib/gwms-frontend/.globus/x509up_u1018" proxy_DN="/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=glidein-1.sbgrid.org" proxy_selection_plugin="ProxyAll" security_name="SBGrid" sym_key="aes_256_cbc">
+      <credentials>
+         <credential absfname="/var/lib/gwms-frontend/.globus/x509up_u1018" security_class="frontend" trust_domain="grid" type="grid_proxy"/>
+      </credentials>
+   </security>
+   <stage base_dir="/var/lib/gwms-frontend/web-area/stage" use_symlink="True" web_base_url="http://glidein-1.sbgrid.org/vofrontend/stage"/>
+   <work base_dir="/var/lib/gwms-frontend/vofrontend" base_log_dir="/var/log/gwms-frontend"/>
+   <attrs>
+      <attr name="GLIDECLIENT_Rank" glidein_publish="False" job_publish="False" parameter="True" type="string" value="1"/>
+      <attr name="GLIDEIN_Expose_Grid_Env" glidein_publish="True" job_publish="True" parameter="False" type="string" value="True"/>
+      <attr name="GLIDEIN_Glexec_Use" glidein_publish="True" job_publish="True" parameter="False" type="string" value="NEVER"/>
+      <attr name="USE_MATCH_AUTH" glidein_publish="False" job_publish="False" parameter="True" type="string" value="True"/>
+   </attrs>
+   <groups>
+     <group name="gpu" enabled="True">
+         <config>
+            <idle_glideins_per_entry max="50" reserve="5"/>
+            <idle_vms_per_entry curb="5" max="100"/>
+            <idle_vms_total curb="200" max="1000"/>
+            <processing_workers matchmakers="3"/>
+            <running_glideins_per_entry max="1000" relative_to_queue="1.10"/>
+            <running_glideins_total curb="90000" max="100000"/>
+          </config>
+	  <!--
+         <match match_expr="True" start_expr="TARGET.RequiresWholeMachine">
+            <factory query_expr='(stringListMember("SBGridGPU", GLIDEIN_Supported_VOs))'>
+               <match_attrs>
+               </match_attrs>
+	  -->
+	  <match match_expr="'SBGridGPU' in glidein['attrs']['GLIDEIN_Supported_VOs']" start_expr="TARGET.RequiresWholeMachine"> 
+	    <factory query_expr='TRUE'> 
+	      <match_attrs> 
+		<match_attr name="GLIDEIN_Supported_VOs" type="string"/>
+	      </match_attrs> 
+               <collectors>
+               </collectors>
+            </factory>
+            <job query_expr="(RequestGpus &gt;= 1)&amp;&amp;(JobUniverse==5)&amp;&amp;(GLIDEIN_Is_Monitor =!= TRUE)&amp;&amp;(JOB_Is_Monitor =!= TRUE)">
+               <match_attrs>
+               </match_attrs>
+               <schedds>
+               </schedds>
+            </job>
+         </match>
+         <security>
+            <credentials>
+            </credentials>
+         </security>
+         <attrs>
+         </attrs>
+         <files>
+            <file absfname="/storage/app/site/vofrontend/osg_glidein.sh" after_entry="True" const="True" executable="True" untar="False" wrapper="False">
+               <untar_options cond_attr="TRUE"/>
+            </file>
+         </files>
+     </group>
+      <group name="main" enabled="True">
+         <config>
+            <idle_glideins_per_entry max="50" reserve="5"/>
+            <idle_vms_per_entry curb="5" max="100"/>
+            <idle_vms_total curb="200" max="1000"/>
+            <processing_workers matchmakers="3"/>
+            <running_glideins_per_entry max="6000" relative_to_queue="1.10"/>
+            <running_glideins_total curb="90000" max="100000"/>
+         </config>
+         <match match_expr="True" start_expr="True">
+            <factory query_expr="True">
+               <match_attrs>
+                  <match_attr name="GLIDEIN_Site" type="string"/>
+               </match_attrs>
+               <collectors>
+               </collectors>
+            </factory>
+            <job query_expr="True">
+               <match_attrs>
+                  <match_attr name="DESIRED_Sites" type="string"/>
+               </match_attrs>
+               <schedds>
+               </schedds>
+            </job>
+         </match>
+         <security>
+            <credentials>
+            </credentials>
+         </security>
+         <attrs>
+         </attrs>
+         <files>
+            <file absfname="/storage/app/site/vofrontend/osg_glidein.sh" after_entry="True" const="True" executable="True" untar="False" wrapper="False">
+               <untar_options cond_attr="TRUE"/>
+            </file>
+         </files>
+      </group>
+   </groups>
+   <collectors>
+      <collector DN="/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=glidein-1.sbgrid.org" group="default" node="134.174.140.230:9618" secondary="False"/>
+      <collector DN="/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=glidein-1.sbgrid.org" group="default" node="134.174.140.230:9620-9660" secondary="True"/>
+   </collectors>
+   <files>
+   </files>
+</frontend>

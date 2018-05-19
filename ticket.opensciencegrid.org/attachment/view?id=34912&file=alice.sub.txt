@@ -1,0 +1,21 @@
+cmd = /export/data/alice/alien-logs//tmp/agent.startup.648095
+
+
+log = /export/data/alice/alien-logs/htcondor-logs//2017-09-19/jobagent_648095_147.log
+universe = grid
+grid_resource = condor mpdsfgrid01 mpdsfgrid01.nersc.gov:9619
++TransferOutput = ""
+periodic_hold = \
+  JobStatus == 1 && ( \
+    GridJobStatus =?= undefined && CurrentTime - EnteredCurrentStatus > 1800 \
+  ) || \
+  JobStatus <= 2 && ( \
+    CurrentTime - EnteredCurrentStatus > 172800 \
+  )
+
+periodic_remove = \
+  CurrentTime - QDate > 259200
+
+use_x509userproxy = true
+environment = "ALIEN_CM_AS_LDAP_PROXY='palicevo1.nersc.gov:8084' ALIEN_JOBAGENT_ID='648095_147'"
+queue 1

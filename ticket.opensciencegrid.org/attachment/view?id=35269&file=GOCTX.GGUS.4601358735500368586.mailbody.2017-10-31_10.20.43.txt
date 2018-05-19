@@ -1,0 +1,94 @@
+Hi,
+
+We will be able to look into it on thursday. The relevant experts are on 
+travel.
+
+cheers,
+
+--john
+
+On 10/31/17 9:36 AM, helpdesk@ggus.org wrote:
+> 
+> Dear support staff,
+> ticket #131441 for site "BNL-ATLAS-OPP" is ASSIGNED to you.
+> 
+> REFERENCE LINK: https://ggus.eu/index.php?mode=ticket_info&ticket_id=131441
+> SUBJECT: vmem limit?
+> 
+> -----------------------------------------------------------------------------
+> TICKET INFORMATION:
+> -----------------------------------------------------------------------------
+> DESCRIPTION ->
+> Dear BNL admins,
+> 
+> it looks like you have some VMEM limit set for the ATLAS ATLAS_OPP_OSG-SU_OG queue - could you please have a look? I am attaching below the problem and the investigations done on ATLAS side [1].
+> 
+> Kind regards,
+> Ivan Glushkov
+> 
+> [1]
+> 
+> Hi,
+> Running manually on lxplus I can reproduce the failure by limiting vmem
+> ulimit -v 2200000
+> 
+> I can only conclude that there is some sneaky limit on the vmem somewhere. Maybe it is only introduced when running like the pilot, e.g. after batch/vac has had it`s way.
+> Could you maybe check /proc/..../limits.
+> For sure in the pilot I do not see a ulimit.
+> 
+> The command to run it yourself is linked to each job - or ask.
+> 
+> Cheers,
+> Rod.
+> 
+> 
+> 
+> 
+> On 30 October 2017 at 10:45, Rodney Walker <rodwalker007@gmail.com> wrote:
+> Hi,
+> The error is when trying to allocate memory with tcmalloc. I saw something similar at LIV VAC site, and didn`t get to the bottom of it there. It looks like there is some limit on the vmem, or a sharp spike in usage that some WNs cannot cover. The VAC nodes were 2GB +8GB swap.
+> The SU_OG PQ has maxrss 32GB, which I guess is not right. I will reduce to 2GB but I don`t think that is the problem. It would not block such tasks from brokering there.
+> 
+> Maybe US people could take a look. Or we set the PQ to run only ES.
+> 
+> Cheers,
+> Rod.
+> 
+> On 30 October 2017 at 09:51, Ivan Glushkov <Ivan.Glushkov@cern.ch> wrote:
+> Dear all,
+> 
+> looking at too many failures today on a site [1] I’ve noticed that most of those come from request 14032 [2]. what I see is ~50% failure rate for this request [3]. What I do not understand is why the generation failures prefer the ATLAS_OPP_OSG-SU_OG site [4].. It cannot be site related since this is generation and the error is [5]:
+> PyJobTransforms.transform.execute 2017-10-30 00:12:08,251 CRITICAL Transform executor raised TransformValidationException: Non-zero return code from generate (33); Logfile error in log.generate: "Sherpa_i            FATAL ../src/GenModule.cxx:35 (StatusCode GenModule::initialize()): code 0: genInitialize()"
+> Cheers,
+> Ivan
+> 
+> [1] https://bigpanda.cern.ch/errors/?computingsite=ATLAS_OPP_OSG-SU_OG
+> [2] https://bigpanda.cern.ch/jobs/?reqid=14032
+> [3]
+> PastedGraphic-9.png
+> 
+> [4]
+> PastedGraphic-8.png
+> 
+> [5] https://aipanda106.cern.ch/media/filebrowser/5964edfb-2c30-44bb-a5fb-f55ad07ef590/mc15_13TeV/tarball_PandaJob_3681851481_ATLAS_OPP_OSG-SU_OG/pilotlog.txt
+> Affected Site: BNL-ATLAS-OPP
+> 
+> LAST MODIFIER -> ivan.glushkov
+> NOTIFIED SITE -> BNL-ATLAS-OPP
+> CONCERNED VO -> atlas
+> PRIORITY -> less urgent
+> TYPE OF ISSUE -> Computing Services
+> SUBMITTER -> ivan.glushkov
+> 
+> *********************************************************************************
+>   This is an automated mail. When replying don't change the subject line!
+>   S T R I P  P R E V I O U S  M A I L S please!!
+> *********************************************************************************
+> 
+
+-- 
+John Hover
+Group Leader | Grid Group/Experiment Services
+RHIC/ATLAS Computing Facility | Brookhaven National Laboratory
+jhover@bnl.gov | 631-344-5828 | http://www.racf.bnl.gov/Members/jhover
+

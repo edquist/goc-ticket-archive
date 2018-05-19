@@ -1,0 +1,672 @@
+######## VO: glow #################################
+###############################################
+General query to determine records to correct
+###############################################
+
+set @CommonName := '/CN=pilot/glidein2.chtc.wisc.edu';
+set @start := '2014-07-01';
+set @end   := '2014-10-01';
+set @corrid     := 339;  -- glow
+select
+       SiteName
+      ,Main.ProbeName as ProbeName
+      ,CommonName
+      ,date_format(EndTime,'%Y-%m-%d') as EndTime
+      ,VO.VOName as VOName
+      ,corrid
+      ,sum(Njobs) as Jobs
+      ,round(sum(CpuUserDuration+CpuSystemDuration)/3600,0) as CpuHrs
+      ,round(sum(WallDuration * Cores)/3600,0) as WallHrs
+from MasterSummaryData  Main
+join Probe on (Main.ProbeName = Probe.probename)
+join Site  on (Probe.siteid = Site.siteid)
+join VONameCorrection voc on (Main.VOcorrid = voc.corrid)
+join VO on (voc.VOid = VO.VOid)
+where (Main.ProbeName like '%mwt2.org'
+         or
+       Main.ProbeName = 'condor:mwt2-gk.campuscluster.illinois.edu')
+  and EndTime > @start
+  and EndTime < @end
+  and CommonName = @CommonName
+group by
+       SiteName
+      ,ProbeName
+      ,CommonName
+      ,EndTime
+      ,VOName
+      ,corrid
+;
+
++--------------+-------------------------------------------+----------------------------------+------------+--------+--------+------+--------+---------+
+| SiteName     | ProbeName                                 | CommonName                       | EndTime    | VOName | corrid | Jobs | CpuHrs | WallHrs |
++--------------+-------------------------------------------+----------------------------------+------------+--------+--------+------+--------+---------+
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-02 | glow   |    339 |    2 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-03 | glow   |    339 |    8 |     15 |      19 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-04 | glow   |    339 |    2 |      4 |       5 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-05 | glow   |    339 |    1 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-07 | glow   |    339 |    2 |     11 |      11 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-08 | glow   |    339 |    3 |     22 |      23 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-09 | glow   |    339 |    4 |      5 |       7 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-10 | glow   |    339 |   16 |      0 |       7 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-11 | glow   |    339 |    1 |     11 |      11 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-14 | glow   |    339 |   13 |     11 |      16 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-15 | glow   |    339 |   14 |      3 |       8 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-16 | glow   |    339 |    3 |      9 |       9 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-17 | glow   |    339 |    1 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-18 | glow   |    339 |    2 |     11 |      11 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-19 | glow   |    339 |    3 |      1 |       2 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-20 | glow   |    339 |    7 |     11 |      13 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-21 | glow   |    339 |    9 |      6 |       8 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-22 | atlas  |    984 |    1 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-23 | atlas  |    984 |    1 |      1 |       2 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-25 | atlas  |    984 |    1 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-18 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-19 | atlas  |    984 |    1 |     11 |      11 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-20 | atlas  |    984 |    2 |     11 |      11 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-21 | atlas  |    984 |    3 |      8 |       9 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-23 | atlas  |    984 |    6 |      0 |       9 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-24 | atlas  |    984 |    8 |      0 |      18 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-25 | atlas  |    984 |    2 |      0 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-26 | atlas  |    984 |    1 |      1 |       2 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-28 | atlas  |    984 |    4 |      2 |       2 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-29 | atlas  |    984 |    2 |      9 |       8 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-31 | atlas  |    984 |    3 |     11 |      12 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-01 | atlas  |    984 |    4 |     12 |      11 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-02 | atlas  |    984 |    1 |     11 |      12 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-03 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-04 | atlas  |    984 |    5 |      0 |       6 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-06 | atlas  |    984 |    2 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-07 | atlas  |    984 |    1 |      3 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-08 | atlas  |    984 |    2 |      0 |       2 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-09 | atlas  |    984 |    1 |      5 |       6 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-10 | atlas  |    984 |    2 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-11 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-12 | atlas  |    984 |    5 |     11 |      16 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-13 | atlas  |    984 |    1 |      0 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-13 | glow   |    339 |    4 |      2 |       8 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-15 | glow   |    339 |    1 |      1 |       3 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-16 | glow   |    339 |    2 |      0 |       3 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-02 | glow   |    339 |   53 |    687 |     710 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-03 | glow   |    339 |   13 |     40 |      42 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-04 | glow   |    339 |   31 |     70 |      93 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-05 | glow   |    339 |  214 |    103 |     171 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-06 | glow   |    339 |    9 |    121 |     123 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-07 | glow   |    339 |   40 |    721 |     725 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-08 | glow   |    339 |  152 |   1039 |    1058 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-09 | glow   |    339 |  793 |   1430 |    1667 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-10 | glow   |    339 | 2910 |    703 |    2062 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-11 | glow   |    339 |  540 |   8466 |    8814 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-12 | glow   |    339 |   87 |    441 |     474 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-13 | glow   |    339 | 1278 |   8411 |    9629 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-14 | glow   |    339 |  276 |   6245 |    6398 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-22 | atlas  |    984 |   18 |      0 |      13 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-23 | atlas  |    984 |  540 |   3465 |    3712 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-24 | atlas  |    984 | 1291 |   9322 |    9996 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-25 | atlas  |    984 |  567 |   5143 |    5703 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-26 | atlas  |    984 |  482 |   7167 |    7393 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-27 | atlas  |    984 |  237 |   2985 |    3045 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-28 | atlas  |    984 |   83 |    469 |     555 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-29 | atlas  |    984 |  398 |   5844 |    6009 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-30 | atlas  |    984 |  324 |   3946 |    4077 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-31 | atlas  |    984 |  287 |   1880 |    1937 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-01 | atlas  |    984 |   55 |    327 |     364 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-02 | atlas  |    984 |  550 |   9938 |   10262 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-03 | atlas  |    984 |   69 |    902 |     937 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-04 | atlas  |    984 |  207 |    946 |    1007 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-05 | atlas  |    984 |  159 |   2181 |    2269 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-06 | atlas  |    984 |   57 |    485 |     545 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-07 | atlas  |    984 |   69 |    638 |     679 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-08 | atlas  |    984 |  237 |   2760 |    3205 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-09 | atlas  |    984 |  184 |   1694 |    1923 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-10 | atlas  |    984 |  104 |   1243 |    1317 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-11 | atlas  |    984 |  114 |   1314 |    1394 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-12 | atlas  |    984 |   25 |    356 |     413 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-13 | atlas  |    984 |   34 |    486 |     533 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-14 | atlas  |    984 |  151 |    892 |    1032 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-15 | atlas  |    984 |  380 |   3473 |    3804 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-16 | atlas  |    984 |  676 |   4368 |    4607 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-17 | atlas  |    984 |  543 |   2019 |    2213 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-18 | atlas  |    984 |  197 |   4070 |    4183 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-19 | atlas  |    984 |  228 |   2929 |    3081 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-20 | atlas  |    984 | 1186 |  12991 |   13557 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-21 | atlas  |    984 | 1080 |   1141 |    1754 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-22 | atlas  |    984 | 1490 |   3521 |    6489 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-23 | atlas  |    984 | 1617 |   5194 |    9455 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-24 | atlas  |    984 | 1495 |   6068 |   10382 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-25 | atlas  |    984 | 1259 |   5332 |    8904 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-26 | atlas  |    984 |  428 |   1480 |    2590 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-27 | atlas  |    984 |  319 |   5195 |    5522 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-28 | atlas  |    984 |  405 |    468 |     687 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-29 | atlas  |    984 |  244 |    947 |    1026 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-30 | atlas  |    984 |   36 |    567 |     597 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-31 | atlas  |    984 |   20 |    289 |     294 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-01 | atlas  |    984 |   54 |    242 |     276 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-02 | atlas  |    984 |   35 |    621 |     455 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-03 | atlas  |    984 |  174 |   2362 |    2040 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-04 | atlas  |    984 |  108 |    504 |     691 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-05 | atlas  |    984 |   67 |    183 |     203 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-06 | atlas  |    984 |   58 |    617 |     629 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-07 | atlas  |    984 |   29 |    380 |     388 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-08 | atlas  |    984 |  109 |    300 |     311 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-09 | atlas  |    984 |   91 |    351 |     470 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-10 | atlas  |    984 |  319 |   3283 |    3643 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-11 | atlas  |    984 |  220 |   3266 |    3424 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-12 | atlas  |    984 | 1058 |  12720 |   13942 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-13 | atlas  |    984 |  236 |    184 |     738 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-13 | glow   |    339 |  648 |   1726 |    3341 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-14 | glow   |    339 |  933 |  11340 |   13338 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-15 | glow   |    339 | 1708 |  23241 |   26238 |
+| MWT2_CE_IU   | condor:iut2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-16 | glow   |    339 |  133 |   1754 |    1990 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-02 | glow   |    339 |   83 |   1237 |    1267 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-03 | glow   |    339 |   31 |    438 |     464 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-04 | glow   |    339 |   84 |    284 |     324 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-05 | glow   |    339 |  272 |    166 |     263 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-06 | glow   |    339 |   13 |     83 |      87 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-07 | glow   |    339 |   33 |    595 |     599 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-08 | glow   |    339 |  163 |    996 |    1088 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-09 | glow   |    339 |  774 |    889 |    1134 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-10 | glow   |    339 | 2766 |    696 |    2062 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-11 | glow   |    339 |  720 |  10716 |   11383 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-12 | glow   |    339 |   64 |     29 |      52 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-13 | glow   |    339 | 1389 |  10600 |   11994 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-14 | glow   |    339 |  281 |   6211 |    6769 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-15 | glow   |    339 |   73 |    101 |     119 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-16 | glow   |    339 |  831 |  11259 |   11506 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-17 | glow   |    339 | 1216 |  13087 |   13547 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-18 | glow   |    339 |  730 |   9724 |   10013 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-19 | glow   |    339 |  187 |   1553 |    1674 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-20 | glow   |    339 |  210 |    539 |     626 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-21 | glow   |    339 | 2045 |   1762 |    2358 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-22 | atlas  |    984 |   64 |      2 |       7 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-22 | glow   |    339 |  184 |    186 |     245 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-23 | atlas  |    984 |  684 |   4415 |    4595 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-24 | atlas  |    984 | 1054 |   5774 |    6405 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-25 | atlas  |    984 |  598 |   5231 |    5657 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-26 | atlas  |    984 |  482 |   6820 |    6976 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-27 | atlas  |    984 |  239 |   2724 |    2776 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-28 | atlas  |    984 |   89 |    367 |     609 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-29 | atlas  |    984 |  543 |   7123 |    7266 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-30 | atlas  |    984 |  458 |   3301 |    3875 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-31 | atlas  |    984 |  279 |    866 |     897 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-01 | atlas  |    984 |   53 |    849 |     861 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-02 | atlas  |    984 |  744 |  12617 |   13125 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-03 | atlas  |    984 |   51 |    708 |     731 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-04 | atlas  |    984 |  239 |    447 |     580 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-05 | atlas  |    984 |  811 |   6503 |    7082 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-06 | atlas  |    984 |  128 |   1282 |    1465 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-07 | atlas  |    984 |   73 |    945 |     979 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-08 | atlas  |    984 |  240 |   2582 |    3110 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-09 | atlas  |    984 |  186 |   1595 |    1819 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-10 | atlas  |    984 |  126 |   1545 |    1670 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-11 | atlas  |    984 |  168 |   1459 |    1567 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-12 | atlas  |    984 |  166 |   2488 |    2869 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-13 | atlas  |    984 |   36 |    525 |     576 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-14 | atlas  |    984 |  198 |   1021 |    1244 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-15 | atlas  |    984 |  471 |   3084 |    3691 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-16 | atlas  |    984 |  642 |   3437 |    3738 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-17 | atlas  |    984 |  901 |   4433 |    4716 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-18 | atlas  |    984 |  242 |   5003 |    5072 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-19 | atlas  |    984 |  238 |   3164 |    3252 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-20 | atlas  |    984 |   35 |    250 |     263 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-21 | atlas  |    984 |   20 |     22 |     141 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-22 | atlas  |    984 |   32 |     53 |     128 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-23 | atlas  |    984 |   20 |     58 |     101 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-24 | atlas  |    984 |   21 |     25 |      70 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-25 | atlas  |    984 |   29 |     55 |     113 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-26 | atlas  |    984 |   13 |     26 |      56 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-27 | atlas  |    984 |   26 |     36 |      46 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-28 | atlas  |    984 |   13 |     54 |      74 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-29 | atlas  |    984 |   16 |     41 |      49 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-30 | atlas  |    984 |   12 |     25 |      25 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-31 | atlas  |    984 |   22 |     23 |      25 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-01 | atlas  |    984 |    8 |     17 |      22 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-02 | atlas  |    984 |    3 |     40 |      42 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-03 | atlas  |    984 |   14 |     27 |      30 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-04 | atlas  |    984 |   45 |      0 |      11 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-05 | atlas  |    984 |   55 |    353 |     389 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-06 | atlas  |    984 |   18 |    142 |     167 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-07 | atlas  |    984 |   53 |    268 |     359 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-08 | atlas  |    984 |  178 |    345 |     479 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-09 | atlas  |    984 |  189 |    932 |    1314 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-10 | atlas  |    984 |  253 |   1555 |    1804 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-11 | atlas  |    984 |  451 |   2789 |    3796 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-12 | atlas  |    984 |  537 |   2827 |    4178 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-13 | atlas  |    984 |  211 |      0 |     603 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-13 | glow   |    339 |  686 |   1113 |    2988 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-14 | glow   |    339 | 1161 |   1673 |    6374 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-15 | glow   |    339 |  538 |    357 |    1917 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-16 | glow   |    339 |   30 |      9 |     100 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-02 | glow   |    339 |   44 |   1309 |    1332 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-03 | glow   |    339 |   97 |   3480 |    3517 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-04 | glow   |    339 |  100 |    622 |     677 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-05 | glow   |    339 |  301 |    363 |     472 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-06 | glow   |    339 |   13 |     96 |     100 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-07 | glow   |    339 |   16 |    247 |     253 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-08 | glow   |    339 |  152 |    502 |     596 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-09 | glow   |    339 |  336 |   4116 |    4247 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-10 | glow   |    339 | 1541 |    457 |    1319 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-11 | glow   |    339 |  733 |  11874 |   12627 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-12 | glow   |    339 |  268 |   5840 |    6782 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-13 | glow   |    339 |  911 |   5192 |    6171 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-14 | glow   |    339 |  280 |   8826 |   10330 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-15 | glow   |    339 |  287 |  12312 |   13051 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-17 | glow   |    339 |   17 |      0 |       1 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-18 | glow   |    339 |   16 |    122 |     123 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-19 | glow   |    339 |   34 |    141 |     149 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-20 | glow   |    339 |   34 |    116 |     129 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-21 | glow   |    339 |   28 |    272 |     281 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-22 | atlas  |    984 |   57 |      9 |      13 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-22 | glow   |    339 |    7 |      0 |       3 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-23 | atlas  |    984 |  265 |   1471 |    1679 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-24 | atlas  |    984 | 1428 |  22120 |   24006 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-25 | atlas  |    984 |  611 |   3219 |    3943 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-26 | atlas  |    984 |  401 |   8684 |    8901 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-27 | atlas  |    984 |  356 |  11925 |   12248 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-28 | atlas  |    984 |   89 |    390 |     467 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-29 | atlas  |    984 |    6 |     53 |      64 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-30 | atlas  |    984 |  569 |  17519 |   17974 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-07-31 | atlas  |    984 |  235 |   4480 |    4613 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-01 | atlas  |    984 |  108 |   1225 |    1256 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-02 | atlas  |    984 |   99 |   3425 |    3518 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-03 | atlas  |    984 |  433 |  16983 |   18089 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-04 | atlas  |    984 |   12 |     45 |      59 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-05 | atlas  |    984 |   13 |    186 |     212 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-06 | atlas  |    984 |  102 |   2817 |    2923 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-07 | atlas  |    984 |   46 |    412 |     478 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-08 | atlas  |    984 |  102 |   1956 |    2120 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-09 | atlas  |    984 |  222 |   3153 |    3545 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-10 | atlas  |    984 |   71 |   1511 |    1616 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-11 | atlas  |    984 |  130 |   2727 |    3109 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-12 | atlas  |    984 |   26 |    252 |     567 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-13 | atlas  |    984 |  158 |   5921 |    6476 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-14 | atlas  |    984 |  190 |   1867 |    2212 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-15 | atlas  |    984 |  200 |   2377 |    2658 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-16 | atlas  |    984 | 1024 |  12812 |   13669 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-17 | atlas  |    984 |  327 |   2889 |    3013 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-18 | atlas  |    984 |  673 |  18954 |   18970 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-19 | atlas  |    984 |    2 |      3 |       4 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-21 | atlas  |    984 |  960 |    490 |    1165 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-22 | atlas  |    984 | 1474 |   2593 |    5666 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-23 | atlas  |    984 | 1749 |  16834 |   21474 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-24 | atlas  |    984 | 1535 |   7980 |   12693 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-25 | atlas  |    984 | 1176 |   7525 |   10721 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-26 | atlas  |    984 |  671 |   8087 |    9643 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-27 | atlas  |    984 |   99 |      0 |       0 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-28 | atlas  |    984 |  227 |     58 |     108 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-29 | atlas  |    984 |  216 |    166 |     220 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-30 | atlas  |    984 |    8 |     53 |      54 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-08-31 | atlas  |    984 |   70 |   1943 |    2006 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-01 | atlas  |    984 |   64 |    744 |     781 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-02 | atlas  |    984 |   34 |   1311 |    1287 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-03 | atlas  |    984 |   58 |    916 |     906 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-04 | atlas  |    984 |   51 |    301 |     389 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-05 | atlas  |    984 |   41 |    242 |     277 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-06 | atlas  |    984 |   18 |    412 |     428 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-07 | atlas  |    984 |   47 |   1259 |    1278 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-08 | atlas  |    984 |  229 |   1040 |    1152 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-09 | atlas  |    984 |  111 |   1153 |    1396 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-10 | atlas  |    984 |  275 |   3175 |    3709 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-11 | atlas  |    984 |   46 |     57 |      96 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-12 | atlas  |    984 |  825 |   7833 |   13491 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-13 | atlas  |    984 |   85 |     66 |     321 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-13 | glow   |    339 |  170 |   3283 |    3806 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-14 | glow   |    339 |    6 |    168 |     191 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-15 | glow   |    339 |  105 |    941 |    1187 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=pilot/glidein2.chtc.wisc.edu | 2014-09-16 | glow   |    339 |    3 |     45 |      50 |
++--------------+-------------------------------------------+----------------------------------+------------+--------+--------+------+--------+---------+
+
+###############################################
+Update transactions to be applied
+###############################################
+
+set @CommonName := '/CN=pilot/glidein2.chtc.wisc.edu';
+set @start := '2014-07-23';
+set @end   := '2014-09-13';
+set @corrid     := 339;  -- glow
+
+select
+CONCAT('update MasterSummaryData set VOCorrid = ',@corrid,' where SummaryID = ',SummaryID,';')
+from MasterSummaryData
+where (ProbeName like '%mwt2.org'
+         or
+       ProbeName = 'condor:mwt2-gk.campuscluster.illinois.edu')
+  and EndTime > @start
+  and EndTime < @end
+  and CommonName = @CommonName
+  and VOcorrid = 984
+;
+
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 74783703;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 74791825;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 74853785;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 74870289;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 75000216;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 75045000;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 75532844;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 75539844;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 75543515;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 75544318;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 75554342;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 75584202;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 76104074;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 76263647;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 76267597;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 76354967;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 76457885;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 76560202;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 76695345;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77044883;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77049827;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77058992;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77110722;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77189370;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77523391;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77691144;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77715994;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77727074;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77744995;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77746025;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 77865653;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 78545425;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 78594939;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 78721264;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 78769886;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 78931432;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 78975973;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 79328300;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 79333453;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 79348889;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 79378767;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 79618482;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 79704579;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 80250984;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 80260600;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 80261279;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 80426016;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 80467191;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 80483681;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81073249;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81110468;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81112404;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81213811;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81471437;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81482681;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81710189;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81811646;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81812945;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 81861607;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 82483527;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 82484114;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 82573409;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 82574359;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 82738136;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 83322147;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 83351180;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 83988639;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84002730;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84039185;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84066716;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84146616;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84164473;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84201529;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84203230;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84392362;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 84964474;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85016113;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85206519;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85206534;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85215835;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85215884;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85740656;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85751056;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85752989;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85753064;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 85754461;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 86183052;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 86558342;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 86575584;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 86599252;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 86740124;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 86779196;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 86805567;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 87295633;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 87298080;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 87324688;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 87331527;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 87551439;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 87686003;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 88021709;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 88026259;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 88040332;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 88655289;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 88659994;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 88668385;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89065908;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89284284;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89288336;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89421567;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89448213;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89451088;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89451119;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89452621;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 89452628;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 90436748;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 90555497;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 90714321;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 90738360;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 91236915;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 91256145;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 91265857;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 91303547;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 91466220;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 91559003;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 92116790;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 92118547;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 92132073;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 92371077;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 92478885;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 92690118;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 93038783;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 93044192;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 93052671;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 93419829;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94020851;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94024728;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94035938;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94046954;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94054573;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94367556;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94792740;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94795992;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94796303;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94921097;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 94944019;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 95731332;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 96288181;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 96341019;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 96530811;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 96556853;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 96673346;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 96907201;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 97059322;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 98096550;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 98175121;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 98765019;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 98782308;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99132412;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99159229;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99393944;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99394023;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99398599;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99425370;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99452000;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99706422;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99735551;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 99988556;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 100174436;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 100176222;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 100177496;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 100180759;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 100213822;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 100248909;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101038420;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101046283;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101051409;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101055490;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101068969;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101162252;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101310838;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101809129;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101811990;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101817870;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101833904;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101847256;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 101899981;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 102161560;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 102466029;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 102469368;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 102487173;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 102503331;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 102585495;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 102620514;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 102823009;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 103546961;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 103552704;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 103552768;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 103561166;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 103561171;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 104117724;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 104608920;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 104682789;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 104729332;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 104774306;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 104779928;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 104789308;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 105539570;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 105645957;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 105679358;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 105716045;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 105741233;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 105831255;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 105909988;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 106132790;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 106525808;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 106533360;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 106687373;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 106790604;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 106800490;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 106804217;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 106838969;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 107625041;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 107891316;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 108489099;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 108572840;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 108739428;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 108845929;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 108937628;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 108947817;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 109329409;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 109356463;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 109362082;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 109376279;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 109411444;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 109428626;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 109452062;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 109638648;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110023225;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110126836;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110171978;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110285386;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110300494;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110312885;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110430067;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110435527;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110835533;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110872350;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110873159;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 110954697;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 111061411;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 111061584;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 111655341;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 111706000;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 111771484;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 111891143;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112086001;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112169749;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112354301;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112631963;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112636747;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112678926;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112685338;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112717798;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 112894820;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 113035806;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 113391299;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 113398279;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 113398282;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 113415973;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 113442703;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 113542755;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114287896;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114299127;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114322534;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114328431;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114371234;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114374746;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114820933;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114946897;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114959532;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 114988544;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115006298;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115009089;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115135305;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115418894;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115455956;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115461721;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115467648;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115469041;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115474012;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115531263;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115552640;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 115818660;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 116176940;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 116194106;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 116232415;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 116431033;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 116638206;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 116697607;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 116937538;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117081453;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117085778;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117089886;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117093921;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117121956;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117140323;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117323665;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117403685;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117405074;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117878711;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117879189;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117879195;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117890941;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 117951149;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118148456;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118302620;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118617718;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118624883;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118630726;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118649402;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118685093;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118764923;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118910125;
+update MasterSummaryData set VOCorrid = 339 where SummaryID = 118910383;
+
+##########################################################################
+# To verify... rerun the query at the top of page with all 'set' commands
+#
+# all should show glow with the exception of 2014-07-22 and 2014-09-13
+# .. those 2 dates should show glow and atlas.
+#
+# If looks good, you can commit.
+##########################################################################
+

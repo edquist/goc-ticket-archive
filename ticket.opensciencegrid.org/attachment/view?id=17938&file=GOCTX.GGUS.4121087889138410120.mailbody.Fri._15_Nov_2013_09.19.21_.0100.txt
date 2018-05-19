@@ -1,0 +1,238 @@
+
+This is an automated notification sent by LCG Savannah.
+It relates to:
+		support #139160, project CMS Computing Infrastructure  Support
+
+==============================================================================
+ LATEST MODIFICATIONS of support #139160:
+==============================================================================
+
+Update of sr #139160 (project cmscompinfrasup):
+
+                Use GGUS:                      No => Yes                    
+
+
+==============================================================================
+ OVERVIEW of support #139160:
+==============================================================================
+
+URL:
+  <http://savannah.cern.ch/support/?139160>
+
+                 Summary: SAM CE and SRM errors at T2_US_Nebraska
+                 Project: CMS Computing Infrastructure  Support
+            Submitted by: wcarvalh
+            Submitted on: 2013-08-07 21:48
+                Category: SAM tests
+                Priority: 5 - Normal
+                Severity: 3 - Normal
+                  Status: None
+                 Privacy: Public
+             Assigned to: cmscompinfrasup-t2usnebraska
+        Originator Email: 
+             Open/Closed: Open
+         Discussion Lock: Any
+         GGUS ticket url: 
+                Use GGUS: Yes
+                    Site: T2_US_Nebraska
+
+    _______________________________________________________
+
+
+Dear Administrators,
+
+According to Site View, your site is in critical state for 
+25 hours now with respect to SAM tests: 
+
+http://dashb-ssb.cern.ch/dashboard/request.py/sitehistory?site=T2_US_Nebraska&combine=on
+
+SAM CE is in MISSING state: 
+
+http://dashb-cms-sum.cern.ch/dashboard/request.py/latestresultssmry-sum#profile=CMS_CRITICAL_FULL&group=AllGroups&site[]=T2_US_Nebraska&flavour[]=OSG-CE&metric[]=All+Metrics&status[]=All+Exit+Status&table=true
+
+and SAM SRM is in CRITICAL state:
+
+http://dashb-cms-sum.cern.ch/dashboard/request.py/latestresultssmry-sum#profile=CMS_CRITICAL_FULL&group=AllGroups&site[]=T2_US_Nebraska&flavour[]=OSG-SRMv2&metric[]=All+Metrics&status[]=All+Exit+Status&table=true
+
+All three SRM instances are critical with respect to the 
+metric "org.cms.SRM-VOPut".
+
+Strangely, T2_US_Nebraska status was not "red ball" at the 
+beginning of my shift and just switched status a few hours 
+ago.  
+
+Please, have a look.
+
+   Wagner Carvalho
+     CSP shifter
+
+
+    _______________________________________________________
+
+Follow-up Comments:
+
+
+-------------------------------------------------------
+Date: 2013-09-24 10:54              By: Duncan Ralph <dkralph>
+Hi,
+
+It looks like there are still problems with the metric. Do we have some idea
+what the problem is?
+
+thanks
+
+-------------------------------------------------------
+Date: 2013-09-06 15:20              By: Carl Lundstedt <clundst>
+red-srm1 errors look to be group priv problems on a hadoop directory.  The
+mapping/cert running the test changed at some point and things went red.
+
+I'll watch to make sure it goes green.
+Carl
+
+-------------------------------------------------------
+Date: 2013-09-06 14:55              By: Garhan Attebury <gattebur>
+We're looking into this, but all signs are pointing towards the OSG Oasis
+CVMFS outage being the main cause. All the test errors seem to indicate
+issues with /cvmfs/oasis.opensciencegrid.org/cmssoft/cms/* being missing, and
+that's supposed to be a symlink to /cvmfs/cms.cern.ch on our systems (why I'm
+still figuring out, I'm out of the loop on why that was setup this way).
+
+This caused all sorts of errors -- missing TFC, missing python 2.6, missing
+CMS_PATH, etc.
+
+In addition one of our three CEs (red.unl.edu) had run out of disk due to a
+user submitting many jobs with 100+MB stage in files, and the SE problems
+with red-srm1.unl.edu are still a mystery.
+
+So we're working on multiple issues right now - will update once things have
+stabilized.
+
+-------------------------------------------------------
+Date: 2013-09-06 08:37              By: Helio Nogima <nogima>
+Dear Admins,
+
+Maybe it is related to this issue, there are two hosts failing SAM CE tests
+(org.cms.WN-*) for more than 16 hours now.
+
+http://dashb-cms-sum.cern.ch/dashboard/request.py/historicalsmryview-sum#view=test&profile=CMS_CRITICAL_FULL&time=last48&group=AllGroups&site=T2_US_Nebraska&flavour=OSG-CE&disabledFlavours=true&host=red-gw1.unl.edu&metric=All%20Metrics&date=2013-09-06T08:11:25Z
+
+http://dashb-cms-sum.cern.ch/dashboard/request.py/historicalsmryview-sum#view=test&profile=CMS_CRITICAL_FULL&time=last48&group=AllGroups&site=T2_US_Nebraska&flavour=OSG-CE&disabledFlavours=true&host=red-gw2.unl.edu&metric=All%20Metrics&date=2013-09-06T07:31:22Z
+
+Could you please check?
+
+Cheers,
+
+Helio (CSP)
+
+-------------------------------------------------------
+Date: 2013-08-16 16:30              By: Nicolo Magini <magini>
+Hi Carl,
+
+despite the very misleading error message from lcg-cp, "zero number of
+replicas" is not a source error but it is caused by some internal error on
+the destination. Using srmcp instead of lcg-cp gives some more insight:
+
+
+bash-3.2$ srmcp -debug -2 file:////etc/hosts
+srm://red-srm1.unl.edu:8443/srm/v2/server?SFN=/mnt/hadoop/user/uscms01/pnfs/unl.edu/data4/cms/store/unmerged/SAM/testSRM/SAM-red-srm1.unl.edu/lcg-util/niccotest.txt
+
+[snip]
+
+GridftpClient: starting a transfer to
+/mnt/hadoop/user/uscms01/pnfs/unl.edu/data4/cms/store/unmerged/SAM/testSRM/SAM-red-srm1.unl.edu/lcg-util/niccotest.txt
+org.globus.ftp.exception.ServerException: Server refused performing the
+request. Custom message:  (error code 1) [Nested exception message:  Custom
+message: Unexpected reply: 500-Command failed. : System error in opening file
+due to an internal HDFS error; could be a misconfiguration or bad installation
+at the site. (host=red-gridftp7.unl.edu, user=cmsprod038,
+path=/user/uscms01/pnfs/unl.edu/data4/cms/store/unmerged/SAM/testSRM/SAM-red-srm1.unl.edu/lcg-util/niccotest.txt):
+Unknown error 255
+500-A system call failed: Unknown error 255
+500 End.
+
+
+I hope this helps to debug the issue; reassigning to site.
+
+Cheers
+Nicolo'
+
+-------------------------------------------------------
+Date: 2013-08-13 14:31              By: Carl Lundstedt <clundst>
+Has any SAM op had a chance to look into this?  Is this a source problem?
+
+Carl
+
+-------------------------------------------------------
+Date: 2013-08-09 21:06              By: Carl Lundstedt <clundst>
+Most of our SRM tests have gone green, but one server gets the following
+failure:
+
+StartTime of the transfer: 2013-08-09 22:28:40.025252
+Destination:
+srm://red-srm1.unl.edu:8443/srm/v2/server?SFN=/mnt/hadoop/user/uscms01/pnfs/unl.edu/data4/cms/store/unmerged/SAM/testSRM/SAM-red-srm1.unl.edu/lcg-util/testfile-put-nospacetoken-1376080117-ac1fc2cba963.txt
+ERROR:
+file:/var/lib/gridprobes/cms.Role=production/org.cms/SRM/red-srm1.unl.edu/testFile.txt:
+zero number of replicas
+
+This looks like a source error.
+
+Carl
+
+-------------------------------------------------------
+Date: 2013-08-09 18:03              By: Carl Lundstedt <clundst>
+I think I have a handle on what's going on.  I believe it's a routing/network
+issue between us and cern.ch.  Everything else is working at the site.  Once
+we make the changes on our end and get things working can we get a excused
+absence from the tests?
+
+Carl
+
+-------------------------------------------------------
+Date: 2013-08-09 14:13              By: Carl Lundstedt <clundst>
+I've crawled all over the transfer stack on my end and can not determine why
+these tests are failing.  Has anything changed upstream in the SAM tests that
+would provide a hint where to look?  Other tests to:
+
+/store/user/sam/SAM/
+
+seem to be working fine.
+
+Still working, still stumped.
+
+-Carl
+
+-------------------------------------------------------
+Date: 2013-08-08 20:05              By: Carl Lundstedt <clundst>
+I started looking into this this morning.  Still not sure where the problem 
+is.
+Carl
+
+
+
+
+
+    _______________________________________________________
+
+Carbon-Copy List:
+
+CC Address                          | Comment
+------------------------------------+-----------------------------
+6959                                | -COM-
+3954                                | -COM-
+7591                                | -COM-
+279                                 | -COM-
+3750                                | -COM-
+7264                                | -SUB-
+
+
+
+
+==============================================================================
+
+This item URL is:
+  <http://savannah.cern.ch/support/?139160>
+
+_______________________________________________
+  Message sent via/by LCG Savannah
+  http://savannah.cern.ch/
+

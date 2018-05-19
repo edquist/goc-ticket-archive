@@ -1,0 +1,120 @@
+Greetings,
+
+It all seems to have to do with the order of the options. I don't get the
+error so long as ignore and accept are immediately after nodes:
+
+#### Download agents configuration
+
+### ENVIRON glite
+
+### AGENT LABEL=download-fts PROGRAM=Toolkit/Transfer/FileDownload
+DEFAULT=on
+ -db              ${PHEDEX_DBPARAM}
+ -nodes           ${PHEDEX_NODE}
+ -ignore          '%T3_US_TAMU%','%T1_DE_KIT%'
+ -accept          '%'
+ -delete          ${PHEDEX_CONFIG}/CUHEP-FileDownloadSRMDelete
+ -validate        ${PHEDEX_CONFIG}/CUHEP-FileDownloadSRMVerify
+ -backend         FTS3
+ -service         https://fts3.cern.ch:8446
+ -protocols       'srmv2'
+
+
+### AGENT LABEL=download-remove PROGRAM=Toolkit/Transfer/FileRemove
+ENVIRON=glite
+ -db              ${PHEDEX_DBPARAM}
+ -nodes           ${PHEDEX_NODE}
+ -delete          ${PHEDEX_CONFIG}/CUHEP-FileDownloadSRMDelete
+ -protocol        'srmv2'
+
+From FTS log file:
+
+2017-02-21 16:37:38: FileDownload[21242]: note: exiting from stop flag
+2017-02-21 16:39:46: FileDownload[21461]: starting Agent session (id=2)
+2017-02-21 16:39:46: FileDownload[21461]: STATISTICS: Reporting every 3600
+seconds, detail=1
+2017-02-21 16:39:46: FileDownload[21461]: has successfully initialised
+2017-02-21 16:39:46: QMon[21461]: is starting (session 7)
+2017-02-21 16:39:46: FileDownload[21461]: AGENT_STATISTICS RSS=24.252
+VSize=172.655 Stime=0.000 Utime=0.030 dRSS=0.000 dVSize=0.000 dStime=0.000
+dUtime=0.000
+2017-02-21 16:39:46: FileDownload[21461]: (re)connecting to database
+FileRemove: pid 21473 started in
+/opt/phedex/Prod_T3_US_Colorado/state/download-remove/
+2017-02-21 16:40:58: FileDownload[21461]: disconnecting from database
+2017-02-21 16:40:58: FileDownload[21461]: disconnected from database
+
+
+Thank you for your help,
+doug
+
+
+On Tue, Feb 21, 2017 at 3:23 AM, <helpdesk@ggus.org> wrote:
+
+> Dear user,
+>
+> Your GGUS ticket #126556 was updated.
+> Please read this email carefully as your input may be required!
+>
+> REFERENCE LINK: https://ggus.eu/index.php?mode=ticket_info&ticket_id=
+> 126556
+> SUBJECT: PhEDEx 4.2.1 unknown options
+>
+> =====================
+> LATEST MODIFICATIONS:
+>
+> LAST MODIFIER -> Sebastian Pulido
+>
+>
+> PUBLIC DIARY ->
+> Dear Doug,
+> Can you also try to set the options in the same order as stated in the
+> template [1], (i.e. moving accept option up)
+>
+> Sebastian.
+>
+> [1]
+> ### AGENT LABEL=download-t1 PROGRAM=Toolkit/Transfer/FileDownload
+> ENVIRON=glite
+> -db                    ${PHEDEX_DBPARAM}
+> -nodes                 ${PHEDEX_NODE}
+> -ignore                'T2%','T3%','%CERN_Disk'
+> -accept                'T1%'
+> -delete                ${PHEDEX_CONFIG}/FileDownloadDelete
+> -validate              ${PHEDEX_CONFIG}/FileDownloadVerify,${PHEDEX_
+> BASE}/PHEDEX/Utilities/GetLocalPath,${PHEDEX_MAP},'rfio'
+> -backend               FTS
+> -checksum
+> -protocols             'srmv2'
+> -service               ${CERN_FTS_SERVER}
+> -batch-files           30
+> -link-pending-files    50
+>
+> ************************************************************
+> *********************
+>  This is an automated mail. When replying don't change the subject line!
+>  S T R I P  P R E V I O U S  M A I L S please!!
+> ************************************************************
+> *********************
+>
+
+
+
+-- 
+---------------------------------------------------------------------------------
+   Doug Johnson                    email: drjohn@pizero.colorado.edu
+
+   B390, Duane Physics             (303)-492-4506 Office
+
+   Boulder, CO 80309               (303)-492-5119 FAX
+
+                                   http://www.aaccchildren.org
+
+                                   http://www.bouldernablus.com
+
+
+http://advance.colorado.edu/support/fulbright
+<http://www-hep.colorado.edu/support/fulbright>
+
+   No one can everything, but everyone can do something
+----------------------------------------------------------------------------

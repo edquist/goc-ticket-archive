@@ -1,0 +1,193 @@
+Debbuging OSG network messaging to CERN
+=======================================
+
+Problems occurred around 22:25 on 2/11/2017 and 2/18/2017
+
+Feb 21 2017
+
+Checking logs on psds0 in /net/nas01/Public/logs/psds0
+
+First checking publisher-simplevisor.log
+
+Shows this around the time of the outage:
+
+2017-02-18 22:45:01,526 simplevisor[849656]: [INFO] caught SIGTERM
+2017-02-18 22:45:01,526 simplevisor[849656]: [INFO] stopping all the children
+2017-02-18 22:45:02,785 simplevisor[849656]: [INFO] service dashb-test-mb found running, stopped with result: (0, 'stompclt (pid 849853) is being told to quit...\nstompclt does not seem to be running anymore\n', '')
+2017-02-18 22:45:02,785 simplevisor[849656]: [INFO] stopping
+2017-02-18 22:45:02,786 simplevisor[849656]: [INFO] stopped
+2017-02-18 22:45:05,351 simplevisor[967968]: [INFO] service dashb-test-mb started with result: (0, 'stompclt (pid 968159) started\n', '')
+2017-02-18 22:45:05,351 simplevisor[967968]: [INFO] started
+
+This type event seems to be happening hourly (cron?) and is only hitting the test instance 'dashb-test-mb'?   Why is that on psds0?
+
+Next check rsv/consumers directory.   
+
+[1] 14:58:33 UTC [smckee@jump:psds0-mq-issue]$ grep "2017-02-11 22" *
+html-consumer.output:2017-02-11 22:04:43: html-consumer initializing.
+html-consumer.output:2017-02-11 22:04:47: Processing 56 files
+html-consumer.output:2017-02-11 22:10:01: html-consumer initializing.
+html-consumer.output:2017-02-11 22:10:05: Processing 48 files
+html-consumer.output:2017-02-11 22:15:38: html-consumer initializing.
+html-consumer.output:2017-02-11 22:15:42: Processing 58 files
+html-consumer.output:2017-02-11 22:21:18: html-consumer initializing.
+html-consumer.output:2017-02-11 22:21:22: Processing 58 files
+html-consumer.output:2017-02-11 22:26:37: html-consumer initializing.
+html-consumer.output:2017-02-11 22:26:39: Processing 58 files
+html-consumer.output:2017-02-11 22:32:03: html-consumer initializing.
+html-consumer.output:2017-02-11 22:32:07: Processing 83 files
+html-consumer.output:2017-02-11 22:37:35: html-consumer initializing.
+html-consumer.output:2017-02-11 22:37:38: Processing 47 files
+html-consumer.output:2017-02-11 22:43:01: html-consumer initializing.
+html-consumer.output:2017-02-11 22:43:04: Processing 48 files
+html-consumer.output:2017-02-11 22:48:33: html-consumer initializing.
+html-consumer.output:2017-02-11 22:48:37: Processing 55 files
+html-consumer.output:2017-02-11 22:53:49: html-consumer initializing.
+html-consumer.output:2017-02-11 22:53:53: Processing 42 files
+html-consumer.output:2017-02-11 22:59:16: html-consumer initializing.
+html-consumer.output:2017-02-11 22:59:19: Processing 47 files
+json-consumer.output:2017-02-11 22:01:38: json-consumer initializing.
+json-consumer.output:2017-02-11 22:01:38: Processing 74 files
+json-consumer.output:2017-02-11 22:06:48: json-consumer initializing.
+json-consumer.output:2017-02-11 22:06:48: Processing 44 files
+json-consumer.output:2017-02-11 22:11:53: json-consumer initializing.
+json-consumer.output:2017-02-11 22:11:53: Processing 45 files
+json-consumer.output:2017-02-11 22:17:22: json-consumer initializing.
+json-consumer.output:2017-02-11 22:17:22: Processing 62 files
+json-consumer.output:2017-02-11 22:22:41: json-consumer initializing.
+json-consumer.output:2017-02-11 22:22:41: Processing 61 files
+json-consumer.output:2017-02-11 22:28:08: json-consumer initializing.
+json-consumer.output:2017-02-11 22:28:08: Processing 56 files
+json-consumer.output:2017-02-11 22:33:32: json-consumer initializing.
+json-consumer.output:2017-02-11 22:33:32: Processing 76 files
+json-consumer.output:2017-02-11 22:38:35: json-consumer initializing.
+json-consumer.output:2017-02-11 22:38:35: Processing 42 files
+json-consumer.output:2017-02-11 22:44:00: json-consumer initializing.
+json-consumer.output:2017-02-11 22:44:01: Processing 53 files
+json-consumer.output:2017-02-11 22:49:15: json-consumer initializing.
+json-consumer.output:2017-02-11 22:49:15: Processing 50 files
+json-consumer.output:2017-02-11 22:54:27: json-consumer initializing.
+json-consumer.output:2017-02-11 22:54:27: Processing 37 files
+json-consumer.output:2017-02-11 22:59:43: json-consumer initializing.
+json-consumer.output:2017-02-11 22:59:43: Processing 52 files
+
+
+[0] 14:56:24 UTC [smckee@jump:psds0-mq-issue]$ grep "2017-02-18 22" *
+html-consumer.output:2017-02-18 22:00:51: html-consumer initializing.
+html-consumer.output:2017-02-18 22:00:54: Processing 71 files
+html-consumer.output:2017-02-18 22:06:13: html-consumer initializing.
+html-consumer.output:2017-02-18 22:06:16: Processing 72 files
+html-consumer.output:2017-02-18 22:11:43: html-consumer initializing.
+html-consumer.output:2017-02-18 22:11:45: Processing 63 files
+html-consumer.output:2017-02-18 22:17:09: html-consumer initializing.
+html-consumer.output:2017-02-18 22:17:11: Processing 71 files
+html-consumer.output:2017-02-18 22:22:24: html-consumer initializing.
+html-consumer.output:2017-02-18 22:22:27: Processing 79 files
+html-consumer.output:2017-02-18 22:27:50: html-consumer initializing.
+html-consumer.output:2017-02-18 22:27:53: Processing 58 files
+html-consumer.output:2017-02-18 22:33:04: html-consumer initializing.
+html-consumer.output:2017-02-18 22:33:06: Processing 64 files
+html-consumer.output:2017-02-18 22:38:25: html-consumer initializing.
+html-consumer.output:2017-02-18 22:38:28: Processing 77 files
+html-consumer.output:2017-02-18 22:43:54: html-consumer initializing.
+html-consumer.output:2017-02-18 22:43:58: Processing 68 files
+html-consumer.output:2017-02-18 22:49:24: html-consumer initializing.
+html-consumer.output:2017-02-18 22:49:27: Processing 66 files
+html-consumer.output:2017-02-18 22:54:39: html-consumer initializing.
+html-consumer.output:2017-02-18 22:54:42: Processing 77 files
+json-consumer.output:2017-02-18 22:05:03: json-consumer initializing.
+json-consumer.output:2017-02-18 22:05:03: Processing 71 files
+json-consumer.output:2017-02-18 22:10:26: json-consumer initializing.
+json-consumer.output:2017-02-18 22:10:26: Processing 61 files
+json-consumer.output:2017-02-18 22:15:36: json-consumer initializing.
+json-consumer.output:2017-02-18 22:15:36: Processing 74 files
+json-consumer.output:2017-02-18 22:20:41: json-consumer initializing.
+json-consumer.output:2017-02-18 22:20:41: Processing 68 files
+json-consumer.output:2017-02-18 22:26:10: json-consumer initializing.
+json-consumer.output:2017-02-18 22:26:10: Processing 66 files
+json-consumer.output:2017-02-18 22:31:28: json-consumer initializing.
+json-consumer.output:2017-02-18 22:31:28: Processing 66 files
+json-consumer.output:2017-02-18 22:36:53: json-consumer initializing.
+json-consumer.output:2017-02-18 22:36:54: Processing 79 files
+json-consumer.output:2017-02-18 22:42:08: json-consumer initializing.
+json-consumer.output:2017-02-18 22:42:08: Processing 60 files
+json-consumer.output:2017-02-18 22:47:29: json-consumer initializing.
+json-consumer.output:2017-02-18 22:47:29: Processing 63 files
+json-consumer.output:2017-02-18 22:52:57: json-consumer initializing.
+json-consumer.output:2017-02-18 22:52:57: Processing 82 files
+json-consumer.output:2017-02-18 22:58:24: json-consumer initializing.
+json-consumer.output:2017-02-18 22:58:24: Processing 79 files
+
+Nothing problematic there.
+
+The esmond log esmond.log has "gaps" (or things only run around 3 AM):
+
+
+2017-02-18 00:37:51,505 [INFO] /usr/lib/esmond/lib/python2.7/site-packages/pycassa/logging/pool_logger.py: Connection 140092378904080 (cassandra1.goc:9160) in pool 140092532450256 failed: TimedOutException(acknowledged_by=0, acknowledged_by_batchlog=None)
+2017-02-18 03:09:31,643 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-18 03:09:31,643 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-18 03:09:31,644 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-18 03:09:31,644 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-18 03:09:31,645 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-18 03:09:31,646 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-18 03:09:31,647 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-18 03:09:31,648 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-18 03:09:31,648 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-18 03:09:31,649 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-18 03:09:31,650 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-18 03:09:31,650 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-18 03:09:31,651 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-18 03:09:31,653 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-18 03:09:31,654 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-18 03:09:31,655 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-18 03:09:31,665 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+2017-02-18 03:09:31,671 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+2017-02-18 03:09:31,671 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+2017-02-18 03:09:31,671 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+2017-02-18 03:09:31,673 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+2017-02-18 03:09:31,674 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+2017-02-18 03:09:31,675 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+2017-02-18 03:09:31,684 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+2017-02-18 09:20:50,795 [INFO] /usr/lib/esmond/lib/python2.7/site-packages/pycassa/logging/pool_logger.py: Connection 140092237999120 (cassandra2.goc:9160) in pool 140092530876944 failed: TimedOutException(acknowledged_by=0, acknowledged_by_batchlog=None)
+2017-02-20 03:24:23,469 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-20 03:24:23,470 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-20 03:24:23,471 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-20 03:24:23,474 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-20 03:24:23,474 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-20 03:24:23,473 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-20 03:24:23,474 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-20 03:24:23,475 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-20 03:24:23,476 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-20 03:24:23,477 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-20 03:24:23,478 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-20 03:24:23,478 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-20 03:24:23,479 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-20 03:24:23,481 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-20 03:24:23,492 [INFO] /usr/lib/esmond/esmond/cassandra.py: Checking/creating column families
+2017-02-20 03:24:23,494 [INFO] /usr/lib/esmond/esmond/cassandra.py: Schema check done
+2017-02-20 03:24:23,744 [INFO] /usr/lib/esmond/esmond/cassandra.py: Connected to ['cassandra1.goc:9160', 'cassandra2.goc:9160']
+
+There is nothing on the 19th.  Need to confirm the timestamp.  Is it UTC or Eastern or Central or ?? If it is UTC we are missing logging from the
+approximate time of the problem  (would be 2017-02-19 03:26 UTC).   This seems like it may be exposing part of the issue.
+
+
+The django.log shows regular ERRORS:
+
+2017-02-15 03:09:27,820 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/
+2017-02-16 04:22:30,115 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/
+2017-02-16 04:22:30,030 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/
+2017-02-17 03:48:28,209 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/2da25bfe684d44088d7ffecaa16526f1/
+2017-02-17 03:48:28,227 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/9a1b3041c23c458286df640037aaaa01/
+2017-02-18 00:37:51,505 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/554c38cbab954a3aa2f1e9b1bc1b9244/
+2017-02-18 03:09:21,914 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/54d4f3d72d054397a5470b779f0f6a4c/
+2017-02-18 03:09:22,545 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/
+2017-02-18 09:20:50,796 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/6da7fd8ca6444ca4873ca4a6d450e592/
+2017-02-19 03:14:33,074 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/3bb38a65606141199a0704f95733d19c/
+2017-02-19 03:14:33,076 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/
+2017-02-21 03:46:40,699 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/
+2017-02-21 12:20:55,326 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/65138b2fd9e34474859c764ebd6f7d7c/
+2017-02-21 12:20:55,741 [ERROR] /usr/lib/esmond/lib/python2.7/site-packages/django/core/handlers/base.py: Internal Server Error: /esmond/perfsonar/archive/
+
+Not sure these are relevant but should get investigated and fixed.
+
+

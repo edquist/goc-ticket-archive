@@ -1,0 +1,97 @@
+# Port specifications; only the redirector needs to use a well-known port
+# "any" will cause rooted to bind to any available port.  Change as needed for firewalls.
+if cmsxrootd.hep.wisc.edu pubxrootd.hep.wisc.edu
+  xrd.port 1094 
+else
+  xrd.port 31094
+fi
+
+# Set the sitename for Xrootd Passive Monitoring
+# http://xrootd.t2.ucsd.edu/dump_cache.jsp?pred=%25%2FCMS%3A%3A%25%3A%3AXrdReport%2F%25%2Fsite&submit=Filter
+all.sitename  T2_US_Wisconsin
+
+# The roles this server will play.
+all.role server
+all.role manager if cmsxrootd.hep.wisc.edu
+all.role manager if pubxrootd.hep.wisc.edu
+all.role supervisor if s15*.hep.wisc.edu
+
+# The known managers
+if pubxrootd.hep.wisc.edu g22*.hep.wisc.edu s17*.hep.wisc.edu
+  all.manager all pubxrootd.hep.wisc.edu:1213
+else
+  # all other nodes use cmsxrootd
+  all.manager all cmsxrootd.hep.wisc.edu:1213
+fi
+
+# Change config files for AAA framework
+# https://twiki.cern.ch/twiki/bin/view/Main/RedirectorsSubscription#US_sites
+# pubxrootd is the redirector for T2_Wisc that is public
+# Meta manager (Fermilab) need to know only this one
+# cmsxrootd is an internal xrootd server
+
+if pubxrootd.hep.wisc.edu
+   all.manager meta all cmsxrootd.fnal.gov+ 1213
+   #all.manager meta all xrootd-itb.unl.edu:1213
+   #all.manager meta xrootd.unl.edu:1213
+   #all.manager meta cmsxrootd1.fnal.gov:1213
+fi
+
+# Allow any path to be exported; this is further refined in the authfile.
+all.export / nostage
+
+# Hosts allowed to use this xrootd cluster
+cms.allow host *
+
+### Standard directives
+# Simple sites probably don't need to touch these.
+# Logging verbosity
+xrootd.trace emsg login stall redirect
+ofs.trace none
+xrd.trace conn
+cms.trace all
+
+# Turn on authorization
+ofs.authorize 1
+acc.authdb /etc/xrootd/Authfile
+acc.audit deny grant
+
+# Security configuration
+# Currently, gsi is disabled everywhere except for s17s, g22s, because daemons go bad and stop working
+if s17*.hep.wisc.edu g22*.hep.wisc.edu
+  # default line as of 201702:
+  # sec.protocol /usr/lib64 gsi -certdir:/etc/grid-security/certificates -cert:/etc/grid-security/xrd/xrdcert.pem -key:/etc/grid-security/xrd/xrdkey.pem -crl:3 -authzfun:libXrdLcmaps.so --gmapopt:2 --gmapto:0
+  # configured line as of 201702:
+  sec.protocol /usr/lib64 gsi -certdir:/etc/grid-security/certificates -cert:/etc/grid-security/xrd/xrdcert.pem -key:/etc/grid-security/xrd/xrdkey.pem -crl:1 -authzfun:libXrdLcmaps.so -authzfunparms:--osg,--lcmapscfg,/etc/xrootd/lcmaps.cfg,--loglevel,0|useglobals -gmapopt:10 -gmapto:0 -vomsfun:/usr/lib64/libXrdSecgsiVOMS.so -vomsfunparms:grpopt=2
+fi
+
+if cmsxrootd.hep.wisc.edu
+  # (no 'not' operator) load the below .so files only on not cmsxrootd 
+else
+  # Integrate with CMS TFC, placed in /etc/storage.xml
+  oss.namelib /usr/lib64/libXrdCmsTfc.so file:/etc/xrootd/storage.xml?protocol=hadoop
+  ofs.osslib /usr/lib64/libXrdHdfs.so
+fi
+
+xrootd.seclib /usr/lib64/libXrdSec.so
+xrootd.fslib /usr/lib64/libXrdOfs.so
+all.adminpath /var/run/xrootd
+all.pidpath /var/run/xrootd
+
+cms.delay startup 10 servers 1
+cms.fxhold 60s
+# do namespace lookups centrally, rather than asking all data servers to query independently
+cms.dfs lookup distrib mdhold 60s redirect immed
+
+if exec xrootd
+  xrd.protocol http:1094 /usr/lib64/libXrdHttp-4.so
+  http.cadir /etc/grid-security/certificates
+  http.cert /etc/grid-security/xrd/xrdcert.pem
+  http.key /etc/grid-security/xrd/xrdkey.pem
+  http.secxtractor /usr/lib64/libXrdLcmaps.so
+  http.listingdeny yes
+  http.staticpreload http://static/robots.txt /etc/xrootd/robots.txt
+  http.desthttps yes
+  xrd.report xrootd.t2.ucsd.edu:9931 every 30s all sync
+  xrootd.monitor all auth flush 30s mbuff 1472 window 5s dest files io info user xrootd.t2.ucsd.edu:9930
+fi

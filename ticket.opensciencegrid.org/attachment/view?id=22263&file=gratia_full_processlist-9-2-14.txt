@@ -1,0 +1,3460 @@
+"Id","User","Host","db","Command","Time","State","Info"
+111536,"reader","gratiaweb1.grid.iu.edu:51393","gratia","Query",20241,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'numi'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111537,"reader","gratiaweb2.grid.iu.edu:37952","gratia","Query",20241,"Copying to tmp table","SELECT
+                   VO.VOName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-07 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'osg$|glow|hcc|engage|sbgrid|gluex'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   VO.VOName   ,
+                time"
+111538,"reader","gratiaweb2.grid.iu.edu:37953","gratia","Query",20241,"Copying to tmp table","SELECT
+                   VO.VOName   ,
+                   sum(R.Cores*R.WallDuration)/3600 as WallHours   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                
+            WHERE
+                R.EndTime >= '2013-09-07 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'osg$|glow|hcc|engage|sbgrid|gluex'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'     AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                R.CommonName regexp '.*'   
+                    
+            GROUP BY 
+                   VO.VOName   
+               HAVING sum(R.Cores*R.WallDuration)/3600 >= 10"
+111539,"reader","gratiaweb2.grid.iu.edu:37954","gratia","Query",20241,"Copying to tmp table","SELECT
+                   VO.VOName   ,
+                   sum(R.Njobs)   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                
+            WHERE
+                R.EndTime >= '2013-09-07 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'osg$|glow|hcc|engage|sbgrid|gluex'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'     AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                R.CommonName regexp '.*'   
+                    
+            GROUP BY 
+                   VO.VOName"
+111540,"reader","gratiaweb2.grid.iu.edu:37956","gratia","Query",20239,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'minerva'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111894,"reader","gratiaweb-itb.grid.iu.edu:54868","gratia","Query",18406,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'argoneut'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111895,"reader","gratiaweb2.grid.iu.edu:38158","gratia","Query",18406,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'mcdrd'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111896,"reader","gratiaweb1.grid.iu.edu:51581","gratia","Query",18404,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'gcedu'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111941,"reader","gratiaweb-itb.grid.iu.edu:54871","gratia","Query",18106,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'mars'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111942,"reader","gratiaweb2.grid.iu.edu:38213","gratia","Query",18106,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'gendetrd'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111943,"reader","gratiaweb1.grid.iu.edu:51595","gratia","Query",18102,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'coupp'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111955,"reader","gratiaweb-itb.grid.iu.edu:54891","gratia","Query",17806,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'gm2'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111956,"reader","gratiaweb2.grid.iu.edu:38233","gratia","Query",17805,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'UC3'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111957,"reader","gratiaweb1.grid.iu.edu:51641","gratia","Query",17802,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'microboone'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111963,"reader","gratiaweb-itb.grid.iu.edu:54917","gratia","Query",17506,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'gcedu'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111964,"reader","gratiaweb2.grid.iu.edu:38260","gratia","Query",17505,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'bio'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+111965,"reader","gratiaweb1.grid.iu.edu:51643","gratia","Query",17502,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'uc3'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112039,"reader","gratiaweb-itb.grid.iu.edu:54920","gratia","Query",17206,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'gcvo'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112040,"reader","gratiaweb2.grid.iu.edu:38330","gratia","Query",17205,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'csiu'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112041,"reader","gratiaweb1.grid.iu.edu:51708","gratia","Query",17202,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'lqcd'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112056,"reader","gratiaweb-itb.grid.iu.edu:54937","gratia","Query",16906,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'coupp'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112057,"reader","gratiaweb2.grid.iu.edu:38342","gratia","Query",16905,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'seaquest'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112058,"reader","gratiaweb1.grid.iu.edu:51738","gratia","Query",16902,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'mcdrd'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112095,"reader","gratiaweb-itb.grid.iu.edu:54939","gratia","Query",16606,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'microboone'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112096,"reader","gratiaweb2.grid.iu.edu:38358","gratia","Query",16605,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'i2u2'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112097,"reader","gratiaweb1.grid.iu.edu:51750","gratia","Query",16602,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'gendetrd'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112116,"reader","gratiaweb-itb.grid.iu.edu:54942","gratia","Query",16306,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'uc3'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112117,"reader","gratiaweb2.grid.iu.edu:38398","gratia","Query",16305,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'CSIU'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112118,"reader","gratiaweb1.grid.iu.edu:51771","gratia","Query",16302,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'UC3'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112138,"reader","gratiaweb-itb.grid.iu.edu:54961","gratia","Query",16006,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'lqcd'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112139,"reader","gratiaweb2.grid.iu.edu:38427","gratia","Query",16005,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'lar1'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112140,"reader","gratiaweb1.grid.iu.edu:51818","gratia","Query",16002,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'bio'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112150,"reader","gratiaweb-itb.grid.iu.edu:54987","gratia","Query",15706,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'mcdrd'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112151,"reader","gratiaweb2.grid.iu.edu:38462","gratia","Query",15705,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'glast.org'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112152,"reader","gratiaweb1.grid.iu.edu:51829","gratia","Query",15701,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'csiu'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112177,"reader","gratiaweb-itb.grid.iu.edu:54990","gratia","Query",15406,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'gendetrd'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112178,"reader","gratiaweb1.grid.iu.edu:51848","gratia","Query",15401,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'seaquest'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112186,"reader","gratiaweb-itb.grid.iu.edu:54992","gratia","Query",15105,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'UC3'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112187,"reader","gratiaweb1.grid.iu.edu:51856","gratia","Query",15101,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'i2u2'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112197,"reader","display-itb.grid.iu.edu:60297","gratia","Query",15052,"Copying to tmp table","SELECT
+          Date,
+          SUM(Njobs) AS Records,
+          SUM(WallSeconds)/3600 AS Hours
+        FROM (
+            SELECT
+              ProbeName,
+              R.VOCorrid AS VOCorrid,
+              SUM(Njobs) AS NJobs,
+              SUM(WallDuration*Cores) AS WallSeconds,
+              DATE(EndTime) AS Date
+            FROM MasterSummaryData R FORCE INDEX(index02)
+            WHERE
+              EndTime >= '2014-08-01 00:00:00' AND
+              EndTime < '2014-09-02 00:00:00' AND
+              ResourceType = 'Batch'
+            GROUP BY Date, ProbeName, VOCorrid
+          ) as R
+        JOIN Probe P on R.ProbeName = P.probename
+        JOIN Site S on S.siteid = P.siteid
+        JOIN VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          S.SiteName NOT IN ('NONE', 'Generic', 'Obsolete') AND
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY Date
+        ORDER BY Date ASC"
+112200,"reader","xd-login.opensciencegrid.org:58477","gratia","Query",14864,"Sending data","select MIN(dbid), MAX(dbid) from JobUsageRecord_Meta WHERE ProbeName = 'condor:osg-xsede.grid.iu.edu'"
+112205,"reader","gratiaweb-itb.grid.iu.edu:55010","gratia","Query",14805,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'bio'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112206,"reader","gratiaweb1.grid.iu.edu:51885","gratia","Query",14801,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'CSIU'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112219,"reader","gratiaweb2.grid.iu.edu:38519","gratia","Query",14696,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'darkside'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112229,"reader","gratiaweb-itb.grid.iu.edu:55013","gratia","Query",14505,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'csiu'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112230,"reader","gratiaweb1.grid.iu.edu:51908","gratia","Query",14500,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'lar1'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112234,"reader","gratiaweb2.grid.iu.edu:38531","gratia","Query",14469,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'orka'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112240,"reader","fcl301.fnal.gov:42711","gratia","Query",14467,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112251,"reader","gratiaweb-itb.grid.iu.edu:55015","gratia","Query",14205,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'seaquest'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112252,"reader","gratiaweb1.grid.iu.edu:51965","gratia","Query",14172,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'glast.org'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112253,"reader","fcl301.fnal.gov:43160","gratia","Query",14167,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112259,"reader","gratiaweb-itb.grid.iu.edu:55059","gratia","Query",13905,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'i2u2'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112275,"reader","fcl301.fnal.gov:43738","gratia","Query",13847,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112283,"reader","gratiaweb1.grid.iu.edu:52010","gratia","Query",13605,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'darkside'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112284,"reader","gratiaweb-itb.grid.iu.edu:55085","gratia","Query",13605,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'CSIU'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112291,"reader","gratiaweb-itb.grid.iu.edu:55087","gratia","Query",13305,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'lar1'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112292,"reader","gratiaweb2.grid.iu.edu:38619","gratia","Query",13297,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'lariat'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112335,"reader","gratiaweb1.grid.iu.edu:52107","gratia","Query",12246,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'orka'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112372,"reader","display1.grid.iu.edu:47201","gratia","Query",11166,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-2642)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 06:44:02' AND
+            ServerDate < '2014-09-02 18:44:02' AND
+            JUR.EndTime < '2014-09-02 18:44:02' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112373,"reader","display-itb.grid.iu.edu:60357","gratia","Query",11164,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-2644)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 06:44:04' AND
+            ServerDate < '2014-09-02 18:44:04' AND
+            JUR.EndTime < '2014-09-02 18:44:04' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112380,"reader","fcl301.fnal.gov:49663","gratia","Query",10867,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112389,"reader","fcl301.fnal.gov:50312","gratia","Query",10567,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112391,"reader","fcl301.fnal.gov:50394","gratia","Query",10546,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112409,"reader","display1.grid.iu.edu:47204","gratia","Query",10267,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-3541)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 06:59:01' AND
+            ServerDate < '2014-09-02 18:59:01' AND
+            JUR.EndTime < '2014-09-02 18:59:01' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112412,"reader","display-itb.grid.iu.edu:60360","gratia","Query",10264,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-3544)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 06:59:04' AND
+            ServerDate < '2014-09-02 18:59:04' AND
+            JUR.EndTime < '2014-09-02 18:59:04' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112415,"reader","fcl301.fnal.gov:51067","gratia","Query",10247,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112443,"reader","display1.grid.iu.edu:47233","gratia","Query",9366,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-842)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 07:14:02' AND
+            ServerDate < '2014-09-02 19:14:02' AND
+            JUR.EndTime < '2014-09-02 19:14:02' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112444,"reader","display-itb.grid.iu.edu:60387","gratia","Query",9364,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-844)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 07:14:04' AND
+            ServerDate < '2014-09-02 19:14:04' AND
+            JUR.EndTime < '2014-09-02 19:14:04' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112454,"reader","gratiaweb1.grid.iu.edu:52347","gratia","Query",9052,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'lariat'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112471,"reader","display1.grid.iu.edu:47235","gratia","Query",8466,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-1742)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 07:29:02' AND
+            ServerDate < '2014-09-02 19:29:02' AND
+            JUR.EndTime < '2014-09-02 19:29:02' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112473,"reader","display-itb.grid.iu.edu:60390","gratia","Query",8464,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-1744)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 07:29:04' AND
+            ServerDate < '2014-09-02 19:29:04' AND
+            JUR.EndTime < '2014-09-02 19:29:04' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112476,"reader","gratiaweb-itb.grid.iu.edu:55272","gratia","Query",8334,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'glast.org'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112480,"reader","mac-124281.dhcp.fnal.gov:52434","gratia","Sleep",5764,"",NULL
+112494,"reader","display-itb.grid.iu.edu:60417","gratia","Query",7565,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-2643)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 07:44:03' AND
+            ServerDate < '2014-09-02 19:44:03' AND
+            JUR.EndTime < '2014-09-02 19:44:03' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112495,"reader","display1.grid.iu.edu:58008","gratia","Query",7564,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-2643)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 07:44:03' AND
+            ServerDate < '2014-09-02 19:44:03' AND
+            JUR.EndTime < '2014-09-02 19:44:03' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112502,"reader","fcl301.fnal.gov:58629","gratia","Query",7267,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112509,"reader","fcl301.fnal.gov:59279","gratia","Query",6967,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112510,"reader","fcl301.fnal.gov:59361","gratia","Query",6946,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112521,"reader","display1.grid.iu.edu:58011","gratia","Query",6665,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-3543)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 07:59:03' AND
+            ServerDate < '2014-09-02 19:59:03' AND
+            JUR.EndTime < '2014-09-02 19:59:03' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112523,"reader","display-itb.grid.iu.edu:60420","gratia","Query",6663,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-3545)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 07:59:05' AND
+            ServerDate < '2014-09-02 19:59:05' AND
+            JUR.EndTime < '2014-09-02 19:59:05' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112526,"reader","fcl301.fnal.gov:60035","gratia","Query",6647,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112528,"reader","mac-123136.dhcp.fnal.gov:50104","gratia","Query",209,"Copying to tmp table","select EndTime,VOName,round(sum(WallDuration)/3600,1) as hours, sum(NJobs) as jobs from VOProbeSummary where probename='condor:fcdfosg2.fnal.gov' and EndTime>'2014-06-06' group by VOName,EndTime"
+112529,"reader","mac-123136.dhcp.fnal.gov:50105",NULL,"Sleep",33,"",NULL
+112530,"reader","xd-login.opensciencegrid.org:54917","gratia","Query",6374,"Sending data","select MIN(dbid), MAX(dbid) from JobUsageRecord_Meta WHERE ProbeName = 'condor:xd-login.opensciencegrid.org'"
+112549,"reader","fcl301.fnal.gov:33279","gratia_osg_transfer","Query",6005,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112553,"reader","display1.grid.iu.edu:58038","gratia","Query",5765,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-843)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 08:14:03' AND
+            ServerDate < '2014-09-02 20:14:03' AND
+            JUR.EndTime < '2014-09-02 20:14:03' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112554,"reader","display-itb.grid.iu.edu:60447","gratia","Query",5764,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-844)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 08:14:04' AND
+            ServerDate < '2014-09-02 20:14:04' AND
+            JUR.EndTime < '2014-09-02 20:14:04' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112580,"reader","display1.grid.iu.edu:58040","gratia","Query",4865,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-1743)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 08:29:03' AND
+            ServerDate < '2014-09-02 20:29:03' AND
+            JUR.EndTime < '2014-09-02 20:29:03' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112583,"reader","display-itb.grid.iu.edu:60451","gratia","Query",4863,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-1745)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 08:29:05' AND
+            ServerDate < '2014-09-02 20:29:05' AND
+            JUR.EndTime < '2014-09-02 20:29:05' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112589,"reader","gratiaweb-itb.grid.iu.edu:55415","gratia","Query",4586,"Copying to tmp table","SELECT
+                   S.SiteName   ,
+                truncate( unix_timestamp(EndTime) / 604800   , 0 ) * 604800    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-09-02 00:00:00'         AND
+                R.EndTime < '2014-09-01 23:59:59'       AND
+                S.SiteName regexp '.*'        AND
+                VO.VOName regexp 'darkside'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   S.SiteName   ,
+                time"
+112618,"reader","display1.grid.iu.edu:58067","gratia","Query",3966,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-2642)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 08:44:02' AND
+            ServerDate < '2014-09-02 20:44:02' AND
+            JUR.EndTime < '2014-09-02 20:44:02' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112621,"reader","display-itb.grid.iu.edu:60478","gratia","Query",3964,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-2644)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 08:44:04' AND
+            ServerDate < '2014-09-02 20:44:04' AND
+            JUR.EndTime < '2014-09-02 20:44:04' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112636,"reader","fcl301.fnal.gov:39728","gratia","Query",3667,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112648,"reader","fcl301.fnal.gov:40455","gratia","Query",3367,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112653,"reader","fcl301.fnal.gov:40599","gratia","Query",3347,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112667,"reader","display1.grid.iu.edu:58070","gratia","Query",3066,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-3542)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 08:59:02' AND
+            ServerDate < '2014-09-02 20:59:02' AND
+            JUR.EndTime < '2014-09-02 20:59:02' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112670,"reader","gratiaweb2.grid.iu.edu:35505","gratia","Query",3064,"Copying to tmp table","SELECT
+                   COALESCE(R.CommonName, VO.VOName)   ,
+                truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2014-06-04 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                S.SiteName regexp 'UColorado_HEP|UColorado_SE'        AND
+                VO.VOName regexp '.*'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   COALESCE(R.CommonName, VO.VOName)   ,
+                time"
+112671,"reader","display-itb.grid.iu.edu:60480","gratia","Query",3062,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-3546)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 08:59:06' AND
+            ServerDate < '2014-09-02 20:59:06' AND
+            JUR.EndTime < '2014-09-02 20:59:06' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112672,"reader","gr12x0.fnal.gov:34343","gratia","Query",3060,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112673,"reader","fcl301.fnal.gov:41254","gratia","Query",3047,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112674,"reader","fcl301.fnal.gov:41282","gratia_osg_transfer","Query",3025,"Copying to tmp table","SELECT
+  S.SiteName                 as Site,
+  X.ProbeName                as Probe,
+  X.LastReported             as LastReported,
+  date_format(P.currenttime,\"%Y-%m-%d\") as LastHandshake,
+  \"\"                        as x,
+  format(X.Jobs,0)           as Jobs,
+  format(X.Gb_Transferred,0) as Gbytes,
+  format(X.Duration,0)       AS Duration_Hrs
+FROM
+ ( SELECT
+      T.ProbeName                                AS ProbeName,
+      DATE_FORMAT(max(StartTime), \"%Y-%m-%d\")    AS LastReported,
+      SUM(T.Njobs)                               AS Jobs,
+      SUM(T.TransferSize * Multiplier) /1024     AS Gb_Transferred,
+      SUM(T.TransferDuration)/3600               AS Duration
+   FROM
+      MasterTransferSummary T
+   JOIN SizeUnits SU ON (T.StorageUnit = SU.Unit) 
+   WHERE StartTime >= \"2014-03-06\" 
+   GROUP BY ProbeName
+) X
+JOIN Probe P on (X.ProbeName = P.Probename)
+JOIN Site S  on (P.siteid    = S.siteid)
+ORDER BY S.SiteName, X.ProbeName, LastReported desc"
+112684,"reader","gr12x0.fnal.gov:34352","gratia","Query",2997,"Copying to tmp table","SELECT
+             S.SiteName   ,
+          truncate( unix_timestamp(EndTime) / 604800, 0 ) * 604800 as time,
+             sum(IF(CommonName regexp 'Thain' AND Cores = 1, 8, Cores)*WallDuration)/3600   
+        FROM
+          MasterSummaryData R
+        JOIN
+          Probe P on R.ProbeName = P.probename
+        JOIN
+          Site S on S.siteid = P.siteid
+        JOIN
+          VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+        JOIN
+          VO on (VC.void = VO.void)
+            
+        WHERE
+          (R.ResourceType regexp '^Batch$' or R.ResourceType = '') AND
+          EndTime >= '2013-09-02 00:00:00' AND
+          EndTime < '2014-09-01 23:59:59' AND
+          S.SiteName regexp '.*' AND
+          VO.VOName regexp '.*' AND
+          R.CommonName regexp '.*' AND
+          (NOT (S.SiteName regexp 'NONE|Generic|Obsolete')) AND
+          (NOT (R.CommonName regexp 'NONE')) AND
+          (NOT (VO.VOName regexp 'unknown|other')) AND
+          R.ProbeName regexp '.*' AND
+          WallDuration < 1100000000
+             AND WallDuration > 0   
+        GROUP BY
+             S.SiteName   ,
+          time"
+112699,"reader","fcl301.fnal.gov:42083","gratia_osg_transfer","Query",2725,"Copying to tmp table","SELECT
+  S.SiteName                 as Site,
+  X.ProbeName                as Probe,
+  X.LastReported             as LastReported,
+  date_format(P.currenttime,\"%Y-%m-%d\") as LastHandshake,
+  \"\"                        as x,
+  format(X.Jobs,0)           as Jobs,
+  format(X.Gb_Transferred,0) as Gbytes,
+  format(X.Duration,0)       AS Duration_Hrs
+FROM
+ ( SELECT
+      T.ProbeName                                AS ProbeName,
+      DATE_FORMAT(max(StartTime), \"%Y-%m-%d\")    AS LastReported,
+      SUM(T.Njobs)                               AS Jobs,
+      SUM(T.TransferSize * Multiplier) /1024     AS Gb_Transferred,
+      SUM(T.TransferDuration)/3600               AS Duration
+   FROM
+      MasterTransferSummary T
+   JOIN SizeUnits SU ON (T.StorageUnit = SU.Unit) 
+   WHERE StartTime >= \"2014-03-06\" 
+   GROUP BY ProbeName
+) X
+JOIN Probe P on (X.ProbeName = P.Probename)
+JOIN Site S  on (P.siteid    = S.siteid)
+ORDER BY S.SiteName, X.ProbeName, LastReported desc"
+112702,"reader","fcl301.fnal.gov:42094","gratia_osg_transfer","Query",2704,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112720,"reader","gr12x0.fnal.gov:34778","gratia","Query",2449,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112722,"reader","fcl301.fnal.gov:42824","gratia_osg_transfer","Query",2405,"Copying to tmp table","SELECT ProbeName,SiteName,LastReported
+from ( SELECT ProbeName, 
+       binary ReportedSiteName as SiteName,
+       max(ServerDate) as LastReported
+from JobUsageRecord_Meta
+where ServerDate >= \"2014-08-30\"
+group by ProbeName, SiteName
+) X
+order by ProbeName,LastReported"
+112727,"reader","gratiaweb2.grid.iu.edu:35569","gratia_osg_transfer","Query",2281,"Copying to tmp table","SELECT
+             VO.VOName   ,
+          truncate( unix_timestamp(StartTime) / 86400   , 0 ) * 86400    as time,
+             sum(TransferSize)/pow(1024, 3)  
+        FROM
+          MasterTransferSummary R FORCE INDEX (index01)
+        JOIN
+          Probe P on R.ProbeName = P.probename
+        JOIN
+          Site S on S.siteid = P.siteid
+        JOIN
+          VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+        JOIN
+          VO on (VC.void = VO.void)
+            
+        WHERE
+          StartTime >= '2014-08-03 00:00:00'         AND
+          StartTime < '2014-09-02 23:59:59'       AND
+          SiteName regexp '.*Public.*'        AND
+          R.Protocol regexp '.*'        AND
+          VO.VOName regexp '.*'  AND
+          (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+          (NOT (VO.VOName regexp 'Unknown|other'         ))
+              
+        GROUP BY
+             VO.VOName   ,
+          time"
+112729,"reader","xd-login.opensciencegrid.org:33819","gratia","Query",2213,"Sending data","select MIN(dbid), MAX(dbid) from JobUsageRecord_Meta WHERE ProbeName = 'condor:xd-login.opensciencegrid.org'"
+112732,"reader","display1.grid.iu.edu:58098","gratia","Query",2166,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-842)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 09:14:02' AND
+            ServerDate < '2014-09-02 21:14:02' AND
+            JUR.EndTime < '2014-09-02 21:14:02' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112736,"reader","display-itb.grid.iu.edu:60507","gratia","Query",2165,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-843)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 09:14:03' AND
+            ServerDate < '2014-09-02 21:14:03' AND
+            JUR.EndTime < '2014-09-02 21:14:03' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112739,"reader","gratiaweb2.grid.iu.edu:35603","gratia","Query",2080,"Copying to tmp table","SELECT
+                   COALESCE(R.CommonName, VO.VOName)   ,
+                truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2014-06-04 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                S.SiteName regexp 'UColorado_HEP'        AND
+                VO.VOName regexp '.*'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   COALESCE(R.CommonName, VO.VOName)   ,
+                time"
+112740,"reader","soichi6.grid.iu.edu:58171","gratia","Sleep",892,"",NULL
+112752,"reader","gr12x4.fnal.gov:36654","gratia_itb","Query",1864,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112753,"reader","gr12x0.fnal.gov:34856","gratia","Query",1853,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112754,"reader","gratiaweb2.grid.iu.edu:35614","gratia","Query",1753,"Copying to tmp table","SELECT
+                   VO.VOName   ,
+                unix_timestamp(date_format(EndTime, \"%Y-%m-01 00:00:00\")) as time,
+                   sum(CpuUserDuration + CpuSystemDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2013-08-18 00:00:00'        
+                AND R.EndTime < '2014-08-25 23:59:59'      
+                AND S.SiteName regexp 'fnal'       
+                AND VO.VOName regexp '.*' 
+                AND VC.VOName regexp '.*'   
+                AND (NOT (VC.VOName regexp 'NONE'           ))
+                AND (R.ResourceType regexp '^Batch$'             or R.ResourceType = '')
+                AND ('true'            ='true' OR ApplicationExitCode=0)
+                AND ('true'              ='true' OR ApplicationExitCode!=0)
+                AND (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               ))
+                AND (NOT (R.CommonName regexp 'NONE'           ))
+                AND (NOT (VO.VOName regexp 'Unknown|unknown|other'         ))
+                AND R.WallDuration < 1100000000
+                AND R.ProbeName regexp '.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   VO.VOName   ,
+                time"
+112760,"reader","juanfmx2-pc.dhcp.fnal.gov:54362","gratia","Sleep",340,"",NULL
+112761,"reader","juanfmx2-pc.dhcp.fnal.gov:54363","gratia","Sleep",340,"",NULL
+112775,"reader","display1.grid.iu.edu:58102","gratia","Query",1266,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-1742)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 09:29:02' AND
+            ServerDate < '2014-09-02 21:29:02' AND
+            JUR.EndTime < '2014-09-02 21:29:02' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112777,"reader","display-itb.grid.iu.edu:60510","gratia","Query",1262,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-1746)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 09:29:06' AND
+            ServerDate < '2014-09-02 21:29:06' AND
+            JUR.EndTime < '2014-09-02 21:29:06' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112779,"reader","gr12x4.fnal.gov:36677","gratia_itb","Query",1262,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112780,"reader","gr12x0.fnal.gov:34906","gratia","Query",1248,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112789,"reader","juanfmx2-pc.dhcp.fnal.gov:54501",NULL,"Sleep",884,"",NULL
+112790,"reader","juanfmx2-pc.dhcp.fnal.gov:54502",NULL,"Sleep",1,"",NULL
+112797,"reader","gratiaweb1.grid.iu.edu:52899","gratia","Query",706,"Copying to tmp table","SELECT
+             S.SiteName   ,
+          truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time,
+             sum(IF(CommonName regexp 'Thain' AND Cores = 1, 8, Cores)*WallDuration)/3600   
+        FROM
+          MasterSummaryData R
+        JOIN
+          Probe P on R.ProbeName = P.probename
+        JOIN
+          Site S on S.siteid = P.siteid
+        JOIN
+          VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+        JOIN
+          VO on (VC.void = VO.void)
+            
+        WHERE
+          (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND
+          EndTime >= '2014-08-02 00:00:00'         AND
+          EndTime < '2014-09-02 23:59:59'       AND
+          S.SiteName regexp '.*'        AND
+          VO.VOName regexp '.*'  AND
+          R.CommonName regexp 'xsede-pilot'    AND
+          (NOT (S.SiteName regexp 'NONE|Generic|Obsolete'               )) AND
+          (NOT (R.CommonName regexp 'NONE'           )) AND
+          (NOT (VO.VOName regexp 'unknown|other'         )) AND
+          R.ProbeName regexp '.*'     AND
+          WallDuration < 1100000000
+             AND WallDuration > 0   
+        GROUP BY
+             S.SiteName   ,
+          time"
+112805,"reader","gr12x4.fnal.gov:36717","gratia_itb","Query",663,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112806,"reader","gr12x3.fnal.gov:59951","gratia_osg_transfer","Query",662,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112808,"reader","gr12x0.fnal.gov:34949","gratia","Query",651,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112817,"reader","display1.grid.iu.edu:58131","gratia","Query",366,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-2642)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 09:44:02' AND
+            ServerDate < '2014-09-02 21:44:02' AND
+            JUR.EndTime < '2014-09-02 21:44:02' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112819,"reader","display-itb.grid.iu.edu:60537","gratia","Query",364,"Copying to tmp table","SELECT
+          time,
+          sum(Records),
+          sum(Hours)
+        FROM (
+          SELECT
+            (truncate((unix_timestamp(JUR.EndTime)-2644)/3600, 0)*
+              3600) as time,
+            count(*) as Records,
+            sum(WallDuration)/3600 as Hours,
+            JUR.VOName as VOName,
+            JUR.ReportableVOName as ReportableVOName
+          FROM JobUsageRecord_Meta 
+          JOIN JobUsageRecord JUR Ignore index (index16) ON JUR.dbid=JobUsageRecord_Meta.dbid
+          WHERE
+            ServerDate >= '2014-09-01 09:44:04' AND
+            ServerDate < '2014-09-02 21:44:04' AND
+            JUR.EndTime < '2014-09-02 21:44:04' AND
+            JUR.ResourceType = 'Batch'
+          GROUP BY time, VOName, ReportableVOName
+        ) as foo
+        JOIN VONameCorrection VC ON
+          ((foo.VOName = BINARY VC.VOName) AND
+           (((foo.ReportableVOName IS NULL) AND (VC.ReportableVOName IS NULL))
+            OR (BINARY foo.ReportableVOName = BINARY VC.ReportableVOName)))
+        JOIN VO on (VC.void = VO.void)
+        WHERE
+          VO.VOName NOT IN ('Unknown', 'unknown', 'other')
+        GROUP BY time
+        ORDER BY time ASC"
+112821,"reader","gratiaweb2.grid.iu.edu:35714","gratia","Query",247,"Copying to tmp table","SELECT
+                   R.ApplicationExitCode   ,
+                truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time,
+                   sum(Njobs)   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2014-08-26 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                R.HostDescription regexp '.*'        AND
+                R.Grid regexp '.*'    AND
+                VO.VOName regexp '.*'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp 'BatchPilot'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (R.HostDescription regexp 'NONE'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp 'atlas.ci-connect.*'    
+                    
+            GROUP BY 
+                   R.ApplicationExitCode   ,
+                time"
+112822,"reader","gratiaweb2.grid.iu.edu:35716","gratia","Query",187,"Copying to tmp table","SELECT
+                   COALESCE(UPPER(PNC.ReportableProjectName), \"UNKNOWN\"), R.HostDescription   ,
+                truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+               JOIN ProjectNameCorrection PNC ON (PNC.ProjectNameCorrid=R.ProjectNameCorrid)    
+            WHERE
+                R.EndTime >= '2014-08-26 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                R.HostDescription regexp '.*'        AND
+                R.Grid regexp '.*'    AND
+                VO.VOName regexp '.*'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp 'BatchPilot'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (R.HostDescription regexp 'NONE|Generic|Obsolete'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'Unknown|unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp 'atlas.ci-connect.*'    
+                   AND WallDuration > 0
+	      AND PNC.ReportableProjectName regexp '.*'          
+	      AND (NOT (PNC.ReportableProjectName regexp 'unknown|other'                  ))  
+            GROUP BY 
+                   COALESCE(UPPER(PNC.ReportableProjectName), \"UNKNOWN\"), R.HostDescription   ,
+                time"
+112823,"reader","gratiaweb2.grid.iu.edu:35718","gratia","Query",127,"Copying to tmp table","SELECT
+                   UPPER(COALESCE(PNC.ReportableProjectName, \"UNKNOWN\"))   ,
+                truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+               JOIN ProjectNameCorrection PNC ON (PNC.ProjectNameCorrid=R.ProjectNameCorrid)    
+            WHERE
+                R.EndTime >= '2014-08-26 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                R.HostDescription regexp '.*'        AND
+                R.Grid regexp '.*'    AND
+                VO.VOName regexp '.*'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp 'BatchPilot'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (R.HostDescription regexp 'NONE'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp 'cms.ci-connect.*'    
+                   AND WallDuration > 0 
+	      AND PNC.ReportableProjectName regexp '.*'           
+	      AND (NOT (PNC.ReportableProjectName regexp 'unknown|other'                  ))  
+            GROUP BY 
+                   UPPER(COALESCE(PNC.ReportableProjectName, \"UNKNOWN\"))   ,
+                time"
+112830,"reader","fcl301.fnal.gov:48831","gratia","Query",67,"Copying to tmp table","SELECT s.SiteName,
+       p.ProbeName,
+       date_format(max(vo.EndTime),\"%Y-%m-%d\") as Last_reported,
+       date_format(p.currenttime,\"%Y-%m-%d\") as Last_handshake,
+       vo.ResourceType,
+       format(SUM(vo.Njobs),0) AS Njobs,
+       format(Round(Sum(CpuUserDuration+CpuSystemDuration)/3600),0) as SumCPU,
+       format(Round(Sum(WallDuration)/3600),0) as SumWCT
+FROM
+  VOProbeSummary vo, Probe p, Site s
+WHERE
+      vo.EndTime >= \"2014-03-06\" 
+  and vo.ResourceType <> \"GridMonitor\"
+  and vo.probename    = p.ProbeName
+  and  p.siteid       = s.siteid
+GROUP BY s.SiteName, p.ProbeName, Last_handshake, vo.ResourceType
+ORDER BY s.SiteName, Last_reported desc, p.ProbeName, vo.ResourceType"
+112831,"reader","gratiaweb2.grid.iu.edu:35720","gratia","Query",66,"Copying to tmp table","SELECT
+                   COALESCE(R.CommonName, VO.VOName)   ,
+                truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time,
+                   sum(Cores*WallDuration)/3600   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2014-08-26 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                R.HostDescription regexp '.*'        AND
+                R.Grid regexp '.*'    AND
+                VO.VOName regexp '.*'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp 'BatchPilot'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (R.HostDescription regexp 'NONE'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp 'cms.ci-connect.*'    
+                   AND WallDuration > 0   
+            GROUP BY 
+                   COALESCE(R.CommonName, VO.VOName)   ,
+                time"
+112832,"reader","gr12x3.fnal.gov:59966","gratia_osg_transfer","Query",63,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112833,"reader","gr12x4.fnal.gov:36736","gratia_itb","Query",63,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112834,"reader","gr12x0.fnal.gov:35056","gratia","Query",50,"Sending data","SELECT distinct S.SiteName, 1 from Site S"
+112835,"reader","mac-123136.dhcp.fnal.gov:51119","gratia","Query",0,NULL,"show full processlist"
+112836,"reader","mac-123136.dhcp.fnal.gov:51120",NULL,"Sleep",18,"",NULL
+112837,"reader","gratiaweb2.grid.iu.edu:35738","gratia","Query",6,"Copying to tmp table","SELECT
+                   R.ApplicationExitCode   ,
+                truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time,
+                   sum(Njobs)   
+            FROM
+                MasterSummaryData R
+            JOIN
+                Probe P on R.ProbeName = P.probename
+            JOIN
+                Site S on S.siteid = P.siteid
+            JOIN
+                VONameCorrection VC ON (VC.corrid=R.VOcorrid)
+            JOIN
+                VO on (VC.void = VO.void)
+                 
+            WHERE
+                R.EndTime >= '2014-08-26 00:00:00'         AND
+                R.EndTime < '2014-09-02 23:59:59'       AND
+                R.HostDescription regexp '.*'        AND
+                R.Grid regexp '.*'    AND
+                VO.VOName regexp '.*'  AND
+                VC.VOName regexp '.*'    AND
+                (NOT (VC.VOName regexp 'NONE'           )) AND
+                (R.ResourceType regexp 'BatchPilot'             or R.ResourceType = '') AND
+                R.CommonName regexp '.*'    AND
+                ('true'            ='true' OR ApplicationExitCode=0) AND
+                ('true'              ='true' OR ApplicationExitCode!=0) AND
+                (NOT (R.HostDescription regexp 'NONE'               )) AND
+                (NOT (R.CommonName regexp 'NONE'           )) AND
+                (NOT (VO.VOName regexp 'unknown|other'         )) AND
+                R.WallDuration < 1100000000 AND
+                R.ProbeName regexp 'cms.ci-connect.*'    
+                    
+            GROUP BY 
+                   R.ApplicationExitCode   ,
+                time"

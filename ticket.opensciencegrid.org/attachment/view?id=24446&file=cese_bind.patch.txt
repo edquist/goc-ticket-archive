@@ -1,0 +1,196 @@
+From e7b0d5ac5ce7c4f8765d2fa48b14dbdb365de6db Mon Sep 17 00:00:00 2001
+From: Matyas Selmeci <matyas@cs.wisc.edu>
+Date: Mon, 13 Apr 2015 15:42:13 -0500
+Subject: [PATCH 1/2] Move getHTCondorCEPort and getCondorCEConfigVal to
+ gip_common.py
+
+---
+ gip/lib/python/gip_batch.py  | 48 +------------------------------------------
+ gip/lib/python/gip_common.py | 49 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+), 47 deletions(-)
+
+diff --git a/gip_batch.py b/gip_batch.py
+index 6bb01ec..0ebfb1b 100644
+--- a/gip_batch.py
++++ b/gip_batch.py
+@@ -1,10 +1,10 @@
+ """
+ Common functions for GIP batch system providers and plugins.
+ """
+ 
+-from gip_common import cp_getBoolean, cp_get, cp_getList, cp_getInt, vdtDir
++from gip_common import cp_getBoolean, cp_get, cp_getList, cp_getInt, vdtDir, getHTCondorCEPort
+ from gip_cluster import getOSGVersion
+ from gip_sections import ce
+ from gip_testing import runCommand
+ import os
+ import re
+@@ -149,51 +149,5 @@ def getHTPCInfo(cp, batch, queue, log):
+ 
+     return ('HTPCrsl: %s' % queueRSL, htpcMaxSlots)
+         
+         
+ 
+-def getHTCondorCEPort():
+-    """Get what port condor-ce is running on based on its configuration"""
+-
+-    # If COLLECTOR_HOST is defined and has a port number, use that.
+-    # Else, if COLLECTOR_PORT is defined, use that.
+-    # Else, use 9619.
+-
+-    collector_host = getCondorCEConfigVal('COLLECTOR_HOST')
+-    if collector_host:
+-        if collector_host.count(':') > 1:
+-            # ipv6 address, must be bracketed if it has a port at the end, i.e. [ADDR]:PORT
+-            match = re.search(r'\]:(\d+)$', collector_host)
+-            if match:
+-                return int(match.group(1))
+-        else:
+-            # at most 1 colon -> hostname or ipv4 address with or without port
+-            match = re.search(r':(\d+)$', collector_host)
+-            if match:
+-                return int(match.group(1))
+-
+-    try:
+-        return int(getCondorCEConfigVal('COLLECTOR_PORT'))
+-    except (TypeError, ValueError):
+-        return 9619
+-
+-
+-def getCondorCEConfigVal(variable):
+-    """Use condor_ce_config_val to return the expanded value of a variable.
+-    Returns: the stripped output of condor_ce_config_val, or None if the
+-    variable is undefined or there is an error.
+-    """
+-    log = logging.getLogger()
+-    try:
+-        process = subprocess.Popen(['condor_ce_config_val', '-expand', variable],
+-                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+-        output, error = process.communicate()
+-        if error and not error.startswith('Not defined:'):
+-            log.warning('condor_ce_config_val on %s reported error: %s' % (variable, error))
+-        if process.returncode != 0:
+-          return None
+-        return output.strip()
+-    except OSError:
+-        return None
+-
+-
+-
+diff --git a/gip_common.py b/gip_common.py
+index 59b95c6..e9da869 100644
+--- a/gip_common.py
++++ b/gip_common.py
+@@ -19,10 +19,11 @@ import socket
+ import traceback
+ import ConfigParser
+ import urllib
+ import tempfile
+ import glob
++import subprocess
+ 
+ from gip_ldap import read_bdii
+ 
+ #pylint: disable-msg=W0105
+ 
+@@ -977,5 +978,53 @@ class _Constants: #pylint: disable-msg=C0103
+     """
+     
+     def __init__(self):
+         self.CR = '\r'
+         self.LF = '\n'
++
++
++def getHTCondorCEPort():
++    """Get what port condor-ce is running on based on its configuration"""
++
++    # If COLLECTOR_HOST is defined and has a port number, use that.
++    # Else, if COLLECTOR_PORT is defined, use that.
++    # Else, use 9619.
++
++    collector_host = getCondorCEConfigVal('COLLECTOR_HOST')
++    if collector_host:
++        if collector_host.count(':') > 1:
++            # ipv6 address, must be bracketed if it has a port at the end, i.e. [ADDR]:PORT
++            match = re.search(r'\]:(\d+)$', collector_host)
++            if match:
++                return int(match.group(1))
++        else:
++            # at most 1 colon -> hostname or ipv4 address with or without port
++            match = re.search(r':(\d+)$', collector_host)
++            if match:
++                return int(match.group(1))
++
++    try:
++        return int(getCondorCEConfigVal('COLLECTOR_PORT'))
++    except (TypeError, ValueError):
++        return 9619
++
++
++def getCondorCEConfigVal(variable):
++    """Use condor_ce_config_val to return the expanded value of a variable.
++    Returns: the stripped output of condor_ce_config_val, or None if the
++    variable is undefined or there is an error.
++    """
++    log = logging.getLogger()
++    try:
++        process = subprocess.Popen(['condor_ce_config_val', '-expand', variable],
++                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
++        output, error = process.communicate()
++        if error and not error.startswith('Not defined:'):
++            log.warning('condor_ce_config_val on %s reported error: %s' % (variable, error))
++        if process.returncode != 0:
++          return None
++        return output.strip()
++    except OSError:
++        return None
++
++
++
+-- 
+2.0.1
+
+From da11d2880291c76bb0fa9aadbe230515503d82e5 Mon Sep 17 00:00:00 2001
+From: Matyas Selmeci <matyas@cs.wisc.edu>
+Date: Mon, 13 Apr 2015 15:55:23 -0500
+Subject: [PATCH 2/2] Handle htcondorce in gip_cese_bind.getCEList
+
+This is used by gip/providers/cluster.py to generate the GlueForeignKey: GlueCEUniqueID=... strings
+---
+ gip/lib/python/gip_cese_bind.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/gip_cese_bind.py b/gip_cese_bind.py
+index 4403ef0..d9c333b 100644
+--- a/gip_cese_bind.py
++++ b/gip_cese_bind.py
+@@ -3,11 +3,11 @@
+ Provide information about the CEs of this site, the SEs, and
+ the bindings between the two.
+ """
+ import re
+ 
+-from gip_common import cp_get, cp_getBoolean
++from gip_common import cp_get, cp_getBoolean, getHTCondorCEPort
+ from gip_storage import getPath
+ from pbs_common import getQueueList as getPBSQueueList
+ from lsf_common import getQueueList as getLSFQueueList
+ from condor_common import getQueueList as getCondorQueueList
+ from sge_common import getQueueList as getSGEQueueList
+@@ -32,10 +32,13 @@ def getCEList(cp, extraCEs=[]):
+     prefix = 'jobmanager'
+     port = 2119
+     if cp_getBoolean(cp, 'cream', 'enabled', False):
+         prefix = 'cream'
+         port = 8443
++    if cp_getBoolean(cp, 'htcondorce', 'enabled', False):
++        prefix = 'htcondorce'
++        port = getHTCondorCEPort()
+     ce_names = ['%s:%d/%s-%s-%%s' % (hostname, port, prefix, jobman) for hostname in hostnames]
+ 
+     ce_list = []
+     if jobman == 'pbs':
+         queue_entries = getPBSQueueList(cp)
+-- 
+2.0.1
+

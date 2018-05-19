@@ -1,0 +1,38 @@
+Route 1
+Name         : "Local_Condor"
+Universe     : 5
+MaxJobs      : 400
+MaxIdleJobs  : 200
+GridResource : 
+Requirements : true
+ClassAd      : 
+    [
+        set_OnExitHold = ifThenElse(orig_OnExitHold isnt undefined,orig_OnExitHold,false) || ifThenElse(minWalltime isnt undefined && RemoteWallClockTime isnt undefined,RemoteWallClockTime < 60 * minWallTime,false); 
+        copy_OnExitHoldReason = "orig_OnExitHoldReason"; 
+        set_OnExitHoldReason = ifThenElse(( orig_OnExitHold isnt undefined ) && orig_OnExitHold,ifThenElse(orig_OnExitHoldReason isnt undefined,orig_OnExitHoldReason,strcat("The on_exit_hold expression (",unparse(orig_OnExitHold),") evaluated to TRUE.")),ifThenElse(minWalltime isnt undefined && RemoteWallClockTime isnt undefined && ( RemoteWallClockTime < 60 * minWallTime ),strcat("The job's wall clock time, ",int(RemoteWallClockTime / 60),"min, is less than the minimum specified by the job (",minWalltime,")"),"Job held for unknown reason.")); 
+        eval_set_remote_cerequirements = strcat(ifThenElse(default_remote_cerequirements isnt undefined,strcat(string(default_remote_cerequirements)," && "),""),ifThenElse(maxWallTime isnt undefined,strcat("Walltime == ",string(60 * maxWallTime)," && CondorCE == 1"),ifThenElse(default_maxWallTime isnt undefined,strcat("Walltime == ",string(60 * default_maxWallTime)," && CondorCE == 1"),"CondorCE == 1"))); 
+        eval_set_remote_NodeNumber = ifThenElse(xcount isnt undefined,xcount,ifThenElse(default_xcount isnt undefined,default_xcount,1)); 
+        eval_set_RequestCpus = ifThenElse(xcount isnt undefined,xcount,ifThenElse(orig_RequestCpus isnt undefined,ifThenElse(orig_RequestCpus > 1,orig_RequestCpus,ifThenElse(default_xcount isnt undefined,default_xcount,1)),ifThenElse(default_xcount isnt undefined,default_xcount,1))); 
+        delete_TotalSubmitProcs = true; 
+        eval_set_RequestMemory = ifThenElse(maxMemory isnt undefined,maxMemory,ifThenElse(default_maxMemory isnt undefined,default_maxMemory,2000)); 
+        delete_CondorCE = true; 
+        copy_OnExitHoldSubCode = "orig_OnExitHoldSubCode"; 
+        set_OnExitHoldSubCode = ifThenElse(( orig_OnExitHold isnt undefined ) && orig_OnExitHold,ifThenElse(orig_OnExitHoldSubCode isnt undefined,orig_OnExitHoldSubCode,1),42); 
+        set_RoutedJob = true; 
+        delete_PeriodicRemove = true; 
+        copy_RequestCpus = "orig_RequestCpus"; 
+        TargetUniverse = 5; 
+        set_CondorCECollectorHost = ifThenElse(regexp(":","gluskap.phys.uconn.edu:9619"),"gluskap.phys.uconn.edu:9619",strcat("gluskap.phys.uconn.edu:9619",":",9619)); 
+        eval_set_remote_queue = ifThenElse(batch_queue isnt undefined,batch_queue,ifThenElse(queue isnt undefined,queue,ifThenElse(default_queue isnt undefined,default_queue,""))); 
+        eval_set_remote_SMPGranularity = ifThenElse(xcount isnt undefined,xcount,ifThenElse(default_xcount isnt undefined,default_xcount,1)); 
+        eval_set_environment = debug(strcat("HOME=",userHome(Owner,"/")," CONDORCE_COLLECTOR_HOST=",CondorCECollectorHost," ",ifThenElse(orig_environment is undefined,osg_environment,strcat(osg_environment," ",orig_environment)))); 
+        Requirements = true; 
+        set_osg_environment = "OSG_GRID='/etc/osg/wn-client/' LD_PRELOAD='/lib64/libkeepalive.so' OSG_SQUID_LOCATION='gryphn.phys.uconn.edu:3128' KEEPCNT='9' KEEPINTVL='60' OSG_SITE_READ='dcap://nod25.phys.uconn.edu:22125/pnfs/phys.uconn.edu/data' OSG_APP='/nfs/direct/app' OSG_HOSTNAME='gluskap.phys.uconn.edu' OSG_DATA='/nfs/direct/annex/osg-data' LOCAL_ROOTSYS='/usr/local/root' CERN_ROOT='/usr/local/cern/pro' OSG_WN_TMP='worker_node_temp' CERN='/usr/local/cern' OSG_STORAGE_ELEMENT='True' KEEPIDLE='500' XERCESCROOT='/usr/local/xerces' OSG_SITE_NAME='UConn-OSG_CE' GLOBUS_LOCATION='/usr' PATH='/bin:/usr/bin:/sbin:/usr/sbin' OSG_DEFAULT_SE='grinch.phys.uconn.edu' OSG_SITE_WRITE='srm://grinch.phys.uconn.edu:8443/'"; 
+        MaxJobs = 400; 
+        set_requirements = true; 
+        MaxIdleJobs = 200; 
+        copy_OnExitHold = "orig_OnExitHold"; 
+        name = "Local_Condor"; 
+        copy_environment = "orig_environment"
+    ]
+

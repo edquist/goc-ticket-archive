@@ -1,0 +1,163 @@
+######## VO: lsst #################################
+###############################################
+General query to determine records to correct
+###############################################
+
+set @CommonName := '/CN=lsst-glidein.rcac.purdue.edu';
+set @start := '2014-07-01';
+set @end   := '2014-10-01';
+set @corrid     := 979;   -- lsst
+
+select
+       SiteName
+      ,Main.ProbeName as ProbeName
+      ,CommonName
+      ,date_format(EndTime,'%Y-%m-%d') as EndTime
+      ,VO.VOName as VOName
+      ,corrid
+      ,sum(Njobs) as Jobs
+      ,round(sum(CpuUserDuration+CpuSystemDuration)/3600,0) as CpuHrs
+      ,round(sum(WallDuration * Cores)/3600,0) as WallHrs
+from MasterSummaryData  Main
+join Probe on (Main.ProbeName = Probe.probename)
+join Site  on (Probe.siteid = Site.siteid)
+join VONameCorrection voc on (Main.VOcorrid = voc.corrid)
+join VO on (voc.VOid = VO.VOid)
+where (Main.ProbeName like '%mwt2.org'
+         or
+       Main.ProbeName = 'condor:mwt2-gk.campuscluster.illinois.edu')
+  and EndTime > @start
+  and EndTime < @end
+  and CommonName = @CommonName
+group by
+       SiteName
+      ,ProbeName
+      ,CommonName
+      ,EndTime
+      ,VOName
+      ,corrid
+;
+
++--------------+-------------------------------------------+----------------------------------+------------+--------+--------+------+--------+---------+
+| SiteName     | ProbeName                                 | CommonName                       | EndTime    | VOName | corrid | Jobs | CpuHrs | WallHrs |
++--------------+-------------------------------------------+----------------------------------+------------+--------+--------+------+--------+---------+
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-18 | lsst   |    979 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-19 | lsst   |    979 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-20 | lsst   |    979 |   13 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-29 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-03 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-04 | atlas  |    984 |    3 |      0 |       0 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-12 | atlas  |    984 |    2 |      4 |       5 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-15 | lsst   |    934 |    2 |      6 |       6 |
+| MWT2         | condor:osg-gk.mwt2.org                    | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-16 | lsst   |    934 |    2 |      3 |       3 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-07-17 | lsst   |    979 |    2 |      0 |       1 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-07-30 | lsst   |    979 |    1 |      0 |       0 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-07-31 | lsst   |    979 |    3 |      3 |       4 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-01 | lsst   |    979 |   34 |     39 |      61 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-02 | lsst   |    979 |  229 |   2399 |    2558 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-03 | lsst   |    979 |  280 |   2985 |    3174 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-04 | lsst   |    979 |  192 |   1637 |    1848 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-05 | lsst   |    979 |   21 |      8 |      16 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-07 | lsst   |    979 |   38 |    501 |     510 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-08 | lsst   |    979 |  213 |   2980 |    3015 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-09 | lsst   |    979 |  264 |   2972 |    3394 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-10 | lsst   |    979 |  122 |   1624 |    1794 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-11 | lsst   |    979 |  115 |   1910 |    1973 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-12 | lsst   |    979 |  157 |   2602 |    2949 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-13 | lsst   |    979 |   78 |   1448 |    1483 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-14 | lsst   |    979 |  106 |   1414 |    1449 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-15 | lsst   |    979 |  114 |   1203 |    1317 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-16 | lsst   |    979 |    8 |    116 |     118 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-17 | lsst   |    979 |   13 |    163 |     167 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-18 | lsst   |    979 |   27 |    439 |     446 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-19 | lsst   |    979 |   55 |   1033 |    1042 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-20 | lsst   |    979 |   11 |    146 |     148 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-29 | atlas  |    984 |    4 |      0 |       1 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-02 | atlas  |    984 |    3 |      0 |       1 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-04 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-05 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-11 | atlas  |    984 |   28 |      6 |      19 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-12 | atlas  |    984 |    9 |      0 |       2 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-15 | lsst   |    934 |  140 |   1509 |    1546 |
+| MWT2_CE_UC   | condor:uct2-gk.mwt2.org                   | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-16 | lsst   |    934 |  120 |   1518 |    1612 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-07-30 | lsst   |    979 |    2 |      0 |       1 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-07-31 | lsst   |    979 |    1 |      0 |       0 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-01 | lsst   |    979 |   25 |      4 |      17 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-02 | lsst   |    979 |   72 |    564 |     591 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-03 | lsst   |    979 |  253 |   5319 |    5531 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-04 | lsst   |    979 |  179 |   4309 |    4470 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-05 | lsst   |    979 |   12 |      1 |       5 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-07 | lsst   |    979 |    5 |      8 |      14 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-08 | lsst   |    979 |   35 |   1032 |    1062 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-09 | lsst   |    979 |  224 |   6082 |    6480 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-10 | lsst   |    979 |   86 |   2944 |    3296 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-11 | lsst   |    979 |  146 |   4825 |    5109 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-12 | lsst   |    979 |   32 |    228 |     806 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-13 | lsst   |    979 |   55 |   2229 |    2279 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-14 | lsst   |    979 |   93 |   3380 |    3452 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-15 | lsst   |    979 |  214 |   4160 |    4783 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-16 | lsst   |    979 |   46 |   1865 |    1895 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-17 | lsst   |    979 |   49 |   1536 |    1566 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-18 | lsst   |    979 |   62 |   1370 |    1438 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-20 | lsst   |    979 |    1 |     29 |      29 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-08-29 | atlas  |    984 |    8 |      0 |       2 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-02 | atlas  |    984 |    3 |      0 |       1 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-03 | atlas  |    984 |    2 |      0 |       0 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-04 | atlas  |    984 |    3 |      0 |       0 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-05 | atlas  |    984 |    1 |      0 |       0 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-11 | atlas  |    984 |   27 |      7 |      19 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-12 | atlas  |    984 |    9 |      7 |       9 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-15 | lsst   |    934 |   92 |    593 |     672 |
+| MWT2_CE_UIUC | condor:mwt2-gk.campuscluster.illinois.edu | /CN=lsst-glidein.rcac.purdue.edu | 2014-09-16 | lsst   |    934 |   46 |    686 |     700 |
++--------------+-------------------------------------------+----------------------------------+------------+--------+--------+------+--------+---------+
+
+###############################################
+Update transactions to be applied
+###############################################
+
+set @CommonName := '/CN=lsst-glidein.rcac.purdue.edu';
+set @start := '2014-07-23';
+set @end   := '2014-09-13';
+set @corrid     := 979;   -- lsst
+
+select
+CONCAT('update MasterSummaryData set VOCorrid = ',@corrid,' where SummaryID = ',SummaryID,';')
+from MasterSummaryData
+where (ProbeName like '%mwt2.org'
+         or
+       ProbeName = 'condor:mwt2-gk.campuscluster.illinois.edu')
+  and EndTime > @start
+  and EndTime < @end
+  and CommonName = @CommonName
+  and VOcorrid = 984
+;
+
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 106538171;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 106538532;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 107648353;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 111398694;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 111400803;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 112243821;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 112258180;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 113035809;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 113035824;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 113035834;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 113227754;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 113231040;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 113918316;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 113921250;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 118452078;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 118457762;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 118735724;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 118736464;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 118764917;
+update MasterSummaryData set VOCorrid = 979 where SummaryID = 118790074;
+
+##########################################################################
+# To verify... rerun the query at the top of page with all 'set' commands
+#
+# all should show lsst 
+#
+# If looks good, you can commit.
+##########################################################################
+

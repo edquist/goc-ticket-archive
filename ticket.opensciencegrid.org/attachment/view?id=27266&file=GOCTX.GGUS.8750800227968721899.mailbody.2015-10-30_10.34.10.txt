@@ -1,0 +1,87 @@
+Hi again,
+
+I just had another look at the DDM dashboard, and the errors are still 
+continuing, but I don't believe that the error reported is correct. It 
+still says
+
+----
+DELETION SITE	OUHEP_OSG_DATADISK
+DELETION URL 
+srm://ouhep2.nhn.ou.edu:8443/srm/v2/server?SFN=/raid01/data/atlasdatadisk/rucio/user/ddmadmin/19/6a/sonar.test.IEPSAS-KOSICE_DATADISK.file4.rnd
+ERROR MSG	The requested service is not available at the moment. Details: 
+An unknown exception occurred. Details: srm-ifce err: Communication 
+error on send, err: [SE][srmRm][] 
+httpg://ouhep2.nhn.ou.edu:8443/srm/v2/server: CGSI-gSOAP running on 
+rucio-daemon-prod-16.cern.ch reports Error reading token data header: 
+Connection reset by peer
+----
+
+but when I look at that file, it's not there:
+
+----
+[hs@ouhep01 ~]$ ls -ao 
+/raid01/data/atlasdatadisk/rucio/user/ddmadmin/19/6a/
+total 0
+drwxr-xr-x 2 usatlas1  6 Oct 13 13:07 .
+drwxr-xr-x 8 usatlas1 60 Mar 31  2015 ..
+
+[hs@ouhep01 ~]$ ls -aoc 
+/raid01/data/atlasdatadisk/rucio/user/ddmadmin/19/6a/
+total 0
+drwxr-xr-x 2 usatlas1  6 Oct 13 13:07 .
+drwxr-xr-x 8 usatlas1 60 Mar 31  2015 ..
+----
+
+And from the time stamp on the directory you can see that this file has 
+not been there since at least October 13, therefore there is clearly a 
+problem with rucio trying to delete a lot of files which aren't there in 
+the first place.
+
+So this not a problem on our end. How do we fix it? Can we escalate this 
+to the RUCIO experts?
+
+Thanks,
+
+	Horst
+
+
+On 10/29/2015 10:26 PM, helpdesk@ggus.org wrote:
+> Dear site administrators,
+> TEAM ticket #117278 for site OUHEP_OSG is ASSIGNED to you.
+>
+> REFERENCE LINK:https://ggus.eu/index.php?mode=ticket_info&ticket_id=117278
+> SUBJECT: US OUHEP_OSG DATADISK staging error with "The requested service is not available "
+>
+> -----------------------------------------------------------------------------
+> TICKET INFORMATION:
+> -----------------------------------------------------------------------------
+> DESCRIPTION ->
+> US OUHEP_OSG DATADISK is observed 3.7k staging errors in the passed 4 hours.
+>
+> http://dashb-atlas-ddm.cern.ch/ddm2/#activity=(Data+Brokering,Data+Consolidation,Deletion,Express,Functional+Test,Group+Subscriptions,Production,Production+Input,Production+Output,Recovery,Staging,T0+Export,T0+Tape,User+Subscriptions,default,on))&d.dst.cloud=%22US%22&d.dst.site=%22OUHEP_OSG%22&d.dst.token=%22DATADISK%22&date.from=201510292310&date.interval=0&date.to=201510300310&dst.cloud=(%22US%22)&dst.site=(%22OUHEP_OSG%22)&grouping.dst=(cloud,site,token)&m.content=(d_eff,d_faf,s_eff,s_err,t_eff,t_err)&s.state=DELETION_FAILED&samples=true&src.tier=(0,1,2)
+>
+> http://dashb-atlas-ddm.cern.ch/ddm2/#activity=(Data+Brokering,Data+Consolidation,Deletion,Express,Functional+Test,Group+Subscriptions,Production,Production+Input,Production+Output,Recovery,Staging,T0+Export,T0+Tape,User+Subscriptions,default,on))&d.dst.cloud=%22US%22&d.dst.site=%22OUHEP_OSG%22&d.dst.token=%22DATADISK%22&d.error_code=327&d.state=(DELETION_FAILED)&date.from=201510292310&date.interval=0&date.to=201510300310&dst.cloud=(%22US%22)&dst.site=(%22OUHEP_OSG%22)&grouping.dst=(cloud,site,token)&m.content=(d_eff,d_faf,s_eff,s_err,t_eff,t_err)&s.state=DELETION_FAILED&samples=true&src.tier=(0,1,2)&tab=details
+>
+> error message example:
+> DELETION SITE	OUHEP_OSG_DATADISK
+> DELETION URL	srm://ouhep2.nhn.ou.edu:8443/srm/v2/server?SFN=/raid01/data/atlasdatadisk/rucio/user/ddmadmin/53/e6/sonar.test.MWT2_DATADISK.file8.rnd
+> ERROR MSG	The requested service is not available at the moment. Details: An unknown exception occurred. Details: srm-ifce err: Communication error on send, err: [SE][srmRm][] httpg://ouhep2.nhn.ou.edu:8443/srm/v2/server: CGSI-gSOAP running on rucio-daemon-prod-16.cern.ch reports Error reading token data header: Connection reset by peer
+> ACTIVITY	Deletion
+> FILE SIZE	1090519040 bytes
+> DATASET MONITORING	Details on Rucio UI:  file
+>
+> LAST MODIFIER -> lu.feng
+> NOTIFIED SITE -> OUHEP_OSG
+> MOU AREA -> Other Services
+> CONCERNED VO -> atlas
+> PRIORITY -> less urgent
+> TYPE OF ISSUE -> Storage Systems
+> SUBMITTER -> lu.feng
+> SUBMITTER DN -> lu.feng6946
+>
+> *********************************************************************************
+>   This is an automated mail. When replying don't change the subject line!
+>   Type your text above this box and S T R I P  P R E V I O U S  M A I L S please!!
+> *********************************************************************************
+>
+

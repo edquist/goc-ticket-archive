@@ -1,0 +1,25 @@
+From edquist@cs.wisc.edu Wed May 13 11:00:54 2015
+Date: Wed, 13 May 2015 11:00:03
+From: edquist@cs.wisc.edu
+To: juanfmx2@gmail.com, edquist@cs.wisc.edu
+Subject: *** gratia db queries running over 10min (at 20150513-110003) ***
+
+ID	HOST	COMMAND	TIME	STATE
+3396130	gratiaweb2.grid.iu.edu:52863	Query	0	Copying to tmp table
+3396104	oim.grid.iu.edu:46420	Query	393	Copying to tmp table
+3396103	oim.grid.iu.edu:46419	Query	394	Sending data
+3396102	oim.grid.iu.edu:46418	Query	394	Sending data
+3395034	gr12x3.fnal.gov:51559	Query	10415	Copying to tmp table
+3395022	gr12x3.fnal.gov:51547	Query	10715	Copying to tmp table
+
+---
+
+ID	USER	HOST	DB	COMMAND	TIME	STATE	INFO
+3396130	reader	gratiaweb2.grid.iu.edu:52863	gratia	Query	0	Copying to tmp table	SELECT COALESCE(R.CommonName, VO.VOName) , truncate( unix_timestamp(EndTime) / 86400   , 0 ) * 86400    as time, sum(Cores*WallDuration)/3600 FROM MasterSummaryData R JOIN Probe P on R.ProbeName = P.probename JOIN Site S on S.siteid = P.siteid JOIN VONameCorrection VC ON (VC.corrid=R.VOcorrid) JOIN VO on (VC.void = VO.void) WHERE R.EndTime >= '2015-02-12 00:00:00'         AND R.EndTime < '2015-05-13 23:59:59'       AND S.SiteName in ('UColorado_HEP','UColorado_SE') AND true AND true AND (NOT (VC.VOName in ('NONE'))) AND (R.ResourceType regexp '^Batch$'             or R.ResourceType = '') AND true AND ('true'            ='true' OR ApplicationExitCode=0) AND ('true'              ='true' OR ApplicationExitCode!=0) AND (NOT (S.SiteName in ('NONE','Generic','Obsolete'))) AND (NOT (R.CommonName in ('NONE'))) AND (NOT (VO.VOName in ('Unknown','unknown','other'))) AND R.WallDuration < 1100000000 AND true AND WallDuration > 0 GROUP BY COALESCE(R.CommonName, VO.VOName) , time
+3396104	reader	oim.grid.iu.edu:46420	gratia	Query	393	Copying to tmp table	select distinct KeyInfoContent from JobUsageRecord where ReportableVOName='atlas' and Processors=8 and Year(EndTime)=2015 and Month(EndTime)=05 limit 4,1
+3396103	reader	oim.grid.iu.edu:46419	gratia	Query	394	Sending data	select min(a.EndTime), max(a.EndTime) from JobUsageRecord a, JobUsageRecord_Meta b  where a.dbid=b.dbid and Month(a.EndTime)=05 and Year(a.EndTime)=2015 and a.Processors=1 and a.ReportableVOName='cms' and b.ReportedSiteName='UColorado_HEP' and a.KeyInfoContent='/DC=ch/DC=cern/OU=computers/CN=cmspilot02/vocms080.cern.ch'
+3396102	reader	oim.grid.iu.edu:46418	gratia	Query	394	Sending data	select min(a.EndTime), max(a.EndTime) from JobUsageRecord a, JobUsageRecord_Meta b  where a.dbid=b.dbid and Month(a.EndTime)=05 and Year(a.EndTime)=2015 and a.Processors=8 and a.ReportableVOName='cms' and b.ReportedSiteName='Purdue-Hansen' and a.KeyInfoContent='/DC=ch/DC=cern/OU=computers/CN=cmspilot01/vocms080.cern.ch'
+3395034	reader	gr12x3.fnal.gov:51559	gratia_osg_transfer	Query	10415	Copying to tmp table	SELECT\n             VO.VOName   ,\n          truncate( unix_timestamp(StartTime) / 86400, 0 ) * 86400 as time,\n             sum(TransferSize)/pow(1024, 2)/86400  \n        FROM\n          MasterTransferSummary R FORCE INDEX (index01)\n        JOIN\n          Probe P on R.ProbeName = P.probename\n        JOIN\n          Site S on S.siteid = P.siteid\n        JOIN\n          VONameCorrection VC ON (VC.corrid=R.VOcorrid)\n        JOIN\n          VO on (VC.void = VO.void)\n            \n        WHERE\n          StartTime >= '2015-04-30 00:00:00' AND\n          StartTime < '2015-05-13 23:59:59' AND\n          SiteName regexp '.*' AND\n          R.Protocol regexp '.*' AND\n          VO.VOName regexp '.*' AND\n          (NOT (S.SiteName regexp 'NONE|Generic|Obsolete')) AND\n          (NOT (VO.VOName regexp 'unknown|other'))\n              \n        GROUP BY\n             VO.VOName   ,\n          time
+3395022	reader	gr12x3.fnal.gov:51547	gratia_osg_transfer	Query	10715	Copying to tmp table	SELECT\n             SiteName   ,\n          truncate( unix_timestamp(StartTime) / 86400, 0 ) * 86400 as time,\n             sum(TransferSize)/pow(1024, 2)/86400  \n        FROM\n          MasterTransferSummary R FORCE INDEX (index01)\n        JOIN\n          Probe P on R.ProbeName = P.probename\n        JOIN\n          Site S on S.siteid = P.siteid\n        JOIN\n          VONameCorrection VC ON (VC.corrid=R.VOcorrid)\n        JOIN\n          VO on (VC.void = VO.void)\n            \n        WHERE\n          StartTime >= '2015-04-30 00:00:00' AND\n          StartTime < '2015-05-13 23:59:59' AND\n          SiteName regexp '.*' AND\n          R.Protocol regexp '.*' AND\n          VO.VOName regexp '.*' AND\n          (NOT (S.SiteName regexp 'NONE|Generic|Obsolete')) AND\n          (NOT (VO.VOName regexp 'unknown|other'))\n              \n        GROUP BY\n             SiteName   ,\n          time
+
+

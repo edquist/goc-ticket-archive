@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+import sys
+import classad
+
+SUCCESS = 0
+FAILURE = 1
+input_delim = '------'
+
+def main():
+    route_ad = classad.ClassAd(sys.stdin.readline())
+    separator_line = sys.stdin.readline()
+    try:
+        assert separator_line == "------\n"
+    except AssertionError:
+        sys.stderr.write("Separator line was not second line of STDIN\n")
+        return(FAILURE)
+    try:
+        ad = classad.parseOld(sys.stdin)
+    except SyntaxError:
+        sys.stderr.write("Unable to parse classad\n")
+        return(FAILURE)
+    # try:
+    #     ad = classad.parse(input_classad)
+    # except SyntaxError:
+    #     try:
+    #         ad = classad.parseOld(input_classad)
+    #     except SyntaxError:
+    #         sys.stderr.write("Unable to parse classad")
+    #         return(FAILURE)
+
+    print ad.printOld()
+
+    return(SUCCESS)
+
+if __name__ == '__main__':
+    sys.exit(main())

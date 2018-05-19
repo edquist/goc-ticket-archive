@@ -1,0 +1,98 @@
+Hi,
+
+Yes, we are running opportunistically an MC workflow on T3_US_Parrot, 
+which is a metasite in glideinWMS and one of the sites behind it is 
+Fermigrid. All jobs run under Parrot. Last week we were seeing around 
+20% success rate but this week it is 0%.
+
+ From the wmagent wmstats monitoring we cannot see exactly where the 
+jobs run, but all the jobs I checked by looking at the stdout and 
+stderr, ran at Fermigrid (WNs like fnpc6011.fnal.gov, 
+GLIDEIN_ResourceName=FNAL_FERMIGRID, OSG_SITE_NAME=FNAL_GPGRID_2 or 
+OSG_SITE_NAME=FNAL_GPGRID_1 in the environment). The stage out via 
+lcg-cp is not going to CERN but to Wisconsin and then Nebraska as a 
+fallback. It normally works but not all the time. See below.
+
+We are in fact testing a new retry handler in wmagent, so having a 
+certain failure rate is exactly what we need. The current 100% failure 
+is a limit case and also interesting for testing the behaviour of the 
+retry algorithm. I think it would be beneficial if site admins help 
+resolve some of the problems so we get some jobs that succeed. The 
+failures we get are as follows.
+
+The most common error we see is:
+
+Error in CMSSW: 50513
+ScramSetupFailure
+Message:
+         Scram Command Diagnostic:
+         Command : scramv1
+         Architecture: slc5_amd64_gcc434
+         Executed: scramv1 project CMSSW CMSSW_4_1_8
+         Exit Status: 3
+         Stdout:
+         Stderr: /bin/bash: line 5: scramv1: command not found
+
+     ModuleName : WMCore.WMSpec.Steps.WMExecutionFailure
+     MethodName : __init__
+     ClassInstance : None
+     FileName : 
+/local/stage1/disk18/dir_21109/glide_8JLr49/execute/dir_43313/job/WMCore.zip/WMCore/WMSpec/Steps/WMExecutionFailure.py
+     ClassName : None
+     LineNumber : 18
+     ErrorNr : 50513
+
+For the case of stageout error (to Wisconsin and Nebraska) in stderr I 
+see diagnostics like:
+
+INFO:root:Beginning report processing for step logArch1
+ERROR:root:Cannot find report for step logArch1 in space 
+/local/stage1/disk16/dir_11621/glide_T11716/execute/dir_19245/job/WMTaskSpace/logArch1
+INFO:root:Beginning report processing for step cmsRun1
+usage: lcg-cp [-h,--help] [-c,--config config_file] [-n nbstreams] 
+[-b,--nobdii] [-D,--defaultsetype se|srmv1|srmv2]
+         [-T,--srcsetype se|srmv1|srmv2] [-U,--dstsetype se|srmv1|srmv2] 
+[-s,--sst src_spacetokendesc]
+         [-S,--dst dest_spacetokendesc] [--connect-timeout value] 
+[--sendreceive-timeout value]
+         [--bdii-timeout value] [--srm-timeout value] [--checksum] 
+[--checksum-type type]
+         [-v,--verbose] [-V,--vo vo] [--version]
+         [--src-protocols <protocol1,protocol2,...>]
+         [--dst-protocols <protocol1,protocol2,...>]
+         src_file  dest_file
+srm://cmssrm.hep.wisc.edu:8443/srm/v2/server?SFN=/hdfs/store/unmerged/IntegrationTest_131021/BdToMuMu_2MuPtFilter_7TeV-pythia6-evtgen/GEN-SIM/MyFilter-OppTest-v3/00001/DAF1BBC3-DA3A-E311-8812-002590593884.root: 
+[SE][srmRm][SRM_FAILURE] Error:/bin/rm: cannot remove 
+`/hdfs/store/unmerged/IntegrationTest_131021/BdToMuMu_2MuPtFilter_7TeV-pythia6-evtgen/GEN-SIM/MyFilter-OppTest-v3/00001/DAF1BBC3-DA3A-E311-8812-002590593884.root': 
+No such file or directory
+Ref-u cmsprod  /bin/rm 
+/hdfs/store/unmerged/IntegrationTest_131021/BdToMuMu_2MuPtFilter_7TeV-pythia6-evtgen/GEN-SIM/MyFilter-OppTest-v3/00001/DAF1BBC3-DA3A-E311-8812-002590593884.root
+
+Looks like something is missing and an lcg-cp is invoked incorrectly.
+
+Another type of error is just:
+
+in stdout:
+WMAgent bootstrap : Tue Oct 22 06:25:18 UTC 2013 : starting...
+WMAgent bootstrap : Tue Oct 22 06:25:18 UTC 2013 : arguments validated...
+WMAgent bootstrap : Tue Oct 22 06:25:18 UTC 2013 : WMAgent thinks it 
+found the correct CMSSW setup script
+
+in stderr:
+/local/stage1/disk22/dir_17864/glide_Y18193/execute/dir_30341/condor_exec.exe: 
+line 39: /grid/app/cmssoft/cms/cmsset_default.sh: No such file or directory
+WMAgent bootstrap : Tue Oct 22 06:25:18 UTC 2013 : Error: Python2.6 
+isn't available on this worker node.
+WMAgent bootstrap : Tue Oct 22 06:25:18 UTC 2013 : Error: WMCore/WMAgent 
+REQUIRES python2.6
+
+and in the condor log:
+Error from glidein_26917@fnpc4049.fnal.gov: STARTER at 131.225.167.145 
+failed to send file(s) to &lt;128.142.138.230:4080&gt;: error reading 
+from 
+/local/stage1/disk22/dir_17864/glide_Y18193/execute/dir_30341/Report.4.pkl: 
+(errno 2) No such file or directory; SHADOW failed to receive file(s) 
+from &lt;131.225.167.145:53101&gt;
+
+Cheers,
+Preslav

@@ -1,0 +1,20 @@
+diff --git a/Condor.py b/Condor.py
+--- a/Condor.py
++++ b/Condor.py
+@@ -164,10 +164,13 @@ class Condor:
+         except IOError, err:
+             self.rsv.log("ERROR", "Cannot write temporary submission file '%s'." % sub_file_name)
+             self.rsv.log("ERROR", "Error message: %s" % err)
+             return False
+ 
++        _, out = self.commands_getstatusoutput("stat " + re.escape(sub_file_name))
++        self.rsv.log("DEBUG", "stat of submit file:\n " + out)
++
+         # We need to change to a directory that can be read by the RSV user.  This is
+         # because Condor puts the current working directory into the job ad as 'Iwd'
+         # (Initial working dir).  When starting the job condor cd's to Iwd then starts
+         # the process.  If it cannot cd into the dir it gives a 'permission denied' error.
+         os.chdir(os.path.join("/", "tmp"))
+-- 
+2.6.3
+

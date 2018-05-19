@@ -1,0 +1,63 @@
+#FILESYSTEM_DOMAIN=brazos.tamu.edu
+#UID_DOMAIN=brazos.tamu.edu
+#USERS=*@brazos.tamu.edu
+
+# Next 2 commented out temporarily to allow Brian Lin to debug
+#START_LOCAL_UNIVERSE = target.Owner =?= "rsv"
+#START_SCHEDULER_UNIVERSE = $(START_LOCAL_UNIVERSE)
+SPOOL=/fdata/spool
+
+MAX_GRIDMANAGER_LOG = 6h
+MAX_NUM_GRIDMANAGER_LOG = 8
+GRIDMANAGER_LOG = D_FULLDEBUG
+JOB_ROUTER_DEBUG = D_FULLDEBUG
+SCHEDD_DEBUG = D_FULLDEBUG
+MASTER_DEBUG = D_FULLDEBUG
+
+#JOB_ROUTER_ENTRIES = \
+#   [ \
+#     GridResource = "batch pbs"; \
+#     TargetUniverse = 9; \
+#     name = "Local_PBS"; \
+#   ]
+
+# Basic route for submitting to PBS
+JOB_ROUTER_ENTRIES = \
+   [ \
+     GridResource = "batch pbs"; \
+     TargetUniverse = 9; \
+     name = "Local_PBS"; \
+     Requirements = (TARGET.Owner =!= "cms1014"); \
+     set_default_queue = "background"; \
+     set_default_maxMemory = 1900; \
+   ] \
+   [ \
+     GridResource = "batch pbs"; \
+     TargetUniverse = 9; \
+     name = "Local_SAM"; \
+     Requirements = (TARGET.Owner =?= "cms1014"); \
+     set_default_queue = "background-4g"; \
+     set_default_maxMemory = 3900; \
+     set_default_maxWallTime = 60; \
+  ]
+
+PILOT_HOOK_TRANSLATE_JOB = /usr/libexec/htcondor-job-router/pilot-translate.py
+
+# A more complex route, sending CMS jobs to the "cms" queue and everyone else
+# to the "grid" queue
+#JOB_ROUTER_ENTRIES = \
+#   [ \
+#     GridResource = "batch pbs"; \
+#     TargetUniverse = 9; \
+#     name = "Local_PBS_cms"; \
+#     set_remote_queue = "cms"; \
+#     Requirements = target.x509UserProxyVOName =?= "cms"; \
+#   ] \
+#   [ \
+#     GridResource = "batch pbs"; \
+#     TargetUniverse = 9; \
+#     name = "Local_PBS_other"; \
+#     set_remote_queue = "other"; \
+#     Requirements = target.x509UserProxyVOName =!= "cms"; \
+#   ]
+

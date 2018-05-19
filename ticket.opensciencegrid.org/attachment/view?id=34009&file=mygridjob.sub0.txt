@@ -1,0 +1,26 @@
+# condor submit file for osg production, based on a custom singularity image for sim-recon
+# Richard Jones
+# June 8, 2017
+#
+universe = vanilla
+executable = ./mygridjob.py
+Requirements = HAS_SINGULARITY == TRUE
+
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/rjones30/gluex:latest"
++SingularityBindCVMFS = True
++SingularityAutoLoad = True
+
+should_transfer_files = IF_NEEDED
+when_to_transfer_output = ON_EXIT
+x509userproxy = /tmp/x509up_u7896
+concurrency_limits = GluexProduction
+on_exit_remove = true
+on_exit_hold = false
+
+initialdir = /home/halld/work7/mygridjob.logs
+output = $(CLUSTER).$(PROCESS).out
+error = $(CLUSTER).$(PROCESS).err
+log = mygridjob.log
+
+arguments = doslice 0 $(PROCESS)
+queue 40

@@ -1,0 +1,33 @@
+
+-- ###########################################################
+-- ### Validation
+-- ### From 2013-10 to present Efficiency was below 70
+-- ### After changes are applied, they should be in the 
+-- ### range of 2013-01 thru 2013-09 numbers.
+-- ### with the exception of October which we did not correct
+-- ###########################################################
+set @site  ='WT2';
+set @start ='2013-01-01 00:00:00';
+set @end   ='2014-02-06 00:00:00';
+
+SELECT SiteName ,Period ,CpuHrs ,WallHrs
+      ,round((CpuHrs / WallHrs) * 100,0) as Efficiency
+FROM (
+SELECT
+       Site.SiteName AS SiteName,
+       date_format(EndTime,"%Y-%m") as Period,
+       Sum(NJobs),
+       Round(Sum(CpuUserDuration+CpuSystemDuration)/3600) as CpuHrs,
+       Round(Sum(WallDuration)/3600) as WallHrs
+from Site, Probe, VOProbeSummary Main
+where Site.SiteName = @site 
+  and Site.siteid = Probe.siteid
+  and Probe.ProbeName  = Main.ProbeName
+  and Main.EndTime >= @start and Main.EndTime <  @end
+  and Main.ResourceType = "Batch"
+group by SiteName, Period
+) t
+order by SiteName,Period
+;
+
+

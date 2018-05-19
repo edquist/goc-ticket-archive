@@ -1,0 +1,655 @@
+ ############   screens_condor_ce_run.txt ############
+
+Submission from malice01 via condor_ce_run works:
+
+-bash-4.1$ condor_ce_run -r mpdsfgrid01.nersc.gov:9619 /bin/date
+Tue Jan 17 13:36:32 PST 2017
+
+in between submission and the return of the date value, the CE did:
+
+-- Schedd: mpdsfgrid01.nersc.gov : <128.55.164.105:61809>
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+  57.0   porter          1/17 13:35   0+00:00:00 I  0   0.1  date
+  58.0   porter          1/17 13:36   0+00:00:00 I  0   0.1  date
+
+2 jobs; 0 completed, 0 removed, 2 idle, 0 running, 0 held, 0 suspended
+
+
+*** Not sure why it started 2 jobs - do you understand that?
+
+The UGE cluster showed the job submitted:
+
+> qstat -u porter
+job-ID  prior   name       user         state submit/start at     queue                          jclass                         slots ja-task-ID 
+------------------------------------------------------------------------------------------------------------------------------------------------
+5928682 0.00000 bl_e98d8fd porter       qw    01/17/2017 13:36:15                                                                   1        
+
+After the job finished, condor_ce_q gave:
+
+-- Schedd: mpdsfgrid01.nersc.gov : <128.55.164.105:61809>
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+  57.0   porter          1/17 13:35   0+00:00:00 C  0   0.1  date
+  58.0   porter          1/17 13:36   0+00:00:00 C  0   0.1  date
+
+2 jobs; 2 completed, 0 removed, 0 idle, 0 running, 0 held, 0 suspended
+
+then:
+
+-- Schedd: mpdsfgrid01.nersc.gov : <128.55.164.105:61809>
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+  57.0   porter          1/17 13:35   0+00:00:00 C  0   0.1  date
+
+1 jobs; 1 completed, 0 removed, 0 idle, 0 running, 0 held, 0 suspended
+
+then:
+
+-- Schedd: mpdsfgrid01.nersc.gov : <128.55.164.105:61809>
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+
+0 jobs; 0 completed, 0 removed, 0 idle, 0 running, 0 held, 0 suspended
+
+
+
+
+
+ ############   SchedLog.condor_ce_run.works   ############
+01/17/17 13:35:33 Setting maximum file descriptors to 4096.
+01/17/17 13:35:33 ******************************************************
+01/17/17 13:35:33 ** condor_schedd (CONDOR_SCHEDD) STARTING UP
+01/17/17 13:35:33 ** /usr/sbin/condor_schedd
+01/17/17 13:35:33 ** SubsystemInfo: name=SCHEDD type=SCHEDD(5) class=DAEMON(1)
+01/17/17 13:35:33 ** Configuration: subsystem:SCHEDD local:<NONE> class:DAEMON
+01/17/17 13:35:33 ** $CondorVersion: 8.4.9 Sep 29 2016 $
+01/17/17 13:35:33 ** $CondorPlatform: X86_64-CentOS_7.2 $
+01/17/17 13:35:33 ** PID = 2537239
+01/17/17 13:35:33 ** Log last touched time unavailable (No such file or directory)
+01/17/17 13:35:33 ******************************************************
+01/17/17 13:35:33 Using config source: /etc/condor-ce/condor_config
+01/17/17 13:35:33 Using local config sources: 
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/01-ce-auth-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/01-ce-info-services-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/01-ce-router-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/01-common-auth-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/01-common-collector-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/02-ce-sge-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/03-ce-shared-port-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/03-gratia-cleanup.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/03-managed-fork-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/05-ce-health-defaults.conf
+01/17/17 13:35:33    /usr/share/condor-ce/config.d/05-ce-view-defaults.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/01-ce-auth.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/01-ce-router.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/01-common-auth.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/02-ce-sge.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/03-ce-shared-port.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/03-managed-fork.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/10-ce-collector-generated.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/10-osg-attributes-generated.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/50-osg-configure.conf
+01/17/17 13:35:33    /etc/condor-ce/config.d/99-local.conf
+01/17/17 13:35:33    /usr/share/condor-ce/condor_ce_router_defaults|
+01/17/17 13:35:33 config Macros = 174, Sorted = 174, StringBytes = 13547, TablesBytes = 6480
+01/17/17 13:35:33 CLASSAD_CACHING is ENABLED
+01/17/17 13:35:33 Daemon Log is logging: D_ALWAYS D_ERROR D_AUDIT
+01/17/17 13:35:33 SharedPortEndpoint: waiting for connections to named socket 2537204_6c0c_3
+01/17/17 13:35:33 DaemonCore: command socket at <128.55.164.105:9619?addrs=128.55.164.105-9619&noUDP&sock=2537204_6c0c_3>
+01/17/17 13:35:33 DaemonCore: private command socket at <128.55.164.105:9619?addrs=128.55.164.105-9619&noUDP&sock=2537204_6c0c_3>
+01/17/17 13:35:33 History file rotation is enabled.
+01/17/17 13:35:33   Maximum history file size is: 20971520 bytes
+01/17/17 13:35:33   Number of rotated history files is: 2
+01/17/17 13:35:33 Logging per-job history files to: /var/lib/gratia/condorce_data
+01/17/17 13:35:33 Failed to execute /usr/sbin/condor_shadow.std, ignoring
+01/17/17 13:35:33 CronJobList: Adding job 'GRATIA_CLEANUP'
+01/17/17 13:35:33 CronJobList: Adding job 'CEVIEW'
+01/17/17 13:35:33 CronJob: Initializing job 'GRATIA_CLEANUP' (/usr/share/condor-ce/gratia_cleanup.py)
+01/17/17 13:35:33 CronJob: Initializing job 'CEVIEW' (/usr/share/condor-ce/condor_ce_jobmetrics)
+01/17/17 13:35:34 Received a superuser command
+01/17/17 13:35:34 Number of Active Workers 0
+01/17/17 13:35:39 TransferQueueManager stats: active up=0/10 down=0/10; waiting up=0 down=0; wait time up=0s down=0s
+01/17/17 13:35:39 TransferQueueManager upload 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:35:39 TransferQueueManager download 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:35:55 Command=QMGMT_WRITE_CMD, peer=<128.55.160.143:64619>
+01/17/17 13:35:55 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:35:55 Submitting new job 57.0
+01/17/17 13:35:55 WriteUserLog::initialize: safe_open_wrapper("/common/osg/condor/57/0/cluster57.proc0.subproc0/.log_77430_AHbQIA") failed - errno 13 (Permission denied)
+01/17/17 13:35:55 WriteUserLog::initialize: failed to open file /common/osg/condor/57/0/cluster57.proc0.subproc0/.log_77430_AHbQIA
+01/17/17 13:35:55 Command=SPOOL_JOB_FILES_WITH_PERMS, peer=<128.55.160.143:46030>
+01/17/17 13:35:55 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:35:55 Transferring files for jobs 57.0
+01/17/17 13:35:55 spoolJobFiles(): started worker process
+01/17/17 13:35:55 The submitting job ad as the FileTransferObject sees it
+EnteredCurrentStatus = 1484688955
+QDate = 1484688955
+ExitStatus = 0
+ShouldTransferFiles = "YES"
+CondorPlatform = "$CondorPlatform: X86_64-CentOS_6.8 $"
+TransferInputSizeMB = 0
+x509userproxysubject = "/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349"
+CommittedSlotTime = 0
+TotalSuspensions = 0
+MaxHosts = 1
+RequestMemory = ifthenelse(MemoryUsage =!= undefined,MemoryUsage,( ImageSize + 1023 ) / 1024)
+Args = ""
+PeriodicRelease = false
+Out = "_condor_stdout"
+PeriodicHold = false
+Rank = 0.0
+RemoteWallClockTime = 0.0
+CompletionDate = 0
+LocalSysCpu = 0.0
+RemoteSysCpu = 0.0
+LocalUserCpu = 0.0
+RemoteUserCpu = 0.0
+ExecutableSize = 75
+PeriodicRemove = false
+In = "/dev/null"
+DiskUsage = 75
+HoldReason = "Spooling input data files"
+StreamErr = false
+DiskUsage_RAW = 55
+OnExitRemove = true
+WantRemoteIO = true
+StreamOut = false
+HoldReasonCode = 16
+CommittedTime = 0
+WantRemoteSyscalls = false
+LeaveJobInQueue = ( StageOutFinish > 0 ) =!= true
+ImageSize_RAW = 55
+WhenToTransferOutput = "ON_EXIT"
+TargetType = "Machine"
+WantCheckpoint = false
+ExecutableSize_RAW = 55
+BufferSize = 524288
+JobNotification = 0
+ClusterId = 57
+NumCkpts = 0
+ExitBySignal = false
+JobUniverse = 5
+ImageSize = 75
+NumCkpts_RAW = 0
+RequestCpus = 1
+TransferIn = false
+CondorVersion = "$CondorVersion: 8.4.9 Sep 29 2016 $"
+MyType = "Job"
+NiceUser = false
+CumulativeSlotTime = 0
+CoreSize = 0
+x509UserProxyExpiration = 1484729957
+Err = "_condor_stderr"
+BufferBlockSize = 32768
+OnExitHold = false
+NumRestarts = 0
+User = "porter@users.opensciencegrid.org"
+EncryptExecuteDirectory = false
+CommittedSuspensionTime = 0
+Owner = "porter"
+NumSystemHolds = 0
+CumulativeSuspensionTime = 0
+Environment = "PATH=/usr/syscom/nsg/sbin:/usr/syscom/nsg/bin:/usr/share/Modules/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin MAIL=/var/spool/mail/alicesgm LD_LIBRARY_PATH=/usr/syscom/nsg/lib MYPROXY_SERVER_DN=/DC=org/DC=opensciencegrid/O=Open' 'Science' 'Grid/OU=Services/CN=nerscca3.nersc.gov MANPATH=/usr/syscom/nsg/man:/usr/share/Modules/man:/usr/man MODULEPATH=/usr/share/Modules/modulefiles:/etc/modulefiles:/usr/syscom/nsg/modulefiles:/usr/syscom/nsg/opt/modulefiles GLOBUS_GSSAPI_CIPHERS=HIGH NERSC_HOST=pdsf X509_CERT_DIR=/etc/grid-security/certificates SHELL=/bin/bash _LMFILES_=/usr/share/Modules/modulefiles/modules:/usr/syscom/nsg/modulefiles/nsg/1.2.0 PWD=/global/homes/a/alicesgm/pdsftest _=/usr/bin/condor_ce_run TOOL_DEBUG=D_FULLDEBUG CONDOR_CONFIG=/etc/condor-ce/condor_config HISTSIZE=1000 USER=alicesgm LOADEDMODULES=modules:nsg/1.2.0 G_BROKEN_FILENAMES=1 LESSOPEN=|/usr/bin/lesspipe.sh' '%s MODULESHOME=/usr/share/Modules GRIDMAP=/etc/grid-security/grid-mapfile HISTCONTROL=ignoredups SHLVL=1 _condor_SEC_CLIENT_AUTHENTICATION_METHODS=GSI,FS NSG_HOME=/usr/syscom/nsg HOSTNAME=malice01 GLOBUS_GSSAPI_SERVER_CIPHER_ORDER=true GLOBUS_GSSAPI_FORCE_TLS=false GLOBUS_GSSAPI_NAME_COMPATIBILITY=STRICT_RFC2818 HOME=/global/homes/a/alicesgm TERM=xterm-256color OLDPWD=/global/homes/a/alicesgm LOGNAME=alicesgm"
+MinHosts = 1
+Requirements = ( TARGET.Arch == "X86_64" ) && ( TARGET.OpSys == "LINUX" ) && ( TARGET.Disk >= RequestDisk ) && ( TARGET.Memory >= RequestMemory ) && ( TARGET.HasFileTransfer )
+RequestDisk = DiskUsage
+LastSuspensionTime = 0
+NumJobStarts = 0
+JobLeaseDuration = 2400
+CurrentHosts = 0
+JobPrio = 0
+RootDir = "/"
+StageInStart = 1484688955
+UserLog = ".log_77430_AHbQIA"
+SUBMIT_UserLog = "/export/data/homes/a/alicesgm/pdsftest/.log_77430_AHbQIA"
+SUBMIT_Cmd = "/bin/date"
+Cmd = "date"
+GlobalJobId = "mpdsfgrid01.nersc.gov#57.0#1484688955"
+SUBMIT_Iwd = "/export/data/homes/a/alicesgm/pdsftest"
+TransferOutputRemaps = undefined
+JobStatus = 5
+SUBMIT_x509userproxy = "/tmp/x509up_u49514"
+ProcId = 0
+x509userproxy = "x509up_u49514"
+Iwd = "/common/osg/condor/57/0/cluster57.proc0.subproc0"
+SUBMIT_TransferOutputRemaps = "_condor_stdout=/export/data/homes/a/alicesgm/pdsftest/.stdout_77430_iZ2UA5;_condor_stderr=/export/data/homes/a/alicesgm/pdsftest/.stderr_77430_VY5bmD"
+01/17/17 13:35:56 Received proxy for job 57.0
+01/17/17 13:35:56 proxy path: /common/osg/condor/57/0/cluster57.proc0.subproc0/x509up_u49514
+01/17/17 13:35:56 proxy expiration: 1484729957
+01/17/17 13:35:56 proxy identity: /DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349
+01/17/17 13:35:56 proxy subject: /DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349/CN=704542939
+01/17/17 13:35:56 proxy email: porter@nersc.gov
+01/17/17 13:35:56 Transfer completed
+01/17/17 13:35:56 Scheduler::spoolJobFilesWorkerThread(void *arg, Stream* s) NAP TIME
+01/17/17 13:35:56 TransferQueueManager stats: active up=0/10 down=0/10; waiting up=0 down=0; wait time up=0s down=0s
+01/17/17 13:35:56 TransferQueueManager upload 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:35:56 TransferQueueManager download 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:35:56 Sent ad to central manager for porter@users.opensciencegrid.org
+01/17/17 13:35:56 Sent ad to 1 collectors for porter@users.opensciencegrid.org
+01/17/17 13:35:56 Can't find address for negotiator 
+01/17/17 13:35:56 Failed to send RESCHEDULE to unknown daemon: 
+01/17/17 13:35:56 Number of Active Workers 0
+01/17/17 13:35:57 Job 57.0 released from hold: Data files spooled
+01/17/17 13:35:57 Number of Active Workers 0
+01/17/17 13:35:58 Number of Active Workers 0
+01/17/17 13:35:59 Number of Active Workers 0
+01/17/17 13:36:00 Number of Active Workers 0
+01/17/17 13:36:01 TransferQueueManager stats: active up=0/10 down=0/10; waiting up=0 down=0; wait time up=0s down=0s
+01/17/17 13:36:01 TransferQueueManager upload 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:36:01 TransferQueueManager download 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:36:01 Sent ad to central manager for porter@users.opensciencegrid.org
+01/17/17 13:36:01 Sent ad to 1 collectors for porter@users.opensciencegrid.org
+01/17/17 13:36:01 Can't find address for negotiator 
+01/17/17 13:36:01 Failed to send RESCHEDULE to unknown daemon: 
+01/17/17 13:36:01 Number of Active Workers 0
+01/17/17 13:36:02 Number of Active Workers 0
+01/17/17 13:36:03 Number of Active Workers 0
+01/17/17 13:36:03 Command=QMGMT_WRITE_CMD, peer=<128.55.164.105:55911>
+01/17/17 13:36:03 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=mpdsfgrid01.nersc.gov, CondorId=mpdsfgrid01.nersc.gov@daemon.opensciencegrid.org
+01/17/17 13:36:03 Set Attribute for job 57.0, Managed = "External"
+01/17/17 13:36:03 Set Attribute for job 57.0, ManagedManager = "htcondor-ce"
+01/17/17 13:36:03 Command=QMGMT_WRITE_CMD, peer=<128.55.164.105:17635>
+01/17/17 13:36:03 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=mpdsfgrid01.nersc.gov, CondorId=mpdsfgrid01.nersc.gov@daemon.opensciencegrid.org
+01/17/17 13:36:03 Submitting new job 58.0
+01/17/17 13:36:04 Number of Active Workers 0
+01/17/17 13:36:05 Number of Active Workers 0
+01/17/17 13:36:06 TransferQueueManager stats: active up=0/10 down=0/10; waiting up=0 down=0; wait time up=0s down=0s
+01/17/17 13:36:06 TransferQueueManager upload 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:36:06 TransferQueueManager download 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:36:06 Sent ad to central manager for porter@users.opensciencegrid.org
+01/17/17 13:36:06 Sent ad to 1 collectors for porter@users.opensciencegrid.org
+01/17/17 13:36:06 Started condor_gmanager for owner porter pid=2537297
+01/17/17 13:36:06 Can't find address for negotiator 
+01/17/17 13:36:06 Failed to send RESCHEDULE to unknown daemon: 
+01/17/17 13:36:06 Number of Active Workers 0
+01/17/17 13:36:07 Number of Active Workers 0
+01/17/17 13:36:08 Number of Active Workers 0
+01/17/17 13:36:09 Number of Active Workers 0
+01/17/17 13:36:10 Received a superuser command
+01/17/17 13:36:10 Number of Active Workers 0
+01/17/17 13:36:10 Number of Active Workers 0
+01/17/17 13:36:11 Number of Active Workers 0
+01/17/17 13:36:12 Number of Active Workers 0
+01/17/17 13:36:13 Command=QMGMT_WRITE_CMD, peer=<128.55.164.105:13025>
+01/17/17 13:36:13 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=mpdsfgrid01.nersc.gov, CondorId=mpdsfgrid01.nersc.gov@daemon.opensciencegrid.org
+01/17/17 13:36:13 Set Attribute for job 57.0, RoutedToJobId = "58.0"
+01/17/17 13:36:14 Number of Active Workers 0
+01/17/17 13:36:15 Number of Active Workers 0
+01/17/17 13:36:16 Number of Active Workers 0
+01/17/17 13:36:17 Number of Active Workers 0
+01/17/17 13:36:18 Number of Active Workers 0
+01/17/17 13:36:19 Number of Active Workers 0
+01/17/17 13:36:20 Number of Active Workers 0
+01/17/17 13:36:21 Number of Active Workers 0
+01/17/17 13:36:22 Number of Active Workers 0
+01/17/17 13:36:23 Number of Active Workers 0
+01/17/17 13:36:24 Number of Active Workers 0
+01/17/17 13:36:25 Number of Active Workers 0
+01/17/17 13:36:26 Number of Active Workers 0
+01/17/17 13:36:27 Number of Active Workers 0
+01/17/17 13:36:28 Number of Active Workers 0
+01/17/17 13:36:29 Number of Active Workers 0
+01/17/17 13:36:30 Number of Active Workers 0
+01/17/17 13:36:32 Number of Active Workers 0
+01/17/17 13:36:33 Number of Active Workers 0
+01/17/17 13:36:34 Number of Active Workers 0
+01/17/17 13:36:35 Number of Active Workers 0
+01/17/17 13:36:36 Number of Active Workers 0
+01/17/17 13:36:37 Number of Active Workers 0
+01/17/17 13:36:37 Received a superuser command
+01/17/17 13:36:37 Number of Active Workers 0
+01/17/17 13:36:38 Number of Active Workers 0
+01/17/17 13:36:39 Number of Active Workers 0
+01/17/17 13:36:40 Number of Active Workers 0
+01/17/17 13:36:41 Number of Active Workers 0
+01/17/17 13:36:42 Number of Active Workers 0
+01/17/17 13:36:43 Number of Active Workers 0
+01/17/17 13:36:44 Number of Active Workers 0
+01/17/17 13:36:45 Received a superuser command
+01/17/17 13:36:45 Number of Active Workers 0
+01/17/17 13:36:45 Number of Active Workers 0
+01/17/17 13:36:46 Number of Active Workers 0
+01/17/17 13:36:47 Number of Active Workers 0
+01/17/17 13:36:48 Number of Active Workers 0
+01/17/17 13:36:49 Number of Active Workers 0
+01/17/17 13:36:51 Number of Active Workers 0
+01/17/17 13:36:51 Received a superuser command
+01/17/17 13:36:51 Number of Active Workers 0
+01/17/17 13:36:52 Number of Active Workers 0
+01/17/17 13:36:53 Number of Active Workers 0
+01/17/17 13:36:54 Number of Active Workers 0
+01/17/17 13:36:55 Number of Active Workers 0
+01/17/17 13:36:56 Number of Active Workers 0
+01/17/17 13:36:57 Number of Active Workers 0
+01/17/17 13:36:58 Number of Active Workers 0
+01/17/17 13:36:59 Number of Active Workers 0
+01/17/17 13:37:00 Number of Active Workers 0
+01/17/17 13:37:01 Number of Active Workers 0
+01/17/17 13:37:02 Number of Active Workers 0
+01/17/17 13:37:03 Number of Active Workers 0
+01/17/17 13:37:04 Number of Active Workers 0
+01/17/17 13:37:05 Number of Active Workers 0
+01/17/17 13:37:06 Number of Active Workers 0
+01/17/17 13:37:07 Number of Active Workers 0
+01/17/17 13:37:08 Received a superuser command
+01/17/17 13:37:08 Number of Active Workers 0
+01/17/17 13:37:08 Number of Active Workers 0
+01/17/17 13:37:10 Number of Active Workers 0
+01/17/17 13:37:11 Number of Active Workers 0
+01/17/17 13:37:11 Received a superuser command
+01/17/17 13:37:11 Number of Active Workers 0
+01/17/17 13:37:12 Number of Active Workers 0
+01/17/17 13:37:13 Number of Active Workers 0
+01/17/17 13:37:14 Number of Active Workers 0
+01/17/17 13:37:15 Number of Active Workers 0
+01/17/17 13:37:16 Number of Active Workers 0
+01/17/17 13:37:17 Number of Active Workers 0
+01/17/17 13:37:18 Number of Active Workers 0
+01/17/17 13:37:19 Number of Active Workers 0
+01/17/17 13:37:20 Number of Active Workers 0
+01/17/17 13:37:21 Number of Active Workers 0
+01/17/17 13:37:22 Number of Active Workers 0
+01/17/17 13:37:23 Number of Active Workers 0
+01/17/17 13:37:24 Number of Active Workers 0
+01/17/17 13:37:25 Number of Active Workers 0
+01/17/17 13:37:26 Number of Active Workers 0
+01/17/17 13:37:27 Number of Active Workers 0
+01/17/17 13:37:29 Number of Active Workers 0
+01/17/17 13:37:29 condor_gridmanager (PID 2537297, owner porter) exited with return code 0.
+01/17/17 13:37:30 Number of Active Workers 0
+01/17/17 13:37:30 Number of Active Workers 0
+01/17/17 13:37:31 Number of Active Workers 0
+01/17/17 13:37:32 Number of Active Workers 0
+01/17/17 13:37:33 Number of Active Workers 0
+01/17/17 13:37:33 Command=QMGMT_WRITE_CMD, peer=<128.55.164.105:2852>
+01/17/17 13:37:33 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=mpdsfgrid01.nersc.gov, CondorId=mpdsfgrid01.nersc.gov@daemon.opensciencegrid.org
+01/17/17 13:37:33 Set Attribute for job 57.0, CompletionDate = 1484689049
+01/17/17 13:37:33 Set Attribute for job 57.0, ExitCode = 0
+01/17/17 13:37:33 Set Attribute for job 57.0, JobStatus = 4
+01/17/17 13:37:34 Number of Active Workers 0
+01/17/17 13:37:34 Command=TRANSFER_DATA_WITH_PERMS, peer=<128.55.160.143:48905>
+01/17/17 13:37:34 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:37:34 Transferring files for jobs 57.0
+01/17/17 13:37:34 spoolJobFiles(): started worker process
+01/17/17 13:37:34 The submitting job ad as the FileTransferObject sees it
+QDate = 1484688955
+ExitStatus = 0
+ShouldTransferFiles = "YES"
+CondorPlatform = "$CondorPlatform: X86_64-CentOS_6.8 $"
+TransferInputSizeMB = 0
+x509userproxysubject = "/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349"
+CommittedSlotTime = 0
+TotalSuspensions = 0
+MaxHosts = 1
+RequestMemory = ifthenelse(MemoryUsage =!= undefined,MemoryUsage,( ImageSize + 1023 ) / 1024)
+Args = ""
+PeriodicRelease = false
+Out = "_condor_stdout"
+PeriodicHold = false
+Rank = 0.0
+RemoteWallClockTime = 0.0
+LocalSysCpu = 0.0
+RemoteSysCpu = 0.0
+LocalUserCpu = 0.0
+RemoteUserCpu = 0.0
+ExecutableSize = 75
+PeriodicRemove = false
+In = "/dev/null"
+DiskUsage = 75
+StreamErr = false
+DiskUsage_RAW = 55
+OnExitRemove = true
+WantRemoteIO = true
+StreamOut = false
+CommittedTime = 0
+WantRemoteSyscalls = false
+LeaveJobInQueue = ( StageOutFinish > 0 ) =!= true
+ImageSize_RAW = 55
+WhenToTransferOutput = "ON_EXIT"
+TargetType = "Machine"
+WantCheckpoint = false
+ExecutableSize_RAW = 55
+BufferSize = 524288
+JobNotification = 0
+ClusterId = 57
+NumCkpts = 0
+ExitBySignal = false
+JobUniverse = 5
+ImageSize = 75
+NumCkpts_RAW = 0
+RequestCpus = 1
+TransferIn = false
+CondorVersion = "$CondorVersion: 8.4.9 Sep 29 2016 $"
+MyType = "Job"
+NiceUser = false
+CumulativeSlotTime = 0
+CoreSize = 0
+x509UserProxyExpiration = 1484729957
+Err = "_condor_stderr"
+BufferBlockSize = 32768
+OnExitHold = false
+NumRestarts = 0
+User = "porter@users.opensciencegrid.org"
+EncryptExecuteDirectory = false
+CommittedSuspensionTime = 0
+Owner = "porter"
+NumSystemHolds = 0
+CumulativeSuspensionTime = 0
+Environment = "PATH=/usr/syscom/nsg/sbin:/usr/syscom/nsg/bin:/usr/share/Modules/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin MAIL=/var/spool/mail/alicesgm LD_LIBRARY_PATH=/usr/syscom/nsg/lib MYPROXY_SERVER_DN=/DC=org/DC=opensciencegrid/O=Open' 'Science' 'Grid/OU=Services/CN=nerscca3.nersc.gov MANPATH=/usr/syscom/nsg/man:/usr/share/Modules/man:/usr/man MODULEPATH=/usr/share/Modules/modulefiles:/etc/modulefiles:/usr/syscom/nsg/modulefiles:/usr/syscom/nsg/opt/modulefiles GLOBUS_GSSAPI_CIPHERS=HIGH NERSC_HOST=pdsf X509_CERT_DIR=/etc/grid-security/certificates SHELL=/bin/bash _LMFILES_=/usr/share/Modules/modulefiles/modules:/usr/syscom/nsg/modulefiles/nsg/1.2.0 PWD=/global/homes/a/alicesgm/pdsftest _=/usr/bin/condor_ce_run TOOL_DEBUG=D_FULLDEBUG CONDOR_CONFIG=/etc/condor-ce/condor_config HISTSIZE=1000 USER=alicesgm LOADEDMODULES=modules:nsg/1.2.0 G_BROKEN_FILENAMES=1 LESSOPEN=|/usr/bin/lesspipe.sh' '%s MODULESHOME=/usr/share/Modules GRIDMAP=/etc/grid-security/grid-mapfile HISTCONTROL=ignoredups SHLVL=1 _condor_SEC_CLIENT_AUTHENTICATION_METHODS=GSI,FS NSG_HOME=/usr/syscom/nsg HOSTNAME=malice01 GLOBUS_GSSAPI_SERVER_CIPHER_ORDER=true GLOBUS_GSSAPI_FORCE_TLS=false GLOBUS_GSSAPI_NAME_COMPATIBILITY=STRICT_RFC2818 HOME=/global/homes/a/alicesgm TERM=xterm-256color OLDPWD=/global/homes/a/alicesgm LOGNAME=alicesgm"
+MinHosts = 1
+Requirements = ( TARGET.Arch == "X86_64" ) && ( TARGET.OpSys == "LINUX" ) && ( TARGET.Disk >= RequestDisk ) && ( TARGET.Memory >= RequestMemory ) && ( TARGET.HasFileTransfer )
+RequestDisk = DiskUsage
+NumJobStarts = 0
+JobLeaseDuration = 2400
+CurrentHosts = 0
+JobPrio = 0
+RootDir = "/"
+StageOutStart = 1484689054
+ExitCode = 0
+CompletionDate = 1484689049
+ManagedManager = "htcondor-ce"
+Iwd = "/common/osg/condor/57/0/cluster57.proc0.subproc0"
+HoldReason = undefined
+SUBMIT_x509userproxy = "/tmp/x509up_u49514"
+RoutedToJobId = "58.0"
+LastHoldReason = "Spooling input data files"
+JobStatus = 4
+SUBMIT_Iwd = "/export/data/homes/a/alicesgm/pdsftest"
+GlobalJobId = "mpdsfgrid01.nersc.gov#57.0#1484688955"
+Cmd = "date"
+StageInFinish = 1484688956
+SUBMIT_Cmd = "/bin/date"
+x509userproxy = "x509up_u49514"
+SUBMIT_UserLog = "/export/data/homes/a/alicesgm/pdsftest/.log_77430_AHbQIA"
+UserLog = ".log_77430_AHbQIA"
+ReleaseReason = "Data files spooled"
+StageInStart = 1484688955
+LastSuspensionTime = 0
+LastJobStatus = 1
+ProcId = 0
+LastHoldReasonCode = 16
+Managed = "External"
+HoldReasonCode = undefined
+SUBMIT_TransferOutputRemaps = "_condor_stdout=/export/data/homes/a/alicesgm/pdsftest/.stdout_77430_iZ2UA5;_condor_stderr=/export/data/homes/a/alicesgm/pdsftest/.stderr_77430_VY5bmD"
+TransferOutputRemaps = undefined
+EnteredCurrentStatus = 1484688957
+01/17/17 13:37:34 set_user_egid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_euid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_egid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_euid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_egid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_euid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_egid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_euid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_egid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_euid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_egid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_euid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_egid() called when UserIds not inited!
+01/17/17 13:37:34 set_user_euid() called when UserIds not inited!
+01/17/17 13:37:34 Transfer completed
+01/17/17 13:37:37 Received a superuser command
+01/17/17 13:37:37 Number of Active Workers 0
+01/17/17 13:37:39 Number of Active Workers 0
+01/17/17 13:37:43 Received a superuser command
+01/17/17 13:37:43 Number of Active Workers 0
+01/17/17 13:37:43 Command=QMGMT_WRITE_CMD, peer=<128.55.164.105:17576>
+01/17/17 13:37:43 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=mpdsfgrid01.nersc.gov, CondorId=mpdsfgrid01.nersc.gov@daemon.opensciencegrid.org
+01/17/17 13:37:43 Set Attribute for job 58.0, LeaveJobInQueue = FALSE
+01/17/17 13:37:43 Command=ACT_ON_JOBS, peer=<128.55.164.105:8783>
+01/17/17 13:37:43 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=mpdsfgrid01.nersc.gov, CondorId=mpdsfgrid01.nersc.gov@daemon.opensciencegrid.org
+01/17/17 13:37:43 Remove jobs 58.0
+01/17/17 13:37:43 Finished Remove jobs 58.0
+01/17/17 13:37:43 Command=QMGMT_WRITE_CMD, peer=<128.55.164.105:47660>
+01/17/17 13:37:43 AuthMethod=GSI, AuthId=/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=mpdsfgrid01.nersc.gov, CondorId=mpdsfgrid01.nersc.gov@daemon.opensciencegrid.org
+01/17/17 13:37:43 Set Attribute for job 57.0, Managed = "Schedd"
+01/17/17 13:37:43 Set Attribute for job 57.0, ManagedManager = ""
+01/17/17 13:37:46 Received a superuser command
+01/17/17 13:37:46 Number of Active Workers 0
+01/17/17 13:37:50 Received a superuser command
+01/17/17 13:37:50 Number of Active Workers 0
+01/17/17 13:37:52 Received a superuser command
+01/17/17 13:37:52 Number of Active Workers 0
+01/17/17 13:38:10 Received a superuser command
+01/17/17 13:38:10 Number of Active Workers 0
+ ############   screens_condor_submit.txt ############
+Submission from malice01 via condor_submit fails:
+
+-bash-4.1$ condor_submit mpdsf.sub
+Submitting job(s).
+1 job(s) submitted to cluster 1.
+-bash-4.1$ condor_q
+
+
+-- Schedd: malice01.nersc.gov : <128.55.160.143:11000?...
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   1.0   alicesgm        1/17 13:39   0+00:00:00 I  0   0.0  test.sh
+
+1 jobs; 0 completed, 0 removed, 1 idle, 0 running, 0 held, 0 suspended
+
+then shortly
+
+-bash-4.1$ condor_q
+
+
+-- Schedd: malice01.nersc.gov : <128.55.160.143:11000?...
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   1.0   alicesgm        1/17 13:39   0+00:00:00 H  0   0.0  test.sh
+
+1 jobs; 0 completed, 0 removed, 0 idle, 0 running, 1 held, 0 suspended
+
+
+-bash-4.1$ condor_q -hold
+
+
+-- Schedd: malice01.nersc.gov : <128.55.160.143:11000?...
+ ID      OWNER          HELD_SINCE  HOLD_REASON                                                                                                                                                                                                                                  
+   1.0   alicesgm        1/17 13:40 Error connecting to schedd mpdsfgrid01.nersc.gov: SECMAN:2009:DENIED authorization of server 'anonymous@malice01.nersc.gov/128.55.164.105' (I am acting as the client): reason: cached result for CLIENT; see first case for the full reason.
+
+1 jobs; 0 completed, 0 removed, 0 idle, 0 running, 1 held, 0 suspended
+
+
+I never see anything in condor_ce_q on the HTCondor-CE (mpdsfgrid01.nersc.gov) nor reaching the UGE cluster.
+
+ ############   SchedLog.condor_submit.fails   ############
+01/17/17 13:39:54 Command=QMGMT_WRITE_CMD, peer=<128.55.160.143:32160>
+01/17/17 13:39:54 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:39:59 Command=QMGMT_WRITE_CMD, peer=<128.55.160.143:2624>
+01/17/17 13:39:59 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:40:09 Command=QMGMT_WRITE_CMD, peer=<128.55.160.143:36860>
+01/17/17 13:40:09 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:40:19 Command=QMGMT_WRITE_CMD, peer=<128.55.160.143:15095>
+01/17/17 13:40:19 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:40:29 Command=QMGMT_WRITE_CMD, peer=<128.55.160.143:5374>
+01/17/17 13:40:29 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:40:31 Number of Active Workers 0
+01/17/17 13:40:34 Command=QMGMT_WRITE_CMD, peer=<128.55.160.143:58422>
+01/17/17 13:40:34 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:40:39 Command=QMGMT_WRITE_CMD, peer=<128.55.160.143:26828>
+01/17/17 13:40:39 AuthMethod=GSI, AuthId=/DC=gov/DC=nersc/OU=People/CN=R. (Jeff) Jefferson Porter 11349, CondorId=porter@users.opensciencegrid.org
+01/17/17 13:40:40 Number of Active Workers 0
+01/17/17 13:41:07 TransferQueueManager stats: active up=0/10 down=0/10; waiting up=0 down=0; wait time up=0s down=0s
+01/17/17 13:41:07 TransferQueueManager upload 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:41:07 TransferQueueManager download 1m I/O load: 0 bytes/s  0.000 disk load  0.000 net load
+01/17/17 13:41:07 Sent ad to central manager for porter@users.opensciencegrid.org
+01/17/17 13:41:07 Sent ad to 1 collectors for porter@users.opensciencegrid.org
+01/17/17 13:41:07 Sent owner (0 jobs) ad to 1 collectors
+01/17/17 13:41:07 Can't find address for negotiator 
+01/17/17 13:41:07 Failed to send RESCHEDULE to unknown daemon: 
+01/17/17 13:41:33 Number of Active Workers 0
+01/17/17 13:41:33 Can't insert 'CEViewProcessing CE mpdsfgrid01.nersc.gov.' into 'CEVIEW' ClassAd
+ ############   mpdsfgrid.sub   ############
+universe = grid
+
+use_x509userproxy = true
++Owner = undefined
+
+grid_resource = condor mpdsfgrid01.nersc.gov mpdsfgrid01.nersc.gov:9619
+
+executable = /global/homes/a/alicesgm/pdsftest/test.sh
+
+transfer_executable = true
+transfer_output = true
+transfer_error = true
+stream_output = false
+stream_error = false
+
+log = /global/homes/a/alicesgm/pdsftest/logs/test.$(Cluster).log
+output = /global/homes/a/alicesgm/pdsftest/logs/test.$(Cluster).out
+error = /global/homes/a/alicesgm/pdsftest/logs/test.$(Cluster).err
+
+notification = NEVER
+WhenToTransferOutput = ON_EXIT
+
+queue 1 
+ ############   test.1.log   ############
+000 (001.000.000) 01/17 13:39:46 Job submitted from host: <128.55.160.143:11000?addrs=128.55.160.143-11000&noUDP&sock=77369_e7c6_3>
+...
+028 (001.000.000) 01/17 13:39:46 Job ad information event triggered.
+JOB_GLIDEIN_Name = "$$(GLIDEIN_Name:Unknown)"
+JOB_Site = "$$(GLIDEIN_Site:Unknown)"
+Proc = 0
+JOB_GLIDEIN_Entry_Name = "$$(GLIDEIN_Entry_Name:Unknown)"
+EventTime = "2017-01-17T13:39:46"
+TriggerEventTypeName = "ULOG_SUBMIT"
+SubmitHost = "<128.55.160.143:11000?addrs=128.55.160.143-11000&noUDP&sock=77369_e7c6_3>"
+JOB_GLIDEIN_SiteWMS_Queue = "$$(GLIDEIN_SiteWMS_Queue:Unknown)"
+TriggerEventTypeNumber = 0
+JOB_GLIDEIN_Site = "$$(GLIDEIN_Site:Unknown)"
+JOB_GLIDEIN_SiteWMS_JobId = "$$(GLIDEIN_SiteWMS_JobId:Unknown)"
+MyType = "SubmitEvent"
+JOB_GLIDEIN_ProcId = "$$(GLIDEIN_ProcId:Unknown)"
+JOB_GLIDEIN_Schedd = "$$(GLIDEIN_Schedd:Unknown)"
+JOB_GLIDEIN_ClusterId = "$$(GLIDEIN_ClusterId:Unknown)"
+Cluster = 1
+JOB_GLIDEIN_Factory = "$$(GLIDEIN_Factory:Unknown)"
+JOB_GLIDEIN_SiteWMS_Slot = "$$(GLIDEIN_SiteWMS_Slot:Unknown)"
+Subproc = 0
+EventTypeNumber = 28
+JOB_GLIDEIN_SiteWMS = "$$(GLIDEIN_SiteWMS:Unknown)"
+...
+012 (001.000.000) 01/17 13:40:39 Job was held.
+	Error connecting to schedd mpdsfgrid01.nersc.gov: SECMAN:2009:DENIED authorization of server 'anonymous@malice01.nersc.gov/128.55.164.105' (I am acting as the client): reason: cached result for CLIENT; see first case for the full reason.
+	Code 0 Subcode 0
+...
+028 (001.000.000) 01/17 13:40:39 Job ad information event triggered.
+JOB_Site = "$$(GLIDEIN_Site:Unknown)"
+JOB_GLIDEIN_Name = "$$(GLIDEIN_Name:Unknown)"
+Proc = 0
+JOB_GLIDEIN_Entry_Name = "$$(GLIDEIN_Entry_Name:Unknown)"
+EventTime = "2017-01-17T13:40:39"
+TriggerEventTypeName = "ULOG_JOB_HELD"
+HoldReasonCode = 0
+JOB_GLIDEIN_SiteWMS_Queue = "$$(GLIDEIN_SiteWMS_Queue:Unknown)"
+TriggerEventTypeNumber = 12
+HoldReason = "Error connecting to schedd mpdsfgrid01.nersc.gov: SECMAN:2009:DENIED authorization of server 'anonymous@malice01.nersc.gov/128.55.164.105' (I am acting as the client): reason: cached result for CLIENT; see first case for the full reason."
+JOB_GLIDEIN_Site = "$$(GLIDEIN_Site:Unknown)"
+JOB_GLIDEIN_SiteWMS_JobId = "$$(GLIDEIN_SiteWMS_JobId:Unknown)"
+MyType = "JobHeldEvent"
+HoldReasonSubCode = 0
+JOB_GLIDEIN_ProcId = "$$(GLIDEIN_ProcId:Unknown)"
+JOB_GLIDEIN_Schedd = "$$(GLIDEIN_Schedd:Unknown)"
+JOB_GLIDEIN_ClusterId = "$$(GLIDEIN_ClusterId:Unknown)"
+Cluster = 1
+JOB_GLIDEIN_Factory = "$$(GLIDEIN_Factory:Unknown)"
+JOB_GLIDEIN_SiteWMS_Slot = "$$(GLIDEIN_SiteWMS_Slot:Unknown)"
+Subproc = 0
+EventTypeNumber = 28
+JOB_GLIDEIN_SiteWMS = "$$(GLIDEIN_SiteWMS:Unknown)"
+...

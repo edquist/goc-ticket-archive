@@ -1,0 +1,125 @@
+Job Name: 008b78e8-3e19-11e7-be68-02163e01820e-0
+WMBS job id: 2462983
+Workflow: fabozzi_Run2016E-v2-BTagMu-18Apr2017_8028_170519_175243_510
+Task: /fabozzi_Run2016E-v2-BTagMu-18Apr2017_8028_170519_175243_510/DataProcessing/DataProcessingMergeAODoutput
+Status: jobfailed
+Input dataset: /BTagMu/Run2016E-v2/RAW
+Site: T2_US_MIT
+Agent: vocms0130.cern.ch
+ACDC URL: https://cmsweb.cern.ch/couchdb/acdcserver
+State Transition
+jobcooloff: 2017/5/21 (Sun) 12:42:32 UTC, T2_US_MIT
+jobcooloff: 2017/5/21 (Sun) 13:39:37 UTC, T2_US_MIT
+jobcooloff: 2017/5/21 (Sun) 16:13:12 UTC, T2_US_MIT
+jobcooloff: 2017/5/21 (Sun) 22:50:26 UTC, T2_US_MIT
+jobfailed: 2017/5/22 (Mon) 12:20:02 UTC, T2_US_MIT
+Exit code: 99109
+Retry count: 4
+Errors:
+logArch1
+cmsRun1
+stageOut1
+Misc. StageOut error: 99109 (Exit Code: 99109)
+Error in StageOut: 99109
+StageOutFailure
+Message: Failure for fallback stage out:
+StageOutError
+Message: 2017-05-22T08:14:31 : Command exited non-zero
+	 ErrorCode : 60311
+	 ModuleName : WMCore.Storage.StageOutError
+	 MethodName : __init__
+	 ErrorType : GeneralStageOutFailure
+	 ClassInstance : None
+	 FileName : /export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMCore.zip/WMCore/Storage/StageOutError.py
+	 ClassName : None
+	 Command : #!/bin/sh
+date "+%Y-%m-%dT%H:%M:%S"; lcg-cp -b -D srmv2 --vo cms --srm-timeout 2400 --sendreceive-timeout 2400 --connect-timeout 300 --verbose file:/export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMTaskSpace/cmsRun1/Merged.root  srm://srmb.ihepa.ufl.edu:8443/srm/v2/server?SFN=/cms/data/store/data/Run2016E/BTagMu/AOD/18Apr2017-v1/120000/E2D25EBA-E13E-E711-BDC7-C81F66B782DD.root 2> stageout.log
+            EXIT_STATUS=$?
+            cat stageout.log
+            echo -e "
+lcg-cp exit status: $EXIT_STATUS"
+            if [[ $EXIT_STATUS != 0 ]]; then
+                echo "Non-zero lcg-cp Exit status!!!"
+                echo "Cleaning up failed file:"
+                date "+%Y-%m-%dT%H:%M:%S";  lcg-del -b -l -D srmv2 --srm-timeout 600 --sendreceive-timeout 600 --connect-timeout 300 --vo cms srm://srmb.ihepa.ufl.edu:8443/srm/v2/server?SFN=/cms/data/store/data/Run2016E/BTagMu/AOD/18Apr2017-v1/120000/E2D25EBA-E13E-E711-BDC7-C81F66B782DD.root
+                exit 60311
+            fi
+
+            FILE_SIZE=`stat -c %s /export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMTaskSpace/cmsRun1/Merged.root`
+echo "Local File Size is:  $FILE_SIZE"
+
+            LCG_OUTPUT=`lcg-ls -l -b -D srmv2 --srm-timeout 600 --sendreceive-timeout 600 --connect-timeout 300 srm://srmb.ihepa.ufl.edu:8443/srm/v2/server?SFN=/cms/data/store/data/Run2016E/BTagMu/AOD/18Apr2017-v1/120000/E2D25EBA-E13E-E711-BDC7-C81F66B782DD.root 2>/dev/null`
+            SRM_SIZE=`echo "$LCG_OUTPUT" | awk 'NR==1{print $5}'`
+            SRM_CHECKSUM=`echo "$LCG_OUTPUT" | sed -nr 's/^.*\s([a-f0-9]{8})\s*\([aA][dD][lL][eE][rR]32\)\s*$/\1/p'`
+            echo "Remote File Size is: $SRM_SIZE"
+            echo "Remote Checksum is:  $SRM_CHECKSUM"
+            if [[ $SRM_SIZE == $FILE_SIZE ]]; then
+                
+                if [[ "X$SRM_CHECKSUM" != "X" ]]; then
+                    if [[ "$SRM_CHECKSUM" == "c24c24ee" ]]; then
+                        exit 0
+                    else
+                        echo "ERROR: Checksum Mismatch between local and SE"
+                        echo "Cleaning up failed file"
+                        date "+%Y-%m-%dT%H:%M:%S";  lcg-del -b -l -D srmv2 --srm-timeout 600 --sendreceive-timeout 600 --connect-timeout 300 --vo cms srm://srmb.ihepa.ufl.edu:8443/srm/v2/server?SFN=/cms/data/store/data/Run2016E/BTagMu/AOD/18Apr2017-v1/120000/E2D25EBA-E13E-E711-BDC7-C81F66B782DD.root
+                        exit 60311
+                    fi
+                else
+                    exit 0
+                fi
+                
+            else
+                echo $LCG_OUTPUT
+                echo "ERROR: Size Mismatch between local and SE. Cleaning up failed file..."
+                date "+%Y-%m-%dT%H:%M:%S";  lcg-del -b -l -D srmv2 --srm-timeout 600 --sendreceive-timeout 600 --connect-timeout 300 --vo cms srm://srmb.ihepa.ufl.edu:8443/srm/v2/server?SFN=/cms/data/store/data/Run2016E/BTagMu/AOD/18Apr2017-v1/120000/E2D25EBA-E13E-E711-BDC7-C81F66B782DD.root
+                exit 60311
+            fi
+            
+	    LineNumber : 32
+	    ErrorNr : 0
+	    ExitCode : 23
+
+Traceback: 
+  File "/export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMCore.zip/WMCore/Storage/StageOutImpl.py", line 213, in __call__
+    self.executeCommand(command)
+
+  File "/export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMCore.zip/WMCore/Storage/StageOutImpl.py", line 91, in executeCommand
+    raise StageOutError(msg, Command=command, ExitCode=exitCode)
+
+
+    TargetPFN : srm://srmb.ihepa.ufl.edu:8443/srm/v2/server?SFN=/cms/data/store/data/Run2016E/BTagMu/AOD/18Apr2017-v1/120000/E2D25EBA-E13E-E711-BDC7-C81F66B782DD.root
+    ErrorCode : 60311
+    ModuleName : WMCore.Storage.StageOutError
+    MethodName : __init__
+    LFN : /store/data/Run2016E/BTagMu/AOD/18Apr2017-v1/120000/E2D25EBA-E13E-E711-BDC7-C81F66B782DD.root
+    ClassInstance : None
+    FileName : /export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMCore.zip/WMCore/Storage/StageOutError.py
+    ClassName : None
+    Command : srmv2-lcg
+    LineNumber : 32
+    InputPFN : /export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMTaskSpace/cmsRun1/Merged.root
+    ErrorNr : 0
+    ErrorType : GeneralStageOutFailure
+
+Traceback: 
+  File "/export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMCore.zip/WMCore/Storage/StageOutMgr.py", line 278, in fallbackStageOut
+    impl(fbParams['command'], localPfn, pfn, fbParams.get("option", None), checksums)
+
+  File "/export/data1/condor/execute/dir_13873/glide_1kcTn4/execute/dir_30778/job/WMCore.zip/WMCore/Storage/StageOutImpl.py", line 224, in __call__
+    raise ex
+
+Input files
+Lumis
+Output:
+output
+lfn: /store/data/Run2016E/BTagMu/AOD/18Apr2017-v1/120000/E2D25EBA-E13E-E711-BDC7-C81F66B782DD.root
+location: null
+checksums: adler32: c24c24ee
+size: 2192520216
+logArchive
+lfn: /store/unmerged/logs/prod/2017/5/22/fabozzi_Run2016E-v2-BTagMu-18Apr2017_8028_170519_175243_510/DataProcessing/DataProcessingMergeAODoutput/0000/4/008b78e8-3e19-11e7-be68-02163e01820e-0-4-logArchive.tar.gz
+location: null
+pfn:
+checksums: adler32: 113fdd83
+size: 0
+log archive:

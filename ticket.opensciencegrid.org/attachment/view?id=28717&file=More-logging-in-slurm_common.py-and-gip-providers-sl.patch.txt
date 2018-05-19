@@ -1,0 +1,60 @@
+From 96ec7095ac9a89af533bba43a7ebf5901ad598ca Mon Sep 17 00:00:00 2001
+From: Matyas Selmeci <matyas@fnal.gov>
+Date: Fri, 1 Apr 2016 12:59:05 -0500
+Subject: [PATCH] More logging in slurm_common.py and gip/providers/slurm.py
+
+---
+ gip/providers/slurm.py |    6 +++++-
+ slurm_common.py        |    8 ++++++--
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/gip/providers/slurm.py b/gip/providers/slurm.py
+index 46c23a6..db1a206 100755
+--- a/gip/providers/slurm.py
++++ b/gip/providers/slurm.py
+@@ -28,11 +28,15 @@ def print_CE(cp):
+     try:
+         excludeQueues = [i.strip() for i in cp_get(cp, "slurm", \
+             "queue_exclude", "").split(',')]
+-    except:
++        log.info("excludeQueues is " + str(excludeQueues))
++    except Exception, err:
++        log.exception("Exception getting excludeQueues")
+         excludeQueues = []
+     vo_queues = getVoQueues(cp)
+     for queue, info in queueInfo.items():
++        log.info("looking at queue=%s, info=%s", queue, info)
+         if queue in excludeQueues:
++            log.info("queue skipped")
+             continue
+         info["lrmsVersion"] = slurmVersion
+         info["job_manager"] = "slurm"
+diff --git a/slurm_common.py b/slurm_common.py
+index aaa22cc..74f15b5 100644
+--- a/slurm_common.py
++++ b/slurm_common.py
+@@ -238,7 +238,9 @@ def getQueueList(cp):
+     try:            
+         queue_exclude = [i.strip() for i in cp.get("slurm", "queue_exclude").\
+             split(',')]
+-    except:         
++        log.info("queue_exclude is " + str(queue_exclude))
++    except Exception:
++        log.exception("Exception getting queue_exclude")
+         queue_exclude = []
+     rvf_info = parseRvf('slurm.rvf')
+     rvf_queue_list = rvf_info.get('queue', {}).get('Values', None)
+@@ -269,7 +271,9 @@ def getVoQueues(cp):
+     try:
+         queue_exclude = [i.strip() for i in cp.get("slurm", "queue_exclude").\
+             split(',')]
+-    except:
++        log.info("queue_exclude is " + str(queue_exclude))
++    except Exception:
++        log.exception("Exception getting queue_exclude")
+         queue_exclude = []
+     vo_queues = []
+     queueInfo = getQueueInfo(cp)
+-- 
+1.7.1
+

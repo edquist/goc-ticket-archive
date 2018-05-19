@@ -1,0 +1,41 @@
+
+
+Route 1
+Name         : "Local_Condor"
+Universe     : 5
+MaxJobs      : 10000
+MaxIdleJobs  : 2000
+GridResource : 
+Requirements : true
+ClassAd      : 
+    [
+        eval_set_OnExitHold = ifThenElse(orig_OnExitHold isnt null,orig_OnExitHold,false) || ifThenElse(minWalltime isnt null && RemoteWallClockTime isnt null,RemoteWallClockTime < 60 * minWallTime,false); 
+        set_InputRSL = ifThenElse(GlobusRSL is null,
+            [
+            ],eval_rsl(GlobusRSL)); 
+        copy_OnExitHoldReason = "orig_OnExitHoldReason"; 
+        eval_set_remote_cerequirements = ifThenElse(InputRSL.maxWallTime isnt null,strcat("Walltime == ",string(60 * InputRSL.maxWallTime)," && CondorCE == 1"),ifThenElse(maxWallTime isnt null,strcat("Walltime == ",string(60 * maxWallTime)," && CondorCE == 1"),ifThenElse(default_maxWallTime isnt null,strcat("Walltime == ",string(60 * default_maxWallTime)," && CondorCE == 1"),"CondorCE == 1"))); 
+        eval_set_remote_NodeNumber = ifThenElse(InputRSL.xcount isnt null,InputRSL.xcount,ifThenElse(xcount isnt null,xcount,ifThenElse(default_xcount isnt null,default_xcount,1))); 
+        eval_set_OnExitHoldReason = ifThenElse(( orig_OnExitHold isnt null ) && orig_OnExitHold,ifThenElse(orig_OnExitHoldReason isnt null,orig_OnExitHoldReason,strcat("The on_exit_hold expression (",unparse(orig_OnExitHold),") evaluated to TRUE.")),ifThenElse(minWalltime isnt null && RemoteWallClockTime isnt null && ( RemoteWallClockTime < 60 * minWallTime ),strcat("The job's wall clock time, ",int(RemoteWallClockTime / 60),"min, is less than the minimum specified by the job (",minWalltime,")"),"Job held for unknown reason.")); 
+        eval_set_RequestCpus = ifThenElse(InputRSL.xcount isnt null,InputRSL.xcount,ifThenElse(xcount isnt null,xcount,ifThenElse(default_xcount isnt null,default_xcount,1))); 
+        eval_set_RequestMemory = ifThenElse(InputRSL.maxMemory isnt null,InputRSL.maxMemory,ifThenElse(maxMemory isnt null,maxMemory,ifThenElse(default_maxMemory isnt null,default_maxMemory,2000))); 
+        delete_CondorCE = true; 
+        copy_OnExitHoldSubCode = "orig_OnExitHoldSubCode"; 
+        set_RoutedJob = true; 
+        delete_PeriodicRemove = true; 
+        TargetUniverse = 5; 
+        set_CondorCECollectorHost = ifThenElse(regexp(":","opteron03.crc.nd.edu:9619"),"opteron03.crc.nd.edu:9619",strcat("opteron03.crc.nd.edu:9619",":",9619)); 
+        eval_set_remote_queue = ifThenElse(InputRSL.queue isnt null,InputRSL.queue,ifThenElse(batch_queue isnt null,batch_queue,ifThenElse(queue isnt null,queue,ifThenElse(default_queue isnt null,default_queue,"")))); 
+        eval_set_remote_SMPGranularity = ifThenElse(InputRSL.xcount isnt null,InputRSL.xcount,ifThenElse(xcount isnt null,xcount,ifThenElse(default_xcount isnt null,default_xcount,1))); 
+        eval_set_environment = debug(strcat("HOME=",userHome(Owner,"/")," CONDORCE_COLLECTOR_HOST=",CondorCECollectorHost," ",ifThenElse(orig_environment is undefined,osg_environment,strcat(osg_environment," ",orig_environment)))); 
+        Requirements = true; 
+        set_osg_environment = "OSG_GRID='/pscratch/osg/wn-1.2' OSG_SQUID_LOCATION='ndcms.crc.nd.edu:3128' OSG_SITE_READ='/pscratch/osg/data' OSG_APP='/pscratch/osg/app' OSG_GLEXEC_LOCATION='None' OSG_DATA='/pscratch/osg/data' OSG_HOSTNAME='opteron03.crc.nd.edu' GLOBUS_LOCATION='/usr' OSG_STORAGE_ELEMENT='False' OSG_SITE_NAME='NWICG_NotreDame' OSG_WN_TMP='/pscratch/osg/wn_tmp' PATH='/osg/condor/bin:/osg/condor/sbin:/osg/condor/libexec:/bin:/usr/bin:/sbin:/usr/sbin' OSG_DEFAULT_SE='opteron03.crc.nd.edu' OSG_SITE_WRITE='/pscratch/osg/data'"; 
+        MaxJobs = 10000; 
+        MaxIdleJobs = 2000; 
+        set_requirements = true; 
+        copy_OnExitHold = "orig_OnExitHold"; 
+        eval_set_OnExitHoldSubCode = ifThenElse(( orig_OnExitHold isnt null ) && orig_OnExitHold,ifThenElse(orig_OnExitHoldSubCode isnt null,orig_OnExitHoldSubCode,1),42); 
+        name = "Local_Condor"; 
+        copy_environment = "orig_environment"
+    ]
+

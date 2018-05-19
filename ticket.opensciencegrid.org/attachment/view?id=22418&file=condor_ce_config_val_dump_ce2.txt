@@ -1,0 +1,163 @@
+# Showing macros from configuration files(s) only.
+# Environment overloads were honored.
+
+# Configuration from machine: ce2.accre.vanderbilt.edu
+# Contributing configuration file(s):
+#	/etc/condor-ce/condor_config
+#	/usr/share/condor-ce/config.d/01-ce-auth-defaults.conf
+#	/usr/share/condor-ce/config.d/01-ce-router-defaults.conf
+#	/usr/share/condor-ce/config.d/01-common-auth-defaults.conf
+#	/usr/share/condor-ce/config.d/02-ce-pbs-defaults.conf
+#	/usr/share/condor-ce/config.d/03-ce-shared-port-defaults.conf
+#	/usr/share/condor-ce/config.d/03-managed-fork-defaults.conf
+#	/etc/condor-ce/config.d/01-ce-auth.conf
+#	/etc/condor-ce/config.d/01-ce-router.conf
+#	/etc/condor-ce/config.d/01-common-auth.conf
+#	/etc/condor-ce/config.d/02-ce-pbs.conf
+#	/etc/condor-ce/config.d/03-ce-shared-port.conf
+#	/etc/condor-ce/config.d/03-managed-fork.conf
+#	/etc/condor-ce/config.d/99-local.ini
+#	/usr/share/condor-ce/condor_ce_router_defaults|
+
+ABORT_ON_EXCEPTION = false
+ALLOW_ADMINISTRATOR = $(HOSTNAME)@daemon.opensciencegrid.org/$(FULL_HOSTNAME)
+ALLOW_DAEMON = $(FRIENDLY_DAEMONS)
+ALLOW_WRITE = $(FRIENDLY_DAEMONS)
+AMAZON_GAHP = $(SBIN)/amazon_gahp
+AMAZON_GAHP_LOG = $(USER_LOG)/user/AmazonGahpLog.$(USERNAME)
+ARCH = X86_64
+BATCH_GAHP = $(BIN)/blahpd
+C_GAHP.ALLOW_DAEMON = $(ALLOW_DAEMON)
+C_GAHP_LOCK = /CGAHPLock.$(USERNAME)
+C_GAHP_LOG = /tmp/CGAHPLog.$(USERNAME)
+C_GAHP_WORKER_THREAD_LOCK = $(USER_LOCK)/CGAHPWorkerLock.$(USERNAME)
+C_GAHP_WORKER_THREAD_LOG = $(USER_LOG)/CGAHPWorkerLog.$(USERNAME)
+CERTIFICATE_MAPFILE = /etc/condor-ce/condor_mapfile
+CLASSAD_USER_LIBS = 
+COLLECTOR = $(SBIN)/condor_collector
+COLLECTOR.ALLOW_ADVERTISE_MASTER = $(FRIENDLY_DAEMONS)
+COLLECTOR.ALLOW_ADVERTISE_SCHEDD = $(FRIENDLY_DAEMONS)
+COLLECTOR_ARGS = -port $(PORT)
+COLLECTOR_HOST = $(CONDOR_HOST):$(PORT)
+CONDOR_ADMIN = root@$(FULL_HOSTNAME)
+CONDOR_GAHP = $(SBIN)/condor_c-gahp
+CONDOR_GAHP_WORKER = $(SBIN)/condor_c-gahp_worker_thread
+CONDOR_HOST = $(FULL_HOSTNAME)
+CREAM_GAHP = $(SBIN)/cream_gahp
+DAEMON_LIST = MASTER COLLECTOR SCHEDD JOB_ROUTER, SHARED_PORT, SHARED_PORT
+DATA_DIR = $(RELEASE_DIR)/share/condor-ce
+DENY_ADMINISTRATOR = anonymous@*, unmapped@*
+DENY_CLIENT = anonymous@*, unmapped@*
+DENY_DAEMON = anonymous@*, unmapped@*
+DENY_NEGOTIATOR = anonymous@*, unmapped@*
+DENY_WRITE = anonymous@*, unmapped@*
+DETECTED_CORES = 24
+DETECTED_MEMORY = 64375
+EMAIL_DOMAIN = $(FULL_HOSTNAME)
+ENABLE_ADDRESS_REWRITING = true
+ENABLE_PERSISTENT_CONFIG = false
+ENABLE_RUNTIME_CONFIG = false
+EXECUTE = $(LOCAL_DIR)/lib/condor-ce/execute
+FILESYSTEM_DOMAIN = $(FULL_HOSTNAME)
+FRIENDLY_DAEMONS = $(FULL_HOSTNAME)@daemon.opensciencegrid.org/$(FULL_HOSTNAME) condor@users.opensciencegrid.org/$(FULL_HOSTNAME) rsv@users.opensciencegrid.org/$(FULL_HOSTNAME)
+FULL_HOSTNAME = ce2.accre.vanderbilt.edu
+GRID_MONITOR = $(SBIN)/grid_monitor.sh
+GRIDMANAGER = $(SBIN)/condor_gridmanager
+GRIDMANAGER_LOCK = $(LOCK)/GridmanagerLock.$(USERNAME)
+GRIDMANAGER_LOG = $(LOG)/GridmanagerLog.$(USERNAME)
+GRIDMANAGER_MAX_SUBMITTED_JOBS_PER_RESOURCE = 10000
+GSI_DAEMON_CERT = /etc/grid-security/hostcert.pem
+GSI_DAEMON_KEY = /etc/grid-security/hostkey.pem
+GSI_DAEMON_TRUSTED_CA_DIR = /etc/grid-security/certificates
+GSI_DELEGATION_KEYBITS = 1024
+GT2_GAHP = $(SBIN)/gahp_server
+HOSTNAME = ce2
+IP_ADDRESS = 129.59.197.224
+JOB_ROUTER = $(LIBEXEC)/condor_job_router
+JOB_ROUTER_DEFAULTS = [ MaxIdleJobs = 2000; MaxJobs = 10000; /* by default, accept all jobs */ Requirements = True; /* now modify routed job attributes */ /* remove routed job if the client disappears for 48 hours or it is idle for 6 */ /*set_PeriodicRemove = (LastClientContact - time() > 48*60*60) || (JobStatus == 1 && (time() - QDate) > 6*60);*/ delete_PeriodicRemove = true; delete_CondorCE = true; set_RoutedJob = true; copy_environment = "orig_environment"; set_osg_environment = "OSG_GRID='/etc/osg/wn-client/' OSG_SQUID_LOCATION='fs1.accre.vanderbilt.edu:3128' OSG_SITE_READ='/home/grid-data' OSG_APP='/home/grid-app' OSG_GLEXEC_LOCATION='/usr/local/osg/glexec-osg/sbin/glexec' OSG_DATA='/home/grid-data' OSG_HOSTNAME='ce2.accre.vanderbilt.edu' OSG_STORAGE_ELEMENT='True' OSG_SITE_NAME='Vanderbilt_CE2' GLOBUS_LOCATION='/usr' OSG_WN_TMP='/tmp' OSG_SITE_WRITE='/home/grid-data' OSG_DEFAULT_SE='se1.accre.vanderbilt.edu' OSG_JOB_CONTACT='ce2.accre.vanderbilt.edu/jobmanager-pbs'"; eval_set_environment = debug(strcat("HOME=", userHome(Owner, "/"), " ", ifThenElse(orig_environment is undefined, osg_environment, strcat(osg_environment, " ", orig_environment) ))); /* Set new requirements */ /* set_requirements = LastClientContact - time() < 30*60; */ set_requirements = True; /* Note default memory request of 2GB */ /* Note yet another nested condition allow pass attributes (maxMemory,xcount,jobtype,queue) via gWMS Factory described within ClassAd if undefined via RSL */ eval_set_RequestMemory = ifThenElse(InputRSL.maxMemory isnt null, InputRSL.maxMemory, ifThenElse(maxMemory isnt null, maxMemory, ifThenElse(default_maxMemory isnt null, default_maxMemory, 2000))); eval_set_remote_queue = ifThenElse(InputRSL.queue isnt null, InputRSL.queue, ifThenElse(queue isnt null, queue, ifThenElse(default_queue isnt null, default_queue, ""))); /* HTCondor uses RequestCpus; blahp uses SMPGranularity and NodeNumber.  Default is 1 core. */ eval_set_RequestCpus = ifThenElse(InputRSL.xcount isnt null, InputRSL.xcount, ifThenElse(xcount isnt null, xcount, ifThenElse(default_xcount isnt null, default_xcount, 1))); eval_set_remote_SMPGranularity = ifThenElse(InputRSL.xcount isnt null, InputRSL.xcount, ifThenElse(xcount isnt null, xcount, ifThenElse(default_xcount isnt null, default_xcount, 1))); eval_set_remote_NodeNumber = ifThenElse(InputRSL.xcount isnt null, InputRSL.xcount, ifThenElse(xcount isnt null, xcount, ifThenElse(default_xcount isnt null, default_xcount, 1))); /* If remote_cerequirements is a string, BLAH will parse it as an expression before examining it */ eval_set_remote_cerequirements = ifThenElse(InputRSL.maxWallTime isnt null, strcat("Walltime == ", string(60*InputRSL.maxWallTime), " && CondorCE == 1"), "CondorCE == 1"); ]
+JOB_ROUTER_ENTRIES = [ eval_set_RequestMemory = "invalid"; default_maxMemory = "invalid"; GridResource = "batch pbs"; TargetUniverse = 9; name = "Local_PBS"; delete_RequestMemory = true; eval_set_remote_cerequirements = strcat("maxMemory == ", string(maxMemory), " && CondorCE ==1"); ]
+JOB_ROUTER_NAME = htcondor-ce
+JOB_ROUTER_POLLING_PERIOD = 10
+JOB_ROUTER_SOURCE_JOB_CONSTRAINT = (target.x509userproxysubject =!= UNDEFINED) && (target.x509UserProxyExpiration =!= UNDEFINED) && (time() < target.x509UserProxyExpiration) && (target.JobUniverse =?= 5 || target.JobUniverse =?= 1)
+LIBEXEC = $(RELEASE_DIR)/libexec/condor
+LOCAL_CONFIG_DIR = /usr/share/condor-ce/config.d,/etc/condor-ce/config.d
+LOCAL_CONFIG_DIR_EXCLUDE_REGEXP = ^((\..*)|(.*~)|(#.*)|(.*\.rpmsave)|(.*\.rpmnew))$
+LOCAL_CONFIG_FILE = /usr/share/condor-ce/condor_ce_router_defaults|
+LOCAL_DIR = /var
+LOCK = $(LOCAL_DIR)/lock/condor-ce
+LOG = $(LOCAL_DIR)/log/condor-ce
+MAIL = /bin/mail
+MASTER = $(SBIN)/condor_master
+MASTER_ADDRESS_FILE = $(LOG)/.master_address
+MAX_NUM_SCHEDD_AUDIT_LOG = 90
+MAX_SCHEDD_AUDIT_LOG = 1d
+NO_DNS = false
+NORDUGRID_GAHP = $(SBIN)/nordugrid_gahp
+OPSYS = LINUX
+OPSYSANDVER = CentOS6
+OPSYSLEGACY = LINUX
+OPSYSLONGNAME = CentOS release 6.5 (Final)
+OPSYSMAJORVER = 6
+OPSYSNAME = CentOS
+OPSYSSHORTNAME = CentOS
+OPSYSVER = 605
+PASSWD_CACHE_REFRESH = 300
+PER_JOB_HISTORY_DIR = /var/lib/gratia/condorce_data
+PID = 6768
+PORT = 9619
+PPID = 4822
+QUEUE_SUPER_USERS = $(FULL_HOSTNAME)
+REAL_GID = 0
+REAL_UID = 0
+RELEASE_DIR = /usr
+REQUIRE_LOCAL_CONFIG_FILE = true
+ROUTED_JOB_MAX_TIME = 2880
+RUN = $(LOCAL_DIR)/run/condor-ce
+SBIN = $(RELEASE_DIR)/sbin
+SCHEDD = $(SBIN)/condor_schedd
+SCHEDD.ALLOW_NEGOTIATOR = $(FULL_HOSTNAME)@daemon.opensciencegrid.org/$(FULL_HOSTNAME)
+SCHEDD.ALLOW_WRITE = $(USERS), $(FULL_HOSTNAME)@daemon.opensciencegrid.org/$(FULL_HOSTNAME)
+SCHEDD.SEC_DAEMON_AUTHENTICATION_METHODS = FS,GSI
+SCHEDD.SEC_WRITE_AUTHENTICATION_METHODS = FS,GSI
+SCHEDD_ADDRESS_FILE = $(SPOOL)/.schedd_address
+SCHEDD_AUDIT_LOG = $(LOG)/AuditLog
+SCHEDD_DEBUG = D_FULLDEBUG
+SEC_CLIENT_AUTHENTICATION = OPTIONAL
+SEC_CLIENT_AUTHENTICATION_METHODS = FS,GSI
+SEC_CLIENT_ENCRYPTION = OPTIONAL
+SEC_CLIENT_INTEGRITY = OPTIONAL
+SEC_DEFAULT_AUTHENTICATION = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS = GSI
+SEC_DEFAULT_ENCRYPTION = OPTIONAL
+SEC_DEFAULT_INTEGRITY = REQUIRED
+SEC_READ_AUTHENTICATION = OPTIONAL
+SEC_READ_ENCRYPTION = OPTIONAL
+SEC_READ_INTEGRITY = OPTIONAL
+SHARED_PORT = /usr/libexec/condor/condor_shared_port
+SHARED_PORT_ARGS = -p 9620
+SPOOL = /home/grid-spool/ce2/
+START_LOCAL_UNIVERSE = TotalLocalJobsRunning < 20
+START_SCHEDULER_UNIVERSE = TotalLocalJobsRunning < 20
+SUBSYSTEM = TOOL
+SYSTEM_PERIODIC_HOLD = (x509userproxysubject =?= UNDEFINED) || (x509UserProxyExpiration =?= UNDEFINED) || (time() > x509UserProxyExpiration) || (RoutedBy is null && JobUniverse =!= 1 && JobUniverse =!= 5 && JobUniverse =!= 7 && JobUniverse =!= 12) || ((JobStatus =?= 1 && CurrentTime - EnteredCurrentStatus > 1800) && RoutedToJobId is null && RoutedJob =!= true)
+SYSTEM_PERIODIC_HOLD_REASON = strcat("CE job in status ", JobStatus, " put on hold by SYSTEM_PERIODIC_HOLD due to ", ifThenElse(isUndefined(x509userproxysubject) || isUndefined(x509UserProxyExpiration),  "missing user proxy.", ifThenElse(time() > x509UserProxyExpiration, "expired user proxy.", ifThenElse(RoutedBy is null && JobUniverse =!= 1 && JobUniverse =!= 5 && JobUniverse =!= 7 && JobUniverse =!= 12, "invalid job universe.", "non-existent route or entry in JOB_ROUTER_ENTRIES." ) ) ) )
+SYSTEM_PERIODIC_REMOVE = (JobStatus == 5 && CurrentTime - EnteredCurrentStatus > 3600*24)
+SYSTEM_PERIODIC_REMOVE_REASON = strcat("CE job removed by SYSTEM_PERIODIC_REMOVE due to ", ifThenElse((JobStatus == 5 && CurrentTime - EnteredCurrentStatus > 3600*24), "being in the hold state for 24 hours.", ifThenElse((JobStatus == 5 && isUndefined(RoutedToJobId)), "non-existent route or entry in JOB_ROUTER_ENTRIES.", "input files missing." ) ) )
+TILDE = /var/lib/condor
+UID_DOMAIN = users.opensciencegrid.org
+UNAME_ARCH = x86_64
+UNAME_OPSYS = Linux
+UNICORE_GAHP = $(SBIN)/unicore_gahp
+USE_SHARED_PORT = true
+USER_JOB_WRAPPER = $(DATA_DIR)/osg-wrapper
+USER_LOCK = $(LOCK)/user
+USER_LOG = $(LOG)/user
+USERNAME = root
+USERS = *@users.opensciencegrid.org
+UTSNAME_MACHINE = x86_64
+UTSNAME_NODENAME = ce2.accre.vanderbilt.edu
+UTSNAME_RELEASE = 2.6.32-431.23.3.el6.x86_64
+UTSNAME_SYSNAME = Linux
+UTSNAME_VERSION = #1 SMP Thu Jul 31 17:20:51 UTC 2014
+VM_GAHP_LOG = $(LOG)/VMGahpLog
+VM_GAHP_SERVER = $(SBIN)/condor_vm-gahp

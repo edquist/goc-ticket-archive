@@ -1,0 +1,187 @@
+
+This is an automated notification sent by LCG Savannah.
+It relates to:
+		support #141890, project CMS Computing Infrastructure  Support
+
+==============================================================================
+ LATEST MODIFICATIONS of support #141890:
+==============================================================================
+
+Update of sr #141890 (project cmscompinfrasup):
+
+                Use GGUS:                      No => Yes                    
+
+
+==============================================================================
+ OVERVIEW of support #141890:
+==============================================================================
+
+URL:
+  <http://savannah.cern.ch/support/?141890>
+
+                 Summary: Failed PhEDEx transfers between T3_US_Minnesota and
+T1_UK_RAL_Buffer
+                 Project: CMS Computing Infrastructure  Support
+            Submitted by: nbertran
+            Submitted on: 2014-02-03 22:03
+                Category: Data Transfers
+                Priority: 5 - Normal
+                Severity: 4 - Important
+                  Status: None
+                 Privacy: Public
+             Assigned to: cmscompinfrasup-t1ukral
+        Originator Email: 
+             Open/Closed: Open
+         Discussion Lock: Any
+         GGUS ticket url: 
+                Use GGUS: Yes
+                    Site: T3_US_Minnesota
+
+    _______________________________________________________
+
+
+PhEDEx transfers between T3_US_Minnesota and T1_UK_RAL_Buffer have been
+failing with the SRM client error "java.net.ConnectException: Connection
+refused". Transfers between T3_US_Minnesota and other sites are working
+correctly. I am able to transfer files by hand from T1_UK_RAL_Buffer to a
+local disk at T3_US_Minnesota using srm-copy, but srm-copy between the
+gridftp servers at the two sites fails with the connection refused error. I
+am unsure which side is refusing the connection, but no connection attempts
+to the gridftp server at T3_US_Minnesota appear in the gridftp logs.
+
+The following command to transfer from T1_UK_RAL_Buffer to a local disk at
+T3_US_Minnesota works:
+
+srm-copy
+srm://srm-cms.gridpp.rl.ac.uk:8443/srm/managerv2?SFN=/castor/ads.rl.ac.uk/prod/cms/store/mc/Summer12_DR53X/MinBias_TuneZ2star_8TeV-pythia6/GEN-SIM-RAW/PU25bx25_START53_V19D-v1/10000/3E695507-12D3-E211-A5C0-003048C6941E.root
+file:////tmp/3E695507-12D3-E211-A5C0-003048C6941E.root -debug -dcau false
+-3partycopy
+
+The output from this command is in attached srm-copy-file.log.
+
+The following command to transfer from T1_UK_RAL_Buffer to SE at
+T3_US_Minnesota fails:
+
+srm-copy
+srm://srm-cms.gridpp.rl.ac.uk:8443/srm/managerv2?SFN=/castor/ads.rl.ac.uk/prod/cms/store/mc/Summer12_DR53X/MinBias_TuneZ2star_8TeV-pythia6/GEN-SIM-RAW/PU25bx25_START53_V19D-v1/10000/3E695507-12D3-E211-A5C0-003048C6941E.root
+srm://gc1-se.spa.umn.edu:8443/srm/v2/server?SFN=/data/whybee1b/phedex/store/mc/Summer12_DR53X/MinBias_TuneZ2star_8TeV-pythia6/GEN-SIM-RAW/PU25bx25_START53_V19D-v1/10000/3E695507-12D3-E211-A5C0-003048C6941E.root
+-debug -dcau false -3partycopy
+
+The output from this command is in attached srm-copy-gridftp.log.
+
+Output from voms-proxy-info -all:
+
+[1067]nick@gc1-se:~> voms-proxy-info -all
+subject   : /DC=ch/DC=cern/OU=Organic
+Units/OU=Users/CN=nbertran/CN=740860/CN=Nicholas Adam Bertrand/CN=proxy
+issuer    : /DC=ch/DC=cern/OU=Organic
+Units/OU=Users/CN=nbertran/CN=740860/CN=Nicholas Adam Bertrand
+identity  : /DC=ch/DC=cern/OU=Organic
+Units/OU=Users/CN=nbertran/CN=740860/CN=Nicholas Adam Bertrand
+type      : proxy
+strength  : 1024 bits
+path      : /tmp/x509up_u5572
+timeleft  : 10:22:59
+key usage : Digital Signature, Key Encipherment
+=== VO cms extension information ===
+VO        : cms
+subject   : /DC=ch/DC=cern/OU=Organic
+Units/OU=Users/CN=nbertran/CN=740860/CN=Nicholas Adam Bertrand
+issuer    : /DC=ch/DC=cern/OU=computers/CN=voms.cern.ch
+attribute : /cms/Role=NULL/Capability=NULL
+attribute : /cms/uscms/Role=NULL/Capability=NULL
+timeleft  : 10:22:59
+uri       : voms.cern.ch:15002
+
+Example log entry from from PhEDEx FileDownload log:
+
+2014-02-03 20:10:38: FileDownload[29293]: xstats: task=242980466
+file=61959963 from=T1_UK_RAL_Buffer to=T3_US_Minnesota priority=3
+report-code=1 xfer-code=51 size=2315686212 t-expire=1391469185.97372
+t-assign=1391443823.21786 t-export=1391444277.83437 t-inxfer=1391446238.79346
+t-xfer=1391458039.50724 t-done=1391458238.75287
+lfn=/store/mc/Summer12_DR53X/MinBias_TuneZ2star_8TeV-pythia6/GEN-SIM-RAW/PU25bx25_START53_V19D-v1/10000/5A42FC07-48D3-E211-A8C0-0030487E52A1.root
+from-pfn=srm://srm-cms.gridpp.rl.ac.uk:8443/srm/managerv2?SFN=/castor/ads.rl.ac.uk/prod/cms/store/mc/Summer12_DR53X/MinBias_TuneZ2star_8TeV-pythia6/GEN-SIM-RAW/PU25bx25_START53_V19D-v1/10000/5A42FC07-48D3-E211-A8C0-0030487E52A1.root
+to-pfn=srm://gc1-se.spa.umn.edu:8443/srm/v2/server?SFN=/data/whybee1b/phedex/store/mc/Summer12_DR53X/MinBias_TuneZ2star_8TeV-pythia6/GEN-SIM-RAW/PU25bx25_START53_V19D-v1/10000/5A42FC07-48D3-E211-A8C0-0030487E52A1.root
+detail=() validate=(Executing:
+/home/phedex2/SITECONF/T3_US_Minnesota/PhEDEx/FileDownloadSRMVerify 51
+srm://gc1-se.spa.umn.edu:8443/srm/v2/server?SFN=/data/whybee1b/phedex/store/mc/Summer12_DR53X/MinBias_TuneZ2star_8TeV-pythia6/GEN-SIM-RAW/PU25bx25_START53_V19D-v1/10000/5A42FC07-48D3-E211-A8C0-0030487E52A1.root
+2315686212 adler32:cccc7eb1,cksum:1801311297 0 ~~ file
+srm://gc1-se.spa.umn.edu:8443/srm/v2/server?SFN=/data/whybee1b/phedex/store/mc/Summer12_DR53X/MinBias_TuneZ2star_8TeV-pythia6/GEN-SIM-RAW/PU25bx25_START53_V19D-v1/10000/5A42FC07-48D3-E211-A8C0-0030487E52A1.root
+doesn't seem to exist ~~ Job exited with status code 1 (256) after 6.969
+seconds ~~ )
+job-log=/home/phedex2/state/download-srm/archive/job.1388509207.24987
+
+A tarball of the job-log directory from the above transfer attempt can be
+found in attached phedex-logs.tar.gz
+
+Recent errors for transfers:
+
+https://cmsweb.cern.ch/phedex/prod/Activity::ErrorInfo?tofilter=T3_US_Minnesota&fromfilter=T1_UK_RAL_Buffer&report_code=.*&xfer_code=.*&to_pfn=.*&from_pfn=.*&log_detail=.*&log_validate=.*&.submit=Update#
+
+Quality plot showing failures:
+
+https://cmsweb.cern.ch/phedex/prod/Activity::QualityPlots?graph=quality_all&entity=src&src_filter=T1_UK_RAL_Buffer&dest_filter=T3_US_Minnesota&no_mss=true&period=l14d&upto=
+
+
+
+    _______________________________________________________
+
+Follow-up Comments:
+
+
+-------------------------------------------------------
+Date: 2014-02-05 17:03              By: Si Liu <siliu>
+Hi Nick,
+
+We also don't have a clear clue with this issue.
+Looks like an authentication error on the RAL gridftp servers.
+
+Assign this ticket to RAL side for further check.
+
+Thanks,
+Lucy
+
+
+
+
+
+    _______________________________________________________
+
+Carbon-Copy List:
+
+CC Address                          | Comment
+------------------------------------+-----------------------------
+5654                                | -UPD-
+9138                                | -COM-
+10106                               | -SUB-
+
+
+
+    _______________________________________________________
+
+File Attachments:
+
+
+-------------------------------------------------------
+Date: 2014-02-03 22:03  Name: srm-copy-file.log  Size: 14kB   By: nbertran
+
+<http://savannah.cern.ch/support/download.php?file_id=37245>
+-------------------------------------------------------
+Date: 2014-02-03 22:03  Name: srm-copy-gridftp.log  Size: 13kB   By: nbertran
+
+<http://savannah.cern.ch/support/download.php?file_id=37246>
+-------------------------------------------------------
+Date: 2014-02-03 22:03  Name: phedex-logs.tar.gz  Size: 11kB   By: nbertran
+
+<http://savannah.cern.ch/support/download.php?file_id=37247>
+
+==============================================================================
+
+This item URL is:
+  <http://savannah.cern.ch/support/?141890>
+
+_______________________________________________
+  Message sent via/by LCG Savannah
+  http://savannah.cern.ch/
+

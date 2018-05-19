@@ -1,0 +1,147 @@
+# Tasks for installing display.
+---
+
+- name: Install epel repo
+  shell: 'rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
+
+- name: Install yum-plugin-priorities
+  yum: name=yum-plugin-priorities state=installed
+
+- name: Cleanup yum repos
+  shell: 'yum clean all'
+
+- name: Cleanup osg-release
+  shell: 'rpm -e osg-release'
+
+- name: Install osg 3.3
+  shell: 'rpm -U https://repo.grid.iu.edu/osg/3.3/osg-3.3-el7-release-latest.rpm'
+
+- name: Configure loopback device, production
+  when: "'-itb' not in inventory_hostname_short"
+  copy: owner={{ item.own }} group={{ item.grp }} mode={{ item.mode }} dest={{ item.dest }} src={{ item.src }}
+  with_items:
+    - { src: 'prod-ifcfg-lo:0'     , dest: '/etc/sysconfig/network-scripts/ifcfg-lo:0'          , mode: '0744' , own: 'root'   , grp: 'root' }
+
+- name:  Configure loopback device, itb
+  when: "'-itb' in inventory_hostname_short"
+  copy: owner={{ item.own }} group={{ item.grp }} mode={{ item.mode }} dest={{ item.dest }} src={{ item.src }}
+  with_items:
+    - { src: 'itb-ifcfg-lo:0'     , dest: '/etc/sysconfig/network-scripts/ifcfg-lo:0'          , mode: '0744' , own: 'root'   , grp: 'root' }
+
+- name: Install basic packages
+  yum: name='{{ item.pack }}' state=installed
+  with_items:
+    - { pack: 'fetch-crl' }
+    - { pack: 'osg-ca-certs' }
+    - { pack: 'httpd' }
+    - { pack: 'php' }
+    - { pack: 'mod_ssl' }
+#    - { pack: 'subversion' }
+#    - { pack: 'git' }
+
+- name: Create Directory /etc/osg_display
+  file: path=/etc/osg_display/ state=directory mode=755
+
+- name: Transfer files
+  copy: owner={{ item.own }} group={{ item.grp }} mode={{ item.mode }} dest={{ item.dest }} src={{ item.src }}
+  with_items:
+    - { src: '60-local-display-rules'        , dest: '/etc/iptables.d/60-local-display-rules' , mode: '0744' , own: 'root'   , grp: 'root' }
+    - { src: 'display.tar'                   , dest: '/tmp/display.tar'                       , mode: '0744' , own: 'root'   , grp: 'root' }
+    - { src: 'disp_tar.sh'                   , dest: '/tmp/disp_tar.sh'                       , mode: '0755' , own: 'root'   , grp: 'root' }
+    - { src: 'msttcorefonts-2.0-1.noarch.rpm', dest: '/tmp/msttcorefonts-2.0-1.noarch.rpm'    , mode: '0744' , own: 'root'   , grp: 'root' }
+    - { src: 'osg_display.conf'              , dest: '/etc/osg_display/osg_display.conf'      , mode: '0744' , own: 'root'   , grp: 'root' }
+    - { src: 'display_first.sh'              , dest: '/tmp/display_first.sh'                  , mode: '0755' , own: 'root'   , grp: 'root' }
+    - { src: 'setup_apache.sh'               , dest: '/tmp/setup_apache.sh'                   , mode: '0755' , own: 'root'   , grp: 'root' }
+    - { src: 'sysctl.conf'                   , dest: '/etc/sysctl.conf'                       , mode: '0644' , own: 'root'   , grp: 'root' }
+    - { src: 'restore.py'                    , dest: '/tmp/restore.py'                        , mode: '0755' , own: 'root'   , grp: 'root' }
+    - { src: 'backup.py'                     , dest: '/usr/local/backup.py'                   , mode: '0755' , own: 'apache'   , grp: 'apache' }
+
+- name: Execute installation scripts, part 1
+  shell: '{{ item.cmd }}'
+  with_items:
+    - { cmd: '/tmp/setup_apache.sh'}
+
+- name: Enable contrib repo (needed by osg-display-data install)
+  replace: 
+    dest: /etc/yum.repos.d/osg-contrib.repo
+    regexp: "enabled=0"
+    replace: "enabled=1"
+
+- name: Install display packages
+  yum: name='{{ item.pack }}' state=installed
+  with_items:
+    - { pack: '/tmp/msttcorefonts-2.0-1.noarch.rpm' }
+    - { pack: 'osg-display-data' }
+
+- name: Disable contrib repo, just in case
+  replace: 
+    dest: /etc/yum.repos.d/osg-contrib.repo
+    regexp: "enabled=1"
+    replace: "enabled=0"
+
+- name: create sundry directories owned by root
+  file: path={{ item.pth }} state=directory mode=0755 group=root owner=root
+  with_items:
+    - { pth: '/usr/local/display'}
+
+- name: create sundry directories owned by apache, part 1
+  file: path={{ item.pth }} state=directory mode=0775 group=apache owner=apache
+  with_items:
+    - { pth: '/usr/local/display/osg_display'}
+
+- name: create sundry directories owned by apache, part 2
+  file: path={{ item.pth }} state=directory mode=0755 group=apache owner=apache
+  with_items:
+    - { pth: '/var/log/osg_display'}
+
+- name: Execute installation scripts, create log files
+  shell: '{{ item.cmd }}'
+  with_items:
+    - { cmd: 'touch /var/log/osg_display/error.log'}
+    - { cmd: 'chmod ugoa+w /var/log/osg_display/error.log'}
+    - { cmd: 'touch /var/log/osg_display/osg_display.log'}
+    - { cmd: 'chmod ugoa+w  /var/log/osg_display/osg_display.log'}
+    - { cmd: '/tmp/disp_tar.sh'}
+
+- name: Install python packages
+  yum: name='{{ item.pack }}' state=installed
+  with_items:
+    - { pack: 'python-imaging' }
+
+- name: Execute system commands to configure stuff
+  shell: '{{ item.cmd }}'
+  with_items:
+    - { cmd: 'sysctl -p' }
+    - { cmd: '/tmp/restore.py' }
+    - { cmd: '/tmp/display_first.sh'}
+
+- name: Backup done only on production instance
+  when: "'-itb' in inventory_hostname_short"
+  shell: '{{ item.cmd }}'
+  with_items:
+    - { cmd: 'rm /etc/cron.d/backup' }
+
+- name: Production instance, configure backup
+  when: "'-itb' not in inventory_hostname_short"
+  shell: '{{ item.cmd }}'
+  with_items:
+    - { cmd: 'echo "10 */6 * * * root /root/install/common/backup.py" > /etc/cron.d/backup' }
+
+- name: Restart/enable installed services
+  service: state=restarted enabled=yes name={{ item }} 
+  with_items:
+    - fetch-crl-cron
+    - httpd
+    - gociptables
+
+- name: Insure current with GOC-wide OS updates
+  shell: '{{ item.cmd }}'
+  with_items:
+    - { cmd: '/opt/sbin/osupdate'}
+
+- name: Restart machine
+  shell: sleep 2 && reboot
+  async: 1
+  poll: 0
+  ignore_errors: true
+

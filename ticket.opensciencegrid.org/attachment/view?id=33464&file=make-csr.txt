@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Generates a CSR that can be sent to OSG
+
+# Ensure we are in the certificate directory
+if [[ ! -f ./openssl.cnf ]]; then
+    echo "unable to find openssl.cnf in the cwd"
+    echo "Are you executing this script from the certificate directory?"
+    exit 1
+fi
+
+echo -n "Hostname: "
+read hostname
+
+csr="${hostname}.csr"
+key="${hostname}.key"
+
+
+#echo -n "Alternative names, comma separated: "
+#read altnames
+if [[ $altnames ]]; then
+    altnames="DNS:${altnames}"
+    altnames=$(echo ${altnames} | sed 's/,/,DNS:/g')
+    altnames="DNS:${hostname},${altnames}"
+else
+    altnames="DNS:${hostname}"
+fi
+
+export SSL_ALTNAMES=${altnames}
+echo "Using ALTNAMES= ${altnames}"
+
+# generate key
+if [[ -f ${key} ]] ; then
+    echo "key exists, not regenerating"
+else
+    openssl genrsa -out ${key} 4096
+fi
+
+# generate key and csr
+subj="/CN=${hostname}"
+openssl req -config ./openssl.cnf -new -subj "${subj}" -out ${csr} -key ${key}
+# sign csr
+#openssl ca -config ./openssl.cnf -days ${days} -out ${cert} -infiles ${csr}

@@ -1,0 +1,25 @@
+universe = grid
+executable = nagrun.sh
+arguments = " -v cms -f /cms/Role=pilot -d /queue/grid.probe.metricOutput.EGEE.sam-cms-dev_cern_ch -b 'stomp://oldsam.msg.cern.ch:6163/' -c ce1.accre.vanderbilt.edu:2119/jobmanager-pbs-all -t 600 -w 1"
+transfer_executable = true
+
+output  = /var/lib/gridprobes/cms.Role=pilot/org.sam/CONDORJS/ce1.accre.vanderbilt.edu/jobOutput/gridjob.out
+error   = /var/lib/gridprobes/cms.Role=pilot/org.sam/CONDORJS/ce1.accre.vanderbilt.edu/jobOutput/gridjob.err
+log     = /var/lib/gridprobes/cms.Role=pilot/org.sam/CONDORJS/ce1.accre.vanderbilt.edu/jobOutput/gridjob.log
+log_xml = true
+
+#<jdlInputSandboxExecutable>
+transfer_input_files = /var/lib/gridprobes/cms.Role=pilot/org.sam/CONDORJS/ce1.accre.vanderbilt.edu/gridjob.tgz,/var/lib/gridprobes/cms.Role=pilot/org.sam/CONDORJS/ce1.accre.vanderbilt.edu/wnlogs.tgz
+transfer_output_files = wnlogs.tgz
+transfer_output_remaps = "wnlogs.tgz=/var/lib/gridprobes/cms.Role=pilot/org.sam/CONDORJS/ce1.accre.vanderbilt.edu/jobOutput/wnlogs.tgz"
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+leave_in_queue = (JobStatus != 5)
+use_x509userproxy = true
+
+globus_rsl=(jobtype=single)(queue=all)
+
+grid_resource = gt5 ce1.accre.vanderbilt.edu:2119/jobmanager-pbs
+queue
+

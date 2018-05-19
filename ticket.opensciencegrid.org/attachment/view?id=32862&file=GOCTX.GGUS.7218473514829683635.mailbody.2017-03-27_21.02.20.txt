@@ -1,0 +1,91 @@
+Here’s what I ended up going with for the job router entries on the CE.  You can see the values for memory and wall time:
+
+JOB_ROUTER_ENTRIES = \
+[ \
+  # Route to queue called moonshot \
+  GridResource = "batch pbs"; \
+  TargetUniverse = 9; \
+  name = "Local_PBS_moonshot"; \
+# Max Mem 4GB \
+  set_default_maxMemory=4096; \
+# Max WallTime 48 hours \
+  set_default_maxWallTime=172800; \
+  set_default_queue=moonshot; \
+# Core count = 8 \
+  set_default_xcount=8;\
+  Requirements = (TARGET.queue =?= "moonshot"); \
+] \
+[ \
+  # Route to queue called dellblades \
+  GridResource = "batch pbs"; \
+  TargetUniverse = 9; \
+  name = "Local_PBS_dellblades"; \
+# Max Mem 2GB \
+  set_default_maxMemory=2048; \
+# Max WallTime 48 hours \
+  set_default_maxWallTime=172800; \
+  set_default_queue=dellblades; \
+# Core count = 16 \
+  set_default_xcount=16;\
+  Requirements = (TARGET.queue =?= "dellblades"); \ 
+]
+
+I ran the condor_ce_reconfig after making the changes to 99-local.conf.  Is there anything else I need to do?
+
+Cheers,
+
+Mike
+
+On 3/22/17, 6:36 PM, "helpdesk@ggus.org" <helpdesk@ggus.org> wrote:
+
+    Hello,
+    
+    GGUS Ticket #126886 was updated.
+    You receive this mail in CC for your information.
+    
+    REFERENCE LINK: https://ggus.eu/index.php?mode=ticket_info&ticket_id=126886
+    SUBJECT: T3_US_Baylor: Submit SAM tests to HTCondorCE
+    
+    =====================
+    LATEST MODIFICATIONS: 
+    
+    LAST MODIFIER -> Marty Kandes
+    
+    
+    PUBLIC DIARY -> 
+    Hi Mike,
+    
+    It sounds like there is some confusion here. Let me try to clarify .... 
+    
+    First, your job router recipes in update#34 look correct for specifying the difference queues we may target when submitting glideins from the factories. Second, as indicated in the Job Router Recipes documentation [1], you may also set a default/maximum number of cores, memory, and/or wall clock time for each route using the set_default_* options you mentioned in update#36. 
+    
+    In addition to these set_default_* options in your job router entries, we will also set on the factory-side the requested number of cores, memory, and wall clock time per glidein when we submit them to your HTCondor-CE. On our side, these requested values should be equal to or less than your any maximum limits you set either in your job route entries and/or local PBS batch/queue limits. These "submit attributes" set at the factory are the slightly different syntax Marian was referring to in update#35. i.e., we set +maxMemory, +maxWallTime, and +xcount in the factory.
+    
+    So I think all we need from you to correctly configure the moonshot entry in the factory is:
+    
+    1. What is the number of cores we should use in the glideins submitted to the moonshot queue? e.g., CMS standard multicore glidein is 8-cores.
+    2. What is the amount of available memory per core for jobs in the moonshot queue? e.g., minimum is 2 GB per core.
+    3. What is the maximum wall clock limit for a job in the moonshot queue? e.g., typical CMS site is 48 hours. 
+    
+    Marty Kandes
+    UCSD Glidein Factory Operations
+    
+    
+    
+    
+    
+    
+    
+    
+    Marty Kandes
+    UCSD Glidein Factory Operations
+    
+    [1]
+    
+    https://twiki.grid.iu.edu/bin/view/Documentation/Release3/JobRouterRecipes
+    
+    *********************************************************************************
+     This is an automated mail. When replying don't change the subject line!
+     S T R I P  P R E V I O U S  M A I L S please!!
+    *********************************************************************************
+

@@ -1,0 +1,55 @@
+--- ./gums-core/src/main/java/gov/bnl/gums/userGroup/VOMSUserGroup.java.orig	2015-09-09 19:08:39.769679114 +0000
++++ ./gums-core/src/main/java/gov/bnl/gums/userGroup/VOMSUserGroup.java	2015-09-09 19:17:48.784496227 +0000
+@@ -37,7 +37,7 @@
+ public class VOMSUserGroup extends UserGroup {
+ 	static private final boolean defaultAcceptProxyWithoutFQAN = true;
+ 	static private final String defaultMatchFQAN = "ignore";
+-	static private String[] matchFQANTypes = {"exact","vorole","role","vogroup","vo","ignore"};
++	static private String[] matchFQANTypes = {"exact","vorole","role","vogroup","vo","ignore","vogroupnorole"};
+ 	
+ 	/*static {
+        Logger.getLogger(org.glite.security.trustmanager.CRLFileTrustManager.class.getName()).setLevel(Level.ERROR);
+@@ -103,6 +103,7 @@
+      *   <li>group, vogroup - group and vo have to match.</li>
+      *   <li>vo - vo has to match.</li>
+      *   <li>ignore - no matching.</li>
++     *   <li>vogroupnorole - group and vo have to match. no role can be specified.</li>
+      * </ul>
+      * @return matching type as String.
+      */
+@@ -228,6 +229,19 @@
+             if (!user.getVoFQAN().toString().equals(fqan))
+                 return false;
+         }
++
++        // If we have a vo-group match, role is null
++        if ("vogroupnorole".equals(getMatchFQAN())) {
++            if (user.getVoFQAN().getVo() == null)
++                return false;
++            if (user.getVoFQAN().getRole() != null)
++                return false;
++            FQAN theFQAN = new FQAN(fqan);
++            if (!user.getVoFQAN().getVo().equals(theFQAN.getVo()))
++                return false;
++            if (!user.getVoFQAN().toString().startsWith(voGroup))
++                return false;
++        }
+         
+         // If we have a vo-role match, vo and role has to be the same
+         if ("vorole".equals(getMatchFQAN()) && user.getVoFQAN().getVo()!=null && user.getVoFQAN().getRole()!=null) {
+--- ./gums-core/src/test/java/gov/bnl/gums/userGroup/VOMSUserGroupTest.java.orig	2015-09-09 19:07:28.636250338 +0000
++++ ./gums-core/src/test/java/gov/bnl/gums/userGroup/VOMSUserGroupTest.java	2015-09-09 19:09:37.840398787 +0000
+@@ -133,6 +133,13 @@
+         assertFalse(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev/Role=production")));
+         assertTrue(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev/subgriddev/Role=griddevrole")));
+         assertTrue(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev/subgriddev/Role=otherrole")));
++        VOMSUserGroup.setMatchFQAN("vogroupnorole");
++        assertFalse(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", null)));
++        assertFalse(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev")));
++        assertTrue(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev/subgriddev")));
++        assertFalse(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev/Role=production")));
++        assertFalse(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev/subgriddev/Role=griddevrole")));
++        assertFalse(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev/subgriddev/Role=otherrole")));
+         VOMSUserGroup.setMatchFQAN("exact");
+         assertFalse(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", null)));
+         assertFalse(userGroup.isInGroup(new GridUser("/DC=org/DC=griddev/OU=People/CN=John Smith", "/griddev")));

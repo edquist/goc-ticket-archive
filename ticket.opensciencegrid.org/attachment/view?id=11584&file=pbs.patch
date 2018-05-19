@@ -1,0 +1,106 @@
+--- urCollector.pl.orig	2012-05-21 11:59:06.396622000 -0500
++++ urCollector.pl.new	2012-05-21 12:04:25.062697000 -0500
+@@ -339,8 +339,8 @@
+    opendir(DIR, $lrmsLogDir) || &error("Error: can't open dir $lrmsLogDir: $!");
+    while( defined(my $file = readdir(DIR)) ) {
+       next if ( $file =~ /^\.\.?$/o ); # skip '.' and '..' 
+-      next if ( $lrmsType eq "pbs" && !($file =~ /^\d{8}(\.gz)?$/o) );
+-      next if ( $lrmsType eq "lsf" && !($file =~ /^lsb\.acct(\.\d*)?(\.gz)?$/o) );
++      next if ( $lrmsType eq "pbs" && !($file =~ /^\d{8}(\.(gz|bz2))?$/o) );
++      next if ( $lrmsType eq "lsf" && !($file =~ /^lsb\.acct(\.\d*)?(\.(gz|bz2))?$/o) );
+       # we accept compressed files as well (but will be able to parse them
+       # only if we have the command less, see later)
+       
+@@ -413,7 +413,7 @@
+    # building command to open the log file
+    my $cmd = $tac_cmd;
+    # decide whether to decompress using 'less':
+-   if ($filename =~ /(\.gz)?$/o) {
++   if ($filename =~ /(\.(gz|bz2))?$/o) {
+       # decompress and pipe into tac:
+       $cmd = "$less_cmd -f $lrmsLogDir/$filename | ".$cmd;
+    } else {
+@@ -597,9 +597,9 @@
+       #print "CE_LOG_FILE:$fullname ...\n";
+       
+       next if ($file =~ /^\.\.?$/o); # skip '.' and '..' 
+-      next if ( !( $fullname =~ /^$ceJobMapLog[\/\-_]?\d{8}(\.gz)?$/ ) &&
+-      !( $fullname =~ /^$ceJobMapLog[\/\-_]?\d{4}-\d{2}-\d{2}(\.gz)?$/ ) &&
+-      !( $fullname =~ /^$ceJobMapLog(\.\d*)?(\.gz)?$/)
++      next if ( !( $fullname =~ /^$ceJobMapLog[\/\-_]?\d{8}(\.(gz|bz2))?$/ ) &&
++      !( $fullname =~ /^$ceJobMapLog[\/\-_]?\d{4}-\d{2}-\d{2}(\.(gz|bz2))?$/ ) &&
++      !( $fullname =~ /^$ceJobMapLog(\.\d*)?(\.(gz|bz2))?$/)
+       ); # skip if not like "<logname>(-)20060309(.gz)" (one per day)
+       # skip if not like "<logname>(-)2006-03-09(.gz)" (one per day)
+       # and not like "<logname>.1(.gz)" (rotated)!
+@@ -680,7 +680,7 @@
+          $cmd = $cat_cmd;
+       }
+       # decide whether to decompress using 'less':
+-      if ($scanFile =~ /(\.gz)?$/o) {
++      if ($scanFile =~ /(\.(gz|bz2))?$/o) {
+          # decompress and pipe into cat/tac:
+          $cmd = "$less_cmd $ceJobMapLogDir/$scanFile | ".$cmd;
+       } else {
+@@ -918,13 +918,14 @@
+    if (exists($urGridInfo{GRID_JOBID})) {
+       $gridJobId = $urGridInfo{GRID_JOBID};
+    } elsif (exists($urAcctlogInfo{server}) && $urAcctlogInfo{server} ne ""
+-   && exists($urAcctlogInfo{lrmsId}) && $urAcctlogInfo{lrmsId} ne ""
+-   && exists($urAcctlogInfo{start}) && $urAcctlogInfo{start} ne "") {
++            && exists($urAcctlogInfo{lrmsId}) && $urAcctlogInfo{lrmsId} ne ""
++            && exists($urAcctlogInfo{start}) && $urAcctlogInfo{start} ne "") 
++   {
+       $gridJobId = $urAcctlogInfo{server}.":".$urAcctlogInfo{lrmsId}."_".$urAcctlogInfo{start};
+    }
+    
+    if ($gridJobId eq "") {
+-      print "ERROR: Canot determine or construct a unique job ID ... skipping!\n";
++      print "ERROR: Cannot determine or construct a unique job ID ... skipping!\n";
+       return 3;
+    } else {
+       print "Using grid job ID '$gridJobId' also as RecordIdentity!\n";
+@@ -1003,11 +1004,13 @@
+       $cmd .= "\"LocalUserGroup=$urAcctlogInfo{group}\" ";
+    }
+    
+-   if ($userVo ne "") {
+-      $cmd .= "\"UserVOName=$userVo\" ";
+-   } elsif (exists $urAcctlogInfo{account} and $urAcctlogInfo{account} ne "") {
+-      $cmd .= "\"UserVOName=$urAcctlogInfo{account}\" ";
+-   }
++   #supress generation of UserVOName attribute that causes to 
++   # gratia collector to store the value of this attribute as a VOName	
++   #if ($userVo ne "") {
++   #   $cmd .= "\"UserVOName=$userVo\" ";
++   #} elsif (exists $urAcctlogInfo{account} and $urAcctlogInfo{account} ne "") {
++   #   $cmd .= "\"UserVOName=$urAcctlogInfo{account}\" ";
++   #}
+    
+    if ($fqan ne "") {
+       $cmd .= "\"UserFQAN=$fqan\" ";
+@@ -1306,7 +1309,7 @@
+    }
+    $urAcctlogInfo{lrmsId}=$tmpArray[2];
+    $_ = $tmpArray[2];
+-   if (/^([\d|\-]*)\.(.*)$/o) {
++   if (/^([\d|\-|\[|\]|\<|\>]*)\.(.*)$/o) {
+       $urAcctlogInfo{server}=$2;
+    }
+    foreach my $record_field ( @$lrmsRecordFields ) {
+@@ -1346,9 +1349,15 @@
+       } elsif ( $record_field =~ /^Resource_List\.select=(\d+)(?::ncpus=(\d+))/o ) {
+          $urAcctlogInfo{select} = $1 * ( ${2} || 1 );
+          next;
++      } elsif ( $record_field =~ /^Resource_List\.select=(\d+)/o ) {
++         $urAcctlogInfo{select} = $1;
++         next;
+       } elsif ( $record_field =~ /^Resource_List\.nodes=(\d+)(?::(\d+))/o ) {
+          $urAcctlogInfo{nodes} = ${1} * ( ${2} || 1 );
+          next;
++      } elsif ( $record_field =~ /^Resource_List\.nodes=(\d+):ppn=(\d+)/o ) {
++         $urAcctlogInfo{nodes} = ${1} * ( ${2} || 1 );
++         next;
+       } elsif ( $record_field =~ /^Resource_List\.ncpus=(\d+)/o ) {
+          $urAcctlogInfo{cores} = ${1};
+          next;
