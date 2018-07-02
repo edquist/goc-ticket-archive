@@ -445,55 +445,6 @@ $(function() {
 
 </div><!--container-fluid-->
 <script>
-var chat = io.connect('https://ticket1.grid.iu.edu:8443');
-chat.on('connect', function() {
-    chat.emit('authenticate', {nodekey:'', ticketid: 23684});
-});
-chat.on('peers', function(peers) {
-    $("#peers").html("");
-    for(var pid in peers) {
-        var peer = peers[pid];
-        addPeer(pid, peer);
-    }
-});
-chat.on('peer_disconnect', function(pid) {
-    $("#peer_"+pid).hide("slow");
-});
-chat.on('peer_connected', function(peers) {
-    //expect only 1 peer connecting, but..
-    for(var pid in peers) {
-        var peer = peers[pid];
-        addPeer(pid, peer);
-    }
-});
-chat.on('submit', function() {
-    if(confirm("This ticket was updated. Do you want to refresh?")) {
-        history.go(0);
-    }
-});
-
-function addPeer(pid, peer) {
-    var ipinfo = "";
-    if(peer.ip != undefined) {
-        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
-    }
-    if(chat.io.engine.id == pid) {
-        //don't display myself
-        return;
-    }
-    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
-    $("#peers").prepend(html);
-    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
-}
-
-$(function() {
-    $("#ticket_form").submit(function() {
-        chat.emit('submit');
-        return true;
-    });
-});
-</script>
-<script>
 //used by searchbox
 function parseValue(value) {
     var obj = new Object();
